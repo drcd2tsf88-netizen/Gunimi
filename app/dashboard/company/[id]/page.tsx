@@ -25,14 +25,20 @@ export default function CompanyPage() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [addingCustomer, setAddingCustomer] =
+  useState(false);
 
   // Notes
   const [notes, setNotes] = useState<any[]>([]);
   const [noteContent, setNoteContent] = useState("");
+  const [addingNote, setAddingNote] =
+  useState(false);
 
   // Tasks
   const [tasks, setTasks] = useState<any[]>([]);
   const [taskTitle, setTaskTitle] = useState("");
+  const [addingTask, setAddingTask] =
+  useState(false);
 
   // Activities
   const [activities, setActivities] = useState<any[]>([]);
@@ -160,6 +166,7 @@ export default function CompanyPage() {
     if (error) {
       toast.error(error.message);
       return;
+      setAddingCustomer(false);
     }
 
     toast.success("Customer added");
@@ -420,9 +427,10 @@ export default function CompanyPage() {
 
           <button
             onClick={handleAddCustomer}
+            disabled = {addingCustomer}
             className="rounded-lg bg-white p-3 font-semibold text-black"
           >
-            Add Customer
+            {addingCustomer ? "Adding..." : "Add Customer"}
           </button>
 
         </div>
