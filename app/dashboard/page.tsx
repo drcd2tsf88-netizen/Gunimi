@@ -13,18 +13,6 @@ export default function DashboardPage() {
   const [loading, setLoading] =
     useState(true);
 
-  const [open, setOpen] =
-    useState(false);
-
-  const [name, setName] =
-    useState("");
-
-  const [industry, setIndustry] =
-    useState("");
-
-  const [creating, setCreating] =
-    useState(false);
-
   useEffect(() => {
     loadCompanies();
   }, []);
@@ -68,67 +56,6 @@ export default function DashboardPage() {
     } finally {
 
       setLoading(false);
-
-    }
-  }
-
-  async function handleCreateCompany() {
-
-    if (!name || !industry) {
-
-      toast.error(
-        "Please fill all fields"
-      );
-
-      return;
-    }
-
-    try {
-
-      setCreating(true);
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      const { error } =
-        await supabase
-          .from("companies")
-          .insert({
-            name,
-            industry,
-            user_id: user?.id,
-          });
-
-      if (error) {
-
-        toast.error(error.message);
-
-        return;
-      }
-
-      toast.success(
-        "Company created"
-      );
-
-      setName("");
-      setIndustry("");
-
-      setOpen(false);
-
-      loadCompanies();
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast.error(
-        "Something went wrong"
-      );
-
-    } finally {
-
-      setCreating(false);
 
     }
   }
@@ -188,7 +115,11 @@ export default function DashboardPage() {
         </div>
 
         <button
-          onClick={() => setOpen(true)}
+          onClick={() =>
+            toast(
+              "Create Company module updating"
+            )
+          }
           className="rounded-2xl bg-white px-6 py-4 font-semibold text-black transition hover:opacity-90"
         >
           Create Company
@@ -357,15 +288,6 @@ export default function DashboardPage() {
 
           </p>
 
-          <button
-            onClick={() =>
-              setOpen(true)
-            }
-            className="mt-8 rounded-xl bg-white px-6 py-3 font-semibold text-black transition hover:opacity-90"
-          >
-            Create First Company
-          </button>
-
         </div>
 
       )}
@@ -417,99 +339,6 @@ export default function DashboardPage() {
 
       </div>
 
-      {/* Modal */}
-      {open && (
-
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
-
-          <div className="w-full max-w-xl rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
-
-            {/* Header */}
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <div className="inline-flex rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm text-zinc-400">
-                  New Workspace
-                </div>
-
-                <h2 className="mt-5 text-3xl font-bold">
-                  Create Company
-                </h2>
-
-                <p className="mt-3 text-zinc-400">
-                  Create a new business workspace inside OrbitDesk.
-                </p>
-
-              </div>
-
-              <button
-                onClick={() =>
-                  setOpen(false)
-                }
-                className="rounded-xl border border-zinc-700 px-4 py-2 transition hover:bg-zinc-800"
-              >
-                ✕
-              </button>
-
-            </div>
-
-            {/* Form */}
-            <div className="mt-8 space-y-5">
-
-              <input
-                type="text"
-                placeholder="Company Name"
-                value={name}
-                disabled={creating}
-                onChange={(e) =>
-                  setName(e.target.value)
-                }
-                className="w-full rounded-2xl border border-zinc-700 bg-black p-4 text-white outline-none transition focus:border-zinc-500 disabled:cursor-not-allowed disabled:opacity-50"
-              />
-
-              <input
-                type="text"
-                placeholder="Industry"
-                value={industry}
-                disabled={creating}
-                onChange={(e) =>
-                  setIndustry(e.target.value)
-                }
-                className="w-full rounded-2xl border border-zinc-700 bg-black p-4 text-white outline-none transition focus:border-zinc-500 disabled:cursor-not-allowed disabled:opacity-50"
-              />
-
-              {/* Actions */}
-              <div className="flex flex-wrap gap-4 pt-4">
-
-                <button
-                  onClick={handleCreateCompany}
-                  disabled={creating}
-                  className="rounded-2xl bg-white px-6 py-3 font-semibold text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-
-                  {creating
-                    ? "Creating..."
-                    : "Create Workspace"}
-
-                </button>
-
-                <button
-                  onClick={() =>
-                    setOpen(false)
-                  }
-                  disabled={creating}
-                  className="rounded-2xl border border-zinc-700 px-6 py-3 transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Cancel
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      )}
+    </main>
+  );
+}
