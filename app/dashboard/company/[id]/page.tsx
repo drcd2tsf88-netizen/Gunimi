@@ -364,41 +364,148 @@ export default function CompanyPage() {
       </div>
 
       {/* Stats */}
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="mt-10 grid gap-6 xl:grid-cols-3">
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-          <p className="text-zinc-500">Customers</p>
+  {/* AI Workspace Card */}
+  <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6">
 
-          <h2 className="mt-4 text-5xl font-bold">
-            {customers.length}
-          </h2>
+    <div className="flex items-center justify-between">
+
+      <h2 className="text-2xl font-bold">
+        Orbit AI
+      </h2>
+
+      <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
+        AI Workspace
+      </span>
+
+    </div>
+
+    <p className="mt-4 leading-relaxed text-zinc-400">
+
+      AI-powered business assistance,
+      summaries, workflow suggestions
+      and productivity insights.
+
+    </p>
+
+    <button className="mt-8 rounded-xl bg-white px-5 py-3 font-semibold text-black transition hover:opacity-90">
+      Open AI Assistant
+    </button>
+
+  </div>
+
+  {/* Workspace Health */}
+  <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6">
+
+    <div className="flex items-center justify-between">
+
+      <h2 className="text-2xl font-bold">
+        Workspace Health
+      </h2>
+
+      <span className="rounded-full bg-green-500/20 px-4 py-2 text-sm text-green-400">
+        Healthy
+      </span>
+
+    </div>
+
+    <div className="mt-8 space-y-5">
+
+      <div>
+
+        <div className="flex items-center justify-between">
+
+          <p className="text-zinc-400">
+            CRM Activity
+          </p>
+
+          <p className="font-semibold">
+            Active
+          </p>
+
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-          <p className="text-zinc-500">Notes</p>
+        <div className="mt-3 h-3 rounded-full bg-zinc-800">
 
-          <h2 className="mt-4 text-5xl font-bold">
-            {notes.length}
-          </h2>
-        </div>
+          <div className="h-3 w-[78%] rounded-full bg-white" />
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-          <p className="text-zinc-500">Tasks</p>
-
-          <h2 className="mt-4 text-5xl font-bold">
-            {tasks.length}
-          </h2>
-        </div>
-
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-          <p className="text-zinc-500">Activities</p>
-
-          <h2 className="mt-4 text-5xl font-bold">
-            {activities.length}
-          </h2>
         </div>
 
       </div>
+
+      <div>
+
+        <div className="flex items-center justify-between">
+
+          <p className="text-zinc-400">
+            Productivity
+          </p>
+
+          <p className="font-semibold">
+            Strong
+          </p>
+
+        </div>
+
+        <div className="mt-3 h-3 rounded-full bg-zinc-800">
+
+          <div className="h-3 w-[64%] rounded-full bg-zinc-400" />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  {/* Activity Summary */}
+  <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6">
+
+    <div className="flex items-center justify-between">
+
+      <h2 className="text-2xl font-bold">
+        Activity
+      </h2>
+
+      <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
+        Today
+      </span>
+
+    </div>
+
+    <div className="mt-8 space-y-4">
+
+      <div className="rounded-2xl border border-zinc-800 bg-black p-4">
+
+        <p className="text-sm text-zinc-400">
+          Customer activity updated
+        </p>
+
+      </div>
+
+      <div className="rounded-2xl border border-zinc-800 bg-black p-4">
+
+        <p className="text-sm text-zinc-400">
+          Tasks synchronized successfully
+        </p>
+
+      </div>
+
+      <div className="rounded-2xl border border-zinc-800 bg-black p-4">
+
+        <p className="text-sm text-zinc-400">
+          Orbit AI generated insights
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
       {/* Add Customer */}
       <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">

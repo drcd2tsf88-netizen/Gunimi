@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function RegisterPage() {
 
   const router = useRouter();
 
@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [loading, setLoading] =
     useState(false);
 
-  async function handleLogin() {
+  async function handleRegister() {
 
     if (!email || !password) {
 
@@ -28,12 +28,21 @@ export default function LoginPage() {
       return;
     }
 
+    if (password.length < 6) {
+
+      toast.error(
+        "Password must be at least 6 characters"
+      );
+
+      return;
+    }
+
     try {
 
       setLoading(true);
 
       const { error } =
-        await supabase.auth.signInWithPassword({
+        await supabase.auth.signUp({
           email,
           password,
         });
@@ -45,9 +54,11 @@ export default function LoginPage() {
         return;
       }
 
-      toast.success("Welcome back");
+      toast.success(
+        "Account created successfully"
+      );
 
-      Windows.location.href = "/dashboard";
+      router.push("/dashboard");
 
     } catch (error) {
 
@@ -75,11 +86,11 @@ export default function LoginPage() {
           </div>
 
           <h1 className="mt-6 text-4xl font-bold">
-            Welcome back
+            Create account
           </h1>
 
           <p className="mt-3 text-zinc-400">
-            Login to continue managing your business.
+            Start managing your business with OrbitDesk AI.
           </p>
 
         </div>
@@ -113,14 +124,14 @@ export default function LoginPage() {
 
           {/* Button */}
           <button
-            onClick={handleLogin}
+            onClick={handleRegister}
             disabled={loading}
             className="w-full rounded-xl bg-white p-4 font-semibold text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
 
             {loading
-              ? "Signing in..."
-              : "Login"}
+              ? "Creating account..."
+              : "Register"}
 
           </button>
 
@@ -129,14 +140,14 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-zinc-500">
 
-          Don&apos;t have an account?
+          Already have an account?
           {" "}
 
           <Link
-            href="/register"
+            href="/login"
             className="text-white transition hover:opacity-80"
           >
-            Register
+            Login
           </Link>
 
         </div>
