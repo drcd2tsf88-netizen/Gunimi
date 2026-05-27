@@ -1,212 +1,611 @@
 "use client";
 
-import { useState } from "react";
 import toast from "react-hot-toast";
+
+import OrbitHeading
+from "@/components/ui/OrbitHeading";
+
+import OrbitSection
+from "@/components/layout/OrbitSection";
+
+import OrbitCard
+from "@/components/ui/OrbitCard";
 
 export default function AIPage() {
 
-  const [prompt, setPrompt] = useState("");
-  const [reply, setReply] = useState("");
-  const [loading, setLoading] = useState(false);
+  const suggestions = [
 
-  async function handleAskAI() {
+    "Summarize workspace activity",
 
-    if (!prompt) {
-      toast.error("Write a message first");
+    "Analyze CRM performance",
 
-      return;
-    }
+    "Generate productivity insights",
 
-    try {
+    "Find workflow bottlenecks",
 
-      setLoading(true);
+    "Optimize task management",
 
-      const res = await fetch("/api/summary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          note: prompt,
-        }),
-      });
+    "Create AI business summary",
 
-      const data = await res.json();
-
-      if (data.reply) {
-
-        setReply(data.reply);
-
-        toast.success("Orbit AI responded");
-
-      } else {
-
-        toast.error("AI failed to respond");
-
-      }
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast.error("Something went wrong");
-
-    } finally {
-
-      setLoading(false);
-
-    }
-  }
+  ];
 
   return (
-    <main className="text-white">
 
-      {/* Header */}
-      <div>
+    <div className="space-y-8">
 
-        <div className="inline-flex rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm text-zinc-400">
-          Orbit AI Assistant
-        </div>
+      {/* Hero */}
+      <OrbitSection>
 
-        <h1 className="mt-6 text-5xl font-bold">
-          Your AI business workspace.
-        </h1>
+        <OrbitHeading
 
-        <p className="mt-4 max-w-3xl text-xl text-zinc-400">
+          badge="Orbit AI Assistant"
 
-          Ask Orbit AI to summarize meetings,
-          generate ideas, organize workflows
-          and help manage your business.
+          title="AI Command Center"
 
-        </p>
+          subtitle="
+            Interact with Orbit AI
+            to analyze workspace activity,
+            optimize workflows and generate
+            intelligent business insights.
+          "
 
-      </div>
+        />
 
-      {/* AI Chat */}
-      <div className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900 p-6">
+      </OrbitSection>
 
-        <div className="flex items-center justify-between">
+      {/* AI Terminal */}
+      <OrbitSection>
 
-          <h2 className="text-2xl font-bold">
-            Orbit AI
-          </h2>
+        <OrbitCard
+          className="overflow-hidden p-0"
+        >
 
-          <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
-            AI Powered
-          </span>
+          {/* Header */}
+          <div
 
-        </div>
+            className="
 
-        {/* Prompt */}
-        <div className="mt-6">
+              flex
+              items-center
+              justify-between
 
-          <textarea
-            placeholder="Ask Orbit AI anything about your business..."
-            value={prompt}
-            onChange={(e) =>
-              setPrompt(e.target.value)
-            }
-            className="min-h-[180px] w-full rounded-2xl border border-zinc-700 bg-black p-5 text-white outline-none"
-          />
+              border-b
+              border-white/10
 
-        </div>
+              px-6
+              py-5
 
-        {/* Actions */}
-        <div className="mt-6 flex flex-wrap gap-4">
-
-          <button
-            onClick={handleAskAI}
-            className="rounded-xl bg-white px-6 py-3 font-semibold text-black transition hover:opacity-90"
+            "
           >
-            {loading
-              ? "Thinking..."
-              : "Ask Orbit AI"}
-          </button>
 
-          <button
-            onClick={() =>
-              setPrompt(
-                "Summarize today's business activity"
-              )
-            }
-            className="rounded-xl border border-zinc-700 px-6 py-3 transition hover:bg-zinc-800"
-          >
-            Activity Summary
-          </button>
+            <div
+              className="flex items-center gap-3"
+            >
 
-          <button
-            onClick={() =>
-              setPrompt(
-                "Suggest follow-up tasks for customers"
-              )
-            }
-            className="rounded-xl border border-zinc-700 px-6 py-3 transition hover:bg-zinc-800"
-          >
-            CRM Suggestions
-          </button>
+              <div
+                className="
+                  h-3
+                  w-3
+                  rounded-full
+                  bg-red-500
+                "
+              />
 
-          <button
-            onClick={() =>
-              setPrompt(
-                "Generate productivity improvement ideas"
-              )
-            }
-            className="rounded-xl border border-zinc-700 px-6 py-3 transition hover:bg-zinc-800"
-          >
-            Productivity Ideas
-          </button>
+              <div
+                className="
+                  h-3
+                  w-3
+                  rounded-full
+                  bg-yellow-500
+                "
+              />
 
-        </div>
-
-      </div>
-
-      {/* AI Response */}
-      <div className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900 p-6">
-
-        <div className="flex items-center justify-between">
-
-          <h2 className="text-2xl font-bold">
-            AI Response
-          </h2>
-
-          <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
-            Live Output
-          </span>
-
-        </div>
-
-        <div className="mt-6">
-
-          {!reply ? (
-
-            <div className="rounded-2xl border border-dashed border-zinc-700 bg-black p-10 text-center">
-
-              <p className="text-lg text-zinc-500">
-                No AI response yet
-              </p>
-
-              <p className="mt-2 text-zinc-600">
-                Ask Orbit AI to start generating business insights.
-              </p>
+              <div
+                className="
+                  h-3
+                  w-3
+                  rounded-full
+                  bg-green-500
+                "
+              />
 
             </div>
 
-          ) : (
+            <div
 
-            <div className="rounded-2xl border border-zinc-800 bg-black p-6">
+              className="
 
-              <p className="whitespace-pre-wrap text-zinc-300 leading-relaxed">
-                {reply}
-              </p>
+                rounded-full
+
+                border
+                border-violet-500/20
+
+                bg-violet-500/10
+
+                px-4
+                py-2
+
+                text-xs
+                text-violet-300
+
+              "
+            >
+
+              Orbit AI Online
 
             </div>
 
-          )}
+          </div>
+
+          {/* Content */}
+          <div className="p-8">
+
+            <div className="space-y-6">
+
+              {/* AI Welcome */}
+              <div
+
+                className="
+
+                  rounded-3xl
+
+                  border
+                  border-white/10
+
+                  bg-white/[0.03]
+
+                  p-6
+
+                "
+              >
+
+                <p
+
+                  className="
+
+                    text-xs
+
+                    uppercase
+
+                    tracking-[0.3em]
+
+                    text-zinc-500
+
+                  "
+                >
+
+                  ORBIT AI
+
+                </p>
+
+                <p
+
+                  className="
+
+                    mt-5
+
+                    leading-relaxed
+
+                    text-zinc-300
+
+                  "
+                >
+
+                  Welcome to OrbitDesk
+                  AI Command Center.
+
+                  Workspace systems
+                  operational.
+
+                  Analytics synchronized
+                  successfully.
+
+                  Awaiting instructions.
+
+                </p>
+
+              </div>
+
+              {/* User */}
+              <div
+
+                className="
+
+                  rounded-3xl
+
+                  border
+                  border-white/10
+
+                  bg-white/[0.02]
+
+                  p-6
+
+                "
+              >
+
+                <p
+
+                  className="
+
+                    text-xs
+
+                    uppercase
+
+                    tracking-[0.3em]
+
+                    text-zinc-500
+
+                  "
+                >
+
+                  USER
+
+                </p>
+
+                <p
+                  className="mt-5 text-white"
+                >
+
+                  Analyze workspace
+                  productivity and recommend
+                  improvements.
+
+                </p>
+
+              </div>
+
+              {/* AI Response */}
+              <div
+
+                className="
+
+                  rounded-3xl
+
+                  border
+                  border-violet-500/10
+
+                  bg-violet-500/[0.03]
+
+                  p-6
+
+                "
+              >
+
+                <p
+
+                  className="
+
+                    text-xs
+
+                    uppercase
+
+                    tracking-[0.3em]
+
+                    text-violet-300
+
+                  "
+                >
+
+                  ORBIT AI RESPONSE
+
+                </p>
+
+                <div
+
+                  className="
+
+                    mt-6
+
+                    space-y-4
+
+                    text-zinc-300
+
+                  "
+                >
+
+                  <p>
+
+                    Workspace productivity
+                    currently stable at 87%.
+
+                  </p>
+
+                  <p>
+
+                    CRM response delays
+                    detected in customer
+                    follow-up pipeline.
+
+                  </p>
+
+                  <div
+                    className="pt-2"
+                  >
+
+                    <p
+                      className="mb-4"
+                    >
+
+                      Recommended actions:
+
+                    </p>
+
+                    <ul
+
+                      className="
+
+                        space-y-3
+
+                        text-sm
+                        text-zinc-400
+
+                      "
+                    >
+
+                      <li>
+                        → Automate repetitive workflows
+                      </li>
+
+                      <li>
+                        → Prioritize overdue CRM conversations
+                      </li>
+
+                      <li>
+                        → Optimize task assignment distribution
+                      </li>
+
+                    </ul>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Input */}
+            <div
+
+              className="
+
+                mt-10
+
+                flex
+                flex-col
+                gap-4
+
+                xl:flex-row
+
+              "
+            >
+
+              <input
+
+                type="text"
+
+                placeholder="
+                  Ask Orbit AI anything...
+                "
+
+                className="
+
+                  h-[58px]
+                  flex-1
+
+                  rounded-2xl
+
+                  border
+                  border-white/10
+
+                  bg-white/[0.03]
+
+                  px-5
+
+                  text-white
+
+                  outline-none
+
+                  placeholder:text-zinc-500
+
+                "
+              />
+
+              <button
+
+                onClick={() =>
+
+                  toast(
+                    "AI integration coming soon"
+                  )
+
+                }
+
+                className="
+
+                  h-[58px]
+
+                  rounded-2xl
+
+                  border
+                  border-violet-500/20
+
+                  bg-violet-500/10
+
+                  px-8
+
+                  text-sm
+                  font-medium
+                  text-violet-200
+
+                  transition-all
+                  duration-300
+
+                  hover:bg-violet-500/20
+
+                "
+              >
+
+                Execute
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </OrbitCard>
+
+      </OrbitSection>
+
+      {/* Suggestions */}
+      <OrbitSection>
+
+        <div
+
+          className="
+
+            flex
+            items-center
+            justify-between
+
+          "
+        >
+
+          <div>
+
+            <h2
+              className="text-xl font-semibold"
+            >
+
+              AI Suggestions
+
+            </h2>
+
+            <p
+              className="mt-2 text-zinc-400"
+            >
+
+              Quick AI actions for
+              workspace productivity.
+
+            </p>
+
+          </div>
+
+          <div
+
+            className="
+
+              rounded-full
+
+              border
+              border-white/10
+
+              bg-white/[0.03]
+
+              px-4
+              py-2
+
+              text-sm
+              text-zinc-300
+
+            "
+          >
+
+            Smart Prompts
+
+          </div>
 
         </div>
 
-      </div>
+        <div
+          className="mt-8 grid gap-6 xl:grid-cols-3"
+        >
 
-    </main>
+          {suggestions.map((item) => (
+
+            <button
+
+              key={item}
+
+              onClick={() =>
+
+                toast(
+                  "AI actions updating soon"
+                )
+
+              }
+
+              className="text-left"
+
+            >
+
+              <OrbitCard
+                className="p-6"
+              >
+
+                <div
+
+                  className="
+
+                    flex
+                    items-center
+                    justify-between
+
+                  "
+                >
+
+                  <div>
+
+                    <h3
+                      className="font-semibold"
+                    >
+
+                      {item}
+
+                    </h3>
+
+                    <p
+
+                      className="
+
+                        mt-3
+
+                        text-sm
+                        text-zinc-400
+
+                      "
+                    >
+
+                      Execute intelligent
+                      workspace analysis.
+
+                    </p>
+
+                  </div>
+
+                  <span
+                    className="text-zinc-500"
+                  >
+
+                    →
+
+                  </span>
+
+                </div>
+
+              </OrbitCard>
+
+            </button>
+
+          ))}
+
+        </div>
+
+      </OrbitSection>
+
+    </div>
+
   );
 }

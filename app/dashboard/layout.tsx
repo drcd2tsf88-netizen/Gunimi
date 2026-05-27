@@ -1,28 +1,27 @@
-import "./globals.css";
+import type {
+  Metadata,
+} from "next";
 
-import { Inter } from "next/font/google";
+import DashboardLayoutClient
+from "@/components/dashboard/DashboardLayoutClient";
 
-const inter = Inter({
-  subsets: ["latin"],
-});
+export const metadata:
+  Metadata = {
+  title:
+    "OrbitDesk Dashboard",
 
-export const metadata = {
-  title: "OrbitDesk",
-  description: "AI Business Operating System",
+  description:
+    "OrbitDesk AI Workspace Operating System Dashboard",
 };
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-
-      <body className={inter.className}>
-        {children}
-      </body>
-
-    </html>
+    <DashboardLayoutClient>
+      {children}
+    </DashboardLayoutClient>
   );
 }

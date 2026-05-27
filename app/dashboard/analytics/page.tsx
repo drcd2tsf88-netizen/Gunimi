@@ -1,384 +1,1487 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import {
+  motion,
+} from "framer-motion";
+
+import OrbitHeading
+from "@/components/ui/OrbitHeading";
+
+import OrbitSection
+from "@/components/layout/OrbitSection";
+
+import OrbitCard
+from "@/components/ui/OrbitCard";
 
 export default function AnalyticsPage() {
 
-  const [companies, setCompanies] = useState<any[]>([]);
-  const [customers, setCustomers] = useState<any[]>([]);
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [activities, setActivities] = useState<any[]>([]);
+  const metrics = [
 
-  useEffect(() => {
-    loadAnalytics();
-  }, []);
+    {
+      label:
+        "AI Efficiency",
 
-  async function loadAnalytics() {
+      value:
+        "+28%",
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+      description:
+        "Workspace acceleration",
+    },
 
-    // Companies
-    const { data: companiesData } = await supabase
-      .from("companies")
-      .select("*")
-      .eq("user_id", user?.id);
+    {
+      label:
+        "CRM Momentum",
 
-    // Customers
-    const { data: customersData } = await supabase
-      .from("customers")
-      .select("*")
-      .eq("user_id", user?.id);
+      value:
+        "+16%",
 
-    // Tasks
-    const { data: tasksData } = await supabase
-      .from("tasks")
-      .select("*")
-      .eq("user_id", user?.id);
+      description:
+        "Lead engagement growth",
+    },
 
-    // Activities
-    const { data: activitiesData } = await supabase
-      .from("activities")
-      .select("*")
-      .eq("user_id", user?.id);
+    {
+      label:
+        "Workflow Speed",
 
-    setCompanies(companiesData || []);
-    setCustomers(customersData || []);
-    setTasks(tasksData || []);
-    setActivities(activitiesData || []);
-  }
+      value:
+        "4.2x",
 
-  const completedTasks = tasks.filter(
-    (task) => task.status === "done"
-  ).length;
+      description:
+        "Automation performance",
+    },
 
-  const activeTasks = tasks.filter(
-    (task) => task.status !== "done"
-  ).length;
+    {
+      label:
+        "AI Actions",
 
-  const wonDeals = customers.filter(
-    (customer) => customer.status === "won"
-  ).length;
+      value:
+        "12.4K",
 
-  const activeLeads = customers.filter(
-    (customer) => customer.status === "lead"
-  ).length;
+      description:
+        "System executions",
+    },
 
-  const aiActivities = activities.filter(
-    (activity) => activity.type === "ai"
-  ).length;
+  ];
+
+  const insights = [
+
+    {
+      title:
+        "Productivity acceleration detected",
+
+      description:
+        "Orbit AI identified elevated execution efficiency across active workspace systems.",
+    },
+
+    {
+      title:
+        "CRM conversion momentum increasing",
+
+      description:
+        "Lead engagement performance improved during the last automation cycle.",
+    },
+
+    {
+      title:
+        "AI workflow optimization recommended",
+
+      description:
+        "Orbit AI suggests automating repetitive workspace operations.",
+    },
+
+  ];
 
   return (
-    <main className="text-white">
 
-      {/* Header */}
-      <div>
+    <div className="space-y-10">
 
-        <h1 className="text-5xl font-bold">
-          Analytics
-        </h1>
+      {/* Hero */}
+      <OrbitSection>
 
-        <p className="mt-3 text-xl text-zinc-400">
-          Business insights and performance overview.
-        </p>
+        <OrbitHeading
 
-      </div>
+          badge="AI Observatory"
 
-      {/* Main Stats */}
-      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+          title="Orbit Intelligence Analytics"
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+          subtitle="
+            Realtime AI-powered workspace intelligence,
+            predictive productivity monitoring and
+            autonomous business analysis.
+          "
 
-          <p className="text-zinc-500">
-            Companies
-          </p>
+        />
 
-          <h2 className="mt-4 text-5xl font-bold">
-            {companies.length}
-          </h2>
+        {/* Observatory Grid */}
+        <div
 
-        </div>
+          className="
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+            mt-10
 
-          <p className="text-zinc-500">
-            Customers
-          </p>
+            grid
+            gap-6
 
-          <h2 className="mt-4 text-5xl font-bold">
-            {customers.length}
-          </h2>
+            lg:grid-cols-3
 
-        </div>
+          "
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+        >
 
-          <p className="text-zinc-500">
-            Tasks
-          </p>
+          {/* Main Intelligence */}
+          <OrbitCard
+            className="relative overflow-hidden p-8 lg:col-span-2"
+          >
 
-          <h2 className="mt-4 text-5xl font-bold">
-            {tasks.length}
-          </h2>
+            {/* Glow */}
+            <div
 
-        </div>
+              className="
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+                pointer-events-none
 
-          <p className="text-zinc-500">
-            Activities
-          </p>
+                absolute
+                right-[-120px]
+                top-[-120px]
 
-          <h2 className="mt-4 text-5xl font-bold">
-            {activities.length}
-          </h2>
+                h-[280px]
+                w-[280px]
 
-        </div>
+                rounded-full
 
-      </div>
+                bg-violet-500/10
 
-      {/* Business Insights */}
-      <div className="mt-10 grid grid-cols-1 gap-6 xl:grid-cols-2">
+                blur-3xl
 
-        {/* Tasks Overview */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              "
 
-          <div className="flex items-center justify-between">
+            />
 
-            <h3 className="text-2xl font-bold">
-              Task Performance
-            </h3>
+            <div className="relative z-10">
 
-            <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
-              Productivity
-            </span>
+              <div
 
-          </div>
+                className="
 
-          <div className="mt-8 space-y-6">
+                  inline-flex
+                  items-center
+                  gap-2
 
-            <div>
+                  rounded-full
 
-              <div className="flex items-center justify-between">
+                  border
+                  border-violet-500/20
 
-                <p className="text-zinc-400">
-                  Completed Tasks
-                </p>
+                  bg-violet-500/10
 
-                <p className="font-semibold">
-                  {completedTasks}
-                </p>
+                  px-3
+                  py-1
+
+                  text-xs
+                  text-violet-300
+
+                "
+
+              >
+
+                <motion.div
+
+                  animate={{
+
+                    scale: [1, 1.4, 1],
+                    opacity: [0.5, 1, 0.5],
+
+                  }}
+
+                  transition={{
+
+                    duration: 2,
+                    repeat: Infinity,
+
+                  }}
+
+                  className="
+
+                    h-2
+                    w-2
+
+                    rounded-full
+
+                    bg-violet-400
+
+                  "
+
+                />
+
+                Orbit AI Analysis Active
 
               </div>
 
-              <div className="mt-3 h-3 rounded-full bg-zinc-800">
+              <h2
 
-                <div
-                  className="h-3 rounded-full bg-white"
-                  style={{
-                    width: `${
-                      tasks.length
-                        ? (completedTasks / tasks.length) * 100
-                        : 0
-                    }%`,
-                  }}
-                />
+                className="
+
+                  mt-6
+
+                  max-w-2xl
+
+                  text-4xl
+                  font-bold
+                  leading-tight
+
+                "
+
+              >
+
+                Productivity acceleration
+                detected across workspace systems.
+
+              </h2>
+
+              <p
+
+                className="
+
+                  mt-5
+
+                  max-w-2xl
+
+                  text-base
+                  leading-relaxed
+                  text-zinc-400
+
+                "
+
+              >
+
+                Orbit AI identified increased workflow
+                efficiency, CRM engagement growth and
+                elevated automation execution performance.
+
+              </p>
+
+              {/* Metrics */}
+              <div
+
+                className="
+
+                  mt-10
+
+                  grid
+                  gap-4
+
+                  md:grid-cols-2
+                  xl:grid-cols-4
+
+                "
+
+              >
+
+                {
+
+                  metrics.map((item) => (
+
+                    <div
+
+                      key={item.label}
+
+                      className="
+
+                        rounded-2xl
+
+                        border
+                        border-white/10
+
+                        bg-white/[0.03]
+
+                        p-5
+
+                        backdrop-blur-xl
+
+                      "
+
+                    >
+
+                      <p
+                        className="text-sm text-zinc-500"
+                      >
+
+                        {item.label}
+
+                      </p>
+
+                      <h3
+
+                        className="
+
+                          mt-3
+
+                          text-3xl
+                          font-bold
+
+                        "
+
+                      >
+
+                        {item.value}
+
+                      </h3>
+
+                      <p
+
+                        className="
+
+                          mt-2
+
+                          text-sm
+                          text-zinc-400
+
+                        "
+
+                      >
+
+                        {item.description}
+
+                      </p>
+
+                    </div>
+
+                  ))
+
+                }
 
               </div>
 
             </div>
 
-            <div>
+          </OrbitCard>
 
-              <div className="flex items-center justify-between">
+          {/* AI Signal */}
+          <OrbitCard
+            className="relative overflow-hidden p-6"
+          >
 
-                <p className="text-zinc-400">
-                  Active Tasks
-                </p>
+            <div
 
-                <p className="font-semibold">
-                  {activeTasks}
-                </p>
+              className="
 
-              </div>
+                pointer-events-none
 
-              <div className="mt-3 h-3 rounded-full bg-zinc-800">
+                absolute
+                bottom-[-80px]
+                left-[-80px]
 
-                <div
-                  className="h-3 rounded-full bg-zinc-400"
-                  style={{
-                    width: `${
-                      tasks.length
-                        ? (activeTasks / tasks.length) * 100
-                        : 0
-                    }%`,
-                  }}
-                />
+                h-[220px]
+                w-[220px]
+
+                rounded-full
+
+                bg-cyan-500/10
+
+                blur-3xl
+
+              "
+
+            />
+
+            <div className="relative z-10">
+
+              <p
+                className="text-sm text-cyan-300"
+              >
+
+                Live AI Signal
+
+              </p>
+
+              <h3
+
+                className="
+
+                  mt-4
+
+                  text-2xl
+                  font-bold
+                  leading-snug
+
+                "
+
+              >
+
+                System stability
+                operating normally.
+
+              </h3>
+
+              <div
+                className="mt-8 space-y-4"
+              >
+
+                {
+
+                  [
+
+                    "AI systems operational",
+
+                    "Workspace sync stable",
+
+                    "Automation engine online",
+
+                    "Predictive analysis active",
+
+                  ].map((signal) => (
+
+                    <div
+
+                      key={signal}
+
+                      className="
+
+                        flex
+                        items-center
+                        gap-3
+
+                      "
+
+                    >
+
+                      <motion.div
+
+                        animate={{
+
+                          scale: [1, 1.3, 1],
+
+                          opacity: [0.5, 1, 0.5],
+
+                        }}
+
+                        transition={{
+
+                          duration: 2,
+                          repeat: Infinity,
+
+                        }}
+
+                        className="
+
+                          h-2.5
+                          w-2.5
+
+                          rounded-full
+
+                          bg-cyan-400
+
+                        "
+
+                      />
+
+                      <span
+                        className="text-sm text-zinc-300"
+                      >
+
+                        {signal}
+
+                      </span>
+
+                    </div>
+
+                  ))
+
+                }
 
               </div>
 
             </div>
 
-          </div>
+          </OrbitCard>
 
         </div>
 
-        {/* CRM Overview */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+      </OrbitSection>
 
-          <div className="flex items-center justify-between">
+      {/* Analytics Grid */}
+      <OrbitSection>
 
-            <h3 className="text-2xl font-bold">
-              CRM Pipeline
-            </h3>
+        <div
+          className="grid gap-6 xl:grid-cols-3"
+        >
 
-            <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
-              Sales
-            </span>
+          {/* Observatory Chart */}
+          <OrbitCard
+            className="relative overflow-hidden p-8 xl:col-span-2"
+          >
 
-          </div>
+            {/* Glow */}
+            <div
 
-          <div className="mt-8 space-y-6">
+              className="
 
-            <div>
+                pointer-events-none
 
-              <div className="flex items-center justify-between">
+                absolute
+                bottom-[-120px]
+                right-[-120px]
 
-                <p className="text-zinc-400">
-                  Active Leads
-                </p>
+                h-[260px]
+                w-[260px]
 
-                <p className="font-semibold">
-                  {activeLeads}
-                </p>
+                rounded-full
+
+                bg-violet-500/10
+
+                blur-3xl
+
+              "
+
+            />
+
+            <div className="relative z-10">
+
+              <div
+
+                className="
+
+                  flex
+                  items-center
+                  justify-between
+
+                "
+
+              >
+
+                <div>
+
+                  <h2
+                    className="text-2xl font-semibold"
+                  >
+
+                    AI Performance Observatory
+
+                  </h2>
+
+                  <p
+                    className="mt-2 text-zinc-400"
+                  >
+
+                    Realtime operational intelligence
+                    across workspace systems.
+
+                  </p>
+
+                </div>
+
+                <div
+
+                  className="
+
+                    rounded-full
+
+                    border
+                    border-violet-500/20
+
+                    bg-violet-500/10
+
+                    px-4
+                    py-2
+
+                    text-sm
+                    text-violet-300
+
+                  "
+
+                >
+
+                  Live Monitoring
+
+                </div>
 
               </div>
 
-              <div className="mt-3 h-3 rounded-full bg-zinc-800">
+              {/* Chart */}
+              <div
 
-                <div
-                  className="h-3 rounded-full bg-white"
-                  style={{
-                    width: `${
-                      customers.length
-                        ? (activeLeads / customers.length) * 100
-                        : 0
-                    }%`,
-                  }}
-                />
+                className="
+
+                  mt-14
+
+                  flex
+                  h-80
+                  items-end
+                  gap-5
+
+                "
+
+              >
+
+                {
+
+                  [42, 58, 49, 72, 65, 88, 96].map(
+
+                    (height, index) => (
+
+                      <motion.div
+
+                        key={index}
+
+                        initial={{
+                          opacity: 0,
+                          y: 20,
+                        }}
+
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+
+                        transition={{
+                          delay: index * 0.08,
+                        }}
+
+                        className="flex-1"
+
+                      >
+
+                        <motion.div
+
+                          whileHover={{
+                            y: -6,
+                          }}
+
+                          className="
+
+                            relative
+
+                            overflow-hidden
+
+                            rounded-t-[28px]
+
+                            bg-gradient-to-t
+                            from-violet-500
+                            to-cyan-400
+
+                            shadow-[0_0_30px_rgba(124,58,237,0.25)]
+
+                          "
+
+                          style={{
+                            height: `${height}%`,
+                          }}
+
+                        >
+
+                          <div
+
+                            className="
+
+                              absolute
+                              inset-0
+
+                              bg-white/10
+
+                            "
+
+                          />
+
+                        </motion.div>
+
+                      </motion.div>
+
+                    )
+
+                  )
+
+                }
 
               </div>
 
             </div>
 
-            <div>
+          </OrbitCard>
+          <OrbitSection>
 
-              <div className="flex items-center justify-between">
+  <OrbitHeading
 
-                <p className="text-zinc-400">
-                  Won Deals
-                </p>
+    badge="Predictive Intelligence"
 
-                <p className="font-semibold">
-                  {wonDeals}
-                </p>
+    title="Orbit AI Predictive Layer"
+
+    subtitle="
+      Autonomous AI prediction systems monitoring
+      workspace behavior, productivity risks and
+      future operational performance.
+    "
+
+  />
+
+  <div
+
+    className="
+
+      mt-10
+
+      grid
+      gap-6
+
+      xl:grid-cols-3
+
+    "
+
+  >
+
+    {
+
+      [
+
+        {
+
+          title:
+            "Productivity slowdown probability",
+
+          prediction:
+            "72%",
+
+          description:
+            "Orbit AI predicts reduced execution efficiency within the next operational cycle.",
+
+          status:
+            "Moderate Risk",
+
+        },
+
+        {
+
+          title:
+            "CRM conversion acceleration",
+
+          prediction:
+            "+24%",
+
+          description:
+            "Lead engagement momentum indicates elevated conversion potential.",
+
+          status:
+            "Growth Signal",
+
+        },
+
+        {
+
+          title:
+            "Workflow bottleneck detected",
+
+          prediction:
+            "3 Active",
+
+          description:
+            "AI identified high-priority task congestion inside automation queues.",
+
+          status:
+            "Requires Attention",
+
+        },
+
+      ].map((item, index) => (
+
+        <motion.div
+
+          key={item.title}
+
+          initial={{
+            opacity: 0,
+            y: 12,
+          }}
+
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            delay: index * 0.08,
+          }}
+
+        >
+
+          <OrbitCard
+            className="relative overflow-hidden p-6"
+          >
+
+            {/* Ambient Glow */}
+            <div
+
+              className="
+
+                pointer-events-none
+
+                absolute
+                right-[-80px]
+                top-[-80px]
+
+                h-[220px]
+                w-[220px]
+
+                rounded-full
+
+                bg-violet-500/10
+
+                blur-3xl
+
+              "
+
+            />
+
+            <div className="relative z-10">
+
+              {/* Status */}
+              <div
+
+                className="
+
+                  inline-flex
+                  items-center
+                  gap-2
+
+                  rounded-full
+
+                  border
+                  border-violet-500/20
+
+                  bg-violet-500/10
+
+                  px-3
+                  py-1
+
+                  text-xs
+                  text-violet-300
+
+                "
+
+              >
+
+                <motion.div
+
+                  animate={{
+
+                    scale: [1, 1.3, 1],
+
+                    opacity: [0.5, 1, 0.5],
+
+                  }}
+
+                  transition={{
+
+                    duration: 2,
+                    repeat: Infinity,
+
+                    delay: index * 0.2,
+
+                  }}
+
+                  className="
+
+                    h-2
+                    w-2
+
+                    rounded-full
+
+                    bg-violet-400
+
+                  "
+
+                />
+
+                {item.status}
 
               </div>
 
-              <div className="mt-3 h-3 rounded-full bg-zinc-800">
+              <h3
 
-                <div
-                  className="h-3 rounded-full bg-zinc-400"
-                  style={{
-                    width: `${
-                      customers.length
-                        ? (wonDeals / customers.length) * 100
-                        : 0
-                    }%`,
+                className="
+
+                  mt-6
+
+                  text-xl
+                  font-semibold
+                  leading-snug
+
+                "
+
+              >
+
+                {item.title}
+
+              </h3>
+
+              <div
+
+                className="
+
+                  mt-8
+
+                  text-5xl
+                  font-bold
+
+                "
+
+              >
+
+                {item.prediction}
+
+              </div>
+
+              <p
+
+                className="
+
+                  mt-6
+
+                  text-sm
+                  leading-relaxed
+                  text-zinc-400
+
+                "
+
+              >
+
+                {item.description}
+
+              </p>
+
+            </div>
+
+          </OrbitCard>
+
+        </motion.div>
+
+      ))
+
+    }
+
+  </div>
+
+</OrbitSection>
+<OrbitSection>
+
+  <OrbitHeading
+
+    badge="Autonomous Execution"
+
+    title="Orbit AI Autonomous Actions"
+
+    subtitle="
+      AI-generated execution flows,
+      intelligent recovery systems and
+      autonomous operational assistance.
+    "
+
+  />
+
+  <div
+
+    className="
+
+      mt-10
+
+      grid
+      gap-6
+
+      xl:grid-cols-2
+
+    "
+
+  >
+
+    {
+
+      [
+
+        {
+
+          title:
+            "Workflow Recovery Plan",
+
+          description:
+            "Orbit AI detected operational slowdown and prepared a recovery execution strategy.",
+
+          actions: [
+
+            "Redistribute high-priority tasks",
+
+            "Generate AI productivity summary",
+
+            "Optimize automation queue",
+
+          ],
+
+        },
+
+        {
+
+          title:
+            "CRM Momentum Optimization",
+
+          description:
+            "Orbit AI identified elevated engagement potential inside the CRM pipeline.",
+
+          actions: [
+
+            "Generate follow-up workflows",
+
+            "Prioritize high-conversion leads",
+
+            "Prepare AI outreach summary",
+
+          ],
+
+        },
+
+      ].map((item, index) => (
+
+        <motion.div
+
+          key={item.title}
+
+          initial={{
+            opacity: 0,
+            y: 14,
+          }}
+
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            delay: index * 0.08,
+          }}
+
+        >
+
+          <OrbitCard
+            className="relative overflow-hidden p-8"
+          >
+
+            {/* Glow */}
+            <div
+
+              className="
+
+                pointer-events-none
+
+                absolute
+                right-[-100px]
+                top-[-100px]
+
+                h-[240px]
+                w-[240px]
+
+                rounded-full
+
+                bg-violet-500/10
+
+                blur-3xl
+
+              "
+
+            />
+
+            <div className="relative z-10">
+
+              {/* Status */}
+              <div
+
+                className="
+
+                  inline-flex
+                  items-center
+                  gap-2
+
+                  rounded-full
+
+                  border
+                  border-violet-500/20
+
+                  bg-violet-500/10
+
+                  px-3
+                  py-1
+
+                  text-xs
+                  text-violet-300
+
+                "
+
+              >
+
+                <motion.div
+
+                  animate={{
+
+                    scale: [1, 1.3, 1],
+
+                    opacity: [0.5, 1, 0.5],
+
                   }}
+
+                  transition={{
+
+                    duration: 2,
+                    repeat: Infinity,
+
+                  }}
+
+                  className="
+
+                    h-2
+                    w-2
+
+                    rounded-full
+
+                    bg-violet-400
+
+                  "
+
                 />
+
+                Autonomous Execution Ready
+
+              </div>
+
+              <h2
+
+                className="
+
+                  mt-6
+
+                  text-2xl
+                  font-bold
+
+                "
+
+              >
+
+                {item.title}
+
+              </h2>
+
+              <p
+
+                className="
+
+                  mt-5
+
+                  text-sm
+                  leading-relaxed
+                  text-zinc-400
+
+                "
+
+              >
+
+                {item.description}
+
+              </p>
+
+              {/* Actions */}
+              <div
+                className="mt-8 space-y-4"
+              >
+
+                {
+
+                  item.actions.map((action) => (
+
+                    <motion.button
+
+                      key={action}
+
+                      whileHover={{
+                        y: -2,
+                      }}
+
+                      whileTap={{
+                        scale: 0.98,
+                      }}
+
+                      className="
+
+                        flex
+                        w-full
+                        items-center
+                        justify-between
+
+                        rounded-2xl
+
+                        border
+                        border-white/10
+
+                        bg-white/[0.03]
+
+                        px-5
+                        py-4
+
+                        text-left
+                        text-sm
+                        text-zinc-300
+
+                        transition-all
+                        duration-300
+
+                        hover:border-violet-500/20
+                        hover:bg-violet-500/10
+                        hover:text-white
+
+                      "
+
+                    >
+
+                      <span>
+                        {action}
+                      </span>
+
+                      <span>
+                        →
+                      </span>
+
+                    </motion.button>
+
+                  ))
+
+                }
 
               </div>
 
             </div>
 
-          </div>
+          </OrbitCard>
+
+        </motion.div>
+
+      ))
+
+    }
+
+  </div>
+
+</OrbitSection>
+
+          {/* AI Insights */}
+          <OrbitCard
+            className="relative overflow-hidden p-6"
+          >
+
+            {/* Glow */}
+            <div
+
+              className="
+
+                pointer-events-none
+
+                absolute
+                top-[-80px]
+                right-[-80px]
+
+                h-[220px]
+                w-[220px]
+
+                rounded-full
+
+                bg-violet-500/10
+
+                blur-3xl
+
+              "
+
+            />
+
+            <div className="relative z-10">
+
+              <div
+
+                className="
+
+                  flex
+                  items-center
+                  justify-between
+
+                "
+
+              >
+
+                <h2
+                  className="text-2xl font-semibold"
+                >
+
+                  Orbit AI Insights
+
+                </h2>
+
+                <div
+
+                  className="
+
+                    rounded-full
+
+                    border
+                    border-violet-500/20
+
+                    bg-violet-500/10
+
+                    px-4
+                    py-2
+
+                    text-xs
+                    text-violet-300
+
+                  "
+
+                >
+
+                  AI LIVE
+
+                </div>
+
+              </div>
+
+              <div
+                className="mt-8 space-y-4"
+              >
+
+                {
+
+                  insights.map((item, index) => (
+
+                    <motion.div
+
+                      key={item.title}
+
+                      initial={{
+                        opacity: 0,
+                        y: 10,
+                      }}
+
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+
+                      transition={{
+                        delay: index * 0.08,
+                      }}
+
+                      className="
+
+                        rounded-2xl
+
+                        border
+                        border-white/10
+
+                        bg-white/[0.03]
+
+                        p-5
+
+                        backdrop-blur-xl
+
+                      "
+
+                    >
+
+                      <div
+                        className="flex gap-4"
+                      >
+
+                        <motion.div
+
+                          animate={{
+
+                            scale: [1, 1.3, 1],
+
+                            opacity: [0.5, 1, 0.5],
+
+                          }}
+
+                          transition={{
+
+                            duration: 2,
+                            repeat: Infinity,
+
+                            delay: index * 0.2,
+
+                          }}
+
+                          className="
+
+                            mt-1
+
+                            h-2.5
+                            w-2.5
+
+                            rounded-full
+
+                            bg-violet-400
+
+                          "
+
+                        />
+
+                        <div>
+
+                          <h3
+
+                            className="
+
+                              text-sm
+                              font-medium
+                              text-white
+
+                            "
+
+                          >
+
+                            {item.title}
+
+                          </h3>
+
+                          <p
+
+                            className="
+
+                              mt-3
+
+                              text-sm
+                              leading-relaxed
+                              text-zinc-400
+
+                            "
+
+                          >
+
+                            {item.description}
+
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                    </motion.div>
+
+                  ))
+
+                }
+
+              </div>
+
+            </div>
+
+          </OrbitCard>
 
         </div>
 
-      </div>
+      </OrbitSection>
 
-      {/* AI Insights */}
-      <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+    </div>
 
-        <div className="flex items-center justify-between">
-
-          <h3 className="text-2xl font-bold">
-            AI Insights
-          </h3>
-
-          <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
-            Orbit AI
-          </span>
-
-        </div>
-
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-
-          <div className="rounded-2xl border border-zinc-800 bg-black p-6">
-
-            <p className="text-zinc-500">
-              AI Actions
-            </p>
-
-            <h4 className="mt-4 text-4xl font-bold">
-              {aiActivities}
-            </h4>
-
-          </div>
-
-          <div className="rounded-2xl border border-zinc-800 bg-black p-6">
-
-            <p className="text-zinc-500">
-              Productivity Score
-            </p>
-
-            <h4 className="mt-4 text-4xl font-bold">
-
-              {Math.min(
-                100,
-                completedTasks * 10
-              )}
-              %
-
-            </h4>
-
-          </div>
-
-          <div className="rounded-2xl border border-zinc-800 bg-black p-6">
-
-            <p className="text-zinc-500">
-              CRM Health
-            </p>
-
-            <h4 className="mt-4 text-4xl font-bold">
-
-              {Math.min(
-                100,
-                wonDeals * 20
-              )}
-              %
-
-            </h4>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </main>
   );
+
 }

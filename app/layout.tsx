@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
+
 const inter = Inter({
   subsets: ["latin"],
 });
@@ -24,37 +25,53 @@ export default function RootLayout({
         className={`${inter.className} bg-black text-white`}
       >
 
-        <Toaster
-          position="top-right"
-          toastOptions={{
+       <Toaster
+  position="top-right"
 
-            duration: 4000,
+  toastOptions={{
+    style: {
+      background:
+        "rgba(10,15,31,0.92)",
 
-            style: {
-              background: "#09090b",
-              color: "#ffffff",
-              border: "1px solid #27272a",
-              borderRadius: "16px",
-              padding: "16px",
-              fontSize: "14px",
-            },
+      color: "#fff",
 
-            success: {
-              style: {
-                border:
-                  "1px solid rgba(34,197,94,0.25)",
-              },
-            },
+      border:
+        "1px solid rgba(255,255,255,0.08)",
 
-            error: {
-              style: {
-                border:
-                  "1px solid rgba(239,68,68,0.25)",
-              },
-            },
+      backdropFilter:
+        "blur(24px)",
 
-          }}
-        />
+      borderRadius:
+        "20px",
+
+      padding:
+        "16px 18px",
+
+      fontSize:
+        "14px",
+    },
+
+    success: {
+      iconTheme: {
+        primary:
+          "#8b5cf6",
+
+        secondary:
+          "#ffffff",
+      },
+    },
+
+    error: {
+      iconTheme: {
+        primary:
+          "#ef4444",
+
+        secondary:
+          "#ffffff",
+      },
+    },
+  }}
+/>
 
         {children}
 

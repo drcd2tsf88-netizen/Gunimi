@@ -1,0 +1,107 @@
+import {
+  errorResponse,
+  successResponse,
+}
+from "@/lib/server/apiResponse";
+
+import { sanitize }
+from "@/lib/server/sanitize";
+
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
+import { getUser }
+from "@/lib/server/auth";
+
+export async function POST(
+  req: Request
+) {
+
+  try {
+
+    const body =
+      await req.json();
+
+    const {
+      companyId,
+      title,
+      content,
+    } = body;
+
+    const user = await getUser();
+
+    if (!user) {
+      return errorResponse("Unauthorized", 401);
+    }
+
+   if (
+  !companyId ||
+  !title
+) {
+
+  return errorResponse(
+    "Missing fields",
+    400
+  );
+    }
+
+    const cleanTitle =
+      sanitize(title);
+
+    const cleanContent =
+      sanitize(content);
+
+    const { error } =
+      await supabaseAdmin
+        .from("workspace_notes")
+        .insert({
+
+          company_id:
+            companyId,
+
+          user_id:
+            user.id,
+
+          title:
+            cleanTitle,
+
+          content:
+            cleanContent,
+
+        });
+
+    if (error) {
+
+      return errorResponse(
+        error.message
+      );
+    }
+
+    await supabaseAdmin
+      .from("workspace_activity")
+      .insert({
+
+        company_id:
+          companyId,
+
+        user_id:
+          user.id,
+
+        type:
+          "note_created",
+
+        message:
+          `Created note "${cleanTitle}"`,
+
+      });
+
+    return successResponse();
+
+  } catch (error) {
+
+    console.error(error);
+
+    return errorResponse(
+      "Server error"
+    );
+  }
+}

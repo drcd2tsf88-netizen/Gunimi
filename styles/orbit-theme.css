@@ -1,0 +1,67 @@
+:root {
+
+  /* COLORS */
+  --orbit-bg:
+    #060816;
+
+  --orbit-surface:
+    rgba(15, 23, 42, 0.72);
+
+  --orbit-card:
+    rgba(17, 25, 40, 0.78);
+
+  --orbit-border:
+    rgba(255,255,255,0.08);
+
+  --orbit-text:
+    #ffffff;
+
+  --orbit-muted:
+    #94a3b8;
+
+  --orbit-primary:
+    #7c3aed;
+
+  --orbit-primary-2:
+    #06b6d4;
+
+  --orbit-success:
+    #22c55e;
+
+  --orbit-warning:
+    #f59e0b;
+
+  --orbit-danger:
+    #ef4444;
+
+  /* GRADIENTS */
+  --orbit-gradient:
+
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,0.18),
+      rgba(6,182,212,0.12)
+    );
+
+  --orbit-glow:
+
+    0 0 40px
+    rgba(124,58,237,0.18);
+
+  /* RADIUS */
+  --orbit-radius:
+    24px;
+
+  /* BLUR */
+  --orbit-blur:
+    blur(18px);
+
+  /* SPACING */
+  --orbit-space:
+    24px;
+
+  /* TRANSITIONS */
+  --orbit-transition:
+    all 0.25s ease;
+
+}

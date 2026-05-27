@@ -1,256 +1,323 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import toast from "react-hot-toast";
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import { motion }
+from "framer-motion";
+
+import { supabase }
+from "@/lib/supabase";
+
+import { getTasks }
+from "@/lib/tasks/getTasks";
+import { getWorkspaceTasks }
+from "@/server/actions/tasks/getWorkspaceTasks";
+
+import { useTasksStore }
+from "@/lib/store/tasks-store";
+
+type Task = {
+  id: string;
+
+  title: string;
+
+  status: string;
+
+  priority: string;
+
+  created_at: string;
+};
 
 export default function TasksPage() {
+  const [loading, setLoading] =
+    useState(true);
 
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    loadTasks();
-  }, []);
-
-  async function loadTasks() {
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const { data, error } = await supabase
-      .from("tasks")
-      .select(`
-        *,
-        companies (
-          name
-        )
-      `)
-      .eq("user_id", user?.id)
-      .order("created_at", {
-        ascending: false,
-      });
-
-    if (error) {
-      console.error(error);
-
-      toast.error("Failed to load tasks");
-
-      return;
-    }
-
-    setTasks(data || []);
-  }
-
-  async function toggleTask(task: any) {
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const newStatus =
-      task.status === "done"
-        ? "todo"
-        : "done";
-
-    const { error } = await supabase
-      .from("tasks")
-      .update({
-        status: newStatus,
-      })
-      .eq("id", task.id)
-      .eq("user_id", user?.id);
-
-    if (error) {
-      toast.error(error.message);
-
-      return;
-    }
-
-    toast.success(
-      `Task marked as ${newStatus}`
+  const tasks =
+    useTasksStore(
+      (state) => state.tasks
     );
 
-    loadTasks();
+  const setTasks =
+    useTasksStore(
+      (state) => state.setTasks
+    );
+
+ useEffect(() => {
+  async function loadTasks() {
+    const data =
+      await getWorkspaceTasks();
+
+    setTasks(data);
   }
 
-  const filteredTasks = tasks.filter(
-    (task) =>
-      task.title
-        ?.toLowerCase()
-        .includes(search.toLowerCase())
-  );
+  // INITIAL LOAD
+
+  loadTasks();
+
+  // REALTIME
+
+  const channel =
+    supabase
+      .channel(
+        "workspace-tasks"
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+
+          schema: "public",
+
+          table:
+            "workspace_tasks",
+        },
+        () => {
+          loadTasks();
+        }
+      )
+      .subscribe();
+
+  // CLEANUP
+
+  return () => {
+    supabase.removeChannel(
+      channel
+    );
+  };
+}, []);
 
   return (
-    <main className="text-white">
+    <div
+      className="
+        min-h-screen
+        bg-[#060816]
+        px-8
+        py-8
+        text-white
+      "
+    >
+      {/* HEADER */}
 
-      {/* Header */}
-      <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
-
+      <div
+        className="
+          mb-8
+          flex
+          items-center
+          justify-between
+        "
+      >
         <div>
-
-          <h1 className="text-5xl font-bold">
+          <h1
+            className="
+              text-3xl
+              font-semibold
+            "
+          >
             Tasks
           </h1>
 
-          <p className="mt-3 text-xl text-zinc-400">
-            Organize and track business operations.
+          <p
+            className="
+              mt-2
+              text-sm
+              text-white/50
+            "
+          >
+            Live workspace task
+            execution system
           </p>
-
         </div>
 
-        {/* Search */}
-        <input
-          type="text"
-          placeholder="Search tasks..."
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-          className="w-full xl:w-96 rounded-xl border border-zinc-700 bg-zinc-900 p-4 text-white outline-none"
-        />
-
+        <div
+          className="
+            rounded-2xl
+            border
+            border-violet-500/20
+            bg-violet-500/10
+            px-4
+            py-2
+            text-sm
+            text-violet-300
+          "
+        >
+          {tasks.length} Active Tasks
+        </div>
       </div>
 
-      {/* Stats */}
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* LOADING */}
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-
-          <p className="text-zinc-500">
-            Total Tasks
-          </p>
-
-          <h2 className="mt-4 text-5xl font-bold">
-            {tasks.length}
-          </h2>
-
+      {loading && (
+        <div
+          className="
+            flex
+            items-center
+            justify-center
+            py-24
+          "
+        >
+          <div
+            className="
+              h-12
+              w-12
+              animate-spin
+              rounded-full
+              border-2
+              border-violet-500/20
+              border-t-violet-400
+            "
+          />
         </div>
+      )}
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+      {/* EMPTY */}
 
-          <p className="text-zinc-500">
-            Todo
-          </p>
+      {!loading &&
+        tasks.length === 0 && (
+          <div
+            className="
+              rounded-3xl
+              border
+              border-white/10
+              bg-white/[0.03]
+              p-12
+              text-center
+            "
+          >
+            <h2
+              className="
+                text-xl
+                font-medium
+              "
+            >
+              No tasks yet
+            </h2>
 
-          <h2 className="mt-4 text-5xl font-bold">
+            <p
+              className="
+                mt-3
+                text-sm
+                text-white/50
+              "
+            >
+              Orbit AI will create
+              tasks automatically.
+            </p>
+          </div>
+        )}
 
-            {
-              tasks.filter(
-                (task) =>
-                  task.status !== "done"
-              ).length
-            }
+      {/* TASKS */}
 
-          </h2>
+      {!loading &&
+        tasks.length > 0 && (
+          <div
+            className="
+              grid
+              gap-5
+            "
+          >
+            {tasks.map(
+              (
+                task: Task,
+                index
+              ) => (
+                <motion.div
+                  key={task.id}
+                  initial={{
+                    opacity: 0,
+                    y: 10,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    delay:
+                      index * 0.05,
+                  }}
+                  className="
+                    rounded-3xl
+                    border
+                    border-white/10
+                    bg-white/[0.03]
+                    p-6
+                    backdrop-blur-xl
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      items-start
+                      justify-between
+                    "
+                  >
+                    <div>
+                      <h3
+                        className="
+                          text-lg
+                          font-medium
+                        "
+                      >
+                        {task.title}
+                      </h3>
 
-        </div>
+                      <p
+                        className="
+                          mt-3
+                          text-sm
+                          text-white/50
+                        "
+                      >
+                        Created{" "}
+                        {new Date(
+                          task.created_at
+                        ).toLocaleString()}
+                      </p>
+                    </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-
-          <p className="text-zinc-500">
-            Completed
-          </p>
-
-          <h2 className="mt-4 text-5xl font-bold">
-
-            {
-              tasks.filter(
-                (task) =>
-                  task.status === "done"
-              ).length
-            }
-
-          </h2>
-
-        </div>
-
-      </div>
-
-      {/* Tasks */}
-      <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-
-        <div className="flex items-center justify-between">
-
-          <h3 className="text-2xl font-bold">
-            All Tasks
-          </h3>
-
-          <p className="text-zinc-500">
-            {filteredTasks.length} results
-          </p>
-
-        </div>
-
-        <div className="mt-6 grid gap-4">
-
-          {filteredTasks.length === 0 ? (
-
-            <div className="rounded-2xl border border-dashed border-zinc-700 bg-black p-10 text-center">
-
-              <p className="text-lg text-zinc-500">
-                No tasks found
-              </p>
-
-              <p className="mt-2 text-zinc-600">
-                Create tasks inside companies to organize work.
-              </p>
-
-            </div>
-
-          ) : (
-
-            filteredTasks.map((task) => (
-              <button
-                key={task.id}
-                onClick={() => toggleTask(task)}
-                className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5 text-left transition hover:border-zinc-600"
-              >
-
-                <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-
-                  <div>
-
-                    <h4 className="text-xl font-bold">
-                      {task.title}
-                    </h4>
-
-                    <p className="mt-3 text-sm text-zinc-500">
-
-                      Company:
-                      {" "}
-                      {task.companies?.name || "Unknown"}
-
-                    </p>
-
-                  </div>
-
-                  <div>
-
-                    <span
-                      className={
-                        task.status === "done"
-                          ? "rounded-full bg-green-500/20 px-4 py-2 text-sm text-green-400"
-                          : "rounded-full bg-yellow-500/20 px-4 py-2 text-sm text-yellow-400"
-                      }
+                    <div
+                      className="
+                        flex
+                        items-center
+                        gap-3
+                      "
                     >
-                      {task.status}
-                    </span>
+                      <div
+                        className="
+                          rounded-xl
+                          bg-cyan-500/10
+                          px-3
+                          py-1
+                          text-xs
+                          uppercase
+                          text-cyan-300
+                        "
+                      >
+                        {task.status}
+                      </div>
 
+                      <div
+                        className="
+                          rounded-xl
+                          bg-violet-500/10
+                          px-3
+                          py-1
+                          text-xs
+                          uppercase
+                          text-violet-300
+                        "
+                      >
+                        {task.priority}
+                      </div>
+                    </div>
                   </div>
-
-                </div>
-
-              </button>
-            ))
-
-          )}
-
-        </div>
-
-      </div>
-
-    </main>
+                </motion.div>
+              )
+            )}
+          </div>
+        )}
+    </div>
   );
 }

@@ -1,0 +1,703 @@
+"use client";
+
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import Image
+from "next/image";
+
+import {
+  useRouter,
+} from "next/navigation";
+
+import {
+  AnimatePresence,
+  motion,
+} from "framer-motion";
+
+import {
+  Check,
+  ChevronDown,
+  LogOut,
+  Settings,
+  Sparkles,
+} from "lucide-react";
+
+import { toast }
+from "react-hot-toast";
+
+import { supabase }
+from "@/lib/supabase";
+
+import { getWorkspaceMembership }
+from "@/server/actions/workspace/getWorkspaceMembership";
+
+type Workspace = {
+  id: string;
+
+  name: string;
+
+  slug: string;
+};
+
+type WorkspaceData = {
+  workspace: Workspace;
+
+  membership: {
+    role: string;
+  };
+};
+
+export default function OrbitProfileDropdown() {
+  const router =
+    useRouter();
+
+  const dropdownRef =
+    useRef<HTMLDivElement>(null);
+
+  const [open, setOpen] =
+    useState(false);
+
+  const [workspaceData, setWorkspaceData] =
+    useState<WorkspaceData | null>(
+      null
+    );
+
+  const [user, setUser] =
+    useState<any>(null);
+
+  // TEMP WORKSPACES
+  // later realtime db fetch
+
+  const [workspaces] =
+    useState<Workspace[]>([
+      {
+        id: "1",
+
+        name:
+          "Orbit Labs",
+
+        slug:
+          "orbit-labs",
+      },
+
+      {
+        id: "2",
+
+        name:
+          "Neural Systems",
+
+        slug:
+          "neural-systems",
+      },
+    ]);
+
+  const [activeWorkspace, setActiveWorkspace] =
+    useState<string>(
+      "Orbit Labs"
+    );
+
+  // LOAD DATA
+
+  useEffect(() => {
+    async function loadData() {
+      // USER
+
+      const {
+        data: { user },
+      } =
+        await supabase.auth.getUser();
+
+      setUser(user);
+
+      // WORKSPACE
+
+      const workspace =
+        await getWorkspaceMembership();
+
+      if (workspace) {
+        setWorkspaceData(
+          workspace
+        );
+
+        setActiveWorkspace(
+          workspace.workspace
+            .name
+        );
+      }
+    }
+
+    loadData();
+  }, []);
+
+  // CLICK OUTSIDE
+
+  useEffect(() => {
+    function handleOutside(
+      event: MouseEvent
+    ) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(
+          event.target as Node
+        )
+      ) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      "mousedown",
+      handleOutside
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleOutside
+      );
+    };
+  }, []);
+
+  // LOGOUT
+
+  async function handleLogout() {
+    try {
+      await supabase.auth.signOut();
+
+      toast.success(
+        "Orbit AI session terminated."
+      );
+
+      router.push("/login");
+    } catch (error) {
+      toast.error(
+        "Logout failed."
+      );
+    }
+  }
+
+  // USER INITIAL
+
+  const initial =
+    user?.email?.[0]?.toUpperCase() ||
+    "O";
+
+  return (
+    <div
+      ref={dropdownRef}
+      className="relative"
+    >
+      {/* TRIGGER */}
+
+      <motion.button
+        whileHover={{
+          y: -2,
+        }}
+        onClick={() =>
+          setOpen(!open)
+        }
+        className="
+          flex
+          items-center
+          gap-3
+
+          rounded-2xl
+
+          border
+          border-white/10
+
+          bg-white/[0.03]
+
+          px-3
+          py-2
+
+          transition-all
+
+          hover:border-white/20
+        "
+      >
+        {/* AVATAR */}
+
+        <div
+          className="
+            relative
+
+            flex
+            h-11
+            w-11
+
+            items-center
+            justify-center
+
+            overflow-hidden
+
+            rounded-2xl
+
+            border
+            border-white/10
+
+            bg-violet-500/20
+
+            text-sm
+            font-medium
+
+            text-violet-200
+          "
+        >
+          {user?.user_metadata
+            ?.avatar_url ? (
+            <Image
+              src={
+                user.user_metadata
+                  .avatar_url
+              }
+              alt="Avatar"
+              fill
+              className="
+                object-cover
+              "
+            />
+          ) : (
+            initial
+          )}
+        </div>
+
+        {/* USER INFO */}
+
+        <div
+          className="
+            hidden
+            text-left
+
+            md:block
+          "
+        >
+          <p
+            className="
+              max-w-[180px]
+
+              truncate
+
+              text-sm
+              font-medium
+            "
+          >
+            {user?.email}
+          </p>
+
+          <p
+            className="
+              text-xs
+              text-white/40
+            "
+          >
+            {
+              activeWorkspace
+            }
+          </p>
+        </div>
+
+        <ChevronDown
+          size={16}
+          className="
+            hidden
+            text-white/40
+
+            md:block
+          "
+        />
+      </motion.button>
+
+      {/* DROPDOWN */}
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 10,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              y: 10,
+            }}
+            className="
+              absolute
+              right-0
+              top-[68px]
+              z-[999]
+
+              w-[340px]
+
+              overflow-hidden
+
+              rounded-[32px]
+
+              border
+              border-white/10
+
+              bg-[#0A0F1F]/95
+
+              backdrop-blur-2xl
+            "
+          >
+            {/* HEADER */}
+
+            <div
+              className="
+                border-b
+                border-white/5
+
+                p-6
+              "
+            >
+              <div
+                className="
+                  flex
+                  items-center
+                  gap-4
+                "
+              >
+                {/* LARGE AVATAR */}
+
+                <div
+                  className="
+                    relative
+
+                    flex
+                    h-16
+                    w-16
+
+                    items-center
+                    justify-center
+
+                    overflow-hidden
+
+                    rounded-3xl
+
+                    border
+                    border-white/10
+
+                    bg-violet-500/20
+
+                    text-lg
+                    font-medium
+
+                    text-violet-200
+                  "
+                >
+                  {user
+                    ?.user_metadata
+                    ?.avatar_url ? (
+                    <Image
+                      src={
+                        user
+                          .user_metadata
+                          .avatar_url
+                      }
+                      alt="Avatar"
+                      fill
+                      className="
+                        object-cover
+                      "
+                    />
+                  ) : (
+                    initial
+                  )}
+                </div>
+
+                {/* USER */}
+
+                <div>
+                  <p
+                    className="
+                      max-w-[180px]
+
+                      truncate
+
+                      text-sm
+                      font-medium
+                    "
+                  >
+                    {user?.email}
+                  </p>
+
+                  <p
+                    className="
+                      mt-1
+
+                      text-xs
+                      text-white/40
+                    "
+                  >
+                    Role:
+                    {" "}
+                    {
+                      workspaceData
+                        ?.membership
+                        ?.role
+                    }
+                  </p>
+                </div>
+              </div>
+
+              {/* STATUS */}
+
+              <div
+                className="
+                  mt-5
+
+                  flex
+                  items-center
+                  gap-3
+                "
+              >
+                <div
+                  className="
+                    h-2
+                    w-2
+
+                    animate-pulse
+
+                    rounded-full
+
+                    bg-emerald-400
+                  "
+                />
+
+                <p
+                  className="
+                    text-sm
+                    text-emerald-300
+                  "
+                >
+                  Workspace synchronized
+                </p>
+              </div>
+            </div>
+
+            {/* WORKSPACES */}
+
+            <div
+              className="
+                border-b
+                border-white/5
+
+                p-4
+              "
+            >
+              <p
+                className="
+                  mb-3
+
+                  text-xs
+                  uppercase
+                  tracking-wider
+
+                  text-white/30
+                "
+              >
+                Workspaces
+              </p>
+
+              <div
+                className="
+                  space-y-2
+                "
+              >
+                {workspaces.map(
+                  (
+                    workspace
+                  ) => (
+                    <button
+                      key={
+                        workspace.id
+                      }
+                      onClick={() => {
+                        setActiveWorkspace(
+                          workspace.name
+                        );
+
+                        toast.success(
+                          `Switched to ${workspace.name}`
+                        );
+                      }}
+                      className="
+                        flex
+                        w-full
+                        items-center
+                        justify-between
+
+                        rounded-2xl
+
+                        border
+                        border-white/5
+
+                        bg-white/[0.03]
+
+                        px-4
+                        py-3
+
+                        text-left
+
+                        transition-all
+
+                        hover:border-white/10
+                        hover:bg-white/[0.05]
+                      "
+                    >
+                      <div
+                        className="
+                          flex
+                          items-center
+                          gap-3
+                        "
+                      >
+                        <div
+                          className="
+                            flex
+                            h-10
+                            w-10
+
+                            items-center
+                            justify-center
+
+                            rounded-2xl
+
+                            bg-violet-500/15
+
+                            text-violet-200
+                          "
+                        >
+                          <Sparkles
+                            size={16}
+                          />
+                        </div>
+
+                        <div>
+                          <p
+                            className="
+                              text-sm
+                              font-medium
+                            "
+                          >
+                            {
+                              workspace.name
+                            }
+                          </p>
+
+                          <p
+                            className="
+                              mt-1
+
+                              text-xs
+                              text-white/40
+                            "
+                          >
+                            {
+                              workspace.slug
+                            }
+                          </p>
+                        </div>
+                      </div>
+
+                      {activeWorkspace ===
+                        workspace.name && (
+                        <Check
+                          size={16}
+                          className="
+                            text-emerald-300
+                          "
+                        />
+                      )}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* ACTIONS */}
+
+            <div
+              className="
+                p-3
+              "
+            >
+              <button
+                onClick={() => {
+                  setOpen(false);
+
+                  router.push(
+                    "/dashboard/settings"
+                  );
+                }}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  gap-3
+
+                  rounded-2xl
+
+                  px-4
+                  py-4
+
+                  text-sm
+                  text-white/70
+
+                  transition-all
+
+                  hover:bg-white/[0.03]
+                "
+              >
+                <Settings
+                  size={16}
+                />
+
+                Workspace Settings
+              </button>
+
+              <button
+                onClick={
+                  handleLogout
+                }
+                className="
+                  flex
+                  w-full
+                  items-center
+                  gap-3
+
+                  rounded-2xl
+
+                  px-4
+                  py-4
+
+                  text-sm
+                  text-red-300
+
+                  transition-all
+
+                  hover:bg-red-500/10
+                "
+              >
+                <LogOut
+                  size={16}
+                />
+
+                Logout
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
