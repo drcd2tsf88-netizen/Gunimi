@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  Suspense,
+} from "react";
+
 import Link
 from "next/link";
 
@@ -18,14 +22,16 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export default function RegisterVerifyPage() {
+// ─── Inner component ─────────────────────────────────────────────────────────
+// useSearchParams() must live inside a <Suspense> boundary so Next.js can
+// statically render the outer shell and stream the dynamic part.
+
+function VerifyContent() {
   const searchParams =
     useSearchParams();
 
   const email =
-    searchParams.get(
-      "email"
-    ) || "";
+    searchParams.get("email") || "";
 
   return (
     <main
@@ -198,9 +204,7 @@ export default function RegisterVerifyPage() {
             animate={{
               boxShadow: [
                 "0 0 0px rgba(124,58,237,0)",
-
                 "0 0 40px rgba(124,58,237,0.35)",
-
                 "0 0 0px rgba(124,58,237,0)",
               ],
             }}
@@ -230,17 +234,8 @@ export default function RegisterVerifyPage() {
           >
             <motion.div
               animate={{
-                scale: [
-                  1,
-                  1.5,
-                  1,
-                ],
-
-                opacity: [
-                  0.4,
-                  0,
-                  0.4,
-                ],
+                scale: [1, 1.5, 1],
+                opacity: [0.4, 0, 0.4],
               }}
               transition={{
                 duration: 2.5,
@@ -296,9 +291,7 @@ export default function RegisterVerifyPage() {
               text-violet-300
             "
           >
-            <Sparkles
-              size={12}
-            />
+            <Sparkles size={12} />
 
             Orbit Verification System
           </div>
@@ -391,7 +384,7 @@ export default function RegisterVerifyPage() {
             </p>
           </div>
 
-          {/* INFO */}
+          {/* STEPS */}
 
           <div
             className="
@@ -427,56 +420,49 @@ export default function RegisterVerifyPage() {
             >
               {[
                 "Verify your email identity",
-
                 "Initialize Orbit profile systems",
-
                 "Launch AI workspace environment",
-              ].map(
-                (
-                  step,
-                  index
-                ) => (
+              ].map((step, index) => (
+                <div
+                  key={step}
+                  className="
+                    flex
+                    items-center
+                    gap-3
+                  "
+                >
                   <div
-                    key={step}
                     className="
                       flex
+                      h-6
+                      w-6
+
                       items-center
-                      gap-3
+                      justify-center
+
+                      rounded-full
+
+                      bg-violet-500/10
+
+                      text-xs
+
+                      text-violet-300
                     "
                   >
-                    <div
-                      className="
-                        flex
-                        h-6
-                        w-6
-
-                        items-center
-                        justify-center
-
-                        rounded-full
-
-                        bg-violet-500/10
-
-                        text-xs
-
-                        text-violet-300
-                      "
-                    >
-                      {index + 1}
-                    </div>
-
-                    <p
-                      className="
-                        text-sm
-
-                        text-zinc-400
-                      "
-                    >
-                      {step}
-                    </p>
+                    {index + 1}
                   </div>
-                )
-              )}
+
+                  <p
+                    className="
+                      text-sm
+
+                      text-zinc-400
+                    "
+                  >
+                    {step}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -527,9 +513,7 @@ export default function RegisterVerifyPage() {
             >
               Continue to Login
 
-              <ArrowRight
-                size={16}
-              />
+              <ArrowRight size={16} />
             </Link>
 
             <p
@@ -539,7 +523,7 @@ export default function RegisterVerifyPage() {
                 text-zinc-600
               "
             >
-              Didn’t receive the email?
+              Didn't receive the email?
               Check spam or promotions
               folder.
             </p>
@@ -547,5 +531,17 @@ export default function RegisterVerifyPage() {
         </div>
       </motion.div>
     </main>
+  );
+}
+
+// ─── Page export ─────────────────────────────────────────────────────────────
+// Wrapping in Suspense is required by Next.js when useSearchParams() is used
+// inside a client component during static generation.
+
+export default function RegisterVerifyPage() {
+  return (
+    <Suspense>
+      <VerifyContent />
+    </Suspense>
   );
 }
