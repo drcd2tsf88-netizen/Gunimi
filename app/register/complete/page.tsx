@@ -64,47 +64,67 @@ export default function RegisterCompletePage() {
         "Synchronizing identity systems..."
       );
 
+      // Check if profile already exists so we don't overwrite
+      // a role that an admin may have pre-assigned.
       const {
-        data: profile,
-
-        error: profileError,
+        data: existingProfile,
       } =
         await supabase
           .from("profiles")
-          .upsert(
-            {
-              id: user.id,
+          .select("id, platform_role")
+          .eq("id", user.id)
+          .maybeSingle();
 
-              email:
-                user.email,
+      let profileError: unknown = null;
+      let profile: { platform_role: string } | null = existingProfile;
+
+      if (existingProfile) {
+        // Profile exists — only update safe fields, preserve platform_role.
+        const { error } =
+          await supabase
+            .from("profiles")
+            .update({
+              email: user.email,
 
               full_name:
-                user
-                  .user_metadata
-                  ?.full_name ||
-                "",
+                user.user_metadata?.full_name || "",
 
               avatar_url:
-                user
-                  .user_metadata
-                  ?.avatar_url ||
-                "",
+                user.user_metadata?.avatar_url || "",
 
-              onboarding_completed:
-                true,
+              onboarding_completed: true,
+            })
+            .eq("id", user.id);
 
-              platform_role:
-                "user",
+        profileError = error;
+      } else {
+        // New user — insert with default role.
+        const { data: newProfile, error } =
+          await supabase
+            .from("profiles")
+            .insert({
+              id: user.id,
+
+              email: user.email,
+
+              full_name:
+                user.user_metadata?.full_name || "",
+
+              avatar_url:
+                user.user_metadata?.avatar_url || "",
+
+              onboarding_completed: true,
+
+              platform_role: "user",
 
               status: "active",
-            },
+            })
+            .select()
+            .single();
 
-            {
-              onConflict: "id",
-            }
-          )
-          .select()
-          .single();
+        profileError = error;
+        profile = newProfile;
+      }
 
       console.log(
         "PROFILE",
@@ -310,9 +330,15 @@ export default function RegisterCompletePage() {
 
       setLoading(false);
 
+      const role = profile?.platform_role || "user";
+      const hasAccess =
+        role === "beta" ||
+        role === "team" ||
+        role === "admin";
+
       setTimeout(() => {
         window.location.href =
-          "/dashboard";
+          hasAccess ? "/dashboard" : "/waitlist";
       }, 1200);
     } catch (err) {
       console.error(

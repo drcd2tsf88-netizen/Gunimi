@@ -37,7 +37,7 @@ export default function OrbitAIStatus() {
         )
         .select("*")
         .limit(1)
-        .single();
+        .maybeSingle();
 
     if (error) {
       console.error(

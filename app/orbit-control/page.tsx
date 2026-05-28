@@ -57,46 +57,41 @@ export default function OrbitControlPage() {
   const [loading, setLoading] =
     useState(true);
 
-  async function loadProfiles() {
-    try {
+  const [authorized, setAuthorized] =
+    useState(false);
+
+  useEffect(() => {
+    async function init() {
       const {
-        data,
-        error,
-      } =
-        await supabase
-          .from("profiles")
-          .select("*")
-          .order(
-            "created_at",
-            {
-              ascending: false,
-            }
-          );
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      if (error) {
-        console.error(error);
-
-        toast.error(
-          "Failed to load profiles."
-        );
-
+      if (!session) {
+        window.location.href = "/login";
         return;
       }
 
-      setProfiles(
-        (data ||
-          []) as Profile[]
-      );
-    } catch (error) {
-      console.error(error);
+      const res = await fetch("/api/admin/users");
 
-      toast.error(
-        "Failed to load profiles."
-      );
-    } finally {
+      if (res.status === 403) {
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      if (!res.ok) {
+        toast.error("Failed to load admin panel.");
+        setLoading(false);
+        return;
+      }
+
+      const { profiles: data } = await res.json();
+      setProfiles((data || []) as Profile[]);
+      setAuthorized(true);
       setLoading(false);
     }
-  }
+
+    init();
+  }, []);
 
   async function updateRole(
     id: string,
@@ -107,93 +102,82 @@ export default function OrbitControlPage() {
       | "team"
       | "admin"
   ) {
-    const {
-      error,
-    } =
-      await supabase
-        .from("profiles")
-        .update({
-          platform_role:
-            role,
-        })
-        .eq("id", id);
+    const res = await fetch(
+      "/api/admin/users",
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, platform_role: role }),
+      }
+    );
 
-    if (error) {
-      console.error(error);
-
-      toast.error(
-        "Failed to update role."
-      );
-
+    if (!res.ok) {
+      toast.error("Failed to update role.");
       return;
     }
 
-    toast.success(
-      `User updated to ${role}`
-    );
-
+    toast.success(`User updated to ${role}`);
     loadProfiles();
   }
 
   async function updateStatus(
     id: string,
-
     status: string
   ) {
-    const {
-      error,
-    } =
-      await supabase
-        .from("profiles")
-        .update({
-          status,
-        })
-        .eq("id", id);
+    const res = await fetch(
+      "/api/admin/users",
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status }),
+      }
+    );
 
-    if (error) {
-      console.error(error);
-
-      toast.error(
-        "Failed to update status."
-      );
-
+    if (!res.ok) {
+      toast.error("Failed to update status.");
       return;
     }
 
-    toast.success(
-      `Status changed to ${status}`
-    );
-
+    toast.success(`Status changed to ${status}`);
     loadProfiles();
   }
 
-  useEffect(() => {
-    loadProfiles();
-  }, []);
+  async function loadProfiles() {
+    const res = await fetch("/api/admin/users");
+    if (!res.ok) return;
+    const { profiles: data } = await res.json();
+    setProfiles((data || []) as Profile[]);
+  }
 
   const totalUsers =
     profiles.length;
 
   const betaUsers =
     profiles.filter(
-      (profile) =>
-        profile.platform_role ===
-        "beta"
+      (p) => p.platform_role === "beta"
     ).length;
 
   const admins =
     profiles.filter(
-      (profile) =>
-        profile.platform_role ===
-        "admin"
+      (p) => p.platform_role === "admin"
     ).length;
 
   const pendingUsers =
     profiles.filter(
-      (profile) =>
-        profile.platform_role ===
-        "user"
+      (p) => p.platform_role === "user"
     ).length;
+
+  if (loading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#050816] text-white">
+        <div className="text-zinc-500 text-sm">
+          Verifying access...
+        </div>
+      </main>
+    );
+  }
+
+  if (!authorized) return null;
 
   return (
     <main
@@ -631,311 +615,281 @@ export default function OrbitControlPage() {
               </thead>
 
               <tbody>
-                {loading && (
-                  <tr>
-                    <td
-                      colSpan={5}
+                {profiles.map(
+                  (profile) => (
+                    <tr
+                      key={profile.id}
                       className="
-                        px-8
-                        py-10
+                        border-b
+                        border-white/[0.04]
 
-                        text-center
+                        transition-all
 
-                        text-zinc-500
+                        hover:bg-white/[0.02]
                       "
                     >
-                      Loading Orbit
-                      systems...
-                    </td>
-                  </tr>
-                )}
+                      {/* USER */}
 
-                {!loading &&
-                  profiles.map(
-                    (
-                      profile
-                    ) => (
-                      <tr
-                        key={
-                          profile.id
-                        }
-                        className="
-                          border-b
-                          border-white/[0.04]
-
-                          transition-all
-
-                          hover:bg-white/[0.02]
-                        "
-                      >
-                        {/* USER */}
-
-                        <td className="px-8 py-6">
-                          <div>
-                            <div
-                              className="
-                                font-medium
-                              "
-                            >
-                              {profile.full_name ||
-                                "Orbit User"}
-                            </div>
-
-                            <div
-                              className="
-                                mt-2
-
-                                text-sm
-                                text-zinc-500
-                              "
-                            >
-                              {
-                                profile.email
-                              }
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* ROLE */}
-
-                        <td className="px-8 py-6">
-                          <div
-                            className={`
-                              inline-flex
-                              rounded-full
-
-                              px-3
-                              py-1.5
-
-                              text-xs
-                              font-medium
-
-                              ${
-                                profile.platform_role ===
-                                "admin"
-                                  ? "bg-red-500/10 text-red-300"
-
-                                  : profile.platform_role ===
-                                    "team"
-                                  ? "bg-cyan-500/10 text-cyan-300"
-
-                                  : profile.platform_role ===
-                                    "beta"
-                                  ? "bg-emerald-500/10 text-emerald-300"
-
-                                  : "bg-white/5 text-zinc-400"
-                              }
-                            `}
-                          >
-                            {
-                              profile.platform_role
-                            }
-                          </div>
-                        </td>
-
-                        {/* STATUS */}
-
-                        <td className="px-8 py-6">
-                          <div
-                            className={`
-                              inline-flex
-                              rounded-full
-
-                              px-3
-                              py-1.5
-
-                              text-xs
-                              font-medium
-
-                              ${
-                                profile.status ===
-                                "active"
-                                  ? "bg-emerald-500/10 text-emerald-300"
-
-                                  : "bg-red-500/10 text-red-300"
-                              }
-                            `}
-                          >
-                            {
-                              profile.status
-                            }
-                          </div>
-                        </td>
-
-                        {/* ONBOARDING */}
-
-                        <td className="px-8 py-6">
-                          {profile.onboarding_completed ? (
-                            <div
-                              className="
-                                inline-flex
-                                items-center
-                                gap-2
-
-                                text-sm
-                                text-emerald-300
-                              "
-                            >
-                              <CheckCircle2
-                                size={
-                                  14
-                                }
-                              />
-
-                              Completed
-                            </div>
-                          ) : (
-                            <div
-                              className="
-                                inline-flex
-                                items-center
-                                gap-2
-
-                                text-sm
-                                text-zinc-500
-                              "
-                            >
-                              <XCircle
-                                size={
-                                  14
-                                }
-                              />
-
-                              Pending
-                            </div>
-                          )}
-                        </td>
-
-                        {/* ACTIONS */}
-
-                        <td className="px-8 py-6">
+                      <td className="px-8 py-6">
+                        <div>
                           <div
                             className="
-                              flex
-                              flex-wrap
-                              gap-2
+                              font-medium
                             "
                           >
-                            <button
-                              onClick={() =>
-                                updateRole(
-                                  profile.id,
-                                  "beta"
-                                )
-                              }
-                              className="
-                                rounded-xl
-
-                                border
-                                border-emerald-500/10
-
-                                bg-emerald-500/5
-
-                                px-3
-                                py-2
-
-                                text-xs
-                                text-emerald-300
-
-                                transition-all
-
-                                hover:bg-emerald-500/10
-                              "
-                            >
-                              Approve Beta
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                updateRole(
-                                  profile.id,
-                                  "team"
-                                )
-                              }
-                              className="
-                                rounded-xl
-
-                                border
-                                border-cyan-500/10
-
-                                bg-cyan-500/5
-
-                                px-3
-                                py-2
-
-                                text-xs
-                                text-cyan-300
-
-                                transition-all
-
-                                hover:bg-cyan-500/10
-                              "
-                            >
-                              Make Team
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                updateRole(
-                                  profile.id,
-                                  "admin"
-                                )
-                              }
-                              className="
-                                rounded-xl
-
-                                border
-                                border-red-500/10
-
-                                bg-red-500/5
-
-                                px-3
-                                py-2
-
-                                text-xs
-                                text-red-300
-
-                                transition-all
-
-                                hover:bg-red-500/10
-                              "
-                            >
-                              Make Admin
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                updateStatus(
-                                  profile.id,
-                                  "suspended"
-                                )
-                              }
-                              className="
-                                rounded-xl
-
-                                border
-                                border-white/10
-
-                                bg-white/[0.03]
-
-                                px-3
-                                py-2
-
-                                text-xs
-                                text-zinc-300
-
-                                transition-all
-
-                                hover:bg-white/[0.06]
-                              "
-                            >
-                              Suspend
-                            </button>
+                            {profile.full_name ||
+                              "Orbit User"}
                           </div>
-                        </td>
-                      </tr>
-                    )
-                  )}
+
+                          <div
+                            className="
+                              mt-2
+
+                              text-sm
+                              text-zinc-500
+                            "
+                          >
+                            {profile.email}
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* ROLE */}
+
+                      <td className="px-8 py-6">
+                        <div
+                          className={`
+                            inline-flex
+                            rounded-full
+
+                            px-3
+                            py-1.5
+
+                            text-xs
+                            font-medium
+
+                            ${
+                              profile.platform_role ===
+                              "admin"
+                                ? "bg-red-500/10 text-red-300"
+
+                                : profile.platform_role ===
+                                  "team"
+                                ? "bg-cyan-500/10 text-cyan-300"
+
+                                : profile.platform_role ===
+                                  "beta"
+                                ? "bg-emerald-500/10 text-emerald-300"
+
+                                : "bg-white/5 text-zinc-400"
+                            }
+                          `}
+                        >
+                          {profile.platform_role}
+                        </div>
+                      </td>
+
+                      {/* STATUS */}
+
+                      <td className="px-8 py-6">
+                        <div
+                          className={`
+                            inline-flex
+                            rounded-full
+
+                            px-3
+                            py-1.5
+
+                            text-xs
+                            font-medium
+
+                            ${
+                              profile.status ===
+                              "active"
+                                ? "bg-emerald-500/10 text-emerald-300"
+
+                                : "bg-red-500/10 text-red-300"
+                            }
+                          `}
+                        >
+                          {profile.status}
+                        </div>
+                      </td>
+
+                      {/* ONBOARDING */}
+
+                      <td className="px-8 py-6">
+                        {profile.onboarding_completed ? (
+                          <div
+                            className="
+                              inline-flex
+                              items-center
+                              gap-2
+
+                              text-sm
+                              text-emerald-300
+                            "
+                          >
+                            <CheckCircle2
+                              size={14}
+                            />
+
+                            Completed
+                          </div>
+                        ) : (
+                          <div
+                            className="
+                              inline-flex
+                              items-center
+                              gap-2
+
+                              text-sm
+                              text-zinc-500
+                            "
+                          >
+                            <XCircle
+                              size={14}
+                            />
+
+                            Pending
+                          </div>
+                        )}
+                      </td>
+
+                      {/* ACTIONS */}
+
+                      <td className="px-8 py-6">
+                        <div
+                          className="
+                            flex
+                            flex-wrap
+                            gap-2
+                          "
+                        >
+                          <button
+                            onClick={() =>
+                              updateRole(
+                                profile.id,
+                                "beta"
+                              )
+                            }
+                            className="
+                              rounded-xl
+
+                              border
+                              border-emerald-500/10
+
+                              bg-emerald-500/5
+
+                              px-3
+                              py-2
+
+                              text-xs
+                              text-emerald-300
+
+                              transition-all
+
+                              hover:bg-emerald-500/10
+                            "
+                          >
+                            Approve Beta
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              updateRole(
+                                profile.id,
+                                "team"
+                              )
+                            }
+                            className="
+                              rounded-xl
+
+                              border
+                              border-cyan-500/10
+
+                              bg-cyan-500/5
+
+                              px-3
+                              py-2
+
+                              text-xs
+                              text-cyan-300
+
+                              transition-all
+
+                              hover:bg-cyan-500/10
+                            "
+                          >
+                            Make Team
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              updateRole(
+                                profile.id,
+                                "admin"
+                              )
+                            }
+                            className="
+                              rounded-xl
+
+                              border
+                              border-red-500/10
+
+                              bg-red-500/5
+
+                              px-3
+                              py-2
+
+                              text-xs
+                              text-red-300
+
+                              transition-all
+
+                              hover:bg-red-500/10
+                            "
+                          >
+                            Make Admin
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              updateStatus(
+                                profile.id,
+                                profile.status === "suspended"
+                                  ? "active"
+                                  : "suspended"
+                              )
+                            }
+                            className="
+                              rounded-xl
+
+                              border
+                              border-white/10
+
+                              bg-white/[0.03]
+
+                              px-3
+                              py-2
+
+                              text-xs
+                              text-zinc-300
+
+                              transition-all
+
+                              hover:bg-white/[0.06]
+                            "
+                          >
+                            {profile.status === "suspended"
+                              ? "Unsuspend"
+                              : "Suspend"}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </div>

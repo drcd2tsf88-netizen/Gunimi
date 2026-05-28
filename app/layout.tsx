@@ -1,18 +1,28 @@
 import "./globals.css";
 
-import { Inter } from "next/font/google";
-import { Toaster } from "react-hot-toast";
+import { Inter }
+from "next/font/google";
 
+import { Toaster }
+from "react-hot-toast";
+
+import {
+  OrbitRuntimeProvider,
+} from "@/core/runtime/OrbitRuntimeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
+
   display: "swap",
+
   preload: false,
 });
 
 export const metadata = {
   title: "OrbitDesk",
-  description: "AI Business Operating System",
+
+  description:
+    "AI Business Operating System",
 };
 
 export default function RootLayout({
@@ -22,63 +32,60 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-
       <body
         className={`${inter.className} bg-black text-white`}
       >
+        <OrbitRuntimeProvider>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background:
+                  "rgba(10,15,31,0.92)",
 
-       <Toaster
-  position="top-right"
+                color: "#fff",
 
-  toastOptions={{
-    style: {
-      background:
-        "rgba(10,15,31,0.92)",
+                border:
+                  "1px solid rgba(255,255,255,0.08)",
 
-      color: "#fff",
+                backdropFilter:
+                  "blur(24px)",
 
-      border:
-        "1px solid rgba(255,255,255,0.08)",
+                borderRadius:
+                  "20px",
 
-      backdropFilter:
-        "blur(24px)",
+                padding:
+                  "16px 18px",
 
-      borderRadius:
-        "20px",
+                fontSize:
+                  "14px",
+              },
 
-      padding:
-        "16px 18px",
+              success: {
+                iconTheme: {
+                  primary:
+                    "#8b5cf6",
 
-      fontSize:
-        "14px",
-    },
+                  secondary:
+                    "#ffffff",
+                },
+              },
 
-    success: {
-      iconTheme: {
-        primary:
-          "#8b5cf6",
+              error: {
+                iconTheme: {
+                  primary:
+                    "#ef4444",
 
-        secondary:
-          "#ffffff",
-      },
-    },
+                  secondary:
+                    "#ffffff",
+                },
+              },
+            }}
+          />
 
-    error: {
-      iconTheme: {
-        primary:
-          "#ef4444",
-
-        secondary:
-          "#ffffff",
-      },
-    },
-  }}
-/>
-
-        {children}
-
+          {children}
+        </OrbitRuntimeProvider>
       </body>
-
     </html>
   );
 }

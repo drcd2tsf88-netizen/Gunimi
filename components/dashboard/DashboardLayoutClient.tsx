@@ -98,6 +98,30 @@ export default function DashboardLayoutClient({
           return;
         }
 
+        const { data: profile } =
+          await supabase
+            .from("profiles")
+            .select("platform_role, status")
+            .eq("id", session.user.id)
+            .single();
+
+        if (profile?.status === "suspended") {
+          await supabase.auth.signOut();
+          window.location.href = "/login";
+          return;
+        }
+
+        const role = profile?.platform_role || "user";
+        const hasAccess =
+          role === "beta" ||
+          role === "team" ||
+          role === "admin";
+
+        if (!hasAccess) {
+          window.location.href = "/waitlist";
+          return;
+        }
+
         setTimeout(() => {
           setLoading(false);
         }, 1200);

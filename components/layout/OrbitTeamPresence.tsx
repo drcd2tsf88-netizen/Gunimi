@@ -50,36 +50,27 @@ export default function OrbitTeamPresence() {
   ] = useState(false);
 
   async function loadMembers() {
-    const {
-      data,
-      error,
-    } =
-      await supabase
-        .from(
-          "workspace_members"
-        )
-        .select(`
-          id,
-          role,
-          profiles (
-            avatar_url,
-            email,
-            full_name
-          )
-        `);
+    // Get current user's workspace
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
 
-    if (error) {
-      console.error(
-        "Failed to load members:",
-        error
-      );
+    const { data: myMembership } = await supabase
+      .from("workspace_members")
+      .select("workspace_id")
+      .eq("user_id", session.user.id)
+      .maybeSingle();
 
-      return;
-    }
+    if (!myMembership) return;
 
-    setMembers(
-      (data || []) as Member[]
+    // Fetch all members of this workspace via service API
+    const res = await fetch(
+      `/api/workspace/members?workspace_id=${myMembership.workspace_id}`
     );
+
+    if (!res.ok) return;
+
+    const { members: data } = await res.json();
+    setMembers((data || []) as Member[]);
   }
 
   useEffect(() => {

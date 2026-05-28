@@ -77,6 +77,18 @@ export default function InvitePage() {
 
   async function loadInvite() {
     try {
+      // RLS requires authentication to read invites.
+      // If not signed in, save token and redirect to login.
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        localStorage.setItem("orbit_invite_token", token);
+        window.location.href = `/login?redirect=/invite/${token}`;
+        return;
+      }
+
       const {
         data,
         error,
@@ -164,34 +176,17 @@ export default function InvitePage() {
     try {
       setAccepting(true);
 
-      // AUTH SESSION
-
       const {
-        data: {
-          session,
-        },
-      } =
-        await supabase.auth.getSession();
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      // NOT AUTHENTICATED
-
-      if (
-        !session?.user
-      ) {
-        localStorage.setItem(
-          "orbit_invite_token",
-          token
-        );
-
-        router.push(
-          "/login"
-        );
-
+      if (!session?.user) {
+        localStorage.setItem("orbit_invite_token", token);
+        router.push("/login");
         return;
       }
 
-      const user =
-        session.user;
+      const user = session.user;
 
       // EMAIL SECURITY
 
