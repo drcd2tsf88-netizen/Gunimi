@@ -1,14 +1,18 @@
-import {
-  NextResponse,
-} from "next/server";
+import { NextResponse } from "next/server";
 
-import {
-  createServerClient,
-} from "@supabase/ssr";
+import { createServerClient }
+from "@supabase/ssr";
 
-import {
-  cookies,
-} from "next/headers";
+import { cookies }
+from "next/headers";
+import { sendWorkspaceInvite }
+from "@/lib/email/sendWorkspaceInvites";
+
+const ALLOWED_ROLES = [
+  "admin",
+  "member",
+  "viewer",
+];
 
 export async function POST(
   request: Request
@@ -23,6 +27,45 @@ export async function POST(
       role,
     } = body;
 
+    // BASIC VALIDATION
+
+    if (
+      !workspaceId ||
+      !email ||
+      !role
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Missing required fields",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    if (
+      !ALLOWED_ROLES.includes(
+        role
+      )
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Invalid role",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const normalizedEmail =
+      email
+        .trim()
+        .toLowerCase();
+
     const cookieStore =
       await cookies();
 
@@ -36,7 +79,9 @@ export async function POST(
 
         {
           cookies: {
-            get(name: string) {
+            get(
+              name: string
+            ) {
               return cookieStore.get(
                 name
               )?.value;
@@ -45,7 +90,7 @@ export async function POST(
         }
       );
 
-    // AUTH USER
+    // AUTH
 
     const {
       data: { user },
@@ -58,17 +103,19 @@ export async function POST(
           error:
             "Unauthorized",
         },
-
         {
           status: 401,
         }
       );
     }
 
-    // MEMBERSHIP VALIDATION
+    // MEMBERSHIP
 
     const {
       data: membership,
+
+      error:
+        membershipError,
     } =
       await supabase
         .from(
@@ -86,7 +133,23 @@ export async function POST(
         .maybeSingle();
 
     if (
-      !membership ||
+      membershipError ||
+      !membership
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Membership not found",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
+    // ROLE CHECK
+
+    if (
       ![
         "owner",
         "admin",
@@ -99,14 +162,13 @@ export async function POST(
           error:
             "Insufficient permissions",
         },
-
         {
           status: 403,
         }
       );
     }
 
-    // DUPLICATE INVITE CHECK
+    // DUPLICATE INVITE
 
     const {
       data:
@@ -116,14 +178,14 @@ export async function POST(
         .from(
           "workspace_invites"
         )
-        .select("*")
+        .select("id")
         .eq(
           "workspace_id",
           workspaceId
         )
         .eq(
           "email",
-          email
+          normalizedEmail
         )
         .eq(
           "status",
@@ -139,11 +201,62 @@ export async function POST(
           error:
             "Invite already exists",
         },
-
         {
           status: 400,
         }
       );
+    }
+
+    // MEMBER CHECK
+
+    const {
+      data:
+        existingUser,
+    } =
+      await supabase
+        .from("profiles")
+        .select("id")
+        .eq(
+          "email",
+          normalizedEmail
+        )
+        .maybeSingle();
+
+    if (
+      existingUser
+    ) {
+      const {
+        data:
+          existingMembership,
+      } =
+        await supabase
+          .from(
+            "workspace_members"
+          )
+          .select("id")
+          .eq(
+            "workspace_id",
+            workspaceId
+          )
+          .eq(
+            "user_id",
+            existingUser.id
+          )
+          .maybeSingle();
+
+      if (
+        existingMembership
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "User is already a workspace member",
+          },
+          {
+            status: 400,
+          }
+        );
+      }
     }
 
     // TOKEN
@@ -156,14 +269,14 @@ export async function POST(
     const expiresAt =
       new Date(
         Date.now() +
-          1000 *
-            60 *
-            60 *
+          7 *
             24 *
-            7
+            60 *
+            60 *
+            1000
       );
 
-    // INSERT INVITE
+    // CREATE INVITE
 
     const {
       data: invite,
@@ -182,11 +295,15 @@ export async function POST(
           invited_by:
             user.id,
 
-          email,
+          email:
+            normalizedEmail,
 
           role,
 
           token,
+
+          status:
+            "pending",
 
           expires_at:
             expiresAt.toISOString(),
@@ -198,6 +315,7 @@ export async function POST(
       inviteError
     ) {
       console.error(
+        "INVITE ERROR",
         inviteError
       );
 
@@ -206,32 +324,53 @@ export async function POST(
           error:
             "Failed to create invite",
         },
-
         {
           status: 500,
         }
       );
     }
 
+await sendWorkspaceInvite({
+  email:
+    normalizedEmail,
+
+  workspaceName:
+    "Orbit Workspace",
+
+  role,
+
+  token,
+});
+
     // TODO:
-    // SEND ORBIT EMAIL
+    // CREATE ACTIVITY EVENT
 
-    return NextResponse.json(
+    console.log(
+      "invite.created",
       {
-        success: true,
-
-        invite,
+        workspaceId,
+        email:
+          normalizedEmail,
+        role,
       }
     );
+
+    return NextResponse.json({
+      success: true,
+
+      invite,
+    });
   } catch (error) {
-    console.error(error);
+    console.error(
+      "INVITE ROUTE ERROR",
+      error
+    );
 
     return NextResponse.json(
       {
         error:
           "Internal server error",
       },
-
       {
         status: 500,
       }

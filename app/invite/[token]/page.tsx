@@ -168,145 +168,78 @@ export default function InvitePage() {
     }
   }
 
-  async function acceptInvite() {
-    if (!invite) {
-      return;
-    }
+async function acceptInvite() {
+  if (!invite) {
+    return;
+  }
 
-    try {
-      setAccepting(true);
+  try {
+    setAccepting(true);
 
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } =
+      await supabase.auth.getSession();
 
-      if (!session?.user) {
-        localStorage.setItem("orbit_invite_token", token);
-        router.push("/login");
-        return;
-      }
-
-      const user = session.user;
-
-      // EMAIL SECURITY
-
-      if (
-        user.email?.toLowerCase() !==
-        invite.email.toLowerCase()
-      ) {
-        toast.error(
-          "This invite belongs to another email."
-        );
-
-        setAccepting(false);
-
-        return;
-      }
-
-      // EXISTING MEMBERSHIP
-
-      const {
-        data:
-          existingMembership,
-      } =
-        await supabase
-          .from(
-            "workspace_members"
-          )
-          .select("id")
-          .eq(
-            "workspace_id",
-            invite.workspace_id
-          )
-          .eq(
-            "user_id",
-            user.id
-          )
-          .maybeSingle();
-
-      // CREATE MEMBERSHIP
-
-      if (
-        !existingMembership
-      ) {
-        const {
-          error:
-            membershipError,
-        } =
-          await supabase
-            .from(
-              "workspace_members"
-            )
-            .insert({
-              workspace_id:
-                invite.workspace_id,
-
-              user_id:
-                user.id,
-
-              role:
-                invite.role,
-            });
-
-        if (
-          membershipError
-        ) {
-          console.error(
-            membershipError
-          );
-
-          toast.error(
-            "Failed to join workspace."
-          );
-
-          setAccepting(false);
-
-          return;
-        }
-      }
-
-      // UPDATE INVITE STATUS
-
-      const {
-        error:
-          inviteError,
-      } =
-        await supabase
-          .from(
-            "workspace_invites"
-          )
-          .update({
-            status:
-              "accepted",
-          })
-          .eq(
-            "id",
-            invite.id
-          );
-
-      if (inviteError) {
-        console.error(
-          inviteError
-        );
-      }
-
-      toast.success(
-        "Workspace joined successfully."
+    if (!session?.user) {
+      localStorage.setItem(
+        "orbit_invite_token",
+        token
       );
 
       router.push(
-        "/dashboard"
+        "/login"
       );
-    } catch (error) {
-      console.error(error);
 
-      toast.error(
-        "Failed to accept invitation."
-      );
-    } finally {
-      setAccepting(false);
+      return;
     }
+
+    const response =
+      await fetch(
+        "/api/invites/accept",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            token,
+          }),
+        }
+      );
+
+    const result =
+      await response.json();
+
+    if (!response.ok) {
+      toast.error(
+        result.error ||
+          "Failed to accept invite."
+      );
+
+      return;
+    }
+
+    toast.success(
+      "Workspace joined successfully."
+    );
+
+    router.push(
+      "/dashboard"
+    );
+  } catch (error) {
+    console.error(error);
+
+    toast.error(
+      "Failed to accept invitation."
+    );
+  } finally {
+    setAccepting(false);
   }
+}
 
   useEffect(() => {
     loadInvite();
