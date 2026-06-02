@@ -48,7 +48,7 @@ type Invite = {
 
   workspaces?: {
     name: string;
-  };
+  }| null;
 };
 
 export default function InvitePage() {
@@ -82,12 +82,32 @@ export default function InvitePage() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
+      const inviteRedirect =
+  localStorage.getItem(
+    "orbit_invite_redirect"
+  );
+
+if (inviteRedirect) {
+  localStorage.removeItem(
+    "orbit_invite_redirect"
+  );
+
+  router.push(
+    inviteRedirect
+  );
+
+  return;
+}
 
       if (!session) {
-        localStorage.setItem("orbit_invite_token", token);
-        window.location.href = `/login?redirect=/invite/${token}`;
-        return;
+        localStorage.setItem(
+  "orbit_invite_redirect",
+  `/invite/${token}`
+);
+
+window.location.href = "/login";
       }
+      return;
 
       const {
         data,
@@ -183,20 +203,18 @@ async function acceptInvite() {
 
     if (!session?.user) {
       localStorage.setItem(
-        "orbit_invite_token",
-        token
-      );
+  "orbit_invite_redirect",
+  `/invite/${token}`
+);
 
-      router.push(
-        "/login"
-      );
+router.push("/login");
 
       return;
     }
 
     const response =
       await fetch(
-        "/api/invites/accept",
+        "/api/workspace/invite/accept",
         {
           method: "POST",
 
@@ -242,8 +260,10 @@ async function acceptInvite() {
 }
 
   useEffect(() => {
-    loadInvite();
-  }, []);
+  if (!token) return;
+
+  loadInvite();
+}, [token]);
 
   // ERROR STATE
 

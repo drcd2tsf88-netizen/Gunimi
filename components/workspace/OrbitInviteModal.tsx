@@ -20,13 +20,13 @@ from "react-dom";
 
 type OrbitInviteModalProps = {
   open: boolean;
-
   onClose: () => void;
+  workspaceId: string;
 };
 
 export default function OrbitInviteModal({
   open,
-
+  workspaceId,
   onClose,
 }: OrbitInviteModalProps) {
   const [email, setEmail] =
@@ -60,30 +60,80 @@ export default function OrbitInviteModal({
   }, [onClose]);
 
   async function handleInvite() {
-    if (!email) {
-      return;
-    }
+  if (!email.trim()) {
+    alert(
+      "Please enter an email address."
+    );
+    return;
+  }
 
-    try {
-      setLoading(true);
+  if (!workspaceId) {
+    alert(
+      "Workspace not found."
+    );
+    return;
+  }
 
-      console.log(
-        "Inviting:",
-        email
+  try {
+    setLoading(true);
+
+    const response =
+      await fetch(
+        "/api/workspace/invite",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            workspaceId,
+            email:
+              email.trim(),
+            role: "member",
+          }),
+        }
       );
 
-      // TODO:
-      // invite logic
+    const result =
+      await response.json();
 
-      setEmail("");
-
-      onClose();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      throw new Error(
+        result.error ||
+          "Failed to send invite"
+      );
     }
+
+    console.log(
+      "Invite created:",
+      result
+    );
+
+    alert(
+      "Workspace invite sent successfully."
+    );
+
+    setEmail("");
+
+    onClose();
+  } catch (error) {
+    console.error(
+      "Invite error:",
+      error
+    );
+
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Failed to send invite"
+    );
+  } finally {
+    setLoading(false);
   }
+}
 
   return createPortal(
     <AnimatePresence>
