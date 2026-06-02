@@ -1,23 +1,23 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { createClient }
+from "@/lib/supabase/server";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
 
+import { getCurrentWorkspace }
+from "@/lib/workspace/getCurrentWorkspace";
+
 type CreateActivityProps = {
   type: string;
-
   title: string;
-
   description: string;
 };
 
 export async function createActivity({
   type,
-
   title,
-
   description,
 }: CreateActivityProps) {
   try {
@@ -25,37 +25,64 @@ export async function createActivity({
       await getUser();
 
     if (!user) {
-      return null;
+      throw new Error(
+        "User not authenticated"
+      );
     }
 
-    const { data, error } =
-      await supabase
-        .from(
-          "workspace_activity"
-        )
-        .insert([
-          {
-            type,
+    const workspace =
+      await getCurrentWorkspace();
 
-            title,
+    if (!workspace) {
+      throw new Error(
+        "Workspace not found"
+      );
+    }
 
-            description,
+    const supabase =
+      await createClient();
 
-            user_id: user.id,
-          },
-        ])
-        .select()
-        .single();
+    const {
+      data,
+      error,
+    } = await supabase
+      .from(
+        "workspace_activity"
+      )
+      .insert({
+        workspace_id:
+          workspace.id,
+
+        user_id:
+          user.id,
+
+        type,
+
+        title,
+
+        description,
+
+        message:
+          description,
+      })
+      .select()
+      .single();
 
     if (error) {
-      console.error(error);
+      console.error(
+        "createActivity error:",
+        error
+      );
 
-      return null;
+      throw error;
     }
 
     return data;
   } catch (error) {
-    console.error(error);
+    console.error(
+      "createActivity failed:",
+      error
+    );
 
     return null;
   }

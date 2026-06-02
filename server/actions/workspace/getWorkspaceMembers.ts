@@ -15,27 +15,30 @@ export async function getWorkspaceMembers() {
       return [];
     }
 const supabase =  await createClient();
-    const {
-      data,
-      error,
-    } =
-      await supabase
-        .from(
-          "workspace_members"
-        )
-        .select(`
-          id,
-          role,
-          users (
-            id,
-            email,
-            avatar_url
-          )
-        `)
-        .eq(
-          "workspace_id",
-          workspace.id
-        );
+   const {
+  data,
+  error,
+} =
+  await supabase
+    .from(
+      "workspace_members"
+    )
+    .select(`
+  id,
+  role,
+  user_id,
+  profiles (
+    id,
+    email,
+    full_name,
+    avatar_url,
+    status
+  )
+`)
+    .eq(
+      "workspace_id",
+      workspace.id
+    );
 
     if (error) {
       console.error(
