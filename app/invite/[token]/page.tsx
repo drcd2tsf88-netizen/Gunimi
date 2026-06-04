@@ -106,8 +106,11 @@ if (inviteRedirect) {
 );
 
 window.location.href = "/login";
-      }
-      return;
+  "use client";
+
+return;
+}
+      
 
       const {
         data,
