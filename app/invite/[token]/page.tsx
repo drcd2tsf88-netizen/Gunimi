@@ -81,44 +81,34 @@ export default function InvitePage() {
   try {
     const {
       data: { session },
-    } = await supabase.auth.getSession();
+    } =
+      await supabase.auth.getSession();
 
     setIsAuthenticated(
       !!session
     );
 
-    const {
-      data,
-      error,
-    } =
-      await supabase
-        .from(
-          "workspace_invites"
-        )
-        .select("*")
-       .maybeSingle()
+    const response =
+      await fetch(
+        `/api/workspace/invite/${token}`
+      );
 
-    if (
-    
-      error ||
-      !data
-    ) {
+    const result =
+      await response.json();
+
+    if (!response.ok) {
       setError(
-        "Invalid invitation."
+        result.error ||
+          "Invalid invitation."
       );
 
       setLoading(false);
-      console.log(
-  "INVITE DEBUG",
-  {
-    token,
-    data,
-    error,
-  }
-);
 
       return;
     }
+
+    const data =
+      result.invite;
 
     if (
       data.status !==
