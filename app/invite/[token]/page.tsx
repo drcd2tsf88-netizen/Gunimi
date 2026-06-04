@@ -74,122 +74,93 @@ export default function InvitePage() {
 
   const [error, setError] =
     useState("");
+    const [isAuthenticated, setIsAuthenticated] =
+  useState(false);
 
   async function loadInvite() {
-    try {
-      // RLS requires authentication to read invites.
-      // If not signed in, save token and redirect to login.
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      const inviteRedirect =
-  localStorage.getItem(
-    "orbit_invite_redirect"
-  );
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-if (inviteRedirect) {
-  localStorage.removeItem(
-    "orbit_invite_redirect"
-  );
+    setIsAuthenticated(
+      !!session
+    );
 
-  router.push(
-    inviteRedirect
-  );
-
-  return;
-}
-
-      if (!session) {
-        localStorage.setItem(
-  "orbit_invite_redirect",
-  `/invite/${token}`
-);
-
-window.location.href = "/login";
-  "use client";
-
-return;
-}
-      
-
-      const {
-        data,
-        error,
-      } =
-        await supabase
-          .from(
-            "workspace_invites"
+    const {
+      data,
+      error,
+    } =
+      await supabase
+        .from(
+          "workspace_invites"
+        )
+        .select(`
+          *,
+          workspaces (
+            name
           )
-          .select(`
-            *,
-            workspaces (
-              name
-            )
-          `)
-          .eq(
-            "token",
-            token
-          )
-          .maybeSingle();
+        `)
+        .eq(
+          "token",
+          token
+        )
+        .maybeSingle();
 
-      if (
-        error ||
-        !data
-      ) {
-        setError(
-          "Invalid invitation."
-        );
-
-        setLoading(false);
-
-        return;
-      }
-
-      // STATUS
-
-      if (
-        data.status !==
-        "pending"
-      ) {
-        setError(
-          "This invite is no longer active."
-        );
-
-        setLoading(false);
-
-        return;
-      }
-
-      // EXPIRATION
-
-      const expired =
-        new Date(
-          data.expires_at
-        ) < new Date();
-
-      if (expired) {
-        setError(
-          "This invitation has expired."
-        );
-
-        setLoading(false);
-
-        return;
-      }
-
-      setInvite(data);
-
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-
+    if (
+      error ||
+      !data
+    ) {
       setError(
-        "Failed to load invitation."
+        "Invalid invitation."
       );
 
       setLoading(false);
+
+      return;
     }
+
+    if (
+      data.status !==
+      "pending"
+    ) {
+      setError(
+        "This invite is no longer active."
+      );
+
+      setLoading(false);
+
+      return;
+    }
+
+    const expired =
+      new Date(
+        data.expires_at
+      ) < new Date();
+
+    if (expired) {
+      setError(
+        "This invitation has expired."
+      );
+
+      setLoading(false);
+
+      return;
+    }
+
+    setInvite(data);
+
+    setLoading(false);
+  } catch (error) {
+    console.error(error);
+
+    setError(
+      "Failed to load invitation."
+    );
+
+    setLoading(false);
   }
+}
 
 async function acceptInvite() {
   if (!invite) {
@@ -205,15 +176,13 @@ async function acceptInvite() {
       await supabase.auth.getSession();
 
     if (!session?.user) {
-      localStorage.setItem(
-  "orbit_invite_redirect",
-  `/invite/${token}`
-);
+  router.push(
+    `/login?invite=${token}`
+  );
 
-router.push("/login");
+  return;
+}
 
-      return;
-    }
 
     const response =
       await fetch(
@@ -744,64 +713,135 @@ router.push("/login");
               </div>
 
               {/* BUTTON */}
+             {isAuthenticated ? (
+  <button
+    onClick={
+      acceptInvite
+    }
+    disabled={
+      accepting
+    }
+    className="
+      mt-10
 
-              <button
-                onClick={
-                  acceptInvite
-                }
-                disabled={
-                  accepting
-                }
-                className="
-                  mt-10
+      inline-flex
+      items-center
+      gap-2
 
-                  inline-flex
-                  items-center
-                  gap-2
+      rounded-2xl
 
-                  rounded-2xl
+      bg-violet-500
 
-                  bg-violet-500
+      px-7
+      py-4
 
-                  px-7
-                  py-4
+      text-sm
+      font-medium
 
-                  text-sm
-                  font-medium
+      text-white
 
-                  text-white
+      transition-all
 
-                  transition-all
+      hover:bg-violet-400
 
-                  hover:bg-violet-400
+      disabled:cursor-not-allowed
+      disabled:opacity-50
+    "
+  >
+    {accepting ? (
+      <>
+        <Loader2
+          className="
+            h-4
+            w-4
 
-                  disabled:cursor-not-allowed
-                  disabled:opacity-50
-                "
-              >
-                {accepting ? (
-                  <>
-                    <Loader2
-                      className="
-                        h-4
-                        w-4
+            animate-spin
+          "
+        />
 
-                        animate-spin
-                      "
-                    />
+        Joining Workspace...
+      </>
+    ) : (
+      <>
+        <CheckCircle2
+          size={16}
+        />
 
-                    Joining Workspace...
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle2
-                      size={16}
-                    />
+        Accept Invitation
+      </>
+    )}
+  </button>
+) : (
+  <div
+    className="
+      mt-10
 
-                    Accept Invitation
-                  </>
-                )}
-              </button>
+      flex
+      flex-col
+
+      gap-4
+    "
+  >
+    <Link
+      href={`/login?invite=${token}`}
+      className="
+        inline-flex
+        items-center
+        justify-center
+
+        rounded-2xl
+
+        bg-violet-500
+
+        px-7
+        py-4
+
+        text-sm
+        font-medium
+
+        text-white
+
+        transition-all
+
+        hover:bg-violet-400
+      "
+    >
+      Sign In
+    </Link>
+
+    <Link
+      href={`/register?invite=${token}`}
+      className="
+        inline-flex
+        items-center
+        justify-center
+
+        rounded-2xl
+
+        border
+        border-white/10
+
+        bg-white/[0.03]
+
+        px-7
+        py-4
+
+        text-sm
+        font-medium
+
+        text-white/80
+
+        transition-all
+
+        hover:bg-white/[0.05]
+        hover:text-white
+      "
+    >
+      Create Account
+    </Link>
+  </div>
+)}
+             
             </div>
           )}
       </motion.div>

@@ -30,6 +30,7 @@ from "@/lib/supabase";
 import OrbitInput
 from "@/components/ui/OrbitInput";
 
+
 export default function LoginPage() {
   const router =
     useRouter();
@@ -83,7 +84,22 @@ export default function LoginPage() {
       // IMPORTANT FOR SSR
 
       await supabase.auth.refreshSession();
+       new URLSearchParams(
+    window.location.search
+  );
 
+const invite =
+  params.get(
+    "invite"
+  );
+
+if (invite) {
+  router.push(
+    `/invite/${invite}`
+  );
+
+  return;
+}
       const user =
         data.user;
 
