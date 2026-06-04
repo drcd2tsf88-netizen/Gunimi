@@ -84,7 +84,9 @@ export default function LoginPage() {
       // IMPORTANT FOR SSR
 
       await supabase.auth.refreshSession();
-       new URLSearchParams(
+       
+      const params =
+  new URLSearchParams(
     window.location.search
   );
 
