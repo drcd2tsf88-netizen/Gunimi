@@ -116,6 +116,14 @@ export default function InvitePage() {
       );
 
       setLoading(false);
+      console.log(
+  "INVITE DEBUG",
+  {
+    token,
+    data,
+    error,
+  }
+);
 
       return;
     }
