@@ -95,17 +95,8 @@ export default function InvitePage() {
         .from(
           "workspace_invites"
         )
-        .select(`
-          *,
-          workspaces (
-            name
-          )
-        `)
-        .eq(
-          "token",
-          token
-        )
-        .maybeSingle();
+        .select("*")
+       
 
     if (
       error ||
