@@ -96,9 +96,10 @@ export default function InvitePage() {
           "workspace_invites"
         )
         .select("*")
-       
+       .maybeSingle()
 
     if (
+    
       error ||
       !data
     ) {
