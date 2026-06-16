@@ -6,6 +6,8 @@ from "@/lib/supabase/server";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { Company } from "@/types/company";
+
 export async function getCompanies() {
   try {
     const workspace =
@@ -165,7 +167,7 @@ export async function getCompanies() {
 
           pipeline_value:
             pipelineValue,
-        };
+        } as unknown as Company;
       }
     );
   } catch (error) {

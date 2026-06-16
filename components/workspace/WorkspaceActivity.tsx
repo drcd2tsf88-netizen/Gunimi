@@ -7,8 +7,10 @@ import {
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
+import type { WorkspaceActivity } from "@/types/activity";
+
 type Props = {
-  activity: any[];
+  activity: WorkspaceActivity[];
 };
 
 export default function WorkspaceActivity({

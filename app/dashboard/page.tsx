@@ -28,6 +28,19 @@ import { getWorkspaceStats } from "@/server/actions/dashboard/getWorkspaceStats"
 import DashboardWorkspaceStrip from "@/components/dashboard/DashboardWorkspaceStrip";
 
 
+type UserProfile = {
+  full_name?: string;
+  email?: string;
+};
+
+type DashboardStats = {
+  tasks: number;
+  contacts: number;
+  notes: number;
+  activity: number;
+  completedTasks: number;
+};
+
 type ActivityItem = {
   id: string;
 
@@ -48,13 +61,13 @@ export default function DashboardPage() {
   ] = useState(false);
   
   const [profile, setProfile] =
-  useState<any>(null);
+  useState<UserProfile | null>(null);
 
   const [loading, setLoading] =
     useState(true);
 
   const [stats, setStats] =
-    useState<any>(null);
+    useState<DashboardStats | null>(null);
   const [
     activityFeed,
 
@@ -294,7 +307,7 @@ if (user) {
       <DashboardWorkspaceStrip />
       <DashboardStats
         loading={loading}
-        stats={stats}
+        stats={stats ?? { tasks: 0, completedTasks: 0, contacts: 0, activity: 0 }}
       />
       
       <OrbitIntelligence />

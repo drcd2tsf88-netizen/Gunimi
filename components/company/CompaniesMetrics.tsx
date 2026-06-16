@@ -16,8 +16,10 @@ from "@/components/ui/OrbitCard";
 import { useTranslations }
 from "next-intl";
 
+import { Company } from "@/types/company";
+
 type Props = {
-  companies: any[];
+  companies: Company[];
 };
 
 export default function CompaniesMetrics({

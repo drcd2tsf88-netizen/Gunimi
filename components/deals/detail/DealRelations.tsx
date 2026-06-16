@@ -22,8 +22,10 @@ from "@/components/ui/OrbitHeading";
 import OrbitEmptyState
 from "@/components/ui/OrbitEmptyState";
 
+import { Deal } from "@/types/deal";
+
 type Props = {
-  deal: any;
+  deal: Deal;
 };
 
 export default function DealRelations({

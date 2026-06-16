@@ -6,6 +6,8 @@ from "@/lib/supabase/server";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { Deal } from "@/types/deal";
+
 export async function getDeals() {
   try {
     const workspace =
@@ -75,7 +77,7 @@ export async function getDeals() {
       return [];
     }
 
-    return data || [];
+    return (data || []) as unknown as Deal[];
   } catch (error) {
     console.error(error);
 

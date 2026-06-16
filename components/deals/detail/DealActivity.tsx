@@ -17,8 +17,10 @@ from "@/components/ui/OrbitHeading";
 import OrbitEmptyState
 from "@/components/ui/OrbitEmptyState";
 
+import { WorkspaceActivity } from "@/types/activity";
+
 type Props = {
-  activities: any[];
+  activities: WorkspaceActivity[];
 };
 
 export default function DealActivity({

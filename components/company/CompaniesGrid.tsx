@@ -23,8 +23,10 @@ from "next-intl";
 import getRelativeTime
 from "@/lib/utils/getRelativeTime";
 
+import { Company } from "@/types/company";
+
 type Props = {
-  companies: any[];
+  companies: Company[];
 };
 
 export default function CompaniesGrid({

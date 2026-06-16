@@ -6,6 +6,8 @@ from "@/lib/supabase/server";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { WorkspaceActivity } from "@/types/activity";
+
 export async function getCompanyActivity(
   companyId: string
 ) {
@@ -50,7 +52,7 @@ export async function getCompanyActivity(
       return [];
     }
 
-    return data || [];
+    return (data || []) as unknown as WorkspaceActivity[];
 
   } catch (error) {
     console.error(error);

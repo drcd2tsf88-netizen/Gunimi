@@ -49,7 +49,13 @@ if (
 ) {
   return false;
 }
-const updateData: any = {
+type DealUpdatePayload = {
+  stage: DealStage;
+  updated_at: string;
+  probability?: number;
+};
+
+const updateData: DealUpdatePayload = {
   stage,
 
   updated_at:

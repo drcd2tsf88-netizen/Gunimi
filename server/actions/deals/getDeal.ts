@@ -6,6 +6,9 @@ from "@/lib/supabase/server";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { Deal } from "@/types/deal";
+import { WorkspaceActivity } from "@/types/activity";
+
 export async function getDeal(
   dealId: string
 ) {
@@ -138,10 +141,10 @@ export async function getDeal(
     }
 
     return {
-      deal,
+      deal: deal as unknown as Deal,
 
       activities:
-        activities || [],
+        (activities || []) as unknown as WorkspaceActivity[],
     };
   } catch (error) {
     console.error(error);

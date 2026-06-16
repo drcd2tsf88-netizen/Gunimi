@@ -34,12 +34,16 @@ from "./DealsPipeline";
 import CreateDealsModal
 from "./createDealsModal";
 
+import { Deal } from "@/types/deal";
+import { Company } from "@/types/company";
+import { Contact } from "@/types/contact";
+
 type Props = {
-  deals: any[];
+  deals: Deal[];
 
-  companies: any[];
+  companies: Company[];
 
-  contacts: any[];
+  contacts: Contact[];
 };
 
 export default function DealsPageView({

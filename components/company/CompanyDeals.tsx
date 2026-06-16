@@ -20,8 +20,10 @@ from "@/components/ui/OrbitCard";
 import OrbitEmptyState
 from "@/components/ui/OrbitEmptyState";
 
+import { Deal } from "@/types/deal";
+
 type Props = {
-  deals: any[];
+  deals: Deal[];
 };
 
 function getStageStyles(

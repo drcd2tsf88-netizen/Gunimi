@@ -7,8 +7,10 @@ import {
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
+import { Company } from "@/types/company";
+
 type Props = {
-  company: any;
+  company: Company;
 };
 
 export default function WorkspaceHero({

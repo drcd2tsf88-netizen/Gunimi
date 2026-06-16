@@ -6,6 +6,8 @@ from "@/lib/supabase/server";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { Company } from "@/types/company";
+
 export async function getCompany(
   companyId: string
 ) {
@@ -52,7 +54,7 @@ export async function getCompany(
       return null;
     }
 
-    return data;
+    return data as unknown as Company;
 
   } catch (error) {
     console.error(error);

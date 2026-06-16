@@ -9,8 +9,10 @@ from "@/components/ui/OrbitHeading";
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
+import { Company } from "@/types/company";
+
 type Props = {
-  company: any;
+  company: Company;
 };
 
 function getStatusStyles(

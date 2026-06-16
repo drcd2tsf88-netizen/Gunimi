@@ -28,8 +28,10 @@ from "@/components/ui/OrbitCard";
 import OrbitInput
 from "@/components/ui/OrbitInput";
 
+import { WorkspaceMember } from "@/types/member";
+
 type Props = {
-  members: any[];
+  members: WorkspaceMember[];
 
   companyId: string;
 

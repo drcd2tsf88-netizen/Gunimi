@@ -11,8 +11,10 @@ import {
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
+import { Deal } from "@/types/deal";
+
 type Props = {
-  deal: any;
+  deal: Deal;
 };
 
 export default function DealHeader({

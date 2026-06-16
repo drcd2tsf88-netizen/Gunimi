@@ -26,8 +26,10 @@ const STAGES = [
 type DealStage =
   (typeof STAGES)[number];
 
+import { Deal } from "@/types/deal";
+
 type Props = {
-  deals: any[];
+  deals: Deal[];
 
   onRefresh: () => void;
 };

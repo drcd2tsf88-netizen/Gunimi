@@ -14,10 +14,14 @@ import {
 } from "lucide-react";
 import { useTranslations }from "next-intl"; 
 
+import { Company } from "@/types/company";
+import { Contact } from "@/types/contact";
+import { Deal } from "@/types/deal";
+
 type Props = {
-  company: any;
-  contacts: any[];
-  deals: any[];
+  company: Company;
+  contacts: Contact[];
+  deals: Deal[];
 };
 
 export default function CompanyMetrics({

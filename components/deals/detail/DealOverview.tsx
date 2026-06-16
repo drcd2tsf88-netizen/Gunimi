@@ -10,8 +10,10 @@ from "@/components/ui/OrbitCard";
 import OrbitHeading
 from "@/components/ui/OrbitHeading";
 
+import { Deal } from "@/types/deal";
+
 type Props = {
-  deal: any;
+  deal: Deal;
 };
 
 export default function DealOverview({

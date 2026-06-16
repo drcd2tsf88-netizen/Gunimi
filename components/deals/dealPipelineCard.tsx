@@ -20,8 +20,10 @@ from "@/components/ui/OrbitCard";
 import OrbitButton
 from "@/components/ui/OrbitButton";
 
+import { Deal } from "@/types/deal";
+
 type Props = {
-  deal: any;
+  deal: Deal;
 
   canMoveBack: boolean;
 

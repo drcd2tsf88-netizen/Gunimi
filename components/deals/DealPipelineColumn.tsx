@@ -32,11 +32,13 @@ const STAGES = [
   "lost",
 ] as const;
 
+import { Deal } from "@/types/deal";
+
 type Props = {
   stage:
     (typeof STAGES)[number];
 
-  deals: any[];
+  deals: Deal[];
 
   onRefresh: () => void;
 };

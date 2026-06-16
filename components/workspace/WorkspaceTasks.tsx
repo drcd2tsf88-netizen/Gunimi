@@ -12,8 +12,10 @@ import { useTranslations } from "next-intl";
 import OrbitCard from "@/components/ui/OrbitCard";
 import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
 
+import { Task } from "@/types/task";
+
 type Props = {
-  tasks: any[];
+  tasks: Task[];
 };
 
 function getPriorityStyles(

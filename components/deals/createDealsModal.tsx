@@ -47,6 +47,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Company } from "@/types/company";
+import { Contact } from "@/types/contact";
+
 type Props = {
   open: boolean;
 
@@ -54,9 +57,9 @@ type Props = {
     open: boolean
   ) => void;
 
-  companies: any[];
+  companies: Company[];
 
-  contacts: any[];
+  contacts: Contact[];
 
   onCreated: () => void;
 };

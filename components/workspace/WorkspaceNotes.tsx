@@ -34,8 +34,10 @@ from "@/components/ui/OrbitInput";
 import OrbitTextarea
 from "@/components/ui/OrbitTextarea";
 
+import { Note } from "@/types/note";
+
 type Props = {
-  notes: any[];
+  notes: Note[];
 
   companyId: string;
 

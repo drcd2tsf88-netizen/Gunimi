@@ -6,6 +6,8 @@ from "@/lib/supabase/server";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { Contact } from "@/types/contact";
+
 export async function getCompanyContacts(
   companyId: string
 ) {
@@ -70,7 +72,7 @@ export async function getCompanyContacts(
       return [];
     }
 
-    return data || [];
+    return (data || []) as unknown as Contact[];
 
   } catch (error) {
     console.error(error);

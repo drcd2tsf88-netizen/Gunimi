@@ -17,8 +17,10 @@ import {
   useTranslations,
 } from "next-intl";
 
+import { Deal } from "@/types/deal";
+
 type Props = {
-  deal: any;
+  deal: Deal;
 };
 
 export default function DealMetrics({

@@ -15,9 +15,12 @@ from "./DealRelations";
 import DealActivity
 from "./DealActivity";
 
+import { Deal } from "@/types/deal";
+import { WorkspaceActivity } from "@/types/activity";
+
 type Props = {
-  deal: any;
-  activities: any[];
+  deal: Deal;
+  activities: WorkspaceActivity[];
 };
 
 export default function DealDetailView({

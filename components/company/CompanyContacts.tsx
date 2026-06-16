@@ -21,8 +21,10 @@ from "@/components/ui/OrbitEmptyState";
 import getRelativeTime
 from "@/lib/utils/getRelativeTime";
 
+import { Contact } from "@/types/contact";
+
 type Props = {
-  contacts: any[];
+  contacts: Contact[];
 };
 
 function getStatusStyles(

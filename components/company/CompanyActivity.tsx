@@ -15,8 +15,10 @@ from "@/components/ui/OrbitEmptyState";
 import { Activity }
 from "lucide-react";
 
+import { WorkspaceActivity } from "@/types/activity";
+
 type Props = {
-  activity: any[];
+  activity: WorkspaceActivity[];
 };
 
 export default function CompanyActivity({

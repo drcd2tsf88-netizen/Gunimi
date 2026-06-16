@@ -38,9 +38,10 @@ from "@/components/ui/OrbitEmptyState";
 import getRelativeTime
 from "@/lib/utils/getRelativeTime";
 
-type Props = {
-  contacts: any[];
+import { Contact } from "@/types/contact";
 
+type Props = {
+  contacts: Contact[];
 
   refresh: () => void;
 
