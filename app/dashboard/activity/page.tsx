@@ -7,9 +7,6 @@ import {
 
 import { useTranslations } from "next-intl";
 
-import { motion }
-from "framer-motion";
-
 import CountUp
 from "react-countup";
 
@@ -21,6 +18,9 @@ from "@/components/layout/OrbitSection";
 
 import OrbitCard
 from "@/components/ui/OrbitCard";
+
+import OrbitActivityFeed
+from "@/components/ui/OrbitActivityFeed";
 
 import { supabase }
 from "@/lib/supabase";
@@ -47,20 +47,6 @@ export default function ActivityPage() {
 
   const [loading, setLoading] =
     useState(true);
-
-  function formatText(
-    text?: string
-  ) {
-    if (!text) {
-      return t("workspaceEvent");
-    }
-
-    return text
-      .replaceAll("_", " ")
-      .replaceAll("-", " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
 
   // LOAD ACTIVITY
 
@@ -253,195 +239,30 @@ export default function ActivityPage() {
 
       {/* TIMELINE */}
 
-      <OrbitSection>
-        <div className="space-y-5">
-          {loading &&
-            [1, 2, 3].map(
-              (item) => (
-                <OrbitCard
-                  key={item}
-                  className="p-6"
-                >
-                  <div
-                    className="
-                      animate-pulse
-                    "
-                  >
-                    <div
-                      className="
-                        h-4
-                        w-40
-
-                        rounded-full
-
-                        bg-white/10
-                      "
-                    />
-
-                    <div
-                      className="
-                        mt-5
-
-                        h-5
-                        w-full
-
-                        rounded-full
-
-                        bg-white/10
-                      "
-                    />
-                  </div>
-                </OrbitCard>
-              )
-            )}
-
-          {!loading &&
-            activity.length ===
-              0 && (
-              <OrbitCard
-                className="
-                  p-10
-
-                  text-center
-                "
-              >
-                <h2
-                  className="
-                    text-xl
-                    font-semibold
-                  "
-                >
-                  {t("noActivity")}
-                </h2>
-
-                <p
-                  className="
-                    mt-3
-
-                    text-sm
-                    text-white/50
-                  "
-                >
-                  {t("noActivityDescription")}
-                </p>
+      {loading && (
+        <OrbitSection>
+          <div className="space-y-5">
+            {[1, 2, 3].map((item) => (
+              <OrbitCard key={item} className="p-6">
+                <div className="animate-pulse">
+                  <div className="h-4 w-40 rounded-full bg-white/10" />
+                  <div className="mt-5 h-5 w-full rounded-full bg-white/10" />
+                </div>
               </OrbitCard>
-            )}
+            ))}
+          </div>
+        </OrbitSection>
+      )}
 
-          {!loading &&
-            activity.map(
-              (
-                item,
-                index
-              ) => (
-                <motion.div
-                  key={item.id}
-                  initial={{
-                    opacity: 0,
-                    y: 10,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  transition={{
-                    delay:
-                      index * 0.05,
-                  }}
-                >
-                  <OrbitCard
-                    className="p-6"
-                  >
-                    <div
-                      className="
-                        flex
-                        items-start
-                        justify-between
-                        gap-6
-                      "
-                    >
-                      <div>
-                        <div
-                          className="
-                            flex
-                            items-center
-                            gap-3
-                          "
-                        >
-                          <div
-                            className="
-                              rounded-full
-
-                              border
-                              border-violet-500/20
-
-                              bg-violet-500/10
-
-                              px-3
-                              py-1
-
-                              text-xs
-                              uppercase
-
-                              tracking-wide
-
-                              text-violet-300
-                            "
-                          >
-                            {formatText(
-                              item.type
-                            )}
-                          </div>
-                        </div>
-
-                        <h2
-                          className="
-                            mt-4
-
-                            text-lg
-                            font-semibold
-                            text-white
-                          "
-                        >
-                          {formatText(
-                            item.title ||
-                              item.message
-                          )}
-                        </h2>
-
-                        <p
-                          className="
-                            mt-3
-
-                            text-sm
-                            leading-relaxed
-                            text-white/60
-                          "
-                        >
-                          {formatText(
-                            item.description
-                          )}
-                        </p>
-                      </div>
-
-                      <div
-                        className="
-                          whitespace-nowrap
-
-                          text-sm
-                          text-white/40
-                        "
-                      >
-                        {new Date(
-                          item.created_at
-                        ).toLocaleString()}
-                      </div>
-                    </div>
-                  </OrbitCard>
-                </motion.div>
-              )
-            )}
-        </div>
-      </OrbitSection>
+      {!loading && (
+        <OrbitActivityFeed
+          items={activity}
+          emptyTitle={t("noActivity")}
+          emptyDescription={t("noActivityDescription")}
+          dateDisplay="localeString"
+          itemFallback={t("workspaceEvent")}
+        />
+      )}
     </div>
   );
 }

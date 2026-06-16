@@ -1,22 +1,26 @@
 "use client";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
-
-import OrbitStatCard
-from "@/components/ui/OrbitStatCard";
-
 import {
   Users,
   Briefcase,
   TrendingUp,
   Activity,
 } from "lucide-react";
-import { useTranslations }from "next-intl"; 
 
-import { Company } from "@/types/company";
-import { Contact } from "@/types/contact";
-import { Deal } from "@/types/deal";
+import { useTranslations }
+from "next-intl";
+
+import OrbitMetricGrid
+from "@/components/ui/OrbitMetricGrid";
+
+import { Company }
+from "@/types/company";
+
+import { Contact }
+from "@/types/contact";
+
+import { Deal }
+from "@/types/deal";
 
 type Props = {
   company: Company;
@@ -31,72 +35,41 @@ export default function CompanyMetrics({
 }: Props) {
   const t = useTranslations();
 
-  const pipelineValue =
-    deals.reduce(
-      (sum, deal) =>
-        sum +
-        Number(
-          deal.value || 0
-        ),
-      0
-    );
+  const pipelineValue = deals.reduce(
+    (sum, deal) => sum + Number(deal.value || 0),
+    0
+  );
 
   return (
-    <OrbitSection>
-      <div
-        className="
-          grid
-          gap-4
-
-          md:grid-cols-2
-          xl:grid-cols-4
-        "
-      >
-        <OrbitStatCard
-          title={t(
-  "companies.relationships"
-)}
-          value={String(
-            contacts.length
-          )}
-          icon={Users}
-        />
-
-        <OrbitStatCard
-          title={t(
-  "companies.openDeals"
-)}
-          value={String(
+    <OrbitMetricGrid
+      items={[
+        {
+          label: t("companies.relationships"),
+          value: String(contacts.length),
+          icon: Users,
+        },
+        {
+          label: t("companies.openDeals"),
+          value: String(
             deals.filter(
               (deal) =>
-                deal.stage !==
-                  "won" &&
-                deal.stage !==
-                  "lost"
+                deal.stage !== "won" &&
+                deal.stage !== "lost"
             ).length
-          )}
-          icon={Briefcase}
-        />
-
-        <OrbitStatCard
-          title={t(
-  "companies.pipelineValue"
-)}
-          value={`€${pipelineValue.toLocaleString()}`}
-          icon={TrendingUp}
-        />
-
-        <OrbitStatCard
-          title={t(
-  "companies.annualValue"
-)}
-          value={`€${Number(
-            company?.annual_value ||
-            0
-          ).toLocaleString()}`}
-          icon={Activity}
-        />
-      </div>
-    </OrbitSection>
+          ),
+          icon: Briefcase,
+        },
+        {
+          label: t("companies.pipelineValue"),
+          value: `€${pipelineValue.toLocaleString()}`,
+          icon: TrendingUp,
+        },
+        {
+          label: t("companies.annualValue"),
+          value: `€${Number(company?.annual_value || 0).toLocaleString()}`,
+          icon: Activity,
+        },
+      ]}
+    />
   );
 }

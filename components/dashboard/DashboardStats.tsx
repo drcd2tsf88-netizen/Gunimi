@@ -15,14 +15,14 @@ from "@/components/layout/OrbitSection";
 import OrbitSkeleton
 from "@/components/ui/OrbitSkeleton";
 
-import OrbitStatCard
-from "@/components/ui/OrbitStatCard";
+import OrbitMetricGrid
+from "@/components/ui/OrbitMetricGrid";
 
 type DashboardStatsProps = {
   loading: boolean;
 
   stats: {
-     tasks: number;
+    tasks: number;
     completedTasks: number;
     contacts: number;
     activity: number;
@@ -31,66 +31,56 @@ type DashboardStatsProps = {
 
 export default function DashboardStats({
   loading,
-
   stats,
 }: DashboardStatsProps) {
   const t = useTranslations("dashboard");
 
+  if (loading) {
+    return (
+      <OrbitSection>
+        <div
+          className="
+            grid
+            gap-4
+
+            md:grid-cols-2
+            lg:grid-cols-4
+          "
+        >
+          <OrbitSkeleton />
+          <OrbitSkeleton />
+          <OrbitSkeleton />
+          <OrbitSkeleton />
+        </div>
+      </OrbitSection>
+    );
+  }
+
   return (
-    <OrbitSection>
-      <div
-        className="
-          grid
-          gap-3
-
-          md:grid-cols-2
-          lg:grid-cols-4
-        "
-      >
-        {loading ? (
-          <>
-            <OrbitSkeleton />
-            <OrbitSkeleton />
-            <OrbitSkeleton />
-            <OrbitSkeleton />
-          </>
-        ) : (
-          <>
-            <OrbitStatCard
-  title={t("openTasks")}
-  value={String(
-    stats.tasks -
-    stats.completedTasks
-  )}
-  icon={CheckSquare}
-/>
-
-<OrbitStatCard
-  title={t("completed")}
-  value={String(
-    stats.completedTasks
-  )}
-  icon={CheckSquare}
-/>
-
-<OrbitStatCard
-  title={t("contacts")}
-  value={String(
-    stats.contacts
-  )}
-  icon={Users}
-/>
-
-<OrbitStatCard
-  title={t("activityLabel")}
-  value={String(
-    stats.activity
-  )}
-  icon={Activity}
-/>
-          </>
-        )}
-      </div>
-    </OrbitSection>
+    <OrbitMetricGrid
+      items={[
+        {
+          label: t("openTasks"),
+          value: String(stats.tasks - stats.completedTasks),
+          icon: CheckSquare,
+        },
+        {
+          label: t("completed"),
+          value: String(stats.completedTasks),
+          icon: CheckSquare,
+        },
+        {
+          label: t("contacts"),
+          value: String(stats.contacts),
+          icon: Users,
+        },
+        {
+          label: t("activityLabel"),
+          value: String(stats.activity),
+          icon: Activity,
+        },
+      ]}
+      breakpoint="lg"
+    />
   );
 }

@@ -1,11 +1,5 @@
 "use client";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
-
-import OrbitStatCard
-from "@/components/ui/OrbitStatCard";
-
 import {
   Briefcase,
   TrendingUp,
@@ -13,11 +7,14 @@ import {
   Activity,
 } from "lucide-react";
 
-import {
-  useTranslations,
-} from "next-intl";
+import { useTranslations }
+from "next-intl";
 
-import { Deal } from "@/types/deal";
+import OrbitMetricGrid
+from "@/components/ui/OrbitMetricGrid";
+
+import { Deal }
+from "@/types/deal";
 
 type Props = {
   deals: Deal[];
@@ -26,113 +23,65 @@ type Props = {
 export default function DealsMetrics({
   deals,
 }: Props) {
-  const t =
-    useTranslations(
-      "deals"
-    );
+  const t = useTranslations("deals");
 
-  const openDeals =
-    deals.filter(
-      (deal) =>
-        deal.stage !== "won" &&
-        deal.stage !== "lost"
-    );
+  const openDeals = deals.filter(
+    (deal) =>
+      deal.stage !== "won" &&
+      deal.stage !== "lost"
+  );
 
-  const wonDeals =
-    deals.filter(
-      (deal) =>
-        deal.stage === "won"
-    );
+  const wonDeals = deals.filter(
+    (deal) => deal.stage === "won"
+  );
 
-  const lostDeals =
-    deals.filter(
-      (deal) =>
-        deal.stage === "lost"
-    );
+  const lostDeals = deals.filter(
+    (deal) => deal.stage === "lost"
+  );
 
-  const pipelineValue =
-    openDeals.reduce(
-      (sum, deal) =>
-        sum +
-        Number(
-          deal.value || 0
-        ),
-      0
-    );
+  const pipelineValue = openDeals.reduce(
+    (sum, deal) => sum + Number(deal.value || 0),
+    0
+  );
 
-  const wonRevenue =
-    wonDeals.reduce(
-      (sum, deal) =>
-        sum +
-        Number(
-          deal.value || 0
-        ),
-      0
-    );
+  const wonRevenue = wonDeals.reduce(
+    (sum, deal) => sum + Number(deal.value || 0),
+    0
+  );
 
   const winRate =
-    wonDeals.length +
-      lostDeals.length >
-    0
+    wonDeals.length + lostDeals.length > 0
       ? Math.round(
           (wonDeals.length /
-            (
-              wonDeals.length +
-              lostDeals.length
-            )) *
+            (wonDeals.length + lostDeals.length)) *
             100
         )
       : 0;
 
   return (
-    <OrbitSection>
-      <div
-        className="
-          grid
-          gap-4
-
-          md:grid-cols-2
-          xl:grid-cols-4
-        "
-      >
-        <OrbitStatCard
-          title={t(
-            "openOpportunities"
-          )}
-          value={String(
-            openDeals.length
-          )}
-          icon={Briefcase}
-        />
-
-        <OrbitStatCard
-          title={t(
-            "pipelineValue"
-          )}
-          value={String(
-            pipelineValue
-          )}
-          icon={TrendingUp}
-        />
-
-        <OrbitStatCard
-          title={t(
-            "wonRevenue"
-          )}
-          value={String(
-            wonRevenue
-          )}
-          icon={Trophy}
-        />
-
-        <OrbitStatCard
-          title={t(
-            "winRate"
-          )}
-          value={`${winRate}`}
-          icon={Activity}
-        />
-      </div>
-    </OrbitSection>
+    <OrbitMetricGrid
+      items={[
+        {
+          label: t("openOpportunities"),
+          value: String(openDeals.length),
+          icon: Briefcase,
+        },
+        {
+          label: t("pipelineValue"),
+          value: String(pipelineValue),
+          icon: TrendingUp,
+        },
+        {
+          label: t("wonRevenue"),
+          value: String(wonRevenue),
+          icon: Trophy,
+        },
+        {
+          label: t("winRate"),
+          value: `${winRate}%`,
+          icon: Activity,
+        },
+      ]}
+    />
   );
 }
