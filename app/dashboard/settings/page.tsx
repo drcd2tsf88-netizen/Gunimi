@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import toast from "react-hot-toast";
 
 import OrbitHeading
@@ -12,6 +14,43 @@ import OrbitCard
 from "@/components/ui/OrbitCard";
 
 export default function SettingsPage() {
+  const t = useTranslations("settings");
+
+  const aiPreferencesItems = [
+    {
+      title: t("aiRecommendations"),
+      description: t("aiRecommendationsDescription"),
+      status: t("enabled"),
+    },
+    {
+      title: t("workflowAutomation"),
+      description: t("workflowAutomationDescription"),
+      status: t("active"),
+    },
+    {
+      title: t("smartInsights"),
+      description: t("smartInsightsDescription"),
+      status: t("enabled"),
+    },
+  ];
+
+  const notificationItems = [
+    {
+      title: t("emailNotifications"),
+      description: t("emailNotificationsDescription"),
+      status: t("enabled"),
+    },
+    {
+      title: t("aiActivityAlerts"),
+      description: t("aiActivityAlertsDescription"),
+      status: t("enabled"),
+    },
+    {
+      title: t("crmUpdates"),
+      description: t("crmUpdatesDescription"),
+      status: t("silent"),
+    },
+  ];
 
   return (
 
@@ -22,15 +61,11 @@ export default function SettingsPage() {
 
         <OrbitHeading
 
-          badge="OrbitDesk Settings"
+          badge={t("badge")}
 
-          title="Workspace Configuration"
+          title={t("title")}
 
-          subtitle="
-            Manage workspace preferences,
-            AI behavior, integrations
-            and security settings.
-          "
+          subtitle={t("subtitle")}
 
         />
 
@@ -95,7 +130,7 @@ export default function SettingsPage() {
                   className="text-xl font-semibold"
                 >
 
-                  Orbit User
+                  {t("orbitUser")}
 
                 </h2>
 
@@ -103,7 +138,7 @@ export default function SettingsPage() {
                   className="mt-2 text-zinc-400"
                 >
 
-                  Workspace Owner
+                  {t("workspaceOwner")}
 
                 </p>
 
@@ -116,7 +151,7 @@ export default function SettingsPage() {
               onClick={() =>
 
                 toast(
-                  "Profile editing coming soon"
+                  t("profileEditingComingSoon")
                 )
 
               }
@@ -125,7 +160,7 @@ export default function SettingsPage() {
 
             >
 
-              Edit Profile
+              {t("editProfile")}
 
             </button>
 
@@ -164,7 +199,7 @@ export default function SettingsPage() {
                   className="text-xl font-semibold"
                 >
 
-                  AI Preferences
+                  {t("aiPreferences")}
 
                 </h2>
 
@@ -172,8 +207,7 @@ export default function SettingsPage() {
                   className="mt-2 text-zinc-400"
                 >
 
-                  Configure Orbit AI behavior
-                  and workspace intelligence.
+                  {t("aiPreferencesSubtitle")}
 
                 </p>
 
@@ -199,7 +233,7 @@ export default function SettingsPage() {
                 "
               >
 
-                Orbit AI
+                {t("orbitAiLabel")}
 
               </div>
 
@@ -209,41 +243,7 @@ export default function SettingsPage() {
               className="mt-8 space-y-4"
             >
 
-              {[
-                {
-                  title:
-                    "AI Recommendations",
-
-                  description:
-                    "Enable intelligent workspace suggestions.",
-
-                  status:
-                    "Enabled",
-                },
-
-                {
-                  title:
-                    "Workflow Automation",
-
-                  description:
-                    "Allow AI workflow optimization.",
-
-                  status:
-                    "Active",
-                },
-
-                {
-                  title:
-                    "Smart Insights",
-
-                  description:
-                    "Generate AI business analytics.",
-
-                  status:
-                    "Enabled",
-                },
-
-              ].map((item) => (
+              {aiPreferencesItems.map((item) => (
 
                 <div
 
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                   className="text-xl font-semibold"
                 >
 
-                  Notifications
+                  {t("notifications")}
 
                 </h2>
 
@@ -354,8 +354,7 @@ export default function SettingsPage() {
                   className="mt-2 text-zinc-400"
                 >
 
-                  Control workspace alerts
-                  and activity updates.
+                  {t("notificationsSubtitle")}
 
                 </p>
 
@@ -381,7 +380,7 @@ export default function SettingsPage() {
                 "
               >
 
-                Workspace
+                {t("workspaceLabel")}
 
               </div>
 
@@ -391,41 +390,7 @@ export default function SettingsPage() {
               className="mt-8 space-y-4"
             >
 
-              {[
-                {
-                  title:
-                    "Email Notifications",
-
-                  description:
-                    "Receive workspace updates by email.",
-
-                  status:
-                    "Enabled",
-                },
-
-                {
-                  title:
-                    "AI Activity Alerts",
-
-                  description:
-                    "Receive AI-generated productivity alerts.",
-
-                  status:
-                    "Enabled",
-                },
-
-                {
-                  title:
-                    "CRM Updates",
-
-                  description:
-                    "Customer pipeline notifications.",
-
-                  status:
-                    "Silent",
-                },
-
-              ].map((item) => (
+              {notificationItems.map((item) => (
 
                 <div
 

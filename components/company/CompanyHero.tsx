@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import OrbitSection
 from "@/components/layout/OrbitSection";
 
@@ -86,18 +88,20 @@ function getStageStyles(
 export default function CompanyHero({
   company,
 }: Props) {
+  const t = useTranslations("companies");
+
   return (
     <OrbitSection>
       <OrbitHeading
-        badge="Company Intelligence"
+        badge={t("intelligence")}
         title={
           company?.name ||
           "Company"
         }
         subtitle={`
-          ${company?.industry || "Unknown Industry"}
+          ${company?.industry || t("unknownIndustry")}
           •
-          ${company?.country || "Unknown Region"}
+          ${company?.country || t("unknownRegion")}
         `}
       />
 
@@ -186,7 +190,7 @@ export default function CompanyHero({
                 text-zinc-500
               "
             >
-              Owner
+              {t("owner")}
             </p>
 
             <p
@@ -201,7 +205,7 @@ export default function CompanyHero({
               {
                 company?.owner
                   ?.full_name ||
-                "Unassigned"
+                t("unassigned")
               }
             </p>
           </div>
@@ -217,7 +221,7 @@ export default function CompanyHero({
                 text-zinc-500
               "
             >
-              Website
+              {t("website")}
             </p>
 
             <p
@@ -247,7 +251,7 @@ export default function CompanyHero({
                 text-zinc-500
               "
             >
-              Company Size
+              {t("companySize")}
             </p>
 
             <p
@@ -277,7 +281,7 @@ export default function CompanyHero({
                 text-zinc-500
               "
             >
-              Annual Value
+              {t("annualValue")}
             </p>
 
             <p

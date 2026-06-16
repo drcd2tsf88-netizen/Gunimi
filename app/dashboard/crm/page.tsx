@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import { useTranslations } from "next-intl";
+
 import toast
 from "react-hot-toast";
 
@@ -26,6 +28,7 @@ import WorkspaceCRM
 from "@/components/workspace/WorkspaceCRM";
 
 export default function CRMPage() {
+  const t = useTranslations("crm");
 
   const [customers, setCustomers] =
     useState<any[]>([]);
@@ -86,7 +89,7 @@ export default function CRMPage() {
       console.error(error);
 
       toast.error(
-        "Failed to load CRM"
+        t("failedToLoad")
       );
 
     } finally {
@@ -122,16 +125,11 @@ export default function CRMPage() {
 
       <OrbitHeading
 
-        badge="Workspace CRM"
+        badge={t("badge")}
 
-        title="Customer Relationships"
+        title={t("title")}
 
-        subtitle="
-          Manage leads,
-          customers and
-          workspace relationships
-          in one unified system.
-        "
+        subtitle={t("subtitle")}
 
       />
 
@@ -165,7 +163,7 @@ export default function CRMPage() {
               className="text-xl font-semibold"
             >
 
-              Customer Database
+              {t("customerDatabase")}
 
             </h2>
 
@@ -173,8 +171,7 @@ export default function CRMPage() {
               className="mt-2 text-zinc-400"
             >
 
-              Search and manage
-              workspace contacts.
+              {t("searchAndManage")}
 
             </p>
 
@@ -182,7 +179,7 @@ export default function CRMPage() {
 
           <input
             type="text"
-            placeholder="Search customers..."
+            placeholder={t("searchCustomers")}
             value={search}
             onChange={(e) =>
               setSearch(
@@ -234,7 +231,7 @@ export default function CRMPage() {
             className="text-zinc-400"
           >
 
-            Total Customers
+            {t("totalCustomers")}
 
           </p>
 
@@ -263,7 +260,7 @@ export default function CRMPage() {
             className="text-zinc-400"
           >
 
-            Active Leads
+            {t("activeLeads")}
 
           </p>
 
@@ -279,15 +276,11 @@ export default function CRMPage() {
           >
 
             {
-
               customers.filter(
                 (customer) =>
-
                   customer.status ===
                   "lead"
-
               ).length
-
             }
 
           </h2>
@@ -302,7 +295,7 @@ export default function CRMPage() {
             className="text-zinc-400"
           >
 
-            Won Deals
+            {t("wonDeals")}
 
           </p>
 
@@ -318,15 +311,11 @@ export default function CRMPage() {
           >
 
             {
-
               customers.filter(
                 (customer) =>
-
                   customer.status ===
                   "won"
-
               ).length
-
             }
 
           </h2>
@@ -361,7 +350,7 @@ export default function CRMPage() {
               className="text-xl font-semibold"
             >
 
-              Customers
+              {t("customers")}
 
             </h2>
 
@@ -369,7 +358,7 @@ export default function CRMPage() {
               className="mt-2 text-zinc-400"
             >
 
-              Workspace CRM contacts.
+              {t("workspaceCrmContacts")}
 
             </p>
 
@@ -397,7 +386,7 @@ export default function CRMPage() {
 
             {filteredCustomers.length}
             {" "}
-            results
+            {t("results")}
 
           </div>
 
@@ -440,9 +429,7 @@ export default function CRMPage() {
 
     text-center
   "
->     
-     
-            
+>
 
   {/* Icon */}
   <div
@@ -481,7 +468,7 @@ export default function CRMPage() {
     className="text-2xl font-semibold"
   >
 
-    Your CRM is ready
+    {t("crmReady")}
 
   </h2>
 
@@ -499,12 +486,7 @@ export default function CRMPage() {
     "
   >
 
-    Start building your
-    AI-powered customer workspace.
-
-    Add contacts, manage pipelines
-    and let Orbit AI optimize
-    business relationships.
+    {t("crmReadyDescription")}
 
   </p>
 
@@ -539,7 +521,7 @@ export default function CRMPage() {
 
     >
 
-      Add First Contact
+      {t("addFirstContact")}
 
     </button>
 
@@ -569,7 +551,7 @@ export default function CRMPage() {
 
     >
 
-      Generate Demo Data
+      {t("generateDemoData")}
 
     </button>
 
@@ -633,14 +615,11 @@ export default function CRMPage() {
                     className="mt-3 text-sm text-zinc-500"
                   >
 
-                    Company:
+                    {t("company")}:
                     {" "}
                     {
-
                       customer.companies?.name ||
-
-                      "Unknown"
-
+                      t("unknown")
                     }
 
                   </p>

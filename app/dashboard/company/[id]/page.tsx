@@ -14,6 +14,9 @@ import {
   getCompanyActivity,
 } from "@/server/actions/company/getCompanyActivity";
 
+import { getTranslations }
+from "next-intl/server";
+
 import CompanyHero
 from "@/components/company/CompanyHero";
 
@@ -38,6 +41,8 @@ type Props = {
 export default async function CompanyPage({
   params,
 }: Props) {
+  const t = await getTranslations("companies");
+
   const companyId =
     params.id;
 
@@ -72,7 +77,7 @@ export default async function CompanyPage({
           text-white
         "
       >
-        Company not found
+        {t("notFound")}
       </div>
     );
   }

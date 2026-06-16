@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   Users,
   Mail,
@@ -57,25 +59,20 @@ function getStatusStyles(
 export default function CompanyContacts({
   contacts,
 }: Props) {
+  const t = useTranslations("companies");
+
   return (
     <OrbitSection>
       <OrbitHeading
-        badge="Relationship Intelligence"
-        title="Active Relationships"
-        subtitle="
-          Customer stakeholders,
-          decision makers and
-          operational contacts.
-        "
+        badge={t("relationshipIntelligence")}
+        title={t("activeRelationships")}
+        subtitle={t("contactsSubtitle")}
       />
 
       {contacts.length === 0 && (
         <OrbitEmptyState
-          title="No relationships"
-          description="
-            No company contacts
-            available yet.
-          "
+          title={t("noRelationships")}
+          description={t("noRelationshipsDescription")}
           icon={Users}
         />
       )}
@@ -128,7 +125,7 @@ export default function CompanyContacts({
                     >
                       {
                         contact.position ||
-                        "Unknown Position"
+                        t("unknownPosition")
                       }
                     </p>
                   </div>
@@ -208,7 +205,7 @@ export default function CompanyContacts({
                         text-white/40
                       "
                     >
-                      Relationship Owner
+                      {t("relationshipOwner")}
                     </p>
 
                     <p
@@ -220,7 +217,7 @@ export default function CompanyContacts({
                       {
                         contact.owner
                           ?.full_name ||
-                        "Unassigned"
+                        t("unassigned")
                       }
                     </p>
                   </div>
@@ -232,7 +229,7 @@ export default function CompanyContacts({
                         text-white/40
                       "
                     >
-                      Last Contact
+                      {t("lastContact")}
                     </p>
 
                     <p
@@ -245,7 +242,7 @@ export default function CompanyContacts({
                         ? getRelativeTime(
                             contact.last_contacted_at
                           )
-                        : "No activity"}
+                        : t("noActivity")}
                     </p>
                   </div>
                 </div>

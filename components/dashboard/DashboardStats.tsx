@@ -6,6 +6,9 @@ import {
   Users,
 } from "lucide-react";
 
+import { useTranslations }
+from "next-intl";
+
 import OrbitSection
 from "@/components/layout/OrbitSection";
 
@@ -31,6 +34,8 @@ export default function DashboardStats({
 
   stats,
 }: DashboardStatsProps) {
+  const t = useTranslations("dashboard");
+
   return (
     <OrbitSection>
       <div
@@ -52,7 +57,7 @@ export default function DashboardStats({
         ) : (
           <>
             <OrbitStatCard
-  title="Open Tasks"
+  title={t("openTasks")}
   value={String(
     stats.tasks -
     stats.completedTasks
@@ -61,7 +66,7 @@ export default function DashboardStats({
 />
 
 <OrbitStatCard
-  title="Completed"
+  title={t("completed")}
   value={String(
     stats.completedTasks
   )}
@@ -69,7 +74,7 @@ export default function DashboardStats({
 />
 
 <OrbitStatCard
-  title="Contacts"
+  title={t("contacts")}
   value={String(
     stats.contacts
   )}
@@ -77,7 +82,7 @@ export default function DashboardStats({
 />
 
 <OrbitStatCard
-  title="Activity"
+  title={t("activityLabel")}
   value={String(
     stats.activity
   )}

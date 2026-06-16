@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   motion,
 } from "framer-motion";
@@ -14,51 +16,32 @@ import OrbitCard
 from "@/components/ui/OrbitCard";
 
 export default function AnalyticsPage() {
+  const t = useTranslations("analytics");
 
   const metrics = [
 
     {
-      label:
-        "AI Efficiency",
-
-      value:
-        "+28%",
-
-      description:
-        "Workspace acceleration",
+      label: t("metricAiEfficiency"),
+      value: "+28%",
+      description: t("metricAiEfficiencyDesc"),
     },
 
     {
-      label:
-        "CRM Momentum",
-
-      value:
-        "+16%",
-
-      description:
-        "Lead engagement growth",
+      label: t("metricCrmMomentum"),
+      value: "+16%",
+      description: t("metricCrmMomentumDesc"),
     },
 
     {
-      label:
-        "Workflow Speed",
-
-      value:
-        "4.2x",
-
-      description:
-        "Automation performance",
+      label: t("metricWorkflowSpeed"),
+      value: "4.2x",
+      description: t("metricWorkflowSpeedDesc"),
     },
 
     {
-      label:
-        "AI Actions",
-
-      value:
-        "12.4K",
-
-      description:
-        "System executions",
+      label: t("metricAiActions"),
+      value: "12.4K",
+      description: t("metricAiActionsDesc"),
     },
 
   ];
@@ -66,27 +49,18 @@ export default function AnalyticsPage() {
   const insights = [
 
     {
-      title:
-        "Productivity acceleration detected",
-
-      description:
-        "Orbit AI identified elevated execution efficiency across active workspace systems.",
+      title: t("insight1Title"),
+      description: t("insight1Description"),
     },
 
     {
-      title:
-        "CRM conversion momentum increasing",
-
-      description:
-        "Lead engagement performance improved during the last automation cycle.",
+      title: t("insight2Title"),
+      description: t("insight2Description"),
     },
 
     {
-      title:
-        "AI workflow optimization recommended",
-
-      description:
-        "Orbit AI suggests automating repetitive workspace operations.",
+      title: t("insight3Title"),
+      description: t("insight3Description"),
     },
 
   ];
@@ -100,15 +74,11 @@ export default function AnalyticsPage() {
 
         <OrbitHeading
 
-          badge="AI Observatory"
+          badge={t("badge")}
 
-          title="Orbit Intelligence Analytics"
+          title={t("title")}
 
-          subtitle="
-            Realtime AI-powered workspace intelligence,
-            predictive productivity monitoring and
-            autonomous business analysis.
-          "
+          subtitle={t("subtitle")}
 
         />
 
@@ -213,7 +183,7 @@ export default function AnalyticsPage() {
 
                 />
 
-                Orbit AI Analysis Active
+                {t("analysisActive")}
 
               </div>
 
@@ -233,8 +203,7 @@ export default function AnalyticsPage() {
 
               >
 
-                Productivity acceleration
-                detected across workspace systems.
+                {t("productivityAcceleration")}
 
               </h2>
 
@@ -254,9 +223,7 @@ export default function AnalyticsPage() {
 
               >
 
-                Orbit AI identified increased workflow
-                efficiency, CRM engagement growth and
-                elevated automation execution performance.
+                {t("productivityDescription")}
 
               </p>
 
@@ -390,7 +357,7 @@ export default function AnalyticsPage() {
                 className="text-sm text-cyan-300"
               >
 
-                Live AI Signal
+                {t("liveAiSignal")}
 
               </p>
 
@@ -408,8 +375,7 @@ export default function AnalyticsPage() {
 
               >
 
-                System stability
-                operating normally.
+                {t("systemStability")}
 
               </h3>
 
@@ -420,15 +386,10 @@ export default function AnalyticsPage() {
                 {
 
                   [
-
-                    "AI systems operational",
-
-                    "Workspace sync stable",
-
-                    "Automation engine online",
-
-                    "Predictive analysis active",
-
+                    t("signalAiOperational"),
+                    t("signalWorkspaceSync"),
+                    t("signalAutomationOnline"),
+                    t("signalPredictiveActive"),
                   ].map((signal) => (
 
                     <div
@@ -555,7 +516,7 @@ export default function AnalyticsPage() {
                     className="text-2xl font-semibold"
                   >
 
-                    AI Performance Observatory
+                    {t("aiPerformanceObservatory")}
 
                   </h2>
 
@@ -563,8 +524,7 @@ export default function AnalyticsPage() {
                     className="mt-2 text-zinc-400"
                   >
 
-                    Realtime operational intelligence
-                    across workspace systems.
+                    {t("realtimeIntelligence")}
 
                   </p>
 
@@ -591,7 +551,7 @@ export default function AnalyticsPage() {
 
                 >
 
-                  Live Monitoring
+                  {t("liveMonitoring")}
 
                 </div>
 
@@ -697,19 +657,16 @@ export default function AnalyticsPage() {
             </div>
 
           </OrbitCard>
+
           <OrbitSection>
 
   <OrbitHeading
 
-    badge="Predictive Intelligence"
+    badge={t("predictiveBadge")}
 
-    title="Orbit AI Predictive Layer"
+    title={t("predictiveTitle")}
 
-    subtitle="
-      Autonomous AI prediction systems monitoring
-      workspace behavior, productivity risks and
-      future operational performance.
-    "
+    subtitle={t("predictiveSubtitle")}
 
   />
 
@@ -733,51 +690,24 @@ export default function AnalyticsPage() {
       [
 
         {
-
-          title:
-            "Productivity slowdown probability",
-
-          prediction:
-            "72%",
-
-          description:
-            "Orbit AI predicts reduced execution efficiency within the next operational cycle.",
-
-          status:
-            "Moderate Risk",
-
+          title: t("prediction1Title"),
+          prediction: "72%",
+          description: t("prediction1Description"),
+          status: t("prediction1Status"),
         },
 
         {
-
-          title:
-            "CRM conversion acceleration",
-
-          prediction:
-            "+24%",
-
-          description:
-            "Lead engagement momentum indicates elevated conversion potential.",
-
-          status:
-            "Growth Signal",
-
+          title: t("prediction2Title"),
+          prediction: "+24%",
+          description: t("prediction2Description"),
+          status: t("prediction2Status"),
         },
 
         {
-
-          title:
-            "Workflow bottleneck detected",
-
-          prediction:
-            "3 Active",
-
-          description:
-            "AI identified high-priority task congestion inside automation queues.",
-
-          status:
-            "Requires Attention",
-
+          title: t("prediction3Title"),
+          prediction: "3 Active",
+          description: t("prediction3Description"),
+          status: t("prediction3Status"),
         },
 
       ].map((item, index) => (
@@ -964,15 +894,11 @@ export default function AnalyticsPage() {
 
   <OrbitHeading
 
-    badge="Autonomous Execution"
+    badge={t("autonomousBadge")}
 
-    title="Orbit AI Autonomous Actions"
+    title={t("autonomousTitle")}
 
-    subtitle="
-      AI-generated execution flows,
-      intelligent recovery systems and
-      autonomous operational assistance.
-    "
+    subtitle={t("autonomousSubtitle")}
 
   />
 
@@ -996,43 +922,23 @@ export default function AnalyticsPage() {
       [
 
         {
-
-          title:
-            "Workflow Recovery Plan",
-
-          description:
-            "Orbit AI detected operational slowdown and prepared a recovery execution strategy.",
-
+          title: t("plan1Title"),
+          description: t("plan1Description"),
           actions: [
-
-            "Redistribute high-priority tasks",
-
-            "Generate AI productivity summary",
-
-            "Optimize automation queue",
-
+            t("plan1Action1"),
+            t("plan1Action2"),
+            t("plan1Action3"),
           ],
-
         },
 
         {
-
-          title:
-            "CRM Momentum Optimization",
-
-          description:
-            "Orbit AI identified elevated engagement potential inside the CRM pipeline.",
-
+          title: t("plan2Title"),
+          description: t("plan2Description"),
           actions: [
-
-            "Generate follow-up workflows",
-
-            "Prioritize high-conversion leads",
-
-            "Prepare AI outreach summary",
-
+            t("plan2Action1"),
+            t("plan2Action2"),
+            t("plan2Action3"),
           ],
-
         },
 
       ].map((item, index) => (
@@ -1143,7 +1049,7 @@ export default function AnalyticsPage() {
 
                 />
 
-                Autonomous Execution Ready
+                {t("autonomousReady")}
 
               </div>
 
@@ -1312,7 +1218,7 @@ export default function AnalyticsPage() {
                   className="text-2xl font-semibold"
                 >
 
-                  Orbit AI Insights
+                  {t("orbitAiInsights")}
 
                 </h2>
 
@@ -1337,7 +1243,7 @@ export default function AnalyticsPage() {
 
                 >
 
-                  AI LIVE
+                  {t("aiLive")}
 
                 </div>
 

@@ -19,6 +19,9 @@ import {
 import toast
 from "react-hot-toast";
 
+import { useTranslations }
+from "next-intl";
+
 import { supabase }
 from "@/lib/supabase";
 
@@ -56,6 +59,8 @@ type Note = {
 };
 
 export default function NotesPage() {
+  const t = useTranslations("notes");
+
   const [notes, setNotes] =
     useState<Note[]>([]);
 
@@ -95,7 +100,7 @@ export default function NotesPage() {
         console.error(error);
 
         toast.error(
-          "Failed to load notes."
+          t("failedToLoad")
         );
 
         return;
@@ -114,7 +119,7 @@ export default function NotesPage() {
   async function handleCreate() {
     if (!title.trim()) {
       toast.error(
-        "Note title required."
+        t("titleRequired")
       );
 
       return;
@@ -129,7 +134,7 @@ export default function NotesPage() {
         await supabase.auth.getUser();
 
       if (!user) {
-        toast.error("Unauthorized.");
+        toast.error(t("unauthorized"));
 
         return;
       }
@@ -146,13 +151,13 @@ export default function NotesPage() {
       if (error) {
         toast.error(
           error.message ||
-            "Failed to create note."
+            t("failedToCreate")
         );
 
         return;
       }
 
-      toast.success("Note created.");
+      toast.success(t("noteCreated"));
 
       setTitle("");
       setContent("");
@@ -162,7 +167,7 @@ export default function NotesPage() {
       console.error(err);
 
       toast.error(
-        "Failed to create note."
+        t("failedToCreate")
       );
     } finally {
       setCreating(false);
@@ -183,13 +188,9 @@ export default function NotesPage() {
 
       <OrbitSection>
         <OrbitHeading
-          badge="Workspace Knowledge"
-          title="Notes"
-          subtitle="
-            Capture ideas, meeting
-            summaries and workspace
-            knowledge.
-          "
+          badge={t("badge")}
+          title={t("title")}
+          subtitle={t("subtitle")}
         />
       </OrbitSection>
 
@@ -217,7 +218,7 @@ export default function NotesPage() {
           >
             <Sparkles size={12} />
 
-            New Note
+            {t("newNote")}
           </div>
 
           <div
@@ -229,7 +230,7 @@ export default function NotesPage() {
           >
             <OrbitInput
               type="text"
-              placeholder="Note title"
+              placeholder={t("noteTitlePlaceholder")}
               value={title}
               disabled={creating}
               onChange={(e) =>
@@ -240,7 +241,7 @@ export default function NotesPage() {
             />
 
             <OrbitTextarea
-              placeholder="Write your note..."
+              placeholder={t("writePlaceholder")}
               value={content}
               disabled={creating}
               onChange={(e) =>
@@ -291,13 +292,13 @@ export default function NotesPage() {
                     "
                   />
 
-                  Creating...
+                  {t("creating")}
                 </>
               ) : (
                 <>
                   <Plus size={14} />
 
-                  Create Note
+                  {t("createNote")}
                 </>
               )}
             </button>
@@ -330,12 +331,8 @@ export default function NotesPage() {
         ) : notes.length === 0 ? (
           <OrbitEmptyState
             icon={FileText}
-            title="No notes yet"
-            description="
-              Create your first note
-              above to start capturing
-              workspace knowledge.
-            "
+            title={t("noNotes")}
+            description={t("noNotesDescription")}
           />
         ) : (
           <div

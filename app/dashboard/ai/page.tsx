@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import toast from "react-hot-toast";
 
 import OrbitHeading
@@ -12,21 +14,15 @@ import OrbitCard
 from "@/components/ui/OrbitCard";
 
 export default function AIPage() {
+  const t = useTranslations("ai");
 
   const suggestions = [
-
-    "Summarize workspace activity",
-
-    "Analyze CRM performance",
-
-    "Generate productivity insights",
-
-    "Find workflow bottlenecks",
-
-    "Optimize task management",
-
-    "Create AI business summary",
-
+    t("suggestion1"),
+    t("suggestion2"),
+    t("suggestion3"),
+    t("suggestion4"),
+    t("suggestion5"),
+    t("suggestion6"),
   ];
 
   return (
@@ -38,16 +34,11 @@ export default function AIPage() {
 
         <OrbitHeading
 
-          badge="Orbit AI Assistant"
+          badge={t("badge")}
 
-          title="AI Command Center"
+          title={t("title")}
 
-          subtitle="
-            Interact with Orbit AI
-            to analyze workspace activity,
-            optimize workflows and generate
-            intelligent business insights.
-          "
+          subtitle={t("subtitle")}
 
         />
 
@@ -131,7 +122,7 @@ export default function AIPage() {
               "
             >
 
-              Orbit AI Online
+              {t("orbitAiOnline")}
 
             </div>
 
@@ -174,7 +165,7 @@ export default function AIPage() {
                   "
                 >
 
-                  ORBIT AI
+                  {t("orbitAi")}
 
                 </p>
 
@@ -191,16 +182,7 @@ export default function AIPage() {
                   "
                 >
 
-                  Welcome to OrbitDesk
-                  AI Command Center.
-
-                  Workspace systems
-                  operational.
-
-                  Analytics synchronized
-                  successfully.
-
-                  Awaiting instructions.
+                  {t("welcomeMessage")}
 
                 </p>
 
@@ -238,7 +220,7 @@ export default function AIPage() {
                   "
                 >
 
-                  USER
+                  {t("user")}
 
                 </p>
 
@@ -246,9 +228,7 @@ export default function AIPage() {
                   className="mt-5 text-white"
                 >
 
-                  Analyze workspace
-                  productivity and recommend
-                  improvements.
+                  {t("userMessage")}
 
                 </p>
 
@@ -286,7 +266,7 @@ export default function AIPage() {
                   "
                 >
 
-                  ORBIT AI RESPONSE
+                  {t("orbitAiResponse")}
 
                 </p>
 
@@ -305,16 +285,13 @@ export default function AIPage() {
 
                   <p>
 
-                    Workspace productivity
-                    currently stable at 87%.
+                    {t("response1")}
 
                   </p>
 
                   <p>
 
-                    CRM response delays
-                    detected in customer
-                    follow-up pipeline.
+                    {t("response2")}
 
                   </p>
 
@@ -326,7 +303,7 @@ export default function AIPage() {
                       className="mb-4"
                     >
 
-                      Recommended actions:
+                      {t("recommendedActions")}
 
                     </p>
 
@@ -343,15 +320,15 @@ export default function AIPage() {
                     >
 
                       <li>
-                        → Automate repetitive workflows
+                        {t("recommendedAction1")}
                       </li>
 
                       <li>
-                        → Prioritize overdue CRM conversations
+                        {t("recommendedAction2")}
                       </li>
 
                       <li>
-                        → Optimize task assignment distribution
+                        {t("recommendedAction3")}
                       </li>
 
                     </ul>
@@ -384,9 +361,7 @@ export default function AIPage() {
 
                 type="text"
 
-                placeholder="
-                  Ask Orbit AI anything...
-                "
+                placeholder={t("inputPlaceholder")}
 
                 className="
 
@@ -416,7 +391,7 @@ export default function AIPage() {
                 onClick={() =>
 
                   toast(
-                    "AI integration coming soon"
+                    t("integrationComingSoon")
                   )
 
                 }
@@ -446,7 +421,7 @@ export default function AIPage() {
                 "
               >
 
-                Execute
+                {t("execute")}
 
               </button>
 
@@ -478,7 +453,7 @@ export default function AIPage() {
               className="text-xl font-semibold"
             >
 
-              AI Suggestions
+              {t("aiSuggestions")}
 
             </h2>
 
@@ -486,8 +461,7 @@ export default function AIPage() {
               className="mt-2 text-zinc-400"
             >
 
-              Quick AI actions for
-              workspace productivity.
+              {t("aiSuggestionsDescription")}
 
             </p>
 
@@ -513,7 +487,7 @@ export default function AIPage() {
             "
           >
 
-            Smart Prompts
+            {t("smartPrompts")}
 
           </div>
 
@@ -532,7 +506,7 @@ export default function AIPage() {
               onClick={() =>
 
                 toast(
-                  "AI actions updating soon"
+                  t("actionsComingSoon")
                 )
 
               }
@@ -578,8 +552,7 @@ export default function AIPage() {
                       "
                     >
 
-                      Execute intelligent
-                      workspace analysis.
+                      {t("executeSuggestion")}
 
                     </p>
 

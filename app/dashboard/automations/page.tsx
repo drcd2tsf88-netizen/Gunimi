@@ -1,30 +1,29 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 export default function AutomationsPage() {
+  const t = useTranslations("automations");
 
   const automations = [
     {
-      title: "Lead Follow-Up",
-      description:
-        "Automatically create a follow-up task when a new lead is added.",
+      title: t("automation1Title"),
+      description: t("automation1Description"),
       status: "Active",
     },
     {
-      title: "AI Meeting Summary",
-      description:
-        "Generate AI summaries after creating company notes.",
+      title: t("automation2Title"),
+      description: t("automation2Description"),
       status: "Active",
     },
     {
-      title: "Won Deal Workflow",
-      description:
-        "Create onboarding tasks when a customer is moved to won stage.",
+      title: t("automation3Title"),
+      description: t("automation3Description"),
       status: "Coming Soon",
     },
     {
-      title: "Task Reminder",
-      description:
-        "Notify team members about overdue tasks and deadlines.",
+      title: t("automation4Title"),
+      description: t("automation4Description"),
       status: "Coming Soon",
     },
   ];
@@ -36,19 +35,15 @@ export default function AutomationsPage() {
       <div>
 
         <div className="inline-flex rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm text-zinc-400">
-          Orbit Automations
+          {t("badge")}
         </div>
 
         <h1 className="mt-6 text-5xl font-bold">
-          AI-powered business automations.
+          {t("title")}
         </h1>
 
         <p className="mt-4 max-w-3xl text-xl text-zinc-400">
-
-          Automate repetitive workflows,
-          CRM actions and business operations
-          with OrbitDesk AI.
-
+          {t("subtitle")}
         </p>
 
       </div>
@@ -59,7 +54,7 @@ export default function AutomationsPage() {
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
 
           <p className="text-zinc-500">
-            Active Automations
+            {t("activeAutomations")}
           </p>
 
           <h2 className="mt-4 text-5xl font-bold">
@@ -71,7 +66,7 @@ export default function AutomationsPage() {
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
 
           <p className="text-zinc-500">
-            AI Workflows
+            {t("aiWorkflows")}
           </p>
 
           <h2 className="mt-4 text-5xl font-bold">
@@ -83,7 +78,7 @@ export default function AutomationsPage() {
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
 
           <p className="text-zinc-500">
-            Productivity Boost
+            {t("productivityBoost")}
           </p>
 
           <h2 className="mt-4 text-5xl font-bold">
@@ -116,7 +111,7 @@ export default function AutomationsPage() {
                     : "rounded-full bg-yellow-500/20 px-4 py-2 text-sm text-yellow-400"
                 }
               >
-                {automation.status}
+                {automation.status === "Active" ? t("statusActive") : t("statusComingSoon")}
               </span>
 
             </div>
@@ -130,7 +125,7 @@ export default function AutomationsPage() {
             <button
               className="mt-8 rounded-xl border border-zinc-700 px-6 py-3 transition hover:bg-zinc-800"
             >
-              Configure Automation
+              {t("configureAutomation")}
             </button>
 
           </div>
@@ -144,11 +139,11 @@ export default function AutomationsPage() {
         <div className="flex items-center justify-between">
 
           <h2 className="text-2xl font-bold">
-            Suggested AI Workflows
+            {t("suggestedWorkflows")}
           </h2>
 
           <span className="rounded-full bg-zinc-800 px-4 py-2 text-sm text-zinc-400">
-            Orbit AI
+            {t("orbitAi")}
           </span>
 
         </div>
@@ -158,7 +153,7 @@ export default function AutomationsPage() {
           <div className="rounded-2xl border border-zinc-800 bg-black p-5">
 
             <p className="font-semibold">
-              Create tasks from meeting notes automatically
+              {t("suggestion1")}
             </p>
 
           </div>
@@ -166,7 +161,7 @@ export default function AutomationsPage() {
           <div className="rounded-2xl border border-zinc-800 bg-black p-5">
 
             <p className="font-semibold">
-              Generate CRM follow-up reminders using AI
+              {t("suggestion2")}
             </p>
 
           </div>
@@ -174,7 +169,7 @@ export default function AutomationsPage() {
           <div className="rounded-2xl border border-zinc-800 bg-black p-5">
 
             <p className="font-semibold">
-              Detect inactive leads and suggest re-engagement
+              {t("suggestion3")}
             </p>
 
           </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useRouter }
 from "next/navigation";
 
@@ -27,31 +29,21 @@ export default function DashboardQuickActions({
   onOpenAssistant,
 }: DashboardQuickActionsProps) {
   const router = useRouter();
-  
+  const t = useTranslations("dashboard");
 
   const actions = [
     {
-      title:
-        "Ask Orbit",
-
-      description:
-        "Launch AI workspace assistant.",
-
+      title: t("askOrbit"),
+      description: t("askOrbitDescription"),
       icon: Bot,
-
       action: () =>
         onOpenAssistant?.(),
     },
 
     {
-      title:
-        "Assign Work",
-
-      description:
-        "Create workspace task.",
-
+      title: t("assignWork"),
+      description: t("assignWorkDescription"),
       icon: CheckSquare,
-
       action: () =>
         router.push(
           "/dashboard/tasks"
@@ -59,14 +51,9 @@ export default function DashboardQuickActions({
     },
 
     {
-      title:
-        "Add Relationship",
-
-      description:
-        "Create CRM entry.",
-
+      title: t("addRelationship"),
+      description: t("addRelationshipDescription"),
       icon: Users,
-
       action: () =>
         router.push(
           "/dashboard/crm"
@@ -74,14 +61,9 @@ export default function DashboardQuickActions({
     },
 
     {
-      title:
-        "Capture Knowledge",
-
-      description:
-        "Write workspace note.",
-
+      title: t("captureKnowledge"),
+      description: t("captureKnowledgeDescription"),
       icon: FileText,
-
       action: () =>
         router.push(
           "/dashboard/notes"
@@ -92,11 +74,9 @@ export default function DashboardQuickActions({
   return (
     <OrbitSection>
       <OrbitHeading
-        badge="Command Center"
-        title="Workspace Actions"
-        subtitle="
-          Execute actions across your workspace environment.
-        "
+        badge={t("commandCenter")}
+        title={t("workspaceActions")}
+        subtitle={t("workspaceActionsSubtitle")}
       />
 
       <div

@@ -73,10 +73,11 @@ function getStageStyles(
       `;
   }
 }
-const t = useTranslations();
 export default function CompanyDeals({
   deals,
 }: Props) {
+  const t = useTranslations();
+
   return (
   
     <OrbitSection>
@@ -280,7 +281,7 @@ export default function CompanyDeals({
                         {
                           deal.owner
                             ?.full_name ||
-                          "Unassigned"
+                          t("deals.unassigned")
                         }
                       </p>
                     </div>

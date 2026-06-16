@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import { useTranslations } from "next-intl";
+
 import { motion }
 from "framer-motion";
 
@@ -38,11 +40,27 @@ type ActivityItem = {
 };
 
 export default function ActivityPage() {
+  const t = useTranslations("activity");
+
   const [activity, setActivity] =
     useState<ActivityItem[]>([]);
 
   const [loading, setLoading] =
     useState(true);
+
+  function formatText(
+    text?: string
+  ) {
+    if (!text) {
+      return t("workspaceEvent");
+    }
+
+    return text
+      .replaceAll("_", " ")
+      .replaceAll("-", " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
   // LOAD ACTIVITY
 
@@ -110,35 +128,15 @@ export default function ActivityPage() {
     }
   }
 
-  function formatText(
-    text?: string
-  ) {
-    if (!text) {
-      return "Workspace event";
-    }
-
-    return text
-      .replaceAll("_", " ")
-      .replaceAll("-", " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
   return (
     <div className="space-y-8">
       {/* HERO */}
 
       <OrbitSection>
         <OrbitHeading
-          badge="Workspace Activity"
-          title="Live Activity Timeline"
-          subtitle="
-            Monitor live AI actions,
-            workflow executions,
-            workspace updates and
-            operational events
-            across OrbitDesk.
-          "
+          badge={t("badge")}
+          title={t("title")}
+          subtitle={t("subtitle")}
         />
       </OrbitSection>
 
@@ -162,7 +160,7 @@ export default function ActivityPage() {
                 text-white/50
               "
             >
-              Total Events
+              {t("totalEvents")}
             </p>
 
             <h2
@@ -190,7 +188,7 @@ export default function ActivityPage() {
                 text-white/50
               "
             >
-              AI Executions
+              {t("aiExecutions")}
             </p>
 
             <h2
@@ -225,7 +223,7 @@ export default function ActivityPage() {
                 text-white/50
               "
             >
-              Task Events
+              {t("taskEvents")}
             </p>
 
             <h2
@@ -313,7 +311,7 @@ export default function ActivityPage() {
                     font-semibold
                   "
                 >
-                  No activity yet
+                  {t("noActivity")}
                 </h2>
 
                 <p
@@ -324,9 +322,7 @@ export default function ActivityPage() {
                     text-white/50
                   "
                 >
-                  Orbit AI activity
-                  and workflow events
-                  will appear here live.
+                  {t("noActivityDescription")}
                 </p>
               </OrbitCard>
             )}

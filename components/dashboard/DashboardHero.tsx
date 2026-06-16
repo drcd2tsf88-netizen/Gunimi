@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { motion }
 from "framer-motion";
 
@@ -23,24 +25,23 @@ export default function DashboardHero({
   displayName,
   onOpenAssistant,
 }: DashboardHeroProps) {
+  const t = useTranslations("dashboard");
+
   const hour =
     new Date().getHours();
 
   const greeting =
     hour < 12
-      ? "Good morning"
+      ? t("goodMorning")
       : hour < 18
-        ? "Good afternoon"
-        : "Good evening";
+        ? t("goodAfternoon")
+        : t("goodEvening");
 
   return (
     <OrbitSection>
       <OrbitHeading
   title={`${greeting}, ${displayName}`}
-  subtitle="
-    Workspace systems operational.
-    AI monitoring active execution across your environment.
-  "
+  subtitle={t("heroSubtitle")}
       />
 
       <motion.div
@@ -92,7 +93,7 @@ export default function DashboardHero({
     font-semibold
   "
 >
-  Workspace Status
+  {t("workspaceStatus")}
 </h2>
 
 <p
@@ -103,8 +104,7 @@ export default function DashboardHero({
     text-white/60
   "
 >
-  All systems operational.
-No critical issues detected.
+  {t("allSystemsOperational")}
 </p>
 
             <button
@@ -131,7 +131,7 @@ No critical issues detected.
                 hover:bg-violet-500/30
               "
             >
-              Open Orbit
+              {t("openOrbit")}
             </button>
           </div>
         </OrbitCard>
@@ -139,6 +139,6 @@ No critical issues detected.
        <DashboardWorkspaceStrip
    />
     </OrbitSection>
- 
+
   );
 }

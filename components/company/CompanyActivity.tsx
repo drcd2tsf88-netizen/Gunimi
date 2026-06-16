@@ -15,6 +15,9 @@ from "@/components/ui/OrbitEmptyState";
 import { Activity }
 from "lucide-react";
 
+import { useTranslations }
+from "next-intl";
+
 import { WorkspaceActivity } from "@/types/activity";
 
 type Props = {
@@ -24,24 +27,20 @@ type Props = {
 export default function CompanyActivity({
   activity,
 }: Props) {
+  const t = useTranslations("companies");
+
   return (
     <OrbitSection>
       <OrbitHeading
-        badge="Operations Timeline"
-        title="Relationship Activity"
-        subtitle="
-          Historical relationship
-          interactions and operational events.
-        "
+        badge={t("operationsTimeline")}
+        title={t("relationshipActivity")}
+        subtitle={t("activitySubtitle")}
       />
 
       {activity.length === 0 && (
         <OrbitEmptyState
-          title="No activity"
-          description="
-            Relationship activity
-            will appear here.
-          "
+          title={t("noActivity")}
+          description={t("noActivityDescription")}
           icon={Activity}
         />
       )}
