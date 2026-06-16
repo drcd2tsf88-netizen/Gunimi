@@ -22,6 +22,8 @@ from "@/components/ui/OrbitCard";
 
 import OrbitSkeleton
 from "@/components/ui/OrbitSkeleton";
+import WorkspaceCRM
+from "@/components/workspace/WorkspaceCRM";
 
 export default function CRMPage() {
 
@@ -685,6 +687,11 @@ export default function CRMPage() {
       </OrbitCard>
 
     </OrbitSection>
+    <WorkspaceCRM
+  contacts={customers}
+  refresh={loadCustomers}
+  refreshActivity={() => {}}
+/>
 
   </div>
   );

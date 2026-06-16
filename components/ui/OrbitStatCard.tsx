@@ -4,32 +4,44 @@ import {
   motion,
 } from "framer-motion";
 
+import CountUp
+from "react-countup";
+
 import {
   LucideIcon,
 } from "lucide-react";
 
-import CountUp
-from "react-countup";
+import { cn }
+from "@/lib/utils";
 
 type OrbitStatCardProps = {
   title: string;
 
-  value: string;
+  value:
+    | string
+    | number;
 
   description?: string;
 
   icon: LucideIcon;
+
+  animated?: boolean;
+
+  className?: string;
 };
 
 export default function OrbitStatCard({
   title,
-
   value,
-
   description,
-
   icon: Icon,
+  animated = false,
+  className,
 }: OrbitStatCardProps) {
+  const isNumeric =
+    typeof value ===
+    "number";
+
   return (
     <motion.div
       whileHover={{
@@ -38,7 +50,8 @@ export default function OrbitStatCard({
       transition={{
         duration: 0.18,
       }}
-      className="
+      className={cn(
+        `
         group
         relative
 
@@ -65,7 +78,9 @@ export default function OrbitStatCard({
         hover:bg-white/[0.04]
 
         hover:shadow-[0_0_40px_rgba(124,58,237,0.08)]
-      "
+        `,
+        className
+      )}
     >
       {/* TOP LIGHT */}
 
@@ -119,11 +134,17 @@ export default function OrbitStatCard({
             flex
             items-start
             justify-between
+            gap-4
           "
         >
           {/* TEXT */}
 
-          <div>
+          <div
+            className="
+              min-w-0
+              flex-1
+            "
+          >
             <p
               className="
                 text-[11px]
@@ -141,6 +162,8 @@ export default function OrbitStatCard({
               className="
                 mt-4
 
+                break-words
+
                 text-3xl
                 font-semibold
 
@@ -149,11 +172,16 @@ export default function OrbitStatCard({
                 text-white
               "
             >
-              <CountUp
-                end={Number(value)}
-                duration={1.8}
-                separator=","
-              />
+              {animated &&
+              isNumeric ? (
+                <CountUp
+                  end={value}
+                  duration={1.8}
+                  separator=","
+                />
+              ) : (
+                value
+              )}
             </h3>
           </div>
 
@@ -164,6 +192,8 @@ export default function OrbitStatCard({
               flex
               h-10
               w-10
+
+              shrink-0
 
               items-center
               justify-center

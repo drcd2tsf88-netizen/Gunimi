@@ -15,10 +15,12 @@ import DashboardWorkspaceStrip
 from "@/components/dashboard/DashboardWorkspaceStrip";
 
 type DashboardHeroProps = {
+   displayName: string;
   onOpenAssistant: () => void;
 };
 
 export default function DashboardHero({
+  displayName,
   onOpenAssistant,
 }: DashboardHeroProps) {
   const hour =
@@ -34,11 +36,11 @@ export default function DashboardHero({
   return (
     <OrbitSection>
       <OrbitHeading
-        badge="Orbit Workspace"
-        title={`${greeting}, Michal 👋`}
-        subtitle="
-          Workspace AI systems operational and monitoring live execution activity.
-        "
+  title={`${greeting}, ${displayName}`}
+  subtitle="
+    Workspace systems operational.
+    AI monitoring active execution across your environment.
+  "
       />
 
       <motion.div
@@ -85,28 +87,25 @@ export default function DashboardHero({
             "
           >
             <h2
-              className="
-                text-lg
-                font-semibold
-              "
-            >
-              Orbit AI Workspace
-            </h2>
+  className="
+    text-lg
+    font-semibold
+  "
+>
+  Workspace Status
+</h2>
 
-            <p
-              className="
-                mt-2
-                text-sm
-                leading-relaxed
-                text-white/60
-              "
-            >
-              Live AI operating
-              system with realtime
-              workflows, autonomous
-              execution and
-              workspace intelligence.
-            </p>
+<p
+  className="
+    mt-2
+    text-sm
+    leading-relaxed
+    text-white/60
+  "
+>
+  All systems operational.
+No critical issues detected.
+</p>
 
             <button
               onClick={
@@ -132,7 +131,7 @@ export default function DashboardHero({
                 hover:bg-violet-500/30
               "
             >
-              AI cognition systems operational
+              Open Orbit
             </button>
           </div>
         </OrbitCard>

@@ -3,31 +3,31 @@ from "./supabaseAdmin";
 
 type AuditLogParams = {
 
-  companyId: string;
+  workspace_id?: string;
 
-  userId?: string;
+  user_id?: string;
 
   action: string;
 
   entity?: string;
 
-  entityId?: string;
+  entity_id?: string;
 
   metadata?: any;
 };
 
 export async function createAuditLog({
 
-  companyId,
+  workspace_id,
 
-  userId,
+  user_id,
   
 
   action,
 
   entity,
 
-  entityId,
+  entity_id,
 
   metadata,
 
@@ -37,10 +37,11 @@ export async function createAuditLog({
     .from("audit_logs")
     .insert({
 
-      company_id:
-        companyId,
+      workspace_id:
+        workspace_id,
 
-      userId,
+      user_id:
+        user_id,
         
 
       action,
@@ -48,7 +49,7 @@ export async function createAuditLog({
       entity,
 
       entity_id:
-        entityId,
+        entity_id,
 
       metadata,
 

@@ -1,20 +1,16 @@
 "use client";
 
-import {
-  motion,
-} from "framer-motion";
-
+import { motion } from "framer-motion";
 import {
   CheckCircle2,
   Clock3,
   Layers3,
 } from "lucide-react";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import { useTranslations } from "next-intl";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import OrbitCard from "@/components/ui/OrbitCard";
+import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
 
 type Props = {
   tasks: any[];
@@ -58,11 +54,18 @@ function getStatusStyles(
         text-emerald-300
       `;
 
-    case "in_progress":
+    case "active":
       return `
         border-cyan-500/20
         bg-cyan-500/10
         text-cyan-300
+      `;
+
+    case "blocked":
+      return `
+        border-red-500/20
+        bg-red-500/10
+        text-red-300
       `;
 
     default:
@@ -77,12 +80,11 @@ function getStatusStyles(
 export default function WorkspaceTasks({
   tasks,
 }: Props) {
+  const t =
+    useTranslations();
+
   return (
-    <section
-      className="
-        space-y-6
-      "
-    >
+    <section className="space-y-6">
       {/* HEADER */}
 
       <div
@@ -107,7 +109,9 @@ export default function WorkspaceTasks({
               text-violet-300
             "
           >
-            Workspace Productivity
+            {t(
+              "tasks.workManagement"
+            )}
           </p>
 
           <h2
@@ -120,7 +124,9 @@ export default function WorkspaceTasks({
               tracking-tight
             "
           >
-            Workspace Tasks
+            {t(
+              "tasks.tasksExecution"
+            )}
           </h2>
 
           <p
@@ -133,12 +139,11 @@ export default function WorkspaceTasks({
               text-zinc-500
             "
           >
-            Active productivity and
-            collaboration workflows.
+            {t(
+              "tasks.tasksExecutionSubtitle"
+            )}
           </p>
         </div>
-
-        {/* COUNT */}
 
         <div
           className="
@@ -169,7 +174,11 @@ export default function WorkspaceTasks({
           />
 
           <span>
-            {tasks.length} Tasks
+            {tasks.length}
+            {" "}
+            {t(
+              "tasks.tasksExecution"
+            )}
           </span>
         </div>
       </div>
@@ -178,14 +187,12 @@ export default function WorkspaceTasks({
 
       {tasks.length === 0 && (
         <OrbitEmptyState
-          title="
-            No workspace tasks
-          "
-          description="
-            Orbit AI has not detected
-            any active workspace
-            productivity workflows yet.
-          "
+          title={t(
+            "tasks.noTasks"
+          )}
+          description={t(
+            "tasks.noTasksDescription"
+          )}
           icon={Clock3}
         />
       )}
@@ -224,7 +231,6 @@ export default function WorkspaceTasks({
                 <OrbitCard
                   className="
                     h-full
-
                     p-5
                   "
                 >
@@ -236,8 +242,6 @@ export default function WorkspaceTasks({
                       gap-4
                     "
                   >
-                    {/* CONTENT */}
-
                     <div
                       className="
                         min-w-0
@@ -255,21 +259,23 @@ export default function WorkspaceTasks({
                         {task.title}
                       </h3>
 
-                      <p
-                        className="
-                          mt-4
+                      {task.description && (
+                        <p
+                          className="
+                            mt-4
 
-                          text-sm
-                          leading-relaxed
+                            text-sm
+                            leading-relaxed
 
-                          text-zinc-400
-                        "
-                      >
-                        {task.description}
-                      </p>
+                            text-zinc-400
+                          "
+                        >
+                          {
+                            task.description
+                          }
+                        </p>
+                      )}
                     </div>
-
-                    {/* STATUS ICON */}
 
                     <div
                       className="
@@ -299,8 +305,6 @@ export default function WorkspaceTasks({
                     </div>
                   </div>
 
-                  {/* FOOTER */}
-
                   <div
                     className="
                       mt-6
@@ -320,8 +324,6 @@ export default function WorkspaceTasks({
                         gap-2
                       "
                     >
-                      {/* PRIORITY */}
-
                       <div
                         className={`
                           inline-flex
@@ -344,10 +346,10 @@ export default function WorkspaceTasks({
                           )}
                         `}
                       >
-                        {task.priority}
+                        {
+                          task.priority
+                        }
                       </div>
-
-                      {/* STATUS */}
 
                       <div
                         className={`
@@ -371,25 +373,56 @@ export default function WorkspaceTasks({
                           )}
                         `}
                       >
-                        {task.status.replace(
-                          "_",
-                          " "
+                        {t(
+                          `tasks.${task.status}`
                         )}
                       </div>
                     </div>
 
-                    {/* DATE */}
-
                     <p
                       className="
                         text-[11px]
-
                         text-zinc-500
                       "
                     >
                       {new Date(
                         task.created_at
                       ).toLocaleDateString()}
+                    </p>
+                  </div>
+
+                  {/* ENTERPRISE READY */}
+
+                  <div
+                    className="
+                      mt-4
+
+                      space-y-1
+
+                      text-xs
+
+                      text-zinc-500
+                    "
+                  >
+                    <p>
+                      {t(
+                        "tasks.owner"
+                      )}
+                      :{" "}
+                      {task.assigned_to_name ||
+                        "-"}
+                    </p>
+
+                    <p>
+                      {t(
+                        "tasks.dueDate"
+                      )}
+                      :{" "}
+                      {task.due_date
+                        ? new Date(
+                            task.due_date
+                          ).toLocaleDateString()
+                        : "-"}
                     </p>
                   </div>
                 </OrbitCard>

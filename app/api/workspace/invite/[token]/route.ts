@@ -36,7 +36,14 @@ from "@supabase/supabase-js";
         .from(
           "workspace_invites"
         )
-        .select("*")
+        .select(`
+  id,
+  workspace_id,
+  email,
+  token,
+  created_at,
+  expires_at
+`)
         .eq(
           "token",
           token

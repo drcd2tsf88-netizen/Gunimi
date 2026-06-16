@@ -67,9 +67,6 @@ export async function executeOrbitActions({
 
           priority:
             "high",
-
-          workspaceId:
-            workspaceId,
         });
 
       await createActivity({

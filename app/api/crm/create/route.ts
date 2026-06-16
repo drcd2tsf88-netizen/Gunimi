@@ -1,26 +1,26 @@
 import {
   errorResponse,
   successResponse,
-}
-from "@/lib/server/apiResponse";
+} from "@/lib/server/apiResponse";
 
 import { sanitize }
 from "@/lib/server/sanitize";
 
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
+
 import { getUser }
 from "@/lib/server/auth";
 
 import { createAuditLog }
 from "@/lib/server/audit";
+import { getCurrentWorkspace }
+from "@/lib/workspace/getCurrentWorkspace";
 
 export async function POST(
   req: Request
 ) {
-
   try {
-
     const body =
       await req.json();
 
@@ -34,23 +34,39 @@ export async function POST(
       notes,
     } = body;
 
-    const user = await getUser();
+    const user =
+      await getUser();
 
     if (!user) {
-      return errorResponse("Unauthorized", 401);
+      return errorResponse(
+        "Unauthorized",
+        401
+      );
     }
 
-    if (
-      !companyId ||
-      !user.id ||
-      !name
-    ) {
-
+    if (!name) {
       return errorResponse(
-        "Missing fields",
+        "Contact name required",
         400
       );
     }
+
+    // WORKSPACE
+   const workspace =
+  await getCurrentWorkspace();
+
+if (!workspace) {
+  return errorResponse(
+    "Workspace not found",
+    404
+  );
+}
+
+const workspaceId =
+  workspace.id;
+ 
+
+    // SANITIZE
 
     const cleanName =
       sanitize(name);
@@ -70,92 +86,154 @@ export async function POST(
     const cleanNotes =
       sanitize(notes);
 
-    const { error } =
-      await supabaseAdmin
-        .from("workspace_contacts")
-        .insert({
+    // CREATE CONTACT
+const {
+  data: contact,
+  error: contactError,
+} =
+  await supabaseAdmin
+    .from(
+      "workspace_contacts"
+    )
+    .insert({
+      workspace_id:
+        workspaceId,
 
-          company_id:
-            companyId,
+      company_id:
+        companyId ||
+        null,
 
-          user_id:
-            user.id,
+      user_id:
+        user.id,
 
-          name:
-            cleanName,
+      assigned_to:
+        user.id,
 
-          email:
-            cleanEmail,
+      name:
+        cleanName,
 
-          phone:
-            cleanPhone,
+      email:
+        cleanEmail,
 
-          company_name:
-            cleanCompany,
+      phone:
+        cleanPhone,
 
-          position:
-            cleanPosition,
+      company_name:
+        cleanCompany,
 
-          notes:
-            cleanNotes,
+      position:
+        cleanPosition,
 
-        });
+      notes:
+        cleanNotes,
 
-    if (error) {
+      status:
+        "lead",
 
+      updated_at:
+        new Date().toISOString(),
+    })
+    .select()
+    .single();
+
+    if (
+      contactError ||
+      !contact
+    ) {
       return errorResponse(
-        error.message
+        contactError?.message ||
+          "Failed to create contact"
       );
     }
 
+    // CONTACT TIMELINE
+
     await supabaseAdmin
-      .from("workspace_activity")
-      .insert({
+  .from(
+    "workspace_contact_activity"
+  )
+  .insert({
+    workspace_id:
+      workspaceId,
 
-        company_id:
-          companyId,
+    contact_id:
+      contact.id,
 
-        user_id:
-          user.id,
+    type:
+      "contact_created",
 
-        type:
-          "contact_created",
+    title:
+      "Contact Created",
 
-        message:
-          `Created CRM contact "${cleanName}"`,
+    description:
+      `Created contact "${cleanName}"`,
+  });
 
-      });
+    // WORKSPACE ACTIVITY
 
-   await createAuditLog({
+    await supabaseAdmin
+  .from(
+    "workspace_activity"
+  )
+  .insert({
+    workspace_id:
+      workspaceId,
 
-  companyId,
+    user_id:
+      user.id,
 
-  userId:
+    type:
+      "contact_created",
+
+    title:
+      "Contact Created",
+
+    description:
+      `Created contact "${cleanName}"`,
+  });
+
+    // AUDIT LOG
+
+    await createAuditLog({
+      workspace_id:
+        workspaceId,
+
+      user_id:
+        user.id,
+
+      action:
+        "crm_contact_created",
+
+      entity:
+        "crm_contact",
+
+      metadata: {
+  contactId:
+    contact.id,
+
+  name:
+    cleanName,
+
+  email:
+    cleanEmail,
+
+  status:
+    "lead",
+
+  assignedTo:
     user.id,
+},
+    });
 
-  action:
-    "crm_contact_created",
-
-  entity:
-    "crm_contact",
-
-  metadata: {
-
-    name:
-      cleanName,
-
-    email:
-      cleanEmail,
-
-  },
-
-});
-
-    return successResponse();
-
+    return successResponse({
+      id:
+        contact.id,
+    });
   } catch (error) {
-
-    console.error(error);
+    console.error(
+      "CRM CREATE ERROR",
+      error
+    );
 
     return errorResponse(
       "Server error"

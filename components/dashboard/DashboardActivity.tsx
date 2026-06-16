@@ -3,6 +3,9 @@
 import { motion }
 from "framer-motion";
 
+import { useTranslations }
+from "next-intl";
+
 import OrbitSection
 from "@/components/layout/OrbitSection";
 
@@ -14,6 +17,9 @@ from "@/components/ui/OrbitCard";
 
 import OrbitSkeleton
 from "@/components/ui/OrbitSkeleton";
+
+import getRelativeTime
+from "@/lib/utils/getRelativeTime";
 
 type ActivityItem = {
   id: string;
@@ -38,31 +44,38 @@ export default function DashboardActivity({
 
   activity,
 }: DashboardActivityProps) {
+  const t =
+  useTranslations();
   function cleanText(
-    text?: string
-  ) {
-    if (!text) {
-      return "Workspace event";
-    }
-
-    return text
-      .replaceAll("_", " ")
-      .replaceAll("-", " ")
-      .replace(/\s+/g, " ")
-      .trim();
+  text?: string
+) {
+  if (!text) {
+    return t(
+      "dashboard.workspaceEvent"
+    );
   }
+
+  return text
+    .replaceAll("_", " ")
+    .replaceAll("-", " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+  
 
   return (
     <OrbitSection>
       <OrbitHeading
-        badge="Workspace Feed"
-        title="AI Activity Stream"
-        subtitle="
-          Realtime AI workspace activity,
-          automation events and
-          productivity insights.
-        "
-      />
+  badge={t(
+    "dashboard.activityCenter"
+  )}
+  title={t(
+    "dashboard.operationsFeed"
+  )}
+  subtitle={t(
+    "dashboard.operationsFeedSubtitle"
+  )}
+/>
 
       <div
         className="
@@ -84,26 +97,28 @@ export default function DashboardActivity({
             0 && (
             <OrbitCard className="p-8">
               <h3
-                className="
-                  text-lg
-                  font-medium
-                "
-              >
-                No activity yet
-              </h3>
+  className="
+    text-lg
+    font-medium
+  "
+>
+  {t(
+    "dashboard.noActivity"
+  )}
+</h3>
 
-              <p
-                className="
-                  mt-2
+<p
+  className="
+    mt-2
 
-                  text-sm
-                  text-white/50
-                "
-              >
-                Orbit AI events
-                will appear here
-                live.
-              </p>
+    text-sm
+    text-white/50
+  "
+>
+  {t(
+    "dashboard.noActivityDescription"
+  )}
+</p>
             </OrbitCard>
           )}
 
@@ -192,17 +207,17 @@ export default function DashboardActivity({
                     </div>
 
                     <div
-                      className="
-                        whitespace-nowrap
+  className="
+    whitespace-nowrap
 
-                        text-sm
-                        text-white/40
-                      "
-                    >
-                      {new Date(
-                        item.created_at
-                      ).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}
-                    </div>
+    text-sm
+    text-white/40
+  "
+>
+  {getRelativeTime(
+    item.created_at
+  )}
+</div>
                   </div>
                 </OrbitCard>
               </motion.div>

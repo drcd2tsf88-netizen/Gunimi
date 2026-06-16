@@ -16,6 +16,7 @@ import {
 
 import { useAIStateStore }
 from "@/lib/store/ai-state-store";
+import { useTranslations } from "next-intl";
 
 export default function DashboardAIThinking() {
   const thinking =
@@ -30,9 +31,11 @@ export default function DashboardAIThinking() {
         state.currentThought
     );
 
-  if (!thinking) {
-    return null;
-  }
+  const t = useTranslations();
+
+  const insight = thinking
+    ? currentThought
+    : t("dashboard.workspaceOperational");
 
   return (
       <motion.div
@@ -124,7 +127,9 @@ export default function DashboardAIThinking() {
                     text-cyan-300
                   "
                 >
-                  Orbit AI Active
+                  {t(
+  "dashboard.workspaceInsight"
+)}
                 </p>
               </div>
 
@@ -137,7 +142,7 @@ export default function DashboardAIThinking() {
                   line-clamp-1
                 "
               >
-                {currentThought}
+                {insight}
               </h3>
             </div>
           </div>

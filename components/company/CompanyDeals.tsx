@@ -1,0 +1,318 @@
+"use client";
+
+import { motion }
+from "framer-motion";
+
+import {
+  Briefcase,
+  TrendingUp,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import OrbitSection
+from "@/components/layout/OrbitSection";
+
+import OrbitHeading
+from "@/components/ui/OrbitHeading";
+
+import OrbitCard
+from "@/components/ui/OrbitCard";
+
+import OrbitEmptyState
+from "@/components/ui/OrbitEmptyState";
+
+type Props = {
+  deals: any[];
+};
+
+function getStageStyles(
+  stage: string
+) {
+  switch (stage) {
+    case "won":
+      return `
+        border-emerald-500/20
+        bg-emerald-500/10
+        text-emerald-300
+      `;
+
+    case "lost":
+      return `
+        border-rose-500/20
+        bg-rose-500/10
+        text-rose-300
+      `;
+
+    case "negotiation":
+      return `
+        border-orange-500/20
+        bg-orange-500/10
+        text-orange-300
+      `;
+
+    case "proposal":
+      return `
+        border-yellow-500/20
+        bg-yellow-500/10
+        text-yellow-300
+      `;
+
+    case "qualified":
+      return `
+        border-cyan-500/20
+        bg-cyan-500/10
+        text-cyan-300
+      `;
+
+    default:
+      return `
+        border-violet-500/20
+        bg-violet-500/10
+        text-violet-300
+      `;
+  }
+}
+const t = useTranslations();
+export default function CompanyDeals({
+  deals,
+}: Props) {
+  return (
+  
+    <OrbitSection>
+      <OrbitHeading
+        badge={t(
+  "deals.commercialPipeline"
+)}
+        title={t(
+  "deals.commercialOpportunities"
+)}
+        subtitle={t(
+  "deals.commercialPipelineSubtitle"
+)}
+      />
+
+      {deals.length === 0 && (
+        <OrbitEmptyState
+          title={t("deals.noDeals")}
+          description={t("deals.noDealsDescription")}
+          icon={Briefcase}
+        />
+      )}
+
+      {deals.length > 0 && (
+        <div
+          className="
+            mt-6
+
+            grid
+            gap-4
+
+            xl:grid-cols-2
+          "
+        >
+          {deals.map(
+            (
+              deal,
+              index
+            ) => (
+              <motion.div
+                key={deal.id}
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay:
+                    index * 0.05,
+                }}
+              >
+                <OrbitCard
+                  className="
+                    p-5
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      items-start
+                      justify-between
+                      gap-4
+                    "
+                  >
+                    <div>
+                      <h3
+                        className="
+                          text-lg
+                          font-semibold
+                        "
+                      >
+                        {deal.title}
+                      </h3>
+
+                      {deal.description && (
+                        <p
+                          className="
+                            mt-3
+
+                            text-sm
+                            text-white/60
+                          "
+                        >
+                          {
+                            deal.description
+                          }
+                        </p>
+                      )}
+                    </div>
+
+                    <TrendingUp
+                      className="
+                        text-violet-300
+                      "
+                      size={18}
+                    />
+                  </div>
+
+                  <div
+                    className="
+                      mt-5
+
+                      flex
+                      flex-wrap
+                      gap-2
+                    "
+                  >
+                    <div
+                      className={`
+                        rounded-full
+                        border
+
+                        px-3
+                        py-1
+
+                        text-xs
+
+                        ${getStageStyles(
+                          deal.stage
+                        )}
+                      `}
+                    >
+                      {
+  t(
+    `deals.${deal.stage}`
+  )
+}
+                    </div>
+
+                    <div
+                      className="
+                        rounded-full
+
+                        border
+                        border-white/10
+
+                        bg-white/[0.03]
+
+                        px-3
+                        py-1
+
+                        text-xs
+                      "
+                    >
+                      {deal.probability}%
+                    </div>
+                  </div>
+
+                  <div
+                    className="
+                      mt-5
+
+                      grid
+                      gap-4
+
+                      md:grid-cols-3
+                    "
+                  >
+                    <div>
+                      <p
+                        className="
+                          text-xs
+                          text-white/40
+                        "
+                      >
+                       {t("deals.value")}
+                      </p>
+
+                      <p
+                        className="
+                          mt-1
+                          text-sm
+                        "
+                      >
+                        €
+                        {Number(
+                          deal.value || 0
+                        ).toLocaleString()}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p
+                        className="
+                          text-xs
+                          text-white/40
+                        "
+                      >
+                        {t("deals.owner")}
+                      </p>
+
+                      <p
+                        className="
+                          mt-1
+                          text-sm
+                        "
+                      >
+                        {
+                          deal.owner
+                            ?.full_name ||
+                          "Unassigned"
+                        }
+                      </p>
+                    </div>
+
+                    <div>
+                      <p
+                        className="
+                          text-xs
+                          text-white/40
+                        "
+                      >
+                        {t("deals.expectedClose")}
+                      </p>
+
+                      <p
+                        className="
+                          mt-1
+                          text-sm
+                        "
+                      >
+                        {deal.expected_close_date
+                          ? new Date(
+                              deal.expected_close_date
+                            ).toLocaleDateString()
+                          : "-"}
+                      </p>
+                    </div>
+                  </div>
+                </OrbitCard>
+              </motion.div>
+            )
+          )}
+        </div>
+      )}
+    </OrbitSection>
+  );
+}

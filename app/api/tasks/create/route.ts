@@ -140,9 +140,10 @@ export async function POST(
 
     await createAuditLog({
 
-      companyId,
+      workspace_id:
+        companyId,
 
-      userId:
+      user_id:
         user.id,
 
       action:
@@ -151,7 +152,7 @@ export async function POST(
       entity:
         "task",
 
-      entityId:
+      entity_id:
         data.id,
 
       metadata: {

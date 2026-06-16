@@ -1,0 +1,200 @@
+{
+  "dashboard": {
+    "workspace": "Pracovní prostor",
+    "systemsOperational": "AI systémy pracovního prostoru jsou aktivní.",
+
+    "activityCenter": "Centrum aktivit",
+    "operationsFeed": "Provozní přehled",
+    "operationsFeedSubtitle": "Aktivity a události v pracovním prostoru v reálném čase.",
+    "noActivity": "Zatím žádná aktivita",
+    "noActivityDescription": "Aktivity pracovního prostoru se zde budou zobrazovat v reálném čase.",
+    "workspaceEvent": "Událost pracovního prostoru",
+
+    "workspaceInsight": "Přehled pracovního prostoru",
+    "workspaceOperational": "Pracovní prostor funguje bez problémů.",
+
+    "workspaceIntelligence": "Inteligence pracovního prostoru",
+    "orbitIntelligence": "Orbit Intelligence",
+    "orbitIntelligenceSubtitle": "Přehled provozu a doporučení napříč pracovním prostorem.",
+    "recommendedActions": "Doporučené akce",
+    "noRecommendedActions": "Momentálně nejsou dostupné žádné doporučené akce.",
+
+    "members": "Členové",
+    "tasks": "Úkoly",
+    "relationships": "Vztahy",
+    "documents": "Dokumenty",
+    "systemHealthy": "Systém v pořádku",
+
+    "knowledgeBase": "Znalostní báze",
+    "workspaceMemory": "Paměť pracovního prostoru",
+    "workspaceMemorySubtitle": "Zachycené poznatky, rozhodnutí a provozní kontext napříč pracovním prostorem.",
+    "noWorkspaceMemory": "Zatím nejsou dostupné žádné znalosti",
+    "noWorkspaceMemoryDescription": "Poznatky a provozní kontext se zde budou zobrazovat během práce v systému."
+  },
+
+  "crm": {
+    "title": "Zákaznické vztahy",
+    "contacts": "Kontakty",
+    "search": "Hledat kontakty...",
+    "createContact": "Vytvořit kontakt"
+  },
+
+  "tasks": {
+    "workManagement": "Řízení práce",
+    "tasksExecution": "Úkoly a realizace",
+    "tasksExecutionSubtitle": "Sledujte úkoly, odpovědnosti a realizaci práce napříč pracovním prostorem.",
+
+    "owner": "Vlastník",
+    "dueDate": "Termín",
+
+    "planned": "Plánované",
+    "active": "Aktivní",
+    "blocked": "Blokované",
+    "completed": "Dokončené",
+
+    "noTasks": "Žádné úkoly",
+    "noTasksDescription": "Vytvořte první úkol a začněte organizovat práci ve svém pracovním prostoru."
+  },
+
+  
+  "common": {
+    "create": "Vytvořit",
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "delete": "Odstranit",
+    "edit": "Upravit",
+    "loading": "Načítání...",
+    "close": "Zavřít",
+     "confirm": "Potvrdit",
+     "yes": "Ano",
+     "no": "Ne"
+  },
+
+  "deals": {
+    "commercialPipeline": "Obchodní Pipeline",
+    "commercialPipelineSubtitle": "Sledujte obchodní příležitosti, prognózy příjmů a obchodní realizaci.",
+
+    "createOpportunity": "Vytvořit příležitost",
+
+    "openOpportunities": "Otevřené příležitosti",
+    "pipelineValue": "Hodnota pipeline",
+    "wonRevenue": "Vyhrané příjmy",
+    "winRate": "Míra úspěšnosti",
+
+    "lead": "Lead",
+    "qualified": "Kvalifikovaný",
+    "proposal": "Nabídka",
+    "negotiation": "Vyjednávání",
+    "won": "Vyhrané",
+    "lost": "Prohrané",
+
+    "owner": "Vlastník",
+    "company": "Organizace",
+    "contact": "Kontakt",
+    "stage": "Fáze",
+    "value": "Hodnota",
+    "unassigned": "Nepřiřazeno",
+
+    "expectedClose": "Předpokládané uzavření",
+    "expectedCloseDate": "Předpokládané datum uzavření",
+
+    "opportunityName": "Název příležitosti",
+    "opportunityValue": "Hodnota příležitosti",
+    "probability": "Pravděpodobnost",
+    "description": "Popis",
+
+    "selectOrganization": "Vybrat organizaci",
+    "selectContact": "Vybrat kontakt",
+
+    "creating": "Vytváření...",
+
+    "noDeals": "Žádné příležitosti",
+    "noDealsDescription": "Vytvořte první obchodní příležitost a začněte sledovat obchodní výkonnost.",
+    "expectedRevenue": "Očekávané příjmy",
+"selectOrganizationFirst": "Vybrat organizaci jako první",
+
+"opportunityCreated": "Příležitost vytvořena úspěšně",
+"failedToCreateOpportunity": "Nepodařilo se vytvořit příležitost",
+
+"requiredField": "Tohle pole je povinné",
+"invalidProbability": "Pravděpodobnost musí být mezi 0 a 100",
+"invalidValue": "Hodnota musí být větší nebo rovna 0",
+  "open": "Otevřené",
+  "opportunities": "Příležitosti",
+  "moveForward": "Přesunout dopředu",
+  "moveBack": "Přesunout dozadu",
+    "stageUpdated": "Příležitost aktualizována",
+  "failedToUpdateStage": "Nepodařilo se aktualizovat fázi příležitosti",
+   "relationships": "Vztahy",
+  "organization": "Organizace",
+  "activity": "Aktivita",
+  "noRelationships": "Žádné vztahy",
+  "noRelationshipsDescription": "Žádné údaje o vztazích nejsou dostupné.",
+  "noActivity": "Žádná aktivita",
+  "noActivityDescription": "Aktivita vztahů se zobrazí zde.",
+  "daysOpen": "Dny otevřené",
+  "overview": "Přehled",
+  "opportunity": "Příležitost",
+  "lostReason": "Důvod prohry"
+  },
+
+  "companies": {
+    "intelligence": "Firemní inteligence",
+    "organizationIntelligence": "Inteligence organizace",
+
+    "relationships": "Vztahy",
+    "activeRelationships": "Aktivní vztahy",
+
+    "openOpportunities": "Otevřené příležitosti",
+
+    "pipelineValue": "Hodnota pipeline",
+    "annualValue": "Roční hodnota",
+
+    "operationsTimeline": "Provozní časová osa",
+
+    "relationshipOwner": "Správce vztahu",
+
+    "lastContact": "Poslední kontakt",
+
+    "owner": "Vlastník",
+
+    "website": "Webová stránka",
+
+    "companySize": "Velikost společnosti",
+
+    "unassigned": "Nepřiřazeno",
+
+    "unknownPosition": "Neznámá pozice",
+
+    "organizations": "Organizace",
+
+    "noRelationships": "Žádné vztahy",
+    "noRelationshipsDescription": "Zatím nejsou k dispozici žádné firemní kontakty.",
+
+    "noOpportunities": "Žádné příležitosti",
+    "noOpportunitiesDescription": "Nebyly zjištěny žádné aktivní obchodní příležitosti.",
+
+    "noActivity": "Žádná aktivita",
+    "noActivityDescription": "Aktivita vztahů se zobrazí zde.",
+
+    "organizationsSubtitle": "Sledujte obchodní vztahy, příležitosti a výkonnost portfolia.",
+
+    "createOrganization": "Vytvořit organizaci",
+
+    "organizationName": "Název organizace",
+
+    "industry": "Odvětví",
+
+    "country": "Země",
+
+    "creating": "Vytváření...",
+
+    "searchOrganizations": "Hledat organizace",
+
+    "lastActivity": "Poslední aktivita",
+
+    "notes": "Poznámky",
+
+    "addNote": "Přidat poznámku"
+  }
+}

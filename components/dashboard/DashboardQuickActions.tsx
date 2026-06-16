@@ -32,7 +32,7 @@ export default function DashboardQuickActions({
   const actions = [
     {
       title:
-        "Open Orbit AI",
+        "Ask Orbit",
 
       description:
         "Launch AI workspace assistant.",
@@ -45,7 +45,7 @@ export default function DashboardQuickActions({
 
     {
       title:
-        "Create Task",
+        "Assign Work",
 
       description:
         "Create workspace task.",
@@ -60,7 +60,7 @@ export default function DashboardQuickActions({
 
     {
       title:
-        "Add Contact",
+        "Add Relationship",
 
       description:
         "Create CRM entry.",
@@ -75,7 +75,7 @@ export default function DashboardQuickActions({
 
     {
       title:
-        "New Note",
+        "Capture Knowledge",
 
       description:
         "Write workspace note.",
@@ -92,11 +92,10 @@ export default function DashboardQuickActions({
   return (
     <OrbitSection>
       <OrbitHeading
-        badge="Workspace Actions"
-        title="Quick Actions"
+        badge="Command Center"
+        title="Workspace Actions"
         subtitle="
-          Fast access to OrbitDesk
-          workspace operations.
+          Execute actions across your workspace environment.
         "
       />
 

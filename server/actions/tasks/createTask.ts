@@ -9,46 +9,60 @@ from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { createAuditLog }
+from "@/lib/server/audit";
+
 type CreateTaskProps = {
   title: string;
-
-  status?: string;
-
+  description?: string;
   priority?: string;
-
-  workspaceId?: string;
+  status?: string;
 };
 
 export async function createTask({
   title,
-
-  status = "active",
-
+  description = "",
   priority = "medium",
-  workspaceId,
+  status = "planned",
 }: CreateTaskProps) {
   try {
-    // AUTH USER
-const supabase = await createClient();
+    const supabase =
+      await createClient();
+
+    // AUTH
+
     const user =
       await getUser();
 
     if (!user) {
       console.error(
-        "No authenticated user"
+        "Unauthorized"
       );
 
       return null;
     }
 
-    // CURRENT WORKSPACE
+    // WORKSPACE
 
     const workspace =
       await getCurrentWorkspace();
 
     if (!workspace) {
       console.error(
-        "No active workspace found"
+        "No active workspace"
+      );
+
+      return null;
+    }
+
+    // VALIDATION
+
+    const cleanTitle =
+      title?.trim();
+
+    if (!cleanTitle) {
+      console.error(
+        "Task title required"
       );
 
       return null;
@@ -59,28 +73,33 @@ const supabase = await createClient();
     const {
       data,
       error,
-    } =
-      await supabase
-        .from(
-          "workspace_tasks"
-        )
-        .insert([
-          {
-            title,
+    } = await supabase
+      .from(
+        "workspace_tasks"
+      )
+      .insert([
+        {
+          title:
+            cleanTitle,
 
-            status,
+          description,
 
-            priority,
+          priority,
 
-            user_id:
-              user.id,
+          status,
 
-            workspace_id:
-              workspace.id,
-          },
-        ])
-        .select()
-        .single();
+          user_id:
+            user.id,
+
+          workspace_id:
+            workspace.id,
+
+          updated_at:
+            new Date().toISOString(),
+        },
+      ])
+      .select()
+      .single();
 
     if (error) {
       console.error(
@@ -89,6 +108,57 @@ const supabase = await createClient();
 
       return null;
     }
+
+    // ACTIVITY FEED
+
+    await supabase
+      .from(
+        "workspace_activity"
+      )
+      .insert({
+        workspace_id:
+          workspace.id,
+
+        user_id:
+          user.id,
+
+        type:
+          "task_created",
+
+        title:
+          "Task Created",
+
+        description:
+          `Created task "${cleanTitle}"`,
+      });
+
+    // AUDIT LOG
+
+    await createAuditLog({
+      workspace_id:
+        workspace.id,
+
+      user_id:
+        user.id,
+
+      action:
+        "task_created",
+
+      entity:
+        "workspace_task",
+
+      metadata: {
+        taskId:
+          data.id,
+
+        title:
+          cleanTitle,
+
+        priority,
+
+        status,
+      },
+    });
 
     return data;
   } catch (error) {

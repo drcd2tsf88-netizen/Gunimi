@@ -17,8 +17,6 @@ import {
 import toast
 from "react-hot-toast";
 
-import DOMPurify
-from "dompurify";
 
 import { supabase }
 from "@/lib/supabase";
@@ -37,11 +35,12 @@ from "@/components/ui/OrbitTextarea";
 
 import OrbitEmptyState
 from "@/components/ui/OrbitEmptyState";
+import getRelativeTime
+from "@/lib/utils/getRelativeTime";
 
 type Props = {
   contacts: any[];
 
-  companyId: string;
 
   refresh: () => void;
 
@@ -50,8 +49,6 @@ type Props = {
 
 export default function WorkspaceCRM({
   contacts,
-
-  companyId,
 
   refresh,
 
@@ -139,36 +136,6 @@ export default function WorkspaceCRM({
         return;
       }
 
-      const cleanName =
-        DOMPurify.sanitize(
-          name
-        );
-
-      const cleanEmail =
-        DOMPurify.sanitize(
-          email
-        );
-
-      const cleanPhone =
-        DOMPurify.sanitize(
-          phone
-        );
-
-      const cleanCompany =
-        DOMPurify.sanitize(
-          company
-        );
-
-      const cleanPosition =
-        DOMPurify.sanitize(
-          position
-        );
-
-      const cleanNotes =
-        DOMPurify.sanitize(
-          notes
-        );
-
       const response =
         await fetch(
           "/api/crm/create",
@@ -181,25 +148,13 @@ export default function WorkspaceCRM({
             },
 
             body: JSON.stringify({
-              companyId,
-
-              name:
-                cleanName,
-
-              email:
-                cleanEmail,
-
-              phone:
-                cleanPhone,
-
-              company:
-                cleanCompany,
-
-              position:
-                cleanPosition,
-
-              notes:
-                cleanNotes,
+              name,
+              email,
+              phone,
+              company,
+              position,
+              notes,
+               
             }),
           }
         );
@@ -240,6 +195,30 @@ export default function WorkspaceCRM({
       setCreating(false);
     }
   }
+  function needsFollowUp(
+  lastContactedAt?: string
+) {
+  if (!lastContactedAt) {
+    return true;
+  }
+
+  const days =
+    (
+      Date.now() -
+      new Date(
+        lastContactedAt
+      ).getTime()
+    ) /
+    (1000 * 60 * 60 * 24);
+
+  return days > 30;
+}
+const followUpContacts =
+  contacts.filter((contact) =>
+    needsFollowUp(
+      contact.last_contacted_at
+    )
+  );
 
   return (
     <section
@@ -271,7 +250,7 @@ export default function WorkspaceCRM({
               text-violet-300
             "
           >
-            Customer Intelligence
+            Relationship Operations
           </p>
 
           <h2
@@ -284,7 +263,7 @@ export default function WorkspaceCRM({
               tracking-tight
             "
           >
-            CRM Contacts
+            Relationship Intelligence
           </h2>
 
           <p
@@ -297,9 +276,9 @@ export default function WorkspaceCRM({
               text-zinc-500
             "
           >
-            Manage customer
-            relationships and
-            operational CRM workflows.
+            Manage relationships,
+customers and business
+engagement across your workspace.
           </p>
         </div>
 
@@ -334,10 +313,89 @@ export default function WorkspaceCRM({
           />
 
           <span>
-            {contacts.length} Contacts
+            {contacts.length} Relationship
           </span>
         </div>
       </div>
+      {/* METRICS */}
+
+<div
+  className="
+    grid
+    gap-4
+
+    md:grid-cols-4
+  "
+>
+  <OrbitCard className="p-4">
+    <p className="text-zinc-500">
+      Relationships
+    </p>
+
+    <h3 className="mt-3 text-3xl font-semibold">
+      {contacts.length}
+    </h3>
+  </OrbitCard>
+
+  <OrbitCard className="p-4">
+    <p className="text-zinc-500">
+      Qualified
+    </p>
+
+    <h3 className="mt-3 text-3xl font-semibold">
+      {
+        contacts.filter(
+          (c) =>
+            c.status ===
+            "qualified"
+        ).length
+      }
+    </h3>
+  </OrbitCard>
+
+  <OrbitCard className="p-4">
+    <p className="text-zinc-500">
+      Customers
+    </p>
+
+    <h3 className="mt-3 text-3xl font-semibold">
+      {
+        contacts.filter(
+          (c) =>
+            c.status ===
+            "customer"
+        ).length
+      }
+    </h3>
+  </OrbitCard>
+
+  <OrbitCard className="p-4">
+    <p className="text-zinc-500">
+      Inactive
+    </p>
+
+    <h3 className="mt-3 text-3xl font-semibold">
+      {
+        contacts.filter(
+          (c) =>
+            c.status ===
+            "inactive"
+        ).length
+      }
+    </h3>
+   
+  </OrbitCard>
+  <OrbitCard className="p-4">
+  <p className="text-zinc-500">
+    Needs Follow-Up
+  </p>
+
+  <h3 className="mt-3 text-3xl font-semibold">
+    {followUpContacts.length}
+  </h3>
+</OrbitCard>
+</div>
+
 
       {/* CREATE */}
 
@@ -363,7 +421,7 @@ export default function WorkspaceCRM({
             <OrbitInput
               type="text"
               placeholder="
-                Full name
+                Relationship Name
               "
               value={name}
               onChange={(e) =>
@@ -402,7 +460,7 @@ export default function WorkspaceCRM({
             <OrbitInput
               type="text"
               placeholder="
-                Company
+                Organization
               "
               value={company}
               onChange={(e) =>
@@ -431,7 +489,7 @@ export default function WorkspaceCRM({
 
           <OrbitTextarea
             placeholder="
-              CRM notes...
+              Relationship notes...
             "
             value={notes}
             onChange={(e) =>
@@ -479,8 +537,8 @@ export default function WorkspaceCRM({
             <Plus size={16} />
 
             {creating
-              ? "Creating..."
-              : "Create Contact"}
+              ? "Creating Relationship..."
+              : "Add Relationship"}
           </button>
         </div>
       </OrbitCard>
@@ -490,12 +548,12 @@ export default function WorkspaceCRM({
       {contacts.length === 0 && (
         <OrbitEmptyState
           title="
-            No CRM contacts
+            No Relationships 
           "
           description="
-            Orbit AI has not detected
-            any active customer
-            relationships yet.
+            Orbit Intelligence has not
+identified any active business
+relationships yet.
           "
           icon={Users}
         />
@@ -576,6 +634,55 @@ export default function WorkspaceCRM({
                         "
                       >
                         {contact.position}
+                        <div
+  className={`
+    mt-3
+    inline-flex
+    items-center
+
+    rounded-full
+
+    border
+
+    px-3
+    py-1
+
+    text-[10px]
+    uppercase
+
+    tracking-[0.18em]
+
+    ${
+      contact.status === "customer"
+        ? `
+          border-emerald-500/20
+          bg-emerald-500/10
+          text-emerald-300
+        `
+        : contact.status ===
+          "qualified"
+        ? `
+          border-cyan-500/20
+          bg-cyan-500/10
+          text-cyan-300
+        `
+        : contact.status ===
+          "inactive"
+        ? `
+          border-zinc-500/20
+          bg-zinc-500/10
+          text-zinc-300
+        `
+        : `
+          border-violet-500/20
+          bg-violet-500/10
+          text-violet-300
+        `
+    }
+  `}
+>
+  {contact.status}
+</div>
                       </p>
                     </div>
 
@@ -661,6 +768,24 @@ export default function WorkspaceCRM({
                       "
                     >
                       {contact.notes}
+                      {contact.last_contacted_at && (
+  <div
+    className="
+      mt-4
+
+      text-xs
+
+      text-zinc-500
+    "
+  >
+    Last Contact:
+    {" "}
+    {getRelativeTime(
+      contact.last_contacted_at
+    )}
+  </div>
+)}
+
                     </p>
                   )}
                 </OrbitCard>

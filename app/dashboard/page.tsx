@@ -20,15 +20,12 @@ from "@/components/dashboard/DashboardStats";
 import DashboardActivity
 from "@/components/dashboard/DashboardActivity";
 import DashboardQuickActions from "@/components/dashboard/DashboardQuickActions";
-import DashboardObservatory
-from "@/components/dashboard/DashboardObservatory";
 import { runWorkspaceWatcher } from "@/lib/autonomy/runworkspacewatcher";
-import DashboardAIThinking
-from "@/components/dashboard/DashboardAIThinking";
-import DashboardMemory from "@/components/dashboard/DashboardMemory";
+import OrbitIntelligence from "@/components/dashboard/OrbitIntelligence";
+import DashboardMemory from "@/components/dashboard/WorkspaceMemory";
 import { getWorkspaceStats } from "@/server/actions/dashboard/getWorkspaceStats";
-import DashboardAIActions
-from "@/components/dashboard/DashboardAIActions";
+
+import DashboardWorkspaceStrip from "@/components/dashboard/DashboardWorkspaceStrip";
 
 
 type ActivityItem = {
@@ -49,6 +46,9 @@ export default function DashboardPage() {
 
     setAssistantOpen,
   ] = useState(false);
+  
+  const [profile, setProfile] =
+  useState<any>(null);
 
   const [loading, setLoading] =
     useState(true);
@@ -61,7 +61,11 @@ export default function DashboardPage() {
     setActivityFeed,
   ] = useState<
     ActivityItem[]
-  >([]);
+    >([]);
+const displayName =
+  profile?.full_name ||
+  profile?.email?.split("@")[0] ||
+  "Operator";
 
   // LOAD DASHBOARD
 
@@ -69,6 +73,28 @@ export default function DashboardPage() {
     try {
       setLoading(true);
       await runWorkspaceWatcher();
+      const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (user) {
+  const {
+    data: profileData,
+  } = await supabase
+    .from("profiles")
+    .select(
+      "full_name,email"
+    )
+    .eq(
+      "id",
+      user.id
+    )
+    .single();
+
+  setProfile(
+    profileData
+  );
+}
 
       // TASKS
 
@@ -254,32 +280,32 @@ export default function DashboardPage() {
   };
 }, []);
 
+
   return (
     <div className="space-y-8">
-      <DashboardHero
-        onOpenAssistant={() =>
-          setAssistantOpen(
-            true
-          )
-        }
-      />
-      <DashboardAIThinking />
-      <DashboardAIActions />
+     <DashboardHero
+  
+  displayName={displayName}
+  onOpenAssistant={() =>
+    setAssistantOpen(true)
+  }
+/>
+
+      <DashboardWorkspaceStrip />
       <DashboardStats
         loading={loading}
         stats={stats}
       />
+      
+      <OrbitIntelligence />
       <DashboardQuickActions />
-      <DashboardObservatory />
       <DashboardMemory />
-
       <DashboardActivity
         loading={loading}
         activity={
           activityFeed
         }
       />
-
       <OrbitAssistant
         open={assistantOpen}
         onClose={() =>

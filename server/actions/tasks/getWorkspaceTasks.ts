@@ -24,7 +24,17 @@ const supabase =
         .from(
           "workspace_tasks"
         )
-        .select("*")
+        .select(`
+  id,
+  title,
+  description,
+  status,
+  priority,
+  assigned_to,
+  due_date,
+  created_at,
+  updated_at
+`)
         .eq(
           "workspace_id",
           workspace.id

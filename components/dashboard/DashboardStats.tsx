@@ -3,7 +3,6 @@
 import {
   Activity,
   CheckSquare,
-  FileText,
   Users,
 } from "lucide-react";
 
@@ -20,12 +19,9 @@ type DashboardStatsProps = {
   loading: boolean;
 
   stats: {
-    tasks: number;
-
+     tasks: number;
+    completedTasks: number;
     contacts: number;
-
-    notes: number;
-
     activity: number;
   };
 };
@@ -56,36 +52,37 @@ export default function DashboardStats({
         ) : (
           <>
             <OrbitStatCard
-              title="Tasks"
-              value={String(
-                stats.tasks
-              )}
-              icon={CheckSquare}
-            />
+  title="Open Tasks"
+  value={String(
+    stats.tasks -
+    stats.completedTasks
+  )}
+  icon={CheckSquare}
+/>
 
-            <OrbitStatCard
-              title="Contacts"
-              value={String(
-                stats.contacts
-              )}
-              icon={Users}
-            />
+<OrbitStatCard
+  title="Completed"
+  value={String(
+    stats.completedTasks
+  )}
+  icon={CheckSquare}
+/>
 
-            <OrbitStatCard
-              title="Notes"
-              value={String(
-                stats.notes
-              )}
-              icon={FileText}
-            />
+<OrbitStatCard
+  title="Contacts"
+  value={String(
+    stats.contacts
+  )}
+  icon={Users}
+/>
 
-            <OrbitStatCard
-              title="Activity"
-              value={String(
-                stats.activity
-              )}
-              icon={Activity}
-            />
+<OrbitStatCard
+  title="Activity"
+  value={String(
+    stats.activity
+  )}
+  icon={Activity}
+/>
           </>
         )}
       </div>
