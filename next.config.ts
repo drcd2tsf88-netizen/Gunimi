@@ -4,6 +4,12 @@ from "next";
 import { withSentryConfig }
 from "@sentry/nextjs";
 
+import createNextIntlPlugin
+from "next-intl/plugin";
+
+const withNextIntl =
+  createNextIntlPlugin();
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -80,7 +86,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  silent: true,
-  widenClientFileUpload: true,
-});
+export default withSentryConfig(
+  withNextIntl(nextConfig),
+  {
+    silent: true,
+    widenClientFileUpload: true,
+  }
+);

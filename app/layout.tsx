@@ -6,6 +6,12 @@ from "next/font/google";
 import { Toaster }
 from "react-hot-toast";
 
+import { NextIntlClientProvider }
+from "next-intl";
+
+import messages
+from "@/locales/en.json";
+
 import {
   OrbitRuntimeProvider,
 } from "@/core/runtime/OrbitRuntimeProvider";
@@ -35,6 +41,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-black text-white`}
       >
+        <NextIntlClientProvider locale="en" messages={messages}>
         <OrbitRuntimeProvider>
           <Toaster
             position="top-right"
@@ -85,6 +92,7 @@ export default function RootLayout({
 
           {children}
         </OrbitRuntimeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
