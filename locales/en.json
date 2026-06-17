@@ -239,7 +239,9 @@
     "automation3Title": "Won Deal Workflow",
     "automation3Description": "Create onboarding tasks when a customer is moved to won stage.",
     "automation4Title": "Task Reminder",
-    "automation4Description": "Notify team members about overdue tasks and deadlines."
+    "automation4Description": "Notify team members about overdue tasks and deadlines.",
+    "previewBannerTitle": "Alpha Preview",
+    "previewBannerDescription": "Automations are not yet active. This module is coming soon."
   },
 
   "common": {
@@ -284,7 +286,10 @@
     "suggestion5": "Optimize task management",
     "suggestion6": "Create AI business summary",
     "executeSuggestion": "Execute intelligent workspace analysis.",
-    "actionsComingSoon": "AI actions updating soon"
+    "actionsComingSoon": "AI actions updating soon",
+    "alphaPreview": "Alpha Preview",
+    "previewBannerTitle": "Alpha Preview",
+    "previewBannerDescription": "AI Command Center is not yet functional. Full Orbit AI integration is coming soon."
   },
 
   "settings": {
@@ -315,7 +320,10 @@
     "aiActivityAlertsDescription": "Receive AI-generated productivity alerts.",
     "crmUpdates": "CRM Updates",
     "crmUpdatesDescription": "Customer pipeline notifications.",
-    "silent": "Silent"
+    "silent": "Silent",
+    "comingSoon": "Coming Soon",
+    "previewBannerTitle": "Alpha Preview",
+    "previewBannerDescription": "Settings configuration is not yet active. Profile editing, notifications and AI preferences will be available soon."
   },
 
   "activity": {
@@ -387,6 +395,8 @@
     "plan2Description": "Orbit AI identified elevated engagement potential inside the CRM pipeline.",
     "plan2Action1": "Generate follow-up workflows",
     "plan2Action2": "Prioritize high-conversion leads",
-    "plan2Action3": "Prepare AI outreach summary"
+    "plan2Action3": "Prepare AI outreach summary",
+    "previewBannerTitle": "Preview Data",
+    "previewBannerDescription": "These metrics display example data. Real analytics will reflect your actual workspace activity once integrated."
   }
 }

@@ -239,7 +239,9 @@
     "automation3Title": "Workflow pro vyhrané obchody",
     "automation3Description": "Vytvořit onboardingové úkoly při přesunutí zákazníka do fáze vyhráno.",
     "automation4Title": "Připomínka úkolu",
-    "automation4Description": "Notifikovat členy týmu o opožděných úkolech a termínech."
+    "automation4Description": "Notifikovat členy týmu o opožděných úkolech a termínech.",
+    "previewBannerTitle": "Alpha Preview",
+    "previewBannerDescription": "Automations are not yet active. This module is coming soon."
   },
 
   "common": {
@@ -284,7 +286,10 @@
     "suggestion5": "Optimalizovat správu úkolů",
     "suggestion6": "Vytvořit AI obchodní souhrn",
     "executeSuggestion": "Provést inteligentní analýzu pracovního prostoru.",
-    "actionsComingSoon": "AI akce budou brzy aktualizovány"
+    "actionsComingSoon": "AI akce budou brzy aktualizovány",
+    "alphaPreview": "Alpha Preview",
+    "previewBannerTitle": "Alpha Preview",
+    "previewBannerDescription": "AI Command Center is not yet functional. Full Orbit AI integration is coming soon."
   },
 
   "settings": {
@@ -315,7 +320,10 @@
     "aiActivityAlertsDescription": "Dostávejte AI generovaná upozornění na produktivitu.",
     "crmUpdates": "CRM aktualizace",
     "crmUpdatesDescription": "Oznámení zákaznického pipeline.",
-    "silent": "Tiché"
+    "silent": "Tiché",
+    "comingSoon": "Coming Soon",
+    "previewBannerTitle": "Alpha Preview",
+    "previewBannerDescription": "Settings configuration is not yet active. Profile editing, notifications and AI preferences will be available soon."
   },
 
   "activity": {
@@ -387,6 +395,8 @@
     "plan2Description": "Orbit AI identifikovalo zvýšený potenciál angažovanosti v CRM pipeline.",
     "plan2Action1": "Generovat navazující workflow",
     "plan2Action2": "Upřednostnit vysoce konvertující leady",
-    "plan2Action3": "Připravit AI souhrn oslovení"
+    "plan2Action3": "Připravit AI souhrn oslovení",
+    "previewBannerTitle": "Preview Data",
+    "previewBannerDescription": "These metrics display example data. Real analytics will reflect your actual workspace activity once integrated."
   }
 }

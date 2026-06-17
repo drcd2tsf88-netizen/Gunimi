@@ -16,6 +16,8 @@ ALTER TABLE IF EXISTS workspace_invites     ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS workspace_activity    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS workspace_notes       ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS workspace_contacts    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS workspace_companies   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS workspace_deals       ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS workspace_tasks       ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS tasks                 ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS audit_logs            ENABLE ROW LEVEL SECURITY;
@@ -95,9 +97,17 @@ CREATE POLICY "members_insert_own"
 -- STEP 6 — workspace_invites
 -- ────────────────────────────────────────────────────────────
 
-CREATE POLICY "invites_select_authenticated"
+-- Restrict invite reads to members of that workspace.
+-- Invite acceptance API uses supabaseAdmin (bypasses RLS), so this is safe.
+CREATE POLICY "invites_select_member"
   ON workspace_invites FOR SELECT TO authenticated
-  USING (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_invites.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
 
 CREATE POLICY "invites_insert_admin"
   ON workspace_invites FOR INSERT TO authenticated
@@ -121,6 +131,7 @@ CREATE POLICY "invites_update_email_match"
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 7 — workspace_activity
+-- FIX: was joining on company_id (wrong), now uses workspace_id (confirmed in server actions)
 -- ────────────────────────────────────────────────────────────
 
 CREATE POLICY "activity_select_member"
@@ -128,7 +139,7 @@ CREATE POLICY "activity_select_member"
   USING (
     EXISTS (
       SELECT 1 FROM workspace_members wm
-      WHERE wm.workspace_id::text = workspace_activity.company_id::text
+      WHERE wm.workspace_id::text = workspace_activity.workspace_id::text
         AND wm.user_id::text = auth.uid()::text
     )
   );
@@ -136,14 +147,18 @@ CREATE POLICY "activity_select_member"
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 8 — workspace_notes
+-- workspace_notes uses company_id (not workspace_id) — join through workspace_companies
+-- FIX: indirect join via workspace_companies to get workspace isolation
 -- ────────────────────────────────────────────────────────────
 
 CREATE POLICY "notes_select_member"
   ON workspace_notes FOR SELECT TO authenticated
   USING (
     EXISTS (
-      SELECT 1 FROM workspace_members wm
-      WHERE wm.workspace_id::text = workspace_notes.company_id::text
+      SELECT 1
+      FROM workspace_companies wc
+      JOIN workspace_members wm ON wm.workspace_id::text = wc.workspace_id::text
+      WHERE wc.id::text = workspace_notes.company_id::text
         AND wm.user_id::text = auth.uid()::text
     )
   );
@@ -151,6 +166,7 @@ CREATE POLICY "notes_select_member"
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 9 — workspace_contacts (CRM)
+-- FIX: was joining on company_id (wrong), now uses workspace_id (confirmed in server actions)
 -- ────────────────────────────────────────────────────────────
 
 CREATE POLICY "contacts_select_member"
@@ -158,14 +174,106 @@ CREATE POLICY "contacts_select_member"
   USING (
     EXISTS (
       SELECT 1 FROM workspace_members wm
-      WHERE wm.workspace_id::text = workspace_contacts.company_id::text
+      WHERE wm.workspace_id::text = workspace_contacts.workspace_id::text
         AND wm.user_id::text = auth.uid()::text
     )
   );
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 10 — workspace_tasks
+-- STEP 10 — workspace_companies
+-- NEW: RLS was enabled but no SELECT policy existed — all client reads returned empty
+-- ────────────────────────────────────────────────────────────
+
+CREATE POLICY "companies_select_member"
+  ON workspace_companies FOR SELECT TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_companies.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "companies_insert_member"
+  ON workspace_companies FOR INSERT TO authenticated
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_companies.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "companies_update_member"
+  ON workspace_companies FOR UPDATE TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_companies.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "companies_delete_member"
+  ON workspace_companies FOR DELETE TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_companies.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+
+-- ────────────────────────────────────────────────────────────
+-- STEP 11 — workspace_deals
+-- NEW: RLS was enabled but no SELECT policy existed — all client reads returned empty
+-- ────────────────────────────────────────────────────────────
+
+CREATE POLICY "deals_select_member"
+  ON workspace_deals FOR SELECT TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_deals.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "deals_insert_member"
+  ON workspace_deals FOR INSERT TO authenticated
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_deals.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "deals_update_member"
+  ON workspace_deals FOR UPDATE TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_deals.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "deals_delete_member"
+  ON workspace_deals FOR DELETE TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_deals.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+
+-- ────────────────────────────────────────────────────────────
+-- STEP 12 — workspace_tasks
 -- ────────────────────────────────────────────────────────────
 
 CREATE POLICY "workspace_tasks_select_member"
@@ -180,7 +288,9 @@ CREATE POLICY "workspace_tasks_select_member"
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 11 — tasks
+-- STEP 13 — tasks (legacy table — app uses workspace_tasks instead)
+-- NOTE: schema uncertain. If tasks.workspace_id does not exist this policy
+-- will fail to create — safe to skip if table is not actively used.
 -- ────────────────────────────────────────────────────────────
 
 CREATE POLICY "tasks_select_member"
@@ -188,20 +298,20 @@ CREATE POLICY "tasks_select_member"
   USING (
     EXISTS (
       SELECT 1 FROM workspace_members wm
-      WHERE wm.workspace_id::text = tasks.company_id::text
+      WHERE wm.workspace_id::text = tasks.workspace_id::text
         AND wm.user_id::text = auth.uid()::text
     )
   );
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 12 — audit_logs (service role only, no client policies)
+-- STEP 14 — audit_logs (service role only, no client policies)
 -- ────────────────────────────────────────────────────────────
 -- intentionally empty
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 13 — Make guoth123@gmail.com a platform admin
+-- STEP 15 — Make guoth123@gmail.com a platform admin
 -- ────────────────────────────────────────────────────────────
 
 UPDATE profiles

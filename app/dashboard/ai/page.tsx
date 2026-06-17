@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 
 import toast from "react-hot-toast";
 
+import { AlertTriangle } from "lucide-react";
+
 import OrbitHeading
 from "@/components/ui/OrbitHeading";
 
@@ -43,6 +45,15 @@ export default function AIPage() {
         />
 
       </OrbitSection>
+
+      {/* Alpha Preview Banner */}
+      <div className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 py-4">
+        <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-400" />
+        <p className="text-sm text-amber-300/80">
+          <span className="font-semibold text-amber-300">{t("previewBannerTitle")} — </span>
+          {t("previewBannerDescription")}
+        </p>
+      </div>
 
       {/* AI Terminal */}
       <OrbitSection>
@@ -109,20 +120,20 @@ export default function AIPage() {
                 rounded-full
 
                 border
-                border-violet-500/20
+                border-amber-500/30
 
-                bg-violet-500/10
+                bg-amber-500/10
 
                 px-4
                 py-2
 
                 text-xs
-                text-violet-300
+                text-amber-300
 
               "
             >
 
-              {t("orbitAiOnline")}
+              {t("alphaPreview")}
 
             </div>
 

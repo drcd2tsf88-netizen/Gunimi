@@ -6,6 +6,8 @@ import {
   motion,
 } from "framer-motion";
 
+import { AlertTriangle } from "lucide-react";
+
 import OrbitHeading
 from "@/components/ui/OrbitHeading";
 
@@ -68,6 +70,15 @@ export default function AnalyticsPage() {
   return (
 
     <div className="space-y-10">
+
+      {/* Preview Data Banner */}
+      <div className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 py-4">
+        <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-400" />
+        <p className="text-sm text-amber-300/80">
+          <span className="font-semibold text-amber-300">{t("previewBannerTitle")} — </span>
+          {t("previewBannerDescription")}
+        </p>
+      </div>
 
       {/* Hero */}
       <OrbitSection>

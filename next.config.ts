@@ -1,8 +1,10 @@
 import type { NextConfig }
 from "next";
 
-const nextConfig: NextConfig =
-{
+import { withSentryConfig }
+from "@sentry/nextjs";
+
+const nextConfig: NextConfig = {
   async headers() {
     return [
       {
@@ -10,40 +12,28 @@ const nextConfig: NextConfig =
 
         headers: [
           {
-            key:
-              "X-Frame-Options",
-
+            key: "X-Frame-Options",
             value: "DENY",
           },
 
           {
-            key:
-              "X-Content-Type-Options",
-
-            value:
-              "nosniff",
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
 
           {
-            key:
-              "Referrer-Policy",
-
-            value:
-              "strict-origin-when-cross-origin",
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
 
           {
-            key:
-              "Permissions-Policy",
-
+            key: "Permissions-Policy",
             value:
               "camera=(), microphone=(), geolocation=()",
           },
 
           {
-            key:
-              "Content-Security-Policy",
-
+            key: "Content-Security-Policy",
             value: `
               default-src 'self';
 
@@ -71,6 +61,7 @@ const nextConfig: NextConfig =
                 https://urrpqkqwwgjpfccuodmo.supabase.co
                 wss://urrpqkqwwgjpfccuodmo.supabase.co
                 https://*.upstash.io
+                https://*.sentry.io
                 ws://localhost:3000
                 ws://127.0.0.1:3000;
 
@@ -80,10 +71,7 @@ const nextConfig: NextConfig =
 
               form-action 'self';
             `
-              .replace(
-                /\s{2,}/g,
-                " "
-              )
+              .replace(/\s{2,}/g, " ")
               .trim(),
           },
         ],
@@ -92,4 +80,7 @@ const nextConfig: NextConfig =
   },
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  silent: true,
+  widenClientFileUpload: true,
+});

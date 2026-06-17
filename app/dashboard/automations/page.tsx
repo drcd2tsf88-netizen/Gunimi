@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 
+import { AlertTriangle } from "lucide-react";
+
 export default function AutomationsPage() {
   const t = useTranslations("automations");
 
@@ -30,6 +32,15 @@ export default function AutomationsPage() {
 
   return (
     <main className="text-white">
+
+      {/* Alpha Preview Banner */}
+      <div className="mb-8 flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/5 px-5 py-4">
+        <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-400" />
+        <p className="text-sm text-amber-300/80">
+          <span className="font-semibold text-amber-300">{t("previewBannerTitle")} — </span>
+          {t("previewBannerDescription")}
+        </p>
+      </div>
 
       {/* Header */}
       <div>
