@@ -21,6 +21,7 @@ import {
   Settings,
   Sparkles,
   X,
+  MessageSquare,
 } from "lucide-react";
 
 const items = [
@@ -444,9 +445,48 @@ export default function OrbitSidebar({
             border-t
             border-white/5
 
+            space-y-3
             p-4
           "
         >
+          {/* FEEDBACK */}
+
+          <a
+            href="mailto:feedback@orbitdesk.online"
+            className="
+              flex
+              items-center
+              gap-2.5
+
+              rounded-xl
+
+              border
+              border-white/[0.06]
+
+              bg-white/[0.02]
+
+              px-3
+              py-2.5
+
+              text-xs
+              text-zinc-500
+
+              transition
+
+              hover:border-white/10
+              hover:bg-white/[0.05]
+              hover:text-zinc-300
+            "
+          >
+            <MessageSquare
+              size={13}
+              className="shrink-0"
+            />
+            <span>Send Feedback</span>
+          </a>
+
+          {/* ORBIT AI ACTIVE */}
+
           <div
             className="
               rounded-2xl

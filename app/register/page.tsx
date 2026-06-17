@@ -712,10 +712,21 @@ export default function RegisterPage() {
               text-zinc-600
             "
           >
-            By creating an account you
-            agree to OrbitDesk Terms,
-            Privacy Policy and secure
-            workspace authentication.
+            By creating an account you agree to our{" "}
+            <Link
+              href="/terms"
+              className="text-zinc-400 underline underline-offset-2 transition hover:text-white"
+            >
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy"
+              className="text-zinc-400 underline underline-offset-2 transition hover:text-white"
+            >
+              Privacy Policy
+            </Link>
+            .
           </p>
         </div>
       </motion.div>
