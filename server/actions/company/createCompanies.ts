@@ -120,7 +120,9 @@ export async function createCompany({
       return null;
     }
 
-    await supabaseAdmin
+    const {
+      error: activityError,
+    } = await supabaseAdmin
       .from(
         "workspace_activity"
       )
@@ -143,6 +145,13 @@ export async function createCompany({
         description:
           `${name} added to workspace`,
       });
+
+    if (activityError) {
+      console.error(
+        "company activity insert failed:",
+        activityError
+      );
+    }
 
     revalidatePath("/dashboard/companies");
 

@@ -24,6 +24,7 @@ import { runWorkspaceWatcher } from "@/lib/autonomy/runworkspacewatcher";
 import OrbitIntelligence from "@/components/dashboard/OrbitIntelligence";
 import DashboardMemory from "@/components/dashboard/WorkspaceMemory";
 import { getWorkspaceStats } from "@/server/actions/dashboard/getWorkspaceStats";
+import { getWorkspaceActivity } from "@/server/actions/activity/getWorkspaceActivity";
 
 type UserProfile = {
   full_name?: string;
@@ -138,20 +139,8 @@ if (user) {
 
       // ACTIVITY
 
-      const {
-        data: activity,
-      } = await supabase
-        .from(
-          "workspace_activity"
-        )
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending: false,
-          }
-        )
-        .limit(8);
+      const activity =
+        await getWorkspaceActivity(8);
 
       setStats({
         tasks:
@@ -165,8 +154,7 @@ if (user) {
           notes?.length ?? 0,
 
         activity:
-          activity?.length ??
-          0,
+          activity.length,
 
         completedTasks:
           tasks?.filter(
@@ -178,9 +166,7 @@ if (user) {
           ).length ?? 0,
       });
 
-      setActivityFeed(
-        activity ?? []
-      );
+      setActivityFeed(activity);
     } catch (error) {
       console.error(error);
     } finally {
@@ -205,32 +191,21 @@ if (user) {
 
     // ACTIVITY
 
-    const {
-      data: activity,
-    } = await supabase
-      .from(
-        "workspace_activity"
-      )
-      .select("*")
-      .order(
-        "created_at",
-        {
-          ascending: false,
-        }
-      )
-      .limit(8);
+    const activity =
+      await getWorkspaceActivity(8);
 
     setStats(
       (prev: any) => ({
         ...prev,
 
         ...statsData,
+
+        activity:
+          activity.length,
       })
     );
 
-    setActivityFeed(
-      activity ?? []
-    );
+    setActivityFeed(activity);
   }
 
   // INITIAL

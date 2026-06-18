@@ -1,12 +1,12 @@
 "use server";
 
-import { createClient }
-from "@/lib/supabase/server";
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
-export async function getWorkspaceActivity() {
+export async function getWorkspaceActivity(limit = 6) {
   try {
     const workspace =
       await getCurrentWorkspace();
@@ -14,31 +14,30 @@ export async function getWorkspaceActivity() {
     if (!workspace) {
       return [];
     }
-const supabase =
-      await createClient();
+
     const {
       data,
       error,
-    } =
-      await supabase
-        .from(
-          "workspace_activity"
-        )
-        .select("*")
-        .eq(
-          "workspace_id",
-          workspace.id
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false,
-          }
-        )
-        .limit(6);
+    } = await supabaseAdmin
+      .from(
+        "workspace_activity"
+      )
+      .select("*")
+      .eq(
+        "workspace_id",
+        workspace.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false,
+        }
+      )
+      .limit(limit);
 
     if (error) {
       console.error(
+        "getWorkspaceActivity error:",
         error
       );
 
@@ -48,6 +47,7 @@ const supabase =
     return data || [];
   } catch (error) {
     console.error(
+      "getWorkspaceActivity failed:",
       error
     );
 

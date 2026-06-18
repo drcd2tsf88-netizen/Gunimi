@@ -171,7 +171,9 @@ probability =
       return null;
     }
 
-    await supabaseAdmin
+    const {
+      error: activityError,
+    } = await supabaseAdmin
       .from(
         "workspace_activity"
       )
@@ -205,6 +207,13 @@ probability =
             "lead",
         },
       });
+
+    if (activityError) {
+      console.error(
+        "deal activity insert failed:",
+        activityError
+      );
+    }
 
     if (contactId) {
       await supabase

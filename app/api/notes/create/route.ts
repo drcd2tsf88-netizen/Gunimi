@@ -101,7 +101,9 @@ export async function POST(
       );
     }
 
-    await supabaseAdmin
+    const {
+      error: activityError,
+    } = await supabaseAdmin
       .from("workspace_activity")
       .insert({
         workspace_id:
@@ -122,6 +124,13 @@ export async function POST(
         description:
           `Created note "${cleanTitle}"`,
       });
+
+    if (activityError) {
+      console.error(
+        "note activity insert failed:",
+        activityError
+      );
+    }
 
     return successResponse();
 

@@ -25,6 +25,9 @@ from "@/components/ui/OrbitActivityFeed";
 import { supabase }
 from "@/lib/supabase";
 
+import { getWorkspaceActivity }
+from "@/server/actions/activity/getWorkspaceActivity";
+
 type ActivityItem = {
   id: string;
 
@@ -86,27 +89,10 @@ export default function ActivityPage() {
     try {
       setLoading(true);
 
-      const { data, error } =
-        await supabase
-          .from(
-            "workspace_activity"
-          )
-          .select("*")
-          .order(
-            "created_at",
-            {
-              ascending: false,
-            }
-          )
-          .limit(20);
+      const data =
+        await getWorkspaceActivity(20);
 
-      if (error) {
-        console.error(error);
-
-        return;
-      }
-
-      setActivity(data ?? []);
+      setActivity(data);
     } catch (error) {
       console.error(error);
     } finally {
