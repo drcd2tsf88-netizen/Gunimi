@@ -25,9 +25,6 @@ import OrbitIntelligence from "@/components/dashboard/OrbitIntelligence";
 import DashboardMemory from "@/components/dashboard/WorkspaceMemory";
 import { getWorkspaceStats } from "@/server/actions/dashboard/getWorkspaceStats";
 
-import DashboardWorkspaceStrip from "@/components/dashboard/DashboardWorkspaceStrip";
-
-
 type UserProfile = {
   full_name?: string;
   email?: string;
@@ -304,7 +301,6 @@ if (user) {
   }
 />
 
-      <DashboardWorkspaceStrip />
       <DashboardStats
         loading={loading}
         stats={stats ?? { tasks: 0, completedTasks: 0, contacts: 0, activity: 0 }}

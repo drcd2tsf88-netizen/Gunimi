@@ -90,7 +90,7 @@ export default function OrbitTeamPresence() {
     const channel =
       supabase
         .channel(
-          "workspace-members"
+          "topbar-workspace-members"
         )
         .on(
           "postgres_changes",
