@@ -156,7 +156,8 @@ export default function CompanyContacts({
                   "
                 >
                   {contact.email && (
-                    <div
+                    <a
+                      href={`mailto:${contact.email}`}
                       className="
                         flex
                         items-center
@@ -164,15 +165,19 @@ export default function CompanyContacts({
 
                         text-sm
                         text-white/70
+
+                        transition
+                        hover:text-violet-300
                       "
                     >
                       <Mail size={14} />
                       {contact.email}
-                    </div>
+                    </a>
                   )}
 
                   {contact.phone && (
-                    <div
+                    <a
+                      href={`tel:${contact.phone}`}
                       className="
                         flex
                         items-center
@@ -180,11 +185,14 @@ export default function CompanyContacts({
 
                         text-sm
                         text-white/70
+
+                        transition
+                        hover:text-violet-300
                       "
                     >
                       <Phone size={14} />
                       {contact.phone}
-                    </div>
+                    </a>
                   )}
                 </div>
 

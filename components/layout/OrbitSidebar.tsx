@@ -16,6 +16,8 @@ import {
   LayoutDashboard,
   CheckSquare,
   Users,
+  Building2,
+  TrendingUp,
   FileText,
   Activity,
   Settings,
@@ -56,6 +58,28 @@ const items = [
 
     icon:
       Users,
+  },
+
+  {
+    label:
+      "Companies",
+
+    href:
+      "/dashboard/companies",
+
+    icon:
+      Building2,
+  },
+
+  {
+    label:
+      "Deals",
+
+    href:
+      "/dashboard/deals",
+
+    icon:
+      TrendingUp,
   },
 
   {

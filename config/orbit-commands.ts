@@ -2,8 +2,10 @@ import {
   Activity,
   BarChart3,
   Brain,
+  Building2,
   ClipboardList,
   LayoutDashboard,
+  TrendingUp,
   Users,
 } from "lucide-react";
 
@@ -60,6 +62,44 @@ export const orbitCommands = [
 
     href:
       "/dashboard/crm",
+
+    group:
+      "CRM",
+  },
+
+  {
+    id: "companies",
+
+    title:
+      "Open Companies",
+
+    description:
+      "Browse and manage organizations",
+
+    icon:
+      Building2,
+
+    href:
+      "/dashboard/companies",
+
+    group:
+      "CRM",
+  },
+
+  {
+    id: "deals",
+
+    title:
+      "Open Deals",
+
+    description:
+      "View commercial pipeline",
+
+    icon:
+      TrendingUp,
+
+    href:
+      "/dashboard/deals",
 
     group:
       "CRM",
