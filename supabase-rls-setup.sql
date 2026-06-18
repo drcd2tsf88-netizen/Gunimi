@@ -361,20 +361,14 @@ CREATE POLICY "workspace_tasks_delete_member"
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 13 — tasks (legacy table — app uses workspace_tasks instead)
--- NOTE: schema uncertain. If tasks.workspace_id does not exist this policy
--- will fail to create — safe to skip if table is not actively used.
+-- STEP 13 — tasks (legacy company-scoped table)
+-- Schema: id, company_id, title, status, created_at, user_id,
+--         assigned_to, description, priority — no workspace_id column.
+-- Only used by app/api/tasks/create via supabaseAdmin (bypasses RLS).
+-- No client-side reads exist. RLS enabled for defense-in-depth;
+-- no policies needed — service role is the only writer.
 -- ────────────────────────────────────────────────────────────
-
-CREATE POLICY "tasks_select_member"
-  ON tasks FOR SELECT TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM workspace_members wm
-      WHERE wm.workspace_id::text = tasks.workspace_id::text
-        AND wm.user_id::text = auth.uid()::text
-    )
-  );
+-- (intentionally no policies)
 
 
 -- ────────────────────────────────────────────────────────────
