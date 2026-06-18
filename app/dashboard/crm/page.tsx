@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -39,6 +40,8 @@ export default function CRMPage() {
   const [loading, setLoading] =
     useState(true);
 
+  const createFormRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
 
     loadCustomers();
@@ -61,7 +64,7 @@ export default function CRMPage() {
           .from("workspace_contacts")
           .select(`
             *,
-            companies (
+            companies:workspace_companies (
               name
             )
           `)
@@ -497,6 +500,13 @@ export default function CRMPage() {
 
     <button
 
+      onClick={() =>
+        createFormRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        })
+      }
+
       className="
 
         rounded-2xl
@@ -666,11 +676,13 @@ export default function CRMPage() {
       </OrbitCard>
 
     </OrbitSection>
-    <WorkspaceCRM
-  contacts={customers}
-  refresh={loadCustomers}
-  refreshActivity={() => {}}
-/>
+    <div ref={createFormRef}>
+      <WorkspaceCRM
+        contacts={customers}
+        refresh={loadCustomers}
+        refreshActivity={() => {}}
+      />
+    </div>
 
   </div>
   );

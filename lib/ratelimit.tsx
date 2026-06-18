@@ -25,7 +25,7 @@ export const ratelimit =
         "1 m"
       ),
 
-    analytics: true,
+    analytics: false,
 
     prefix:
       "orbitdesk",

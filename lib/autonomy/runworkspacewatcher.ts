@@ -59,7 +59,7 @@ export async function runWorkspaceWatcher() {
       )
       .select("*")
       .eq(
-        "company_id",
+        "workspace_id",
         workspace.id
       );
 
