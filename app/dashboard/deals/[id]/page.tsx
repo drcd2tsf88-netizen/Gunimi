@@ -8,18 +8,18 @@ import DealDetailView
 from "@/components/deals/detail/DealDetailView";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function DealPage({
   params,
 }: Props) {
+  const { id } = await params;
+
   const data =
-    await getDeal(
-      params.id
-    );
+    await getDeal(id);
 
   if (!data) {
     notFound();

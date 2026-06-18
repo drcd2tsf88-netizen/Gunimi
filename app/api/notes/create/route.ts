@@ -13,6 +13,8 @@ import { getUser }
 from "@/lib/server/auth";
 import { ratelimit }
 from "@/lib/ratelimit";
+import { getCurrentWorkspace }
+from "@/lib/workspace/getCurrentWorkspace";
 
 export async function POST(
   req: Request
@@ -35,15 +37,24 @@ export async function POST(
       return errorResponse("Unauthorized", 401);
     }
 
-   if (
-  !companyId ||
-  !title
-) {
+    if (
+      !companyId ||
+      !title
+    ) {
+      return errorResponse(
+        "Missing fields",
+        400
+      );
+    }
 
-  return errorResponse(
-    "Missing fields",
-    400
-  );
+    const workspace =
+      await getCurrentWorkspace();
+
+    if (!workspace) {
+      return errorResponse(
+        "Workspace not found",
+        404
+      );
     }
 
     // RATE LIMIT
@@ -93,6 +104,8 @@ export async function POST(
     await supabaseAdmin
       .from("workspace_activity")
       .insert({
+        workspace_id:
+          workspace.id,
 
         company_id:
           companyId,
@@ -103,9 +116,11 @@ export async function POST(
         type:
           "note_created",
 
-        message:
-          `Created note "${cleanTitle}"`,
+        title:
+          "Note Created",
 
+        description:
+          `Created note "${cleanTitle}"`,
       });
 
     return successResponse();

@@ -6,6 +6,9 @@ from "next/cache";
 import { createClient }
 from "@/lib/supabase/server";
 
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
+
 import { getUser }
 from "@/server/actions/auth/getUser";
 
@@ -117,7 +120,7 @@ export async function createCompany({
       return null;
     }
 
-    await supabase
+    await supabaseAdmin
       .from(
         "workspace_activity"
       )

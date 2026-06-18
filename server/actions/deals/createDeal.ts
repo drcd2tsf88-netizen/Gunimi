@@ -3,6 +3,9 @@
 import { createClient }
 from "@/lib/supabase/server";
 
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
+
 import { getUser }
 from "@/server/actions/auth/getUser";
 
@@ -168,40 +171,40 @@ probability =
       return null;
     }
 
-   await supabase
-  .from(
-    "workspace_activity"
-  )
-  .insert({
-    workspace_id:
-      workspace.id,
+    await supabaseAdmin
+      .from(
+        "workspace_activity"
+      )
+      .insert({
+        workspace_id:
+          workspace.id,
 
-    user_id:
-      user.id,
+        user_id:
+          user.id,
 
-    company_id:
-      companyId || null,
+        company_id:
+          companyId || null,
 
-    deal_id:
-      deal.id,
+        deal_id:
+          deal.id,
 
-    type:
-      "deal_created",
+        type:
+          "deal_created",
 
-    title:
-      "deal_created",
+        title:
+          "Opportunity Created",
 
-    description:
-      null,
+        description:
+          `"${title}" added to pipeline`,
 
-    metadata: {
-      deal_id:
-        deal.id,
+        metadata: {
+          deal_id:
+            deal.id,
 
-      stage:
-        "lead",
-    },
-  });
+          stage:
+            "lead",
+        },
+      });
 
     if (contactId) {
       await supabase

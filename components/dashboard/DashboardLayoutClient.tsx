@@ -65,11 +65,6 @@ export default function DashboardLayoutClient({
     },
 
     {
-      name: "Tasks",
-      href: "/dashboard/tasks",
-    },
-
-    {
       name: "Notes",
       href: "/dashboard/notes",
     },

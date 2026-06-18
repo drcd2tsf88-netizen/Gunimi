@@ -61,10 +61,12 @@ export default function DealsPipeline({
         className="
           mt-6
 
-          grid
+          flex
           gap-4
 
-          xl:grid-cols-6
+          overflow-x-auto
+
+          pb-4
         "
       >
         {STAGES.map(
@@ -79,16 +81,23 @@ export default function DealsPipeline({
               );
 
             return (
-              <DealPipelineColumn
+              <div
                 key={stage}
-                stage={stage}
-                deals={
-                  stageDeals
-                }
-                onRefresh={
-                  onRefresh
-                }
-              />
+                className="
+                  w-[280px]
+                  shrink-0
+                "
+              >
+                <DealPipelineColumn
+                  stage={stage}
+                  deals={
+                    stageDeals
+                  }
+                  onRefresh={
+                    onRefresh
+                  }
+                />
+              </div>
             );
           }
         )}

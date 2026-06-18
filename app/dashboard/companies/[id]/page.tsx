@@ -33,9 +33,9 @@ import CompanyActivity
 from "@/components/company/CompanyActivity";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function CompanyPage({
@@ -43,8 +43,8 @@ export default async function CompanyPage({
 }: Props) {
   const t = await getTranslations("companies");
 
-  const companyId =
-    params.id;
+  const { id: companyId } =
+    await params;
 
   const [
     company,
