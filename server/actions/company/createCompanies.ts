@@ -1,5 +1,8 @@
 "use server";
 
+import { revalidatePath }
+from "next/cache";
+
 import { createClient }
 from "@/lib/supabase/server";
 
@@ -137,6 +140,8 @@ export async function createCompany({
         description:
           `${name} added to workspace`,
       });
+
+    revalidatePath("/dashboard/companies");
 
     return data;
   } catch (error) {

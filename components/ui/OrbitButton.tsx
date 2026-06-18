@@ -5,8 +5,6 @@ from "react";
 
 import { cn }
 from "@/lib/utils";
-import { useTranslations }
-from "next-intl";
 
 type OrbitButtonProps =
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -26,8 +24,6 @@ export default function OrbitButton({
   disabled,
   ...props
 }: OrbitButtonProps) {
-  const t =
-    useTranslations();
   const variants: Record<
   NonNullable<
     OrbitButtonProps["variant"]
@@ -100,9 +96,6 @@ export default function OrbitButton({
   {...props}
 >
   {children}
-      <OrbitButton loading>
-  {t("common.create")}
-</OrbitButton>
     </button>
   );
 }

@@ -55,20 +55,33 @@ export default function DashboardLayoutClient({
     },
 
     {
+      name: "Companies",
+      href: "/dashboard/companies",
+    },
+
+    {
+      name: "Deals",
+      href: "/dashboard/deals",
+    },
+
+    {
       name: "Tasks",
       href: "/dashboard/tasks",
     },
 
     {
-      name: "Analytics",
-      href:
-        "/dashboard/analytics",
+      name: "Notes",
+      href: "/dashboard/notes",
     },
 
     {
       name: "Activity",
-      href:
-        "/dashboard/activity",
+      href: "/dashboard/activity",
+    },
+
+    {
+      name: "Analytics",
+      href: "/dashboard/analytics",
     },
 
     {
@@ -78,8 +91,7 @@ export default function DashboardLayoutClient({
 
     {
       name: "Settings",
-      href:
-        "/dashboard/settings",
+      href: "/dashboard/settings",
     },
   ];
 
