@@ -16,6 +16,8 @@ import { createAuditLog }
 from "@/lib/server/audit";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { ratelimit }
+from "@/lib/ratelimit";
 
 export async function POST(
   req: Request
@@ -48,6 +50,18 @@ export async function POST(
       return errorResponse(
         "Contact name required",
         400
+      );
+    }
+
+    // RATE LIMIT
+
+    const { success } =
+      await ratelimit.limit(user.id);
+
+    if (!success) {
+      return errorResponse(
+        "Rate limit exceeded",
+        429
       );
     }
 

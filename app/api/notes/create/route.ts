@@ -11,6 +11,8 @@ import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
 import { getUser }
 from "@/lib/server/auth";
+import { ratelimit }
+from "@/lib/ratelimit";
 
 export async function POST(
   req: Request
@@ -42,6 +44,18 @@ export async function POST(
     "Missing fields",
     400
   );
+    }
+
+    // RATE LIMIT
+
+    const { success } =
+      await ratelimit.limit(user.id);
+
+    if (!success) {
+      return errorResponse(
+        "Rate limit exceeded",
+        429
+      );
     }
 
     const cleanTitle =

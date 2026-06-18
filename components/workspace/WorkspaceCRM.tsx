@@ -21,9 +21,6 @@ from "react-hot-toast";
 import { supabase }
 from "@/lib/supabase";
 
-import { ratelimit }
-from "@/lib/ratelimit";
-
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
@@ -117,21 +114,6 @@ export default function WorkspaceCRM({
       if (!user) {
         toast.error(
           "Unauthorized"
-        );
-
-        return;
-      }
-
-      const {
-        success,
-      } =
-        await ratelimit.limit(
-          user.id
-        );
-
-      if (!success) {
-        toast.error(
-          "Rate limit exceeded"
         );
 
         return;
