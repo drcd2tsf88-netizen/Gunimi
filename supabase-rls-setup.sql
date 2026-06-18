@@ -131,7 +131,6 @@ CREATE POLICY "invites_update_email_match"
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 7 — workspace_activity
--- FIX: was joining on company_id (wrong), now uses workspace_id (confirmed in server actions)
 -- ────────────────────────────────────────────────────────────
 
 CREATE POLICY "activity_select_member"
@@ -144,16 +143,28 @@ CREATE POLICY "activity_select_member"
     )
   );
 
+CREATE POLICY "activity_insert_member"
+  ON workspace_activity FOR INSERT TO authenticated
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_activity.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 8 — workspace_notes
--- workspace_notes uses company_id (not workspace_id) — join through workspace_companies
--- FIX: indirect join via workspace_companies to get workspace isolation
+-- Two SELECT policies: company-scoped notes (via workspace_companies FK)
+-- and standalone workspace notes (via user_id, no company_id).
+-- Both are needed because /dashboard/notes creates notes without company_id.
 -- ────────────────────────────────────────────────────────────
 
-CREATE POLICY "notes_select_member"
+CREATE POLICY "notes_select_company_member"
   ON workspace_notes FOR SELECT TO authenticated
   USING (
+    company_id IS NOT NULL AND
     EXISTS (
       SELECT 1
       FROM workspace_companies wc
@@ -163,14 +174,46 @@ CREATE POLICY "notes_select_member"
     )
   );
 
+CREATE POLICY "notes_select_own"
+  ON workspace_notes FOR SELECT TO authenticated
+  USING (
+    company_id IS NULL AND
+    user_id::text = auth.uid()::text
+  );
+
+CREATE POLICY "notes_insert_own"
+  ON workspace_notes FOR INSERT TO authenticated
+  WITH CHECK (
+    user_id::text = auth.uid()::text
+  );
+
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 9 — workspace_contacts (CRM)
--- FIX: was joining on company_id (wrong), now uses workspace_id (confirmed in server actions)
 -- ────────────────────────────────────────────────────────────
 
 CREATE POLICY "contacts_select_member"
   ON workspace_contacts FOR SELECT TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_contacts.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "contacts_insert_member"
+  ON workspace_contacts FOR INSERT TO authenticated
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_contacts.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "contacts_update_member"
+  ON workspace_contacts FOR UPDATE TO authenticated
   USING (
     EXISTS (
       SELECT 1 FROM workspace_members wm
@@ -286,6 +329,36 @@ CREATE POLICY "workspace_tasks_select_member"
     )
   );
 
+CREATE POLICY "workspace_tasks_insert_member"
+  ON workspace_tasks FOR INSERT TO authenticated
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_tasks.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "workspace_tasks_update_member"
+  ON workspace_tasks FOR UPDATE TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_tasks.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "workspace_tasks_delete_member"
+  ON workspace_tasks FOR DELETE TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_tasks.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 13 — tasks (legacy table — app uses workspace_tasks instead)
@@ -305,13 +378,56 @@ CREATE POLICY "tasks_select_member"
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 14 — audit_logs (service role only, no client policies)
+-- STEP 14 — workspace_ai_actions / workspace_ai_state / workspace_memory
+-- These are internal system tables written by server actions using supabaseAdmin.
+-- Enable RLS but add no user-facing policies — only the service role can write.
+-- Select is allowed to workspace members so OrbitIntelligence can read them client-side
+-- if needed in future; writes happen exclusively via supabaseAdmin (bypasses RLS).
+-- ────────────────────────────────────────────────────────────
+
+ALTER TABLE IF EXISTS workspace_ai_actions  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS workspace_ai_state    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS workspace_memory      ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "ai_actions_select_member"
+  ON workspace_ai_actions FOR SELECT TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_ai_actions.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "ai_state_select_member"
+  ON workspace_ai_state FOR SELECT TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_ai_state.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "memory_select_member"
+  ON workspace_memory FOR SELECT TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_memory.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+
+-- ────────────────────────────────────────────────────────────
+-- STEP 15 — audit_logs (service role only, no client policies)
 -- ────────────────────────────────────────────────────────────
 -- intentionally empty
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 15 — Make guoth123@gmail.com a platform admin
+-- STEP 16 — Make guoth123@gmail.com a platform admin
 -- ────────────────────────────────────────────────────────────
 
 UPDATE profiles

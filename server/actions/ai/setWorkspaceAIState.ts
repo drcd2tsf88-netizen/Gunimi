@@ -1,7 +1,7 @@
 "use server";
 
-import { createClient }
-from "@/lib/supabase/server";
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
@@ -21,15 +21,13 @@ export async function setWorkspaceAIState({
     const workspace =
       await getCurrentWorkspace();
 
-    const supabase = await createClient();
-
     if (!workspace) {
       return null;
     }
 
     // CLEAR PREVIOUS STATE
 
-    await supabase
+    await supabaseAdmin
       .from(
         "workspace_ai_state"
       )
@@ -45,7 +43,7 @@ export async function setWorkspaceAIState({
       data,
       error,
     } =
-      await supabase
+      await supabaseAdmin
         .from(
           "workspace_ai_state"
         )

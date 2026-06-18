@@ -1,7 +1,7 @@
 "use server";
 
-import { createClient }
-from "@/lib/supabase/server";
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
@@ -24,10 +24,8 @@ export async function createMemory({
     if (!user) {
       return null;
     }
-const supabase =
-      await createClient();
-    const { data, error } =
-      await supabase
+const { data, error } =
+      await supabaseAdmin
         .from(
           "workspace_memory"
         )
