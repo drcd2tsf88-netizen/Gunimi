@@ -6,9 +6,6 @@ from "next/navigation";
 import {
   ChevronLeft,
   ChevronRight,
-  Calendar,
-  Building2,
-  User,
 } from "lucide-react";
 
 import { useTranslations }
@@ -20,7 +17,8 @@ from "@/components/ui/OrbitCard";
 import OrbitButton
 from "@/components/ui/OrbitButton";
 
-import { Deal } from "@/types/deal";
+import { Deal }
+from "@/types/deal";
 
 type Props = {
   deal: Deal;
@@ -45,7 +43,20 @@ export default function DealPipelineCard({
     useRouter();
 
   const t =
-    useTranslations();
+    useTranslations("deals");
+
+  const closeLabel =
+    deal.expected_close_date
+      ? new Date(
+          deal.expected_close_date
+        ).toLocaleDateString(
+          undefined,
+          {
+            month: "short",
+            day: "numeric",
+          }
+        )
+      : null;
 
   return (
     <OrbitCard
@@ -61,166 +72,66 @@ export default function DealPipelineCard({
         className="
           flex
           flex-col
-          gap-4
+          gap-3.5
         "
       >
+        {/* TITLE + COMPANY */}
+
         <div>
+          {deal.company?.name && (
+            <p
+              className="
+                mb-1
+
+                text-[10px]
+                uppercase
+
+                tracking-[0.12em]
+
+                text-white/35
+              "
+            >
+              {deal.company.name}
+            </p>
+          )}
+
           <h3
             className="
               text-sm
               font-semibold
+              leading-snug
             "
           >
             {deal.title}
           </h3>
-
-          {deal.company?.name && (
-            <div
-              className="
-                mt-2
-
-                flex
-                items-center
-                gap-2
-
-                text-xs
-                text-white/50
-              "
-            >
-              <Building2
-                size={12}
-              />
-
-              {deal.company.name}
-            </div>
-          )}
         </div>
 
-        <div
+        {/* INLINE METADATA */}
+
+        <p
           className="
-            grid
-            gap-3
+            text-xs
+            text-white/40
           "
         >
-          <div>
-            <p
-              className="
-                text-xs
-                text-white/40
-              "
-            >
-             {t("deals.value")}
-            </p>
+          €
+          {Number(
+            deal.value || 0
+          ).toLocaleString()}
 
-            <p
-              className="
-                text-sm
-                font-medium
-              "
-            >
-              €
-              {Number(
-                deal.value || 0
-              ).toLocaleString()}
-            </p>
-          </div>
+          {" · "}
 
-          <div>
-            <p
-              className="
-                text-xs
-                text-white/40
-              "
-            >
-              {t("deals.probability")}
-            </p>
+          {deal.probability}%
 
-            <p
-              className="
-                text-sm
-              "
-            >
-              {
-                deal.probability
-              }
-              %
-            </p>
-          </div>
+          {closeLabel && (
+            <>
+              {" · "}
+              {closeLabel}
+            </>
+          )}
+        </p>
 
-          {deal.expected_close_date && (
-  <div>
-    <p
-      className="
-        text-xs
-        text-white/40
-      "
-    >
-      {t(
-        "deals.expectedClose"
-      )}
-    </p>
-
-    <div
-      className="
-        mt-1
-
-        flex
-        items-center
-        gap-2
-
-        text-xs
-        text-white/50
-      "
-    >
-      <Calendar
-        size={12}
-      />
-
-      {new Date(
-        deal.expected_close_date
-      ).toLocaleDateString()}
-    </div>
-  </div>
-)}
-          
-
-          {deal.owner?.full_name && (
-  <div>
-    <p
-      className="
-        text-xs
-        text-white/40
-      "
-    >
-      {t(
-        "deals.owner"
-      )}
-    </p>
-
-    <div
-      className="
-        mt-1
-
-        flex
-        items-center
-        gap-2
-
-        text-xs
-        text-white/50
-      "
-    >
-      <User
-        size={12}
-      />
-
-      {
-        deal.owner
-          .full_name
-      }
-    </div>
-  </div>
-)}
-        </div>
+        {/* ACTIONS */}
 
         <div
           className="
@@ -231,45 +142,39 @@ export default function DealPipelineCard({
         >
           <OrbitButton
             variant="secondary"
-            disabled={
-              !canMoveBack
-            }
-            onClick={
-              onMoveBack
-            }
+            disabled={!canMoveBack}
+            onClick={onMoveBack}
+            className="
+              shrink-0
+              px-2.5
+            "
           >
-            <ChevronLeft
-              size={14}
-            />
+            <ChevronLeft size={14} />
           </OrbitButton>
 
           <OrbitButton
             className="
               flex-1
             "
-            variant="secondary"
             onClick={() =>
               router.push(
                 `/dashboard/deals/${deal.id}`
               )
             }
           >
-            {t(
-              "deals.open"
-            )}
+            {t("open")}
           </OrbitButton>
 
           <OrbitButton
-            disabled={
-              !canMoveForward
-            }
-            onClick={
-              onMoveForward
-            }
+            variant="secondary"
+            disabled={!canMoveForward}
+            onClick={onMoveForward}
+            className="
+              shrink-0
+              px-2.5
+            "
           >
-            <ChevronRight
-              size={14}
-            />
+            <ChevronRight size={14} />
           </OrbitButton>
         </div>
       </div>

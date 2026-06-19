@@ -68,12 +68,12 @@ export default function DealsMetrics({
         },
         {
           label: t("pipelineValue"),
-          value: String(pipelineValue),
+          value: `€${pipelineValue.toLocaleString()}`,
           icon: TrendingUp,
         },
         {
           label: t("wonRevenue"),
-          value: String(wonRevenue),
+          value: `€${wonRevenue.toLocaleString()}`,
           icon: Trophy,
         },
         {

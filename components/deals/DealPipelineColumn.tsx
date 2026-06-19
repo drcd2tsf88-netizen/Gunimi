@@ -10,6 +10,8 @@ import {
   Briefcase,
 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
@@ -31,6 +33,15 @@ const STAGES = [
   "won",
   "lost",
 ] as const;
+
+const STAGE_TITLE_COLOR: Record<string, string> = {
+  lead: "text-white",
+  qualified: "text-white",
+  proposal: "text-white",
+  negotiation: "text-white",
+  won: "text-emerald-400",
+  lost: "text-zinc-500",
+};
 
 import { Deal } from "@/types/deal";
 
@@ -142,10 +153,10 @@ export default function DealPipelineColumn({
         >
           <div>
             <h3
-              className="
-                text-sm
-                font-semibold
-              "
+              className={cn(
+                "text-sm font-semibold",
+                STAGE_TITLE_COLOR[stage]
+              )}
             >
               {t(stage)}
             </h3>

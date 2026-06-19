@@ -68,11 +68,7 @@ export default function DealMetrics({
       >
         <OrbitStatCard
           title={t("value")}
-          value={String(
-            Number(
-              deal.value || 0
-            )
-          )}
+          value={`€${Number(deal.value || 0).toLocaleString()}`}
           icon={TrendingUp}
         />
 
@@ -80,9 +76,7 @@ export default function DealMetrics({
           title={t(
             "probability"
           )}
-          value={String(
-            deal.probability || 0
-          )}
+          value={`${deal.probability || 0}%`}
           icon={Target}
         />
 
@@ -90,11 +84,7 @@ export default function DealMetrics({
           title={t(
             "expectedRevenue"
           )}
-          value={String(
-            Math.round(
-              expectedRevenue
-            )
-          )}
+          value={`€${Math.round(expectedRevenue).toLocaleString()}`}
           icon={Activity}
         />
 
@@ -102,9 +92,7 @@ export default function DealMetrics({
           title={t(
             "daysOpen"
           )}
-          value={String(
-            daysOpen
-          )}
+          value={String(daysOpen)}
           icon={Calendar}
         />
       </div>

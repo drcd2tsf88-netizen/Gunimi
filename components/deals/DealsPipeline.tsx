@@ -84,7 +84,7 @@ export default function DealsPipeline({
               <div
                 key={stage}
                 className="
-                  w-[280px]
+                  w-[240px]
                   shrink-0
                 "
               >
