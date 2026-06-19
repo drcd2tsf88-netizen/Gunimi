@@ -133,9 +133,6 @@ export async function createCompany({
         user_id:
           user.id,
 
-        company_id:
-          data.id,
-
         type:
           "company_created",
 

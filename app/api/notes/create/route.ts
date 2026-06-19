@@ -109,9 +109,6 @@ export async function POST(
         workspace_id:
           workspace.id,
 
-        company_id:
-          companyId,
-
         user_id:
           user.id,
 

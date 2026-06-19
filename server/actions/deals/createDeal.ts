@@ -184,12 +184,6 @@ probability =
         user_id:
           user.id,
 
-        company_id:
-          companyId || null,
-
-        deal_id:
-          deal.id,
-
         type:
           "deal_created",
 
@@ -198,14 +192,6 @@ probability =
 
         description:
           `"${title}" added to pipeline`,
-
-        metadata: {
-          deal_id:
-            deal.id,
-
-          stage:
-            "lead",
-        },
       });
 
     if (activityError) {
