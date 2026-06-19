@@ -25,6 +25,9 @@ from "next-intl";
 import { supabase }
 from "@/lib/supabase";
 
+import { getWorkspaceNotes }
+from "@/server/actions/notes/getWorkspaceNotes";
+
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
@@ -80,35 +83,16 @@ export default function NotesPage() {
 
   async function loadNotes() {
     try {
-      const {
-        data: { user },
-      } =
-        await supabase.auth.getUser();
+      const data =
+        await getWorkspaceNotes();
 
-      if (!user) return;
-
-      const { data, error } =
-        await supabase
-          .from("workspace_notes")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", {
-            ascending: false,
-          });
-
-      if (error) {
-        console.error(error);
-
-        toast.error(
-          t("failedToLoad")
-        );
-
-        return;
-      }
-
-      setNotes(data ?? []);
+      setNotes(data);
     } catch (err) {
       console.error(err);
+
+      toast.error(
+        t("failedToLoad")
+      );
     } finally {
       setLoading(false);
     }

@@ -35,6 +35,12 @@ from "@/lib/supabase";
 import { getWorkspaceMembership }
 from "@/server/actions/workspace/getWorkspaceMembership";
 
+import { getUserWorkspaces }
+from "@/server/actions/workspace/getUserWorkspaces";
+
+import { setActiveWorkspace }
+from "@/server/actions/workspace/setActiveWorkspace";
+
 type Workspace = {
   id: string;
 
@@ -69,36 +75,11 @@ export default function OrbitProfileDropdown() {
   const [user, setUser] =
     useState<any>(null);
 
-  // TEMP WORKSPACES
-  // later realtime db fetch
+  const [workspaces, setWorkspaces] =
+    useState<Workspace[]>([]);
 
-  const [workspaces] =
-    useState<Workspace[]>([
-      {
-        id: "1",
-
-        name:
-          "Orbit Labs",
-
-        slug:
-          "orbit-labs",
-      },
-
-      {
-        id: "2",
-
-        name:
-          "Neural Systems",
-
-        slug:
-          "neural-systems",
-      },
-    ]);
-
-  const [activeWorkspace, setActiveWorkspace] =
-    useState<string>(
-      "Orbit Labs"
-    );
+  const [activeWorkspaceId, setActiveWorkspaceId] =
+    useState<string>("");
 
   // LOAD DATA
 
@@ -113,20 +94,28 @@ export default function OrbitProfileDropdown() {
 
       setUser(user);
 
-      // WORKSPACE
+      // WORKSPACE MEMBERSHIP
 
       const workspace =
         await getWorkspaceMembership();
 
       if (workspace) {
-        setWorkspaceData(
-          workspace
-        );
+        setWorkspaceData(workspace);
+      }
 
-        setActiveWorkspace(
-          workspace.workspace
-            .name
+      // ALL WORKSPACES
+
+      const all =
+        await getUserWorkspaces();
+
+      setWorkspaces(all);
+
+      if (workspace) {
+        setActiveWorkspaceId(
+          workspace.workspace.id
         );
+      } else if (all.length > 0) {
+        setActiveWorkspaceId(all[0].id);
       }
     }
 
@@ -296,7 +285,9 @@ export default function OrbitProfileDropdown() {
             "
           >
             {
-              activeWorkspace
+              workspaces.find(
+                (w) => w.id === activeWorkspaceId
+              )?.name ?? workspaceData?.workspace?.name ?? ""
             }
           </p>
         </div>
@@ -521,14 +512,30 @@ export default function OrbitProfileDropdown() {
                       key={
                         workspace.id
                       }
-                      onClick={() => {
-                        setActiveWorkspace(
-                          workspace.name
-                        );
+                      onClick={async () => {
+                        const ok =
+                          await setActiveWorkspace(
+                            workspace.id
+                          );
 
-                        toast.success(
-                          `Switched to ${workspace.name}`
-                        );
+                        if (ok) {
+                          setActiveWorkspaceId(
+                            workspace.id
+                          );
+
+                          toast.success(
+                            `Switched to ${workspace.name}`
+                          );
+
+                          setOpen(false);
+
+                          window.location.href =
+                            "/dashboard";
+                        } else {
+                          toast.error(
+                            "Failed to switch workspace"
+                          );
+                        }
                       }}
                       className="
                         flex
@@ -609,8 +616,8 @@ export default function OrbitProfileDropdown() {
                         </div>
                       </div>
 
-                      {activeWorkspace ===
-                        workspace.name && (
+                      {activeWorkspaceId ===
+                        workspace.id && (
                         <Check
                           size={16}
                           className="

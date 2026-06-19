@@ -11,8 +11,8 @@ import { useTranslations } from "next-intl";
 import toast
 from "react-hot-toast";
 
-import { supabase }
-from "@/lib/supabase";
+import { getCRMContacts }
+from "@/server/actions/crm/getCRMContacts";
 
 import OrbitHeading
 from "@/components/ui/OrbitHeading";
@@ -54,38 +54,10 @@ export default function CRMPage() {
 
       setLoading(true);
 
-      const {
+      const data =
+        await getCRMContacts();
 
-        data,
-        error,
-
-      } =
-        await supabase
-          .from("workspace_contacts")
-          .select(`
-            *,
-            companies:workspace_companies (
-              name
-            )
-          `)
-          .order("created_at", {
-            ascending: false,
-          });
-
-      if (error) {
-
-        console.error(error);
-
-        toast.error(
-          error.message
-        );
-
-        return;
-      }
-
-      setCustomers(
-        data || []
-      );
+      setCustomers(data);
 
     } catch (error) {
 
