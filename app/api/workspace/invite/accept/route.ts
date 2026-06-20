@@ -5,6 +5,9 @@ import { cookies } from "next/headers";
 import { createServerClient }
 from "@supabase/ssr";
 
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
+
 export async function POST(
   request: Request
 ) {
@@ -230,29 +233,29 @@ export async function POST(
       );
     }
 
-    await supabase
-  .from("activity_logs")
-  .insert({
-    workspace_id:
-      invite.workspace_id,
+    await supabaseAdmin
+      .from("workspace_activity")
+      .insert({
+        workspace_id:
+          invite.workspace_id,
 
-    user_id:
-      user.id,
+        user_id:
+          user.id,
 
-    type:
-      "member.joined",
+        type:
+          "member_joined",
 
-    title:
-      "New member joined",
+        title:
+          "New member joined",
 
-    description:
-      `${user.email} joined the workspace`,
+        description:
+          `${user.email} joined the workspace`,
 
-    metadata: {
-      role:
-        invite.role,
-    },
-  });
+        metadata: {
+          role:
+            invite.role,
+        },
+      });
     // CONSUME INVITE
 
     await supabase

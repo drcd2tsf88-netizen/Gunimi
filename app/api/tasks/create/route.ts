@@ -16,6 +16,9 @@ from "@/lib/server/audit";
 import { getUser }
 from "@/lib/server/auth";
 
+import { getCurrentWorkspace }
+from "@/lib/workspace/getCurrentWorkspace";
+
 import { ratelimit }
 from "@/lib/ratelimit";
 
@@ -56,6 +59,17 @@ export async function POST(
       return errorResponse(
         "Rate limit exceeded",
         429
+      );
+    }
+
+    const workspace =
+      await getCurrentWorkspace();
+
+    if (!workspace) {
+
+      return errorResponse(
+        "Workspace not found",
+        404
       );
     }
 
@@ -123,6 +137,9 @@ export async function POST(
       .from("workspace_activity")
 
       .insert({
+
+        workspace_id:
+          workspace.id,
 
         company_id:
           companyId,
