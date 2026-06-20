@@ -5,8 +5,12 @@ from "@supabase/ssr";
 
 import { cookies }
 from "next/headers";
+
 import { sendWorkspaceInvite }
 from "@/lib/email/sendWorkspaceInvites";
+
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
 
 const ALLOWED_ROLES = [
   "admin",
@@ -342,18 +346,15 @@ await sendWorkspaceInvite({
   token,
 });
 
-    // TODO:
-    // CREATE ACTIVITY EVENT
-
-    console.log(
-      "invite.created",
-      {
-        workspaceId,
-        email:
-          normalizedEmail,
-        role,
-      }
-    );
+    await supabaseAdmin
+      .from("workspace_activity")
+      .insert({
+        workspace_id: workspaceId,
+        user_id: user.id,
+        type: "invite_sent",
+        title: "Invitation Sent",
+        description: `Invited ${normalizedEmail} to workspace`,
+      });
 
     return NextResponse.json({
       success: true,

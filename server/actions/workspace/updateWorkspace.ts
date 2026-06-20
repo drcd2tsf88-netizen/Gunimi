@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 type UpdateWorkspaceParams = {
   name?: string;
@@ -30,7 +31,9 @@ export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<bo
       return false;
     }
 
-    const { error } = await supabase
+    const oldName = workspace.name;
+
+    const { error } = await supabaseAdmin
       .from("workspaces")
       .update(params)
       .eq("id", workspace.id);
@@ -38,6 +41,18 @@ export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<bo
     if (error) {
       console.error(error);
       return false;
+    }
+
+    if (params.name && params.name !== oldName) {
+      await supabaseAdmin
+        .from("workspace_activity")
+        .insert({
+          workspace_id: workspace.id,
+          user_id: user.id,
+          type: "workspace_renamed",
+          title: "Workspace Renamed",
+          description: `Renamed workspace from "${oldName}" to "${params.name}"`,
+        });
     }
 
     return true;

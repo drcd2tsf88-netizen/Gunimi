@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 export async function removeMember(memberId: string): Promise<boolean> {
   try {
@@ -27,7 +28,7 @@ export async function removeMember(memberId: string): Promise<boolean> {
 
     const { data: targetMember } = await supabase
       .from("workspace_members")
-      .select("role")
+      .select("role, user_id")
       .eq("id", memberId)
       .eq("workspace_id", workspace.id)
       .maybeSingle();
@@ -36,6 +37,12 @@ export async function removeMember(memberId: string): Promise<boolean> {
 
     // admins can only remove members, not other admins
     if (currentMembership.role === "admin" && targetMember.role === "admin") return false;
+
+    const { data: targetProfile } = await supabaseAdmin
+      .from("profiles")
+      .select("email")
+      .eq("id", targetMember.user_id)
+      .maybeSingle();
 
     const { error } = await supabase
       .from("workspace_members")
@@ -47,6 +54,16 @@ export async function removeMember(memberId: string): Promise<boolean> {
       console.error(error);
       return false;
     }
+
+    await supabaseAdmin
+      .from("workspace_activity")
+      .insert({
+        workspace_id: workspace.id,
+        user_id: user.id,
+        type: "member_removed",
+        title: "Member Removed",
+        description: `Removed ${targetProfile?.email ?? "a member"} from workspace`,
+      });
 
     return true;
   } catch {

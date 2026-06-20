@@ -3,6 +3,9 @@
 import { createClient }
 from "@/lib/supabase/server";
 
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
+
 export async function initializeWorkspace(
   userId: string
 ) {
@@ -107,9 +110,15 @@ export async function initializeWorkspace(
       return null;
     }
 
-    console.log(
-      "Workspace initialized"
-    );
+    await supabaseAdmin
+      .from("workspace_activity")
+      .insert({
+        workspace_id: workspace.id,
+        user_id: userId,
+        type: "workspace_created",
+        title: "Workspace Created",
+        description: `Created workspace ${workspace.name}`,
+      });
 
     return {
       workspace,
