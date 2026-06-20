@@ -3,7 +3,17 @@
     "allow": [
       "Bash(git commit -m ' *)",
       "Bash(xargs grep -l \"workspace_activity\")",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(node -e \"const j = require\\('./locales/en.json'\\); console.log\\(Object.keys\\(j\\)\\)\")",
+      "Bash(node -e \"const j = require\\('./locales/en.json'\\); const keys = Object.keys\\(j\\); console.log\\('Last namespace:', keys[keys.length-1]\\)\")",
+      "Bash(node -e \"const j = require\\('./locales/en.json'\\); const keys = Object.keys\\(j.settings\\); console.log\\('Last 3 settings keys:', keys.slice\\(-3\\)\\)\")",
+      "Bash(node -e \"const j = require\\('./locales/sk.json'\\); console.log\\(Object.keys\\(j\\)\\)\")",
+      "Bash(node -e \"const j = require\\('./locales/sk.json'\\); const keys = Object.keys\\(j.settings\\); console.log\\('Last 3 sk settings keys:', keys.slice\\(-3\\)\\)\")",
+      "Bash(node -e \"const j = require\\('./locales/cs.json'\\); const keys = Object.keys\\(j.settings\\); console.log\\('Last 3 cs settings keys:', keys.slice\\(-3\\)\\)\")",
+      "Bash(git push *)",
+      "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/en.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")",
+      "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/sk.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")",
+      "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/cs.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")"
     ]
   }
 }

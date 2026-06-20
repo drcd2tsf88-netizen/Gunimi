@@ -49,7 +49,6 @@
     "contacts": "Kontakty",
     "activityLabel": "Aktivita"
   },
-
   "crm": {
     "title": "Vzťahy so zákazníkmi",
     "contacts": "Kontakty",
@@ -74,7 +73,6 @@
     "unknown": "Neznáme",
     "failedToLoad": "Nepodarilo sa načítať CRM"
   },
-
   "tasks": {
     "workManagement": "Riadenie práce",
     "tasksExecution": "Úlohy a realizácia",
@@ -93,7 +91,6 @@
     "comingSoon": "Modul Úlohy sa vyvíja",
     "comingSoonDescription": "Modul Úlohy sa momentálne pripravuje ako súčasť OrbitDesk Workspace OS."
   },
-
   "companies": {
     "intelligence": "Firemná inteligencia",
     "organizationIntelligence": "Inteligencia organizácie",
@@ -142,7 +139,6 @@
     "noOrganizations": "Žiadne organizácie",
     "noOrganizationsDescription": "Vytvorte svoju prvú organizáciu a začnite spravovať obchodné vzťahy."
   },
-
   "deals": {
     "commercialPipeline": "Obchodná Pipeline",
     "commercialPipelineSubtitle": "Monitorujte obchodné príležitosti, prognózy príjmov a obchodnú realizáciu.",
@@ -209,7 +205,6 @@
     "selectContact": "Vybrať kontakt",
     "expectedCloseDate": "Predpokladaný dátum uzavretia"
   },
-
   "notes": {
     "badge": "Znalostná báza pracoviska",
     "title": "Poznámky",
@@ -227,7 +222,6 @@
     "failedToCreate": "Nepodarilo sa vytvoriť poznámku.",
     "noteCreated": "Poznámka vytvorená."
   },
-
   "automations": {
     "badge": "Orbit Automácie",
     "title": "Obchodné automácie poháňané AI.",
@@ -254,7 +248,6 @@
     "previewBannerTitle": "Alpha Preview",
     "previewBannerDescription": "Automations are not yet active. This module is coming soon."
   },
-
   "common": {
     "create": "Vytvoriť",
     "save": "Uložiť",
@@ -267,7 +260,6 @@
     "yes": "Áno",
     "no": "Nie"
   },
-
   "ai": {
     "badge": "Orbit AI Asistent",
     "title": "AI Veliteľské centrum",
@@ -302,17 +294,14 @@
     "previewBannerTitle": "Alpha Preview",
     "previewBannerDescription": "AI Command Center is not yet functional. Full Orbit AI integration is coming soon."
   },
-
   "settings": {
     "badge": "Nastavenia pracovného priestoru",
     "title": "Nastavenia",
     "subtitle": "Spravujte pracovný priestor, členov, predvoľby a zabezpečenie.",
-
     "nav_workspace": "Pracovný priestor",
     "nav_members": "Členovia",
     "nav_preferences": "Predvoľby",
     "nav_danger": "Nebezpečná zóna",
-
     "workspaceIdentity": "Identita pracovného priestoru",
     "workspaceIdentitySubtitle": "Názov a popis vášho pracovného priestoru v OrbitDesk.",
     "workspaceName": "Názov pracovného priestoru",
@@ -326,7 +315,6 @@
     "saving": "Ukladanie...",
     "generatedAvatar": "Generovaný avatar",
     "generatedAvatarSubtitle": "Nahrávanie loga bude dostupné v budúcej verzii.",
-
     "membersTitle": "Členovia",
     "membersCount": "členov",
     "inviteMember": "Pozvať člena",
@@ -360,7 +348,6 @@
     "pending": "Čakajúce",
     "remove": "Odstrániť",
     "cancel": "Zrušiť",
-
     "preferencesTitle": "Predvoľby",
     "preferencesSubtitle": "Nastavte menu, časové pásmo a formát dátumu pracovného priestoru.",
     "language": "Jazyk",
@@ -371,7 +358,6 @@
     "dateFormat": "Formát dátumu",
     "preferencesSaved": "Predvoľby boli uložené",
     "failedToSavePreferences": "Nepodarilo sa uložiť predvoľby",
-
     "dangerZone": "Nebezpečná zóna",
     "dangerZoneSubtitle": "Nezvratné akcie, ktoré ovplyvňujú celý pracovný priestor.",
     "leaveWorkspace": "Opustiť pracovný priestor",
@@ -397,7 +383,6 @@
     "yourRole": "Rola",
     "joinedOn": "Pripojený"
   },
-
   "activity": {
     "badge": "Aktivita pracovného priestoru",
     "title": "Časová os živých aktivít",
@@ -409,69 +394,27 @@
     "noActivityDescription": "Orbit AI aktivity a udalosti workflow sa tu budú zobrazovať naživo.",
     "workspaceEvent": "Udalosť pracovného priestoru"
   },
-
   "analytics": {
-    "badge": "AI Observatórium",
-    "title": "Orbit Intelligence analytika",
-    "subtitle": "Inteligencia pracovného priestoru poháňaná AI v reálnom čase, prediktívne monitorovanie produktivity a autonómna obchodná analýza.",
-    "analysisActive": "Orbit AI analýza aktívna",
-    "productivityAcceleration": "Zrýchlenie produktivity zistené naprieč systémami pracovného priestoru.",
-    "productivityDescription": "Orbit AI identifikovalo zvýšenú efektivitu workflow, rast angažovanosti CRM a zvýšenú výkonnosť automatizácie.",
-    "metricAiEfficiency": "Efektivita AI",
-    "metricAiEfficiencyDesc": "Zrýchlenie pracovného priestoru",
-    "metricCrmMomentum": "CRM Momentum",
-    "metricCrmMomentumDesc": "Rast angažovanosti potenciálnych zákazníkov",
-    "metricWorkflowSpeed": "Rýchlosť workflow",
-    "metricWorkflowSpeedDesc": "Výkonnosť automatizácie",
-    "metricAiActions": "AI akcie",
-    "metricAiActionsDesc": "Vykonávania systému",
-    "liveAiSignal": "Živý AI signál",
-    "systemStability": "Stabilita systému funguje normálne.",
-    "signalAiOperational": "AI systémy sú funkčné",
-    "signalWorkspaceSync": "Synchronizácia pracovného priestoru stabilná",
-    "signalAutomationOnline": "Automatizačný engine online",
-    "signalPredictiveActive": "Prediktívna analýza aktívna",
-    "aiPerformanceObservatory": "Observatórium výkonu AI",
-    "realtimeIntelligence": "Prevádzkové spravodajstvo v reálnom čase naprieč systémami pracovného priestoru.",
-    "liveMonitoring": "Živé monitorovanie",
-    "orbitAiInsights": "Orbit AI prehľady",
-    "aiLive": "AI LIVE",
-    "insight1Title": "Zistené zrýchlenie produktivity",
-    "insight1Description": "Orbit AI identifikovalo zvýšenú výkonnostnú efektivitu naprieč aktívnymi systémami pracovného priestoru.",
-    "insight2Title": "Rastúci konverzný impulz CRM",
-    "insight2Description": "Výkonnosť angažovanosti potenciálnych zákazníkov sa zlepšila počas posledného automatizačného cyklu.",
-    "insight3Title": "Odporúčaná optimalizácia AI workflow",
-    "insight3Description": "Orbit AI navrhuje automatizovanie opakujúcich sa prevádzkových operácií.",
-    "predictiveBadge": "Prediktívna inteligencia",
-    "predictiveTitle": "Orbit AI prediktívna vrstva",
-    "predictiveSubtitle": "Autonómne AI prediktívne systémy monitorujúce správanie pracovného priestoru, produktívne riziká a budúcu prevádzkovú výkonnosť.",
-    "prediction1Title": "Pravdepodobnosť spomalenia produktivity",
-    "prediction1Description": "Orbit AI predikuje zníženú vykonávaciu efektivitu v ďalšom prevádzkovom cykle.",
-    "prediction1Status": "Stredné riziko",
-    "prediction2Title": "Zrýchlenie CRM konverzií",
-    "prediction2Description": "Konverzný impulz potenciálnych zákazníkov naznačuje zvýšený konverzný potenciál.",
-    "prediction2Status": "Rastový signál",
-    "prediction3Title": "Zistená prekážka workflow",
-    "prediction3Description": "AI identifikovalo preťaženie vysokoprioritných úloh vo fronte automatizácie.",
-    "prediction3Status": "Vyžaduje pozornosť",
-    "autonomousBadge": "Autonómne vykonávanie",
-    "autonomousTitle": "Orbit AI autonómne akcie",
-    "autonomousSubtitle": "AI generované toky vykonávania, inteligentné systémy obnovy a autonómna prevádzková pomoc.",
-    "autonomousReady": "Autonómne vykonávanie pripravené",
-    "plan1Title": "Plán obnovy workflow",
-    "plan1Description": "Orbit AI zistilo prevádzkové spomalenie a pripravilo stratégiu obnovy vykonávania.",
-    "plan1Action1": "Prerozdeliť vysokoprioritné úlohy",
-    "plan1Action2": "Generovať AI súhrn produktivity",
-    "plan1Action3": "Optimalizovať front automatizácie",
-    "plan2Title": "Optimalizácia CRM Momenta",
-    "plan2Description": "Orbit AI identifikovalo zvýšený potenciál angažovanosti v CRM pipeline.",
-    "plan2Action1": "Generovať následné workflow",
-    "plan2Action2": "Uprednostniť vysoko konvertujúce leady",
-    "plan2Action3": "Pripraviť AI súhrn oslovovania",
-    "previewBannerTitle": "Preview Data",
-    "previewBannerDescription": "These metrics display example data. Real analytics will reflect your actual workspace activity once integrated."
+    "badge": "Analytika",
+    "title": "Analytika pracovného priestoru",
+    "subtitle": "Sledujte aktivitu, monitorujte pokrok a zistite, čo sa deje vo vašom tíme.",
+    "statCompanies": "Spoločnosti",
+    "statDeals": "Obchody",
+    "statOpenTasks": "Otvorené úlohy",
+    "statMembers": "Členovia tímu",
+    "modulesLabel": "Analytika",
+    "modulesTitle": "Analytické moduly",
+    "modulesSubtitle": "Pokročilé analytické moduly sú vo vývoji. Sledujte najdôležitejšie metriky nižšie.",
+    "comingSoonBadge": "Čoskoro",
+    "revenueTitle": "Analýza príjmov",
+    "revenueDesc": "Sledujte príjmy z obchodov, predpovedajte hodnotu pipeline a monitorujte finančnú výkonnosť.",
+    "pipelineTitle": "Prehľady pipeline",
+    "pipelineDesc": "Pochopte postup obchodov, identifikujte úzke miesta a optimalizujte výkon predajného pipeline.",
+    "teamTitle": "Výkonnosť tímu",
+    "teamDesc": "Monitorujte produktivitu jednotlivcov a tímu, miery plnenia úloh a metriky spolupráce.",
+    "aiTitle": "AI prognózovanie",
+    "aiDesc": "Orbit AI analyzuje vzory pracovného priestoru a poskytne inteligentné prognózy a odporúčania."
   },
-
   "workspace": {
     "createWorkspace": "Vytvoriť pracovný priestor",
     "newWorkspaceTitle": "Vytvoriť nový pracovný priestor",

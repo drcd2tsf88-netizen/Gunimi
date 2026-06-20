@@ -20,7 +20,6 @@ import {
 
 import OrbitField from "@/components/ui/OrbitField";
 import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
 import OrbitButton from "@/components/ui/OrbitButton";
 
 type Props = {
@@ -34,11 +33,9 @@ export default function CreateWorkspaceSheet({ open, onOpenChange }: Props) {
 
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
 
   function reset() {
     setName("");
-    setDescription("");
   }
 
   function handleClose() {
@@ -58,7 +55,6 @@ export default function CreateWorkspaceSheet({ open, onOpenChange }: Props) {
 
       const workspace = await createWorkspace({
         name: name.trim(),
-        description: description.trim() || undefined,
       });
 
       if (!workspace) {
@@ -108,16 +104,6 @@ export default function CreateWorkspaceSheet({ open, onOpenChange }: Props) {
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSubmit();
               }}
-            />
-          </OrbitField>
-
-          <OrbitField label={t("workspaceDescription")}>
-            <OrbitTextarea
-              value={description}
-              disabled={loading}
-              placeholder={t("workspaceDescriptionPlaceholder")}
-              onChange={(e) => setDescription(e.target.value)}
-              className="min-h-[90px]"
             />
           </OrbitField>
         </div>

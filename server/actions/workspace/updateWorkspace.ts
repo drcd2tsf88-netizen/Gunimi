@@ -7,7 +7,6 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 type UpdateWorkspaceParams = {
   name?: string;
-  description?: string | null;
 };
 
 export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<boolean> {
@@ -35,7 +34,7 @@ export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<bo
 
     const { error } = await supabaseAdmin
       .from("workspaces")
-      .update(params)
+      .update({ name: params.name })
       .eq("id", workspace.id);
 
     if (error) {

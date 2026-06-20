@@ -14,7 +14,6 @@ import OrbitCard from "@/components/ui/OrbitCard";
 import OrbitField from "@/components/ui/OrbitField";
 import OrbitInput from "@/components/ui/OrbitInput";
 import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
 
 import { WorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import { WorkspaceSummary } from "@/server/actions/workspace/getUserWorkspaceSummaries";
@@ -45,7 +44,6 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
   const router = useRouter();
 
   const [name, setName] = useState(workspace.name ?? "");
-  const [description, setDescription] = useState(workspace.description ?? "");
   const [isPending, startTransition] = useTransition();
 
   function handleSave() {
@@ -57,7 +55,6 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
     startTransition(async () => {
       const ok = await updateWorkspace({
         name: name.trim(),
-        description: description.trim() || null,
       });
 
       if (ok) {
@@ -69,9 +66,7 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
     });
   }
 
-  const isDirty =
-    name.trim() !== workspace.name ||
-    description.trim() !== (workspace.description ?? "");
+  const isDirty = name.trim() !== workspace.name;
 
   return (
     <div className="space-y-6">
@@ -101,16 +96,6 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
               disabled={isPending}
               placeholder={t("workspaceNamePlaceholder")}
               onChange={(e) => setName(e.target.value)}
-            />
-          </OrbitField>
-
-          <OrbitField label={t("workspaceDescription")}>
-            <OrbitTextarea
-              value={description}
-              disabled={isPending}
-              placeholder={t("workspaceDescriptionPlaceholder")}
-              onChange={(e) => setDescription(e.target.value)}
-              className="min-h-[90px]"
             />
           </OrbitField>
         </div>

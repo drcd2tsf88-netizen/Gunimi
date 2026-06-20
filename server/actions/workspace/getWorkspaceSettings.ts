@@ -3,19 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
-export type WorkspacePreferences = {
-  language?: string;
-  currency?: string;
-  timezone?: string;
-  dateFormat?: string;
-};
-
 export type WorkspaceSettings = {
   id: string;
   name: string;
   slug: string;
-  description: string | null;
-  preferences: WorkspacePreferences | null;
 };
 
 export async function getWorkspaceSettings(): Promise<WorkspaceSettings | null> {
@@ -27,13 +18,13 @@ export async function getWorkspaceSettings(): Promise<WorkspaceSettings | null> 
 
     const { data, error } = await supabase
       .from("workspaces")
-      .select("id, name, slug, description, preferences")
+      .select("id, name, slug")
       .eq("id", workspace.id)
       .single();
 
     if (error) {
-      // Fallback to minimal data if extended columns don't exist
-      return { ...workspace, description: null, preferences: null };
+      console.error("getWorkspaceSettings error:", error);
+      return null;
     }
 
     return data as WorkspaceSettings;

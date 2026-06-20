@@ -5,7 +5,6 @@ import { getUser } from "@/server/actions/auth/getUser";
 
 type CreateWorkspaceParams = {
   name: string;
-  description?: string;
 };
 
 type CreatedWorkspace = {
@@ -42,7 +41,6 @@ async function uniqueSlug(base: string): Promise<string> {
 
 export async function createWorkspace({
   name,
-  description,
 }: CreateWorkspaceParams): Promise<CreatedWorkspace | null> {
   try {
     const user = await getUser();
@@ -59,7 +57,6 @@ export async function createWorkspace({
       .insert({
         name: trimmedName,
         slug,
-        description: description?.trim() || null,
       })
       .select("id, name, slug")
       .single();

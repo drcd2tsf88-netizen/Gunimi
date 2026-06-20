@@ -49,7 +49,6 @@
     "contacts": "Contacts",
     "activityLabel": "Activity"
   },
-
   "crm": {
     "title": "Customer Relationships",
     "contacts": "Contacts",
@@ -74,7 +73,6 @@
     "unknown": "Unknown",
     "failedToLoad": "Failed to load CRM"
   },
-
   "tasks": {
     "workManagement": "Work Management",
     "tasksExecution": "Tasks & Execution",
@@ -127,7 +125,6 @@
     "clearFilters": "Clear Filters",
     "noResults": "No tasks match your filters"
   },
-
   "companies": {
     "intelligence": "Company Intelligence",
     "organizationIntelligence": "Organization Intelligence",
@@ -176,7 +173,6 @@
     "noOrganizations": "No organizations",
     "noOrganizationsDescription": "Create your first organization to start managing business relationships."
   },
-
   "deals": {
     "commercialPipeline": "Commercial Pipeline",
     "commercialPipelineSubtitle": "Monitor opportunities, revenue forecasts and sales execution.",
@@ -243,7 +239,6 @@
     "selectContact": "Select contact",
     "expectedCloseDate": "Expected Close Date"
   },
-
   "notes": {
     "badge": "Workspace Knowledge",
     "title": "Notes",
@@ -261,7 +256,6 @@
     "failedToCreate": "Failed to create note.",
     "noteCreated": "Note created."
   },
-
   "automations": {
     "badge": "Orbit Automations",
     "title": "AI-powered business automations.",
@@ -288,7 +282,6 @@
     "previewBannerTitle": "Alpha Preview",
     "previewBannerDescription": "Automations are not yet active. This module is coming soon."
   },
-
   "common": {
     "create": "Create",
     "save": "Save",
@@ -301,7 +294,6 @@
     "yes": "Yes",
     "no": "No"
   },
-
   "ai": {
     "badge": "Orbit AI Assistant",
     "title": "AI Command Center",
@@ -336,17 +328,14 @@
     "previewBannerTitle": "Alpha Preview",
     "previewBannerDescription": "AI Command Center is not yet functional. Full Orbit AI integration is coming soon."
   },
-
   "settings": {
     "badge": "Workspace Settings",
     "title": "Settings",
     "subtitle": "Manage your workspace, members, preferences and security.",
-
     "nav_workspace": "Workspace",
     "nav_members": "Members",
     "nav_preferences": "Preferences",
     "nav_danger": "Danger Zone",
-
     "workspaceIdentity": "Workspace Identity",
     "workspaceIdentitySubtitle": "Your workspace name and description across OrbitDesk.",
     "workspaceName": "Workspace Name",
@@ -360,7 +349,6 @@
     "saving": "Saving...",
     "generatedAvatar": "Generated avatar",
     "generatedAvatarSubtitle": "Logo upload available in a future release.",
-
     "membersTitle": "Members",
     "membersCount": "members",
     "inviteMember": "Invite Member",
@@ -394,7 +382,6 @@
     "pending": "Pending",
     "remove": "Remove",
     "cancel": "Cancel",
-
     "preferencesTitle": "Preferences",
     "preferencesSubtitle": "Configure workspace currency, timezone and date format.",
     "language": "Language",
@@ -405,7 +392,6 @@
     "dateFormat": "Date Format",
     "preferencesSaved": "Preferences saved",
     "failedToSavePreferences": "Failed to save preferences",
-
     "dangerZone": "Danger Zone",
     "dangerZoneSubtitle": "Irreversible actions that affect your entire workspace.",
     "leaveWorkspace": "Leave Workspace",
@@ -431,7 +417,6 @@
     "yourRole": "Role",
     "joinedOn": "Joined"
   },
-
   "activity": {
     "badge": "Workspace Activity",
     "title": "Live Activity Timeline",
@@ -443,69 +428,27 @@
     "noActivityDescription": "Orbit AI activity and workflow events will appear here live.",
     "workspaceEvent": "Workspace event"
   },
-
   "analytics": {
-    "badge": "AI Observatory",
-    "title": "Orbit Intelligence Analytics",
-    "subtitle": "Realtime AI-powered workspace intelligence, predictive productivity monitoring and autonomous business analysis.",
-    "analysisActive": "Orbit AI Analysis Active",
-    "productivityAcceleration": "Productivity acceleration detected across workspace systems.",
-    "productivityDescription": "Orbit AI identified increased workflow efficiency, CRM engagement growth and elevated automation execution performance.",
-    "metricAiEfficiency": "AI Efficiency",
-    "metricAiEfficiencyDesc": "Workspace acceleration",
-    "metricCrmMomentum": "CRM Momentum",
-    "metricCrmMomentumDesc": "Lead engagement growth",
-    "metricWorkflowSpeed": "Workflow Speed",
-    "metricWorkflowSpeedDesc": "Automation performance",
-    "metricAiActions": "AI Actions",
-    "metricAiActionsDesc": "System executions",
-    "liveAiSignal": "Live AI Signal",
-    "systemStability": "System stability operating normally.",
-    "signalAiOperational": "AI systems operational",
-    "signalWorkspaceSync": "Workspace sync stable",
-    "signalAutomationOnline": "Automation engine online",
-    "signalPredictiveActive": "Predictive analysis active",
-    "aiPerformanceObservatory": "AI Performance Observatory",
-    "realtimeIntelligence": "Realtime operational intelligence across workspace systems.",
-    "liveMonitoring": "Live Monitoring",
-    "orbitAiInsights": "Orbit AI Insights",
-    "aiLive": "AI LIVE",
-    "insight1Title": "Productivity acceleration detected",
-    "insight1Description": "Orbit AI identified elevated execution efficiency across active workspace systems.",
-    "insight2Title": "CRM conversion momentum increasing",
-    "insight2Description": "Lead engagement performance improved during the last automation cycle.",
-    "insight3Title": "AI workflow optimization recommended",
-    "insight3Description": "Orbit AI suggests automating repetitive workspace operations.",
-    "predictiveBadge": "Predictive Intelligence",
-    "predictiveTitle": "Orbit AI Predictive Layer",
-    "predictiveSubtitle": "Autonomous AI prediction systems monitoring workspace behavior, productivity risks and future operational performance.",
-    "prediction1Title": "Productivity slowdown probability",
-    "prediction1Description": "Orbit AI predicts reduced execution efficiency within the next operational cycle.",
-    "prediction1Status": "Moderate Risk",
-    "prediction2Title": "CRM conversion acceleration",
-    "prediction2Description": "Lead engagement momentum indicates elevated conversion potential.",
-    "prediction2Status": "Growth Signal",
-    "prediction3Title": "Workflow bottleneck detected",
-    "prediction3Description": "AI identified high-priority task congestion inside automation queues.",
-    "prediction3Status": "Requires Attention",
-    "autonomousBadge": "Autonomous Execution",
-    "autonomousTitle": "Orbit AI Autonomous Actions",
-    "autonomousSubtitle": "AI-generated execution flows, intelligent recovery systems and autonomous operational assistance.",
-    "autonomousReady": "Autonomous Execution Ready",
-    "plan1Title": "Workflow Recovery Plan",
-    "plan1Description": "Orbit AI detected operational slowdown and prepared a recovery execution strategy.",
-    "plan1Action1": "Redistribute high-priority tasks",
-    "plan1Action2": "Generate AI productivity summary",
-    "plan1Action3": "Optimize automation queue",
-    "plan2Title": "CRM Momentum Optimization",
-    "plan2Description": "Orbit AI identified elevated engagement potential inside the CRM pipeline.",
-    "plan2Action1": "Generate follow-up workflows",
-    "plan2Action2": "Prioritize high-conversion leads",
-    "plan2Action3": "Prepare AI outreach summary",
-    "previewBannerTitle": "Preview Data",
-    "previewBannerDescription": "These metrics display example data. Real analytics will reflect your actual workspace activity once integrated."
+    "badge": "Analytics",
+    "title": "Workspace Analytics",
+    "subtitle": "Monitor workspace activity, track progress and understand what is happening across your team.",
+    "statCompanies": "Companies",
+    "statDeals": "Deals",
+    "statOpenTasks": "Open Tasks",
+    "statMembers": "Team Members",
+    "modulesLabel": "Analytics",
+    "modulesTitle": "Analytics Modules",
+    "modulesSubtitle": "Advanced analytics modules are in development. Track your most important metrics below.",
+    "comingSoonBadge": "Coming Soon",
+    "revenueTitle": "Revenue Analytics",
+    "revenueDesc": "Track deal revenue, forecast pipeline value and monitor financial performance across your workspace.",
+    "pipelineTitle": "Pipeline Insights",
+    "pipelineDesc": "Understand deal progression, identify bottlenecks and optimize your sales pipeline performance.",
+    "teamTitle": "Team Performance",
+    "teamDesc": "Monitor individual and team productivity, task completion rates and collaboration metrics.",
+    "aiTitle": "AI Forecasting",
+    "aiDesc": "Orbit AI will analyze workspace patterns and surface intelligent forecasts and recommendations."
   },
-
   "workspace": {
     "createWorkspace": "Create Workspace",
     "newWorkspaceTitle": "Create a New Workspace",

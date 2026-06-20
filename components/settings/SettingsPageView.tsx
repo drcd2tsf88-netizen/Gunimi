@@ -73,7 +73,7 @@ export default function SettingsPageView({
           {section === "preferences" && (
             <PreferencesSection
               key={workspace.id}
-              preferences={workspace.preferences}
+              preferences={null}
               currentUserRole={currentUserRole}
             />
           )}
