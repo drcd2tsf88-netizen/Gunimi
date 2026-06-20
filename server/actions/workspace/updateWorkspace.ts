@@ -6,7 +6,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 
 type UpdateWorkspaceParams = {
   name?: string;
-  description?: string;
+  description?: string | null;
 };
 
 export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<boolean> {
