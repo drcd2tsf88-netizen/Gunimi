@@ -197,7 +197,17 @@
     "opportunity": "Príležitosť",
     "lostReason": "Dôvod prehry",
     "commercialOpportunities": "Obchodné príležitosti",
-    "backToPipeline": "Späť na Pipeline"
+    "backToPipeline": "Späť na Pipeline",
+    "listView": "Zoznamový pohľad",
+    "pipelineView": "Pohľad pipeline",
+    "pipeline": "Pipeline",
+    "closed": "Uzavreté",
+    "closeDate": "Dátum uzavretia",
+    "dealDetails": "Detaily obchodu",
+    "searchOpportunities": "Hľadať príležitosti...",
+    "selectOrganization": "Vybrať organizáciu",
+    "selectContact": "Vybrať kontakt",
+    "expectedCloseDate": "Predpokladaný dátum uzavretia"
   },
 
   "notes": {

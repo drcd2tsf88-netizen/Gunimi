@@ -197,7 +197,17 @@
     "opportunity": "Opportunity",
     "lostReason": "Lost Reason",
     "commercialOpportunities": "Commercial Opportunities",
-    "backToPipeline": "Back to Pipeline"
+    "backToPipeline": "Back to Pipeline",
+    "listView": "List View",
+    "pipelineView": "Pipeline View",
+    "pipeline": "Pipeline",
+    "closed": "Closed",
+    "closeDate": "Close Date",
+    "dealDetails": "Deal Details",
+    "searchOpportunities": "Search opportunities...",
+    "selectOrganization": "Select organization",
+    "selectContact": "Select contact",
+    "expectedCloseDate": "Expected Close Date"
   },
 
   "notes": {

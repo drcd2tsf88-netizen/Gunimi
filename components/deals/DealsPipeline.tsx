@@ -1,17 +1,7 @@
 "use client";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
-
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
-
 import DealPipelineColumn
 from "./DealPipelineColumn";
-
-import {
-  useTranslations,
-} from "next-intl";
 
 
 const STAGES = [
@@ -38,29 +28,10 @@ export default function DealsPipeline({
   deals,
   onRefresh,
 }: Props) {
-  const t =
-    useTranslations(
-      "deals"
-    );
-
   return (
-    <OrbitSection>
-      <OrbitHeading
-        badge={t(
-          "commercialPipeline"
-        )}
-        title={t(
-          "commercialPipeline"
-        )}
-        subtitle={t(
-          "commercialPipelineSubtitle"
-        )}
-      />
-
+    <div>
       <div
         className="
-          mt-6
-
           flex
           gap-4
 
@@ -102,6 +73,6 @@ export default function DealsPipeline({
           }
         )}
       </div>
-    </OrbitSection>
+    </div>
   );
 }
