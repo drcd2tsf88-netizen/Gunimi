@@ -17,13 +17,15 @@ type CreateTaskProps = {
   description?: string;
   priority?: string;
   status?: string;
+  due_date?: string | null;
 };
 
 export async function createTask({
   title,
   description = "",
   priority = "medium",
-  status = "planned",
+  status = "todo",
+  due_date = null,
 }: CreateTaskProps) {
   try {
     const supabase =
@@ -87,6 +89,8 @@ export async function createTask({
           priority,
 
           status,
+
+          due_date,
 
           user_id:
             user.id,
