@@ -20,6 +20,7 @@ type Props = {
   invites: WorkspaceInvite[];
   currentUserId: string;
   currentUserRole: string;
+  initialSection?: SettingsSection;
 };
 
 export default function SettingsPageView({
@@ -28,9 +29,10 @@ export default function SettingsPageView({
   invites,
   currentUserId,
   currentUserRole,
+  initialSection,
 }: Props) {
   const t = useTranslations("settings");
-  const [section, setSection] = useState<SettingsSection>("workspace");
+  const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
 
   return (
     <div className="space-y-6">
@@ -42,20 +44,14 @@ export default function SettingsPageView({
         <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">{t("title")}</h1>
       </div>
 
-      {/* MOBILE NAV */}
-      <SettingsNav active={section} onChange={setSection} />
-
       {/* LAYOUT */}
       <div className="flex gap-8">
-        {/* DESKTOP NAV */}
-        <div className="hidden md:block">
-          <SettingsNav active={section} onChange={setSection} />
-        </div>
+        <SettingsNav active={section} onChange={setSection} />
 
         {/* CONTENT */}
         <div className="min-w-0 flex-1">
           {section === "workspace" && (
-            <WorkspaceSection workspace={workspace} />
+            <WorkspaceSection key={workspace.id} workspace={workspace} />
           )}
 
           {section === "members" && (
@@ -69,6 +65,7 @@ export default function SettingsPageView({
 
           {section === "preferences" && (
             <PreferencesSection
+              key={workspace.id}
               preferences={workspace.preferences}
               currentUserRole={currentUserRole}
             />

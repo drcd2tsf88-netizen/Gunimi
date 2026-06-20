@@ -34,6 +34,9 @@ export async function removeMember(memberId: string): Promise<boolean> {
 
     if (!targetMember || targetMember.role === "owner") return false;
 
+    // admins can only remove members, not other admins
+    if (currentMembership.role === "admin" && targetMember.role === "admin") return false;
+
     const { error } = await supabase
       .from("workspace_members")
       .delete()

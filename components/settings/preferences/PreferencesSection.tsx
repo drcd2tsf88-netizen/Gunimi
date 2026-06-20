@@ -22,12 +22,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const LANGUAGES = [
-  { value: "en", label: "English" },
-  { value: "sk", label: "Slovenčina" },
-  { value: "cs", label: "Čeština" },
-];
-
 const CURRENCIES = [
   { value: "EUR", label: "EUR — Euro" },
   { value: "USD", label: "USD — US Dollar" },
@@ -69,7 +63,6 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
   const t = useTranslations("settings");
   const router = useRouter();
 
-  const [language, setLanguage] = useState(preferences?.language ?? "en");
   const [currency, setCurrency] = useState(preferences?.currency ?? "EUR");
   const [timezone, setTimezone] = useState(preferences?.timezone ?? "Europe/Bratislava");
   const [dateFormat, setDateFormat] = useState(preferences?.dateFormat ?? "DD/MM/YYYY");
@@ -79,7 +72,7 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
 
   function handleSave() {
     startTransition(async () => {
-      const ok = await updateWorkspacePreferences({ language, currency, timezone, dateFormat });
+      const ok = await updateWorkspacePreferences({ currency, timezone, dateFormat });
 
       if (ok) {
         toast.success(t("preferencesSaved"));
@@ -103,16 +96,12 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
       <OrbitCard className="p-6">
         <div className="grid gap-5 sm:grid-cols-2">
           <OrbitField label={t("language")}>
-            <Select value={language} onValueChange={setLanguage} disabled={!canEdit || isPending}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {LANGUAGES.map((l) => (
-                  <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex h-10 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3">
+              <span className="flex-1 text-sm text-white/25">{t("languageComingSoon")}</span>
+              <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-300">
+                {t("comingSoon")}
+              </span>
+            </div>
           </OrbitField>
 
           <OrbitField label={t("currency")}>

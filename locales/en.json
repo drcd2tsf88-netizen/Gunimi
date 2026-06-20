@@ -362,8 +362,10 @@
     "cancel": "Cancel",
 
     "preferencesTitle": "Preferences",
-    "preferencesSubtitle": "Configure workspace language, currency, timezone and date format.",
+    "preferencesSubtitle": "Configure workspace currency, timezone and date format.",
     "language": "Language",
+    "languageComingSoon": "User-level language switching is coming soon",
+    "comingSoon": "Coming Soon",
     "currency": "Currency",
     "timezone": "Timezone",
     "dateFormat": "Date Format",

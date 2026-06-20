@@ -5,9 +5,17 @@ import { getWorkspaceInvites } from "@/server/actions/workspace/getWorkspaceInvi
 import { getUser } from "@/server/actions/auth/getUser";
 
 import SettingsPageView from "@/components/settings/SettingsPageView";
+import { type SettingsSection } from "@/components/settings/SettingsNav";
 
-export default async function SettingsPage() {
-  const [settings, membership, members, invites, user] = await Promise.all([
+const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "danger"];
+
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ section?: string }>;
+}) {
+  const [params, settings, membership, members, invites, user] = await Promise.all([
+    searchParams,
     getWorkspaceSettings(),
     getWorkspaceMembership(),
     getWorkspaceMembers(),
@@ -16,8 +24,26 @@ export default async function SettingsPage() {
   ]);
 
   if (!settings || !membership || !user) {
-    return null;
+    return (
+      <div className="flex min-h-[480px] flex-col items-center justify-center gap-4 p-8 text-center">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-600">Workspace Settings</p>
+        <h2 className="text-xl font-semibold text-white">Failed to load settings</h2>
+        <p className="max-w-sm text-sm text-white/40">
+          Could not load workspace data. Please refresh the page. If the issue persists, verify your workspace access.
+        </p>
+        <a
+          href="/dashboard/settings"
+          className="mt-2 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-2.5 text-sm text-white/70 transition-colors hover:border-white/20 hover:text-white"
+        >
+          Refresh
+        </a>
+      </div>
+    );
   }
+
+  const initialSection = VALID_SECTIONS.includes(params.section as SettingsSection)
+    ? (params.section as SettingsSection)
+    : undefined;
 
   return (
     <SettingsPageView
@@ -26,6 +52,7 @@ export default async function SettingsPage() {
       invites={invites}
       currentUserId={user.id}
       currentUserRole={membership.membership?.role ?? "member"}
+      initialSection={initialSection}
     />
   );
 }

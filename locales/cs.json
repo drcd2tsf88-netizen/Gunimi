@@ -362,8 +362,10 @@
     "cancel": "Zrušit",
 
     "preferencesTitle": "Předvolby",
-    "preferencesSubtitle": "Nastavte jazyk, měnu, časové pásmo a formát data pracovního prostoru.",
+    "preferencesSubtitle": "Nastavte měnu, časové pásmo a formát data pracovního prostoru.",
     "language": "Jazyk",
+    "languageComingSoon": "Přepínání jazyka na úrovni uživatele bude brzy dostupné",
+    "comingSoon": "Již brzy",
     "currency": "Měna",
     "timezone": "Časové pásmo",
     "dateFormat": "Formát data",

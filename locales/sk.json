@@ -362,8 +362,10 @@
     "cancel": "Zrušiť",
 
     "preferencesTitle": "Predvoľby",
-    "preferencesSubtitle": "Nastavte jazyk, menu, časové pásmo a formát dátumu pracovného priestoru.",
+    "preferencesSubtitle": "Nastavte menu, časové pásmo a formát dátumu pracovného priestoru.",
     "language": "Jazyk",
+    "languageComingSoon": "Prepínanie jazyka na úrovni používateľa bude čoskoro dostupné",
+    "comingSoon": "Čoskoro",
     "currency": "Mena",
     "timezone": "Časové pásmo",
     "dateFormat": "Formát dátumu",

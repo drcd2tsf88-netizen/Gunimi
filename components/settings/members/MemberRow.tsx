@@ -89,9 +89,9 @@ export default function MemberRow({ member, currentUserId, currentUserRole, onRe
   const isOwner = member.role === "owner";
   const canChangeRole = currentUserRole === "owner" && !isOwner && !isCurrentUser;
   const canRemove =
-    ["owner", "admin"].includes(currentUserRole) &&
     !isOwner &&
-    !isCurrentUser;
+    !isCurrentUser &&
+    (currentUserRole === "owner" || (currentUserRole === "admin" && member.role === "member"));
 
   function handleRoleChange(role: string) {
     startTransition(async () => {

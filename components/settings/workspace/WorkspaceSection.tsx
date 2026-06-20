@@ -55,7 +55,7 @@ export default function WorkspaceSection({ workspace }: Props) {
     startTransition(async () => {
       const ok = await updateWorkspace({
         name: name.trim(),
-        description: description.trim() || undefined,
+        description: description.trim() || null,
       });
 
       if (ok) {
