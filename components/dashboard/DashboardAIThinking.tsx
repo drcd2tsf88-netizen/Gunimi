@@ -3,9 +3,6 @@
 import { motion }
 from "framer-motion";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
-
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
@@ -33,9 +30,7 @@ export default function DashboardAIThinking() {
 
   const t = useTranslations();
 
-  const insight = thinking
-    ? currentThought
-    : t("dashboard.workspaceOperational");
+  if (!thinking) return null;
 
   return (
       <motion.div
@@ -142,7 +137,7 @@ export default function DashboardAIThinking() {
                   line-clamp-1
                 "
               >
-                {insight}
+                {currentThought}
               </h3>
             </div>
           </div>

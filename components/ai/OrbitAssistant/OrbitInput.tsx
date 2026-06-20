@@ -1,147 +1,74 @@
 "use client";
 
-import {
-  useState,
-} from "react";
+import { useState } from "react";
+
+import { useTranslations } from "next-intl";
 
 type OrbitInputProps = {
   loading: boolean;
-
-  onSend: (
-    message: string
-  ) => Promise<void>;
+  onSend: (message: string) => Promise<void>;
 };
 
-export default function OrbitInput({
-  loading,
-
-  onSend,
-}: OrbitInputProps) {
-  const [
-    message,
-
-    setMessage,
-  ] = useState("");
+export default function OrbitInput({ loading, onSend }: OrbitInputProps) {
+  const t = useTranslations("aiPanel");
+  const [message, setMessage] = useState("");
 
   async function handleSend() {
-    if (
-      !message.trim() ||
-      loading
-    ) {
-      return;
-    }
-
-    const value =
-      message;
-
+    if (!message.trim() || loading) return;
+    const value = message;
     setMessage("");
-
-    await onSend(
-      value
-    );
+    await onSend(value);
   }
 
   return (
     <div
       className="
-        relative
-        z-10
-
-        border-t
-        border-white/10
-
+        relative z-10
+        border-t border-white/10
         bg-black/20
-
         p-4
       "
     >
       <div
         className="
-          flex
-          items-center
-          gap-2
-
+          flex items-center gap-2
           rounded-2xl
-
-          border
-          border-white/10
-
+          border border-white/10
           bg-white/[0.03]
-
-          px-3
-          py-2
+          px-3 py-2
         "
       >
         <input
           value={message}
-          onChange={(e) =>
-            setMessage(
-              e.target.value
-            )
-          }
-          onKeyDown={(
-            e
-          ) => {
-            if (
-              e.key ===
-              "Enter"
-            ) {
-              handleSend();
-            }
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSend();
           }}
-          placeholder="
-            Ask Orbit AI...
-          "
+          placeholder={t("inputPlaceholder")}
           className="
             flex-1
-
             bg-transparent
-
-            px-2
-            py-2
-
-            text-sm
-            text-white
-
+            px-2 py-2
+            text-sm text-white
             outline-none
-
             placeholder:text-zinc-500
           "
         />
 
         <button
-          onClick={
-            handleSend
-          }
-          disabled={
-            loading
-          }
+          onClick={handleSend}
+          disabled={loading}
           className="
-            flex
-            h-10
-            w-10
-
-            items-center
-            justify-center
-
+            flex h-10 w-10 items-center justify-center
             rounded-xl
-
             bg-white
-
-            text-xs
-            font-medium
-            text-black
-
+            text-xs font-medium text-black
             transition-all
-
             hover:scale-[1.02]
-
             disabled:opacity-50
           "
         >
-          {loading
-            ? "..."
-            : "Send"}
+          {loading ? "..." : t("sendButton")}
         </button>
       </div>
     </div>

@@ -8,6 +8,9 @@ import {
 import { toast }
 from "sonner";
 
+import { useTranslations }
+from "next-intl";
+
 import { useAIStateStore }
 from "@/lib/store/ai-state-store";
 
@@ -33,6 +36,8 @@ import { saveMemory }
 from "@/lib/ai/memory/save-memory";
 
 export function useOrbitAssistant() {
+  const t = useTranslations("aiPanel");
+
   const [
     loading,
     setLoading,
@@ -104,7 +109,7 @@ export function useOrbitAssistant() {
           !workspaceId
         ) {
           toast.error(
-            "Workspace not found."
+            t("workspaceNotFound")
           );
 
           return;
@@ -120,7 +125,7 @@ export function useOrbitAssistant() {
           );
 
           setCurrentThought(
-            "Orbit AI analyzing workspace cognition..."
+            t("thinkingAnalyzing")
           );
 
           // USER MESSAGE
@@ -154,7 +159,7 @@ export function useOrbitAssistant() {
             );
 
           setCurrentThought(
-            `Delegating cognition to ${agent.name}...`
+            t("thinkingDelegating", { agent: agent.name })
           );
 
           // CONTEXT
@@ -316,7 +321,7 @@ export function useOrbitAssistant() {
           // COMPLETE
 
           setCurrentThought(
-            "Workspace cognition synchronized."
+            t("thinkingComplete")
           );
         } catch (error) {
           console.error(
@@ -324,7 +329,7 @@ export function useOrbitAssistant() {
           );
 
           toast.error(
-            "Orbit AI failed to process request."
+            t("processingError")
           );
         } finally {
           setLoading(
@@ -338,6 +343,7 @@ export function useOrbitAssistant() {
       },
 
       [
+        t,
         addMessage,
         aiMemory,
         messages,
