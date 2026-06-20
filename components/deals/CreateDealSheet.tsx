@@ -82,7 +82,7 @@ export default function CreateDealSheet({
 
   function handleClose() {
     resetForm();
-    onOpenChange(false);
+     onOpenChange(false);
   }
 
   async function handleSubmit() {

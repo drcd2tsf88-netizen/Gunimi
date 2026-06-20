@@ -40,17 +40,6 @@ const items = [
 
   {
     label:
-      "Tasks",
-
-    href:
-      "/dashboard/tasks",
-
-    icon:
-      CheckSquare,
-  },
-
-  {
-    label:
       "CRM",
 
     href:
@@ -91,6 +80,17 @@ const items = [
 
     icon:
       FileText,
+  },
+
+  {
+    label:
+      "Tasks",
+
+    href:
+      "/dashboard/tasks",
+
+    icon:
+      CheckSquare,
   },
 
   {

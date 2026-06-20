@@ -31,13 +31,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Task } from "@/types/task";
+import { Task, WorkspaceMember } from "@/types/task";
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   task?: Task | null;
   onSaved: () => void;
+  members: WorkspaceMember[];
 };
 
 const STATUSES = ["todo", "in_progress", "done"] as const;
@@ -48,6 +49,7 @@ export default function CreateTaskSheet({
   onOpenChange,
   task,
   onSaved,
+  members,
 }: Props) {
   const t = useTranslations("tasks");
   const tc = useTranslations("common");
@@ -60,6 +62,7 @@ export default function CreateTaskSheet({
   const [priority, setPriority] = useState("medium");
   const [status, setStatus] = useState("todo");
   const [dueDate, setDueDate] = useState("");
+  const [assignedTo, setAssignedTo] = useState("");
 
   useEffect(() => {
     if (open) {
@@ -68,6 +71,7 @@ export default function CreateTaskSheet({
       setPriority(task?.priority ?? "medium");
       setStatus(task?.status ?? "todo");
       setDueDate(task?.due_date ?? "");
+      setAssignedTo(task?.assigned_to ?? "");
     }
   }, [open, task]);
 
@@ -77,6 +81,7 @@ export default function CreateTaskSheet({
     setPriority("medium");
     setStatus("todo");
     setDueDate("");
+    setAssignedTo("");
   }
 
   function handleClose() {
@@ -101,6 +106,7 @@ export default function CreateTaskSheet({
           priority,
           status,
           due_date: dueDate || null,
+          assigned_to: assignedTo || null,
         });
 
         if (!ok) {
@@ -116,6 +122,7 @@ export default function CreateTaskSheet({
           priority,
           status,
           due_date: dueDate || null,
+          assigned_to: assignedTo || null,
         });
 
         if (!result) {
@@ -147,6 +154,10 @@ export default function CreateTaskSheet({
     medium: t("priorityMedium"),
     high: t("priorityHigh"),
   };
+
+  function getMemberLabel(member: WorkspaceMember): string {
+    return member.profiles?.full_name || member.profiles?.email || member.user_id;
+  }
 
   return (
     <Sheet
@@ -237,6 +248,29 @@ export default function CreateTaskSheet({
               onChange={(e) => setDueDate(e.target.value)}
             />
           </OrbitField>
+
+          {members.length > 0 && (
+            <OrbitField label={t("assignee")}>
+              <Select
+                value={assignedTo}
+                onValueChange={setAssignedTo}
+                disabled={loading}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("unassigned")} />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="">{t("unassigned")}</SelectItem>
+                  {members.map((member) => (
+                    <SelectItem key={member.user_id} value={member.user_id}>
+                      {getMemberLabel(member)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </OrbitField>
+          )}
         </div>
 
         <SheetFooter>

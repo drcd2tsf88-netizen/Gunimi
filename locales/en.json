@@ -117,7 +117,15 @@
     "deleteDescription": "This task will be permanently deleted. This action cannot be undone.",
     "titleRequired": "Task title is required",
     "titlePlaceholder": "Enter task title...",
-    "descriptionPlaceholder": "Describe the task..."
+    "descriptionPlaceholder": "Describe the task...",
+    "assignee": "Assignee",
+    "unassigned": "Unassigned",
+    "searchPlaceholder": "Search tasks...",
+    "allStatuses": "All Statuses",
+    "allPriorities": "All Priorities",
+    "allAssignees": "All Assignees",
+    "clearFilters": "Clear Filters",
+    "noResults": "No tasks match your filters"
   },
 
   "companies": {

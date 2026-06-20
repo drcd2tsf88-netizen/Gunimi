@@ -12,12 +12,16 @@ from "@/lib/workspace/getCurrentWorkspace";
 import { createAuditLog }
 from "@/lib/server/audit";
 
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
+
 type CreateTaskProps = {
   title: string;
   description?: string;
   priority?: string;
   status?: string;
   due_date?: string | null;
+  assigned_to?: string | null;
 };
 
 export async function createTask({
@@ -26,6 +30,7 @@ export async function createTask({
   priority = "medium",
   status = "todo",
   due_date = null,
+  assigned_to = null,
 }: CreateTaskProps) {
   try {
     const supabase =
@@ -92,6 +97,8 @@ export async function createTask({
 
           due_date,
 
+          assigned_to,
+
           user_id:
             user.id,
 
@@ -115,7 +122,7 @@ export async function createTask({
 
     // ACTIVITY FEED
 
-    await supabase
+    await supabaseAdmin
       .from(
         "workspace_activity"
       )

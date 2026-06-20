@@ -1,3 +1,12 @@
+export type WorkspaceMember = {
+  user_id: string;
+  profiles: {
+    email: string;
+    full_name: string | null;
+    avatar_url: string | null;
+  } | null;
+};
+
 export type Task = {
   id: string;
   title: string;

@@ -140,3 +140,15 @@ Never refactor the entire repository without approval.
 Build a production-ready AI Workspace Operating System.
 
 Every implementation must be scalable, maintainable and enterprise-ready.
+ 
+  ---
+
+1. npm run lint
+2. npm run type-check
+3. npm run build
+
+before commit.
+
+No commit should be produced if any of the three commands fail.
+
+Deployment-ready code only.
