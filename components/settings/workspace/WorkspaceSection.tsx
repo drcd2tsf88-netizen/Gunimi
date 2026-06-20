@@ -17,9 +17,11 @@ import OrbitButton from "@/components/ui/OrbitButton";
 import OrbitTextarea from "@/components/ui/OrbitTextarea";
 
 import { WorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
+import { WorkspaceSummary } from "@/server/actions/workspace/getUserWorkspaceSummaries";
 
 type Props = {
   workspace: WorkspaceSettings;
+  workspaceSummaries: WorkspaceSummary[];
 };
 
 function WorkspaceAvatar({ name }: { name: string }) {
@@ -38,7 +40,7 @@ function WorkspaceAvatar({ name }: { name: string }) {
   );
 }
 
-export default function WorkspaceSection({ workspace }: Props) {
+export default function WorkspaceSection({ workspace, workspaceSummaries }: Props) {
   const t = useTranslations("settings");
   const router = useRouter();
 
@@ -72,7 +74,8 @@ export default function WorkspaceSection({ workspace }: Props) {
     description.trim() !== (workspace.description ?? "");
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* IDENTITY */}
       <div>
         <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
           {t("nav_workspace")}
@@ -122,6 +125,72 @@ export default function WorkspaceSection({ workspace }: Props) {
           </OrbitButton>
         </div>
       </OrbitCard>
+
+      {/* MY WORKSPACES DIRECTORY */}
+      {workspaceSummaries.length > 0 && (
+        <div>
+          <div className="mb-3">
+            <h2 className="text-xl font-semibold">{t("myWorkspaces")}</h2>
+            <p className="mt-1 text-sm text-white/40">{t("myWorkspacesSubtitle")}</p>
+          </div>
+
+          <OrbitCard className="divide-y divide-white/[0.05] overflow-hidden p-0">
+            {workspaceSummaries.map((ws) => {
+              const isCurrent = ws.id === workspace.id;
+
+              return (
+                <div
+                  key={ws.id}
+                  className="flex items-center justify-between px-5 py-4"
+                >
+                  {/* LEFT — avatar + info */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-violet-500/20 bg-violet-500/10 text-sm font-bold text-violet-200">
+                      {ws.name.slice(0, 2).toUpperCase()}
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium">{ws.name}</p>
+                        {isCurrent && (
+                          <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-300">
+                            {t("currentWorkspace")}
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-0.5 text-xs text-white/30">{ws.slug}</p>
+                    </div>
+                  </div>
+
+                  {/* RIGHT — role + date */}
+                  <div className="flex items-center gap-4 text-right">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wide text-zinc-500">
+                        {t("yourRole")}
+                      </p>
+                      <p className="mt-0.5 text-xs font-medium capitalize text-white/70">
+                        {ws.role}
+                      </p>
+                    </div>
+                    <div className="hidden sm:block">
+                      <p className="text-[10px] uppercase tracking-wide text-zinc-500">
+                        {t("joinedOn")}
+                      </p>
+                      <p className="mt-0.5 text-xs text-white/40">
+                        {new Date(ws.joined_at).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </OrbitCard>
+        </div>
+      )}
     </div>
   );
 }

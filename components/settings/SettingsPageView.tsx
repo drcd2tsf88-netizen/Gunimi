@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { WorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import { WorkspaceInvite } from "@/server/actions/workspace/getWorkspaceInvites";
 import { MemberRowData } from "./members/MemberRow";
+import { WorkspaceSummary } from "@/server/actions/workspace/getUserWorkspaceSummaries";
 
 import SettingsNav, { SettingsSection } from "./SettingsNav";
 import WorkspaceSection from "./workspace/WorkspaceSection";
@@ -21,6 +22,7 @@ type Props = {
   currentUserId: string;
   currentUserRole: string;
   initialSection?: SettingsSection;
+  workspaceSummaries: WorkspaceSummary[];
 };
 
 export default function SettingsPageView({
@@ -30,6 +32,7 @@ export default function SettingsPageView({
   currentUserId,
   currentUserRole,
   initialSection,
+  workspaceSummaries,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -51,7 +54,11 @@ export default function SettingsPageView({
         {/* CONTENT */}
         <div className="min-w-0 flex-1">
           {section === "workspace" && (
-            <WorkspaceSection key={workspace.id} workspace={workspace} />
+            <WorkspaceSection
+              key={workspace.id}
+              workspace={workspace}
+              workspaceSummaries={workspaceSummaries}
+            />
           )}
 
           {section === "members" && (

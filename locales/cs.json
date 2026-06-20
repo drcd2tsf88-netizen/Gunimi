@@ -390,7 +390,12 @@
     "deleting": "Mazání...",
     "workspaceDeleted": "Pracovní prostor byl smazán",
     "failedToDelete": "Nepodařilo se smazat pracovní prostor",
-    "ownerOnly": "Pouze vlastník"
+    "ownerOnly": "Pouze vlastník",
+    "myWorkspaces": "Moje pracovní prostory",
+    "myWorkspacesSubtitle": "Všechny pracovní prostory, jejichž jste členem.",
+    "currentWorkspace": "Aktuální",
+    "yourRole": "Role",
+    "joinedOn": "Připojen"
   },
 
   "activity": {
@@ -465,5 +470,19 @@
     "plan2Action3": "Připravit AI souhrn oslovení",
     "previewBannerTitle": "Preview Data",
     "previewBannerDescription": "These metrics display example data. Real analytics will reflect your actual workspace activity once integrated."
+  },
+
+  "workspace": {
+    "createWorkspace": "Vytvořit pracovní prostor",
+    "newWorkspaceTitle": "Vytvořit nový pracovní prostor",
+    "newWorkspaceSubtitle": "Začněte znovu s novým pracovním prostorem pro jiný tým nebo projekt.",
+    "workspaceName": "Název pracovního prostoru",
+    "workspaceNamePlaceholder": "např. Moje společnost",
+    "workspaceDescription": "Popis",
+    "workspaceDescriptionPlaceholder": "Popište tento pracovní prostor...",
+    "workspaceNameRequired": "Název pracovního prostoru je povinný",
+    "creating": "Vytváří se...",
+    "workspaceCreated": "Pracovní prostor byl úspěšně vytvořen",
+    "failedToCreate": "Nepodařilo se vytvořit pracovní prostor"
   }
 }

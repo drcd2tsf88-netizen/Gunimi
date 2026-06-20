@@ -424,7 +424,12 @@
     "deleting": "Deleting...",
     "workspaceDeleted": "Workspace deleted",
     "failedToDelete": "Failed to delete workspace",
-    "ownerOnly": "Owner only"
+    "ownerOnly": "Owner only",
+    "myWorkspaces": "My Workspaces",
+    "myWorkspacesSubtitle": "All workspaces you are a member of.",
+    "currentWorkspace": "Current",
+    "yourRole": "Role",
+    "joinedOn": "Joined"
   },
 
   "activity": {
@@ -499,5 +504,19 @@
     "plan2Action3": "Prepare AI outreach summary",
     "previewBannerTitle": "Preview Data",
     "previewBannerDescription": "These metrics display example data. Real analytics will reflect your actual workspace activity once integrated."
+  },
+
+  "workspace": {
+    "createWorkspace": "Create Workspace",
+    "newWorkspaceTitle": "Create a New Workspace",
+    "newWorkspaceSubtitle": "Start fresh with a new workspace for a different team or project.",
+    "workspaceName": "Workspace Name",
+    "workspaceNamePlaceholder": "e.g. My Company",
+    "workspaceDescription": "Description",
+    "workspaceDescriptionPlaceholder": "Describe this workspace...",
+    "workspaceNameRequired": "Workspace name is required",
+    "creating": "Creating...",
+    "workspaceCreated": "Workspace created successfully",
+    "failedToCreate": "Failed to create workspace"
   }
 }

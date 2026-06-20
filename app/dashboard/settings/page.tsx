@@ -3,6 +3,7 @@ import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMemb
 import { getWorkspaceMembership } from "@/server/actions/workspace/getWorkspaceMembership";
 import { getWorkspaceInvites } from "@/server/actions/workspace/getWorkspaceInvites";
 import { getUser } from "@/server/actions/auth/getUser";
+import { getUserWorkspaceSummaries } from "@/server/actions/workspace/getUserWorkspaceSummaries";
 
 import SettingsPageView from "@/components/settings/SettingsPageView";
 import { type SettingsSection } from "@/components/settings/SettingsNav";
@@ -14,13 +15,14 @@ export default async function SettingsPage({
 }: {
   searchParams: Promise<{ section?: string }>;
 }) {
-  const [params, settings, membership, members, invites, user] = await Promise.all([
+  const [params, settings, membership, members, invites, user, workspaceSummaries] = await Promise.all([
     searchParams,
     getWorkspaceSettings(),
     getWorkspaceMembership(),
     getWorkspaceMembers(),
     getWorkspaceInvites(),
     getUser(),
+    getUserWorkspaceSummaries(),
   ]);
 
   if (!settings || !membership || !user) {
@@ -53,6 +55,7 @@ export default async function SettingsPage({
       currentUserId={user.id}
       currentUserRole={membership.membership?.role ?? "member"}
       initialSection={initialSection}
+      workspaceSummaries={workspaceSummaries}
     />
   );
 }

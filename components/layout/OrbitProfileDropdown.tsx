@@ -22,6 +22,7 @@ import {
   Check,
   ChevronDown,
   LogOut,
+  Plus,
   Settings,
   Sparkles,
 } from "lucide-react";
@@ -40,6 +41,9 @@ from "@/server/actions/workspace/getUserWorkspaces";
 
 import { setActiveWorkspace }
 from "@/server/actions/workspace/setActiveWorkspace";
+
+import CreateWorkspaceSheet
+from "@/components/workspace/CreateWorkspaceSheet";
 
 type Workspace = {
   id: string;
@@ -65,6 +69,9 @@ export default function OrbitProfileDropdown() {
     useRef<HTMLDivElement>(null);
 
   const [open, setOpen] =
+    useState(false);
+
+  const [createSheetOpen, setCreateSheetOpen] =
     useState(false);
 
   const [workspaceData, setWorkspaceData] =
@@ -629,6 +636,69 @@ export default function OrbitProfileDropdown() {
                   )
                 )}
               </div>
+
+              {/* CREATE WORKSPACE */}
+
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setCreateSheetOpen(true);
+                }}
+                className="
+                  mt-2
+
+                  flex
+                  w-full
+                  items-center
+                  gap-3
+
+                  rounded-2xl
+
+                  border
+                  border-dashed
+                  border-white/10
+
+                  px-4
+                  py-3
+
+                  text-left
+                  text-sm
+                  text-white/40
+
+                  transition-all
+
+                  hover:border-violet-500/30
+                  hover:bg-violet-500/5
+                  hover:text-violet-300
+                "
+              >
+                <div
+                  className="
+                    flex
+                    h-10
+                    w-10
+
+                    items-center
+                    justify-center
+
+                    rounded-2xl
+
+                    border
+                    border-dashed
+                    border-white/10
+
+                    transition-all
+
+                    group-hover:border-violet-500/20
+                  "
+                >
+                  <Plus size={14} />
+                </div>
+
+                <span className="font-medium">
+                  Create Workspace
+                </span>
+              </button>
             </div>
 
             {/* ACTIONS */}
@@ -705,6 +775,11 @@ export default function OrbitProfileDropdown() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <CreateWorkspaceSheet
+        open={createSheetOpen}
+        onOpenChange={setCreateSheetOpen}
+      />
     </div>
   );
 }
