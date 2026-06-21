@@ -3,13 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import type { WorkspacePreferences } from "./getWorkspaceSettings";
 
-export type WorkspacePreferences = {
-  language?: string;
-  currency?: string;
-  timezone?: string;
-  dateFormat?: string;
-};
+export type { WorkspacePreferences };
 
 export async function updateWorkspacePreferences(
   preferences: WorkspacePreferences
@@ -34,7 +31,7 @@ export async function updateWorkspacePreferences(
       return false;
     }
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from("workspaces")
       .update({ preferences })
       .eq("id", workspace.id);

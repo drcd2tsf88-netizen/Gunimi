@@ -71,7 +71,7 @@ export async function POST(
       );
     }
 
-    // INVITE
+    // INVITE — use supabaseAdmin so non-members can read their own invite
 
     const {
       data: invite,
@@ -79,7 +79,7 @@ export async function POST(
       error:
         inviteError,
     } =
-      await supabase
+      await supabaseAdmin
         .from(
           "workspace_invites"
         )
@@ -256,9 +256,9 @@ export async function POST(
             invite.role,
         },
       });
-    // CONSUME INVITE
+    // CONSUME INVITE — use supabaseAdmin (email-match RLS would block the user client)
 
-    await supabase
+    await supabaseAdmin
       .from(
         "workspace_invites"
       )

@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
 export type AnalyticsOverview = {
@@ -43,7 +44,7 @@ export async function getAnalyticsOverview(): Promise<AnalyticsOverview> {
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id)
         .neq("status", "done"),
-      supabase
+      supabaseAdmin
         .from("workspace_members")
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),

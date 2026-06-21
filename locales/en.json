@@ -71,7 +71,21 @@
     "generateDemoData": "Generate Demo Data",
     "company": "Company",
     "unknown": "Unknown",
-    "failedToLoad": "Failed to load CRM"
+    "failedToLoad": "Failed to load CRM",
+    "editContact": "Edit Contact",
+    "editContactSubtitle": "Update contact details.",
+    "contactName": "Name",
+    "contactNameRequired": "Contact name is required",
+    "contactEmail": "Email",
+    "contactPhone": "Phone",
+    "contactPosition": "Position",
+    "contactNotes": "Notes",
+    "contactUpdated": "Contact updated",
+    "failedToUpdateContact": "Failed to update contact",
+    "deleteContact": "Delete Contact",
+    "confirmDeleteContact": "This contact will be permanently deleted. This action cannot be undone.",
+    "contactDeleted": "Contact deleted",
+    "failedToDeleteContact": "Failed to delete contact"
   },
   "tasks": {
     "workManagement": "Work Management",
@@ -171,7 +185,15 @@
     "activitySubtitle": "Historical relationship interactions and operational events.",
     "notFound": "Company not found",
     "noOrganizations": "No organizations",
-    "noOrganizationsDescription": "Create your first organization to start managing business relationships."
+    "noOrganizationsDescription": "Create your first organization to start managing business relationships.",
+    "editOrganization": "Edit Organization",
+    "editOrganizationSubtitle": "Update organization details.",
+    "companyUpdated": "Organization updated",
+    "failedToUpdateCompany": "Failed to update organization",
+    "deleteOrganization": "Delete Organization",
+    "confirmDeleteOrganization": "This will permanently delete this organization and all associated data. This action cannot be undone.",
+    "companyDeleted": "Organization deleted",
+    "failedToDeleteCompany": "Failed to delete organization"
   },
   "deals": {
     "commercialPipeline": "Commercial Pipeline",
@@ -254,7 +276,15 @@
     "titleRequired": "Note title required.",
     "unauthorized": "Unauthorized.",
     "failedToCreate": "Failed to create note.",
-    "noteCreated": "Note created."
+    "noteCreated": "Note created.",
+    "editNote": "Edit Note",
+    "editNoteSubtitle": "Update note title and content.",
+    "noteUpdated": "Note updated",
+    "failedToUpdateNote": "Failed to update note",
+    "deleteNote": "Delete Note",
+    "confirmDeleteNote": "This note will be permanently deleted. This action cannot be undone.",
+    "noteDeleted": "Note deleted",
+    "failedToDeleteNote": "Failed to delete note"
   },
   "automations": {
     "badge": "Orbit Automations",
@@ -346,7 +376,11 @@
     "inviteByEmailSubtitle": "Send an email invitation to add a new member to this workspace.",
     "emailAddress": "Email Address",
     "emailPlaceholder": "colleague@company.com",
+    "inviteRole": "Role",
     "invalidEmail": "Please enter a valid email address",
+    "alreadyInvited": "This email already has a pending invite",
+    "alreadyMember": "This person is already a workspace member",
+    "forbidden": "You do not have permission to invite members",
     "sendInvite": "Send Invite",
     "inviteSent": "Invite sent",
     "failedToInvite": "Failed to send invite",

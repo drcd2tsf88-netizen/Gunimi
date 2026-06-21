@@ -3,6 +3,7 @@
 import { createClient }
 from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
@@ -114,6 +115,10 @@ if (stage === "lost") {
         .eq(
           "id",
           dealId
+        )
+        .eq(
+          "workspace_id",
+          workspace.id
         );
 
     if (error) {
@@ -157,7 +162,7 @@ if (stage === "lost") {
         `${existingDeal.title} marked as lost`;
     }
 
-   await supabase
+   await supabaseAdmin
   .from(
     "workspace_activity"
   )
@@ -176,11 +181,9 @@ if (stage === "lost") {
 
     type,
 
-    title:
-      type,
+    title,
 
-    description:
-      null,
+    description,
 
     metadata: {
       previous_stage:

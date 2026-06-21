@@ -71,7 +71,21 @@
     "generateDemoData": "Generovat ukázková data",
     "company": "Společnost",
     "unknown": "Neznámé",
-    "failedToLoad": "Nepodařilo se načíst CRM"
+    "failedToLoad": "Nepodařilo se načíst CRM",
+    "editContact": "Upravit kontakt",
+    "editContactSubtitle": "Aktualizujte údaje kontaktu.",
+    "contactName": "Jméno",
+    "contactNameRequired": "Jméno kontaktu je povinné",
+    "contactEmail": "E-mail",
+    "contactPhone": "Telefon",
+    "contactPosition": "Pozice",
+    "contactNotes": "Poznámky",
+    "contactUpdated": "Kontakt byl aktualizován",
+    "failedToUpdateContact": "Aktualizace kontaktu selhala",
+    "deleteContact": "Smazat kontakt",
+    "confirmDeleteContact": "Tento kontakt bude trvale smazán. Tuto akci nelze vrátit zpět.",
+    "contactDeleted": "Kontakt byl smazán",
+    "failedToDeleteContact": "Smazání kontaktu selhalo"
   },
   "tasks": {
     "workManagement": "Řízení práce",
@@ -137,7 +151,15 @@
     "activitySubtitle": "Historické interakce vztahů a provozní události.",
     "notFound": "Společnost nenalezena",
     "noOrganizations": "Žádné organizace",
-    "noOrganizationsDescription": "Vytvořte svou první organizaci a začněte spravovat obchodní vztahy."
+    "noOrganizationsDescription": "Vytvořte svou první organizaci a začněte spravovat obchodní vztahy.",
+    "editOrganization": "Upravit organizaci",
+    "editOrganizationSubtitle": "Aktualizujte údaje organizace.",
+    "companyUpdated": "Organizace byla aktualizována",
+    "failedToUpdateCompany": "Aktualizace organizace selhala",
+    "deleteOrganization": "Smazat organizaci",
+    "confirmDeleteOrganization": "Tato organizace bude trvale smazána spolu se všemi souvisejícími daty. Tuto akci nelze vrátit zpět.",
+    "companyDeleted": "Organizace byla smazána",
+    "failedToDeleteCompany": "Smazání organizace selhalo"
   },
   "deals": {
     "commercialPipeline": "Obchodní Pipeline",
@@ -220,7 +242,15 @@
     "titleRequired": "Vyžaduje se název poznámky.",
     "unauthorized": "Neoprávněný přístup.",
     "failedToCreate": "Nepodařilo se vytvořit poznámku.",
-    "noteCreated": "Poznámka vytvořena."
+    "noteCreated": "Poznámka vytvořena.",
+    "editNote": "Upravit poznámku",
+    "editNoteSubtitle": "Aktualizujte název a obsah poznámky.",
+    "noteUpdated": "Poznámka byla aktualizována",
+    "failedToUpdateNote": "Aktualizace poznámky selhala",
+    "deleteNote": "Smazat poznámku",
+    "confirmDeleteNote": "Tato poznámka bude trvale smazána. Tuto akci nelze vrátit zpět.",
+    "noteDeleted": "Poznámka byla smazána",
+    "failedToDeleteNote": "Smazání poznámky selhalo"
   },
   "automations": {
     "badge": "Orbit Automatizace",
@@ -312,7 +342,11 @@
     "inviteByEmailSubtitle": "Odešlete e-mailové pozvání pro nového člena pracovního prostoru.",
     "emailAddress": "E-mailová adresa",
     "emailPlaceholder": "kolega@spolecnost.cz",
+    "inviteRole": "Role",
     "invalidEmail": "Prosím zadejte platnou e-mailovou adresu",
+    "alreadyInvited": "Tento e-mail již má čekající pozvánku",
+    "alreadyMember": "Tato osoba je již členem pracovního prostoru",
+    "forbidden": "Nemáte oprávnění pozývat členy",
     "sendInvite": "Odeslat pozvání",
     "inviteSent": "Pozvání odesláno",
     "failedToInvite": "Nepodařilo se odeslat pozvání",

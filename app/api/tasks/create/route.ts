@@ -150,6 +150,9 @@ export async function POST(
         type:
           "task_created",
 
+        title:
+          "Task Created",
+
         message:
           `Created task "${cleanTitle}"`,
 
@@ -158,7 +161,7 @@ export async function POST(
     await createAuditLog({
 
       workspace_id:
-        companyId,
+        workspace.id,
 
       user_id:
         user.id,

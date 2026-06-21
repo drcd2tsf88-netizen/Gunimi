@@ -55,6 +55,8 @@ export async function createCompany({
       return null;
     }
 
+    if (!name.trim()) return null;
+
     const supabase =
       await createClient();
 
@@ -110,9 +112,6 @@ export async function createCompany({
       })
       .select()
       .single();
-      if (!name.trim()) {
-  return null;
-}
 
     if (error) {
       console.error(error);
@@ -141,6 +140,9 @@ export async function createCompany({
 
         description:
           `${name} added to workspace`,
+
+        company_id:
+          data.id,
       });
 
     if (activityError) {

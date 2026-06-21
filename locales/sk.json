@@ -71,7 +71,21 @@
     "generateDemoData": "Generovať ukážkové dáta",
     "company": "Spoločnosť",
     "unknown": "Neznáme",
-    "failedToLoad": "Nepodarilo sa načítať CRM"
+    "failedToLoad": "Nepodarilo sa načítať CRM",
+    "editContact": "Upraviť kontakt",
+    "editContactSubtitle": "Aktualizujte údaje kontaktu.",
+    "contactName": "Meno",
+    "contactNameRequired": "Meno kontaktu je povinné",
+    "contactEmail": "E-mail",
+    "contactPhone": "Telefón",
+    "contactPosition": "Pozícia",
+    "contactNotes": "Poznámky",
+    "contactUpdated": "Kontakt bol aktualizovaný",
+    "failedToUpdateContact": "Aktualizácia kontaktu zlyhala",
+    "deleteContact": "Odstrániť kontakt",
+    "confirmDeleteContact": "Tento kontakt bude trvalo odstránený. Túto akciu nemožno vrátiť späť.",
+    "contactDeleted": "Kontakt bol odstránený",
+    "failedToDeleteContact": "Odstránenie kontaktu zlyhalo"
   },
   "tasks": {
     "workManagement": "Riadenie práce",
@@ -137,7 +151,15 @@
     "activitySubtitle": "Historické interakcie vzťahov a prevádzkové udalosti.",
     "notFound": "Spoločnosť sa nenašla",
     "noOrganizations": "Žiadne organizácie",
-    "noOrganizationsDescription": "Vytvorte svoju prvú organizáciu a začnite spravovať obchodné vzťahy."
+    "noOrganizationsDescription": "Vytvorte svoju prvú organizáciu a začnite spravovať obchodné vzťahy.",
+    "editOrganization": "Upraviť organizáciu",
+    "editOrganizationSubtitle": "Aktualizujte údaje organizácie.",
+    "companyUpdated": "Organizácia bola aktualizovaná",
+    "failedToUpdateCompany": "Aktualizácia organizácie zlyhala",
+    "deleteOrganization": "Odstrániť organizáciu",
+    "confirmDeleteOrganization": "Táto organizácia bude trvalo odstránená spolu so všetkými súvisiacimi dátami. Túto akciu nemožno vrátiť späť.",
+    "companyDeleted": "Organizácia bola odstránená",
+    "failedToDeleteCompany": "Odstránenie organizácie zlyhalo"
   },
   "deals": {
     "commercialPipeline": "Obchodná Pipeline",
@@ -220,7 +242,15 @@
     "titleRequired": "Vyžaduje sa názov poznámky.",
     "unauthorized": "Neoprávnený prístup.",
     "failedToCreate": "Nepodarilo sa vytvoriť poznámku.",
-    "noteCreated": "Poznámka vytvorená."
+    "noteCreated": "Poznámka vytvorená.",
+    "editNote": "Upraviť poznámku",
+    "editNoteSubtitle": "Aktualizujte názov a obsah poznámky.",
+    "noteUpdated": "Poznámka bola aktualizovaná",
+    "failedToUpdateNote": "Aktualizácia poznámky zlyhala",
+    "deleteNote": "Odstrániť poznámku",
+    "confirmDeleteNote": "Táto poznámka bude trvalo odstránená. Túto akciu nemožno vrátiť späť.",
+    "noteDeleted": "Poznámka bola odstránená",
+    "failedToDeleteNote": "Odstránenie poznámky zlyhalo"
   },
   "automations": {
     "badge": "Orbit Automácie",
@@ -312,7 +342,11 @@
     "inviteByEmailSubtitle": "Odošlite e-mailové pozvanie pre nového člena pracovného priestoru.",
     "emailAddress": "E-mailová adresa",
     "emailPlaceholder": "kolega@spolocnost.sk",
+    "inviteRole": "Rola",
     "invalidEmail": "Prosím zadajte platnú e-mailovú adresu",
+    "alreadyInvited": "Tento e-mail už má čakajúce pozvanie",
+    "alreadyMember": "Táto osoba je už členom pracovného priestoru",
+    "forbidden": "Nemáte oprávnenie pozývať členov",
     "sendInvite": "Odoslať pozvanie",
     "inviteSent": "Pozvanie odoslané",
     "failedToInvite": "Nepodarilo sa odoslať pozvanie",

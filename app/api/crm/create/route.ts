@@ -160,29 +160,6 @@ const {
       );
     }
 
-    // CONTACT TIMELINE
-
-    await supabaseAdmin
-  .from(
-    "workspace_contact_activity"
-  )
-  .insert({
-    workspace_id:
-      workspaceId,
-
-    contact_id:
-      contact.id,
-
-    type:
-      "contact_created",
-
-    title:
-      "Contact Created",
-
-    description:
-      `Created contact "${cleanName}"`,
-  });
-
     // WORKSPACE ACTIVITY
 
     await supabaseAdmin

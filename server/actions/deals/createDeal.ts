@@ -192,6 +192,12 @@ probability =
 
         description:
           `"${title}" added to pipeline`,
+
+        company_id:
+          companyId || null,
+
+        deal_id:
+          deal.id,
       });
 
     if (activityError) {
@@ -199,29 +205,6 @@ probability =
         "deal activity insert failed:",
         activityError
       );
-    }
-
-    if (contactId) {
-      await supabase
-        .from(
-          "workspace_contact_activity"
-        )
-        .insert({
-          workspace_id:
-            workspace.id,
-
-          contact_id:
-            contactId,
-
-          type:
-            "deal.created",
-
-          title:
-            "Opportunity Created",
-
-          description:
-            `Opportunity "${title}" linked to contact`,
-        });
     }
 
     return deal;

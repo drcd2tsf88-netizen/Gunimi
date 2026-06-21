@@ -13,6 +13,14 @@ import OrbitField from "@/components/ui/OrbitField";
 import OrbitInput from "@/components/ui/OrbitInput";
 
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -30,10 +38,12 @@ type Props = {
 export default function InviteMemberSheet({ open, onOpenChange, onInvited }: Props) {
   const t = useTranslations("settings");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState<"admin" | "member">("member");
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {
     setEmail("");
+    setRole("member");
     onOpenChange(false);
   }
 
@@ -45,15 +55,24 @@ export default function InviteMemberSheet({ open, onOpenChange, onInvited }: Pro
     }
 
     startTransition(async () => {
-      const result = await createWorkspaceInvite({ email: trimmed });
+      const result = await createWorkspaceInvite({ email: trimmed, role });
 
-      if (result) {
+      if (result.ok) {
         toast.success(t("inviteSent"));
         setEmail("");
+        setRole("member");
         onInvited();
         onOpenChange(false);
       } else {
-        toast.error(t("failedToInvite"));
+        if (result.error === "already_invited") {
+          toast.error(t("alreadyInvited"));
+        } else if (result.error === "already_member") {
+          toast.error(t("alreadyMember"));
+        } else if (result.error === "forbidden") {
+          toast.error(t("forbidden"));
+        } else {
+          toast.error(t("failedToInvite"));
+        }
       }
     });
   }
@@ -66,7 +85,7 @@ export default function InviteMemberSheet({ open, onOpenChange, onInvited }: Pro
           <SheetDescription>{t("inviteByEmailSubtitle")}</SheetDescription>
         </SheetHeader>
 
-        <div className="flex-1 px-6 py-6">
+        <div className="flex-1 px-6 py-6 space-y-4">
           <OrbitField label={t("emailAddress")}>
             <OrbitInput
               type="email"
@@ -76,6 +95,22 @@ export default function InviteMemberSheet({ open, onOpenChange, onInvited }: Pro
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
             />
+          </OrbitField>
+
+          <OrbitField label={t("inviteRole")}>
+            <Select
+              value={role}
+              onValueChange={(v) => setRole(v as "admin" | "member")}
+              disabled={isPending}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="member">{t("roleMember")}</SelectItem>
+                <SelectItem value="admin">{t("roleAdmin")}</SelectItem>
+              </SelectContent>
+            </Select>
           </OrbitField>
         </div>
 
