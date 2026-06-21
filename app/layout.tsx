@@ -16,6 +16,9 @@ import {
   OrbitRuntimeProvider,
 } from "@/core/runtime/OrbitRuntimeProvider";
 
+import { SpeedInsights }
+from "@vercel/speed-insights/next";
+
 const inter = Inter({
   subsets: ["latin"],
 
@@ -93,6 +96,7 @@ export default function RootLayout({
           {children}
         </OrbitRuntimeProvider>
         </NextIntlClientProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
