@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { ArrowRight, Briefcase } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -127,11 +129,16 @@ export default function DealsListView({ deals, stage }: Props) {
           : "—";
 
         return (
-          <button
+          <div
             key={deal.id}
+            role="button"
+            tabIndex={0}
             onClick={() =>
               router.push(`/dashboard/deals/${deal.id}`)
             }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") router.push(`/dashboard/deals/${deal.id}`);
+            }}
             className="
               group
 
@@ -149,8 +156,11 @@ export default function DealsListView({ deals, stage }: Props) {
               text-left
 
               transition-all
+              cursor-pointer
 
               hover:bg-white/[0.025]
+              focus-visible:outline-none
+              focus-visible:bg-white/[0.025]
             "
           >
             <p
@@ -164,15 +174,25 @@ export default function DealsListView({ deals, stage }: Props) {
               {deal.title}
             </p>
 
-            <p
-              className="
-                truncate
-                text-sm
-                text-white/45
-              "
-            >
-              {deal.company?.name || "—"}
-            </p>
+            {deal.company?.id ? (
+              <Link
+                href={`/dashboard/companies/${deal.company.id}`}
+                onClick={(e) => e.stopPropagation()}
+                className="
+                  truncate
+                  text-sm
+                  text-white/45
+                  transition-colors
+                  hover:text-violet-300
+                  focus-visible:outline-none
+                  focus-visible:underline
+                "
+              >
+                {deal.company.name}
+              </Link>
+            ) : (
+              <p className="truncate text-sm text-white/45">—</p>
+            )}
 
             <p
               className="
@@ -203,7 +223,7 @@ export default function DealsListView({ deals, stage }: Props) {
                 group-hover:text-white/50
               "
             />
-          </button>
+          </div>
         );
       })}
     </div>

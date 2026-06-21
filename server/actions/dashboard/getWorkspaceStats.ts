@@ -11,63 +11,41 @@ export async function getWorkspaceStats() {
     const workspace =
       await getCurrentWorkspace();
 
-    const supabase = await createClient();
-
     if (!workspace) {
       return null;
     }
 
-    // TASKS
+    const supabase = await createClient();
 
-    const {
-      data: tasks,
-    } =
-      await supabase
-        .from(
-          "workspace_tasks"
-        )
-        .select("*")
-        .eq(
-          "workspace_id",
-          workspace.id
-        );
+    const [
+      { count: totalTasks },
+      { count: doneTasks },
+      { count: activityCount },
+    ] = await Promise.all([
+      supabase
+        .from("workspace_tasks")
+        .select("*", { count: "exact", head: true })
+        .eq("workspace_id", workspace.id),
 
-    // ACTIVITY
+      supabase
+        .from("workspace_tasks")
+        .select("*", { count: "exact", head: true })
+        .eq("workspace_id", workspace.id)
+        .eq("status", "done"),
 
-    const {
-      data: activity,
-    } =
-      await supabase
-        .from(
-          "workspace_activity"
-        )
-        .select("*")
-        .eq(
-          "workspace_id",
-          workspace.id
-        );
+      supabase
+        .from("workspace_activity")
+        .select("*", { count: "exact", head: true })
+        .eq("workspace_id", workspace.id),
+    ]);
 
-    const activeTasks =
-      tasks?.filter(
-        (task) =>
-          task.status ===
-          "active"
-      ).length || 0;
-
-    const completedTasks =
-      tasks?.filter(
-        (task) =>
-          task.status ===
-          "completed"
-      ).length || 0;
+    const completedTasks = doneTasks ?? 0;
+    const activeTasks = (totalTasks ?? 0) - completedTasks;
 
     return {
       activeTasks,
-
       completedTasks,
-
-      activityCount:
-        activity?.length || 0,
+      activityCount: activityCount ?? 0,
     };
   } catch (error) {
     console.error(error);

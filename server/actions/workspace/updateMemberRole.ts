@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 export async function updateMemberRole(memberId: string, role: string): Promise<boolean> {
   try {
@@ -32,14 +33,19 @@ export async function updateMemberRole(memberId: string, role: string): Promise<
 
     if (!targetMember || targetMember.role === "owner") return false;
 
-    const { error } = await supabase
+    const { error, count } = await supabaseAdmin
       .from("workspace_members")
-      .update({ role })
+      .update({ role }, { count: "exact" })
       .eq("id", memberId)
       .eq("workspace_id", workspace.id);
 
     if (error) {
       console.error(error);
+      return false;
+    }
+
+    if (!count || count === 0) {
+      console.error("updateMemberRole: no rows updated for member", memberId);
       return false;
     }
 

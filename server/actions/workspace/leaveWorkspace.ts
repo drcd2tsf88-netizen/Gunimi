@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 type LeaveResult = { ok: boolean; error?: string };
 
@@ -29,15 +30,20 @@ export async function leaveWorkspace(): Promise<LeaveResult> {
       return { ok: false, error: "owner_cannot_leave" };
     }
 
-    const { error } = await supabase
+    const { error, count } = await supabaseAdmin
       .from("workspace_members")
-      .delete()
+      .delete({ count: "exact" })
       .eq("workspace_id", workspace.id)
       .eq("user_id", user.id);
 
     if (error) {
       console.error(error);
       return { ok: false, error: "db_error" };
+    }
+
+    if (!count || count === 0) {
+      console.error("leaveWorkspace: no membership row deleted for user", user.id);
+      return { ok: false, error: "not_deleted" };
     }
 
     return { ok: true };

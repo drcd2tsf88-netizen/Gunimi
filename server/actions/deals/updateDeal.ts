@@ -9,6 +9,9 @@ from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { supabaseAdmin }
+from "@/lib/server/supabaseAdmin";
+
 export type UpdateDealProps = {
   dealId: string;
 
@@ -213,33 +216,16 @@ export async function updateDeal({
       return null;
     }
 
-    await supabase
-      .from(
-        "workspace_activity"
-      )
+    await supabaseAdmin
+      .from("workspace_activity")
       .insert({
-        workspace_id:
-          workspace.id,
-
-        user_id:
-          user.id,
-
-        company_id:
-          deal.company_id,
-
-        deal_id:
-          deal.id,
-
-        type:
-          "deal_updated",
-
-        description:
-          null,
-
-        metadata: {
-          deal_id:
-            deal.id,
-        },
+        workspace_id: workspace.id,
+        user_id: user.id,
+        company_id: deal.company_id,
+        deal_id: deal.id,
+        type: "deal_updated",
+        title: "Opportunity Updated",
+        description: `Updated deal "${deal.title}"`,
       });
 
     return deal;

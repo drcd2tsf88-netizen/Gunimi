@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 type DeleteResult = { ok: boolean; error?: string };
 
@@ -27,14 +28,19 @@ export async function deleteWorkspace(): Promise<DeleteResult> {
       return { ok: false, error: "not_owner" };
     }
 
-    const { error } = await supabase
+    const { error, count } = await supabaseAdmin
       .from("workspaces")
-      .delete()
+      .delete({ count: "exact" })
       .eq("id", workspace.id);
 
     if (error) {
       console.error(error);
       return { ok: false, error: "db_error" };
+    }
+
+    if (!count || count === 0) {
+      console.error("deleteWorkspace: no rows deleted for workspace", workspace.id);
+      return { ok: false, error: "not_deleted" };
     }
 
     return { ok: true };

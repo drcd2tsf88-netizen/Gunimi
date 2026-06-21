@@ -12,6 +12,8 @@ type ActivityItem = {
   title: string;
   description: string;
   created_at: string;
+  company_id?: string | null;
+  deal_id?: string | null;
 };
 
 type Props = {
@@ -39,6 +41,11 @@ export default function DashboardActivity({
       compact
       dateDisplay="relative"
       itemFallback={t("dashboard.workspaceEvent")}
+      getItemHref={(item) => {
+        if (item.deal_id) return `/dashboard/deals/${item.deal_id}`;
+        if (item.company_id) return `/dashboard/companies/${item.company_id}`;
+        return undefined;
+      }}
     />
   );
 }

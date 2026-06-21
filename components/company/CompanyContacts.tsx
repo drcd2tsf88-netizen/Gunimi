@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useTranslations } from "next-intl";
 
 import {
@@ -105,14 +107,19 @@ export default function CompanyContacts({
                   "
                 >
                   <div>
-                    <h3
+                    <Link
+                      href="/dashboard/crm"
                       className="
                         text-lg
                         font-semibold
+                        hover:text-violet-300
+                        transition-colors
+                        focus-visible:outline-none
+                        focus-visible:underline
                       "
                     >
                       {contact.name}
-                    </h3>
+                    </Link>
 
                     <p
                       className="

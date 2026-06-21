@@ -41,14 +41,12 @@ type DashboardStats = {
 
 type ActivityItem = {
   id: string;
-
   type: string;
-
   title: string;
-
   description: string;
-
   created_at: string;
+  company_id?: string | null;
+  deal_id?: string | null;
 };
 
 export default function DashboardPage() {

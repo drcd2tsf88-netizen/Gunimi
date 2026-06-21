@@ -6,6 +6,8 @@ import {
   useState,
 } from "react";
 
+import Link from "next/link";
+
 import { useTranslations } from "next-intl";
 
 import toast
@@ -599,10 +601,17 @@ export default function CRMPage() {
 
                     {t("company")}:
                     {" "}
-                    {
-                      customer.companies?.name ||
-                      t("unknown")
-                    }
+                    {customer.company_id && customer.companies?.name ? (
+                      <Link
+                        href={`/dashboard/companies/${customer.company_id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-violet-300 transition-colors hover:text-violet-200"
+                      >
+                        {customer.companies.name}
+                      </Link>
+                    ) : (
+                      customer.companies?.name || t("unknown")
+                    )}
 
                   </p>
 

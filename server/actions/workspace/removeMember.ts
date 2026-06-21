@@ -44,14 +44,19 @@ export async function removeMember(memberId: string): Promise<boolean> {
       .eq("id", targetMember.user_id)
       .maybeSingle();
 
-    const { error } = await supabase
+    const { error, count } = await supabaseAdmin
       .from("workspace_members")
-      .delete()
+      .delete({ count: "exact" })
       .eq("id", memberId)
       .eq("workspace_id", workspace.id);
 
     if (error) {
       console.error(error);
+      return false;
+    }
+
+    if (!count || count === 0) {
+      console.error("removeMember: no rows deleted for member", memberId);
       return false;
     }
 

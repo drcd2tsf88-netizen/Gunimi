@@ -251,7 +251,7 @@ export default function DealSidebar({ deal }: Props) {
 
             {deal.contact && (
               <Link
-                href={`/dashboard/contacts/${deal.contact.id}`}
+                href="/dashboard/crm"
               >
                 <div
                   className="

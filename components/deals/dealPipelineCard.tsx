@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useRouter }
 from "next/navigation";
 
@@ -79,9 +81,11 @@ export default function DealPipelineCard({
 
         <div>
           {deal.company?.name && (
-            <p
+            <Link
+              href={`/dashboard/companies/${deal.company.id}`}
               className="
                 mb-1
+                block
 
                 text-[10px]
                 uppercase
@@ -89,10 +93,15 @@ export default function DealPipelineCard({
                 tracking-[0.12em]
 
                 text-white/35
+
+                transition-colors
+                hover:text-violet-300
+                focus-visible:outline-none
+                focus-visible:underline
               "
             >
               {deal.company.name}
-            </p>
+            </Link>
           )}
 
           <h3

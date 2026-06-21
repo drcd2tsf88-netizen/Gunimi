@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { motion }
 from "framer-motion";
 
@@ -132,6 +134,10 @@ export default function CompanyDeals({
                     index * 0.05,
                 }}
               >
+                <Link
+                  href={`/dashboard/deals/${deal.id}`}
+                  className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50"
+                >
                 <OrbitCard
                   className="
                     p-5
@@ -311,6 +317,7 @@ export default function CompanyDeals({
                     </div>
                   </div>
                 </OrbitCard>
+                </Link>
               </motion.div>
             )
           )}

@@ -30,16 +30,13 @@ from "@/server/actions/activity/getWorkspaceActivity";
 
 type ActivityItem = {
   id: string;
-
   type: string;
-
   title?: string;
-
   description?: string;
-
   message?: string;
-
   created_at: string;
+  company_id?: string | null;
+  deal_id?: string | null;
 };
 
 export default function ActivityPage() {
@@ -247,6 +244,11 @@ export default function ActivityPage() {
           emptyDescription={t("noActivityDescription")}
           dateDisplay="localeString"
           itemFallback={t("workspaceEvent")}
+          getItemHref={(item) => {
+            if (item.deal_id) return `/dashboard/deals/${item.deal_id}`;
+            if (item.company_id) return `/dashboard/companies/${item.company_id}`;
+            return undefined;
+          }}
         />
       )}
     </div>

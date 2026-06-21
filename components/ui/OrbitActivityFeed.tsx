@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { motion }
 from "framer-motion";
 
@@ -28,6 +30,8 @@ export type OrbitActivityItem = {
   message?: string;
   description?: string;
   created_at: string;
+  company_id?: string | null;
+  deal_id?: string | null;
 };
 
 type Props = {
@@ -44,6 +48,7 @@ type Props = {
   animated?: boolean;
   dateDisplay?: "relative" | "localeString" | "localeDate";
   itemFallback?: string;
+  getItemHref?: (item: OrbitActivityItem) => string | undefined;
 };
 
 function formatActivityText(
@@ -70,6 +75,7 @@ export default function OrbitActivityFeed({
   animated = true,
   dateDisplay = "localeString",
   itemFallback,
+  getItemHref,
 }: Props) {
   function displayDate(
     dateStr: string
@@ -126,6 +132,8 @@ export default function OrbitActivityFeed({
 
             const displayDescription =
               formatActivityText(item.description);
+
+            const href = getItemHref?.(item);
 
             const card = (
               <OrbitCard
@@ -192,6 +200,15 @@ export default function OrbitActivityFeed({
               </OrbitCard>
             );
 
+            const wrappedCard = href ? (
+              <Link
+                href={href}
+                className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50"
+              >
+                {card}
+              </Link>
+            ) : card;
+
             return animated ? (
               <motion.div
                 key={item.id}
@@ -199,10 +216,10 @@ export default function OrbitActivityFeed({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                {card}
+                {wrappedCard}
               </motion.div>
             ) : (
-              <div key={item.id}>{card}</div>
+              <div key={item.id}>{wrappedCard}</div>
             );
           })}
       </div>
