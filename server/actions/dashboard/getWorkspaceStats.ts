@@ -1,15 +1,11 @@
 "use server";
 
-import { createClient }
-from "@/lib/supabase/server";
-
-import { getCurrentWorkspace }
-from "@/lib/workspace/getCurrentWorkspace";
+import { createClient } from "@/lib/supabase/server";
+import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
 export async function getWorkspaceStats() {
   try {
-    const workspace =
-      await getCurrentWorkspace();
+    const workspace = await getCurrentWorkspace();
 
     if (!workspace) {
       return null;
@@ -20,6 +16,8 @@ export async function getWorkspaceStats() {
     const [
       { count: totalTasks },
       { count: doneTasks },
+      { count: contactCount },
+      { count: noteCount },
       { count: activityCount },
     ] = await Promise.all([
       supabase
@@ -34,22 +32,30 @@ export async function getWorkspaceStats() {
         .eq("status", "done"),
 
       supabase
+        .from("workspace_contacts")
+        .select("*", { count: "exact", head: true })
+        .eq("workspace_id", workspace.id),
+
+      supabase
+        .from("workspace_notes")
+        .select("*", { count: "exact", head: true })
+        .eq("workspace_id", workspace.id),
+
+      supabase
         .from("workspace_activity")
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
     ]);
 
-    const completedTasks = doneTasks ?? 0;
-    const activeTasks = (totalTasks ?? 0) - completedTasks;
-
     return {
-      activeTasks,
-      completedTasks,
+      tasks: totalTasks ?? 0,
+      completedTasks: doneTasks ?? 0,
+      contacts: contactCount ?? 0,
+      notes: noteCount ?? 0,
       activityCount: activityCount ?? 0,
     };
   } catch (error) {
     console.error(error);
-
     return null;
   }
 }

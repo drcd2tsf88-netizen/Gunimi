@@ -82,86 +82,32 @@ const displayName =
     try {
       setLoading(true);
       await runWorkspaceWatcher();
-      const {
-  data: { user },
-} = await supabase.auth.getUser();
-
-if (user) {
-  const {
-    data: profileData,
-  } = await supabase
-    .from("profiles")
-    .select(
-      "full_name,email"
-    )
-    .eq(
-      "id",
-      user.id
-    )
-    .single();
-
-  setProfile(
-    profileData
-  );
-}
-
-      // TASKS
 
       const {
-        data: tasks,
-      } = await supabase
-        .from(
-          "workspace_tasks"
-        )
-        .select("*");
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      // CONTACTS
+      if (user) {
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("full_name,email")
+          .eq("id", user.id)
+          .single();
 
-      const {
-        data: contacts,
-      } = await supabase
-        .from(
-          "workspace_contacts"
-        )
-        .select("id");
+        setProfile(profileData);
+      }
 
-      // NOTES
-
-      const {
-        data: notes,
-      } = await supabase
-        .from(
-          "workspace_notes"
-        )
-        .select("id");
-
-      // ACTIVITY
-
-      const activity =
-        await getWorkspaceActivity(8);
+      const [statsData, activity] = await Promise.all([
+        getWorkspaceStats(),
+        getWorkspaceActivity(8),
+      ]);
 
       setStats({
-        tasks:
-          tasks?.length ?? 0,
-
-        contacts:
-          contacts?.length ??
-          0,
-
-        notes:
-          notes?.length ?? 0,
-
-        activity:
-          activity.length,
-
-        completedTasks:
-          tasks?.filter(
-            (
-              task
-            ) =>
-              task.status ===
-              "completed"
-          ).length ?? 0,
+        tasks: statsData?.tasks ?? 0,
+        completedTasks: statsData?.completedTasks ?? 0,
+        contacts: statsData?.contacts ?? 0,
+        notes: statsData?.notes ?? 0,
+        activity: activity.length,
       });
 
       setActivityFeed(activity);
@@ -182,26 +128,19 @@ if (user) {
 
  useEffect(() => {
   async function refreshDashboard() {
-    // LIVE STATS
+    const [statsData, activity] = await Promise.all([
+      getWorkspaceStats(),
+      getWorkspaceActivity(8),
+    ]);
 
-    const statsData =
-      await getWorkspaceStats();
-
-    // ACTIVITY
-
-    const activity =
-      await getWorkspaceActivity(8);
-
-    setStats(
-      (prev: any) => ({
-        ...prev,
-
-        ...statsData,
-
-        activity:
-          activity.length,
-      })
-    );
+    setStats((prev) => ({
+      ...prev,
+      tasks: statsData?.tasks ?? prev?.tasks ?? 0,
+      completedTasks: statsData?.completedTasks ?? prev?.completedTasks ?? 0,
+      contacts: statsData?.contacts ?? prev?.contacts ?? 0,
+      notes: statsData?.notes ?? prev?.notes ?? 0,
+      activity: activity.length,
+    }));
 
     setActivityFeed(activity);
   }
