@@ -37,10 +37,7 @@ export async function POST(
       return errorResponse("Unauthorized", 401);
     }
 
-    if (
-      !companyId ||
-      !title
-    ) {
+    if (!title) {
       return errorResponse(
         "Missing fields",
         400
@@ -80,8 +77,11 @@ export async function POST(
         .from("workspace_notes")
         .insert({
 
+          workspace_id:
+            workspace.id,
+
           company_id:
-            companyId,
+            companyId || null,
 
           user_id:
             user.id,
@@ -111,6 +111,9 @@ export async function POST(
 
         user_id:
           user.id,
+
+        company_id:
+          companyId || null,
 
         type:
           "note_created",

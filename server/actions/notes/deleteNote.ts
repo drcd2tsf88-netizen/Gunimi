@@ -14,12 +14,12 @@ export async function deleteNote(noteId: string) {
     const workspace = await getCurrentWorkspace();
     if (!workspace) return false;
 
-    // Fetch to verify ownership and get title for activity
+    // Verify note belongs to this workspace and get title for activity
     const { data: note } = await supabaseAdmin
       .from("workspace_notes")
-      .select("id, title, user_id")
+      .select("id, title, workspace_id")
       .eq("id", noteId)
-      .eq("user_id", user.id)
+      .eq("workspace_id", workspace.id)
       .single();
 
     if (!note) return false;
@@ -29,10 +29,10 @@ export async function deleteNote(noteId: string) {
       .from("workspace_notes")
       .delete()
       .eq("id", noteId)
-      .eq("user_id", user.id);
+      .eq("workspace_id", workspace.id);
 
     if (deleteError) {
-      console.error(deleteError);
+      console.error("deleteNote error:", deleteError);
       return false;
     }
 
@@ -46,7 +46,7 @@ export async function deleteNote(noteId: string) {
 
     return true;
   } catch (error) {
-    console.error(error);
+    console.error("deleteNote failed:", error);
     return false;
   }
 }

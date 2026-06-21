@@ -14,9 +14,8 @@ import toast from "react-hot-toast";
 
 import { useTranslations } from "next-intl";
 
-import { supabase } from "@/lib/supabase";
-
 import { getWorkspaceNotes } from "@/server/actions/notes/getWorkspaceNotes";
+import { createNote } from "@/server/actions/notes/createNote";
 import { deleteNote } from "@/server/actions/notes/deleteNote";
 
 import OrbitCard from "@/components/ui/OrbitCard";
@@ -82,23 +81,10 @@ export default function NotesPage() {
     try {
       setCreating(true);
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const result = await createNote({ title: title.trim(), content: content.trim() });
 
-      if (!user) {
-        toast.error(t("unauthorized"));
-        return;
-      }
-
-      const { error } = await supabase.from("workspace_notes").insert({
-        user_id: user.id,
-        title: title.trim(),
-        content: content.trim(),
-      });
-
-      if (error) {
-        toast.error(error.message || t("failedToCreate"));
+      if (!result) {
+        toast.error(t("failedToCreate"));
         return;
       }
 

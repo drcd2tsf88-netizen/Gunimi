@@ -156,35 +156,52 @@ CREATE POLICY "activity_insert_member"
 
 -- ────────────────────────────────────────────────────────────
 -- STEP 8 — workspace_notes
--- Two SELECT policies: company-scoped notes (via workspace_companies FK)
--- and standalone workspace notes (via user_id, no company_id).
--- Both are needed because /dashboard/notes creates notes without company_id.
+-- Fully workspace-scoped after supabase-notes-workspace-migration.sql.
+-- All operations require workspace membership. Run the migration first.
 -- ────────────────────────────────────────────────────────────
 
-CREATE POLICY "notes_select_company_member"
+CREATE POLICY "notes_select_member"
   ON workspace_notes FOR SELECT TO authenticated
   USING (
-    company_id IS NOT NULL AND
+    workspace_id IS NOT NULL AND
     EXISTS (
-      SELECT 1
-      FROM workspace_companies wc
-      JOIN workspace_members wm ON wm.workspace_id::text = wc.workspace_id::text
-      WHERE wc.id::text = workspace_notes.company_id::text
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_notes.workspace_id::text
         AND wm.user_id::text = auth.uid()::text
     )
   );
 
-CREATE POLICY "notes_select_own"
-  ON workspace_notes FOR SELECT TO authenticated
-  USING (
-    company_id IS NULL AND
-    user_id::text = auth.uid()::text
-  );
-
-CREATE POLICY "notes_insert_own"
+CREATE POLICY "notes_insert_member"
   ON workspace_notes FOR INSERT TO authenticated
   WITH CHECK (
-    user_id::text = auth.uid()::text
+    workspace_id IS NOT NULL AND
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_notes.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "notes_update_member"
+  ON workspace_notes FOR UPDATE TO authenticated
+  USING (
+    workspace_id IS NOT NULL AND
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_notes.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
+  );
+
+CREATE POLICY "notes_delete_member"
+  ON workspace_notes FOR DELETE TO authenticated
+  USING (
+    workspace_id IS NOT NULL AND
+    EXISTS (
+      SELECT 1 FROM workspace_members wm
+      WHERE wm.workspace_id::text = workspace_notes.workspace_id::text
+        AND wm.user_id::text = auth.uid()::text
+    )
   );
 
 
