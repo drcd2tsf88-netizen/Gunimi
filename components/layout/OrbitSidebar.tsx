@@ -24,6 +24,8 @@ import {
   Sparkles,
   X,
   MessageSquare,
+  CalendarDays,
+  Mail,
 } from "lucide-react";
 
 const items = [
@@ -91,6 +93,28 @@ const items = [
 
     icon:
       CheckSquare,
+  },
+
+  {
+    label:
+      "Calendar",
+
+    href:
+      "/dashboard/calendar",
+
+    icon:
+      CalendarDays,
+  },
+
+  {
+    label:
+      "Email",
+
+    href:
+      "/dashboard/email",
+
+    icon:
+      Mail,
   },
 
   {

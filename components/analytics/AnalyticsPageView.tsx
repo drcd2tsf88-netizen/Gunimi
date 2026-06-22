@@ -8,6 +8,8 @@ import {
   CheckSquare2,
   Users,
   BarChart2,
+  CalendarDays,
+  Mail,
   GitMerge,
   Sparkles,
   UserCheck,
@@ -43,7 +45,7 @@ export default function AnalyticsPageView({ stats }: Props) {
           subtitle={t("subtitle")}
         />
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           <OrbitStatCard
             title={t("statCompanies")}
             value={stats.companies}
@@ -66,6 +68,18 @@ export default function AnalyticsPageView({ stats }: Props) {
             title={t("statMembers")}
             value={stats.members}
             icon={Users}
+            animated
+          />
+          <OrbitStatCard
+            title={t("statUpcomingMeetings")}
+            value={stats.upcomingMeetings}
+            icon={CalendarDays}
+            animated
+          />
+          <OrbitStatCard
+            title={t("statEmailThreads")}
+            value={stats.emailThreads}
+            icon={Mail}
             animated
           />
         </div>
