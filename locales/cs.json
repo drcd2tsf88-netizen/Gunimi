@@ -77,7 +77,13 @@
     "noMeetingsToday": "žádné schůzky naplánované",
     "activityTodayCount": "událostí dnes",
     "noUrgentItems": "Žádné urgentní položky. Pracovní prostor funguje normálně.",
-    "unread": "Nepřečtené"
+    "unread": "Nepřečtené",
+    "briefPriorities": "Dnešní priority",
+    "briefRisks": "Rizika",
+    "briefOpportunities": "Příležitosti",
+    "briefLoading": "Analyzuji pracovní prostor...",
+    "briefUnavailable": "Inteligence pracovního prostoru nedostupná.",
+    "briefAllClear": "Vše v pořádku — žádné položky nevyžadují pozornost."
   },
   "crm": {
     "title": "Zákaznické vztahy",

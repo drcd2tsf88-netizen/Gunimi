@@ -77,7 +77,13 @@
     "noMeetingsToday": "no meetings scheduled",
     "activityTodayCount": "events today",
     "noUrgentItems": "No urgent items. Workspace is on track.",
-    "unread": "Unread"
+    "unread": "Unread",
+    "briefPriorities": "Today's Priorities",
+    "briefRisks": "Risks",
+    "briefOpportunities": "Opportunities",
+    "briefLoading": "Analyzing workspace...",
+    "briefUnavailable": "Workspace intelligence unavailable.",
+    "briefAllClear": "All clear — no items require attention today."
   },
   "crm": {
     "title": "Customer Relationships",

@@ -105,11 +105,7 @@ export default function DashboardView({
       </div>
 
       {/* ROW 3: Daily Brief */}
-      <DailyBriefWidget
-        tasks={tasks}
-        events={events}
-        activityCount={activities.length}
-      />
+      <DailyBriefWidget displayName={displayName} />
 
       <OrbitAssistant
         open={assistantOpen}

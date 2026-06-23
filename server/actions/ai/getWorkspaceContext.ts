@@ -13,6 +13,7 @@ export type WorkspaceAIContext = {
     members: number;
   };
   deals: Array<{
+    id: string;
     title: string;
     stage: string;
     value: number | null;
@@ -20,6 +21,7 @@ export type WorkspaceAIContext = {
     daysSinceUpdated: number;
   }>;
   tasks: Array<{
+    id: string;
     title: string;
     priority: string;
     dueDate: string | null;
@@ -41,6 +43,7 @@ export type WorkspaceAIContext = {
 };
 
 type DealRow = {
+  id: string;
   title: string;
   stage: string;
   value: number | null;
@@ -49,6 +52,7 @@ type DealRow = {
 };
 
 type TaskRow = {
+  id: string;
   title: string;
   priority: string;
   due_date: string | null;
@@ -104,7 +108,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
         .single(),
       supabase
         .from("workspace_deals")
-        .select("title, stage, value, updated_at, company:workspace_companies(name)")
+        .select("id, title, stage, value, updated_at, company:workspace_companies(name)")
         .eq("workspace_id", workspace.id)
         .neq("stage", "won")
         .neq("stage", "lost")
@@ -112,7 +116,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
         .limit(10),
       supabase
         .from("workspace_tasks")
-        .select("title, priority, due_date")
+        .select("id, title, priority, due_date")
         .eq("workspace_id", workspace.id)
         .neq("status", "done")
         .order("due_date", { ascending: true })
@@ -162,6 +166,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
       "Orbit Workspace";
 
     const deals = ((dealsResult.data ?? []) as unknown as DealRow[]).map((d) => ({
+      id: d.id,
       title: d.title,
       stage: d.stage,
       value: d.value != null ? Number(d.value) : null,
@@ -172,6 +177,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
     }));
 
     const tasks = ((tasksResult.data ?? []) as unknown as TaskRow[]).map((t) => ({
+      id: t.id,
       title: t.title,
       priority: t.priority,
       dueDate: t.due_date,
