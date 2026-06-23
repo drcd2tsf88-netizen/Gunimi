@@ -16,18 +16,48 @@ function redirect(path: string) {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
+  const stateParam = searchParams.get("state");
   const oauthError = searchParams.get("error");
 
   if (oauthError || !code) {
     return redirect("/dashboard/calendar?error=oauth_denied");
   }
 
+  if (!stateParam) {
+    return redirect("/dashboard/calendar?error=invalid_state");
+  }
+
+  let stateWorkspaceId: string;
+  let stateUserId: string;
+  try {
+    const parsed = JSON.parse(Buffer.from(stateParam, "base64url").toString());
+    stateWorkspaceId = parsed.workspaceId;
+    stateUserId = parsed.userId;
+    if (!stateWorkspaceId || !stateUserId) throw new Error("Incomplete state");
+  } catch {
+    return redirect("/dashboard/calendar?error=invalid_state");
+  }
+
   try {
     const user = await getUser();
     if (!user) return redirect("/login");
 
+    if (user.id !== stateUserId) {
+      console.error(
+        `[Security] Calendar OAuth state mismatch: session user ${user.id} !== state userId ${stateUserId}`
+      );
+      return redirect("/dashboard/calendar?error=session_mismatch");
+    }
+
     const workspace = await getCurrentWorkspace();
     if (!workspace) return redirect("/dashboard/calendar?error=workspace_not_found");
+
+    if (workspace.id !== stateWorkspaceId) {
+      console.error(
+        `[Security] Calendar OAuth workspace mismatch: active workspace ${workspace.id} !== state workspaceId ${stateWorkspaceId}`
+      );
+      return redirect("/dashboard/calendar?error=workspace_mismatch");
+    }
 
     const provider = getProvider("google");
 

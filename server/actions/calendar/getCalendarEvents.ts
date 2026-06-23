@@ -15,6 +15,7 @@ export async function getCalendarEvents(limit = 20): Promise<CalendarEventRow[]>
         "id, title, description, start_at, end_at, organizer_email, organizer_name, location, html_link, status, all_day"
       )
       .eq("workspace_id", workspace.id)
+      .neq("status", "cancelled")
       .gte("start_at", new Date().toISOString())
       .order("start_at", { ascending: true })
       .limit(limit);

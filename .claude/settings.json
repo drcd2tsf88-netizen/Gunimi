@@ -14,7 +14,8 @@
       "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/en.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")",
       "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/sk.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")",
       "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/cs.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")",
-      "Bash(grep -E \"\\(crm\\\\\\\\\\\\\\\\page|notes\\\\\\\\\\\\\\\\page\\)\")"
+      "Bash(grep -E \"\\(crm\\\\\\\\\\\\\\\\page|notes\\\\\\\\\\\\\\\\page\\)\")",
+      "Bash(npx tsc *)"
     ]
   }
 }

@@ -135,31 +135,30 @@ export class GoogleCalendarProvider implements CalendarProvider {
     const data = await res.json();
     const items: Record<string, unknown>[] = data.items ?? [];
 
-    return items
-      .filter((item) => item.status !== "cancelled")
-      .map((item) => {
-        const start = item.start as Record<string, string> | undefined;
-        const end = item.end as Record<string, string> | undefined;
-        const organizer = item.organizer as Record<string, string> | undefined;
-        const allDay = Boolean(start?.date && !start?.dateTime);
+    return items.map((item) => {
+      const start = item.start as Record<string, string> | undefined;
+      const end = item.end as Record<string, string> | undefined;
+      const organizer = item.organizer as Record<string, string> | undefined;
+      const allDay = Boolean(start?.date && !start?.dateTime);
+      const status = item.status as "confirmed" | "tentative" | "cancelled";
 
-        return {
-          providerEventId: String(item.id),
-          title: String(item.summary ?? "Untitled Event"),
-          description: item.description ? String(item.description) : undefined,
-          startAt: start?.dateTime
-            ? new Date(start.dateTime)
-            : new Date(start?.date ?? ""),
-          endAt: end?.dateTime
-            ? new Date(end.dateTime)
-            : new Date(end?.date ?? ""),
-          organizerEmail: organizer?.email,
-          organizerName: organizer?.displayName,
-          location: item.location ? String(item.location) : undefined,
-          htmlLink: item.htmlLink ? String(item.htmlLink) : undefined,
-          status: (item.status as "confirmed" | "tentative") ?? "confirmed",
-          allDay,
-        };
-      });
+      return {
+        providerEventId: String(item.id),
+        title: String(item.summary ?? "Untitled Event"),
+        description: item.description ? String(item.description) : undefined,
+        startAt: start?.dateTime
+          ? new Date(start.dateTime)
+          : new Date(start?.date ?? ""),
+        endAt: end?.dateTime
+          ? new Date(end.dateTime)
+          : new Date(end?.date ?? ""),
+        organizerEmail: organizer?.email,
+        organizerName: organizer?.displayName,
+        location: item.location ? String(item.location) : undefined,
+        htmlLink: item.htmlLink ? String(item.htmlLink) : undefined,
+        status: status ?? "confirmed",
+        allDay,
+      };
+    });
   }
 }

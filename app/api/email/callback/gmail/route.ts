@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { getUser } from "@/lib/server/auth";
 import { getProvider } from "@/lib/email/providers";
 import { syncEmailConnection } from "@/lib/email/sync";
 
@@ -31,6 +32,39 @@ export async function GET(request: NextRequest) {
   } catch {
     return NextResponse.redirect(
       new URL("/dashboard/email?error=invalid_state", request.url)
+    );
+  }
+
+  // Verify the authenticated session matches the OAuth state
+  const sessionUser = await getUser();
+  if (!sessionUser) {
+    return NextResponse.redirect(
+      new URL("/login", request.url)
+    );
+  }
+
+  if (sessionUser.id !== userId) {
+    console.error(
+      `[Security] Email OAuth state mismatch: session user ${sessionUser.id} !== state userId ${userId}`
+    );
+    return NextResponse.redirect(
+      new URL("/dashboard/email?error=session_mismatch", request.url)
+    );
+  }
+
+  const { data: membership } = await supabaseAdmin
+    .from("workspace_members")
+    .select("id")
+    .eq("workspace_id", workspaceId)
+    .eq("user_id", sessionUser.id)
+    .single();
+
+  if (!membership) {
+    console.error(
+      `[Security] Email OAuth workspace not accessible: user ${sessionUser.id} not a member of ${workspaceId}`
+    );
+    return NextResponse.redirect(
+      new URL("/dashboard/email?error=workspace_forbidden", request.url)
     );
   }
 

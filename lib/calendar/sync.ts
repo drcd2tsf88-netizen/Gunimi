@@ -6,6 +6,10 @@ export type SyncResult = {
   connectionId: string;
 };
 
+function isRevokedTokenError(err: unknown): boolean {
+  return String(err).includes("invalid_grant");
+}
+
 export async function syncCalendarConnection(
   connectionId: string
 ): Promise<SyncResult> {
@@ -29,19 +33,37 @@ export async function syncCalendarConnection(
     new Date(connection.token_expires_at as string) <
       new Date(Date.now() + 60 * 1000)
   ) {
-    const tokens = await provider.refreshAccessToken(
-      connection.refresh_token as string
-    );
-    accessToken = tokens.accessToken;
+    try {
+      const tokens = await provider.refreshAccessToken(
+        connection.refresh_token as string
+      );
+      accessToken = tokens.accessToken;
 
-    await supabaseAdmin
-      .from("calendar_connections")
-      .update({
-        access_token: tokens.accessToken,
-        token_expires_at: tokens.expiresAt.toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", connectionId);
+      await supabaseAdmin
+        .from("calendar_connections")
+        .update({
+          access_token: tokens.accessToken,
+          token_expires_at: tokens.expiresAt.toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", connectionId);
+    } catch (refreshError) {
+      if (isRevokedTokenError(refreshError)) {
+        console.error(
+          `[Calendar] Token revoked for connection ${connectionId} — clearing credentials`
+        );
+        await supabaseAdmin
+          .from("calendar_connections")
+          .update({
+            access_token: null,
+            refresh_token: null,
+            token_expires_at: null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", connectionId);
+      }
+      throw refreshError;
+    }
   }
 
   const timeMin = new Date();

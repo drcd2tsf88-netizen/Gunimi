@@ -4,6 +4,10 @@ import { linkThreadToCrm } from "./crm-linker";
 
 const THREAD_BATCH_SIZE = 10;
 
+function isRevokedTokenError(err: unknown): boolean {
+  return String(err).includes("invalid_grant");
+}
+
 export async function syncEmailConnection(
   connectionId: string
 ): Promise<{ synced: number; linked: number }> {
@@ -28,17 +32,36 @@ export async function syncEmailConnection(
     if (!connection.refresh_token) {
       throw new Error(`No refresh token for connection ${connectionId}`);
     }
-    const refreshed = await provider.refreshAccessToken(connection.refresh_token);
-    accessToken = refreshed.accessToken;
 
-    await supabaseAdmin
-      .from("email_connections")
-      .update({
-        access_token: refreshed.accessToken,
-        token_expires_at: refreshed.expiresAt.toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", connectionId);
+    try {
+      const refreshed = await provider.refreshAccessToken(connection.refresh_token);
+      accessToken = refreshed.accessToken;
+
+      await supabaseAdmin
+        .from("email_connections")
+        .update({
+          access_token: refreshed.accessToken,
+          token_expires_at: refreshed.expiresAt.toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", connectionId);
+    } catch (refreshError) {
+      if (isRevokedTokenError(refreshError)) {
+        console.error(
+          `[Email] Token revoked for connection ${connectionId} — clearing credentials`
+        );
+        await supabaseAdmin
+          .from("email_connections")
+          .update({
+            access_token: null,
+            refresh_token: null,
+            token_expires_at: null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", connectionId);
+      }
+      throw refreshError;
+    }
   }
 
   // List recent threads

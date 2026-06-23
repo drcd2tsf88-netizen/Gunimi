@@ -60,6 +60,7 @@ export async function getAnalyticsOverview(): Promise<AnalyticsOverview> {
         .from("calendar_events")
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id)
+        .neq("status", "cancelled")
         .gte("start_at", now)
         .lte("start_at", sevenDays),
       supabaseAdmin
