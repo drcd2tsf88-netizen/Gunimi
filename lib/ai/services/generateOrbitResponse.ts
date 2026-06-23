@@ -1,6 +1,3 @@
-import { getMemoryContext }
-from "@/lib/ai/memory/getMemoryContext";
-
 type GenerateOrbitResponseProps = {
   input: string;
 
@@ -25,271 +22,45 @@ type GenerateOrbitResponseProps = {
   };
 };
 
-export async function generateOrbitResponse({
-  input,
+type OrbitResponse = {
+  response: string;
+  generatedActions: string[];
+  generatedTimeline: string[];
+  generatedMemory: string[];
+};
 
-  context,
+export async function generateOrbitResponse(
+  props: GenerateOrbitResponseProps
+): Promise<OrbitResponse> {
+  const { input, agent } = props;
 
-  agent,
+  try {
+    const res = await fetch("/api/orbit-assistant", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: input, agent: agent.name }),
+    });
 
-  workspaceMemory,
+    if (!res.ok) {
+      throw new Error(`orbit-assistant returned ${res.status}`);
+    }
 
-  workspaceContext,
-}: GenerateOrbitResponseProps) {
-  // MEMORY
+    const json = (await res.json()) as { response?: string; actions?: string[] };
 
-  const memoryContext =
-    await getMemoryContext();
+    return {
+      response: json.response ?? "Orbit AI could not generate a response.",
+      generatedActions: json.actions ?? [],
+      generatedTimeline: [],
+      generatedMemory: [],
+    };
+  } catch (error) {
+    console.error("generateOrbitResponse failed:", error);
 
-  // NORMALIZE INPUT
-
-  const lowerInput =
-    input.toLowerCase();
-
-  // DEFAULT RESPONSE
-
-  let response =
-    `
-Orbit AI analyzed your workspace state.
-
-Workspace systems remain operational with active AI synchronization and workflow monitoring.
-`;
-
-  let generatedActions:
-    string[] = [];
-
-  let generatedTimeline:
-    string[] = [];
-
-  let generatedMemory:
-    string[] = [];
-
-  // TASK ANALYSIS
-
-  if (
-    lowerInput.includes(
-      "task"
-    )
-  ) {
-    response = `
-Orbit AI analyzed your task infrastructure.
-
-Workspace Memory:
-${memoryContext}
-
-• Active Tasks:
-${workspaceContext.activeTasks}
-
-• Overdue Tasks:
-${workspaceContext.overdueTasks}
-
-Orbit AI recommends prioritizing high-impact execution workflows and resolving overdue productivity items.
-`;
-
-    generatedActions = [
-      "Review Workspace Tasks",
-
-      "Generate Task Workflow",
-    ];
-
-    generatedTimeline = [
-      "Task systems analyzed",
-
-      "Priority workflow generated",
-    ];
-
-    generatedMemory.push(
-      "Task workflow activity detected"
-    );
+    return {
+      response: "Orbit AI encountered an error while processing the request.",
+      generatedActions: [],
+      generatedTimeline: [],
+      generatedMemory: [],
+    };
   }
-
-  // CRM ANALYSIS
-
-  if (
-    lowerInput.includes(
-      "crm"
-    ) ||
-    lowerInput.includes(
-      "lead"
-    )
-  ) {
-    response = `
-Orbit AI analyzed CRM engagement activity.
-
-Workspace Memory:
-${memoryContext}
-
-• CRM Leads:
-${workspaceContext.crmLeads}
-
-• Productivity:
-${workspaceContext.productivity}
-
-Orbit AI recommends prioritizing customer follow-up workflows and active opportunity management.
-`;
-
-    generatedActions = [
-      "Open CRM Pipeline",
-
-      "Generate Follow-up Workflow",
-    ];
-
-    generatedTimeline = [
-      "CRM pipeline analyzed",
-
-      "Lead engagement review completed",
-    ];
-
-    generatedMemory.push(
-      "CRM workflow activity detected"
-    );
-  }
-
-  // ANALYTICS
-
-  if (
-    lowerInput.includes(
-      "analyze"
-    ) ||
-    lowerInput.includes(
-      "analytics"
-    )
-  ) {
-    response = `
-Orbit AI Workspace Analysis
-
-Workspace Memory:
-${memoryContext}
-
-• Active Tasks:
-${workspaceContext.activeTasks}
-
-• Overdue Tasks:
-${workspaceContext.overdueTasks}
-
-• CRM Leads:
-${workspaceContext.crmLeads}
-
-• AI Actions Today:
-${workspaceContext.aiActions}
-
-• Productivity Trend:
-${workspaceContext.productivity}
-
-Analysis:
-Workspace systems remain stable with healthy AI orchestration activity and elevated CRM engagement.
-`;
-
-    generatedActions = [
-      "Open Workspace Analytics",
-
-      "Generate AI Report",
-    ];
-
-    generatedTimeline = [
-      "Workspace analysis completed",
-
-      "AI insight report generated",
-    ];
-  }
-
-  // BRIEFING
-
-  if (
-    lowerInput.includes(
-      "briefing"
-    )
-  ) {
-    response = `
-Orbit AI Workspace Briefing
-
-• Workspace productivity remains stable.
-
-• ${workspaceContext.overdueTasks} overdue tasks require attention.
-
-• CRM engagement systems remain active.
-
-• AI systems completed ${workspaceContext.aiActions} autonomous actions today.
-
-Recommendation:
-Prioritize overdue tasks and review active CRM workflows.
-`;
-
-    generatedTimeline = [
-      "Workspace briefing generated",
-    ];
-  }
-
-  // PRIORITIES
-
-  if (
-    lowerInput.includes(
-      "priority"
-    )
-  ) {
-    response = `
-Orbit AI analyzed current workspace priorities.
-
-Workspace Memory:
-${memoryContext}
-
-Current Focus:
-${workspaceMemory.join(
-  "\n"
-)}
-
-Recommendation:
-Focus on overdue execution workflows and active CRM engagement opportunities.
-`;
-
-    generatedActions = [
-      "Generate Priority Workflow",
-    ];
-  }
-
-  // CREATE TASK
-
-  if (
-    lowerInput.includes(
-      "create task"
-    )
-  ) {
-    response = `
-Orbit AI successfully generated a new workspace task workflow.
-
-Task Status:
-Added to active execution queue.
-
-Priority:
-High
-
-AI orchestration systems synchronized the task with the current workspace productivity pipeline.
-`;
-
-    generatedActions = [
-      "Create Workspace Task",
-    ];
-
-    generatedTimeline = [
-      "Task created",
-
-      "Workflow synchronized",
-
-      "AI execution completed",
-    ];
-
-    generatedMemory.push(
-      "Workspace task generated by Orbit AI"
-    );
-  }
-
-  return {
-    response,
-
-    generatedActions,
-
-    generatedTimeline,
-
-    generatedMemory,
-  };
 }

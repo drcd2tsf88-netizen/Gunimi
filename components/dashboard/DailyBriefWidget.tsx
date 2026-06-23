@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Sparkles, CheckSquare2, CalendarDays, Activity } from "lucide-react";
 import OrbitCard from "@/components/ui/OrbitCard";
@@ -14,6 +15,9 @@ type Props = {
 
 export default function DailyBriefWidget({ tasks, events, activityCount }: Props) {
   const t = useTranslations("dashboard");
+
+  const [brief, setBrief] = useState<string | null>(null);
+  const [briefLoading, setBriefLoading] = useState(false);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -50,6 +54,20 @@ export default function DailyBriefWidget({ tasks, events, activityCount }: Props
     },
   ];
 
+  async function generateBrief() {
+    setBriefLoading(true);
+    setBrief(null);
+    try {
+      const res = await fetch("/api/ai/brief", { method: "POST" });
+      const json = await res.json() as { brief?: string };
+      setBrief(json.brief ?? null);
+    } catch {
+      setBrief(null);
+    } finally {
+      setBriefLoading(false);
+    }
+  }
+
   return (
     <OrbitCard className="p-5">
       <div className="flex items-start gap-4">
@@ -58,13 +76,23 @@ export default function DailyBriefWidget({ tasks, events, activityCount }: Props
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-3">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
-              {t("dailyBrief")}
-            </p>
-            <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-[9px] uppercase tracking-wide text-violet-300">
-              Live
-            </span>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+                {t("dailyBrief")}
+              </p>
+              <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-[9px] uppercase tracking-wide text-violet-300">
+                Live
+              </span>
+            </div>
+
+            <button
+              onClick={generateBrief}
+              disabled={briefLoading}
+              className="shrink-0 rounded-xl border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-[10px] font-medium text-violet-300 transition-all hover:bg-violet-500/15 disabled:opacity-50"
+            >
+              {briefLoading ? "Analyzing..." : "Ask Orbit AI"}
+            </button>
           </div>
           <p className="mt-0.5 text-xs text-white/30">{t("dailyBriefSubtitle")}</p>
 
@@ -82,6 +110,22 @@ export default function DailyBriefWidget({ tasks, events, activityCount }: Props
               );
             })}
           </div>
+
+          {briefLoading && (
+            <div className="mt-4 flex items-center gap-2">
+              <div className="h-3 w-3 animate-spin rounded-full border border-violet-400 border-t-transparent" />
+              <p className="text-xs text-white/30">Orbit AI analyzing workspace...</p>
+            </div>
+          )}
+
+          {brief && !briefLoading && (
+            <div className="mt-4 rounded-xl border border-violet-500/15 bg-violet-500/5 px-4 py-3">
+              <p className="text-xs font-medium uppercase tracking-widest text-violet-400">
+                Orbit AI Insight
+              </p>
+              <p className="mt-1.5 text-sm leading-relaxed text-white/80">{brief}</p>
+            </div>
+          )}
         </div>
       </div>
     </OrbitCard>
