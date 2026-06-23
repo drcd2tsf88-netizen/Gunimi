@@ -202,7 +202,12 @@ export default function CRMPage() {
                   className="flex flex-col gap-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-300 hover:bg-white/[0.05] xl:flex-row xl:items-center xl:justify-between"
                 >
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-lg font-semibold">{customer.name}</h3>
+                    <Link
+                      href={`/dashboard/crm/${customer.id}`}
+                      className="text-lg font-semibold hover:text-violet-300 transition-colors"
+                    >
+                      {customer.name}
+                    </Link>
 
                     <p className="mt-2 text-zinc-400">{customer.email}</p>
 

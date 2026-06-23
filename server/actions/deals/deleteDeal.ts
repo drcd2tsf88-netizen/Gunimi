@@ -45,7 +45,7 @@ export async function deleteDeal(
       error: dealError,
     } = await supabase
       .from("workspace_deals")
-      .select("id, title, company_id, workspace_id")
+      .select("id, title, company_id, contact_id, workspace_id")
       .eq("workspace_id", workspace.id)
       .eq("id", dealId)
       .single();
@@ -74,6 +74,7 @@ export async function deleteDeal(
         workspace_id: workspace.id,
         user_id: user.id,
         company_id: deal.company_id,
+        contact_id: deal.contact_id || null,
         deal_id: deal.id,
         type: "deal_deleted",
         title: "Opportunity Deleted",

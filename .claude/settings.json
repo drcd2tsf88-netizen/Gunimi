@@ -15,7 +15,13 @@
       "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/sk.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")",
       "Bash(node -e \"const f=require\\('fs'\\);const j=JSON.parse\\(f.readFileSync\\('locales/cs.json','utf8'\\)\\);console.log\\(JSON.stringify\\(j.analytics,null,2\\)\\)\")",
       "Bash(grep -E \"\\(crm\\\\\\\\\\\\\\\\page|notes\\\\\\\\\\\\\\\\page\\)\")",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(xargs grep -l \"contact\")",
+      "Bash(mkdir -p \"c:/Users/guoth/OrbitDesk/OrbitDesk/app/dashboard/crm/[id]\" && mkdir -p \"c:/Users/guoth/OrbitDesk/OrbitDesk/components/contacts/detail\")",
+      "Bash(xargs -I {} sh -c 'echo \"File: {}\"; head -50 \"{}\"')"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\guoth\\OrbitDesk\\OrbitDesk\\app\\dashboard\\crm\\[id]"
     ]
   }
 }

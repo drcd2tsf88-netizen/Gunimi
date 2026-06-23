@@ -143,7 +143,7 @@ export default function DealRelations({
 
           {deal.contact && (
             <Link
-              href="/dashboard/crm"
+              href={`/dashboard/crm/${deal.contact.id}`}
             >
               <div
                 className="

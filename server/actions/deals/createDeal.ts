@@ -196,6 +196,9 @@ probability =
         company_id:
           companyId || null,
 
+        contact_id:
+          contactId || null,
+
         deal_id:
           deal.id,
       });

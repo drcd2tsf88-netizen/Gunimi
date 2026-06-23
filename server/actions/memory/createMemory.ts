@@ -6,6 +6,9 @@ from "@/lib/server/supabaseAdmin";
 import { getUser }
 from "@/server/actions/auth/getUser";
 
+import { getCurrentWorkspace }
+from "@/lib/workspace/getCurrentWorkspace";
+
 type CreateMemoryProps = {
   type: string;
 
@@ -24,13 +27,24 @@ export async function createMemory({
     if (!user) {
       return null;
     }
-const { data, error } =
+
+    const workspace =
+      await getCurrentWorkspace();
+
+    if (!workspace) {
+      return null;
+    }
+
+    const { data, error } =
       await supabaseAdmin
         .from(
           "workspace_memory"
         )
         .insert([
           {
+            workspace_id:
+              workspace.id,
+
             type,
 
             content,

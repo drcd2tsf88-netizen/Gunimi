@@ -85,6 +85,11 @@ export default function DashboardLayoutClient({
     },
 
     {
+      name: "Import",
+      href: "/dashboard/import",
+    },
+
+    {
       name: "Settings",
       href: "/dashboard/settings",
     },
@@ -129,9 +134,7 @@ export default function DashboardLayoutClient({
           return;
         }
 
-        setTimeout(() => {
-          setLoading(false);
-        }, 1200);
+        setLoading(false);
       } catch (error) {
         console.error(error);
 

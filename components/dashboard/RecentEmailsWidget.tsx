@@ -61,16 +61,22 @@ export default function RecentEmailsWidget({ threads }: Props) {
 
               <div className="flex shrink-0 items-center gap-1">
                 {thread.contact && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[9px] text-blue-300">
+                  <Link
+                    href={`/dashboard/crm/${thread.contact.id}`}
+                    className="inline-flex items-center gap-1 rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[9px] text-blue-300 transition-colors hover:border-blue-500/40 hover:bg-blue-500/20"
+                  >
                     <User size={9} />
                     {thread.contact.name}
-                  </span>
+                  </Link>
                 )}
                 {thread.company && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-[9px] text-violet-300">
+                  <Link
+                    href={`/dashboard/companies/${thread.company.id}`}
+                    className="inline-flex items-center gap-1 rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-[9px] text-violet-300 transition-colors hover:border-violet-500/40 hover:bg-violet-500/20"
+                  >
                     <Building2 size={9} />
                     {thread.company.name}
-                  </span>
+                  </Link>
                 )}
               </div>
             </div>

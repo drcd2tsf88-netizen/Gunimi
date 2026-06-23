@@ -22,6 +22,7 @@ type CreateTaskProps = {
   status?: string;
   due_date?: string | null;
   assigned_to?: string | null;
+  contactId?: string | null;
 };
 
 export async function createTask({
@@ -31,6 +32,7 @@ export async function createTask({
   status = "todo",
   due_date = null,
   assigned_to = null,
+  contactId = null,
 }: CreateTaskProps) {
   try {
     const supabase =
@@ -98,6 +100,9 @@ export async function createTask({
           due_date,
 
           assigned_to,
+
+          contact_id:
+            contactId || null,
 
           user_id:
             user.id,

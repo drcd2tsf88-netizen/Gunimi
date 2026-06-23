@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
@@ -53,6 +54,8 @@ export async function updateNote({ noteId, title, content }: UpdateNoteProps) {
       title: "Note Updated",
       description: `Updated note "${title.trim()}"`,
     });
+
+    revalidatePath("/dashboard/notes");
 
     return data;
   } catch (error) {

@@ -225,6 +225,7 @@ export async function updateDeal({
         workspace_id: workspace.id,
         user_id: user.id,
         company_id: deal.company_id,
+        contact_id: deal.contact_id || null,
         deal_id: deal.id,
         type: "deal_updated",
         title: "Opportunity Updated",

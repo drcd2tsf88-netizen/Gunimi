@@ -53,10 +53,6 @@ export default function RegisterCompletePage() {
     user: User
   ) {
     try {
-      console.log(
-        "REGISTER COMPLETE START",
-        user.id
-      );
 
       // PROFILE ─────────────────────
 
@@ -126,11 +122,6 @@ export default function RegisterCompletePage() {
         profile = newProfile;
       }
 
-      console.log(
-        "PROFILE",
-        profile,
-        profileError
-      );
 
       if (profileError) {
         console.error(

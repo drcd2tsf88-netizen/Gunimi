@@ -73,11 +73,7 @@ export async function POST(
       );
     }
 
-    if (
-      !companyId ||
-      !user.id ||
-      !title
-    ) {
+    if (!title) {
 
       return errorResponse(
         "Missing fields",
@@ -95,12 +91,12 @@ export async function POST(
 
       await supabaseAdmin
 
-        .from("tasks")
+        .from("workspace_tasks")
 
         .insert({
 
-          company_id:
-            companyId,
+          workspace_id:
+            workspace.id,
 
           user_id:
             user.id,

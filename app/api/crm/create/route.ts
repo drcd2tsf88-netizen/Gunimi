@@ -173,6 +173,9 @@ const {
     user_id:
       user.id,
 
+    contact_id:
+      contact.id,
+
     type:
       "contact_created",
 

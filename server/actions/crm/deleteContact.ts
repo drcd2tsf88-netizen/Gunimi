@@ -46,6 +46,7 @@ export async function deleteContact(contactId: string) {
       workspace_id: workspace.id,
       user_id: user.id,
       company_id: contact.company_id || null,
+      contact_id: contact.id,
       type: "contact_deleted",
       title: "Contact Deleted",
       description: `Deleted contact "${contact.name}"`,

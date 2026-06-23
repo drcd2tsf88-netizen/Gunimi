@@ -87,7 +87,8 @@ if (stage === "lost") {
     title,
     stage,
     workspace_id,
-    company_id
+    company_id,
+    contact_id
   `)
   .eq(
     "id",
@@ -172,6 +173,9 @@ if (stage === "lost") {
 
     company_id:
       existingDeal.company_id,
+
+    contact_id:
+      existingDeal.contact_id || null,
 
     deal_id:
       dealId,

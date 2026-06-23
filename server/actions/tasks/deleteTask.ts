@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getUser } from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
@@ -44,6 +45,8 @@ export async function deleteTask(taskId: string): Promise<boolean> {
           ? `Deleted task "${task.title}"`
           : "Deleted a task",
       });
+
+    revalidatePath("/dashboard/tasks");
 
     return true;
   } catch (error) {

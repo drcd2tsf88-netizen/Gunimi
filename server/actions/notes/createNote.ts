@@ -9,9 +9,10 @@ export type CreateNoteProps = {
   title: string;
   content?: string;
   companyId?: string;
+  contactId?: string;
 };
 
-export async function createNote({ title, content, companyId }: CreateNoteProps) {
+export async function createNote({ title, content, companyId, contactId }: CreateNoteProps) {
   try {
     if (!title.trim()) return null;
 
@@ -27,6 +28,7 @@ export async function createNote({ title, content, companyId }: CreateNoteProps)
         workspace_id: workspace.id,
         user_id: user.id,
         company_id: companyId || null,
+        contact_id: contactId || null,
         title: title.trim(),
         content: content?.trim() || null,
       })

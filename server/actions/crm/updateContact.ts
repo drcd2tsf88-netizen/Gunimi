@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
@@ -57,10 +58,14 @@ export async function updateContact({
       workspace_id: workspace.id,
       user_id: user.id,
       company_id: data.company_id || null,
+      contact_id: contactId,
       type: "contact_updated",
       title: "Contact Updated",
       description: `Updated contact "${name.trim()}"`,
     });
+
+    revalidatePath("/dashboard/crm");
+    revalidatePath(`/dashboard/crm/${contactId}`);
 
     return data;
   } catch (error) {

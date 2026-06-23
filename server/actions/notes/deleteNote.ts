@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
@@ -43,6 +44,8 @@ export async function deleteNote(noteId: string) {
       title: "Note Deleted",
       description: `Deleted note "${note.title}"`,
     });
+
+    revalidatePath("/dashboard/notes");
 
     return true;
   } catch (error) {
