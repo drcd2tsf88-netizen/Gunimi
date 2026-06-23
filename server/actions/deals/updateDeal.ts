@@ -12,6 +12,9 @@ from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
 
+import { revalidatePath }
+from "next/cache";
+
 export type UpdateDealProps = {
   dealId: string;
 
@@ -227,6 +230,9 @@ export async function updateDeal({
         title: "Opportunity Updated",
         description: `Updated deal "${deal.title}"`,
       });
+
+    revalidatePath("/dashboard/deals");
+    revalidatePath(`/dashboard/deals/${deal.id}`);
 
     return deal;
 

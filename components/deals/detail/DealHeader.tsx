@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   ChevronDown,
+  Pencil,
 } from "lucide-react";
 
 import { useTranslations } from "next-intl";
@@ -21,6 +22,8 @@ import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
 import { cn } from "@/lib/utils";
+
+import OrbitButton from "@/components/ui/OrbitButton";
 
 import { updateDealStage } from "@/server/actions/deals/updateDealStage";
 
@@ -58,10 +61,12 @@ const STAGE_DOT: Record<DealStage, string> = {
 
 type Props = {
   deal: Deal;
+  onEdit: () => void;
 };
 
-export default function DealHeader({ deal }: Props) {
+export default function DealHeader({ deal, onEdit }: Props) {
   const t = useTranslations("deals");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -166,7 +171,7 @@ export default function DealHeader({ deal }: Props) {
           </h1>
         </div>
 
-        {/* RIGHT: value + stage */}
+        {/* RIGHT: value + stage + edit */}
 
         <div
           className="
@@ -185,6 +190,15 @@ export default function DealHeader({ deal }: Props) {
           >
             €{Number(deal.value || 0).toLocaleString()}
           </p>
+
+          <OrbitButton
+            variant="secondary"
+            onClick={onEdit}
+            className="flex items-center gap-1.5 px-3"
+          >
+            <Pencil size={13} />
+            {tCommon("edit")}
+          </OrbitButton>
 
           {/* STAGE DROPDOWN */}
 

@@ -225,7 +225,16 @@
     "searchOpportunities": "Hľadať príležitosti...",
     "selectOrganization": "Vybrať organizáciu",
     "selectContact": "Vybrať kontakt",
-    "expectedCloseDate": "Predpokladaný dátum uzavretia"
+    "expectedCloseDate": "Predpokladaný dátum uzavretia",
+    "editOpportunity": "Upraviť príležitosť",
+    "editOpportunitySubtitle": "Aktualizovať detaily obchodu, hodnotu a vzťahy.",
+    "opportunityUpdated": "Príležitosť úspešne aktualizovaná",
+    "failedToUpdate": "Nepodarilo sa aktualizovať príležitosť",
+    "deleteOpportunity": "Odstrániť príležitosť",
+    "deleteConfirm": "Táto príležitosť bude natrvalo odstránená. Túto akciu nie je možné vrátiť späť.",
+    "opportunityDeleted": "Príležitosť úspešne odstránená",
+    "failedToDelete": "Nepodarilo sa odstrániť príležitosť",
+    "loading": "Načítava sa..."
   },
   "notes": {
     "badge": "Znalostná báza pracoviska",

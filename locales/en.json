@@ -259,7 +259,16 @@
     "searchOpportunities": "Search opportunities...",
     "selectOrganization": "Select organization",
     "selectContact": "Select contact",
-    "expectedCloseDate": "Expected Close Date"
+    "expectedCloseDate": "Expected Close Date",
+    "editOpportunity": "Edit Opportunity",
+    "editOpportunitySubtitle": "Update deal details, value and relationships.",
+    "opportunityUpdated": "Opportunity updated successfully",
+    "failedToUpdate": "Failed to update opportunity",
+    "deleteOpportunity": "Delete Opportunity",
+    "deleteConfirm": "This opportunity will be permanently deleted. This action cannot be undone.",
+    "opportunityDeleted": "Opportunity deleted successfully",
+    "failedToDelete": "Failed to delete opportunity",
+    "loading": "Loading..."
   },
   "notes": {
     "badge": "Workspace Knowledge",

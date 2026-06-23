@@ -1,8 +1,6 @@
 "use client";
 
-import DealPipelineColumn
-from "./DealPipelineColumn";
-
+import DealPipelineColumn from "./DealPipelineColumn";
 
 const STAGES = [
   "lead",
@@ -13,21 +11,17 @@ const STAGES = [
   "lost",
 ] as const;
 
-type DealStage =
-  (typeof STAGES)[number];
+type DealStage = (typeof STAGES)[number];
 
 import { Deal } from "@/types/deal";
 
 type Props = {
   deals: Deal[];
-
   onRefresh: () => void;
+  onEdit: (deal: Deal) => void;
 };
 
-export default function DealsPipeline({
-  deals,
-  onRefresh,
-}: Props) {
+export default function DealsPipeline({ deals, onRefresh, onEdit }: Props) {
   return (
     <div>
       <div
@@ -40,38 +34,26 @@ export default function DealsPipeline({
           pb-4
         "
       >
-        {STAGES.map(
-          (
-            stage: DealStage
-          ) => {
-            const stageDeals =
-              deals.filter(
-                (deal) =>
-                  deal.stage ===
-                  stage
-              );
+        {STAGES.map((stage: DealStage) => {
+          const stageDeals = deals.filter((deal) => deal.stage === stage);
 
-            return (
-              <div
-                key={stage}
-                className="
-                  w-[240px]
-                  shrink-0
-                "
-              >
-                <DealPipelineColumn
-                  stage={stage}
-                  deals={
-                    stageDeals
-                  }
-                  onRefresh={
-                    onRefresh
-                  }
-                />
-              </div>
-            );
-          }
-        )}
+          return (
+            <div
+              key={stage}
+              className="
+                w-[240px]
+                shrink-0
+              "
+            >
+              <DealPipelineColumn
+                stage={stage}
+                deals={stageDeals}
+                onRefresh={onRefresh}
+                onEdit={onEdit}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

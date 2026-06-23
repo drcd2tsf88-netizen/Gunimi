@@ -17,9 +17,10 @@ type DealStage =
 
 type Props = {
   deals: Deal[];
+  onEdit: (deal: Deal) => void;
 };
 
-export default function DealsListCommand({ deals }: Props) {
+export default function DealsListCommand({ deals, onEdit }: Props) {
   const [activeStage, setActiveStage] =
     useState<DealStage>("lead");
 
@@ -77,6 +78,7 @@ export default function DealsListCommand({ deals }: Props) {
         <DealsListView
           deals={stageDeals}
           stage={activeStage}
+          onEdit={onEdit}
         />
       </div>
     </div>

@@ -225,7 +225,16 @@
     "searchOpportunities": "Hledat příležitosti...",
     "selectOrganization": "Vybrat organizaci",
     "selectContact": "Vybrat kontakt",
-    "expectedCloseDate": "Předpokládané datum uzavření"
+    "expectedCloseDate": "Předpokládané datum uzavření",
+    "editOpportunity": "Upravit příležitost",
+    "editOpportunitySubtitle": "Aktualizovat detaily obchodu, hodnotu a vztahy.",
+    "opportunityUpdated": "Příležitost úspěšně aktualizována",
+    "failedToUpdate": "Nepodařilo se aktualizovat příležitost",
+    "deleteOpportunity": "Smazat příležitost",
+    "deleteConfirm": "Tato příležitost bude trvale smazána. Tuto akci nelze vrátit zpět.",
+    "opportunityDeleted": "Příležitost úspěšně smazána",
+    "failedToDelete": "Nepodařilo se smazat příležitost",
+    "loading": "Načítání..."
   },
   "notes": {
     "badge": "Znalostní báze pracovního prostoru",

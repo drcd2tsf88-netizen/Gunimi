@@ -12,6 +12,9 @@ from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
 
+import { revalidatePath }
+from "next/cache";
+
 export async function deleteDeal(
   dealId: string
 ) {
@@ -76,6 +79,8 @@ export async function deleteDeal(
         title: "Opportunity Deleted",
         description: `Deleted deal "${deal.title}"`,
       });
+
+    revalidatePath("/dashboard/deals");
 
     return true;
 

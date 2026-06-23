@@ -1,11 +1,10 @@
 import { notFound } from "next/navigation";
 
-import {
-  getDeal,
-} from "@/server/actions/deals/getDeal";
+import { getDeal } from "@/server/actions/deals/getDeal";
+import { getCompanies } from "@/server/actions/company/getCompanies";
+import { getContacts } from "@/server/actions/crm/getContacts";
 
-import DealDetailView
-from "@/components/deals/detail/DealDetailView";
+import DealDetailView from "@/components/deals/detail/DealDetailView";
 
 type Props = {
   params: Promise<{
@@ -13,13 +12,14 @@ type Props = {
   }>;
 };
 
-export default async function DealPage({
-  params,
-}: Props) {
+export default async function DealPage({ params }: Props) {
   const { id } = await params;
 
-  const data =
-    await getDeal(id);
+  const [data, companies, contacts] = await Promise.all([
+    getDeal(id),
+    getCompanies(),
+    getContacts(),
+  ]);
 
   if (!data) {
     notFound();
@@ -28,9 +28,9 @@ export default async function DealPage({
   return (
     <DealDetailView
       deal={data.deal}
-      activities={
-        data.activities
-      }
+      activities={data.activities}
+      companies={companies}
+      contacts={contacts}
     />
   );
 }

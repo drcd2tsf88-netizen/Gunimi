@@ -23,6 +23,7 @@ import DealsMetricStrip from "./DealsMetricStrip";
 import DealsPipeline from "./DealsPipeline";
 import DealsListCommand from "./DealsListCommand";
 import CreateDealSheet from "./CreateDealSheet";
+import EditDealSheet from "./EditDealSheet";
 
 import { Deal } from "@/types/deal";
 import { Company } from "@/types/company";
@@ -50,6 +51,8 @@ export default function DealsPageView({
   const [search, setSearch] = useState("");
 
   const [open, setOpen] = useState(false);
+
+  const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
 
   const filteredDeals = useMemo(() => {
     const query = search.toLowerCase();
@@ -211,11 +214,15 @@ export default function DealsPageView({
 
       <div className="mt-6">
         {view === "list" ? (
-          <DealsListCommand deals={filteredDeals} />
+          <DealsListCommand
+            deals={filteredDeals}
+            onEdit={setEditingDeal}
+          />
         ) : (
           <DealsPipeline
             deals={filteredDeals}
             onRefresh={() => router.refresh()}
+            onEdit={setEditingDeal}
           />
         )}
       </div>
@@ -227,6 +234,27 @@ export default function DealsPageView({
         contacts={contacts}
         onCreated={() => router.refresh()}
       />
+
+      {editingDeal && (
+        <EditDealSheet
+          key={editingDeal.id}
+          deal={editingDeal}
+          open={!!editingDeal}
+          onOpenChange={(next) => {
+            if (!next) setEditingDeal(null);
+          }}
+          companies={companies}
+          contacts={contacts}
+          onUpdated={() => {
+            setEditingDeal(null);
+            router.refresh();
+          }}
+          onDeleted={() => {
+            setEditingDeal(null);
+            router.refresh();
+          }}
+        />
+      )}
     </>
   );
 }

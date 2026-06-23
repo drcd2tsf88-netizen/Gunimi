@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { ArrowRight, Briefcase } from "lucide-react";
+import { ArrowRight, Briefcase, Pencil } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
@@ -20,9 +20,10 @@ type DealStage =
 type Props = {
   deals: Deal[];
   stage: DealStage;
+  onEdit: (deal: Deal) => void;
 };
 
-export default function DealsListView({ deals, stage }: Props) {
+export default function DealsListView({ deals, stage, onEdit }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
 
@@ -54,7 +55,7 @@ export default function DealsListView({ deals, stage }: Props) {
       <div
         className="
           grid
-          grid-cols-[1fr_180px_110px_110px_32px]
+          grid-cols-[1fr_180px_110px_110px_64px]
           items-center
           gap-4
 
@@ -143,7 +144,7 @@ export default function DealsListView({ deals, stage }: Props) {
               group
 
               grid
-              grid-cols-[1fr_180px_110px_110px_32px]
+              grid-cols-[1fr_180px_110px_110px_64px]
               items-center
               gap-4
 
@@ -213,16 +214,47 @@ export default function DealsListView({ deals, stage }: Props) {
               {closeLabel}
             </p>
 
-            <ArrowRight
-              size={13}
-              className="
-                text-white/20
+            <div className="flex items-center justify-end gap-1.5">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(deal);
+                }}
+                className="
+                  flex
+                  h-6
+                  w-6
+                  items-center
+                  justify-center
 
-                transition-colors
+                  rounded-md
 
-                group-hover:text-white/50
-              "
-            />
+                  text-white/20
+
+                  opacity-0
+
+                  transition-all
+
+                  hover:bg-white/[0.06]
+                  hover:text-white/60
+
+                  group-hover:opacity-100
+                "
+              >
+                <Pencil size={11} />
+              </button>
+
+              <ArrowRight
+                size={13}
+                className="
+                  text-white/20
+
+                  transition-colors
+
+                  group-hover:text-white/50
+                "
+              />
+            </div>
           </div>
         );
       })}

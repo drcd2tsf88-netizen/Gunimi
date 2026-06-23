@@ -8,6 +8,7 @@ from "next/navigation";
 import {
   ChevronLeft,
   ChevronRight,
+  Pencil,
 } from "lucide-react";
 
 import { useTranslations }
@@ -32,6 +33,8 @@ type Props = {
   onMoveBack: () => void;
 
   onMoveForward: () => void;
+
+  onEdit: () => void;
 };
 
 export default function DealPipelineCard({
@@ -40,6 +43,7 @@ export default function DealPipelineCard({
   canMoveForward,
   onMoveBack,
   onMoveForward,
+  onEdit,
 }: Props) {
   const router =
     useRouter();
@@ -172,6 +176,17 @@ export default function DealPipelineCard({
             }
           >
             {t("open")}
+          </OrbitButton>
+
+          <OrbitButton
+            variant="secondary"
+            onClick={onEdit}
+            className="
+              shrink-0
+              px-2.5
+            "
+          >
+            <Pencil size={13} />
           </OrbitButton>
 
           <OrbitButton

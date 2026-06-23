@@ -52,12 +52,15 @@ type Props = {
   deals: Deal[];
 
   onRefresh: () => void;
+
+  onEdit: (deal: Deal) => void;
 };
 
 export default function DealPipelineColumn({
   stage,
   deals,
   onRefresh,
+  onEdit,
 }: Props) {
   const t =
     useTranslations(
@@ -262,6 +265,7 @@ export default function DealPipelineColumn({
                   ]
                 )
               }
+              onEdit={() => onEdit(deal)}
             />
           )
         )}
