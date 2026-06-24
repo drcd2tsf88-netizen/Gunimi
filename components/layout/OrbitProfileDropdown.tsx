@@ -25,6 +25,7 @@ import {
   Plus,
   Settings,
   Sparkles,
+  User,
 } from "lucide-react";
 
 import { toast }
@@ -82,6 +83,9 @@ export default function OrbitProfileDropdown() {
   const [user, setUser] =
     useState<any>(null);
 
+  const [profileName, setProfileName] =
+    useState<string>("");
+
   const [workspaces, setWorkspaces] =
     useState<Workspace[]>([]);
 
@@ -100,6 +104,15 @@ export default function OrbitProfileDropdown() {
         await supabase.auth.getUser();
 
       setUser(user);
+
+      if (user) {
+        const { data: profileRow } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("id", user.id)
+          .single();
+        setProfileName(profileRow?.full_name ?? user.email ?? "");
+      }
 
       // WORKSPACE MEMBERSHIP
 
@@ -179,8 +192,7 @@ export default function OrbitProfileDropdown() {
   // USER INITIAL
 
   const initial =
-    user?.email?.[0]?.toUpperCase() ||
-    "O";
+    (profileName || user?.email || "O")[0].toUpperCase();
 
   return (
     <div
@@ -282,7 +294,7 @@ export default function OrbitProfileDropdown() {
               font-medium
             "
           >
-            {user?.email}
+            {profileName || user?.email}
           </p>
 
           <p
@@ -425,6 +437,21 @@ export default function OrbitProfileDropdown() {
                       font-medium
                     "
                   >
+                    {profileName || user?.email}
+                  </p>
+
+                  <p
+                    className="
+                      mt-0.5
+
+                      max-w-[180px]
+
+                      truncate
+
+                      text-xs
+                      text-white/40
+                    "
+                  >
                     {user?.email}
                   </p>
 
@@ -433,11 +460,9 @@ export default function OrbitProfileDropdown() {
                       mt-1
 
                       text-xs
-                      text-white/40
+                      text-white/30
                     "
                   >
-                    Role:
-                    {" "}
                     {
                       workspaceData
                         ?.membership
@@ -708,6 +733,40 @@ export default function OrbitProfileDropdown() {
                 p-3
               "
             >
+              <button
+                onClick={() => {
+                  setOpen(false);
+
+                  router.push(
+                    "/dashboard/settings?section=profile"
+                  );
+                }}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  gap-3
+
+                  rounded-2xl
+
+                  px-4
+                  py-4
+
+                  text-sm
+                  text-white/70
+
+                  transition-all
+
+                  hover:bg-white/[0.03]
+                "
+              >
+                <User
+                  size={16}
+                />
+
+                Profile Settings
+              </button>
+
               <button
                 onClick={() => {
                   setOpen(false);

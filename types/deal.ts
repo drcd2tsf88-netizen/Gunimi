@@ -8,6 +8,7 @@ export type Deal = {
   expected_close_date?: string;
   lost_reason?: string;
   created_at: string;
+  updated_at?: string;
   company?: {
     id: string;
     name: string;

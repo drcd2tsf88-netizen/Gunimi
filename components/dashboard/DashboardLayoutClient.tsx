@@ -3,6 +3,9 @@
 import Link
 from "next/link";
 
+import Image
+from "next/image";
+
 import {
   usePathname,
 } from "next/navigation";
@@ -42,6 +45,9 @@ export default function DashboardLayoutClient({
 
   const [mobileOpen, setMobileOpen] =
     useState(false);
+
+  const [sidebarProfile, setSidebarProfile] =
+    useState<{ full_name: string; avatar_url: string | null } | null>(null);
 
   const links = [
     {
@@ -113,9 +119,16 @@ export default function DashboardLayoutClient({
         const { data: profile } =
           await supabase
             .from("profiles")
-            .select("platform_role, status")
+            .select("platform_role, status, full_name, avatar_url")
             .eq("id", session.user.id)
             .single();
+
+        if (profile) {
+          setSidebarProfile({
+            full_name: profile.full_name ?? session.user.email ?? "",
+            avatar_url: profile.avatar_url ?? null,
+          });
+        }
 
         if (profile?.status === "suspended") {
           await supabase.auth.signOut();
@@ -268,63 +281,77 @@ export default function DashboardLayoutClient({
             border-t
             border-white/5
 
-            p-5
+            p-4
           "
         >
-          <div
-            className="
-              rounded-2xl
-
-              border
-              border-violet-500/20
-
-              bg-violet-500/10
-
-              p-5
-            "
-          >
-            <p
-              className="
-                text-sm
-                text-violet-200
-              "
-            >
-              Orbit AI systems
-              operational
-            </p>
-
+          <Link href="/dashboard/settings?section=profile">
             <div
               className="
-                mt-4
-
                 flex
                 items-center
                 gap-3
+
+                rounded-2xl
+
+                border
+                border-white/[0.06]
+
+                bg-white/[0.02]
+
+                px-3
+                py-3
+
+                transition-all
+
+                hover:border-violet-500/20
+                hover:bg-violet-500/5
               "
             >
               <div
                 className="
-                  h-2
-                  w-2
+                  relative
 
-                  animate-pulse
+                  flex
+                  h-9
+                  w-9
+                  shrink-0
 
-                  rounded-full
+                  items-center
+                  justify-center
 
-                  bg-emerald-400
-                "
-              />
+                  overflow-hidden
 
-              <p
-                className="
-                  text-xs
-                  text-white/50
+                  rounded-xl
+
+                  bg-violet-500/15
+
+                  text-sm
+                  font-semibold
+                  text-violet-300
                 "
               >
-                Realtime sync active
-              </p>
+                {sidebarProfile?.avatar_url ? (
+                  <Image
+                    src={sidebarProfile.avatar_url}
+                    alt=""
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  (sidebarProfile?.full_name?.[0] ?? "O").toUpperCase()
+                )}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-white/80">
+                  {sidebarProfile?.full_name ?? "Profile"}
+                </p>
+                <p className="text-[10px] text-white/30">
+                  Profile Settings
+                </p>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </aside>
       {/* MOBILE SIDEBAR */}
@@ -496,63 +523,80 @@ export default function DashboardLayoutClient({
             border-t
             border-white/5
 
-            p-5
+            p-4
           "
         >
-          <div
-            className="
-              rounded-2xl
-
-              border
-              border-violet-500/20
-
-              bg-violet-500/10
-
-              p-5
-            "
+          <Link
+            href="/dashboard/settings?section=profile"
+            onClick={() => setMobileOpen(false)}
           >
-            <p
-              className="
-                text-sm
-                text-violet-200
-              "
-            >
-              Orbit AI systems
-              operational
-            </p>
-
             <div
               className="
-                mt-4
-
                 flex
                 items-center
                 gap-3
+
+                rounded-2xl
+
+                border
+                border-white/[0.06]
+
+                bg-white/[0.02]
+
+                px-3
+                py-3
+
+                transition-all
+
+                hover:border-violet-500/20
+                hover:bg-violet-500/5
               "
             >
               <div
                 className="
-                  h-2
-                  w-2
+                  relative
 
-                  animate-pulse
+                  flex
+                  h-9
+                  w-9
+                  shrink-0
 
-                  rounded-full
+                  items-center
+                  justify-center
 
-                  bg-emerald-400
-                "
-              />
+                  overflow-hidden
 
-              <p
-                className="
-                  text-xs
-                  text-white/50
+                  rounded-xl
+
+                  bg-violet-500/15
+
+                  text-sm
+                  font-semibold
+                  text-violet-300
                 "
               >
-                Realtime sync active
-              </p>
+                {sidebarProfile?.avatar_url ? (
+                  <Image
+                    src={sidebarProfile.avatar_url}
+                    alt=""
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  (sidebarProfile?.full_name?.[0] ?? "O").toUpperCase()
+                )}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-white/80">
+                  {sidebarProfile?.full_name ?? "Profile"}
+                </p>
+                <p className="text-[10px] text-white/30">
+                  Profile Settings
+                </p>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </motion.aside>
     </>

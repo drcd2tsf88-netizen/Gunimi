@@ -32,6 +32,9 @@ from "@/components/company/CompanyDeals";
 import CompanyActivity
 from "@/components/company/CompanyActivity";
 
+import CompanyIntelligence
+from "@/components/company/CompanyIntelligence";
+
 type Props = {
   params: Promise<{
     id: string;
@@ -108,6 +111,12 @@ export default async function CompanyPage({
 
       <CompanyActivity
         activity={activity}
+      />
+
+      <CompanyIntelligence
+        company={company}
+        deals={deals}
+        contacts={contacts}
       />
     </div>
   );

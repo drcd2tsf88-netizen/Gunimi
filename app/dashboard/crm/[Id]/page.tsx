@@ -10,6 +10,7 @@ import ContactDeals from "@/components/contacts/detail/ContactDeals";
 import ContactTasks from "@/components/contacts/detail/ContactTasks";
 import ContactNotes from "@/components/contacts/detail/ContactNotes";
 import ContactActivity from "@/components/contacts/detail/ContactActivity";
+import ContactIntelligence from "@/components/contacts/detail/ContactIntelligence";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -39,6 +40,7 @@ export default async function ContactDetailPage({ params }: Props) {
       <ContactTasks tasks={tasks} />
       <ContactNotes contact={contact} notes={notes} />
       <ContactActivity activity={activity} />
+      <ContactIntelligence contact={contact} deals={deals} />
     </div>
   );
 }

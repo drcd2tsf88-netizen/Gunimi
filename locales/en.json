@@ -229,7 +229,16 @@
     "deleteOrganization": "Delete Organization",
     "confirmDeleteOrganization": "This will permanently delete this organization and all associated data. This action cannot be undone.",
     "companyDeleted": "Organization deleted",
-    "failedToDeleteCompany": "Failed to delete organization"
+    "failedToDeleteCompany": "Failed to delete organization",
+    "intelligenceBadge": "Orbit Intelligence",
+    "intelligenceTitle": "Company Intelligence",
+    "intelligenceOpenDeals": "{count} open deal(s) — ${value} in pipeline",
+    "intelligenceWonDeals": "{count} closed deal(s) won — proven revenue relationship",
+    "intelligenceContacts": "{count} active contact(s) in this organization",
+    "intelligenceInactive": "No activity in {days} days — relationship at risk",
+    "intelligenceLastActivity": "Last activity {days} days ago — follow up recommended",
+    "intelligenceActiveRelationship": "Active relationship — recent interactions on record",
+    "intelligenceNoData": "No intelligence signals available yet"
   },
   "deals": {
     "commercialPipeline": "Commercial Pipeline",
@@ -284,6 +293,8 @@
     "overview": "Overview",
     "opportunity": "Opportunity",
     "lostReason": "Lost Reason",
+    "dealHealth": "Deal Health",
+    "healthScoreHint": "Score based on probability, activity, and close date.",
     "commercialOpportunities": "Commercial Opportunities",
     "backToPipeline": "Back to Pipeline",
     "listView": "List View",
@@ -394,7 +405,16 @@
     "activity": "Activity Timeline",
     "activitySubtitle": "Historical interactions and events related to this contact.",
     "noActivity": "No activity",
-    "noActivityDescription": "Activity related to this contact will appear here."
+    "noActivityDescription": "Activity related to this contact will appear here.",
+    "intelligenceBadge": "Orbit Intelligence",
+    "intelligenceTitle": "Contact Intelligence",
+    "intelligenceNotContacted": "No contact in {days} days — follow up required",
+    "intelligenceLastContact": "Last contacted {days} days ago — due for outreach",
+    "intelligenceRecentContact": "Contacted {days} days ago — relationship active",
+    "intelligenceNeverContacted": "Never contacted — outreach needed",
+    "intelligenceOpenDeals": "{count} open deal(s) — ${value} in pipeline",
+    "intelligenceCustomer": "Converted customer — focus on retention and expansion",
+    "intelligenceLeadNotConverted": "Lead not yet converted — nurture relationship"
   },
   "common": {
     "create": "Create",
@@ -524,7 +544,17 @@
     "myWorkspacesSubtitle": "All workspaces you are a member of.",
     "currentWorkspace": "Current",
     "yourRole": "Role",
-    "joinedOn": "Joined"
+    "joinedOn": "Joined",
+    "nav_profile": "Profile",
+    "profileTitle": "Profile Settings",
+    "profileSubtitle": "Your personal information shown across OrbitDesk.",
+    "profileName": "Full Name",
+    "profileNamePlaceholder": "Your full name",
+    "profileEmail": "Email",
+    "profileAvatarSubtitle": "Avatar upload coming soon",
+    "profileSaved": "Profile saved",
+    "failedToSaveProfile": "Failed to save profile",
+    "readOnly": "Read only"
   },
   "activity": {
     "badge": "Workspace Activity",

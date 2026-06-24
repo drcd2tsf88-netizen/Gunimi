@@ -1,17 +1,18 @@
 "use client";
 
-import { Building2, Shield, Sliders, Users } from "lucide-react";
+import { Building2, Shield, Sliders, User, Users } from "lucide-react";
 
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
-export type SettingsSection = "workspace" | "members" | "preferences" | "danger";
+export type SettingsSection = "workspace" | "members" | "preferences" | "profile" | "danger";
 
 const NAV_ITEMS: { id: SettingsSection; icon: typeof Building2 }[] = [
   { id: "workspace", icon: Building2 },
   { id: "members", icon: Users },
   { id: "preferences", icon: Sliders },
+  { id: "profile", icon: User },
   { id: "danger", icon: Shield },
 ];
 

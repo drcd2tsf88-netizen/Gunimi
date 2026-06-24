@@ -195,7 +195,16 @@
     "deleteOrganization": "Odstrániť organizáciu",
     "confirmDeleteOrganization": "Táto organizácia bude trvalo odstránená spolu so všetkými súvisiacimi dátami. Túto akciu nemožno vrátiť späť.",
     "companyDeleted": "Organizácia bola odstránená",
-    "failedToDeleteCompany": "Odstránenie organizácie zlyhalo"
+    "failedToDeleteCompany": "Odstránenie organizácie zlyhalo",
+    "intelligenceBadge": "Orbit Intelligence",
+    "intelligenceTitle": "Inteligencia organizácie",
+    "intelligenceOpenDeals": "{count} otvorených obchodov — ${value} v pipeline",
+    "intelligenceWonDeals": "{count} uzatvorených obchodov — overený príjmový vzťah",
+    "intelligenceContacts": "{count} aktívnych kontaktov v tejto organizácii",
+    "intelligenceInactive": "Žiadna aktivita {days} dní — vzťah ohrozený",
+    "intelligenceLastActivity": "Posledná aktivita pred {days} dňami — odporúča sa follow-up",
+    "intelligenceActiveRelationship": "Aktívny vzťah — nedávne interakcie zaznamenané",
+    "intelligenceNoData": "Zatiaľ nie sú k dispozícii žiadne signály"
   },
   "deals": {
     "commercialPipeline": "Obchodná Pipeline",
@@ -250,6 +259,8 @@
     "overview": "Prehľad",
     "opportunity": "Príležitosť",
     "lostReason": "Dôvod prehry",
+    "dealHealth": "Zdravie dohody",
+    "healthScoreHint": "Skóre na základe pravdepodobnosti, aktivity a dátumu uzávierky.",
     "commercialOpportunities": "Obchodné príležitosti",
     "backToPipeline": "Späť na Pipeline",
     "listView": "Zoznamový pohľad",
@@ -360,7 +371,16 @@
     "activity": "Časová os aktivít",
     "activitySubtitle": "Historické interakcie a udalosti súvisiace s týmto kontaktom.",
     "noActivity": "Žiadna aktivita",
-    "noActivityDescription": "Aktivita súvisiaca s týmto kontaktom sa zobrazí tu."
+    "noActivityDescription": "Aktivita súvisiaca s týmto kontaktom sa zobrazí tu.",
+    "intelligenceBadge": "Orbit Intelligence",
+    "intelligenceTitle": "Inteligencia kontaktu",
+    "intelligenceNotContacted": "Žiadny kontakt za {days} dní — vyžaduje sa follow-up",
+    "intelligenceLastContact": "Naposledy kontaktovaný pred {days} dňami — čas na oslup",
+    "intelligenceRecentContact": "Kontaktovaný pred {days} dňami — vzťah aktívny",
+    "intelligenceNeverContacted": "Nikdy nekontaktovaný — potrebný kontakt",
+    "intelligenceOpenDeals": "{count} otvorených obchodov — ${value} v pipeline",
+    "intelligenceCustomer": "Konvertovaný zákazník — zamerajte sa na retenciu",
+    "intelligenceLeadNotConverted": "Lead zatiaľ nekonvertovaný — rozvíjajte vzťah"
   },
   "common": {
     "create": "Vytvoriť",
@@ -490,7 +510,17 @@
     "myWorkspacesSubtitle": "Všetky pracovné priestory, ktorých ste členom.",
     "currentWorkspace": "Aktuálny",
     "yourRole": "Rola",
-    "joinedOn": "Pripojený"
+    "joinedOn": "Pripojený",
+    "nav_profile": "Profil",
+    "profileTitle": "Nastavenia profilu",
+    "profileSubtitle": "Vaše osobné informácie zobrazené v OrbitDesk.",
+    "profileName": "Celé meno",
+    "profileNamePlaceholder": "Vaše celé meno",
+    "profileEmail": "Email",
+    "profileAvatarSubtitle": "Nahrávanie avatara čoskoro",
+    "profileSaved": "Profil uložený",
+    "failedToSaveProfile": "Nepodarilo sa uložiť profil",
+    "readOnly": "Len na čítanie"
   },
   "activity": {
     "badge": "Aktivita pracovného priestoru",

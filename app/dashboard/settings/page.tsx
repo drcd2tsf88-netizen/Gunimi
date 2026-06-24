@@ -4,18 +4,19 @@ import { getWorkspaceMembership } from "@/server/actions/workspace/getWorkspaceM
 import { getWorkspaceInvites } from "@/server/actions/workspace/getWorkspaceInvites";
 import { getUser } from "@/server/actions/auth/getUser";
 import { getUserWorkspaceSummaries } from "@/server/actions/workspace/getUserWorkspaceSummaries";
+import { getUserProfile } from "@/server/actions/profile/getUserProfile";
 
 import SettingsPageView from "@/components/settings/SettingsPageView";
 import { type SettingsSection } from "@/components/settings/SettingsNav";
 
-const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "danger"];
+const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "profile", "danger"];
 
 export default async function SettingsPage({
   searchParams,
 }: {
   searchParams: Promise<{ section?: string }>;
 }) {
-  const [params, settings, membership, members, invites, user, workspaceSummaries] = await Promise.all([
+  const [params, settings, membership, members, invites, user, workspaceSummaries, userProfile] = await Promise.all([
     searchParams,
     getWorkspaceSettings(),
     getWorkspaceMembership(),
@@ -23,6 +24,7 @@ export default async function SettingsPage({
     getWorkspaceInvites(),
     getUser(),
     getUserWorkspaceSummaries(),
+    getUserProfile(),
   ]);
 
   if (!settings || !membership || !user) {
@@ -56,6 +58,7 @@ export default async function SettingsPage({
       currentUserRole={membership.membership?.role ?? "member"}
       initialSection={initialSection}
       workspaceSummaries={workspaceSummaries}
+      userProfile={userProfile}
     />
   );
 }

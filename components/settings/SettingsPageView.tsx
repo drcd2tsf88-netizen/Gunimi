@@ -13,7 +13,9 @@ import SettingsNav, { SettingsSection } from "./SettingsNav";
 import WorkspaceSection from "./workspace/WorkspaceSection";
 import MembersSection from "./members/MembersSection";
 import PreferencesSection from "./preferences/PreferencesSection";
+import ProfileSection from "./profile/ProfileSection";
 import DangerSection from "./danger/DangerSection";
+import { type UserProfile } from "@/server/actions/profile/getUserProfile";
 
 type Props = {
   workspace: WorkspaceSettings;
@@ -23,6 +25,7 @@ type Props = {
   currentUserRole: string;
   initialSection?: SettingsSection;
   workspaceSummaries: WorkspaceSummary[];
+  userProfile: UserProfile | null;
 };
 
 export default function SettingsPageView({
@@ -33,6 +36,7 @@ export default function SettingsPageView({
   currentUserRole,
   initialSection,
   workspaceSummaries,
+  userProfile,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -76,6 +80,10 @@ export default function SettingsPageView({
               preferences={workspace.preferences ?? null}
               currentUserRole={currentUserRole}
             />
+          )}
+
+          {section === "profile" && userProfile && (
+            <ProfileSection profile={userProfile} />
           )}
 
           {section === "danger" && (

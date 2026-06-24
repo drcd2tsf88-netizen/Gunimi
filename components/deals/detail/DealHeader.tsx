@@ -146,17 +146,22 @@ export default function DealHeader({ deal, onEdit }: Props) {
         {/* LEFT: company + title */}
 
         <div className="min-w-0 flex-1">
-          {deal.company?.name && (
-            <p
+          {deal.company && (
+            <Link
+              href={`/dashboard/companies/${deal.company.id}`}
               className="
                 mb-1
 
+                inline-block
                 text-xs
                 text-white/40
+
+                transition-colors
+                hover:text-violet-300
               "
             >
               {deal.company.name}
-            </p>
+            </Link>
           )}
 
           <h1
