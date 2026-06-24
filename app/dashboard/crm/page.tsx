@@ -9,7 +9,7 @@ import {
 
 import Link from "next/link";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { FileUp, Pencil, Trash2, UserPlus, Users } from "lucide-react";
 
 import { useTranslations } from "next-intl";
 
@@ -169,31 +169,41 @@ export default function CRMPage() {
               [1, 2, 3].map((item) => (
                 <OrbitSkeleton key={item} className="h-[120px]" />
               ))
-            ) : filteredCustomers.length === 0 ? (
-              <div className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] px-10 py-20 text-center">
-                <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-violet-500/20 bg-violet-500/10 text-3xl shadow-[0_0_40px_rgba(124,58,237,0.35)]">
-                  ✦
+            ) : filteredCustomers.length === 0 && customers.length === 0 ? (
+              <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/[0.06] bg-white/[0.02] px-8 py-14 text-center">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03]">
+                  <Users size={22} className="text-violet-300" />
                 </div>
-
-                <h2 className="text-2xl font-semibold">{t("crmReady")}</h2>
-
-                <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-400">
-                  {t("crmReadyDescription")}
-                </p>
-
-                <div className="mt-10 flex gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-white/90">
+                    {t("onboardingEmptyTitle")}
+                  </h3>
+                  <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/35">
+                    {t("onboardingEmptyDescription")}
+                  </p>
+                </div>
+                <div className="flex flex-wrap justify-center gap-2">
                   <button
                     onClick={() =>
-                      createFormRef.current?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      })
+                      createFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
                     }
-                    className="rounded-2xl border border-violet-500/20 bg-violet-500/10 px-6 py-3 text-sm text-violet-200 transition-all duration-300 hover:bg-violet-500/20"
+                    className="inline-flex items-center gap-2 rounded-xl border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-200 transition-all hover:bg-violet-500/15"
                   >
-                    {t("addFirstContact")}
+                    <UserPlus size={14} />
+                    {t("onboardingCreateContact")}
                   </button>
+                  <Link
+                    href="/dashboard/import"
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-white/60 transition-all hover:border-white/[0.14]"
+                  >
+                    <FileUp size={14} />
+                    {t("onboardingImportCSV")}
+                  </Link>
                 </div>
+              </div>
+            ) : filteredCustomers.length === 0 ? (
+              <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] px-8 py-12 text-center">
+                <p className="text-sm text-white/35">{t("noSearchResults")}</p>
               </div>
             ) : (
               filteredCustomers.map((customer) => (

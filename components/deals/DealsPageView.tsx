@@ -12,6 +12,8 @@ import { useTranslations } from "next-intl";
 import {
   LayoutGrid,
   List,
+  PlusCircle,
+  TrendingUp,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -213,7 +215,28 @@ export default function DealsPageView({
       {/* VIEW CONTENT */}
 
       <div className="mt-6">
-        {view === "list" ? (
+        {deals.length === 0 ? (
+          <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/[0.06] bg-white/[0.02] px-8 py-16 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03]">
+              <TrendingUp size={22} className="text-violet-300" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white/90">
+                {t("onboardingEmptyTitle")}
+              </h3>
+              <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/35">
+                {t("onboardingEmptyDescription")}
+              </p>
+            </div>
+            <button
+              onClick={() => setOpen(true)}
+              className="inline-flex items-center gap-2 rounded-xl border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-200 transition-all hover:bg-violet-500/15"
+            >
+              <PlusCircle size={14} />
+              {t("onboardingCreateDeal")}
+            </button>
+          </div>
+        ) : view === "list" ? (
           <DealsListCommand
             deals={filteredDeals}
             onEdit={setEditingDeal}

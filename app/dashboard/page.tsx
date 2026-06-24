@@ -5,6 +5,7 @@ import { getWorkspaceTasks } from "@/server/actions/tasks/getWorkspaceTasks";
 import { getCalendarEvents } from "@/server/actions/calendar/getCalendarEvents";
 import { getEmailThreads } from "@/server/actions/email/getEmailThreads";
 import { getWorkspaceActivity } from "@/server/actions/activity/getWorkspaceActivity";
+import { getOnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
 import DashboardView from "@/components/dashboard/DashboardView";
 import type { DashboardTask } from "@/components/dashboard/PriorityTasksWidget";
 import type { DashboardActivityItem } from "@/components/dashboard/RecentActivityWidget";
@@ -12,13 +13,15 @@ import type { DashboardActivityItem } from "@/components/dashboard/RecentActivit
 export default async function DashboardPage() {
   const user = await getUser();
 
-  const [analytics, rawTasks, events, threads, rawActivities] = await Promise.all([
-    getAnalyticsOverview(),
-    getWorkspaceTasks(),
-    getCalendarEvents(5),
-    getEmailThreads(5),
-    getWorkspaceActivity(8),
-  ]);
+  const [analytics, rawTasks, events, threads, rawActivities, onboardingStatus] =
+    await Promise.all([
+      getAnalyticsOverview(),
+      getWorkspaceTasks(),
+      getCalendarEvents(5),
+      getEmailThreads(5),
+      getWorkspaceActivity(8),
+      getOnboardingStatus(),
+    ]);
 
   let displayName = "Operator";
   if (user) {
@@ -45,6 +48,7 @@ export default async function DashboardPage() {
       events={events}
       threads={threads}
       activities={activities}
+      onboardingStatus={onboardingStatus}
     />
   );
 }

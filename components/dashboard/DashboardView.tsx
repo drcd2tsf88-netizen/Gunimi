@@ -19,10 +19,12 @@ import UpcomingMeetingsWidget from "./UpcomingMeetingsWidget";
 import RecentEmailsWidget from "./RecentEmailsWidget";
 import RecentActivityWidget, { type DashboardActivityItem } from "./RecentActivityWidget";
 import DailyBriefWidget from "./DailyBriefWidget";
+import OnboardingWidget from "./OnboardingWidget";
 
 import type { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
 import type { CalendarEventRow } from "@/types/calendar";
 import type { EmailThread } from "@/types/email";
+import type { OnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
 
 type Props = {
   displayName: string;
@@ -31,6 +33,7 @@ type Props = {
   events: CalendarEventRow[];
   threads: EmailThread[];
   activities: DashboardActivityItem[];
+  onboardingStatus: OnboardingStatus;
 };
 
 export default function DashboardView({
@@ -40,6 +43,7 @@ export default function DashboardView({
   events,
   threads,
   activities,
+  onboardingStatus,
 }: Props) {
   const t = useTranslations("dashboard");
   const [assistantOpen, setAssistantOpen] = useState(false);
@@ -47,6 +51,22 @@ export default function DashboardView({
   const hour = new Date().getHours();
   const greeting =
     hour < 12 ? t("goodMorning") : hour < 18 ? t("goodAfternoon") : t("goodEvening");
+
+  // Show onboarding widget until all 5 server-tracked steps are done
+  const serverStepsDone = [
+    onboardingStatus.emailConnected,
+    onboardingStatus.calendarConnected,
+    onboardingStatus.contactsCount > 0,
+    onboardingStatus.companiesCount > 0,
+    onboardingStatus.dealsCount > 0,
+  ].filter(Boolean).length;
+  const showOnboarding = serverStepsDone < 5;
+
+  const isNewWorkspace =
+    onboardingStatus.contactsCount === 0 &&
+    onboardingStatus.dealsCount === 0 &&
+    !onboardingStatus.emailConnected &&
+    !onboardingStatus.calendarConnected;
 
   const stats = [
     { title: t("statsCompanies"), value: analytics.companies, icon: Building2 },
@@ -59,6 +79,14 @@ export default function DashboardView({
 
   return (
     <div className="space-y-6">
+      {/* ONBOARDING WIDGET — shown until 5 server steps complete */}
+      {showOnboarding && (
+        <OnboardingWidget
+          status={onboardingStatus}
+          onOpenAI={() => setAssistantOpen(true)}
+        />
+      )}
+
       {/* HEADER */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -105,7 +133,7 @@ export default function DashboardView({
       </div>
 
       {/* ROW 3: Daily Brief */}
-      <DailyBriefWidget displayName={displayName} />
+      <DailyBriefWidget displayName={displayName} isNewWorkspace={isNewWorkspace} />
 
       <OrbitAssistant
         open={assistantOpen}

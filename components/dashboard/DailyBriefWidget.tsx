@@ -28,6 +28,7 @@ type DailyBrief = {
 
 type Props = {
   displayName: string;
+  isNewWorkspace?: boolean;
 };
 
 type SectionProps = {
@@ -113,7 +114,7 @@ function BriefSection({ label, items, color, icon: Icon }: SectionProps) {
   );
 }
 
-export default function DailyBriefWidget({ displayName }: Props) {
+export default function DailyBriefWidget({ displayName, isNewWorkspace = false }: Props) {
   const t = useTranslations("dashboard");
   const [brief, setBrief] = useState<DailyBrief | null>(null);
   const [loading, setLoading] = useState(true);
@@ -247,8 +248,16 @@ export default function DailyBriefWidget({ displayName }: Props) {
         <p className="mt-5 text-sm text-white/30">{t("briefAllClear")}</p>
       )}
 
-      {/* Unavailable */}
-      {!loading && !brief && (
+      {/* Unavailable — show onboarding guidance for empty workspaces */}
+      {!loading && !brief && isNewWorkspace && (
+        <div className="mt-5 space-y-3">
+          <p className="border-l-2 border-violet-500/30 pl-3.5 text-sm leading-relaxed text-white/55">
+            {t("briefOnboardingIntro")}
+          </p>
+          <p className="text-sm leading-relaxed text-white/35">{t("briefOnboardingHint")}</p>
+        </div>
+      )}
+      {!loading && !brief && !isNewWorkspace && (
         <p className="mt-5 text-sm text-white/30">{t("briefUnavailable")}</p>
       )}
     </OrbitCard>
