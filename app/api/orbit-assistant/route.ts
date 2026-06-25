@@ -4,6 +4,8 @@ import { ratelimit } from "@/lib/ratelimit";
 import { errorResponse } from "@/lib/server/apiResponse";
 import { getWorkspaceContext } from "@/server/actions/ai/getWorkspaceContext";
 import { buildChatSystemPrompt } from "@/lib/ai/context/formatWorkspacePrompt";
+import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logAIUsage } from "@/lib/ai/logUsage";
 import { NextResponse } from "next/server";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -28,7 +30,10 @@ export async function POST(req: Request) {
 
     if (!message.trim()) return errorResponse("Message required", 400);
 
-    const ctx = await getWorkspaceContext();
+    const [ctx, workspace] = await Promise.all([
+      getWorkspaceContext(),
+      getCurrentWorkspace(),
+    ]);
 
     const systemPrompt = ctx
       ? `You are ${agentName} within Orbit AI, the intelligent assistant for ${ctx.workspaceName}.
@@ -58,6 +63,14 @@ Respond with JSON: { "response": "...", "actions": [] }`;
 
     const content = completion.choices[0]?.message?.content ?? "{}";
     const parsed = JSON.parse(content) as { response?: string; actions?: string[] };
+
+    void logAIUsage({
+      workspaceId: workspace?.id ?? null,
+      userId: user.id,
+      feature: "assistant",
+      inputTokens: completion.usage?.prompt_tokens ?? 0,
+      outputTokens: completion.usage?.completion_tokens ?? 0,
+    });
 
     return NextResponse.json({
       response: parsed.response ?? "Orbit AI could not generate a response.",

@@ -4,6 +4,8 @@ import { ratelimit } from "@/lib/ratelimit";
 import { errorResponse } from "@/lib/server/apiResponse";
 import { getWorkspaceContext } from "@/server/actions/ai/getWorkspaceContext";
 import { buildChatSystemPrompt } from "@/lib/ai/context/formatWorkspacePrompt";
+import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logAIUsage } from "@/lib/ai/logUsage";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -38,7 +40,10 @@ export async function POST(req: Request) {
       return errorResponse("Message required", 400);
     }
 
-    const ctx = await getWorkspaceContext();
+    const [ctx, workspace] = await Promise.all([
+      getWorkspaceContext(),
+      getCurrentWorkspace(),
+    ]);
     const systemPrompt = ctx ? buildChatSystemPrompt(ctx) : FALLBACK_SYSTEM;
 
     const completion =
@@ -56,6 +61,14 @@ export async function POST(req: Request) {
           },
         ],
       });
+
+    void logAIUsage({
+      workspaceId: workspace?.id ?? null,
+      userId: user.id,
+      feature: "chat",
+      inputTokens: completion.usage?.prompt_tokens ?? 0,
+      outputTokens: completion.usage?.completion_tokens ?? 0,
+    });
 
     return Response.json({
       reply: completion.choices[0].message.content,

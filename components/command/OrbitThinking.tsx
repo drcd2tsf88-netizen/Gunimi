@@ -1,43 +1,23 @@
 "use client";
 
-import {
-  motion,
-} from "framer-motion";
+import { motion } from "framer-motion";
+import { Brain } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-import {
-  Brain,
-} from "lucide-react";
-
-import { useAIStateStore }
-from "@/lib/store/ai-state-store";
+import { useAIStateStore } from "@/lib/store/ai-state-store";
 
 export default function OrbitThinking() {
-  const thinking =
-    useAIStateStore(
-      (state) =>
-        state.thinking
-    );
+  const t = useTranslations("command");
 
-  const currentThought =
-    useAIStateStore(
-      (state) =>
-        state.currentThought
-    );
+  const thinking = useAIStateStore((state) => state.thinking);
+  const currentThought = useAIStateStore((state) => state.currentThought);
 
-  if (!thinking) {
-    return null;
-  }
+  if (!thinking) return null;
 
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        y: 8,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
       className="
         flex
         items-center
@@ -55,7 +35,6 @@ export default function OrbitThinking() {
       "
     >
       {/* ICON */}
-
       <div
         className="
           relative
@@ -74,13 +53,7 @@ export default function OrbitThinking() {
           text-violet-300
         "
       >
-        <Brain
-          size={16}
-          className="
-            animate-pulse
-          "
-        />
-
+        <Brain size={16} className="animate-pulse" />
         <div
           className="
             absolute
@@ -96,13 +69,7 @@ export default function OrbitThinking() {
       </div>
 
       {/* TEXT */}
-
-      <div
-        className="
-          min-w-0
-          flex-1
-        "
-      >
+      <div className="min-w-0 flex-1">
         <p
           className="
             text-[10px]
@@ -113,7 +80,7 @@ export default function OrbitThinking() {
             text-violet-300
           "
         >
-          Orbit Cognition
+          {t("cognition")}
         </p>
 
         <p

@@ -3,6 +3,7 @@ import { ratelimit } from "@/lib/ratelimit";
 import { errorResponse } from "@/lib/server/apiResponse";
 import { getWorkspaceContext } from "@/server/actions/ai/getWorkspaceContext";
 import { generateDailyBrief } from "@/server/actions/ai/generateDailyBrief";
+import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -13,7 +14,10 @@ export async function GET() {
   if (!success) return errorResponse("Rate limit exceeded", 429);
 
   try {
-    const ctx = await getWorkspaceContext();
+    const [ctx, workspace] = await Promise.all([
+      getWorkspaceContext(),
+      getCurrentWorkspace(),
+    ]);
 
     if (!ctx) {
       return NextResponse.json(
@@ -22,7 +26,10 @@ export async function GET() {
       );
     }
 
-    const brief = await generateDailyBrief(ctx);
+    const logContext =
+      workspace && user ? { workspaceId: workspace.id, userId: user.id } : undefined;
+
+    const brief = await generateDailyBrief(ctx, logContext);
 
     return NextResponse.json(
       brief ?? { summary: "", priorities: [], risks: [], opportunities: [] },

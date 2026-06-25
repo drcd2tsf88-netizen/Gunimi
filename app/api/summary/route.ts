@@ -10,6 +10,12 @@ import {
   errorResponse,
 } from "@/lib/server/apiResponse";
 
+import { getCurrentWorkspace }
+from "@/lib/workspace/getCurrentWorkspace";
+
+import { logAIUsage }
+from "@/lib/ai/logUsage";
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -55,6 +61,15 @@ export async function POST(req: Request) {
           },
         ],
       });
+
+    const workspace = await getCurrentWorkspace();
+    void logAIUsage({
+      workspaceId: workspace?.id ?? null,
+      userId: user.id,
+      feature: "summary",
+      inputTokens: completion.usage?.prompt_tokens ?? 0,
+      outputTokens: completion.usage?.completion_tokens ?? 0,
+    });
 
     return Response.json({
       reply: completion.choices[0].message.content,

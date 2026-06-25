@@ -18,7 +18,8 @@
       "Bash(npx tsc *)",
       "Bash(xargs grep -l \"contact\")",
       "Bash(mkdir -p \"c:/Users/guoth/OrbitDesk/OrbitDesk/app/dashboard/crm/[id]\" && mkdir -p \"c:/Users/guoth/OrbitDesk/OrbitDesk/components/contacts/detail\")",
-      "Bash(xargs -I {} sh -c 'echo \"File: {}\"; head -50 \"{}\"')"
+      "Bash(xargs -I {} sh -c 'echo \"File: {}\"; head -50 \"{}\"')",
+      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\guoth\\OrbitDesk\\OrbitDesk\\app\\dashboard\\crm\\[id]"

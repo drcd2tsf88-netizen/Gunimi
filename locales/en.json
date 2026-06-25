@@ -804,6 +804,120 @@
     "completionTitle": "Workspace Setup Complete",
     "completionSubtitle": "You're all set. Your workspace is ready to use."
   },
+  "command": {
+    "title": "Orbit Command Center",
+    "subtitle": "AI-powered workspace control",
+    "placeholder": "Search workspace, AI actions or workflows...",
+    "topbarPlaceholder": "Search Orbit systems...",
+    "badgeAI": "AI",
+    "badgeOpen": "OPEN",
+    "badgeContact": "CONTACT",
+    "badgeCompany": "COMPANY",
+    "badgeDeal": "DEAL",
+    "escLabel": "ESC",
+    "cognition": "Orbit Cognition",
+    "thinkingCurrentThought": "Processing your request...",
+    "emptyTitle": "No results found",
+    "emptyDescription": "Try searching for a page, action, or AI command.",
+    "emptyHint": "Try: \"Tasks\", \"Analyze Workspace\", \"CRM\"",
+    "searchResultsGroup": "Results",
+    "items": {
+      "dashboard": {
+        "title": "Open Dashboard",
+        "description": "Navigate to workspace dashboard"
+      },
+      "tasks": {
+        "title": "Open Tasks",
+        "description": "View active workspace tasks"
+      },
+      "crm": {
+        "title": "Open CRM",
+        "description": "Manage customer workflows"
+      },
+      "companies": {
+        "title": "Open Companies",
+        "description": "Browse and manage organizations"
+      },
+      "deals": {
+        "title": "Open Deals",
+        "description": "View commercial pipeline"
+      },
+      "analytics": {
+        "title": "Open Analytics",
+        "description": "Review workspace analytics"
+      },
+      "analyze": {
+        "title": "Analyze Workspace",
+        "description": "Orbit AI reviews workspace performance"
+      },
+      "activity": {
+        "title": "Open Activity",
+        "description": "Review workspace observatory"
+      }
+    },
+    "groups": {
+      "navigation": "Navigation",
+      "workspace": "Workspace",
+      "crm": "CRM",
+      "analytics": "Analytics",
+      "ai": "AI Actions"
+    }
+  },
+  "adminAI": {
+    "badge": "Founder Only",
+    "pageTitle": "AI Operations",
+    "pageSubtitle": "Real-time AI usage intelligence and cost monitoring for OrbitDesk.",
+    "generatedAt": "Generated",
+    "overviewTitle": "Usage Overview",
+    "overviewSubtitle": "All-time AI request and token statistics.",
+    "statsRequests": "Total Requests",
+    "statsInputTokens": "Input Tokens",
+    "statsOutputTokens": "Output Tokens",
+    "statsTotalCost": "Total Cost",
+    "statsAvgCost": "Avg Cost / Req",
+    "statsAvgTokens": "Avg Tokens / Req",
+    "provider": "Provider",
+    "model": "Model",
+    "inputPricingLabel": "Input",
+    "outputPricingLabel": "Output",
+    "totalTokensLabel": "Total Tokens",
+    "projectionTitle": "Cost Projection",
+    "projectionSubtitle": "Based on last 7-day average daily cost.",
+    "projectionToday": "Today",
+    "projectionTodayHint": "Actual spend so far today",
+    "projectionSevenDay": "Last 7 Days",
+    "projectionSevenDayHint": "Actual cost over past 7 days",
+    "projectionThirtyDay": "30-Day Projection",
+    "projectionThirtyDayHint": "Extrapolated at current rate",
+    "projectionMonthly": "Month to Date",
+    "projectionMonthlyHint": "Actual spend this calendar month",
+    "featuresTitle": "Feature Usage",
+    "featuresSubtitle": "AI request breakdown by product feature.",
+    "featureColFeature": "Feature",
+    "featureColRequests": "Requests",
+    "featureColTokens": "Tokens",
+    "featureColCost": "Cost",
+    "workspacesTitle": "Workspace Usage",
+    "workspacesSubtitle": "Cost and usage by workspace, sorted by spend.",
+    "wsWorkspace": "Workspace",
+    "wsRequests": "Requests",
+    "wsTokens": "Tokens",
+    "wsCost": "Cost",
+    "wsLastActivity": "Last Active",
+    "usersTitle": "User Usage",
+    "usersSubtitle": "AI usage attributed to individual users.",
+    "userUser": "User",
+    "userWorkspace": "Workspace",
+    "userRequests": "Requests",
+    "userTokens": "Tokens",
+    "userCost": "Cost",
+    "userLastRequest": "Last Request",
+    "tiersTitle": "Tier Limits",
+    "tiersSubtitle": "Planned usage limits per pricing tier — infrastructure foundation.",
+    "tiersNote": "Billing enforcement not yet active. Limits will be applied at Open Alpha launch.",
+    "architectureNote": "Provider-independent architecture. OpenAI today — Anthropic, Gemini, and local models will require minimal changes.",
+    "noDataYet": "No data yet. AI requests will appear here once the table is created and requests are made."
+  },
   "aiPanel": {
     "orbitAi": "Orbit AI",
     "memoryLabel": "Workspace Memory",

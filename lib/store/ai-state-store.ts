@@ -12,7 +12,7 @@ type Message = {
 
   createdAt: string;
 
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 };
 
 type MemoryItem = {

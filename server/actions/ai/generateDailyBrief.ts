@@ -2,6 +2,7 @@
 
 import OpenAI from "openai";
 import type { WorkspaceAIContext } from "./getWorkspaceContext";
+import { logAIUsage } from "@/lib/ai/logUsage";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -40,7 +41,8 @@ const ENTITY_HREFS: Record<string, (id: string) => string> = {
 };
 
 export async function generateDailyBrief(
-  ctx: WorkspaceAIContext
+  ctx: WorkspaceAIContext,
+  logContext?: { workspaceId: string; userId: string }
 ): Promise<DailyBrief | null> {
   try {
     const validDealIds = new Set(ctx.deals.map((d) => d.id));
@@ -109,6 +111,16 @@ STRICT RULES:
         },
       ],
     });
+
+    if (logContext) {
+      void logAIUsage({
+        workspaceId: logContext.workspaceId,
+        userId: logContext.userId,
+        feature: "brief",
+        inputTokens: completion.usage?.prompt_tokens ?? 0,
+        outputTokens: completion.usage?.completion_tokens ?? 0,
+      });
+    }
 
     const content = completion.choices[0]?.message?.content;
     if (!content) return null;

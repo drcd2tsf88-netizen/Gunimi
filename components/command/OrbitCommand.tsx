@@ -3,6 +3,7 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -21,153 +22,177 @@ import {
   CommandList,
   CommandItem,
   CommandGroup,
+  CommandEmpty,
 } from "cmdk";
 
 import {
+  Building2,
+  Search,
+  SearchX,
   Sparkles,
+  TrendingUp,
+  Users,
 } from "lucide-react";
+
+import type { LucideIcon } from "lucide-react";
+import type { EntityResult } from "@/lib/search/types";
+
+import { useTranslations } from "next-intl";
 
 import OrbitThinking
 from "@/components/command/OrbitThinking";
 
-import { orbitCommands } from "@/config/orbit-commands";
+// Side effects: register command modules and search providers
+import "@/config/commands";
+import "@/lib/search/providers";
+
+import { commandRegistry } from "@/lib/commands/registry";
+import type { OrbitCommand } from "@/lib/commands/types";
+
+import { searchEngine } from "@/lib/search";
+import type { SearchResult } from "@/lib/search";
+
 import { executeOrbitCommand }
 from "@/server/actions/ai/executeOrbitCommand";
 
 import { useOrbitCommandStore }
 from "@/lib/store/orbit-command-store";
 
-export default function OrbitCommand() {
-  const router =
-    useRouter();
+import { useAIStateStore }
+from "@/lib/store/ai-state-store";
 
-  const {
-    open,
-    setOpen,
-  } =
-    useOrbitCommandStore();
+export default function OrbitCommandPalette() {
+  const router = useRouter();
+  const t = useTranslations("command");
 
-  const [isThinking, setIsThinking] =
-    useState(false);
+  const { open, setOpen, toggle } = useOrbitCommandStore();
 
-  // SHORTCUT
+  // Single source of truth for AI thinking state
+  const { thinking, setThinking, setCurrentThought } = useAIStateStore();
 
+  // Captures the element that had focus before the palette opened
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // Generation counter — prevents stale async results from overwriting newer ones
+  const searchGenRef = useRef(0);
+
+  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+
+  // Store focused element on open
   useEffect(() => {
-    const down = (
-      event: KeyboardEvent
-    ) => {
-      if (
-        (event.metaKey ||
-          event.ctrlKey) &&
-        event.key === "k"
-      ) {
+    if (open) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
+    }
+  }, [open]);
+
+  // Keyboard shortcut — stable deps only (toggle/setOpen never change reference)
+  useEffect(() => {
+    const down = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
         event.preventDefault();
-
-        setOpen(!open);
+        toggle();
       }
-
-      if (
-        event.key === "Escape"
-      ) {
+      if (event.key === "Escape") {
         setOpen(false);
       }
     };
 
-    document.addEventListener(
-      "keydown",
-      down
-    );
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, [setOpen, toggle]);
 
-    return () =>
-      document.removeEventListener(
-        "keydown",
-        down
-      );
-  }, [open, setOpen]);
+  // Universal Search — fans out to all registered providers on every query change.
+  // The generation counter ensures only the most recent result is applied.
+  useEffect(() => {
+    const gen = ++searchGenRef.current;
 
-  // GROUP COMMANDS
+    if (!query.trim()) {
+      // No clear needed — JSX gates on query.trim(), making stale results invisible.
+      // Gen increment above invalidates any in-flight results from a prior search.
+      return;
+    }
 
-  const groupedCommands =
-    useMemo(() => {
-      return orbitCommands.reduce(
-        (
-          groups,
-          command
-        ) => {
-          if (
-            !groups[
-              command.group
-            ]
-          ) {
-            groups[
-              command.group
-            ] = [];
-          }
-
-          groups[
-            command.group
-          ].push(command);
-
-          return groups;
-        },
-        {} as Record<
-          string,
-          typeof orbitCommands
-        >
-      );
-    }, []);
-
-  // HANDLE COMMAND
-
-  async function handleCommand(
-    command: any
-  ) {
-    setIsThinking(true);
-
-    // AI ACTIONS
-
-    if (command.action) {
-  const result =
-    await executeOrbitCommand({
-      action:
-        command.action,
+    void searchEngine.search({ query, limit: 20 }).then((results) => {
+      if (searchGenRef.current === gen) {
+        setSearchResults(results);
+      }
     });
+  }, [query]);
 
-  setTimeout(() => {
-    setIsThinking(false);
+  // Group commands for the browse (empty query) state — unchanged from Sprint 2
+  const groupedCommands = useMemo(() => commandRegistry.getByGroup(), []);
 
-    setOpen(false);
-  }, 1800);
+  // Executes a typed OrbitCommand from the command registry
+  async function handleCommand(command: OrbitCommand) {
+    if (command.type === "action") {
+      setThinking(true);
+      setCurrentThought(t("thinkingCurrentThought"));
 
-  return;
-}
+      try {
+        await executeOrbitCommand({ action: command.action });
+      } catch (err) {
+        console.error("[OrbitCommand] execution failed:", err);
+      } finally {
+        setThinking(false);
+        setCurrentThought("");
+        setOpen(false);
+      }
 
-    // ROUTING
+      return;
+    }
 
-    setTimeout(() => {
-      router.push(
-        command.href
-      );
-
+    if (command.type === "navigate") {
+      router.push(command.href);
       setOpen(false);
+      return;
+    }
 
-      setIsThinking(false);
-    }, 1200);
+    // command.type === "ai" — Sprint 5 streaming extension point
+    console.warn("[OrbitCommand] AICommand not yet implemented:", command.id);
+    setOpen(false);
+  }
+
+  // Dispatches a SearchResult — resolves to the appropriate action by kind
+  async function handleSearchResult(result: SearchResult) {
+    if (result.kind === "command") {
+      const command = commandRegistry.getAll().find((c) => c.id === result.commandId);
+      if (command) {
+        await handleCommand(command);
+      }
+      return;
+    }
+
+    if (result.kind === "page" || result.kind === "entity") {
+      router.push(result.href);
+      setOpen(false);
+      return;
+    }
+
+    // result.kind === "ai" — Sprint 5 streaming extension point
+    console.warn("[OrbitCommand] AIResult not yet implemented:", result.id);
+    setOpen(false);
   }
 
   return (
-    <AnimatePresence>
+    <AnimatePresence
+      onExitComplete={() => {
+        // Restore focus after exit animation so the focus ring appears on the
+        // underlying element only once the palette is fully gone.
+        previousFocusRef.current?.focus();
+        previousFocusRef.current = null;
+
+        // Reset search state after close animation so the next open
+        // starts with a clean browse view.
+        setQuery("");
+        setSearchResults([]);
+      }}
+    >
       {open && (
         <motion.div
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="
             fixed
             inset-0
@@ -184,32 +209,18 @@ export default function OrbitCommand() {
 
             backdrop-blur-xl
           "
-          onClick={() =>
-            setOpen(false)
-          }
+          onClick={() => setOpen(false)}
         >
+          {/* DIALOG — role and aria attributes live on the focusable content shell */}
           <motion.div
-            initial={{
-              opacity: 0,
-              y: 20,
-              scale: 0.96,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-            }}
-            exit={{
-              opacity: 0,
-              y: 10,
-              scale: 0.98,
-            }}
-            transition={{
-              duration: 0.22,
-            }}
-            onClick={(e) =>
-              e.stopPropagation()
-            }
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="orbit-command-title"
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.98 }}
+            transition={{ duration: 0.22 }}
+            onClick={(e) => e.stopPropagation()}
             className="
               relative
 
@@ -218,7 +229,6 @@ export default function OrbitCommand() {
             "
           >
             {/* AMBIENT GLOW */}
-
             <div
               className="
                 pointer-events-none
@@ -230,9 +240,9 @@ export default function OrbitCommand() {
               "
             />
 
-            {/* COMMAND */}
-
+            {/* COMMAND — shouldFilter=false: we own filtering via the search engine */}
             <Command
+              shouldFilter={false}
               className="
                 relative
 
@@ -251,7 +261,6 @@ export default function OrbitCommand() {
               "
             >
               {/* HEADER */}
-
               <div
                 className="
                   flex
@@ -273,21 +282,15 @@ export default function OrbitCommand() {
                   "
                 >
                   {/* ICON */}
-
                   <motion.div
                     animate={{
                       boxShadow: [
                         "0 0 0px rgba(124,58,237,0)",
-
                         "0 0 30px rgba(124,58,237,0.4)",
-
                         "0 0 0px rgba(124,58,237,0)",
                       ],
                     }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                    }}
+                    transition={{ duration: 4, repeat: Infinity }}
                     className="
                       relative
 
@@ -308,22 +311,10 @@ export default function OrbitCommand() {
                   >
                     <motion.div
                       animate={{
-                        scale: [
-                          1,
-                          1.5,
-                          1,
-                        ],
-
-                        opacity: [
-                          0.4,
-                          0,
-                          0.4,
-                        ],
+                        scale: [1, 1.5, 1],
+                        opacity: [0.4, 0, 0.4],
                       }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
                       className="
                         absolute
 
@@ -335,21 +326,13 @@ export default function OrbitCommand() {
                         bg-violet-400/40
                       "
                     />
-
-                    <Sparkles
-                      className="
-                        h-5
-                        w-5
-
-                        text-violet-300
-                      "
-                    />
+                    <Sparkles className="h-5 w-5 text-violet-300" />
                   </motion.div>
 
                   {/* INFO */}
-
                   <div>
                     <h2
+                      id="orbit-command-title"
                       className="
                         text-lg
                         font-semibold
@@ -357,22 +340,13 @@ export default function OrbitCommand() {
                         text-white
                       "
                     >
-                      Orbit Command Center
+                      {t("title")}
                     </h2>
-
-                    <p
-                      className="
-                        text-sm
-                        text-zinc-500
-                      "
-                    >
-                      AI-powered workspace control
-                    </p>
+                    <p className="text-sm text-zinc-500">{t("subtitle")}</p>
                   </div>
                 </div>
 
-                {/* ESC */}
-
+                {/* ESC HINT */}
                 <div
                   className="
                     rounded-xl
@@ -389,12 +363,11 @@ export default function OrbitCommand() {
                     text-zinc-500
                   "
                 >
-                  ESC
+                  {t("escLabel")}
                 </div>
               </div>
 
-              {/* SEARCH */}
-
+              {/* SEARCH — controlled input: query state drives the search engine */}
               <div
                 className="
                   border-b
@@ -405,10 +378,10 @@ export default function OrbitCommand() {
                 "
               >
                 <CommandInput
-                  placeholder="
-                    Search workspace,
-                    AI actions or workflows...
-                  "
+                  value={query}
+                  onValueChange={setQuery}
+                  placeholder={t("placeholder")}
+                  aria-label={t("placeholder")}
                   className="
                     w-full
 
@@ -424,9 +397,8 @@ export default function OrbitCommand() {
                 />
               </div>
 
-              {/* THINKING */}
-
-              {isThinking && (
+              {/* THINKING — single source of truth: useAIStateStore.thinking */}
+              {thinking && (
                 <div
                   className="
                     border-b
@@ -440,7 +412,6 @@ export default function OrbitCommand() {
               )}
 
               {/* COMMANDS */}
-
               <CommandList
                 className="
                   max-h-[520px]
@@ -450,34 +421,276 @@ export default function OrbitCommand() {
                   p-4
                 "
               >
-                {Object.entries(
-                  groupedCommands
-                ).map(
-                  ([
-                    group,
-                    commands,
-                  ]) => (
-                    <CommandGroup
-                      key={group}
-                      heading={group}
+                {/* EMPTY STATE — shown when no CommandItems are rendered */}
+                <CommandEmpty>
+                  <div
+                    className="
+                      flex
+                      flex-col
+                      items-center
+                      gap-3
+
+                      px-4
+                      py-10
+
+                      text-center
+                    "
+                  >
+                    <div
+                      className="
+                        flex
+                        h-12
+                        w-12
+
+                        items-center
+                        justify-center
+
+                        rounded-2xl
+
+                        border
+                        border-white/[0.07]
+
+                        bg-white/[0.03]
+                      "
                     >
-                      {commands.map(
-                        (
-                          command
-                        ) => {
-                          const Icon =
-                            command.icon;
+                      <SearchX
+                        size={20}
+                        className="text-white/25"
+                      />
+                    </div>
+
+                    <div>
+                      <p
+                        className="
+                          text-sm
+                          font-medium
+                          text-white/50
+                        "
+                      >
+                        {t("emptyTitle")}
+                      </p>
+
+                      <p
+                        className="
+                          mt-1
+                          text-xs
+                          text-white/25
+                        "
+                      >
+                        {t("emptyDescription")}
+                      </p>
+
+                      <p
+                        className="
+                          mt-2
+                          text-xs
+                          text-violet-400/40
+                        "
+                      >
+                        {t("emptyHint")}
+                      </p>
+                    </div>
+                  </div>
+                </CommandEmpty>
+
+                {query.trim() ? (
+                  /*
+                   * SEARCH MODE — Universal Search Engine drives results.
+                   * Rendering null when empty lets CommandEmpty take over.
+                   * Future providers (CRM, Tasks, AI) plug in automatically
+                   * via lib/search/providers/index.ts — zero palette changes required.
+                   */
+                  searchResults.length > 0 && (
+                    <CommandGroup heading={t("searchResultsGroup")}>
+                      {searchResults.map((result) => {
+                        const entityIcons: Record<EntityResult["entityType"], LucideIcon> = {
+                          contact: Users,
+                          company: Building2,
+                          deal: TrendingUp,
+                        };
+
+                        const entityBadgeKeys: Record<EntityResult["entityType"], string> = {
+                          contact: t("badgeContact"),
+                          company: t("badgeCompany"),
+                          deal: t("badgeDeal"),
+                        };
+
+                        const Icon: LucideIcon =
+                          result.kind === "command" || result.kind === "page"
+                            ? (result.icon ?? Search)
+                            : result.kind === "entity"
+                            ? entityIcons[result.entityType]
+                            : Search;
+
+                        const title =
+                          result.kind === "command"
+                            ? t(`items.${result.commandId}.title`)
+                            : result.title;
+
+                        const description =
+                          result.kind === "command"
+                            ? t(`items.${result.commandId}.description`)
+                            : result.description;
+
+                        const badge =
+                          result.kind === "command"
+                            ? result.metadata?.type === "navigate"
+                              ? t("badgeOpen")
+                              : t("badgeAI")
+                            : result.kind === "entity"
+                            ? entityBadgeKeys[result.entityType]
+                            : result.kind === "ai"
+                            ? t("badgeAI")
+                            : t("badgeOpen");
+
+                        return (
+                          <CommandItem
+                            key={result.id}
+                            onSelect={() => {
+                              void handleSearchResult(result);
+                            }}
+                            className="
+                              group
+
+                              mb-2
+
+                              flex
+                              items-center
+                              justify-between
+
+                              rounded-2xl
+
+                              border
+                              border-transparent
+
+                              bg-transparent
+
+                              px-4
+                              py-4
+
+                              text-white
+
+                              transition-all
+                              duration-300
+
+                              hover:border-white/10
+                              hover:bg-white/[0.04]
+
+                              data-[selected=true]:border-violet-500/20
+                              data-[selected=true]:bg-violet-500/10
+                            "
+                          >
+                            {/* LEFT */}
+                            <div
+                              className="
+                                flex
+                                items-center
+                                gap-4
+                              "
+                            >
+                              <div
+                                className="
+                                  flex
+                                  h-12
+                                  w-12
+
+                                  items-center
+                                  justify-center
+
+                                  rounded-2xl
+
+                                  border
+                                  border-white/10
+
+                                  bg-white/[0.03]
+
+                                  transition-all
+                                  duration-300
+
+                                  group-hover:border-violet-500/20
+                                  group-hover:bg-violet-500/10
+                                "
+                              >
+                                <Icon
+                                  className="
+                                    h-5
+                                    w-5
+
+                                    text-zinc-300
+                                  "
+                                />
+                              </div>
+
+                              <div>
+                                <p
+                                  className="
+                                    font-medium
+
+                                    text-white
+                                  "
+                                >
+                                  {title}
+                                </p>
+
+                                {description && (
+                                  <p
+                                    className="
+                                      mt-1
+
+                                      text-sm
+                                      text-zinc-500
+                                    "
+                                  >
+                                    {description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* RIGHT — badge reflects result kind */}
+                            <div
+                              className="
+                                rounded-lg
+
+                                border
+                                border-white/10
+
+                                bg-white/[0.03]
+
+                                px-2
+                                py-1
+
+                                text-xs
+                                text-zinc-500
+                              "
+                            >
+                              {badge}
+                            </div>
+                          </CommandItem>
+                        );
+                      })}
+                    </CommandGroup>
+                  )
+                ) : (
+                  /*
+                   * BROWSE MODE — grouped command registry.
+                   * Identical to pre-Sprint-4 behavior.
+                   */
+                  Object.entries(groupedCommands).map(
+                    ([group, commands]) => (
+                      <CommandGroup
+                        key={group}
+                        heading={t(`groups.${group}`)}
+                      >
+                        {commands.map((command) => {
+                          const Icon = command.icon;
 
                           return (
                             <CommandItem
-                              key={
-                                command.id
-                              }
-                              onSelect={() =>
-                                handleCommand(
-                                  command
-                                )
-                              }
+                              key={command.id}
+                              onSelect={() => {
+                                void handleCommand(command);
+                              }}
                               className="
                                 group
 
@@ -510,7 +723,6 @@ export default function OrbitCommand() {
                               "
                             >
                               {/* LEFT */}
-
                               <div
                                 className="
                                   flex
@@ -559,9 +771,7 @@ export default function OrbitCommand() {
                                       text-white
                                     "
                                   >
-                                    {
-                                      command.title
-                                    }
+                                    {t(`items.${command.id}.title`)}
                                   </p>
 
                                   <p
@@ -572,15 +782,12 @@ export default function OrbitCommand() {
                                       text-zinc-500
                                     "
                                   >
-                                    {
-                                      command.description
-                                    }
+                                    {t(`items.${command.id}.description`)}
                                   </p>
                                 </div>
                               </div>
 
-                              {/* RIGHT */}
-
+                              {/* RIGHT — badge reflects command type */}
                               <div
                                 className="
                                   rounded-lg
@@ -597,15 +804,15 @@ export default function OrbitCommand() {
                                   text-zinc-500
                                 "
                               >
-                                {command.action
-                                  ? "AI"
-                                  : "OPEN"}
+                                {command.type === "navigate"
+                                  ? t("badgeOpen")
+                                  : t("badgeAI")}
                               </div>
                             </CommandItem>
                           );
-                        }
-                      )}
-                    </CommandGroup>
+                        })}
+                      </CommandGroup>
+                    )
                   )
                 )}
               </CommandList>

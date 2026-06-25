@@ -5,6 +5,8 @@ import {
   Search,
 } from "lucide-react";
 
+import { useTranslations } from "next-intl";
+
 import OrbitWorkspaceStatus
 from "@/components/layout/OrbitWorkspaceStatus";
 
@@ -36,6 +38,8 @@ export default function OrbitTopbar({
 
   setMobileOpen,
 }: OrbitTopbarProps) {
+  const t = useTranslations("command");
+
   const {
     setOpen,
   } =
@@ -171,11 +175,11 @@ export default function OrbitTopbar({
 
             <span
               className="
-                text-w-sm
+                text-sm
                 text-white/30
               "
             >
-              Search Orbit systems...
+              {t("topbarPlaceholder")}
             </span>
 
             <div

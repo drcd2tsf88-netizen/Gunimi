@@ -770,6 +770,120 @@
     "completionTitle": "Nastavenie pracovného priestoru dokončené",
     "completionSubtitle": "Ste pripravení. Váš pracovný priestor je pripravený na používanie."
   },
+  "command": {
+    "title": "Orbit Command Center",
+    "subtitle": "Riadenie pracovného priestoru pomocou AI",
+    "placeholder": "Hľadajte stránky, AI akcie alebo pracovné postupy...",
+    "topbarPlaceholder": "Hľadajte v systémoch Orbit...",
+    "badgeAI": "AI",
+    "badgeOpen": "OTVORIŤ",
+    "badgeContact": "KONTAKT",
+    "badgeCompany": "FIRMA",
+    "badgeDeal": "OBCHOD",
+    "escLabel": "ESC",
+    "cognition": "Orbit Kognícia",
+    "thinkingCurrentThought": "Spracovávam požiadavku...",
+    "emptyTitle": "Žiadne výsledky",
+    "emptyDescription": "Skúste hľadať stránku, akciu alebo AI príkaz.",
+    "emptyHint": "Skúste: \"Úlohy\", \"Analyzovať priestor\", \"CRM\"",
+    "searchResultsGroup": "Výsledky",
+    "items": {
+      "dashboard": {
+        "title": "Otvoriť Prehľad",
+        "description": "Navigovať na prehľad pracovného priestoru"
+      },
+      "tasks": {
+        "title": "Otvoriť Úlohy",
+        "description": "Zobraziť aktívne úlohy pracovného priestoru"
+      },
+      "crm": {
+        "title": "Otvoriť CRM",
+        "description": "Spravovať zákaznícke procesy"
+      },
+      "companies": {
+        "title": "Otvoriť Organizácie",
+        "description": "Prehliadať a spravovať organizácie"
+      },
+      "deals": {
+        "title": "Otvoriť Obchody",
+        "description": "Zobraziť obchodný pipeline"
+      },
+      "analytics": {
+        "title": "Otvoriť Analytiku",
+        "description": "Prehľad analytiky pracovného priestoru"
+      },
+      "analyze": {
+        "title": "Analyzovať Pracovný Priestor",
+        "description": "Orbit AI prehliada výkon pracovného priestoru"
+      },
+      "activity": {
+        "title": "Otvoriť Aktivitu",
+        "description": "Prehľad aktivity pracovného priestoru"
+      }
+    },
+    "groups": {
+      "navigation": "Navigácia",
+      "workspace": "Pracovný priestor",
+      "crm": "CRM",
+      "analytics": "Analytika",
+      "ai": "AI Akcie"
+    }
+  },
+  "adminAI": {
+    "badge": "Iba zakladatelia",
+    "pageTitle": "AI Operácie",
+    "pageSubtitle": "Prehľad využitia AI a monitorovanie nákladov v reálnom čase.",
+    "generatedAt": "Vygenerované",
+    "overviewTitle": "Prehľad využitia",
+    "overviewSubtitle": "Celková štatistika požiadaviek a tokenov.",
+    "statsRequests": "Celkové požiadavky",
+    "statsInputTokens": "Vstupné tokeny",
+    "statsOutputTokens": "Výstupné tokeny",
+    "statsTotalCost": "Celkové náklady",
+    "statsAvgCost": "Priem. náklady / req",
+    "statsAvgTokens": "Priem. tokeny / req",
+    "provider": "Poskytovateľ",
+    "model": "Model",
+    "inputPricingLabel": "Vstup",
+    "outputPricingLabel": "Výstup",
+    "totalTokensLabel": "Celkové tokeny",
+    "projectionTitle": "Projekcia nákladov",
+    "projectionSubtitle": "Na základe priemerných denných nákladov za posledných 7 dní.",
+    "projectionToday": "Dnes",
+    "projectionTodayHint": "Skutočné výdavky dnes",
+    "projectionSevenDay": "Posledných 7 dní",
+    "projectionSevenDayHint": "Skutočné náklady za posledných 7 dní",
+    "projectionThirtyDay": "Projekcia 30 dní",
+    "projectionThirtyDayHint": "Extrapolované pri aktuálnej sadzbe",
+    "projectionMonthly": "Mesiac k dnešku",
+    "projectionMonthlyHint": "Skutočné výdavky v tomto mesiaci",
+    "featuresTitle": "Využitie funkcií",
+    "featuresSubtitle": "Rozdelenie požiadaviek AI podľa funkcie produktu.",
+    "featureColFeature": "Funkcia",
+    "featureColRequests": "Požiadavky",
+    "featureColTokens": "Tokeny",
+    "featureColCost": "Náklady",
+    "workspacesTitle": "Využitie pracovných priestorov",
+    "workspacesSubtitle": "Náklady a využitie podľa pracovného priestoru.",
+    "wsWorkspace": "Pracovný priestor",
+    "wsRequests": "Požiadavky",
+    "wsTokens": "Tokeny",
+    "wsCost": "Náklady",
+    "wsLastActivity": "Posl. aktivita",
+    "usersTitle": "Využitie používateľov",
+    "usersSubtitle": "Využitie AI priradené jednotlivým používateľom.",
+    "userUser": "Používateľ",
+    "userWorkspace": "Pracovný priestor",
+    "userRequests": "Požiadavky",
+    "userTokens": "Tokeny",
+    "userCost": "Náklady",
+    "userLastRequest": "Posl. požiadavka",
+    "tiersTitle": "Limity plánov",
+    "tiersSubtitle": "Plánované limity využitia podľa cenového plánu.",
+    "tiersNote": "Fakturácia zatiaľ nie je aktívna. Limity budú uplatňované pri spustení Open Alpha.",
+    "architectureNote": "Architektúra nezávislá od poskytovateľa. Dnes OpenAI — Anthropic, Gemini a lokálne modely si vyžiadajú minimálne zmeny.",
+    "noDataYet": "Zatiaľ žiadne dáta. Požiadavky AI sa tu objavia po vytvorení tabuľky."
+  },
   "aiPanel": {
     "orbitAi": "Orbit AI",
     "memoryLabel": "Pamäť pracovného priestoru",
