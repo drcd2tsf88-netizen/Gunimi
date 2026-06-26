@@ -3,4 +3,5 @@
 
 import "./command.provider";
 import "./crm.provider";
+import "./deal.provider";
 import "./task.provider";
