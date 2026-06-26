@@ -22,11 +22,11 @@ import {
   CommandList,
   CommandItem,
   CommandGroup,
-  CommandEmpty,
 } from "cmdk";
 
 import {
   Building2,
+  ClipboardCheck,
   Search,
   SearchX,
   Sparkles,
@@ -78,6 +78,13 @@ export default function OrbitCommandPalette() {
 
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Tracks the query for which searchResults was last populated.
+  // Prevents the empty state from flashing during the debounce window or
+  // while a search is in-flight — empty state only shows after a search
+  // for the current query completes with zero results.
+  const lastCompletedQueryRef = useRef<string>("");
 
   // Store focused element on open
   useEffect(() => {
@@ -102,22 +109,29 @@ export default function OrbitCommandPalette() {
     return () => document.removeEventListener("keydown", down);
   }, [setOpen, toggle]);
 
-  // Universal Search — fans out to all registered providers on every query change.
-  // The generation counter ensures only the most recent result is applied.
+  // Universal Search — 250 ms debounce reduces Server Action calls during rapid typing.
+  // Generation counter ensures only the latest search result is applied.
+  // setState is never called synchronously in this effect body — only inside
+  // setTimeout and Promise callbacks — preserving react-compiler compatibility.
   useEffect(() => {
     const gen = ++searchGenRef.current;
 
     if (!query.trim()) {
-      // No clear needed — JSX gates on query.trim(), making stale results invisible.
-      // Gen increment above invalidates any in-flight results from a prior search.
       return;
     }
 
-    void searchEngine.search({ query, limit: 20 }).then((results) => {
-      if (searchGenRef.current === gen) {
-        setSearchResults(results);
-      }
-    });
+    const timer = setTimeout(() => {
+      setIsSearching(true);
+      void searchEngine.search({ query, limit: 20 }).then((results) => {
+        if (searchGenRef.current === gen) {
+          setSearchResults(results);
+          setIsSearching(false);
+          lastCompletedQueryRef.current = query;
+        }
+      });
+    }, 250);
+
+    return () => clearTimeout(timer);
   }, [query]);
 
   // Group commands for the browse (empty query) state — unchanged from Sprint 2
@@ -182,10 +196,12 @@ export default function OrbitCommandPalette() {
         previousFocusRef.current?.focus();
         previousFocusRef.current = null;
 
-        // Reset search state after close animation so the next open
-        // starts with a clean browse view.
+        // Reset all search state after close animation so the next open
+        // starts with a clean browse view and no stale loading state.
         setQuery("");
         setSearchResults([]);
+        setIsSearching(false);
+        lastCompletedQueryRef.current = "";
       }}
     >
       {open && (
@@ -370,6 +386,8 @@ export default function OrbitCommandPalette() {
               {/* SEARCH — controlled input: query state drives the search engine */}
               <div
                 className="
+                  relative
+
                   border-b
                   border-white/10
 
@@ -395,6 +413,20 @@ export default function OrbitCommandPalette() {
                     placeholder:text-zinc-500
                   "
                 />
+
+                {/* LOADING INDICATOR — thin animated bar overlaying the bottom border.
+                    Appears 250 ms after the user stops typing (timer fired).
+                    Stays visible until the search engine resolves all providers. */}
+                {isSearching && query.trim() && (
+                  <div className="absolute bottom-0 left-0 right-0 h-px overflow-hidden">
+                    <motion.div
+                      className="absolute inset-y-0 left-0 w-1/3 rounded-full bg-violet-500/60"
+                      initial={{ x: "-100%" }}
+                      animate={{ x: "400%" }}
+                      transition={{ duration: 1.2, ease: "easeInOut", repeat: Infinity }}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* THINKING — single source of truth: useAIStateStore.thinking */}
@@ -421,8 +453,14 @@ export default function OrbitCommandPalette() {
                   p-4
                 "
               >
-                {/* EMPTY STATE — shown when no CommandItems are rendered */}
-                <CommandEmpty>
+                {/* EMPTY STATE — rendered only after a search for the current query
+                    completes and returns zero results. Never shown during the debounce
+                    window (lastCompletedQueryRef lags behind query) or while a search
+                    is still in-flight (isSearching is true). */}
+                {query.trim() &&
+                  !isSearching &&
+                  query === lastCompletedQueryRef.current &&
+                  searchResults.length === 0 && (
                   <div
                     className="
                       flex
@@ -491,14 +529,15 @@ export default function OrbitCommandPalette() {
                       </p>
                     </div>
                   </div>
-                </CommandEmpty>
+                )}
 
                 {query.trim() ? (
                   /*
                    * SEARCH MODE — Universal Search Engine drives results.
-                   * Rendering null when empty lets CommandEmpty take over.
-                   * Future providers (CRM, Tasks, AI) plug in automatically
-                   * via lib/search/providers/index.ts — zero palette changes required.
+                   * Stale results remain visible while a new search is in-flight,
+                   * preventing empty-list flicker between successive queries.
+                   * Future providers plug in via lib/search/providers/index.ts —
+                   * zero palette changes required.
                    */
                   searchResults.length > 0 && (
                     <CommandGroup heading={t("searchResultsGroup")}>
@@ -507,12 +546,14 @@ export default function OrbitCommandPalette() {
                           contact: Users,
                           company: Building2,
                           deal: TrendingUp,
+                          task: ClipboardCheck,
                         };
 
                         const entityBadgeKeys: Record<EntityResult["entityType"], string> = {
                           contact: t("badgeContact"),
                           company: t("badgeCompany"),
                           deal: t("badgeDeal"),
+                          task: t("badgeTask"),
                         };
 
                         const Icon: LucideIcon =

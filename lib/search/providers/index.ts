@@ -3,3 +3,4 @@
 
 import "./command.provider";
 import "./crm.provider";
+import "./task.provider";

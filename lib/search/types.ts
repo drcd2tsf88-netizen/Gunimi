@@ -40,7 +40,7 @@ export type CommandResult = BaseSearchResult & {
 // A domain entity — contact, company, deal
 export type EntityResult = BaseSearchResult & {
   kind: "entity";
-  entityType: "contact" | "company" | "deal";
+  entityType: "contact" | "company" | "deal" | "task";
   entityId: string;
   href: string;
 };
