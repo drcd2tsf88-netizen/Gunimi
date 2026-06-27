@@ -32,6 +32,7 @@ export type OrbitActivityItem = {
   created_at: string;
   company_id?: string | null;
   deal_id?: string | null;
+  contact_id?: string | null;
 };
 
 type Props = {

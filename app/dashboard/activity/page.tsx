@@ -1,32 +1,19 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 import { useTranslations } from "next-intl";
 
-import CountUp
-from "react-countup";
+import CountUp from "react-countup";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import OrbitHeading from "@/components/ui/OrbitHeading";
+import OrbitSection from "@/components/layout/OrbitSection";
+import OrbitCard from "@/components/ui/OrbitCard";
+import OrbitActivityFeed from "@/components/ui/OrbitActivityFeed";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import { supabase } from "@/lib/supabase";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
-
-import OrbitActivityFeed
-from "@/components/ui/OrbitActivityFeed";
-
-import { supabase }
-from "@/lib/supabase";
-
-import { getWorkspaceActivity }
-from "@/server/actions/activity/getWorkspaceActivity";
+import { getWorkspaceActivity, getWorkspaceActivityCount } from "@/server/actions/activity/getWorkspaceActivity";
 
 type ActivityItem = {
   id: string;
@@ -37,48 +24,32 @@ type ActivityItem = {
   created_at: string;
   company_id?: string | null;
   deal_id?: string | null;
+  contact_id?: string | null;
 };
 
 export default function ActivityPage() {
   const t = useTranslations("activity");
 
-  const [activity, setActivity] =
-    useState<ActivityItem[]>([]);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  // LOAD ACTIVITY
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadActivity();
 
-    const channel =
-      supabase
-        .channel(
-          "workspace-activity-live"
-        )
-        .on(
-          "postgres_changes",
-          {
-            event: "*",
-
-            schema: "public",
-
-            table:
-              "workspace_activity",
-          },
-
-          async () => {
-            await loadActivity();
-          }
-        )
-        .subscribe();
+    const channel = supabase
+      .channel("workspace-activity-live")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "workspace_activity" },
+        async () => {
+          await loadActivity();
+        }
+      )
+      .subscribe();
 
     return () => {
-      supabase.removeChannel(
-        channel
-      );
+      supabase.removeChannel(channel);
     };
   }, []);
 
@@ -86,10 +57,13 @@ export default function ActivityPage() {
     try {
       setLoading(true);
 
-      const data =
-        await getWorkspaceActivity(20);
+      const [data, count] = await Promise.all([
+        getWorkspaceActivity(20),
+        getWorkspaceActivityCount(),
+      ]);
 
       setActivity(data);
+      setTotalCount(count);
     } catch (error) {
       console.error(error);
     } finally {
@@ -99,8 +73,6 @@ export default function ActivityPage() {
 
   return (
     <div className="space-y-8">
-      {/* HERO */}
-
       <OrbitSection>
         <OrbitHeading
           badge={t("badge")}
@@ -109,118 +81,34 @@ export default function ActivityPage() {
         />
       </OrbitSection>
 
-      {/* STATS */}
-
       <OrbitSection>
-        <div
-          className="
-            grid
-            gap-5
+        <div className="grid gap-5 md:grid-cols-3">
+          <OrbitCard className="p-6">
+            <p className="text-sm text-white/50">{t("totalEvents")}</p>
+            <h2 className="mt-4 text-4xl font-semibold">
+              <CountUp end={totalCount} />
+            </h2>
+          </OrbitCard>
 
-            md:grid-cols-3
-          "
-        >
-          <OrbitCard
-            className="p-6"
-          >
-            <p
-              className="
-                text-sm
-                text-white/50
-              "
-            >
-              {t("totalEvents")}
-            </p>
-
-            <h2
-              className="
-                mt-4
-
-                text-4xl
-                font-semibold
-              "
-            >
+          <OrbitCard className="p-6">
+            <p className="text-sm text-white/50">{t("aiExecutions")}</p>
+            <h2 className="mt-4 text-4xl font-semibold">
               <CountUp
-                end={
-                  activity.length
-                }
+                end={activity.filter((item) => item.type?.includes("ai")).length}
               />
             </h2>
           </OrbitCard>
 
-          <OrbitCard
-            className="p-6"
-          >
-            <p
-              className="
-                text-sm
-                text-white/50
-              "
-            >
-              {t("aiExecutions")}
-            </p>
-
-            <h2
-              className="
-                mt-4
-
-                text-4xl
-                font-semibold
-              "
-            >
+          <OrbitCard className="p-6">
+            <p className="text-sm text-white/50">{t("taskEvents")}</p>
+            <h2 className="mt-4 text-4xl font-semibold">
               <CountUp
-                end={
-                  activity.filter(
-                    (
-                      item
-                    ) =>
-                      item.type?.includes(
-                        "ai"
-                      )
-                  ).length
-                }
-              />
-            </h2>
-          </OrbitCard>
-
-          <OrbitCard
-            className="p-6"
-          >
-            <p
-              className="
-                text-sm
-                text-white/50
-              "
-            >
-              {t("taskEvents")}
-            </p>
-
-            <h2
-              className="
-                mt-4
-
-                text-4xl
-                font-semibold
-              "
-            >
-              <CountUp
-                end={
-                  activity.filter(
-                    (
-                      item
-                    ) =>
-                      item.type?.includes(
-                        "task"
-                      )
-                  ).length
-                }
+                end={activity.filter((item) => item.type?.includes("task")).length}
               />
             </h2>
           </OrbitCard>
         </div>
       </OrbitSection>
-
-      {/* TIMELINE */}
 
       {loading && (
         <OrbitSection>
@@ -247,6 +135,7 @@ export default function ActivityPage() {
           getItemHref={(item) => {
             if (item.deal_id) return `/dashboard/deals/${item.deal_id}`;
             if (item.company_id) return `/dashboard/companies/${item.company_id}`;
+            if (item.contact_id) return `/dashboard/crm/${item.contact_id}`;
             return undefined;
           }}
         />

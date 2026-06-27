@@ -17,6 +17,12 @@ from "@/components/layout/OrbitSection";
 import OrbitCard
 from "@/components/ui/OrbitCard";
 
+import OrbitEmptyState
+from "@/components/ui/OrbitEmptyState";
+
+import OrbitButton
+from "@/components/ui/OrbitButton";
+
 import { useTranslations }
 from "next-intl";
 
@@ -46,27 +52,17 @@ export default function CompaniesGrid({
   if (companies.length === 0) {
     return (
       <OrbitSection>
-        <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/[0.06] bg-white/[0.02] px-8 py-14 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03]">
-            <Building2 size={22} className="text-violet-300" />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-white/90">
-              {t("companies.onboardingEmptyTitle")}
-            </h3>
-            <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/35">
-              {t("companies.onboardingEmptyDescription")}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setCreateOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-200 transition-all hover:bg-violet-500/15"
-          >
-            <PlusCircle size={14} />
-            {t("companies.onboardingCreateCompany")}
-          </button>
-        </div>
+        <OrbitEmptyState
+          icon={Building2}
+          title={t("companies.onboardingEmptyTitle")}
+          description={t("companies.onboardingEmptyDescription")}
+          action={
+            <OrbitButton onClick={() => setCreateOpen(true)}>
+              <PlusCircle size={14} />
+              {t("companies.onboardingCreateCompany")}
+            </OrbitButton>
+          }
+        />
         <CreateOrganizationModal
           open={createOpen}
           onClose={() => setCreateOpen(false)}

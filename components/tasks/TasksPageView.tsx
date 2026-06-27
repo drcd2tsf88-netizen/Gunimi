@@ -385,6 +385,12 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
             icon={CheckSquare}
             title={t("noTasks")}
             description={t("noTasksDescription")}
+            action={
+              <OrbitButton onClick={handleCreate}>
+                <Plus size={14} />
+                {t("newTask")}
+              </OrbitButton>
+            }
           />
         ) : filteredTasks.length === 0 ? (
           <OrbitEmptyState

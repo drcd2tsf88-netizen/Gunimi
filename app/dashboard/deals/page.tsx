@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import {
   getDeals,
 } from "@/server/actions/deals/getDeals";
@@ -25,10 +27,12 @@ export default async function DealsPage() {
   ]);
 
   return (
-    <DealsPageView
-      deals={deals}
-      companies={companies}
-      contacts={contacts}
-    />
+    <Suspense>
+      <DealsPageView
+        deals={deals}
+        companies={companies}
+        contacts={contacts}
+      />
+    </Suspense>
   );
 }

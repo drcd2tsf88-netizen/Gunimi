@@ -5,7 +5,7 @@ import {
   useState,
 } from "react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useTranslations } from "next-intl";
 
@@ -20,16 +20,19 @@ import { cn } from "@/lib/utils";
 
 import OrbitInput from "@/components/ui/OrbitInput";
 import OrbitButton from "@/components/ui/OrbitButton";
+import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
 
 import DealsMetricStrip from "./DealsMetricStrip";
 import DealsPipeline from "./DealsPipeline";
-import DealsListCommand from "./DealsListCommand";
+import DealsListCommand, { type DealStage } from "./DealsListCommand";
 import CreateDealSheet from "./CreateDealSheet";
 import EditDealSheet from "./EditDealSheet";
 
 import { Deal } from "@/types/deal";
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
+
+const VALID_STAGES: DealStage[] = ["lead", "qualified", "proposal", "negotiation", "won", "lost"];
 
 type View = "list" | "pipeline";
 
@@ -47,6 +50,12 @@ export default function DealsPageView({
   const t = useTranslations("deals");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const stageParam = searchParams.get("stage");
+  const initialStage: DealStage | undefined = VALID_STAGES.includes(stageParam as DealStage)
+    ? (stageParam as DealStage)
+    : undefined;
 
   const [view, setView] = useState<View>("list");
 
@@ -216,30 +225,22 @@ export default function DealsPageView({
 
       <div className="mt-6">
         {deals.length === 0 ? (
-          <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/[0.06] bg-white/[0.02] px-8 py-16 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03]">
-              <TrendingUp size={22} className="text-violet-300" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white/90">
-                {t("onboardingEmptyTitle")}
-              </h3>
-              <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/35">
-                {t("onboardingEmptyDescription")}
-              </p>
-            </div>
-            <button
-              onClick={() => setOpen(true)}
-              className="inline-flex items-center gap-2 rounded-xl border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-200 transition-all hover:bg-violet-500/15"
-            >
-              <PlusCircle size={14} />
-              {t("onboardingCreateDeal")}
-            </button>
-          </div>
+          <OrbitEmptyState
+            icon={TrendingUp}
+            title={t("onboardingEmptyTitle")}
+            description={t("onboardingEmptyDescription")}
+            action={
+              <OrbitButton onClick={() => setOpen(true)}>
+                <PlusCircle size={14} />
+                {t("onboardingCreateDeal")}
+              </OrbitButton>
+            }
+          />
         ) : view === "list" ? (
           <DealsListCommand
             deals={filteredDeals}
             onEdit={setEditingDeal}
+            initialStage={initialStage}
           />
         ) : (
           <DealsPipeline

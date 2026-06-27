@@ -45,6 +45,7 @@ export default function CompanyActivity({
         />
       )}
 
+      {activity.length > 0 && (
       <div
         className="
           mt-6
@@ -108,6 +109,7 @@ export default function CompanyActivity({
           )
         )}
       </div>
+      )}
     </OrbitSection>
   );
 }

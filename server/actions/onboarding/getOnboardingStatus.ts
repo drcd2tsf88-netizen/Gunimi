@@ -1,6 +1,5 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
@@ -30,7 +29,6 @@ export async function getOnboardingStatus(): Promise<OnboardingStatus> {
 
     if (!workspace) return FALLBACK;
 
-    const supabase = await createClient();
     const userId = user?.id ?? null;
 
     const [
@@ -40,17 +38,17 @@ export async function getOnboardingStatus(): Promise<OnboardingStatus> {
       emailResult,
       calendarResult,
     ] = await Promise.all([
-      supabase
+      supabaseAdmin
         .from("workspace_contacts")
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
 
-      supabase
+      supabaseAdmin
         .from("workspace_companies")
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
 
-      supabase
+      supabaseAdmin
         .from("workspace_deals")
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),

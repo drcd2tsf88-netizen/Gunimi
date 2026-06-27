@@ -3,39 +3,44 @@ import { createClient } from "@/lib/supabase/server";
 import { getAnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
 import { getWorkspaceTasks } from "@/server/actions/tasks/getWorkspaceTasks";
 import { getCalendarEvents } from "@/server/actions/calendar/getCalendarEvents";
-import { getEmailThreads } from "@/server/actions/email/getEmailThreads";
 import { getWorkspaceActivity } from "@/server/actions/activity/getWorkspaceActivity";
 import { getOnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
+import { getPipelineBreakdown } from "@/server/actions/dashboard/getPipelineBreakdown";
 import DashboardView from "@/components/dashboard/DashboardView";
-import type { DashboardTask } from "@/components/dashboard/PriorityTasksWidget";
-import type { DashboardActivityItem } from "@/components/dashboard/RecentActivityWidget";
+import type { DashboardTask } from "@/components/dashboard/TodaysPrioritiesWidget";
+import type { DashboardActivityItem } from "@/components/dashboard/MorningSummaryWidget";
 
 export default async function DashboardPage() {
   const user = await getUser();
 
-  const [analytics, rawTasks, events, threads, rawActivities, onboardingStatus] =
-    await Promise.all([
-      getAnalyticsOverview(),
-      getWorkspaceTasks(),
-      getCalendarEvents(5),
-      getEmailThreads(5),
-      getWorkspaceActivity(8),
-      getOnboardingStatus(),
-    ]);
+  const profilePromise = user
+    ? createClient().then((s) =>
+        s.from("profiles").select("full_name").eq("id", user.id).single()
+      )
+    : Promise.resolve({ data: null });
 
-  let displayName = "Operator";
-  if (user) {
-    const supabase = await createClient();
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("full_name")
-      .eq("id", user.id)
-      .single();
-    displayName =
-      (profile as { full_name?: string } | null)?.full_name ||
-      user.email?.split("@")[0] ||
-      "Operator";
-  }
+  const [
+    analytics,
+    rawTasks,
+    events,
+    rawActivities,
+    onboardingStatus,
+    pipeline,
+    profileResult,
+  ] = await Promise.all([
+    getAnalyticsOverview(),
+    getWorkspaceTasks(),
+    getCalendarEvents(10),
+    getWorkspaceActivity(10),
+    getOnboardingStatus(),
+    getPipelineBreakdown(),
+    profilePromise,
+  ]);
+
+  const displayName =
+    (profileResult.data as { full_name?: string } | null)?.full_name ||
+    user?.email?.split("@")[0] ||
+    "Operator";
 
   const tasks = (rawTasks as unknown as DashboardTask[]) ?? [];
   const activities = (rawActivities as unknown as DashboardActivityItem[]) ?? [];
@@ -46,9 +51,9 @@ export default async function DashboardPage() {
       analytics={analytics}
       tasks={tasks}
       events={events}
-      threads={threads}
       activities={activities}
       onboardingStatus={onboardingStatus}
+      pipeline={pipeline}
     />
   );
 }

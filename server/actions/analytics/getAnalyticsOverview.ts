@@ -46,7 +46,8 @@ export async function getAnalyticsOverview(): Promise<AnalyticsOverview> {
       supabase
         .from("workspace_deals")
         .select("*", { count: "exact", head: true })
-        .eq("workspace_id", workspace.id),
+        .eq("workspace_id", workspace.id)
+        .not("stage", "in", '("won","lost")'),
       supabase
         .from("workspace_tasks")
         .select("*", { count: "exact", head: true })

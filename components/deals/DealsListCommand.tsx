@@ -7,7 +7,7 @@ import DealsListView from "./DealsListView";
 
 import { Deal } from "@/types/deal";
 
-type DealStage =
+export type DealStage =
   | "lead"
   | "qualified"
   | "proposal"
@@ -18,11 +18,12 @@ type DealStage =
 type Props = {
   deals: Deal[];
   onEdit: (deal: Deal) => void;
+  initialStage?: DealStage;
 };
 
-export default function DealsListCommand({ deals, onEdit }: Props) {
+export default function DealsListCommand({ deals, onEdit, initialStage }: Props) {
   const [activeStage, setActiveStage] =
-    useState<DealStage>("lead");
+    useState<DealStage>(initialStage ?? "lead");
 
   const stageDeals = deals.filter(
     (d) => d.stage === activeStage
