@@ -1,25 +1,21 @@
-import {
-  motion,
-} from "framer-motion";
+import type { ReactNode } from "react";
 
-import {
-  LucideIcon,
-} from "lucide-react";
+import { motion } from "framer-motion";
+
+import type { LucideIcon } from "lucide-react";
 
 type OrbitEmptyStateProps = {
   title: string;
-
-  description: string;
-
+  description?: string;
   icon: LucideIcon;
+  action?: ReactNode;
 };
 
 export default function OrbitEmptyState({
   title,
-
   description,
-
   icon: Icon,
+  action,
 }: OrbitEmptyStateProps) {
   return (
     <motion.div
@@ -120,20 +116,30 @@ export default function OrbitEmptyState({
 
         {/* DESCRIPTION */}
 
-        <p
-          className="
-            mt-3
+        {description && (
+          <p
+            className="
+              mt-3
 
-            max-w-sm
+              max-w-sm
 
-            text-sm
-            leading-relaxed
+              text-sm
+              leading-relaxed
 
-            text-zinc-500
-          "
-        >
-          {description}
-        </p>
+              text-zinc-500
+            "
+          >
+            {description}
+          </p>
+        )}
+
+        {/* ACTION */}
+
+        {action && (
+          <div className="mt-6">
+            {action}
+          </div>
+        )}
       </div>
     </motion.div>
   );

@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import {
+  usePathname,
   useRouter,
 } from "next/navigation";
 
@@ -46,10 +47,10 @@ from "@/components/command/OrbitThinking";
 import "@/config/commands";
 import "@/lib/search/providers";
 
-import { commandRegistry } from "@/lib/commands/registry";
+import { recentCommands } from "@/lib/commands/recent";
+import { isPanelAction } from "@/lib/commands/panels";
+import type { PanelId } from "@/lib/commands/panels";
 import type { OrbitCommand } from "@/lib/commands/types";
-
-import { searchEngine } from "@/lib/search";
 import type { SearchResult } from "@/lib/search";
 
 import { executeOrbitCommand }
@@ -61,39 +62,130 @@ from "@/lib/store/orbit-command-store";
 import { useAIStateStore }
 from "@/lib/store/ai-state-store";
 
-export default function OrbitCommandPalette() {
+import CreateTaskPanel
+from "@/components/command/panels/CreateTaskPanel";
+import CreateContactPanel
+from "@/components/command/panels/CreateContactPanel";
+import CreateCompanyPanel
+from "@/components/command/panels/CreateCompanyPanel";
+import CreateDealPanel
+from "@/components/command/panels/CreateDealPanel";
+
+import { useCommandSearch }
+from "@/components/command/useCommandSearch";
+import { usePanelState }
+from "@/components/command/usePanelState";
+
+interface OrbitCommandPaletteProps {
+  /** Platform role used to filter role-gated commands. Defaults to "member". */
+  userRole?: string;
+}
+
+export default function OrbitCommandPalette({
+  userRole = "member",
+}: OrbitCommandPaletteProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const t = useTranslations("command");
 
   const { open, setOpen, toggle } = useOrbitCommandStore();
-
-  // Single source of truth for AI thinking state
   const { thinking, setThinking, setCurrentThought } = useAIStateStore();
 
-  // Captures the element that had focus before the palette opened
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  // Prepared for future AI command cancellation (Sprint 19 — transport abstraction)
+  const activeExecutionRef = useRef<AbortController | null>(null);
 
-  // Generation counter — prevents stale async results from overwriting newer ones
-  const searchGenRef = useRef(0);
+  const [recentIds, setRecentIds] = useState<string[]>(
+    () => recentCommands.getRecent()
+  );
+  const [activePanel, setActivePanel] = useState<PanelId | null>(null);
 
-  const [query, setQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
+  // ── Extracted hooks ──────────────────────────────────────────────────────────
 
-  // Tracks the query for which searchResults was last populated.
-  // Prevents the empty state from flashing during the debounce window or
-  // while a search is in-flight — empty state only shows after a search
-  // for the current query completes with zero results.
-  const lastCompletedQueryRef = useRef<string>("");
+  const search = useCommandSearch({ userRole, activePanel });
 
-  // Store focused element on open
+  const panel = usePanelState({
+    query: search.query,
+    activePanel,
+    setActivePanel,
+    setOpen,
+    clearSearchResults: search.clearSearchResults,
+  });
+
+  // ── Browse mode data ─────────────────────────────────────────────────────────
+
+  const groupedCommands = useMemo(() => {
+    return search.allCommands.reduce(
+      (acc, cmd) => {
+        if (!acc[cmd.group]) acc[cmd.group] = [];
+        acc[cmd.group]!.push(cmd);
+        return acc;
+      },
+      {} as Record<string, OrbitCommand[]>
+    );
+  }, [search.allCommands]);
+
+  const contextualCommands = useMemo(
+    () =>
+      search.allCommands.filter(
+        (cmd) =>
+          cmd.routes && cmd.routes.some((r) => pathname.startsWith(r))
+      ),
+    [search.allCommands, pathname]
+  );
+
+  const contextualIds = useMemo(
+    () => new Set(contextualCommands.map((c) => c.id)),
+    [contextualCommands]
+  );
+
+  const recentCommandObjects = useMemo(() => {
+    const idToCommand = new Map(search.allCommands.map((c) => [c.id, c]));
+    return recentIds.flatMap((id) => {
+      const cmd = idToCommand.get(id);
+      return cmd ? [cmd] : [];
+    });
+  }, [search.allCommands, recentIds]);
+
+  const recentIdSet = useMemo(
+    () => new Set(recentCommandObjects.map((c) => c.id)),
+    [recentCommandObjects]
+  );
+
+  // Ordered browse groups: Recent → Suggested → remaining (each command once).
+  const orderedGroups = useMemo<[string, OrbitCommand[]][]>(() => {
+    const excludeIds = new Set([...recentIdSet, ...contextualIds]);
+    const groups: [string, OrbitCommand[]][] = [];
+
+    if (recentCommandObjects.length > 0) {
+      groups.push(["recent", recentCommandObjects]);
+    }
+    if (contextualCommands.length > 0) {
+      groups.push(["contextual", contextualCommands]);
+    }
+    for (const [group, cmds] of Object.entries(groupedCommands)) {
+      if (!cmds) continue;
+      const remaining =
+        excludeIds.size > 0 ? cmds.filter((c) => !excludeIds.has(c.id)) : cmds;
+      if (remaining.length > 0) groups.push([group, remaining]);
+    }
+    return groups;
+  }, [
+    groupedCommands,
+    recentCommandObjects,
+    recentIdSet,
+    contextualCommands,
+    contextualIds,
+  ]);
+
+  // ── Effects ──────────────────────────────────────────────────────────────────
+
   useEffect(() => {
     if (open) {
       previousFocusRef.current = document.activeElement as HTMLElement;
     }
   }, [open]);
 
-  // Keyboard shortcut — stable deps only (toggle/setOpen never change reference)
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key === "k") {
@@ -101,58 +193,52 @@ export default function OrbitCommandPalette() {
         toggle();
       }
       if (event.key === "Escape") {
-        setOpen(false);
+        if (activePanel) {
+          setActivePanel(null);
+          panel.setPanelError(null);
+          // query is intentionally preserved as the entity name draft
+        } else {
+          setOpen(false);
+        }
       }
     };
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [setOpen, toggle]);
+  }, [setOpen, toggle, activePanel, panel]);
 
-  // Universal Search — 250 ms debounce reduces Server Action calls during rapid typing.
-  // Generation counter ensures only the latest search result is applied.
-  // setState is never called synchronously in this effect body — only inside
-  // setTimeout and Promise callbacks — preserving react-compiler compatibility.
-  useEffect(() => {
-    const gen = ++searchGenRef.current;
+  // ── Command dispatch ─────────────────────────────────────────────────────────
 
-    if (!query.trim()) {
+  async function handleCommand(command: OrbitCommand) {
+    recentCommands.record(command.id);
+    setRecentIds(recentCommands.getRecent());
+
+    if (command.type === "action" && isPanelAction(command.action)) {
+      panel.openPanel(command.action);
       return;
     }
 
-    const timer = setTimeout(() => {
-      setIsSearching(true);
-      void searchEngine.search({ query, limit: 20 }).then((results) => {
-        if (searchGenRef.current === gen) {
-          setSearchResults(results);
-          setIsSearching(false);
-          lastCompletedQueryRef.current = query;
-        }
-      });
-    }, 250);
-
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  // Group commands for the browse (empty query) state — unchanged from Sprint 2
-  const groupedCommands = useMemo(() => commandRegistry.getByGroup(), []);
-
-  // Executes a typed OrbitCommand from the command registry
-  async function handleCommand(command: OrbitCommand) {
     if (command.type === "action") {
+      // Non-panel action → AI execution. AbortController prepared for when
+      // executeOrbitCommand gains signal support (transport abstraction sprint).
+      const controller = new AbortController();
+      activeExecutionRef.current?.abort();
+      activeExecutionRef.current = controller;
+
       setThinking(true);
       setCurrentThought(t("thinkingCurrentThought"));
-
       try {
         await executeOrbitCommand({ action: command.action });
       } catch (err) {
-        console.error("[OrbitCommand] execution failed:", err);
+        if (!(err instanceof Error && err.name === "AbortError")) {
+          console.error("[OrbitCommand] execution failed:", err);
+        }
       } finally {
+        activeExecutionRef.current = null;
         setThinking(false);
         setCurrentThought("");
         setOpen(false);
       }
-
       return;
     }
 
@@ -162,18 +248,14 @@ export default function OrbitCommandPalette() {
       return;
     }
 
-    // command.type === "ai" — Sprint 5 streaming extension point
-    console.warn("[OrbitCommand] AICommand not yet implemented:", command.id);
+    // type: "ai" — CommandTransport abstraction required; streaming not yet available
     setOpen(false);
   }
 
-  // Dispatches a SearchResult — resolves to the appropriate action by kind
   async function handleSearchResult(result: SearchResult) {
     if (result.kind === "command") {
-      const command = commandRegistry.getAll().find((c) => c.id === result.commandId);
-      if (command) {
-        await handleCommand(command);
-      }
+      const command = search.allCommands.find((c) => c.id === result.commandId);
+      if (command) await handleCommand(command);
       return;
     }
 
@@ -183,25 +265,228 @@ export default function OrbitCommandPalette() {
       return;
     }
 
-    // result.kind === "ai" — Sprint 5 streaming extension point
-    console.warn("[OrbitCommand] AIResult not yet implemented:", result.id);
+    // result.kind === "ai" — not yet supported
     setOpen(false);
   }
+
+  // ── Render helpers ───────────────────────────────────────────────────────────
+
+  /** Styled heading for CommandGroup. Special groups (Recent, Suggested) get violet accent. */
+  function groupHeading(group: string) {
+    const isSpecial = group === "recent" || group === "contextual";
+    return (
+      <span
+        className={`
+          flex items-center gap-1.5
+          text-[10px] font-semibold uppercase tracking-widest
+          ${isSpecial ? "text-violet-400/70" : "text-zinc-600"}
+        `}
+      >
+        {isSpecial && (
+          <span className="inline-block h-1 w-1 rounded-full bg-violet-400/60" />
+        )}
+        {t(`groups.${group}`)}
+      </span>
+    );
+  }
+
+  /** Single CommandItem rendered consistently across browse and local-filter modes. */
+  function renderCommandItem(command: OrbitCommand) {
+    const Icon = command.icon;
+    return (
+      <CommandItem
+        key={command.id}
+        onSelect={() => {
+          void handleCommand(command);
+        }}
+        className="
+          group
+
+          mb-2
+
+          flex
+          items-center
+          justify-between
+
+          rounded-2xl
+
+          border
+          border-transparent
+
+          bg-transparent
+
+          px-4
+          py-4
+
+          text-white
+
+          transition-all
+          duration-300
+
+          hover:border-white/10
+          hover:bg-white/[0.04]
+
+          data-[selected=true]:border-violet-500/20
+          data-[selected=true]:bg-violet-500/10
+        "
+      >
+        {/* LEFT — icon + title + description */}
+        <div
+          className="
+            flex
+            items-center
+            gap-4
+          "
+        >
+          <div
+            className="
+              flex
+              h-12
+              w-12
+
+              items-center
+              justify-center
+
+              rounded-2xl
+
+              border
+              border-white/10
+
+              bg-white/[0.03]
+
+              transition-all
+              duration-300
+
+              group-hover:border-violet-500/20
+              group-hover:bg-violet-500/10
+            "
+          >
+            <Icon
+              className="
+                h-5
+                w-5
+
+                text-zinc-300
+              "
+            />
+          </div>
+
+          <div>
+            <p
+              className="
+                font-medium
+
+                text-white
+              "
+            >
+              {t(`items.${command.id}.title`)}
+            </p>
+
+            <p
+              className="
+                mt-1
+
+                text-sm
+                text-zinc-500
+              "
+            >
+              {t(`items.${command.id}.description`)}
+            </p>
+          </div>
+        </div>
+
+        {/* RIGHT — optional shortcut + type badge */}
+        <div className="flex items-center gap-2">
+          {command.shortcut && (
+            <span
+              className="
+                rounded-md
+
+                border
+                border-white/10
+
+                bg-white/[0.03]
+
+                px-2
+                py-1
+
+                text-xs
+                text-zinc-600
+              "
+            >
+              {command.shortcut}
+            </span>
+          )}
+
+          <div
+            className="
+              rounded-lg
+
+              border
+              border-white/10
+
+              bg-white/[0.03]
+
+              px-2
+              py-1
+
+              text-xs
+              text-zinc-500
+            "
+          >
+            {command.type === "navigate"
+              ? t("badgeOpen")
+              : command.type === "action"
+              ? t("badgeAction")
+              : t("badgeAI")}
+          </div>
+        </div>
+      </CommandItem>
+    );
+  }
+
+  // ── Derived values ───────────────────────────────────────────────────────────
+
+  const activePanelPlaceholder =
+    activePanel === "create-task"
+      ? t("createTaskPlaceholder")
+      : activePanel === "create-contact"
+      ? t("createContactPlaceholder")
+      : activePanel === "create-company"
+      ? t("createCompanyPlaceholder")
+      : activePanel === "create-deal"
+      ? t("createDealPlaceholder")
+      : t("placeholder");
+
+  // Text for the aria-live region — announced after search completes.
+  const a11yStatusText =
+    search.query.trim() &&
+    !search.isSearching &&
+    search.lastCompletedQueryRef.current === search.query
+      ? search.searchResults.length > 0
+        ? t("a11yResultsFound", { count: search.searchResults.length })
+        : t("a11yNoResults")
+      : "";
+
+  const isSearchDeadZone =
+    search.query.trim().length > 0 &&
+    !search.isSearching &&
+    search.lastCompletedQueryRef.current === search.query &&
+    search.searchResults.length === 0 &&
+    search.localFilteredCommands.length === 0;
+
+  // ── Render ───────────────────────────────────────────────────────────────────
 
   return (
     <AnimatePresence
       onExitComplete={() => {
-        // Restore focus after exit animation so the focus ring appears on the
-        // underlying element only once the palette is fully gone.
         previousFocusRef.current?.focus();
         previousFocusRef.current = null;
 
-        // Reset all search state after close animation so the next open
-        // starts with a clean browse view and no stale loading state.
-        setQuery("");
-        setSearchResults([]);
-        setIsSearching(false);
-        lastCompletedQueryRef.current = "";
+        search.setQuery("");
+        search.clearSearchResults();
+        setActivePanel(null);
+        panel.resetPanel();
       }}
     >
       {open && (
@@ -227,7 +512,7 @@ export default function OrbitCommandPalette() {
           "
           onClick={() => setOpen(false)}
         >
-          {/* DIALOG — role and aria attributes live on the focusable content shell */}
+          {/* DIALOG */}
           <motion.div
             role="dialog"
             aria-modal="true"
@@ -256,7 +541,7 @@ export default function OrbitCommandPalette() {
               "
             />
 
-            {/* COMMAND — shouldFilter=false: we own filtering via the search engine */}
+            {/* COMMAND — shouldFilter=false: filtering is owned by the search engine + local filter */}
             <Command
               shouldFilter={false}
               className="
@@ -297,7 +582,6 @@ export default function OrbitCommandPalette() {
                     gap-3
                   "
                 >
-                  {/* ICON */}
                   <motion.div
                     animate={{
                       boxShadow: [
@@ -345,7 +629,6 @@ export default function OrbitCommandPalette() {
                     <Sparkles className="h-5 w-5 text-violet-300" />
                   </motion.div>
 
-                  {/* INFO */}
                   <div>
                     <h2
                       id="orbit-command-title"
@@ -362,7 +645,6 @@ export default function OrbitCommandPalette() {
                   </div>
                 </div>
 
-                {/* ESC HINT */}
                 <div
                   className="
                     rounded-xl
@@ -383,7 +665,7 @@ export default function OrbitCommandPalette() {
                 </div>
               </div>
 
-              {/* SEARCH — controlled input: query state drives the search engine */}
+              {/* SEARCH INPUT */}
               <div
                 className="
                   relative
@@ -396,10 +678,10 @@ export default function OrbitCommandPalette() {
                 "
               >
                 <CommandInput
-                  value={query}
-                  onValueChange={setQuery}
-                  placeholder={t("placeholder")}
-                  aria-label={t("placeholder")}
+                  value={search.query}
+                  onValueChange={search.setQuery}
+                  placeholder={activePanelPlaceholder}
+                  aria-label={activePanelPlaceholder}
                   className="
                     w-full
 
@@ -414,22 +696,23 @@ export default function OrbitCommandPalette() {
                   "
                 />
 
-                {/* LOADING INDICATOR — thin animated bar overlaying the bottom border.
-                    Appears 250 ms after the user stops typing (timer fired).
-                    Stays visible until the search engine resolves all providers. */}
-                {isSearching && query.trim() && (
+                {search.isSearching && search.query.trim() && (
                   <div className="absolute bottom-0 left-0 right-0 h-px overflow-hidden">
                     <motion.div
                       className="absolute inset-y-0 left-0 w-1/3 rounded-full bg-violet-500/60"
                       initial={{ x: "-100%" }}
                       animate={{ x: "400%" }}
-                      transition={{ duration: 1.2, ease: "easeInOut", repeat: Infinity }}
+                      transition={{
+                        duration: 1.2,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                      }}
                     />
                   </div>
                 )}
               </div>
 
-              {/* THINKING — single source of truth: useAIStateStore.thinking */}
+              {/* THINKING */}
               {thinking && (
                 <div
                   className="
@@ -443,8 +726,19 @@ export default function OrbitCommandPalette() {
                 </div>
               )}
 
+              {/* SCREEN READER STATUS — announces search result count after each search */}
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="sr-only"
+              >
+                {a11yStatusText}
+              </div>
+
               {/* COMMANDS */}
               <CommandList
+                aria-busy={search.isSearching && search.query.trim().length > 0}
                 className="
                   max-h-[520px]
 
@@ -453,408 +747,328 @@ export default function OrbitCommandPalette() {
                   p-4
                 "
               >
-                {/* EMPTY STATE — rendered only after a search for the current query
-                    completes and returns zero results. Never shown during the debounce
-                    window (lastCompletedQueryRef lags behind query) or while a search
-                    is still in-flight (isSearching is true). */}
-                {query.trim() &&
-                  !isSearching &&
-                  query === lastCompletedQueryRef.current &&
-                  searchResults.length === 0 && (
-                  <div
-                    className="
-                      flex
-                      flex-col
-                      items-center
-                      gap-3
-
-                      px-4
-                      py-10
-
-                      text-center
-                    "
-                  >
-                    <div
-                      className="
-                        flex
-                        h-12
-                        w-12
-
-                        items-center
-                        justify-center
-
-                        rounded-2xl
-
-                        border
-                        border-white/[0.07]
-
-                        bg-white/[0.03]
-                      "
-                    >
-                      <SearchX
-                        size={20}
-                        className="text-white/25"
-                      />
-                    </div>
-
-                    <div>
-                      <p
+                {/* PANEL MODE */}
+                {activePanel ? (
+                  activePanel === "create-task" ? (
+                    <CreateTaskPanel
+                      query={search.query}
+                      isSubmitting={panel.isExecuting}
+                      error={panel.panelError}
+                      onSubmit={panel.handleCreateTask}
+                    />
+                  ) : activePanel === "create-contact" ? (
+                    <CreateContactPanel
+                      query={search.query}
+                      isSubmitting={panel.isExecuting}
+                      error={panel.panelError}
+                      onSubmit={panel.handleCreateContact}
+                      defaultValues={panel.panelDraftsRef.current["create-contact"]}
+                      onDraftChange={(draft) =>
+                        panel.saveDraft("create-contact", draft)
+                      }
+                    />
+                  ) : activePanel === "create-company" ? (
+                    <CreateCompanyPanel
+                      query={search.query}
+                      isSubmitting={panel.isExecuting}
+                      error={panel.panelError}
+                      onSubmit={panel.handleCreateCompany}
+                      defaultValues={panel.panelDraftsRef.current["create-company"]}
+                      onDraftChange={(draft) =>
+                        panel.saveDraft("create-company", draft)
+                      }
+                    />
+                  ) : (
+                    <CreateDealPanel
+                      query={search.query}
+                      isSubmitting={panel.isExecuting}
+                      error={panel.panelError}
+                      onSubmit={panel.handleCreateDeal}
+                      defaultValues={panel.panelDraftsRef.current["create-deal"]}
+                      onDraftChange={(draft) =>
+                        panel.saveDraft("create-deal", draft)
+                      }
+                    />
+                  )
+                ) : (
+                  <>
+                    {/* EMPTY STATE — only after search fully resolves with zero results
+                        and local filtering also finds nothing */}
+                    {isSearchDeadZone && (
+                      <div
                         className="
-                          text-sm
-                          font-medium
-                          text-white/50
+                          flex
+                          flex-col
+                          items-center
+                          gap-3
+
+                          px-4
+                          py-10
+
+                          text-center
                         "
                       >
-                        {t("emptyTitle")}
-                      </p>
+                        <div
+                          className="
+                            flex
+                            h-12
+                            w-12
 
-                      <p
-                        className="
-                          mt-1
-                          text-xs
-                          text-white/25
-                        "
-                      >
-                        {t("emptyDescription")}
-                      </p>
+                            items-center
+                            justify-center
 
-                      <p
-                        className="
-                          mt-2
-                          text-xs
-                          text-violet-400/40
-                        "
-                      >
-                        {t("emptyHint")}
-                      </p>
-                    </div>
-                  </div>
-                )}
+                            rounded-2xl
 
-                {query.trim() ? (
-                  /*
-                   * SEARCH MODE — Universal Search Engine drives results.
-                   * Stale results remain visible while a new search is in-flight,
-                   * preventing empty-list flicker between successive queries.
-                   * Future providers plug in via lib/search/providers/index.ts —
-                   * zero palette changes required.
-                   */
-                  searchResults.length > 0 && (
-                    <CommandGroup heading={t("searchResultsGroup")}>
-                      {searchResults.map((result) => {
-                        const entityIcons: Record<EntityResult["entityType"], LucideIcon> = {
-                          contact: Users,
-                          company: Building2,
-                          deal: TrendingUp,
-                          task: ClipboardCheck,
-                        };
+                            border
+                            border-white/[0.07]
 
-                        const entityBadgeKeys: Record<EntityResult["entityType"], string> = {
-                          contact: t("badgeContact"),
-                          company: t("badgeCompany"),
-                          deal: t("badgeDeal"),
-                          task: t("badgeTask"),
-                        };
+                            bg-white/[0.03]
+                          "
+                        >
+                          <SearchX size={20} className="text-white/25" />
+                        </div>
 
-                        const Icon: LucideIcon =
-                          result.kind === "command" || result.kind === "page"
-                            ? (result.icon ?? Search)
-                            : result.kind === "entity"
-                            ? entityIcons[result.entityType]
-                            : Search;
-
-                        const title =
-                          result.kind === "command"
-                            ? t(`items.${result.commandId}.title`)
-                            : result.title;
-
-                        const description =
-                          result.kind === "command"
-                            ? t(`items.${result.commandId}.description`)
-                            : result.description;
-
-                        const badge =
-                          result.kind === "command"
-                            ? result.metadata?.type === "navigate"
-                              ? t("badgeOpen")
-                              : t("badgeAI")
-                            : result.kind === "entity"
-                            ? entityBadgeKeys[result.entityType]
-                            : result.kind === "ai"
-                            ? t("badgeAI")
-                            : t("badgeOpen");
-
-                        return (
-                          <CommandItem
-                            key={result.id}
-                            onSelect={() => {
-                              void handleSearchResult(result);
-                            }}
+                        <div>
+                          <p
                             className="
-                              group
-
-                              mb-2
-
-                              flex
-                              items-center
-                              justify-between
-
-                              rounded-2xl
-
-                              border
-                              border-transparent
-
-                              bg-transparent
-
-                              px-4
-                              py-4
-
-                              text-white
-
-                              transition-all
-                              duration-300
-
-                              hover:border-white/10
-                              hover:bg-white/[0.04]
-
-                              data-[selected=true]:border-violet-500/20
-                              data-[selected=true]:bg-violet-500/10
+                              text-sm
+                              font-medium
+                              text-white/50
                             "
                           >
-                            {/* LEFT */}
-                            <div
-                              className="
-                                flex
-                                items-center
-                                gap-4
-                              "
-                            >
-                              <div
-                                className="
-                                  flex
-                                  h-12
-                                  w-12
+                            {t("emptyTitle")}
+                          </p>
 
+                          <p
+                            className="
+                              mt-1
+                              text-xs
+                              text-white/25
+                            "
+                          >
+                            {t("emptyDescription")}
+                          </p>
+
+                          <p
+                            className="
+                              mt-2
+                              text-xs
+                              text-violet-400/40
+                            "
+                          >
+                            {t("emptyHint")}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {search.query.trim() ? (
+                      /*
+                       * SEARCH MODE
+                       *
+                       * Server results take priority when available.
+                       * Local filtered commands fill the gap during the debounce
+                       * window and search flight — eliminating the dead zone.
+                       */
+                      search.searchResults.length > 0 ? (
+                        <CommandGroup heading={t("searchResultsGroup")}>
+                          {search.searchResults.map((result) => {
+                            const entityIcons: Record<
+                              EntityResult["entityType"],
+                              LucideIcon
+                            > = {
+                              contact: Users,
+                              company: Building2,
+                              deal: TrendingUp,
+                              task: ClipboardCheck,
+                            };
+
+                            const entityBadgeKeys: Record<
+                              EntityResult["entityType"],
+                              string
+                            > = {
+                              contact: t("badgeContact"),
+                              company: t("badgeCompany"),
+                              deal: t("badgeDeal"),
+                              task: t("badgeTask"),
+                            };
+
+                            const Icon: LucideIcon =
+                              result.kind === "command" ||
+                              result.kind === "page"
+                                ? (result.icon ?? Search)
+                                : result.kind === "entity"
+                                ? entityIcons[result.entityType]
+                                : Search;
+
+                            const title =
+                              result.kind === "command"
+                                ? t(`items.${result.commandId}.title`)
+                                : result.title;
+
+                            const description =
+                              result.kind === "command"
+                                ? t(`items.${result.commandId}.description`)
+                                : result.description;
+
+                            const badge =
+                              result.kind === "command"
+                                ? result.metadata?.type === "navigate"
+                                  ? t("badgeOpen")
+                                  : result.metadata?.type === "action"
+                                  ? t("badgeAction")
+                                  : t("badgeAI")
+                                : result.kind === "entity"
+                                ? entityBadgeKeys[result.entityType]
+                                : result.kind === "ai"
+                                ? t("badgeAI")
+                                : t("badgeOpen");
+
+                            return (
+                              <CommandItem
+                                key={result.id}
+                                onSelect={() => {
+                                  void handleSearchResult(result);
+                                }}
+                                className="
+                                  group
+
+                                  mb-2
+
+                                  flex
                                   items-center
-                                  justify-center
+                                  justify-between
 
                                   rounded-2xl
 
                                   border
-                                  border-white/10
+                                  border-transparent
 
-                                  bg-white/[0.03]
+                                  bg-transparent
+
+                                  px-4
+                                  py-4
+
+                                  text-white
 
                                   transition-all
                                   duration-300
 
-                                  group-hover:border-violet-500/20
-                                  group-hover:bg-violet-500/10
-                                "
-                              >
-                                <Icon
-                                  className="
-                                    h-5
-                                    w-5
+                                  hover:border-white/10
+                                  hover:bg-white/[0.04]
 
-                                    text-zinc-300
-                                  "
-                                />
-                              </div>
-
-                              <div>
-                                <p
-                                  className="
-                                    font-medium
-
-                                    text-white
-                                  "
-                                >
-                                  {title}
-                                </p>
-
-                                {description && (
-                                  <p
-                                    className="
-                                      mt-1
-
-                                      text-sm
-                                      text-zinc-500
-                                    "
-                                  >
-                                    {description}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* RIGHT — badge reflects result kind */}
-                            <div
-                              className="
-                                rounded-lg
-
-                                border
-                                border-white/10
-
-                                bg-white/[0.03]
-
-                                px-2
-                                py-1
-
-                                text-xs
-                                text-zinc-500
-                              "
-                            >
-                              {badge}
-                            </div>
-                          </CommandItem>
-                        );
-                      })}
-                    </CommandGroup>
-                  )
-                ) : (
-                  /*
-                   * BROWSE MODE — grouped command registry.
-                   * Identical to pre-Sprint-4 behavior.
-                   */
-                  Object.entries(groupedCommands).map(
-                    ([group, commands]) => (
-                      <CommandGroup
-                        key={group}
-                        heading={t(`groups.${group}`)}
-                      >
-                        {commands.map((command) => {
-                          const Icon = command.icon;
-
-                          return (
-                            <CommandItem
-                              key={command.id}
-                              onSelect={() => {
-                                void handleCommand(command);
-                              }}
-                              className="
-                                group
-
-                                mb-2
-
-                                flex
-                                items-center
-                                justify-between
-
-                                rounded-2xl
-
-                                border
-                                border-transparent
-
-                                bg-transparent
-
-                                px-4
-                                py-4
-
-                                text-white
-
-                                transition-all
-                                duration-300
-
-                                hover:border-white/10
-                                hover:bg-white/[0.04]
-
-                                data-[selected=true]:border-violet-500/20
-                                data-[selected=true]:bg-violet-500/10
-                              "
-                            >
-                              {/* LEFT */}
-                              <div
-                                className="
-                                  flex
-                                  items-center
-                                  gap-4
+                                  data-[selected=true]:border-violet-500/20
+                                  data-[selected=true]:bg-violet-500/10
                                 "
                               >
                                 <div
                                   className="
                                     flex
-                                    h-12
-                                    w-12
-
                                     items-center
-                                    justify-center
+                                    gap-4
+                                  "
+                                >
+                                  <div
+                                    className="
+                                      flex
+                                      h-12
+                                      w-12
 
-                                    rounded-2xl
+                                      items-center
+                                      justify-center
+
+                                      rounded-2xl
+
+                                      border
+                                      border-white/10
+
+                                      bg-white/[0.03]
+
+                                      transition-all
+                                      duration-300
+
+                                      group-hover:border-violet-500/20
+                                      group-hover:bg-violet-500/10
+                                    "
+                                  >
+                                    <Icon
+                                      className="
+                                        h-5
+                                        w-5
+
+                                        text-zinc-300
+                                      "
+                                    />
+                                  </div>
+
+                                  <div>
+                                    <p
+                                      className="
+                                        font-medium
+
+                                        text-white
+                                      "
+                                    >
+                                      {title}
+                                    </p>
+
+                                    {description && (
+                                      <p
+                                        className="
+                                          mt-1
+
+                                          text-sm
+                                          text-zinc-500
+                                        "
+                                      >
+                                        {description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div
+                                  className="
+                                    rounded-lg
 
                                     border
                                     border-white/10
 
                                     bg-white/[0.03]
 
-                                    transition-all
-                                    duration-300
+                                    px-2
+                                    py-1
 
-                                    group-hover:border-violet-500/20
-                                    group-hover:bg-violet-500/10
+                                    text-xs
+                                    text-zinc-500
                                   "
                                 >
-                                  <Icon
-                                    className="
-                                      h-5
-                                      w-5
-
-                                      text-zinc-300
-                                    "
-                                  />
+                                  {badge}
                                 </div>
-
-                                <div>
-                                  <p
-                                    className="
-                                      font-medium
-
-                                      text-white
-                                    "
-                                  >
-                                    {t(`items.${command.id}.title`)}
-                                  </p>
-
-                                  <p
-                                    className="
-                                      mt-1
-
-                                      text-sm
-                                      text-zinc-500
-                                    "
-                                  >
-                                    {t(`items.${command.id}.description`)}
-                                  </p>
-                                </div>
-                              </div>
-
-                              {/* RIGHT — badge reflects command type */}
-                              <div
-                                className="
-                                  rounded-lg
-
-                                  border
-                                  border-white/10
-
-                                  bg-white/[0.03]
-
-                                  px-2
-                                  py-1
-
-                                  text-xs
-                                  text-zinc-500
-                                "
-                              >
-                                {command.type === "navigate"
-                                  ? t("badgeOpen")
-                                  : t("badgeAI")}
-                              </div>
-                            </CommandItem>
-                          );
-                        })}
-                      </CommandGroup>
-                    )
-                  )
+                              </CommandItem>
+                            );
+                          })}
+                        </CommandGroup>
+                      ) : search.localFilteredCommands.length > 0 ? (
+                        // Local instant results — no server latency, no dead zone
+                        <CommandGroup heading={groupHeading("commands")}>
+                          {search.localFilteredCommands.map((command) =>
+                            renderCommandItem(command)
+                          )}
+                        </CommandGroup>
+                      ) : null
+                    ) : (
+                      /*
+                       * BROWSE MODE — Recent → Suggested → grouped commands.
+                       * Each command appears in exactly one group.
+                       */
+                      orderedGroups.map(([group, commands]) => (
+                        <CommandGroup key={group} heading={groupHeading(group)}>
+                          {commands.map((command) => renderCommandItem(command))}
+                        </CommandGroup>
+                      ))
+                    )}
+                  </>
                 )}
               </CommandList>
             </Command>

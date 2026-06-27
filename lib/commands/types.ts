@@ -24,6 +24,8 @@ type BaseCommand = {
   icon: LucideIcon;
   group: CommandGroup;
   keywords?: string[];
+  /** Keyboard shortcut label displayed in the palette, e.g. "⌘T" */
+  shortcut?: string;
   // Optional: restrict to specific routes — used by getForRoute()
   routes?: string[];
   // Optional: restrict to specific platform roles — used by getForRole()

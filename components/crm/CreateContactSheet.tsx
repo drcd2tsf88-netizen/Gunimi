@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 import { useTranslations } from "next-intl";
-
 import toast from "react-hot-toast";
 
-import { updateContact } from "@/server/actions/crm/updateContact";
+import { createContact } from "@/server/actions/crm/createContact";
 
 import {
   Sheet,
@@ -20,77 +19,65 @@ import {
 import OrbitButton from "@/components/ui/OrbitButton";
 import OrbitField from "@/components/ui/OrbitField";
 import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
 
-type Contact = {
+type CreatedContact = {
   id: string;
   name: string;
   email?: string | null;
   phone?: string | null;
   position?: string | null;
   notes?: string | null;
+  status?: string | null;
+  company_id?: string | null;
+  companies?: { name: string } | null;
 };
 
 type Props = {
-  contact: Contact;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSaved: () => void;
+  onCreated: (contact: CreatedContact) => void;
 };
 
-export default function EditContactSheet({
-  contact,
+export default function CreateContactSheet({
   open,
   onOpenChange,
-  onSaved,
+  onCreated,
 }: Props) {
   const t = useTranslations("crm");
   const tc = useTranslations("common");
 
   const [isPending, startTransition] = useTransition();
 
-  const [name, setName] = useState(contact.name ?? "");
-  const [email, setEmail] = useState(contact.email ?? "");
-  const [phone, setPhone] = useState(contact.phone ?? "");
-  const [position, setPosition] = useState(contact.position ?? "");
-  const [notes, setNotes] = useState(contact.notes ?? "");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
-  useEffect(() => {
-    if (open) {
-      setName(contact.name ?? "");
-      setEmail(contact.email ?? "");
-      setPhone(contact.phone ?? "");
-      setPosition(contact.position ?? "");
-      setNotes(contact.notes ?? "");
-    }
-  }, [open, contact]);
+  function reset() {
+    setName("");
+    setEmail("");
+    setPhone("");
+  }
 
   function handleClose() {
+    reset();
     onOpenChange(false);
   }
 
-  function handleSave() {
+  function handleCreate() {
     if (!name.trim()) {
       toast.error(t("contactNameRequired"));
       return;
     }
 
     startTransition(async () => {
-      const result = await updateContact({
-        contactId: contact.id,
-        name,
-        email,
-        phone,
-        position,
-        notes,
-      });
+      const result = await createContact({ name: name.trim(), email, phone });
 
       if (result) {
-        toast.success(t("contactUpdated"));
-        onSaved();
-        onOpenChange(false);
+        toast.success(t("contactCreated"));
+        onCreated(result as CreatedContact);
+        handleClose();
       } else {
-        toast.error(t("failedToUpdateContact"));
+        toast.error(t("failedToCreateContact"));
       }
     });
   }
@@ -105,8 +92,8 @@ export default function EditContactSheet({
     >
       <SheetContent className="max-w-md">
         <SheetHeader>
-          <SheetTitle>{t("editContact")}</SheetTitle>
-          <SheetDescription>{t("editContactSubtitle")}</SheetDescription>
+          <SheetTitle>{t("createContact")}</SheetTitle>
+          <SheetDescription>{t("createContactSubtitle")}</SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
@@ -116,6 +103,7 @@ export default function EditContactSheet({
               disabled={isPending}
               placeholder={t("contactName")}
               onChange={(e) => setName(e.target.value)}
+              autoFocus
             />
           </OrbitField>
 
@@ -137,32 +125,14 @@ export default function EditContactSheet({
               onChange={(e) => setPhone(e.target.value)}
             />
           </OrbitField>
-
-          <OrbitField label={t("contactPosition")}>
-            <OrbitInput
-              value={position}
-              disabled={isPending}
-              placeholder={t("contactPosition")}
-              onChange={(e) => setPosition(e.target.value)}
-            />
-          </OrbitField>
-
-          <OrbitField label={t("contactNotes")}>
-            <OrbitTextarea
-              value={notes}
-              disabled={isPending}
-              placeholder={t("contactNotes")}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </OrbitField>
         </div>
 
         <SheetFooter>
           <OrbitButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
           </OrbitButton>
-          <OrbitButton loading={isPending} onClick={handleSave}>
-            {tc("save")}
+          <OrbitButton loading={isPending} onClick={handleCreate}>
+            {t("createContact")}
           </OrbitButton>
         </SheetFooter>
       </SheetContent>

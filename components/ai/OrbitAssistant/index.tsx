@@ -17,9 +17,6 @@ from "./OrbitInput";
 import OrbitMemory
 from "./OrbitMemory";
 
-import DashboardAIThinking
-from "@/components/dashboard/DashboardAIThinking";
-
 import { useOrbitAssistant }
 from "./hooks/useOrbitAssistant";
 
@@ -168,8 +165,6 @@ export default function OrbitAssistant({
                   space-y-4
                 "
               >
-                <DashboardAIThinking />
-
                 <OrbitMemory
                   aiMemory={
                     aiMemory

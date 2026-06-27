@@ -44,7 +44,7 @@ import { setActiveWorkspace }
 from "@/server/actions/workspace/setActiveWorkspace";
 
 import CreateWorkspaceSheet
-from "@/components/workspace/CreateWorkspaceSheet";
+from "@/components/settings/workspace/CreateWorkspaceSheet";
 
 type Workspace = {
   id: string;

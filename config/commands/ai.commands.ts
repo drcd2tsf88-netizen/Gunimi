@@ -11,6 +11,7 @@ const commands: OrbitCommand[] = [
     icon: Brain,
     action: "analyze-workspace",
     group: "ai",
+    routes: ["/dashboard/analytics"],
     keywords: ["analyze", "review", "performance", "insights", "intelligence", "orbit"],
   },
 ];
