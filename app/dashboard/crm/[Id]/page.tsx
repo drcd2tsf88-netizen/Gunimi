@@ -14,6 +14,7 @@ import ContactNotes from "@/components/contacts/detail/ContactNotes";
 import ContactEmails from "@/components/contacts/detail/ContactEmails";
 import ContactActivity from "@/components/contacts/detail/ContactActivity";
 import ContactIntelligence from "@/components/contacts/detail/ContactIntelligence";
+import EntityMemoryPanel from "@/components/memory/EntityMemoryPanel";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -45,6 +46,7 @@ export default async function ContactDetailPage({ params }: Props) {
       <ContactNotes contact={contact} notes={notes} />
       <ContactEmails threads={emails} />
       <ContactActivity activity={activity} />
+      <EntityMemoryPanel activities={activity} />
       <ContactIntelligence contact={contact} deals={deals} />
     </div>
   );

@@ -14,6 +14,7 @@ import CompanyNotes from "@/components/company/CompanyNotes";
 import CompanyEmails from "@/components/company/CompanyEmails";
 import CompanyActivity from "@/components/company/CompanyActivity";
 import CompanyIntelligence from "@/components/company/CompanyIntelligence";
+import EntityMemoryPanel from "@/components/memory/EntityMemoryPanel";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -45,6 +46,7 @@ export default async function CompanyPage({ params }: Props) {
       <CompanyNotes notes={notes} />
       <CompanyEmails threads={emails} />
       <CompanyActivity activity={activity} />
+      <EntityMemoryPanel activities={activity} />
       <CompanyIntelligence company={company} deals={deals} contacts={contacts} />
     </div>
   );

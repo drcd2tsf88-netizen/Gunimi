@@ -1299,6 +1299,8 @@
     "activity": "Aktivita",
     "import": "Import",
     "settings": "Nastavení",
+    "automations": "Automatizace",
+    "memory": "Paměť",
     "groupRelationships": "Vztahy",
     "groupWork": "Práce",
     "groupCommunication": "Komunikace",
@@ -1319,5 +1321,28 @@
     "thinkingAnalyzing": "Orbit AI analyzuje pracovní prostor...",
     "thinkingDelegating": "Delegování na {agent}...",
     "thinkingComplete": "Analýza dokončena."
+  },
+  "memory": {
+    "badge": "Orbit Paměť",
+    "title": "Časová osa pracovního prostoru",
+    "subtitle": "Každá obchodní událost, zapamatovaná. Jeden nepřetržitý příběh vašeho pracovního prostoru.",
+    "statTotal": "Celkový počet událostí",
+    "statMilestones": "Milníky",
+    "statCritical": "Kritické události",
+    "milestonesBadge": "Klíčové momenty",
+    "milestonesTitle": "Obchodní milníky",
+    "milestonesSubtitle": "Kritické a důležité události, které formovaly váš pracovní prostor",
+    "timelineBadge": "Úplná časová osa",
+    "timelineTitle": "Historie pracovního prostoru",
+    "timelineSubtitle": "Každá událost ve vašem pracovním prostoru v chronologickém pořadí",
+    "noMemory": "Zatím nebyly zaznamenány žádné události",
+    "noMemoryDescription": "Začněte používat OrbitDesk a vaše paměť pracovního prostoru se bude budovat automaticky.",
+    "viewRecord": "Zobrazit záznam",
+    "importanceCritical": "Kritické",
+    "importanceHigh": "Vysoké",
+    "importanceNormal": "Normální",
+    "importanceLow": "Nízké",
+    "entityBadge": "Paměťové upozornění",
+    "entityTitle": "Klíčové momenty"
   }
 }

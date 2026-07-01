@@ -1299,6 +1299,8 @@
     "activity": "Activity",
     "import": "Import",
     "settings": "Settings",
+    "automations": "Automations",
+    "memory": "Memory",
     "groupRelationships": "Relationships",
     "groupWork": "Work",
     "groupCommunication": "Communication",
@@ -1319,5 +1321,28 @@
     "thinkingAnalyzing": "Orbit AI analyzing workspace...",
     "thinkingDelegating": "Delegating to {agent}...",
     "thinkingComplete": "Analysis complete."
+  },
+  "memory": {
+    "badge": "Orbit Memory",
+    "title": "Workspace Timeline",
+    "subtitle": "Every business event, remembered. One continuous story of your workspace.",
+    "statTotal": "Total Events",
+    "statMilestones": "Milestones",
+    "statCritical": "Critical Events",
+    "milestonesBadge": "Key Moments",
+    "milestonesTitle": "Business Milestones",
+    "milestonesSubtitle": "Critical and high-importance events that shaped your workspace",
+    "timelineBadge": "Full Timeline",
+    "timelineTitle": "Workspace History",
+    "timelineSubtitle": "Every event across your workspace in chronological order",
+    "noMemory": "No events recorded yet",
+    "noMemoryDescription": "Start using OrbitDesk and your workspace memory will build automatically.",
+    "viewRecord": "View record",
+    "importanceCritical": "Critical",
+    "importanceHigh": "High",
+    "importanceNormal": "Normal",
+    "importanceLow": "Low",
+    "entityBadge": "Memory Highlights",
+    "entityTitle": "Key Moments"
   }
 }

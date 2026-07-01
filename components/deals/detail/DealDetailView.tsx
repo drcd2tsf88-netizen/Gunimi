@@ -9,6 +9,7 @@ import DealActivity from "./DealActivity";
 import DealNotes from "./DealNotes";
 import DealTasks from "./DealTasks";
 import DealIntelligence from "./DealIntelligence";
+import EntityMemoryPanel from "@/components/memory/EntityMemoryPanel";
 import EditDealSheet from "@/components/deals/EditDealSheet";
 
 import { Deal } from "@/types/deal";
@@ -56,6 +57,7 @@ export default function DealDetailView({
         <div className="space-y-4">
           <DealSidebar deal={deal} />
           <DealIntelligence deal={deal} />
+          <EntityMemoryPanel activities={activities} />
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Activity,
   BarChart3,
+  Brain,
   Building2,
   CalendarDays,
   CheckSquare,
@@ -14,6 +15,7 @@ import {
   TrendingUp,
   Upload,
   Users,
+  Zap,
 } from "lucide-react";
 
 export type NavItemId =
@@ -28,6 +30,8 @@ export type NavItemId =
   | "analytics"
   | "ai"
   | "activity"
+  | "automations"
+  | "memory"
   | "import"
   | "settings";
 
@@ -101,9 +105,11 @@ export const NAV_GROUPS: NavGroup[] = [
     id: "intelligence",
     labelKey: "groupIntelligence",
     items: [
-      { id: "analytics", labelKey: "analytics", href: "/dashboard/analytics", icon: BarChart3 },
-      { id: "ai",        labelKey: "ai",        href: "/dashboard/ai",        icon: Sparkles  },
-      { id: "activity",  labelKey: "activity",  href: "/dashboard/activity",  icon: Activity  },
+      { id: "analytics",   labelKey: "analytics",   href: "/dashboard/analytics",   icon: BarChart3 },
+      { id: "ai",          labelKey: "ai",          href: "/dashboard/ai",          icon: Sparkles  },
+      { id: "activity",    labelKey: "activity",    href: "/dashboard/activity",    icon: Activity  },
+      { id: "automations", labelKey: "automations", href: "/dashboard/automations", icon: Zap       },
+      { id: "memory",      labelKey: "memory",      href: "/dashboard/memory",      icon: Brain     },
     ],
   },
   {
