@@ -81,21 +81,7 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
     onOpenAI();
   }
 
-  const steps: StepDef[] = [
-    {
-      key: "email",
-      icon: Mail,
-      label: t("stepEmail"),
-      done: status.emailConnected,
-      href: "/dashboard/email",
-    },
-    {
-      key: "calendar",
-      icon: CalendarDays,
-      label: t("stepCalendar"),
-      done: status.calendarConnected,
-      href: "/dashboard/calendar",
-    },
+  const coreSteps: StepDef[] = [
     {
       key: "contact",
       icon: Users,
@@ -117,6 +103,23 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
       done: status.dealsCount > 0,
       href: "/dashboard/deals",
     },
+  ];
+
+  const optionalSteps: StepDef[] = [
+    {
+      key: "email",
+      icon: Mail,
+      label: t("stepEmail"),
+      done: status.emailConnected,
+      href: "/dashboard/email",
+    },
+    {
+      key: "calendar",
+      icon: CalendarDays,
+      label: t("stepCalendar"),
+      done: status.calendarConnected,
+      href: "/dashboard/calendar",
+    },
     {
       key: "ai",
       icon: Sparkles,
@@ -126,12 +129,11 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
     },
   ];
 
-  const completedCount = steps.filter((s) => s.done).length;
-  const totalCount = steps.length;
-  const progressPct = Math.round((completedCount / totalCount) * 100);
+  const completedCore = coreSteps.filter((s) => s.done).length;
+  const totalCore = coreSteps.length;
+  const progressPct = Math.round((completedCore / totalCore) * 100);
 
-  // Phase 7: all done — show completion state (widget removes itself on next render cycle)
-  if (completedCount === totalCount) {
+  if (completedCore === totalCore) {
     return (
       <OrbitCard className="p-5">
         <div className="flex items-center gap-3">
@@ -166,7 +168,7 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
         </div>
         <div className="flex shrink-0 items-center gap-3">
           <span className="text-xs text-white/35">
-            {t("completed", { count: completedCount, total: totalCount })}
+            {t("completed", { count: completedCore, total: totalCore })}
           </span>
           {collapsed ? (
             <ChevronDown size={14} className="text-white/30" />
@@ -191,11 +193,23 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
 
       {!collapsed && (
         <>
-          {/* CHECKLIST */}
+          {/* CORE CHECKLIST */}
           <div className="divide-y divide-white/[0.04] border-t border-white/[0.05]">
-            {steps.map((step) => (
+            {coreSteps.map((step) => (
               <StepRow key={step.key} step={step} />
             ))}
+          </div>
+
+          {/* OPTIONAL ENHANCEMENTS */}
+          <div className="border-t border-white/[0.05]">
+            <p className="px-5 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-widest text-zinc-600">
+              {t("stepOptionalLabel")}
+            </p>
+            <div className="divide-y divide-white/[0.04]">
+              {optionalSteps.map((step) => (
+                <StepRow key={step.key} step={step} />
+              ))}
+            </div>
           </div>
 
           {/* QUICK ACTIONS */}
@@ -205,11 +219,11 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
             </p>
             <div className="flex flex-wrap gap-2">
               {[
-                { label: t("actionConnectEmail"), href: "/dashboard/email" },
-                { label: t("actionConnectCalendar"), href: "/dashboard/calendar" },
                 { label: t("actionCreateContact"), href: "/dashboard/crm" },
                 { label: t("actionCreateCompany"), href: "/dashboard/companies" },
                 { label: t("actionCreateDeal"), href: "/dashboard/deals" },
+                { label: t("actionConnectEmail"), href: "/dashboard/email" },
+                { label: t("actionConnectCalendar"), href: "/dashboard/calendar" },
                 { label: t("actionImportCSV"), href: "/dashboard/import" },
               ].map((action) => (
                 <Link

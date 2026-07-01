@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Sparkles, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Sparkles, X } from "lucide-react";
 
 import { NAV_GROUPS, isNavItemActive, type NavGroup } from "@/config/navigation";
 
@@ -26,74 +26,98 @@ function SidebarNav({
   groups,
   pathname,
   t,
+  collapsedGroups,
+  onToggleGroup,
   onLinkClick,
 }: {
   groups: NavGroup[];
   pathname: string;
   t: (key: string) => string;
+  collapsedGroups: Set<string>;
+  onToggleGroup: (id: string) => void;
   onLinkClick?: () => void;
 }) {
   return (
     <div className="space-y-0.5">
-      {groups.map((group, groupIndex) => (
-        <div
-          key={group.id}
-          className={
-            group.separator
-              ? "mt-3 border-t border-white/5 pt-3"
-              : groupIndex > 0
-              ? "mt-1"
-              : ""
-          }
-        >
-          {group.labelKey && (
-            <p className="px-3 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-widest text-zinc-600">
-              {t(group.labelKey)}
-            </p>
-          )}
+      {groups.map((group, groupIndex) => {
+        const isCollapsed = group.collapsible && collapsedGroups.has(group.id);
+        return (
+          <div
+            key={group.id}
+            className={
+              group.separator
+                ? "mt-3 border-t border-white/5 pt-3"
+                : groupIndex > 0
+                ? "mt-1"
+                : ""
+            }
+          >
+            {group.labelKey && (
+              group.collapsible ? (
+                <button
+                  type="button"
+                  onClick={() => onToggleGroup(group.id)}
+                  className="flex w-full items-center justify-between px-3 pb-1 pt-4"
+                >
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-600">
+                    {t(group.labelKey)}
+                  </p>
+                  {isCollapsed ? (
+                    <ChevronRight size={11} className="text-zinc-700" />
+                  ) : (
+                    <ChevronDown size={11} className="text-zinc-700" />
+                  )}
+                </button>
+              ) : (
+                <p className="px-3 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-widest text-zinc-600">
+                  {t(group.labelKey)}
+                </p>
+              )
+            )}
 
-          {group.items.map((item) => {
-            const Icon = item.icon;
-            const active = isNavItemActive(pathname, item);
+            {!isCollapsed && group.items.map((item) => {
+              const Icon = item.icon;
+              const active = isNavItemActive(pathname, item);
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onLinkClick}
-              >
-                <div
-                  className={`
-                    group flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all
-                    ${
-                      active
-                        ? "border border-violet-500/20 bg-violet-500/10 text-white"
-                        : "border border-transparent text-zinc-400 hover:border-white/[0.06] hover:bg-white/[0.03] hover:text-white"
-                    }
-                  `}
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onLinkClick}
                 >
                   <div
                     className={`
-                      flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors
+                      group flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all
                       ${
                         active
-                          ? "bg-violet-500/10 text-violet-300"
-                          : "bg-white/[0.03] text-zinc-500 group-hover:text-zinc-300"
+                          ? "border border-violet-500/20 bg-violet-500/10 text-white"
+                          : "border border-transparent text-zinc-400 hover:border-white/[0.06] hover:bg-white/[0.03] hover:text-white"
                       }
                     `}
                   >
-                    <Icon size={15} />
-                  </div>
+                    <div
+                      className={`
+                        flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors
+                        ${
+                          active
+                            ? "bg-violet-500/10 text-violet-300"
+                            : "bg-white/[0.03] text-zinc-500 group-hover:text-zinc-300"
+                        }
+                      `}
+                    >
+                      <Icon size={15} />
+                    </div>
 
-                  <span className="text-sm font-medium">
-                    {t(item.labelKey)}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      ))}
+                    <span className="text-sm font-medium">
+                      {t(item.labelKey)}
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -187,6 +211,19 @@ export default function DashboardLayoutClient({
   const [loading, setLoading] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userRole, setUserRole] = useState("member");
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+
+  function toggleGroup(id: string) {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }
   const [sidebarProfile, setSidebarProfile] = useState<{
     full_name: string;
     avatar_url: string | null;
@@ -266,6 +303,8 @@ export default function DashboardLayoutClient({
             groups={NAV_GROUPS}
             pathname={pathname}
             t={tNav}
+            collapsedGroups={collapsedGroups}
+            onToggleGroup={toggleGroup}
           />
         </nav>
 
@@ -302,6 +341,8 @@ export default function DashboardLayoutClient({
                   groups={NAV_GROUPS}
                   pathname={pathname}
                   t={tNav}
+                  collapsedGroups={collapsedGroups}
+                  onToggleGroup={toggleGroup}
                   onLinkClick={closeMobile}
                 />
               </nav>

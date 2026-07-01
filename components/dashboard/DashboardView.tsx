@@ -40,15 +40,11 @@ export default function DashboardView({
 }: Props) {
   const [assistantOpen, setAssistantOpen] = useState(false);
 
-  const serverStepsDone = [
-    onboardingStatus.emailConnected,
-    onboardingStatus.calendarConnected,
-    onboardingStatus.contactsCount > 0,
-    onboardingStatus.companiesCount > 0,
-    onboardingStatus.dealsCount > 0,
-  ].filter(Boolean).length;
-
-  const showOnboarding = serverStepsDone < 5;
+  const showOnboarding = !(
+    onboardingStatus.contactsCount > 0 &&
+    onboardingStatus.companiesCount > 0 &&
+    onboardingStatus.dealsCount > 0
+  );
 
   return (
     <div className="space-y-6">

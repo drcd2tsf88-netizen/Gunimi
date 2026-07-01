@@ -38,8 +38,8 @@ export type NavItemId =
 export type NavGroupId =
   | "overview"
   | "relationships"
+  | "sales"
   | "work"
-  | "communication"
   | "intelligence"
   | "system";
 
@@ -59,6 +59,8 @@ export type NavGroup = {
   labelKey: string | null;
   /** When true, renders a top border before this group */
   separator?: boolean;
+  /** When true, group header shows a toggle and items can be collapsed */
+  collapsible?: boolean;
   items: NavItem[];
 };
 
@@ -80,23 +82,23 @@ export const NAV_GROUPS: NavGroup[] = [
     id: "relationships",
     labelKey: "groupRelationships",
     items: [
-      { id: "crm",       labelKey: "crm",       href: "/dashboard/crm",       icon: Users      },
-      { id: "companies", labelKey: "companies", href: "/dashboard/companies", icon: Building2  },
-      { id: "deals",     labelKey: "deals",     href: "/dashboard/deals",     icon: TrendingUp },
+      { id: "crm",       labelKey: "contacts",  href: "/dashboard/crm",       icon: Users      },
+      { id: "companies", labelKey: "companies",  href: "/dashboard/companies", icon: Building2  },
+    ],
+  },
+  {
+    id: "sales",
+    labelKey: "groupSales",
+    items: [
+      { id: "deals", labelKey: "deals", href: "/dashboard/deals", icon: TrendingUp },
     ],
   },
   {
     id: "work",
     labelKey: "groupWork",
     items: [
-      { id: "tasks", labelKey: "tasks", href: "/dashboard/tasks", icon: CheckSquare },
-      { id: "notes", labelKey: "notes", href: "/dashboard/notes", icon: FileText    },
-    ],
-  },
-  {
-    id: "communication",
-    labelKey: "groupCommunication",
-    items: [
+      { id: "tasks",    labelKey: "tasks",    href: "/dashboard/tasks",    icon: CheckSquare },
+      { id: "notes",    labelKey: "notes",    href: "/dashboard/notes",    icon: FileText    },
       { id: "email",    labelKey: "email",    href: "/dashboard/email",    icon: Mail        },
       { id: "calendar", labelKey: "calendar", href: "/dashboard/calendar", icon: CalendarDays },
     ],
@@ -104,12 +106,13 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     id: "intelligence",
     labelKey: "groupIntelligence",
+    collapsible: true,
     items: [
-      { id: "analytics",   labelKey: "analytics",   href: "/dashboard/analytics",   icon: BarChart3 },
       { id: "ai",          labelKey: "ai",          href: "/dashboard/ai",          icon: Sparkles  },
-      { id: "activity",    labelKey: "activity",    href: "/dashboard/activity",    icon: Activity  },
       { id: "automations", labelKey: "automations", href: "/dashboard/automations", icon: Zap       },
       { id: "memory",      labelKey: "memory",      href: "/dashboard/memory",      icon: Brain     },
+      { id: "analytics",   labelKey: "analytics",   href: "/dashboard/analytics",   icon: BarChart3 },
+      { id: "activity",    labelKey: "activity",    href: "/dashboard/activity",    icon: Activity  },
     ],
   },
   {

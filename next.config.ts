@@ -10,6 +10,9 @@ from "next-intl/plugin";
 const withNextIntl =
   createNextIntlPlugin();
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const supabaseWss = supabaseUrl.replace(/^https:\/\//, "wss://");
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -64,8 +67,8 @@ const nextConfig: NextConfig = {
 
               connect-src
                 'self'
-                https://urrpqkqwwgjpfccuodmo.supabase.co
-                wss://urrpqkqwwgjpfccuodmo.supabase.co
+                ${supabaseUrl}
+                ${supabaseWss}
                 https://*.upstash.io
                 https://*.sentry.io
                 ws://localhost:3000
