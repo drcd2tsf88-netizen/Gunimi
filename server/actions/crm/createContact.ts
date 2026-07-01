@@ -7,6 +7,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { createAuditLog } from "@/lib/server/audit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { sanitize } from "@/lib/server/sanitize";
+import { executeAutomations } from "@/lib/automation/engine";
 
 type CreateContactProps = {
   name: string;
@@ -69,6 +70,13 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
         name: cleanName,
         email: cleanEmail,
       },
+    });
+
+    await executeAutomations("contact.created", {
+      workspaceId: workspace.id,
+      userId: user.id,
+      contactId: data.id,
+      contactName: cleanName,
     });
 
     revalidatePath("/dashboard/crm");

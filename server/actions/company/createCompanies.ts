@@ -15,6 +15,8 @@ from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
+import { executeAutomations } from "@/lib/automation/engine";
+
 export type CreateCompanyProps =
   {
     name: string;
@@ -151,6 +153,13 @@ export async function createCompany({
         activityError
       );
     }
+
+    await executeAutomations("company.created", {
+      workspaceId: workspace.id,
+      userId: user.id,
+      companyId: data.id,
+      companyName: name.trim(),
+    });
 
     revalidatePath("/dashboard/companies");
 

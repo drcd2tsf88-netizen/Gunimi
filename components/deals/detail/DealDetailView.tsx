@@ -1,24 +1,30 @@
 "use client";
 
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 
 import DealHeader from "./DealHeader";
 import DealSidebar from "./DealSidebar";
 import DealActivity from "./DealActivity";
+import DealNotes from "./DealNotes";
+import DealTasks from "./DealTasks";
+import DealIntelligence from "./DealIntelligence";
 import EditDealSheet from "@/components/deals/EditDealSheet";
 
 import { Deal } from "@/types/deal";
 import { WorkspaceActivity } from "@/types/activity";
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
+import type { DealRelatedNote } from "@/server/actions/deals/getDealRelatedNotes";
+import type { DealRelatedTask } from "@/server/actions/deals/getDealRelatedTasks";
 
 type Props = {
   deal: Deal;
   activities: WorkspaceActivity[];
   companies: Company[];
   contacts: Contact[];
+  notes: DealRelatedNote[];
+  tasks: DealRelatedTask[];
 };
 
 export default function DealDetailView({
@@ -26,6 +32,8 @@ export default function DealDetailView({
   activities,
   companies,
   contacts,
+  notes,
+  tasks,
 }: Props) {
   const router = useRouter();
   const [editOpen, setEditOpen] = useState(false);
@@ -35,12 +43,19 @@ export default function DealDetailView({
       <DealHeader deal={deal} onEdit={() => setEditOpen(true)} />
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <div className="xl:col-span-2">
+        <div className="space-y-6 xl:col-span-2">
           <DealActivity activities={activities} />
+          <DealNotes
+            notes={notes}
+            contactId={deal.contact?.id}
+            companyId={deal.company?.id}
+          />
+          <DealTasks tasks={tasks} contactId={deal.contact?.id} />
         </div>
 
-        <div>
+        <div className="space-y-4">
           <DealSidebar deal={deal} />
+          <DealIntelligence deal={deal} />
         </div>
       </div>
 

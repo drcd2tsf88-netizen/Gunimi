@@ -4,6 +4,7 @@ import { createClient }
 from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { executeAutomations } from "@/lib/automation/engine";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
@@ -197,6 +198,18 @@ if (stage === "lost") {
         stage,
     },
   });
+
+    if (stage === "won" || stage === "lost") {
+      await executeAutomations(stage === "won" ? "deal.won" : "deal.lost", {
+        workspaceId: existingDeal.workspace_id as string,
+        userId: user.id,
+        dealId,
+        dealTitle: existingDeal.title as string,
+        contactId: (existingDeal.contact_id as string | null) ?? null,
+        companyId: (existingDeal.company_id as string | null) ?? null,
+      });
+    }
+
     return true;
   } catch (error) {
     console.error(error);

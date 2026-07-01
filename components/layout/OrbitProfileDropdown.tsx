@@ -31,6 +31,9 @@ import {
 import { toast }
 from "react-hot-toast";
 
+import { useTranslations }
+from "next-intl";
+
 import { supabase }
 from "@/lib/supabase";
 
@@ -63,6 +66,7 @@ type WorkspaceData = {
 };
 
 export default function OrbitProfileDropdown() {
+  const t = useTranslations("auth");
   const router =
     useRouter();
 
@@ -177,15 +181,10 @@ export default function OrbitProfileDropdown() {
     try {
       await supabase.auth.signOut();
 
-      toast.success(
-        "Orbit AI session terminated."
-      );
-
+      toast.success(t("logoutSuccess"));
       router.push("/login");
-    } catch (error) {
-      toast.error(
-        "Logout failed."
-      );
+    } catch {
+      toast.error(t("logoutFailed"));
     }
   }
 

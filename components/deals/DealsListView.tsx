@@ -49,7 +49,8 @@ export default function DealsListView({ deals, stage, onEdit }: Props) {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="overflow-x-auto">
+    <div className="flex min-w-[600px] flex-col">
       {/* TABLE HEADER */}
 
       <div
@@ -258,6 +259,7 @@ export default function DealsListView({ deals, stage, onEdit }: Props) {
           </div>
         );
       })}
+    </div>
     </div>
   );
 }

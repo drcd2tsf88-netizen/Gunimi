@@ -550,7 +550,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
             <DialogDescription>{t("deleteDescription")}</DialogDescription>
           </DialogHeader>
 
-          <DialogFooter className="mt-4">
+          <DialogFooter className="mt-6">
             <OrbitButton
               variant="secondary"
               disabled={deleteLoading}

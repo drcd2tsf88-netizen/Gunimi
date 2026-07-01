@@ -15,6 +15,7 @@ import type { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsO
 import type { CalendarEventRow } from "@/types/calendar";
 import type { OnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
 import type { PipelineBreakdown } from "@/server/actions/dashboard/getPipelineBreakdown";
+import type { DashboardInsights } from "@/server/actions/dashboard/getDashboardInsights";
 
 type Props = {
   displayName: string;
@@ -24,6 +25,7 @@ type Props = {
   activities: DashboardActivityItem[];
   onboardingStatus: OnboardingStatus;
   pipeline: PipelineBreakdown;
+  insights: DashboardInsights;
 };
 
 export default function DashboardView({
@@ -34,6 +36,7 @@ export default function DashboardView({
   activities,
   onboardingStatus,
   pipeline,
+  insights,
 }: Props) {
   const [assistantOpen, setAssistantOpen] = useState(false);
 
@@ -78,7 +81,7 @@ export default function DashboardView({
           tasks={tasks}
           analytics={analytics}
           onboardingStatus={onboardingStatus}
-          pipeline={pipeline}
+          insights={insights}
         />
       </div>
 

@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
@@ -40,6 +41,8 @@ export async function updateWorkspacePreferences(
       console.error(error);
       return false;
     }
+
+    revalidatePath("/dashboard/settings");
 
     return true;
   } catch (error) {

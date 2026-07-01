@@ -95,8 +95,11 @@ export default function CreateTaskSheet({
       return;
     }
 
+    const toastId = "orbit-task-save";
+
     try {
       setLoading(true);
+      toast.loading(isEdit ? t("saving") : t("creating"), { id: toastId });
 
       if (isEdit && task) {
         const ok = await updateTask({
@@ -110,11 +113,11 @@ export default function CreateTaskSheet({
         });
 
         if (!ok) {
-          toast.error(t("failedToUpdate"));
+          toast.error(t("failedToUpdate"), { id: toastId });
           return;
         }
 
-        toast.success(t("taskUpdated"));
+        toast.success(t("taskUpdated"), { id: toastId });
       } else {
         const result = await createTask({
           title: title.trim(),
@@ -126,18 +129,17 @@ export default function CreateTaskSheet({
         });
 
         if (!result) {
-          toast.error(t("failedToCreate"));
+          toast.error(t("failedToCreate"), { id: toastId });
           return;
         }
 
-        toast.success(t("taskCreated"));
+        toast.success(t("taskCreated"), { id: toastId });
       }
 
       resetForm();
       onSaved();
-    } catch (err) {
-      console.error(err);
-      toast.error(isEdit ? t("failedToUpdate") : t("failedToCreate"));
+    } catch {
+      toast.error(isEdit ? t("failedToUpdate") : t("failedToCreate"), { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -198,7 +200,7 @@ export default function CreateTaskSheet({
             />
           </OrbitField>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <OrbitField label={t("taskStatus")}>
               <Select
                 value={status}

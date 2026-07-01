@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -71,6 +71,16 @@ export default function ActivityPage() {
     }
   }
 
+  const aiCount = useMemo(
+    () => activity.filter((item) => item.type?.includes("ai")).length,
+    [activity]
+  );
+
+  const taskCount = useMemo(
+    () => activity.filter((item) => item.type?.includes("task")).length,
+    [activity]
+  );
+
   return (
     <div className="space-y-8">
       <OrbitSection>
@@ -93,18 +103,14 @@ export default function ActivityPage() {
           <OrbitCard className="p-6">
             <p className="text-sm text-white/50">{t("aiExecutions")}</p>
             <h2 className="mt-4 text-4xl font-semibold">
-              <CountUp
-                end={activity.filter((item) => item.type?.includes("ai")).length}
-              />
+              <CountUp end={aiCount} />
             </h2>
           </OrbitCard>
 
           <OrbitCard className="p-6">
             <p className="text-sm text-white/50">{t("taskEvents")}</p>
             <h2 className="mt-4 text-4xl font-semibold">
-              <CountUp
-                end={activity.filter((item) => item.type?.includes("task")).length}
-              />
+              <CountUp end={taskCount} />
             </h2>
           </OrbitCard>
         </div>

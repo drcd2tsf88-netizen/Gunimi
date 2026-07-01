@@ -78,7 +78,7 @@ export default function DealsPageView({
 
   return (
     <>
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* TITLE + ACTIONS */}
 
         <div

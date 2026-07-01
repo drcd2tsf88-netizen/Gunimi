@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
@@ -53,6 +54,8 @@ export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<bo
           description: `Renamed workspace from "${oldName}" to "${params.name}"`,
         });
     }
+
+    revalidatePath("/dashboard/settings");
 
     return true;
   } catch (error) {

@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { createClient }
 from "@/lib/supabase/server";
 
@@ -11,6 +13,8 @@ from "@/server/actions/auth/getUser";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+
+import { executeAutomations } from "@/lib/automation/engine";
 
 export type CreateDealProps = {
   title: string;
@@ -209,6 +213,18 @@ probability =
         activityError
       );
     }
+
+    await executeAutomations("deal.created", {
+      workspaceId: workspace.id,
+      userId: user.id,
+      dealId: deal.id,
+      dealTitle: title.trim(),
+      companyId: companyId ?? null,
+      contactId: contactId ?? null,
+    });
+
+    revalidatePath("/dashboard/deals");
+    revalidatePath("/dashboard");
 
     return deal;
   } catch (error) {

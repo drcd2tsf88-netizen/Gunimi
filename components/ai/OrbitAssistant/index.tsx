@@ -25,14 +25,14 @@ from "@/lib/store/ai-state-store";
 
 type OrbitAssistantProps = {
   open: boolean;
-
   onClose: () => void;
+  initialPrompt?: string;
 };
 
 export default function OrbitAssistant({
   open,
-
   onClose,
+  initialPrompt,
 }: OrbitAssistantProps) {
   const {
     loading,
@@ -186,9 +186,8 @@ export default function OrbitAssistant({
 
             <OrbitInput
               loading={loading}
-              onSend={
-                sendMessage
-              }
+              onSend={sendMessage}
+              initialValue={initialPrompt}
             />
           </motion.div>
         </motion.div>

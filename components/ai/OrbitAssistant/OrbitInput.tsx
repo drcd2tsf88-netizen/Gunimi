@@ -1,17 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useTranslations } from "next-intl";
 
 type OrbitInputProps = {
   loading: boolean;
   onSend: (message: string) => Promise<void>;
+  initialValue?: string;
 };
 
-export default function OrbitInput({ loading, onSend }: OrbitInputProps) {
+export default function OrbitInput({ loading, onSend, initialValue }: OrbitInputProps) {
   const t = useTranslations("aiPanel");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialValue ?? "");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (initialValue) {
+      setMessage(initialValue);
+      inputRef.current?.focus();
+    }
+  }, [initialValue]);
 
   async function handleSend() {
     if (!message.trim() || loading) return;
@@ -39,6 +48,7 @@ export default function OrbitInput({ loading, onSend }: OrbitInputProps) {
         "
       >
         <input
+          ref={inputRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {

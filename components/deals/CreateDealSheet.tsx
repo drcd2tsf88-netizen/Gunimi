@@ -103,6 +103,7 @@ export default function CreateDealSheet({
 
     try {
       setLoading(true);
+      toast.loading(t("deals.creating"), { id: "orbit-deal-create" });
 
       const deal = await createDeal({
         title,
@@ -115,17 +116,16 @@ export default function CreateDealSheet({
       });
 
       if (!deal) {
-        toast.error(t("deals.failedToCreateOpportunity"));
+        toast.error(t("deals.failedToCreateOpportunity"), { id: "orbit-deal-create" });
         return;
       }
 
-      toast.success(t("deals.opportunityCreated"));
+      toast.success(t("deals.opportunityCreated"), { id: "orbit-deal-create" });
       resetForm();
       onCreated();
       onOpenChange(false);
-    } catch (error) {
-      console.error(error);
-      toast.error(t("deals.failedToCreateOpportunity"));
+    } catch {
+      toast.error(t("deals.failedToCreateOpportunity"), { id: "orbit-deal-create" });
     } finally {
       setLoading(false);
     }
@@ -162,14 +162,7 @@ export default function CreateDealSheet({
             py-6
           "
         >
-          <div
-            className="
-              grid
-              grid-cols-2
-              gap-x-6
-              gap-y-5
-            "
-          >
+          <div className="grid gap-y-5 sm:grid-cols-2 sm:gap-x-6">
             {/* LEFT COLUMN */}
 
             <div className="space-y-5">

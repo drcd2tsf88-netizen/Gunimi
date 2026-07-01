@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Sparkles } from "lucide-react";
@@ -55,10 +57,10 @@ export default function MorningSummaryWidget({
     day: "numeric",
   });
 
-  const cutoff = new Date().getTime() - 24 * 60 * 60 * 1000;
-  const recentActivities = activities.filter(
-    (a) => new Date(a.created_at).getTime() > cutoff
-  );
+  const recentActivities = useMemo(() => {
+    const cutoff = new Date().getTime() - 24 * 60 * 60 * 1000;
+    return activities.filter((a) => new Date(a.created_at).getTime() > cutoff);
+  }, [activities]);
 
   const pulseStats = [
     { label: t("statsCompanies"), value: analytics.companies },
@@ -82,11 +84,12 @@ export default function MorningSummaryWidget({
         <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
           <button
             onClick={onOpenAI}
-            className="inline-flex items-center gap-2 rounded-2xl border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-200 transition-all hover:border-violet-500/30 hover:bg-violet-500/15"
+            className="inline-flex items-center gap-2.5 rounded-2xl border border-violet-500/30 bg-violet-500/15 px-5 py-3 text-base font-semibold text-violet-200 shadow-lg shadow-violet-900/20 transition-all hover:border-violet-500/50 hover:bg-violet-500/25 hover:shadow-violet-900/40"
           >
-            <Sparkles size={13} />
+            <Sparkles size={16} />
             {t("openOrbit")}
           </button>
+          <p className="text-[11px] text-white/30 sm:text-right">{t("tagline")}</p>
           <div className="flex items-center gap-1.5">
             <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
             <p className="text-[11px] text-emerald-300/70">{t("workspaceOperational")}</p>
@@ -95,7 +98,7 @@ export default function MorningSummaryWidget({
       </div>
 
       <div className="mt-5 border-t border-white/[0.05] pt-5">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           {pulseStats.map((stat) => (
             <div key={stat.label}>
               <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">

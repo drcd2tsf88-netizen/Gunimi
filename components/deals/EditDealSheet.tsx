@@ -109,6 +109,7 @@ export default function EditDealSheet({
 
     try {
       setLoading(true);
+      toast.loading(t("deals.saving"), { id: "orbit-deal-save" });
 
       const result = await updateDeal({
         dealId: deal.id,
@@ -122,16 +123,15 @@ export default function EditDealSheet({
       });
 
       if (!result) {
-        toast.error(t("deals.failedToUpdate"));
+        toast.error(t("deals.failedToUpdate"), { id: "orbit-deal-save" });
         return;
       }
 
-      toast.success(t("deals.opportunityUpdated"));
+      toast.success(t("deals.opportunityUpdated"), { id: "orbit-deal-save" });
       onOpenChange(false);
       onUpdated();
-    } catch (error) {
-      console.error(error);
-      toast.error(t("deals.failedToUpdate"));
+    } catch {
+      toast.error(t("deals.failedToUpdate"), { id: "orbit-deal-save" });
     } finally {
       setLoading(false);
     }
@@ -140,21 +140,21 @@ export default function EditDealSheet({
   async function handleDelete() {
     try {
       setDeleting(true);
+      toast.loading(t("deals.deleting"), { id: "orbit-deal-delete" });
 
       const ok = await deleteDeal(deal.id);
 
       if (!ok) {
-        toast.error(t("deals.failedToDelete"));
+        toast.error(t("deals.failedToDelete"), { id: "orbit-deal-delete" });
         return;
       }
 
-      toast.success(t("deals.opportunityDeleted"));
+      toast.success(t("deals.opportunityDeleted"), { id: "orbit-deal-delete" });
       setDeleteOpen(false);
       onOpenChange(false);
       onDeleted();
-    } catch (error) {
-      console.error(error);
-      toast.error(t("deals.failedToDelete"));
+    } catch {
+      toast.error(t("deals.failedToDelete"), { id: "orbit-deal-delete" });
     } finally {
       setDeleting(false);
     }
@@ -172,7 +172,7 @@ export default function EditDealSheet({
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto px-6 py-6">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+            <div className="grid gap-y-5 sm:grid-cols-2 sm:gap-x-6">
               {/* LEFT COLUMN */}
 
               <div className="space-y-5">

@@ -53,6 +53,7 @@ export async function updateTask({
       });
 
     revalidatePath("/dashboard/tasks");
+    revalidatePath("/dashboard");
 
     return true;
   } catch (error) {

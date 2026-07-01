@@ -208,7 +208,7 @@ export default function DashboardLayoutClient({
           .from("profiles")
           .select("platform_role, status, full_name, avatar_url")
           .eq("id", session.user.id)
-          .single();
+          .maybeSingle();
 
         if (profile) {
           setSidebarProfile({

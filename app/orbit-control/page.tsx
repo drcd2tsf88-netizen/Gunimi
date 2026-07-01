@@ -24,6 +24,9 @@ import {
 import toast
 from "react-hot-toast";
 
+import { useTranslations }
+from "next-intl";
+
 import { supabase }
 from "@/lib/supabase";
 
@@ -51,6 +54,7 @@ type Profile = {
 };
 
 export default function OrbitControlPage() {
+  const t = useTranslations("admin");
   const [profiles, setProfiles] =
     useState<Profile[]>([]);
 
@@ -79,7 +83,7 @@ export default function OrbitControlPage() {
       }
 
       if (!res.ok) {
-        toast.error("Failed to load admin panel.");
+        toast.error(t("failedToLoad"));
         setLoading(false);
         return;
       }
@@ -112,11 +116,11 @@ export default function OrbitControlPage() {
     );
 
     if (!res.ok) {
-      toast.error("Failed to update role.");
+      toast.error(t("failedToUpdateRole"));
       return;
     }
 
-    toast.success(`User updated to ${role}`);
+    toast.success(t("roleUpdated", { role }));
     loadProfiles();
   }
 
@@ -134,11 +138,11 @@ export default function OrbitControlPage() {
     );
 
     if (!res.ok) {
-      toast.error("Failed to update status.");
+      toast.error(t("failedToUpdateStatus"));
       return;
     }
 
-    toast.success(`Status changed to ${status}`);
+    toast.success(t("statusUpdated", { status }));
     loadProfiles();
   }
 

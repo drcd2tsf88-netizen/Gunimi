@@ -5,9 +5,11 @@ import { useTranslations } from "next-intl";
 import {
   AlertCircle,
   ArrowRight,
+  Building2,
   CalendarDays,
   CheckCircle2,
   Mail,
+  Trophy,
   TrendingUp,
   TriangleAlert,
   Users,
@@ -15,10 +17,10 @@ import {
 import OrbitCard from "@/components/ui/OrbitCard";
 import type { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
 import type { OnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
-import type { PipelineBreakdown } from "@/server/actions/dashboard/getPipelineBreakdown";
+import type { DashboardInsights } from "@/server/actions/dashboard/getDashboardInsights";
 import type { DashboardTask } from "./TodaysPrioritiesWidget";
 
-type Priority = "critical" | "high" | "medium";
+type Priority = "critical" | "high" | "medium" | "positive";
 
 type Recommendation = {
   id: string;
@@ -34,25 +36,35 @@ type Props = {
   tasks: DashboardTask[];
   analytics: AnalyticsOverview;
   onboardingStatus: OnboardingStatus;
-  pipeline: PipelineBreakdown;
+  insights: DashboardInsights;
 };
 
 const PRIORITY_ORDER: Record<Priority, number> = {
   critical: 0,
   high: 1,
   medium: 2,
+  positive: 3,
 };
 
 const PRIORITY_STYLE: Record<Priority, string> = {
   critical: "border-red-500/20 bg-red-500/5",
   high: "border-amber-500/20 bg-amber-500/5",
   medium: "border-white/[0.06] bg-white/[0.02]",
+  positive: "border-emerald-500/20 bg-emerald-500/5",
 };
 
 const ICON_STYLE: Record<Priority, string> = {
   critical: "text-red-400",
   high: "text-amber-400",
   medium: "text-violet-400/70",
+  positive: "text-emerald-400",
+};
+
+const ACTION_STYLE: Record<Priority, string> = {
+  critical: "text-red-400/70",
+  high: "text-amber-400/70",
+  medium: "text-violet-400/60",
+  positive: "text-emerald-400/70",
 };
 
 function buildTodayStr(): string {
@@ -68,7 +80,7 @@ export default function OrbitRecommendationsWidget({
   tasks,
   analytics,
   onboardingStatus,
-  pipeline,
+  insights,
 }: Props) {
   const t = useTranslations("dashboard");
   const todayStr = buildTodayStr();
@@ -94,15 +106,66 @@ export default function OrbitRecommendationsWidget({
     });
   }
 
-  if (pipeline.staleDealsCount > 0) {
+  for (const deal of insights.staleDeals) {
     recommendations.push({
-      id: "stale-deals",
+      id: `stale-deal-${deal.id}`,
       priority: "high",
       icon: TriangleAlert,
-      title: t("recStaleDeals", { count: pipeline.staleDealsCount }),
+      title: t("insightStaleDeal", { title: deal.title, days: deal.daysSinceUpdate }),
       description: t("recStaleDealsDesc"),
-      href: "/dashboard/deals",
-      actionLabel: t("recReview"),
+      href: `/dashboard/deals/${deal.id}`,
+      actionLabel: t("insightReview"),
+    });
+  }
+
+  for (const contact of insights.contactsNeedingOutreach) {
+    recommendations.push({
+      id: `outreach-${contact.id}`,
+      priority: "high",
+      icon: Users,
+      title:
+        contact.daysSinceContact !== null
+          ? t("insightContactOutreach", {
+              name: contact.name,
+              days: contact.daysSinceContact,
+            })
+          : t("insightContactNeverContacted", { name: contact.name }),
+      description: contact.company_name ?? "",
+      href: `/dashboard/crm/${contact.id}`,
+      actionLabel: t("insightReachOut"),
+    });
+  }
+
+  for (const company of insights.companiesWithoutActivity) {
+    recommendations.push({
+      id: `dormant-company-${company.id}`,
+      priority: "medium",
+      icon: Building2,
+      title:
+        company.daysSinceActivity !== null
+          ? t("insightCompanyDormant", {
+              name: company.name,
+              days: company.daysSinceActivity,
+            })
+          : t("insightCompanyNeverActive", { name: company.name }),
+      description: "",
+      href: `/dashboard/companies/${company.id}`,
+      actionLabel: t("insightFollowUp"),
+    });
+  }
+
+  for (const win of insights.recentWins) {
+    recommendations.push({
+      id: `win-${win.id}`,
+      priority: "positive",
+      icon: Trophy,
+      title: t("insightRecentWin", { title: win.title }),
+      description:
+        win.value != null
+          ? `€${win.value.toLocaleString()}`
+          : "",
+      href: `/dashboard/deals/${win.id}`,
+      actionLabel: t("insightView"),
     });
   }
 
@@ -156,7 +219,7 @@ export default function OrbitRecommendationsWidget({
 
   const sorted = [...recommendations]
     .sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority])
-    .slice(0, 5);
+    .slice(0, 6);
 
   return (
     <OrbitCard className="flex flex-col p-5">
@@ -188,10 +251,12 @@ export default function OrbitRecommendationsWidget({
                   />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-white/85">{rec.title}</p>
-                    <p className="mt-0.5 text-xs text-white/40">{rec.description}</p>
+                    {rec.description && (
+                      <p className="mt-0.5 text-xs text-white/40">{rec.description}</p>
+                    )}
                   </div>
                   <div className="flex shrink-0 items-center gap-1.5">
-                    <span className="text-[10px] uppercase tracking-wide text-violet-400/60">
+                    <span className={`text-[10px] uppercase tracking-wide ${ACTION_STYLE[rec.priority]}`}>
                       {rec.actionLabel}
                     </span>
                     <ArrowRight size={10} className="text-white/25" />

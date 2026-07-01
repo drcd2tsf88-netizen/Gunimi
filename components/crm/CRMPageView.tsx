@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import {
   FileUp,
   Pencil,
+  Search,
   Trash2,
   UserPlus,
   Users,
@@ -20,6 +21,7 @@ import { getCRMContacts } from "@/server/actions/crm/getCRMContacts";
 import { deleteContact } from "@/server/actions/crm/deleteContact";
 
 import OrbitHeading from "@/components/ui/OrbitHeading";
+import OrbitInput from "@/components/ui/OrbitInput";
 import OrbitSection from "@/components/layout/OrbitSection";
 import OrbitCard from "@/components/ui/OrbitCard";
 import OrbitButton from "@/components/ui/OrbitButton";
@@ -70,13 +72,27 @@ export default function CRMPageView({ initialContacts }: Props) {
     setContacts(initialContacts);
   }, [initialContacts]);
 
-  const filtered = search
-    ? contacts.filter(
-        (c) =>
-          c.name?.toLowerCase().includes(search.toLowerCase()) ||
-          c.email?.toLowerCase().includes(search.toLowerCase())
-      )
-    : contacts;
+  const filtered = useMemo(
+    () =>
+      search
+        ? contacts.filter(
+            (c) =>
+              c.name?.toLowerCase().includes(search.toLowerCase()) ||
+              c.email?.toLowerCase().includes(search.toLowerCase())
+          )
+        : contacts,
+    [contacts, search]
+  );
+
+  const leadCount = useMemo(
+    () => contacts.filter((c) => c.status === "lead").length,
+    [contacts]
+  );
+
+  const wonCount = useMemo(
+    () => contacts.filter((c) => c.status === "won").length,
+    [contacts]
+  );
 
   function handleCreated(contact: Contact) {
     setContacts((prev) => [contact, ...prev]);
@@ -135,12 +151,12 @@ export default function CRMPageView({ initialContacts }: Props) {
               <p className="mt-2 text-zinc-400">{t("searchAndManage")}</p>
             </div>
 
-            <input
+            <OrbitInput
               type="text"
               placeholder={t("searchCustomers")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-white outline-none placeholder:text-zinc-500 xl:w-96"
+              className="xl:w-96"
             />
           </div>
         </OrbitCard>
@@ -156,16 +172,12 @@ export default function CRMPageView({ initialContacts }: Props) {
 
           <OrbitCard className="p-6">
             <p className="text-zinc-400">{t("activeLeads")}</p>
-            <h2 className="mt-5 text-4xl font-semibold">
-              {contacts.filter((c) => c.status === "lead").length}
-            </h2>
+            <h2 className="mt-5 text-4xl font-semibold">{leadCount}</h2>
           </OrbitCard>
 
           <OrbitCard className="p-6">
             <p className="text-zinc-400">{t("wonDeals")}</p>
-            <h2 className="mt-5 text-4xl font-semibold">
-              {contacts.filter((c) => c.status === "won").length}
-            </h2>
+            <h2 className="mt-5 text-4xl font-semibold">{wonCount}</h2>
           </OrbitCard>
         </div>
       </OrbitSection>
@@ -207,9 +219,10 @@ export default function CRMPageView({ initialContacts }: Props) {
                 }
               />
             ) : filtered.length === 0 ? (
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] px-8 py-10 text-center">
-                <p className="text-sm text-zinc-500">{t("noSearchResults")}</p>
-              </div>
+              <OrbitEmptyState
+                icon={Search}
+                title={t("noSearchResults")}
+              />
             ) : (
               filtered.map((contact) => (
                 <div

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTransition, useState } from "react";
+
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
@@ -9,18 +11,27 @@ import {
   Building2,
   CheckCircle2,
   Clock,
+  FileText,
   Mail,
   MessageSquare,
   Sparkles,
   TrendingUp,
   User,
+  X,
+  CheckSquare2,
 } from "lucide-react";
 
+import toast from "react-hot-toast";
+
 import OrbitCard from "@/components/ui/OrbitCard";
+import OrbitHeading from "@/components/ui/OrbitHeading";
 import OrbitStatCard from "@/components/ui/OrbitStatCard";
 import OrbitButton from "@/components/ui/OrbitButton";
 import EmailConnectionCard from "@/components/email/EmailConnectionCard";
 import type { EmailConnection, EmailThread } from "@/types/email";
+
+import { createTask } from "@/server/actions/tasks/createTask";
+import { createNote } from "@/server/actions/notes/createNote";
 
 // Module-level time reference — avoids calling Date.now() during render
 const PAGE_NOW = new Date();
@@ -61,9 +72,231 @@ function formatDate(ts: string | null, now: Date): string {
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
+function formatFullDate(ts: string | null): string {
+  if (!ts) return "";
+  return new Date(ts).toLocaleString(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 function senderName(thread: EmailThread): string {
   if (thread.contact?.name) return thread.contact.name;
   return thread.participant_emails[0] ?? "Unknown";
+}
+
+// ─── Thread Detail Panel ──────────────────────────────────────────────────────
+
+type ThreadDetailPanelProps = {
+  thread: EmailThread;
+  onClose: () => void;
+  t: ReturnType<typeof useTranslations<"email">>;
+};
+
+function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
+  const [creatingTask, startCreateTask] = useTransition();
+  const [creatingNote, startCreateNote] = useTransition();
+
+  function handleCreateTask() {
+    startCreateTask(async () => {
+      const title = `${t("followUpPrefix")}: ${thread.subject ?? t("noSubject")}`;
+      const result = await createTask({ title, priority: "medium" });
+      if (result) {
+        toast.success(t("taskCreated"));
+      } else {
+        toast.error(t("failedToCreateTask"));
+      }
+    });
+  }
+
+  function handleCreateNote() {
+    startCreateNote(async () => {
+      const title = `${t("emailNotePrefix")}: ${thread.subject ?? t("noSubject")}`;
+      const content = thread.snippet ? `${t("emailPreview")}:\n${thread.snippet}` : undefined;
+      const contactId = thread.contact?.id ?? undefined;
+      const result = await createNote({ title, content, contactId });
+      if (result) {
+        toast.success(t("noteCreated"));
+      } else {
+        toast.error(t("failedToCreateNote"));
+      }
+    });
+  }
+
+  const participants = thread.participant_emails.slice(0, 5);
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="relative flex h-full w-full max-w-lg flex-col overflow-hidden border-l border-white/10 bg-[#060816]/95 backdrop-blur-3xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* HEADER */}
+        <div className="flex items-start justify-between gap-3 border-b border-white/[0.06] px-6 py-5">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] uppercase tracking-[0.15em] text-zinc-500">{t("threadDetailTitle")}</p>
+            <h2 className="mt-1 truncate text-base font-semibold text-white/90">
+              {thread.subject ?? t("noSubject")}
+            </h2>
+            <p className="mt-1 text-xs text-white/35">{formatFullDate(thread.last_message_at)}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="mt-0.5 shrink-0 rounded-xl border border-white/[0.08] p-1.5 text-white/40 transition-colors hover:text-white/70"
+          >
+            <X size={14} />
+          </button>
+        </div>
+
+        {/* SCROLL AREA */}
+        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+          {/* METADATA */}
+          <div className="space-y-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+            {/* Sender */}
+            <div className="flex items-start gap-2">
+              <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-500/15">
+                <User size={9} className="text-violet-300" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">{t("fromLabel")}</p>
+                <p className="mt-0.5 text-sm text-white/80">{senderName(thread)}</p>
+              </div>
+            </div>
+
+            {/* Participants */}
+            {participants.length > 0 && (
+              <div className="flex items-start gap-2">
+                <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/[0.05]">
+                  <Mail size={9} className="text-white/40" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">{t("participants")}</p>
+                  <div className="mt-0.5 flex flex-wrap gap-1">
+                    {participants.map((email) => (
+                      <span
+                        key={email}
+                        className="rounded-md border border-white/[0.06] bg-white/[0.03] px-2 py-0.5 text-[11px] text-white/50"
+                      >
+                        {email}
+                      </span>
+                    ))}
+                    {thread.participant_emails.length > 5 && (
+                      <span className="text-[11px] text-white/30">
+                        +{thread.participant_emails.length - 5}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Message count */}
+            <div className="flex items-center gap-2">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/[0.05]">
+                <MessageSquare size={9} className="text-white/40" />
+              </div>
+              <p className="text-xs text-white/40">
+                {thread.message_count} {thread.message_count === 1 ? t("message") : t("messages")}
+              </p>
+              {thread.has_unread && (
+                <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[10px] text-blue-300">
+                  {t("unread")}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* EMAIL PREVIEW */}
+          {thread.snippet && (
+            <div>
+              <p className="mb-2 text-[10px] uppercase tracking-[0.15em] text-zinc-500">{t("latestMessage")}</p>
+              <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+                <p className="text-sm leading-relaxed text-white/60">{thread.snippet}</p>
+              </div>
+            </div>
+          )}
+
+          {/* CRM LINKS */}
+          {(thread.contact || thread.company) && (
+            <div>
+              <p className="mb-2 text-[10px] uppercase tracking-[0.15em] text-zinc-500">{t("linkedRecords")}</p>
+              <div className="space-y-2">
+                {thread.contact && (
+                  <Link
+                    href={`/dashboard/crm/${thread.contact.id}`}
+                    className="flex items-center gap-3 rounded-xl border border-cyan-500/15 bg-cyan-500/[0.06] px-4 py-3 transition-colors hover:border-cyan-500/30"
+                  >
+                    <User size={13} className="shrink-0 text-cyan-300" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-cyan-200">{thread.contact.name}</p>
+                      {thread.contact.email && (
+                        <p className="text-[11px] text-white/30">{thread.contact.email}</p>
+                      )}
+                    </div>
+                    <ArrowRight size={11} className="shrink-0 text-white/20" />
+                  </Link>
+                )}
+                {thread.company && (
+                  <Link
+                    href={`/dashboard/companies/${thread.company.id}`}
+                    className="flex items-center gap-3 rounded-xl border border-violet-500/15 bg-violet-500/[0.06] px-4 py-3 transition-colors hover:border-violet-500/30"
+                  >
+                    <Building2 size={13} className="shrink-0 text-violet-300" />
+                    <p className="flex-1 text-sm font-medium text-violet-200">{thread.company.name}</p>
+                    <ArrowRight size={11} className="shrink-0 text-white/20" />
+                  </Link>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ACTIONS */}
+        <div className="border-t border-white/[0.06] px-6 py-4">
+          <p className="mb-3 text-[10px] uppercase tracking-[0.15em] text-zinc-500">{t("actionsLabel")}</p>
+          <div className="flex flex-wrap gap-2">
+            <OrbitButton
+              variant="secondary"
+              loading={creatingTask}
+              onClick={handleCreateTask}
+              className="gap-2 text-xs"
+            >
+              <CheckSquare2 size={13} />
+              {t("createTask")}
+            </OrbitButton>
+            <OrbitButton
+              variant="secondary"
+              loading={creatingNote}
+              onClick={handleCreateNote}
+              className="gap-2 text-xs"
+            >
+              <FileText size={13} />
+              {t("createNote")}
+            </OrbitButton>
+            {thread.contact && (
+              <Link href={`/dashboard/crm/${thread.contact.id}`}>
+                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                  <User size={13} />
+                  {t("viewContact")}
+                </OrbitButton>
+              </Link>
+            )}
+            {thread.company && (
+              <Link href={`/dashboard/companies/${thread.company.id}`}>
+                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                  <Building2 size={13} />
+                  {t("viewCompany")}
+                </OrbitButton>
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // ─── Thread Row ───────────────────────────────────────────────────────────────
@@ -71,13 +304,21 @@ function senderName(thread: EmailThread): string {
 type ThreadRowProps = {
   thread: EmailThread;
   compact?: boolean;
+  onClick?: () => void;
 };
 
-function ThreadRow({ thread, compact = false }: ThreadRowProps) {
+function ThreadRow({ thread, compact = false, onClick }: ThreadRowProps) {
   return (
     <div
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") onClick(); } : undefined}
+      onClick={onClick}
       className={[
-        "flex items-start gap-3 transition-colors hover:bg-white/[0.02]",
+        "flex items-start gap-3 transition-colors",
+        onClick
+          ? "cursor-pointer hover:bg-white/[0.03]"
+          : "hover:bg-white/[0.02]",
         compact ? "px-4 py-3" : "px-5 py-4",
       ].join(" ")}
     >
@@ -117,22 +358,22 @@ function ThreadRow({ thread, compact = false }: ThreadRowProps) {
         {!compact && (thread.contact || thread.company) && (
           <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
             {thread.contact && (
-              <Link
-                href={`/dashboard/crm/${thread.contact.id}`}
-                className="inline-flex items-center gap-1 rounded-md border border-blue-500/20 bg-blue-500/10 px-1.5 py-0.5 text-[10px] text-blue-300 transition-colors hover:border-blue-500/40"
+              <span
+                className="inline-flex items-center gap-1 rounded-md border border-blue-500/20 bg-blue-500/10 px-1.5 py-0.5 text-[10px] text-blue-300"
+                onClick={(e) => e.stopPropagation()}
               >
                 <User size={8} />
                 {thread.contact.name}
-              </Link>
+              </span>
             )}
             {thread.company && (
-              <Link
-                href={`/dashboard/companies/${thread.company.id}`}
-                className="inline-flex items-center gap-1 rounded-md border border-violet-500/20 bg-violet-500/10 px-1.5 py-0.5 text-[10px] text-violet-300 transition-colors hover:border-violet-500/40"
+              <span
+                className="inline-flex items-center gap-1 rounded-md border border-violet-500/20 bg-violet-500/10 px-1.5 py-0.5 text-[10px] text-violet-300"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Building2 size={8} />
                 {thread.company.name}
-              </Link>
+              </span>
             )}
           </div>
         )}
@@ -194,9 +435,11 @@ function WidgetEmptyState({ icon: Icon, message }: { icon: React.ElementType; me
 
 function UnreadPriorityWidget({
   threads,
+  onSelectThread,
   t,
 }: {
   threads: EmailThread[];
+  onSelectThread: (thread: EmailThread) => void;
   t: ReturnType<typeof useTranslations<"email">>;
 }) {
   return (
@@ -213,7 +456,7 @@ function UnreadPriorityWidget({
       ) : (
         <div className="divide-y divide-white/[0.04]">
           {threads.slice(0, 5).map((thread) => (
-            <ThreadRow key={thread.id} thread={thread} compact />
+            <ThreadRow key={thread.id} thread={thread} compact onClick={() => onSelectThread(thread)} />
           ))}
         </div>
       )}
@@ -225,9 +468,11 @@ function UnreadPriorityWidget({
 
 function FollowUpWidget({
   threads,
+  onSelectThread,
   t,
 }: {
   threads: EmailThread[];
+  onSelectThread: (thread: EmailThread) => void;
   t: ReturnType<typeof useTranslations<"email">>;
 }) {
   return (
@@ -244,7 +489,7 @@ function FollowUpWidget({
       ) : (
         <div className="divide-y divide-white/[0.04]">
           {threads.map((thread) => (
-            <ThreadRow key={thread.id} thread={thread} compact />
+            <ThreadRow key={thread.id} thread={thread} compact onClick={() => onSelectThread(thread)} />
           ))}
         </div>
       )}
@@ -256,9 +501,11 @@ function FollowUpWidget({
 
 function RecentThreadsWidget({
   threads,
+  onSelectThread,
   t,
 }: {
   threads: EmailThread[];
+  onSelectThread: (thread: EmailThread) => void;
   t: ReturnType<typeof useTranslations<"email">>;
 }) {
   return (
@@ -275,7 +522,7 @@ function RecentThreadsWidget({
       ) : (
         <div className="divide-y divide-white/[0.04]">
           {threads.map((thread) => (
-            <ThreadRow key={thread.id} thread={thread} />
+            <ThreadRow key={thread.id} thread={thread} onClick={() => onSelectThread(thread)} />
           ))}
         </div>
       )}
@@ -478,15 +725,11 @@ function NoConnectionState({
 }) {
   return (
     <div className="space-y-8">
-      <div>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
-          {t("commandCenterBadge")}
-        </p>
-        <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">
-          {t("commandCenterTitle")}
-        </h1>
-        <p className="mt-1 text-sm text-white/40">{t("commandCenterSubtitle")}</p>
-      </div>
+      <OrbitHeading
+        badge={t("commandCenterBadge")}
+        title={t("commandCenterTitle")}
+        subtitle={t("commandCenterSubtitle")}
+      />
 
       <OrbitCard className="p-10">
         <div className="flex flex-col items-center gap-5 text-center">
@@ -521,6 +764,7 @@ function NoConnectionState({
 
 export default function EmailCommandCenter({ threads, connections }: Props) {
   const t = useTranslations("email");
+  const [selectedThread, setSelectedThread] = useState<EmailThread | null>(null);
 
   const hasConnection = connections.length > 0;
 
@@ -572,66 +816,73 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* HEADER */}
-      <div className="flex items-start justify-between gap-4">
+    <>
+      <div className="space-y-6">
+        {/* HEADER */}
+        <div className="flex items-start justify-between gap-4">
+          <OrbitHeading
+            badge={t("commandCenterBadge")}
+            title={t("commandCenterTitle")}
+            subtitle={t("commandCenterSubtitle")}
+          />
+          <a href="/api/email/connect/gmail" className="mt-1 shrink-0">
+            <OrbitButton variant="secondary" className="gap-2 text-sm">
+              <Mail size={14} />
+              {t("addEmail")}
+            </OrbitButton>
+          </a>
+        </div>
+
+        {/* STATS STRIP */}
+        <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+          <OrbitStatCard title={t("statsTotalThreads")} value={threads.length} icon={MessageSquare} animated />
+          <OrbitStatCard title={t("statsUnread")} value={unreadThreads.length} icon={Mail} animated />
+          <OrbitStatCard title={t("statsLinkedContacts")} value={linkedContacts.length} icon={User} animated />
+          <OrbitStatCard title={t("statsLinkedCompanies")} value={linkedCompanies.length} icon={Building2} animated />
+        </div>
+
+        {/* ROW 1: Unread + Follow-Up */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <UnreadPriorityWidget threads={unreadThreads} onSelectThread={setSelectedThread} t={t} />
+          <FollowUpWidget threads={followUpThreads} onSelectThread={setSelectedThread} t={t} />
+        </div>
+
+        {/* ROW 2: Recent Threads (2/3) + Intelligence (1/3) */}
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <RecentThreadsWidget threads={recentThreads} onSelectThread={setSelectedThread} t={t} />
+          </div>
+          <IntelligenceWidget
+            threads={threads}
+            linkedContacts={linkedContacts}
+            linkedCompanies={linkedCompanies}
+            t={t}
+          />
+        </div>
+
+        {/* ROW 3: Linked Contacts + Companies */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <LinkedContactsWidget contacts={linkedContacts} t={t} />
+          <LinkedCompaniesWidget companies={linkedCompanies} t={t} />
+        </div>
+
+        {/* CONNECTION MANAGEMENT */}
         <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
-            {t("commandCenterBadge")}
+          <p className="mb-4 text-[11px] uppercase tracking-[0.15em] text-zinc-500">
+            {t("connectionStatus")}
           </p>
-          <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">
-            {t("commandCenterTitle")}
-          </h1>
-          <p className="mt-1 text-sm text-white/40">{t("commandCenterSubtitle")}</p>
+          <EmailConnectionCard connections={connections} />
         </div>
-        <a href="/api/email/connect/gmail" className="mt-1 shrink-0">
-          <OrbitButton variant="secondary" className="gap-2 text-sm">
-            <Mail size={14} />
-            {t("addEmail")}
-          </OrbitButton>
-        </a>
       </div>
 
-      {/* STATS STRIP */}
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-        <OrbitStatCard title={t("statsTotalThreads")} value={threads.length} icon={MessageSquare} animated />
-        <OrbitStatCard title={t("statsUnread")} value={unreadThreads.length} icon={Mail} animated />
-        <OrbitStatCard title={t("statsLinkedContacts")} value={linkedContacts.length} icon={User} animated />
-        <OrbitStatCard title={t("statsLinkedCompanies")} value={linkedCompanies.length} icon={Building2} animated />
-      </div>
-
-      {/* ROW 1: Unread + Follow-Up */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <UnreadPriorityWidget threads={unreadThreads} t={t} />
-        <FollowUpWidget threads={followUpThreads} t={t} />
-      </div>
-
-      {/* ROW 2: Recent Threads (2/3) + Intelligence (1/3) */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <RecentThreadsWidget threads={recentThreads} t={t} />
-        </div>
-        <IntelligenceWidget
-          threads={threads}
-          linkedContacts={linkedContacts}
-          linkedCompanies={linkedCompanies}
+      {/* THREAD DETAIL PANEL */}
+      {selectedThread && (
+        <ThreadDetailPanel
+          thread={selectedThread}
+          onClose={() => setSelectedThread(null)}
           t={t}
         />
-      </div>
-
-      {/* ROW 3: Linked Contacts + Companies */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <LinkedContactsWidget contacts={linkedContacts} t={t} />
-        <LinkedCompaniesWidget companies={linkedCompanies} t={t} />
-      </div>
-
-      {/* CONNECTION MANAGEMENT */}
-      <div>
-        <p className="mb-4 text-[11px] uppercase tracking-[0.15em] text-zinc-500">
-          {t("connectionStatus")}
-        </p>
-        <EmailConnectionCard connections={connections} />
-      </div>
-    </div>
+      )}
+    </>
   );
 }

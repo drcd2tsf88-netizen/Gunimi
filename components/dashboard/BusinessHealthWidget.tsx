@@ -98,7 +98,7 @@ export default function BusinessHealthWidget({ tasks, pipeline }: Props) {
 
       {/* Stats */}
       <div className="mt-5 border-t border-white/[0.05] pt-4">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Link
             href="/dashboard/analytics"
             className="group rounded-lg p-1 transition-colors hover:bg-white/[0.03]"

@@ -27,7 +27,7 @@ export default async function DealsPage() {
   ]);
 
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <DealsPageView
         deals={deals}
         companies={companies}

@@ -13,6 +13,7 @@ import {
   Flame,
   TriangleAlert,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import OrbitCard from "@/components/ui/OrbitCard";
 import { updateTask } from "@/server/actions/tasks/updateTask";
 import type { CalendarEventRow } from "@/types/calendar";
@@ -60,7 +61,17 @@ export default function TodaysPrioritiesWidget({ tasks, events, staleDealsCount 
   function handleComplete(taskId: string) {
     setCompletedIds((prev) => new Set([...prev, taskId]));
     startTransition(async () => {
-      await updateTask({ id: taskId, status: "done" });
+      const ok = await updateTask({ id: taskId, status: "done" });
+      if (!ok) {
+        setCompletedIds((prev) => {
+          const next = new Set(prev);
+          next.delete(taskId);
+          return next;
+        });
+        toast.error(t("markDoneFailed"));
+        return;
+      }
+      toast.success(t("markDoneSuccess"));
       router.refresh();
     });
   }
@@ -145,7 +156,7 @@ export default function TodaysPrioritiesWidget({ tasks, events, staleDealsCount 
       )}
 
       {!isAllClear && (
-        <div className="mt-4 grid gap-6 lg:grid-cols-2">
+        <div className="mt-4 grid gap-6 md:grid-cols-2">
           {/* LEFT: Priority tasks */}
           <div>
             <p className="mb-3 text-[10px] uppercase tracking-[0.14em] text-zinc-600">

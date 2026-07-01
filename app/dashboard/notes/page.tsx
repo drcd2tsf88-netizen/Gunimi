@@ -8,7 +8,7 @@ import {
 
 import { motion } from "framer-motion";
 
-import { FileText, Loader2, Pencil, Plus, Sparkles, Trash2 } from "lucide-react";
+import { FileText, Pencil, Plus, Sparkles, Trash2 } from "lucide-react";
 
 import toast from "react-hot-toast";
 
@@ -150,23 +150,10 @@ export default function NotesPage() {
               onChange={(e) => setContent(e.target.value)}
             />
 
-            <button
-              onClick={handleCreate}
-              disabled={creating}
-              className="inline-flex items-center gap-2 rounded-xl border border-violet-500/20 bg-violet-500/10 px-5 py-3 text-sm font-medium text-violet-200 transition-all duration-300 hover:border-violet-500/30 hover:bg-violet-500/15 disabled:opacity-50"
-            >
-              {creating ? (
-                <>
-                  <Loader2 size={14} className="animate-spin" />
-                  {t("creating")}
-                </>
-              ) : (
-                <>
-                  <Plus size={14} />
-                  {t("createNote")}
-                </>
-              )}
-            </button>
+            <OrbitButton onClick={handleCreate} loading={creating}>
+              <Plus size={14} />
+              {t("createNote")}
+            </OrbitButton>
           </div>
         </OrbitCard>
       </OrbitSection>

@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
@@ -51,6 +52,9 @@ export async function deleteContact(contactId: string) {
       title: "Contact Deleted",
       description: `Deleted contact "${contact.name}"`,
     });
+
+    revalidatePath("/dashboard/crm");
+    revalidatePath("/dashboard");
 
     return true;
   } catch (error) {

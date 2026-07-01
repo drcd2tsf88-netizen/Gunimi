@@ -6,6 +6,7 @@ import { getCalendarEvents } from "@/server/actions/calendar/getCalendarEvents";
 import { getWorkspaceActivity } from "@/server/actions/activity/getWorkspaceActivity";
 import { getOnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
 import { getPipelineBreakdown } from "@/server/actions/dashboard/getPipelineBreakdown";
+import { getDashboardInsights } from "@/server/actions/dashboard/getDashboardInsights";
 import DashboardView from "@/components/dashboard/DashboardView";
 import type { DashboardTask } from "@/components/dashboard/TodaysPrioritiesWidget";
 import type { DashboardActivityItem } from "@/components/dashboard/MorningSummaryWidget";
@@ -26,6 +27,7 @@ export default async function DashboardPage() {
     rawActivities,
     onboardingStatus,
     pipeline,
+    insights,
     profileResult,
   ] = await Promise.all([
     getAnalyticsOverview(),
@@ -34,6 +36,7 @@ export default async function DashboardPage() {
     getWorkspaceActivity(10),
     getOnboardingStatus(),
     getPipelineBreakdown(),
+    getDashboardInsights(),
     profilePromise,
   ]);
 
@@ -54,6 +57,7 @@ export default async function DashboardPage() {
       activities={activities}
       onboardingStatus={onboardingStatus}
       pipeline={pipeline}
+      insights={insights}
     />
   );
 }

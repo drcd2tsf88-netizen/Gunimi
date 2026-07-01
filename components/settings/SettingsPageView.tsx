@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useTranslations } from "next-intl";
 
+import OrbitHeading from "@/components/ui/OrbitHeading";
+
 import { WorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import { WorkspaceInvite } from "@/server/actions/workspace/getWorkspaceInvites";
 import { MemberRowData } from "./members/MemberRow";
@@ -44,12 +46,7 @@ export default function SettingsPageView({
   return (
     <div className="space-y-6">
       {/* PAGE HEADING */}
-      <div>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
-          {t("badge")}
-        </p>
-        <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">{t("title")}</h1>
-      </div>
+      <OrbitHeading badge={t("badge")} title={t("title")} />
 
       {/* LAYOUT */}
       <div className="flex gap-8">
