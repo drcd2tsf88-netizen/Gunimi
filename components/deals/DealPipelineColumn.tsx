@@ -25,6 +25,8 @@ import {
   updateDealStage,
 } from "@/server/actions/deals/updateDealStage";
 
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+
 const STAGES = [
   "lead",
   "qualified",
@@ -204,8 +206,7 @@ export default function DealPipelineColumn({
                 font-medium
               "
             >
-              €
-              {stageValue.toLocaleString()}
+              {formatCurrency(stageValue)}
             </p>
           </div>
         </div>

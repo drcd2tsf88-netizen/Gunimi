@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 import { getDeal } from "@/server/actions/deals/getDeal";
 import { getCompanies } from "@/server/actions/company/getCompanies";
@@ -7,12 +8,14 @@ import { getDealRelatedNotes } from "@/server/actions/deals/getDealRelatedNotes"
 import { getDealRelatedTasks } from "@/server/actions/deals/getDealRelatedTasks";
 
 import DealDetailView from "@/components/deals/detail/DealDetailView";
+import OrbitBreadcrumbs from "@/components/ui/OrbitBreadcrumbs";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export default async function DealPage({ params }: Props) {
+  const t = await getTranslations("deals");
   const { id } = await params;
 
   const dealData = await getDeal(id);
@@ -29,13 +32,21 @@ export default async function DealPage({ params }: Props) {
   ]);
 
   return (
-    <DealDetailView
-      deal={dealData.deal}
-      activities={dealData.activities}
-      companies={companies}
-      contacts={contacts}
-      notes={notes}
-      tasks={tasks}
-    />
+    <div className="space-y-8">
+      <OrbitBreadcrumbs
+        items={[
+          { label: t("breadcrumbDeals"), href: "/dashboard/deals" },
+          { label: dealData.deal.title },
+        ]}
+      />
+      <DealDetailView
+        deal={dealData.deal}
+        activities={dealData.activities}
+        companies={companies}
+        contacts={contacts}
+        notes={notes}
+        tasks={tasks}
+      />
+    </div>
   );
 }

@@ -23,6 +23,7 @@ import OrbitEmptyState
 from "@/components/ui/OrbitEmptyState";
 
 import { Deal } from "@/types/deal";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   deals: Deal[];
@@ -261,10 +262,7 @@ export default function CompanyDeals({
                           text-sm
                         "
                       >
-                        €
-                        {Number(
-                          deal.value || 0
-                        ).toLocaleString()}
+                        {formatCurrency(Number(deal.value || 0))}
                       </p>
                     </div>
 

@@ -56,7 +56,7 @@ export default function ContactHeader({ contact }: Props) {
       const ok = await deleteContact(contact.id);
       if (ok) {
         toast.success(tCrm("contactDeleted"));
-        router.push("/dashboard/crm");
+        router.push("/dashboard/contacts");
       } else {
         toast.error(tCrm("failedToDeleteContact"));
         setDeleteOpen(false);

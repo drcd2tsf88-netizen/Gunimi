@@ -2,6 +2,7 @@
 
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 
 type CreateWorkspaceParams = {
   name: string;
@@ -45,6 +46,7 @@ export async function createWorkspace({
   try {
     const user = await getUser();
     if (!user) return null;
+    if (!await checkWriteRateLimit(user.id)) return null;
 
     const trimmedName = name?.trim();
     if (!trimmedName) return null;

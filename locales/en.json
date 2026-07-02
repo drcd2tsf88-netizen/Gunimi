@@ -394,6 +394,7 @@
     "relationshipActivity": "Relationship Activity",
     "activitySubtitle": "Historical relationship interactions and operational events.",
     "notFound": "Company not found",
+    "breadcrumbCompanies": "Companies",
     "noOrganizations": "No organizations",
     "noOrganizationsDescription": "Create your first organization to start managing business relationships.",
     "onboardingEmptyTitle": "No companies yet",
@@ -437,6 +438,7 @@
   },
   "deals": {
     "commercialPipeline": "Commercial Pipeline",
+    "breadcrumbDeals": "Deals",
     "commercialPipelineSubtitle": "Monitor opportunities, revenue forecasts and sales execution.",
     "owner": "Owner",
     "company": "Organization",
@@ -612,6 +614,7 @@
   "contacts": {
     "badge": "Contact Intelligence",
     "notFound": "Contact not found",
+    "breadcrumbContacts": "Contacts",
     "unknownPosition": "Unknown Position",
     "unknownCompany": "Unknown Company",
     "email": "Email",
@@ -1342,7 +1345,12 @@
     "processingError": "Orbit AI failed to process request.",
     "thinkingAnalyzing": "Orbit AI analyzing workspace...",
     "thinkingDelegating": "Delegating to {agent}...",
-    "thinkingComplete": "Analysis complete."
+    "thinkingComplete": "Analysis complete.",
+    "closePanel": "Close AI panel",
+    "clearSession": "Clear session",
+    "confirmClear": "Confirm? Click again",
+    "showLess": "Show less",
+    "showMore": "Show {count} more"
   },
   "memory": {
     "badge": "Orbit Memory",

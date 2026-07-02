@@ -19,7 +19,10 @@
       "Bash(xargs grep -l \"contact\")",
       "Bash(mkdir -p \"c:/Users/guoth/OrbitDesk/OrbitDesk/app/dashboard/crm/[id]\" && mkdir -p \"c:/Users/guoth/OrbitDesk/OrbitDesk/components/contacts/detail\")",
       "Bash(xargs -I {} sh -c 'echo \"File: {}\"; head -50 \"{}\"')",
-      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")"
+      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
+      "Bash(find \"c:\\\\Users\\\\guoth\\\\OrbitDesk\" -type f -name \"*.sql\" 2>/dev/null | head -20)",
+      "Read(//c/Users/guoth/OrbitDesk/**)",
+      "Bash(xargs -I {} sh -c 'echo \"=== {} ===\" && wc -l \"{}\"')"
     ],
     "additionalDirectories": [
       "c:\\Users\\guoth\\OrbitDesk\\OrbitDesk\\app\\dashboard\\crm\\[id]"

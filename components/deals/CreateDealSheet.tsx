@@ -35,6 +35,7 @@ import {
 
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   open: boolean;
@@ -331,7 +332,7 @@ export default function CreateDealSheet({
                     text-white
                   "
                 >
-                  €{Math.round(expectedRevenue).toLocaleString()}
+                  {formatCurrency(Math.round(expectedRevenue))}
                 </p>
               </div>
 

@@ -86,7 +86,7 @@ function ActivityIcon({
 function entityLink(event: MemoryEvent): string | null {
   if (event.dealId) return `/dashboard/deals/${event.dealId}`;
   if (event.companyId) return `/dashboard/companies/${event.companyId}`;
-  if (event.contactId) return `/dashboard/crm/${event.contactId}`;
+  if (event.contactId) return `/dashboard/contacts/${event.contactId}`;
   return null;
 }
 

@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 type DeleteResult = { ok: boolean; error?: string };
@@ -11,6 +12,7 @@ export async function deleteWorkspace(): Promise<DeleteResult> {
   try {
     const user = await getUser();
     if (!user) return { ok: false, error: "unauthorized" };
+    if (!await checkWriteRateLimit(user.id)) return { ok: false, error: "unauthorized" };
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return { ok: false, error: "no_workspace" };

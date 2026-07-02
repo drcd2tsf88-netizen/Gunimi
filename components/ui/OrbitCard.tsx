@@ -1,34 +1,41 @@
 
 "use client";
 
-import { motion }
-from "framer-motion";
+import { motion } from "framer-motion";
 
-import { cn }
-from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type OrbitCardProps = {
-  children:
-    React.ReactNode;
-
+  children: React.ReactNode;
   className?: string;
-
   onClick?: () => void;
+  hoverable?: boolean;
 };
 
 export default function OrbitCard({
   children,
-
   className = "",
-
   onClick,
+  hoverable,
 }: OrbitCardProps) {
+  const isInteractive = !!onClick || hoverable;
+
   return (
     <motion.div
       onClick={onClick}
-      whileHover={{
-        y: -2,
-      }}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (e: React.KeyboardEvent) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
+      whileHover={isInteractive ? { y: -2 } : undefined}
       transition={{
         duration: 0.18,
         ease: "easeOut",
@@ -64,6 +71,11 @@ export default function OrbitCard({
         onClick &&
           `
             cursor-pointer
+            focus-visible:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-violet-500/50
+            focus-visible:ring-offset-2
+            focus-visible:ring-offset-[#050816]
           `,
 
         className

@@ -3,12 +3,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 
 export async function revokeInvite(inviteId: string): Promise<boolean> {
   try {
     const user = await getUser();
     if (!user) return false;
+    if (!await checkWriteRateLimit(user.id)) return false;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return false;

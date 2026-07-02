@@ -252,7 +252,7 @@ export default function AutomationCenterView({ history, stats }: Props) {
                         )}
                         {item.contact_id && !item.deal_id && (
                           <Link
-                            href={`/dashboard/crm/${item.contact_id}`}
+                            href={`/dashboard/contacts/${item.contact_id}`}
                             className="flex items-center gap-1 text-[10px] text-cyan-400/60 hover:text-cyan-300"
                           >
                             <User size={9} />

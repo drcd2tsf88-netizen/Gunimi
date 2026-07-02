@@ -20,6 +20,7 @@ import {
 } from "next-intl";
 
 import { Deal } from "@/types/deal";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   deal: Deal;
@@ -72,7 +73,7 @@ export default function DealMetrics({
       >
         <OrbitStatCard
           title={t("value")}
-          value={`€${Number(deal.value || 0).toLocaleString()}`}
+          value={formatCurrency(Number(deal.value || 0))}
           icon={TrendingUp}
         />
 
@@ -88,7 +89,7 @@ export default function DealMetrics({
           title={t(
             "expectedRevenue"
           )}
-          value={`€${Math.round(expectedRevenue).toLocaleString()}`}
+          value={formatCurrency(Math.round(expectedRevenue))}
           icon={Activity}
         />
 

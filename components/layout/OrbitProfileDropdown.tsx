@@ -210,6 +210,8 @@ export default function OrbitProfileDropdown() {
         onClick={() =>
           setOpen(!open)
         }
+        aria-expanded={open}
+        aria-haspopup="menu"
         className="
           flex
           items-center
@@ -228,6 +230,10 @@ export default function OrbitProfileDropdown() {
           transition-all
 
           hover:border-white/20
+
+          focus-visible:outline-none
+          focus-visible:ring-2
+          focus-visible:ring-violet-500/50
         "
       >
         {/* AVATAR */}
@@ -329,6 +335,8 @@ export default function OrbitProfileDropdown() {
       <AnimatePresence>
         {open && (
           <motion.div
+            role="menu"
+            aria-label="Profile menu"
             initial={{
               opacity: 0,
               y: 10,

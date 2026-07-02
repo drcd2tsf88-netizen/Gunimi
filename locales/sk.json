@@ -394,6 +394,7 @@
     "relationshipActivity": "Aktivita vzťahov",
     "activitySubtitle": "Historické interakcie vzťahov a prevádzkové udalosti.",
     "notFound": "Spoločnosť sa nenašla",
+    "breadcrumbCompanies": "Spoločnosti",
     "noOrganizations": "Žiadne organizácie",
     "noOrganizationsDescription": "Vytvorte svoju prvú organizáciu a začnite spravovať obchodné vzťahy.",
     "onboardingEmptyTitle": "Zatiaľ žiadne spoločnosti",
@@ -437,6 +438,7 @@
   },
   "deals": {
     "commercialPipeline": "Obchodná Pipeline",
+    "breadcrumbDeals": "Príležitosti",
     "commercialPipelineSubtitle": "Monitorujte obchodné príležitosti, prognózy príjmov a obchodnú realizáciu.",
     "owner": "Vlastník",
     "company": "Organizácia",
@@ -612,6 +614,7 @@
   "contacts": {
     "badge": "Inteligencia kontaktov",
     "notFound": "Kontakt sa nenašiel",
+    "breadcrumbContacts": "Kontakty",
     "unknownPosition": "Neznáma pozícia",
     "unknownCompany": "Neznáma spoločnosť",
     "email": "E-mail",
@@ -1342,7 +1345,12 @@
     "processingError": "Orbit AI nezvládlo spracovať požiadavku.",
     "thinkingAnalyzing": "Orbit AI analyzuje pracovný priestor...",
     "thinkingDelegating": "Delegovanie na {agent}...",
-    "thinkingComplete": "Analýza dokončená."
+    "thinkingComplete": "Analýza dokončená.",
+    "closePanel": "Zatvoriť panel AI",
+    "clearSession": "Vymazať reláciu",
+    "confirmClear": "Potvrdiť? Kliknite znova",
+    "showLess": "Zobraziť menej",
+    "showMore": "Zobraziť {count} ďalších"
   },
   "memory": {
     "badge": "Orbit Pamäť",

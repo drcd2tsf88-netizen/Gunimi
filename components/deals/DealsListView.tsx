@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
 import { Deal } from "@/types/deal";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type DealStage =
   | "lead"
@@ -203,7 +204,7 @@ export default function DealsListView({ deals, onEdit }: Props) {
                 text-white
               "
             >
-              €{Number(deal.value || 0).toLocaleString()}
+              {formatCurrency(Number(deal.value || 0))}
             </p>
 
             <p

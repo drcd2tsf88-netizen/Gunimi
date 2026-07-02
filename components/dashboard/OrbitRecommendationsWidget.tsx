@@ -15,6 +15,7 @@ import {
   Users,
 } from "lucide-react";
 import OrbitCard from "@/components/ui/OrbitCard";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 import type { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
 import type { OnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
 import type { DashboardInsights } from "@/server/actions/dashboard/getDashboardInsights";
@@ -131,7 +132,7 @@ export default function OrbitRecommendationsWidget({
             })
           : t("insightContactNeverContacted", { name: contact.name }),
       description: contact.company_name ?? "",
-      href: `/dashboard/crm/${contact.id}`,
+      href: `/dashboard/contacts/${contact.id}`,
       actionLabel: t("insightReachOut"),
     });
   }
@@ -162,7 +163,7 @@ export default function OrbitRecommendationsWidget({
       title: t("insightRecentWin", { title: win.title }),
       description:
         win.value != null
-          ? `€${win.value.toLocaleString()}`
+          ? formatCurrency(win.value)
           : "",
       href: `/dashboard/deals/${win.id}`,
       actionLabel: t("insightView"),
@@ -200,7 +201,7 @@ export default function OrbitRecommendationsWidget({
       icon: Users,
       title: t("recFirstContact"),
       description: t("recFirstContactDesc"),
-      href: "/dashboard/crm",
+      href: "/dashboard/contacts",
       actionLabel: t("recStart"),
     });
   }

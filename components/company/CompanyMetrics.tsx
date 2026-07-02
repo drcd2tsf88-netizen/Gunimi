@@ -22,6 +22,8 @@ from "@/types/contact";
 import { Deal }
 from "@/types/deal";
 
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+
 type Props = {
   company: Company;
   contacts: Contact[];
@@ -61,12 +63,12 @@ export default function CompanyMetrics({
         },
         {
           label: t("companies.pipelineValue"),
-          value: `€${pipelineValue.toLocaleString()}`,
+          value: formatCurrency(pipelineValue),
           icon: TrendingUp,
         },
         {
           label: t("companies.annualValue"),
-          value: `€${Number(company?.annual_value || 0).toLocaleString()}`,
+          value: formatCurrency(Number(company?.annual_value || 0)),
           icon: Activity,
         },
       ]}

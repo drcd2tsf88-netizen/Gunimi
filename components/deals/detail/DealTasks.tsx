@@ -51,7 +51,7 @@ export default function DealTasks({ tasks, contactId }: Props) {
           action={
             contactId ? (
               <Link
-                href={`/dashboard/crm/${contactId}`}
+                href={`/dashboard/contacts/${contactId}`}
                 className="inline-flex items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-xs text-white/50 transition-colors hover:border-white/[0.14] hover:text-white/75"
               >
                 <User size={11} />

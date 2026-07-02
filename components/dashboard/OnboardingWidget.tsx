@@ -87,7 +87,7 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
       icon: Users,
       label: t("stepContact"),
       done: status.contactsCount > 0,
-      href: "/dashboard/crm",
+      href: "/dashboard/contacts",
     },
     {
       key: "company",
@@ -219,7 +219,7 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
             </p>
             <div className="flex flex-wrap gap-2">
               {[
-                { label: t("actionCreateContact"), href: "/dashboard/crm" },
+                { label: t("actionCreateContact"), href: "/dashboard/contacts" },
                 { label: t("actionCreateCompany"), href: "/dashboard/companies" },
                 { label: t("actionCreateDeal"), href: "/dashboard/deals" },
                 { label: t("actionConnectEmail"), href: "/dashboard/email" },

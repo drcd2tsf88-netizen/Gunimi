@@ -33,6 +33,7 @@ import getRelativeTime
 from "@/lib/utils/getRelativeTime";
 
 import { Company } from "@/types/company";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   companies: Company[];
@@ -224,11 +225,7 @@ export default function CompaniesGrid({
                       mt-1
                     "
                   >
-                    €
-                    {Number(
-                      company.annual_value ||
-                        0
-                    ).toLocaleString()}
+                    {formatCurrency(Number(company.annual_value || 0))}
                   </p>
                 </div>
 

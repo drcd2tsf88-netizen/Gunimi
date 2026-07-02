@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { createAuditLog } from "@/lib/server/audit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
@@ -21,6 +22,7 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
 
     const user = await getUser();
     if (!user) return null;
+    if (!await checkWriteRateLimit(user.id)) return null;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return null;
@@ -79,7 +81,7 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
       contactName: cleanName,
     });
 
-    revalidatePath("/dashboard/crm");
+    revalidatePath("/dashboard/contacts");
 
     return data;
   } catch (error) {

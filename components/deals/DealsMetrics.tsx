@@ -13,6 +13,8 @@ from "next-intl";
 import OrbitMetricGrid
 from "@/components/ui/OrbitMetricGrid";
 
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+
 import { Deal }
 from "@/types/deal";
 
@@ -68,12 +70,12 @@ export default function DealsMetrics({
         },
         {
           label: t("pipelineValue"),
-          value: `€${pipelineValue.toLocaleString()}`,
+          value: formatCurrency(pipelineValue),
           icon: TrendingUp,
         },
         {
           label: t("wonRevenue"),
-          value: `€${wonRevenue.toLocaleString()}`,
+          value: formatCurrency(wonRevenue),
           icon: Trophy,
         },
         {

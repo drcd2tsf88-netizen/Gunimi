@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
 export async function deleteNote(noteId: string) {
@@ -11,6 +12,7 @@ export async function deleteNote(noteId: string) {
 
     const user = await getUser();
     if (!user) return false;
+    if (!await checkWriteRateLimit(user.id)) return false;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return false;

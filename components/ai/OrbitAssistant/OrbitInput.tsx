@@ -12,17 +12,21 @@ type OrbitInputProps = {
 
 export default function OrbitInput({ loading, onSend, initialValue }: OrbitInputProps) {
   const t = useTranslations("aiPanel");
-  const [message, setMessage] = useState(initialValue ?? "");
+  const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const sentInitialRef = useRef<string | null>(null);
 
-  const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
-
-  if (initialValue !== prevInitialValue) {
-    setPrevInitialValue(initialValue);
-    if (initialValue) {
-      setMessage(initialValue);
+  // Auto-send when a quick prompt arrives
+  useEffect(() => {
+    if (
+      initialValue &&
+      initialValue !== sentInitialRef.current &&
+      !loading
+    ) {
+      sentInitialRef.current = initialValue;
+      void onSend(initialValue);
     }
-  }
+  }, [initialValue, loading, onSend]);
 
   useEffect(() => {
     if (initialValue) {
@@ -60,7 +64,7 @@ export default function OrbitInput({ loading, onSend, initialValue }: OrbitInput
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleSend();
+            if (e.key === "Enter") void handleSend();
           }}
           placeholder={t("inputPlaceholder")}
           className="
@@ -74,7 +78,7 @@ export default function OrbitInput({ loading, onSend, initialValue }: OrbitInput
         />
 
         <button
-          onClick={handleSend}
+          onClick={() => void handleSend()}
           disabled={loading}
           className="
             flex h-10 w-10 items-center justify-center

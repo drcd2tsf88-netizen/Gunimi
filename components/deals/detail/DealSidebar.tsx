@@ -18,6 +18,7 @@ import { useTranslations } from "next-intl";
 import OrbitCard from "@/components/ui/OrbitCard";
 
 import { Deal } from "@/types/deal";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   deal: Deal;
@@ -106,7 +107,7 @@ export default function DealSidebar({ deal }: Props) {
     {
       icon: TrendingUp,
       label: t("value"),
-      value: `€${Number(deal.value || 0).toLocaleString()}`,
+      value: formatCurrency(Number(deal.value || 0)),
     },
     {
       icon: Target,
@@ -116,7 +117,7 @@ export default function DealSidebar({ deal }: Props) {
     {
       icon: Activity,
       label: t("expectedRevenue"),
-      value: `€${Math.round(expectedRevenue).toLocaleString()}`,
+      value: formatCurrency(Math.round(expectedRevenue)),
     },
     {
       icon: Calendar,
@@ -344,7 +345,7 @@ export default function DealSidebar({ deal }: Props) {
 
             {deal.contact && (
               <Link
-                href={`/dashboard/crm/${deal.contact.id}`}
+                href={`/dashboard/contacts/${deal.contact.id}`}
               >
                 <div
                   className="

@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Deal } from "@/types/deal";
+import { formatCurrencyCompact } from "@/lib/utils/formatCurrency";
 
 type DealStage =
   | "lead"
@@ -54,9 +55,7 @@ export default function DealsStagePicker({
 
     if (total === 0) return null;
 
-    return total >= 1000
-      ? `€${Math.round(total / 1000)}k`
-      : `€${total}`;
+    return formatCurrencyCompact(total);
   }
 
   function renderStage(stage: DealStage) {

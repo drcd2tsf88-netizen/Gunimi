@@ -51,6 +51,18 @@ export function useOrbitAssistant() {
         state.addMessage
     );
 
+  const appendToMessage =
+    useAIStateStore(
+      (state) =>
+        state.appendToMessage
+    );
+
+  const setMessageMetadata =
+    useAIStateStore(
+      (state) =>
+        state.setMessageMetadata
+    );
+
   const messages =
     useAIStateStore(
       (state) =>
@@ -212,7 +224,18 @@ export function useOrbitAssistant() {
                 },
             });
 
-          // GENERATE RESPONSE
+          // PLACEHOLDER ASSISTANT MESSAGE (streams into it)
+
+          const assistantId = crypto.randomUUID();
+
+          addMessage({
+            id: assistantId,
+            role: "assistant",
+            content: "",
+            createdAt: new Date().toISOString(),
+          });
+
+          // GENERATE RESPONSE (streaming)
 
           const response =
             await generateOrbitResponse(
@@ -252,7 +275,8 @@ export function useOrbitAssistant() {
                     productivity:
                       "Operational",
                   },
-              }
+              },
+              (token) => appendToMessage(assistantId, token)
             );
 
           // SAVE MEMORY
@@ -291,30 +315,12 @@ export function useOrbitAssistant() {
               }
             );
 
-          // ASSISTANT MESSAGE
+          // FINALIZE ASSISTANT MESSAGE METADATA
 
-          addMessage({
-            id:
-              crypto.randomUUID(),
-
-            role:
-              "assistant",
-
-            content:
-              response.response,
-
-            createdAt:
-              new Date().toISOString(),
-
-            metadata: {
-              agent:
-                agent.name,
-
-              execution,
-
-              actions:
-                response.generatedActions,
-            },
+          setMessageMetadata(assistantId, {
+            agent: agent.name,
+            execution,
+            actions: response.generatedActions,
           });
 
           // COMPLETE
@@ -344,6 +350,8 @@ export function useOrbitAssistant() {
       [
         t,
         addMessage,
+        appendToMessage,
+        setMessageMetadata,
         aiMemory,
         messages,
         workflowTimeline,

@@ -46,6 +46,7 @@ import {
 import { Deal } from "@/types/deal";
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   deal: Deal;
@@ -285,7 +286,7 @@ export default function EditDealSheet({
                   </p>
 
                   <p className="mt-2 text-2xl font-semibold text-white">
-                    €{Math.round(expectedRevenue).toLocaleString()}
+                    {formatCurrency(Math.round(expectedRevenue))}
                   </p>
                 </div>
 

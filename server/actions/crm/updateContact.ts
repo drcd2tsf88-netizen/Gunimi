@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
 export type UpdateContactProps = {
@@ -28,6 +29,7 @@ export async function updateContact({
 
     const user = await getUser();
     if (!user) return null;
+    if (!await checkWriteRateLimit(user.id)) return null;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return null;
@@ -64,8 +66,8 @@ export async function updateContact({
       description: `Updated contact "${name.trim()}"`,
     });
 
-    revalidatePath("/dashboard/crm");
-    revalidatePath(`/dashboard/crm/${contactId}`);
+    revalidatePath("/dashboard/contacts");
+    revalidatePath(`/dashboard/contacts/${contactId}`);
 
     return data;
   } catch (error) {

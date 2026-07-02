@@ -235,7 +235,7 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
               </p>
               <div className="space-y-2">
                 <Link
-                  href={`/dashboard/crm/${crmContact.id}`}
+                  href={`/dashboard/contacts/${crmContact.id}`}
                   className="flex items-center gap-3 rounded-xl border border-cyan-500/15 bg-cyan-500/[0.06] px-4 py-3 transition-colors hover:border-cyan-500/30"
                 >
                   <User size={13} className="shrink-0 text-cyan-300" />
@@ -282,7 +282,7 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
             </OrbitButton>
 
             {crmContact && (
-              <Link href={`/dashboard/crm/${crmContact.id}`}>
+              <Link href={`/dashboard/contacts/${crmContact.id}`}>
                 <OrbitButton variant="secondary" className="gap-2 text-xs">
                   <User size={13} />
                   {t("viewContact")}
@@ -792,7 +792,7 @@ function LinkedContactsWidget({
             return (
               <Link
                 key={contact.id}
-                href={`/dashboard/crm/${contact.id}`}
+                href={`/dashboard/contacts/${contact.id}`}
                 className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-white/[0.02]"
               >
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cyan-500/15 text-[11px] font-semibold text-cyan-300">

@@ -35,7 +35,7 @@ function formatEventLabel(type?: string | null, title?: string | null): string |
 function getActivityHref(item: DashboardActivityItem): string | null {
   if (item.deal_id) return `/dashboard/deals/${item.deal_id}`;
   if (item.company_id) return `/dashboard/companies/${item.company_id}`;
-  if (item.contact_id) return `/dashboard/crm/${item.contact_id}`;
+  if (item.contact_id) return `/dashboard/contacts/${item.contact_id}`;
   return null;
 }
 

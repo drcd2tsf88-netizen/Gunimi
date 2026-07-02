@@ -185,7 +185,7 @@ export async function runWorkspaceWatcher() {
     "Open CRM",
 
   action_route:
-    "/dashboard/crm",
+    "/dashboard/contacts",
 
   priority:
     "medium",

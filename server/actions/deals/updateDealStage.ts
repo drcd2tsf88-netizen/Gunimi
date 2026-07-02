@@ -9,6 +9,9 @@ import { executeAutomations } from "@/lib/automation/engine";
 import { getUser }
 from "@/server/actions/auth/getUser";
 
+import { checkWriteRateLimit }
+from "@/lib/server/rateLimit";
+
 type DealStage =
   | "lead"
   | "qualified"
@@ -22,19 +25,12 @@ export async function updateDealStage(
   stage: DealStage
 ) {
   try {
-    const user =
-      await getUser();
-      const workspace =
-  await getCurrentWorkspace();
+    const user = await getUser();
+    if (!user) return false;
+    if (!await checkWriteRateLimit(user.id)) return false;
 
-
-if (!workspace) {
-  return false;
-}
-
-    if (!user) {
-      return false;
-    }
+    const workspace = await getCurrentWorkspace();
+    if (!workspace) return false;
     const allowedStages: DealStage[] = [
   "lead",
   "qualified",

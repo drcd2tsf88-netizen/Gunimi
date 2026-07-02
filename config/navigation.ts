@@ -82,7 +82,7 @@ export const NAV_GROUPS: NavGroup[] = [
     id: "relationships",
     labelKey: "groupRelationships",
     items: [
-      { id: "crm",       labelKey: "contacts",  href: "/dashboard/crm",       icon: Users      },
+      { id: "crm",       labelKey: "contacts",  href: "/dashboard/contacts",       icon: Users      },
       { id: "companies", labelKey: "companies",  href: "/dashboard/companies", icon: Building2  },
     ],
   },

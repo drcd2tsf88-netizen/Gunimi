@@ -28,6 +28,7 @@ import OrbitButton from "@/components/ui/OrbitButton";
 import { updateDealStage } from "@/server/actions/deals/updateDealStage";
 
 import { Deal } from "@/types/deal";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 const STAGES = [
   "lead",
@@ -193,7 +194,7 @@ export default function DealHeader({ deal, onEdit }: Props) {
               text-white
             "
           >
-            €{Number(deal.value || 0).toLocaleString()}
+            {formatCurrency(Number(deal.value || 0))}
           </p>
 
           <OrbitButton

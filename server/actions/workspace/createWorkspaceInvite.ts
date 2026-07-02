@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { sendWorkspaceInvite } from "@/lib/email/sendWorkspaceInvites";
 
@@ -25,6 +26,7 @@ export async function createWorkspaceInvite({
   try {
     const user = await getUser();
     if (!user) return { ok: false, error: "unauthorized" };
+    if (!await checkWriteRateLimit(user.id)) return { ok: false, error: "unauthorized" };
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return { ok: false, error: "no_workspace" };

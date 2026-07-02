@@ -37,7 +37,7 @@ function mapContact(contact: ContactRow, query: string): EntityResult {
     id: `contact:${contact.id}`,
     entityType: "contact",
     entityId: contact.id,
-    href: `/dashboard/crm/${contact.id}`,
+    href: `/dashboard/contacts/${contact.id}`,
     title: contact.name,
     description: contact.email ?? contact.position ?? undefined,
     category: "crm",

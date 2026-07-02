@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Deal } from "@/types/deal";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   deals: Deal[];
@@ -38,11 +39,11 @@ export default function DealsMetricStrip({ deals }: Props) {
     },
     {
       label: t("pipelineValue"),
-      value: `€${pipelineValue.toLocaleString()}`,
+      value: formatCurrency(pipelineValue),
     },
     {
       label: t("wonRevenue"),
-      value: `€${wonRevenue.toLocaleString()}`,
+      value: formatCurrency(wonRevenue),
     },
     {
       label: t("winRate"),

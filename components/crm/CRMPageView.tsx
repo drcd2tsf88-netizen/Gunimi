@@ -229,8 +229,16 @@ export default function CRMPageView({ initialContacts }: Props) {
               filtered.map((contact) => (
                 <div
                   key={contact.id}
-                  className="group relative flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all hover:border-violet-500/20 hover:bg-violet-500/[0.03] cursor-pointer"
-                  onClick={() => router.push(`/dashboard/crm/${contact.id}`)}
+                  role="button"
+                  tabIndex={0}
+                  className="group relative flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all hover:border-violet-500/20 hover:bg-violet-500/[0.03] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50"
+                  onClick={() => router.push(`/dashboard/contacts/${contact.id}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      router.push(`/dashboard/contacts/${contact.id}`);
+                    }
+                  }}
                 >
                   {/* Avatar */}
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-sm font-semibold text-violet-300">

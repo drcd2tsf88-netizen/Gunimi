@@ -23,6 +23,9 @@ from "@/components/ui/OrbitButton";
 import { Deal }
 from "@/types/deal";
 
+import { formatCurrency }
+from "@/lib/utils/formatCurrency";
+
 type Props = {
   deal: Deal;
 
@@ -127,10 +130,7 @@ export default function DealPipelineCard({
             text-white/40
           "
         >
-          €
-          {Number(
-            deal.value || 0
-          ).toLocaleString()}
+          {formatCurrency(Number(deal.value || 0))}
 
           {" · "}
 

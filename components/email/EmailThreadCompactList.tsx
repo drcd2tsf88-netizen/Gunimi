@@ -179,7 +179,7 @@ function ThreadPanel({ thread, onClose }: PanelProps) {
               <div className="space-y-2">
                 {thread.contact && (
                   <Link
-                    href={`/dashboard/crm/${thread.contact.id}`}
+                    href={`/dashboard/contacts/${thread.contact.id}`}
                     className="flex items-center gap-3 rounded-xl border border-cyan-500/15 bg-cyan-500/[0.06] px-4 py-3 transition-colors hover:border-cyan-500/30"
                   >
                     <User size={13} className="shrink-0 text-cyan-300" />
@@ -230,7 +230,7 @@ function ThreadPanel({ thread, onClose }: PanelProps) {
               {t("createNote")}
             </OrbitButton>
             {thread.contact && (
-              <Link href={`/dashboard/crm/${thread.contact.id}`}>
+              <Link href={`/dashboard/contacts/${thread.contact.id}`}>
                 <OrbitButton variant="secondary" className="gap-2 text-xs">
                   <User size={13} />
                   {t("viewContact")}

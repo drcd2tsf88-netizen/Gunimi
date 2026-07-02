@@ -11,6 +11,9 @@ from "@/lib/server/supabaseAdmin";
 import { getUser }
 from "@/server/actions/auth/getUser";
 
+import { checkWriteRateLimit }
+from "@/lib/server/rateLimit";
+
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
@@ -62,6 +65,8 @@ if (value < 0) {
     if (!user) {
       return null;
     }
+
+    if (!await checkWriteRateLimit(user.id)) return null;
 
     const workspace =
       await getCurrentWorkspace();

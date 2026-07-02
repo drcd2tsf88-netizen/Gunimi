@@ -6,6 +6,9 @@ from "@/lib/supabase/server";
 import { getUser }
 from "@/server/actions/auth/getUser";
 
+import { checkWriteRateLimit }
+from "@/lib/server/rateLimit";
+
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
@@ -72,6 +75,8 @@ export async function updateDeal({
     if (!user) {
       return null;
     }
+
+    if (!await checkWriteRateLimit(user.id)) return null;
 
     const workspace =
       await getCurrentWorkspace();

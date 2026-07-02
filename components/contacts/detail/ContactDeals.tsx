@@ -9,6 +9,7 @@ import OrbitHeading from "@/components/ui/OrbitHeading";
 import OrbitCard from "@/components/ui/OrbitCard";
 import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
 import { Deal } from "@/types/deal";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   deals: Deal[];
@@ -90,7 +91,7 @@ export default function ContactDeals({ deals }: Props) {
                     <div>
                       <p className="text-xs text-white/40">{tDeals("value")}</p>
                       <p className="mt-1 text-sm">
-                        €{Number(deal.value || 0).toLocaleString()}
+                        {formatCurrency(Number(deal.value || 0))}
                       </p>
                     </div>
                     <div>

@@ -16,6 +16,8 @@ from "@/components/ui/OrbitMetricGrid";
 import { Company }
 from "@/types/company";
 
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+
 type Props = {
   companies: Company[];
 };
@@ -60,12 +62,12 @@ export default function CompaniesMetrics({
         },
         {
           label: t("companies.pipelineValue"),
-          value: `€${pipelineValue.toLocaleString()}`,
+          value: formatCurrency(pipelineValue),
           icon: TrendingUp,
         },
         {
           label: t("companies.annualValue"),
-          value: `€${annualValue.toLocaleString()}`,
+          value: formatCurrency(annualValue),
           icon: Landmark,
         },
       ]}

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
 export type CreateNoteProps = {
@@ -18,6 +19,7 @@ export async function createNote({ title, content, companyId, contactId }: Creat
 
     const user = await getUser();
     if (!user) return null;
+    if (!await checkWriteRateLimit(user.id)) return null;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return null;

@@ -35,7 +35,7 @@ type RawBrief = {
 
 const ENTITY_HREFS: Record<string, (id: string) => string> = {
   deal: (id) => `/dashboard/deals/${id}`,
-  contact: (id) => `/dashboard/crm/${id}`,
+  contact: (id) => `/dashboard/contacts/${id}`,
   company: (id) => `/dashboard/companies/${id}`,
   task: () => `/dashboard/tasks`,
 };

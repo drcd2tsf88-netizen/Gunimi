@@ -52,6 +52,16 @@ type AIStateStore = {
     message: Message
   ) => void;
 
+  appendToMessage: (
+    id: string,
+    token: string
+  ) => void;
+
+  setMessageMetadata: (
+    id: string,
+    metadata: Record<string, unknown>
+  ) => void;
+
   clearMessages: () => void;
 
   // MEMORY
@@ -108,6 +118,20 @@ export const useAIStateStore =
 
             message,
           ],
+        })),
+
+      appendToMessage: (id, token) =>
+        set((state) => ({
+          messages: state.messages.map((m) =>
+            m.id === id ? { ...m, content: m.content + token } : m
+          ),
+        })),
+
+      setMessageMetadata: (id, metadata) =>
+        set((state) => ({
+          messages: state.messages.map((m) =>
+            m.id === id ? { ...m, metadata } : m
+          ),
         })),
 
       clearMessages: () =>

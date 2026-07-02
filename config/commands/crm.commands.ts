@@ -9,7 +9,7 @@ const commands: OrbitCommand[] = [
     type: "navigate",
     namespace: "crm",
     icon: Users,
-    href: "/dashboard/crm",
+    href: "/dashboard/contacts",
     group: "crm",
     keywords: ["contacts", "leads", "customers", "people", "relationships"],
   },
@@ -38,7 +38,7 @@ const commands: OrbitCommand[] = [
     icon: UserPlus,
     action: "create-contact",
     group: "crm",
-    routes: ["/dashboard/crm"],
+    routes: ["/dashboard/contacts"],
     keywords: ["new", "add", "contact", "create", "person", "people", "lead"],
   },
   {
@@ -48,7 +48,7 @@ const commands: OrbitCommand[] = [
     icon: Plus,
     action: "create-company",
     group: "crm",
-    routes: ["/dashboard/crm", "/dashboard/companies"],
+    routes: ["/dashboard/contacts", "/dashboard/companies"],
     keywords: ["new", "add", "company", "create", "organization", "business", "account"],
   },
   {
@@ -58,7 +58,7 @@ const commands: OrbitCommand[] = [
     icon: TrendingUp,
     action: "create-deal",
     group: "crm",
-    routes: ["/dashboard/crm", "/dashboard/deals"],
+    routes: ["/dashboard/contacts", "/dashboard/deals"],
     keywords: ["new", "add", "deal", "create", "opportunity", "pipeline", "revenue", "sales"],
   },
 ];

@@ -7,6 +7,7 @@ import { getContactNotes } from "@/server/actions/crm/getContactNotes";
 import { getContactEmails } from "@/server/actions/crm/getContactEmails";
 
 import ContactHeader from "@/components/contacts/detail/ContactHeader";
+import OrbitBreadcrumbs from "@/components/ui/OrbitBreadcrumbs";
 import ContactCompanyCard from "@/components/contacts/detail/ContactCompanyCard";
 import ContactDeals from "@/components/contacts/detail/ContactDeals";
 import ContactTasks from "@/components/contacts/detail/ContactTasks";
@@ -39,6 +40,12 @@ export default async function ContactDetailPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
+      <OrbitBreadcrumbs
+        items={[
+          { label: t("breadcrumbContacts"), href: "/dashboard/contacts" },
+          { label: contact.name },
+        ]}
+      />
       <ContactHeader contact={contact} />
       <ContactCompanyCard contact={contact} />
       <ContactDeals deals={deals} />

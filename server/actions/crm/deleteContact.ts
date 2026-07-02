@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
+import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
 export async function deleteContact(contactId: string) {
@@ -12,6 +13,7 @@ export async function deleteContact(contactId: string) {
 
     const user = await getUser();
     if (!user) return false;
+    if (!await checkWriteRateLimit(user.id)) return false;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return false;
@@ -53,7 +55,7 @@ export async function deleteContact(contactId: string) {
       description: `Deleted contact "${contact.name}"`,
     });
 
-    revalidatePath("/dashboard/crm");
+    revalidatePath("/dashboard/contacts");
     revalidatePath("/dashboard");
 
     return true;

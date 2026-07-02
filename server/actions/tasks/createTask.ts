@@ -6,6 +6,9 @@ from "@/lib/supabase/server";
 import { getUser }
 from "@/server/actions/auth/getUser";
 
+import { checkWriteRateLimit }
+from "@/lib/server/rateLimit";
+
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
@@ -50,6 +53,8 @@ export async function createTask({
 
       return null;
     }
+
+    if (!await checkWriteRateLimit(user.id)) return null;
 
     // WORKSPACE
 

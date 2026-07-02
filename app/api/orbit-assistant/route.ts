@@ -6,7 +6,6 @@ import { getWorkspaceContext } from "@/server/actions/ai/getWorkspaceContext";
 import { buildChatSystemPrompt } from "@/lib/ai/context/formatWorkspacePrompt";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logAIUsage } from "@/lib/ai/logUsage";
-import { NextResponse } from "next/server";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -24,7 +23,7 @@ export async function POST(req: Request) {
   if (!success) return errorResponse("Rate limit exceeded", 429);
 
   try {
-    const body = await req.json();
+    const body = await req.json() as { message?: string; agent?: string };
     const message: string = body.message ?? "";
     const agentName: string = body.agent ?? "Orbit Core";
 
@@ -41,40 +40,82 @@ ${AGENT_ROLES[agentName] ?? ""}
 
 ${buildChatSystemPrompt(ctx)}
 
-Return a JSON object:
-{
-  "response": "your answer here",
-  "actions": ["suggested next step 1", "suggested next step 2"]
-}
+Give a focused, actionable response. Be concise.`
+      : `You are ${agentName} within Orbit AI. ${AGENT_ROLES[agentName] ?? ""} Give a focused, actionable response.`;
 
-Keep "response" focused and actionable. Keep "actions" to 0-3 short strings only.`
-      : `You are ${agentName} within Orbit AI. ${AGENT_ROLES[agentName] ?? ""}
-Respond with JSON: { "response": "...", "actions": [] }`;
+    // Start actions call concurrently — completes while prose streams
+    const actionsPromise = openai.chat.completions.create({
+      model: "gpt-4.1-mini",
+      temperature: 0.3,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `Suggest 0-3 short follow-up actions or prompts for the user. Return JSON: { "actions": ["action 1", "action 2"] }`,
+        },
+        { role: "user", content: message.slice(0, 500) },
+      ],
+    });
 
-    const completion = await openai.chat.completions.create({
+    // Start prose stream immediately
+    const proseStream = await openai.chat.completions.create({
       model: "gpt-4.1-mini",
       temperature: 0.6,
-      response_format: { type: "json_object" },
+      stream: true,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: message.slice(0, 4000) },
       ],
     });
 
-    const content = completion.choices[0]?.message?.content ?? "{}";
-    const parsed = JSON.parse(content) as { response?: string; actions?: string[] };
+    const encoder = new TextEncoder();
 
-    void logAIUsage({
-      workspaceId: workspace?.id ?? null,
-      userId: user.id,
-      feature: "assistant",
-      inputTokens: completion.usage?.prompt_tokens ?? 0,
-      outputTokens: completion.usage?.completion_tokens ?? 0,
+    const readable = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of proseStream) {
+            const token = chunk.choices[0]?.delta?.content ?? "";
+            if (token) {
+              controller.enqueue(
+                encoder.encode(`data: ${JSON.stringify({ t: token })}\n\n`)
+              );
+            }
+          }
+
+          // Await actions (usually already resolved by now)
+          const actionsResult = await actionsPromise;
+          const actionsContent = actionsResult.choices[0]?.message?.content ?? "{}";
+          let parsedActions: string[] = [];
+          try {
+            parsedActions =
+              (JSON.parse(actionsContent) as { actions?: string[] }).actions ?? [];
+          } catch {
+            parsedActions = [];
+          }
+
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({ a: parsedActions })}\n\n`)
+          );
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        } finally {
+          controller.close();
+          void logAIUsage({
+            workspaceId: workspace?.id ?? null,
+            userId: user.id,
+            feature: "assistant",
+            inputTokens: 0,
+            outputTokens: 0,
+          });
+        }
+      },
     });
 
-    return NextResponse.json({
-      response: parsed.response ?? "Orbit AI could not generate a response.",
-      actions: parsed.actions ?? [],
+    return new Response(readable, {
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+      },
     });
   } catch (error) {
     console.error("orbit-assistant error:", error);

@@ -28,6 +28,7 @@ import {
 import { deleteCompany } from "@/server/actions/company/deleteCompany";
 
 import { Company } from "@/types/company";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   company: Company;
@@ -161,7 +162,7 @@ export default function CompanyHero({ company }: Props) {
                 {t("annualValue")}
               </p>
               <p className="mt-2 text-sm text-white/80">
-                €{Number(company?.annual_value || 0).toLocaleString()}
+                {formatCurrency(Number(company?.annual_value || 0))}
               </p>
             </div>
           </div>

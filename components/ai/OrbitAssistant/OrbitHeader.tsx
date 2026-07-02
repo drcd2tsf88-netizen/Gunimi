@@ -40,6 +40,7 @@ export default function OrbitHeader({ onClose }: OrbitHeaderProps) {
 
       <button
         onClick={onClose}
+        aria-label={t("closePanel")}
         className="
           flex h-9 w-9 items-center justify-center
           rounded-xl
@@ -48,6 +49,9 @@ export default function OrbitHeader({ onClose }: OrbitHeaderProps) {
           text-zinc-400
           transition-all
           hover:bg-white/[0.06] hover:text-white
+          focus-visible:outline-none
+          focus-visible:ring-2
+          focus-visible:ring-violet-500/50
         "
       >
         <X size={16} />

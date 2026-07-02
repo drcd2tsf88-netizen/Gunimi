@@ -108,7 +108,7 @@ export default function CompanyContacts({
                 >
                   <div>
                     <Link
-                      href={`/dashboard/crm/${contact.id}`}
+                      href={`/dashboard/contacts/${contact.id}`}
                       className="
                         text-lg
                         font-semibold
