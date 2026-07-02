@@ -20,7 +20,6 @@ type ExecuteOrbitActionsProps = {
 export async function executeOrbitActions({
   input,
   response,
-  workspaceId,
 }: ExecuteOrbitActionsProps) {
   const executed: string[] =
     [];

@@ -146,10 +146,9 @@ export function useOrbitAssistant() {
 
           // LOAD MEMORY
 
-          const memory =
-            await loadMemory(
-              workspaceId
-            );
+          await loadMemory(
+            workspaceId
+          );
 
           // AGENT
 

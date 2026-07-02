@@ -4,8 +4,7 @@ from "react";
 import { cn }
 from "@/lib/utils";
 
-export interface OrbitTextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+export type OrbitTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const OrbitTextarea =
   React.forwardRef<

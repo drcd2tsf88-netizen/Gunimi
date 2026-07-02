@@ -33,9 +33,9 @@ export async function getUserWorkspaces(): Promise<Workspace[]> {
       return [];
     }
 
+    type WorkspaceMemberRow = { workspaces: Workspace[] };
     return (data || [])
-      .map((m: any) => m.workspaces)
-      .filter(Boolean) as Workspace[];
+      .flatMap((m) => (m as unknown as WorkspaceMemberRow).workspaces ?? []);
   } catch (error) {
     console.error("getUserWorkspaces failed:", error);
     return [];

@@ -8,6 +8,7 @@ import { getUserProfile } from "@/server/actions/profile/getUserProfile";
 
 import SettingsPageView from "@/components/settings/SettingsPageView";
 import { type SettingsSection } from "@/components/settings/SettingsNav";
+import type { MemberRowData } from "@/components/settings/members/MemberRow";
 
 const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "profile", "danger"];
 
@@ -52,7 +53,7 @@ export default async function SettingsPage({
   return (
     <SettingsPageView
       workspace={settings}
-      members={(members as any[]) ?? []}
+      members={(members as unknown as MemberRowData[]) ?? []}
       invites={invites}
       currentUserId={user.id}
       currentUserRole={membership.membership?.role ?? "member"}

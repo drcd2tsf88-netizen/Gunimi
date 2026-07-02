@@ -4,8 +4,7 @@ from "react";
 import { cn }
 from "@/lib/utils";
 
-export interface OrbitInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type OrbitInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const OrbitInput =
   React.forwardRef<

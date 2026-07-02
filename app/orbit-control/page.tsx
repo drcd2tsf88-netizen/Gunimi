@@ -95,7 +95,7 @@ export default function OrbitControlPage() {
     }
 
     init();
-  }, []);
+  }, [t]);
 
   async function updateRole(
     id: string,

@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 
 import { supabase } from "@/lib/supabase";
 
+import { useTranslations } from "next-intl";
+
 import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
 
 type Member = {
@@ -23,23 +25,24 @@ type Member = {
 };
 
 export default function OrbitTeamPresence() {
+  const t = useTranslations("nav");
   const router = useRouter();
   const [members, setMembers] = useState<Member[]>([]);
 
-  async function loadMembers() {
-    const data = await getWorkspaceMembers();
-    setMembers((data as Member[]) ?? []);
-  }
-
   useEffect(() => {
-    loadMembers();
+    async function loadMembers() {
+      const data = await getWorkspaceMembers();
+      setMembers((data as Member[]) ?? []);
+    }
+
+    void loadMembers();
 
     const channel = supabase
       .channel("topbar-workspace-members")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "workspace_members" },
-        () => { loadMembers(); }
+        () => { void loadMembers(); }
       )
       .subscribe();
 
@@ -118,9 +121,9 @@ export default function OrbitTeamPresence() {
       </div>
 
       <div className="hidden text-left lg:block">
-        <p className="text-sm font-medium text-white">Team Workspace</p>
+        <p className="text-sm font-medium text-white">{t("teamWorkspace")}</p>
         <p className="mt-1 text-xs text-zinc-500">
-          {members.length} active members
+          {t("activeMembers", { count: members.length })}
         </p>
       </div>
     </motion.button>

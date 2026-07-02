@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import OrbitSection
 from "@/components/layout/OrbitSection";
 
@@ -41,12 +43,14 @@ export default function DealMetrics({
       ) / 100
     );
 
+  const [now] = useState(Date.now);
+
   const daysOpen =
     Math.max(
       0,
       Math.floor(
         (
-          Date.now() -
+          now -
           new Date(
             deal.created_at
           ).getTime()

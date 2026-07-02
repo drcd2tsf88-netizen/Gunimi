@@ -35,16 +35,32 @@ export default function ActivityPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadActivity();
+    async function loadActivity() {
+      try {
+        setLoading(true);
+
+        const [data, count] = await Promise.all([
+          getWorkspaceActivity(20),
+          getWorkspaceActivityCount(),
+        ]);
+
+        setActivity(data);
+        setTotalCount(count);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    void loadActivity();
 
     const channel = supabase
       .channel("workspace-activity-live")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "workspace_activity" },
-        async () => {
-          await loadActivity();
-        }
+        () => { void loadActivity(); }
       )
       .subscribe();
 
@@ -52,24 +68,6 @@ export default function ActivityPage() {
       supabase.removeChannel(channel);
     };
   }, []);
-
-  async function loadActivity() {
-    try {
-      setLoading(true);
-
-      const [data, count] = await Promise.all([
-        getWorkspaceActivity(20),
-        getWorkspaceActivityCount(),
-      ]);
-
-      setActivity(data);
-      setTotalCount(count);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   const aiCount = useMemo(
     () => activity.filter((item) => item.type?.includes("ai")).length,

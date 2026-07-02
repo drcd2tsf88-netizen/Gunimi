@@ -94,7 +94,10 @@
     "completeWorkspaceFailed": "Failed to create your workspace. Please try again.",
     "completeSessionTimedOut": "Session timed out. Please sign in again.",
     "logoutSuccess": "Session terminated. See you next time.",
-    "logoutFailed": "Sign out failed. Please try again."
+    "logoutFailed": "Sign out failed. Please try again.",
+    "workspaceSynchronized": "Workspace synchronized",
+    "switchedToWorkspace": "Switched to {name}",
+    "switchWorkspaceFailed": "Failed to switch workspace"
   },
   "dashboard": {
     "quickActions": "Quick Actions",
@@ -239,7 +242,12 @@
     "insightReview": "Review",
     "insightReachOut": "Reach Out",
     "insightView": "View",
-    "insightFollowUp": "Follow Up"
+    "insightFollowUp": "Follow Up",
+    "allDay": "All day",
+    "stageLead": "Lead",
+    "stageQualified": "Qualified",
+    "stageProposal": "Proposal",
+    "stageNegotiation": "Negotiation"
   },
   "crm": {
     "title": "Customer Relationships",
@@ -1310,7 +1318,15 @@
     "groupSales": "Sales",
     "groupWork": "Workspace",
     "groupCommunication": "Communication",
-    "groupIntelligence": "Intelligence"
+    "groupIntelligence": "Intelligence",
+    "profileSettings": "Profile Settings",
+    "workspaceSettings": "Workspace Settings",
+    "logout": "Log out",
+    "workspaces": "Workspaces",
+    "createWorkspace": "Create Workspace",
+    "teamWorkspace": "Team Workspace",
+    "activeMembers": "{count} active members",
+    "membersOnline": "{count} members online"
   },
   "aiPanel": {
     "orbitAi": "Orbit AI",

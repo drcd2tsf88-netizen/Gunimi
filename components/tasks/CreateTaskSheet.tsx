@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -64,7 +64,12 @@ export default function CreateTaskSheet({
   const [dueDate, setDueDate] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
 
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevTaskId, setPrevTaskId] = useState(task?.id);
+
+  if (open !== prevOpen || task?.id !== prevTaskId) {
+    setPrevOpen(open);
+    setPrevTaskId(task?.id);
     if (open) {
       setTitle(task?.title ?? "");
       setDescription(task?.description ?? "");
@@ -73,7 +78,7 @@ export default function CreateTaskSheet({
       setDueDate(task?.due_date ?? "");
       setAssignedTo(task?.assigned_to ?? "");
     }
-  }, [open, task]);
+  }
 
   function resetForm() {
     setTitle("");

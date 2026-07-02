@@ -23,7 +23,7 @@ type Props = {
   onEdit: (deal: Deal) => void;
 };
 
-export default function DealsListView({ deals, stage, onEdit }: Props) {
+export default function DealsListView({ deals, onEdit }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
 

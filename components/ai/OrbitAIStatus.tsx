@@ -13,30 +13,30 @@ type AIState = {
 export default function OrbitAIStatus() {
   const [aiState, setAIState] = useState<AIState | null>(null);
 
-  async function loadAIState() {
-    const { data, error } = await supabase
-      .from("workspace_ai_state")
-      .select("*")
-      .limit(1)
-      .maybeSingle();
+  useEffect(() => {
+    async function loadAIState() {
+      const { data, error } = await supabase
+        .from("workspace_ai_state")
+        .select("*")
+        .limit(1)
+        .maybeSingle();
 
-    if (error) {
-      console.error(error);
-      return;
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setAIState(data);
     }
 
-    setAIState(data);
-  }
-
-  useEffect(() => {
-    loadAIState();
+    void loadAIState();
 
     const channel = supabase
       .channel("workspace-ai-state-topbar")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "workspace_ai_state" },
-        () => { loadAIState(); }
+        () => { void loadAIState(); }
       )
       .subscribe();
 

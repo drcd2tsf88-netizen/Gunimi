@@ -13,7 +13,7 @@ type AuditLogParams = {
 
   entity_id?: string;
 
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 };
 
 export async function createAuditLog({

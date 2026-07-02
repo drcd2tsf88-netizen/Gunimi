@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -67,10 +67,12 @@ export default function CRMPageView({ initialContacts }: Props) {
   const [deleteTarget, setDeleteTarget] = useState<Contact | null>(null);
   const [isDeleting, startDelete] = useTransition();
 
-  // Sync when Next.js re-runs the server component after router.refresh()
-  useEffect(() => {
+  const [prevInitialContacts, setPrevInitialContacts] = useState(initialContacts);
+
+  if (prevInitialContacts !== initialContacts) {
+    setPrevInitialContacts(initialContacts);
     setContacts(initialContacts);
-  }, [initialContacts]);
+  }
 
   const filtered = useMemo(
     () =>

@@ -116,8 +116,19 @@ export default function NotesPage() {
   }
 
   useEffect(() => {
-    loadNotes();
-  }, []);
+    async function init() {
+      try {
+        const data = await getWorkspaceNotes();
+        setNotes(data);
+      } catch (err) {
+        console.error(err);
+        toast.error(t("failedToLoad"));
+      } finally {
+        setLoading(false);
+      }
+    }
+    void init();
+  }, [t]);
 
   return (
     <div className="space-y-8">

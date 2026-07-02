@@ -32,7 +32,7 @@ export async function getUser() {
           set(
             name: string,
             value: string,
-            options: any
+            options: Record<string, unknown>
           ) {
             cookieStore.set({
               name,
@@ -43,7 +43,7 @@ export async function getUser() {
 
           remove(
             name: string,
-            options: any
+            options: Record<string, unknown>
           ) {
             cookieStore.set({
               name,

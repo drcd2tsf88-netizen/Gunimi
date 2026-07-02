@@ -43,8 +43,8 @@ function buildTodayStr(): string {
   ].join("-");
 }
 
-function formatMeetingTime(startAt: string, allDay: boolean): string {
-  if (allDay) return "All day";
+function formatMeetingTime(startAt: string, allDay: boolean, allDayLabel: string): string {
+  if (allDay) return allDayLabel;
   return new Date(startAt).toLocaleTimeString(undefined, {
     hour: "numeric",
     minute: "2-digit",
@@ -229,7 +229,7 @@ export default function TodaysPrioritiesWidget({ tasks, events, staleDealsCount 
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm text-white/80">{event.title}</p>
                         <p className="text-[11px] text-white/35">
-                          {formatMeetingTime(event.start_at, event.all_day)}
+                          {formatMeetingTime(event.start_at, event.all_day, t("allDay"))}
                         </p>
                       </div>
                     </Link>

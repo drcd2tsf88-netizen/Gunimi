@@ -7,9 +7,6 @@ import {
 
 import { useTranslations } from "next-intl";
 
-import OrbitWorkspaceStatus
-from "@/components/layout/OrbitWorkspaceStatus";
-
 import OrbitTeamPresence
 from "@/components/layout/OrbitTeamPresence";
 

@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 
 import { cn } from "@/lib/utils";
 
+import Image from "next/image";
+
 import { updateMemberRole } from "@/server/actions/workspace/updateMemberRole";
 
 import OrbitButton from "@/components/ui/OrbitButton";
@@ -57,9 +59,11 @@ function Avatar({ name, avatarUrl }: { name: string; avatarUrl: string | null })
 
   if (avatarUrl) {
     return (
-      <img
+      <Image
         src={avatarUrl}
         alt={name}
+        width={32}
+        height={32}
         className="h-8 w-8 rounded-full object-cover"
       />
     );
@@ -71,6 +75,12 @@ function Avatar({ name, avatarUrl }: { name: string; avatarUrl: string | null })
     </div>
   );
 }
+
+const ROLE_KEY_MAP = {
+  owner: "role_owner",
+  admin: "role_admin",
+  member: "role_member",
+} as const;
 
 const ROLE_BADGE: Record<string, string> = {
   owner: "border-amber-500/20 bg-amber-500/10 text-amber-300",
@@ -141,7 +151,7 @@ export default function MemberRow({ member, currentUserId, currentUserRole, onRe
               ROLE_BADGE[member.role] ?? ROLE_BADGE.member
             )}
           >
-            {t(`role_${member.role}` as any) || member.role}
+            {t(ROLE_KEY_MAP[member.role as keyof typeof ROLE_KEY_MAP] ?? "role_member")}
           </span>
         )}
 

@@ -34,6 +34,8 @@ from "react-hot-toast";
 import { useTranslations }
 from "next-intl";
 
+import type { User as SupabaseUser } from "@supabase/supabase-js";
+
 import { supabase }
 from "@/lib/supabase";
 
@@ -67,6 +69,7 @@ type WorkspaceData = {
 
 export default function OrbitProfileDropdown() {
   const t = useTranslations("auth");
+  const tNav = useTranslations("nav");
   const router =
     useRouter();
 
@@ -85,7 +88,7 @@ export default function OrbitProfileDropdown() {
     );
 
   const [user, setUser] =
-    useState<any>(null);
+    useState<SupabaseUser | null>(null);
 
   const [profileName, setProfileName] =
     useState<string>("");
@@ -501,7 +504,7 @@ export default function OrbitProfileDropdown() {
                     text-emerald-300
                   "
                 >
-                  Workspace synchronized
+                  {t("workspaceSynchronized")}
                 </p>
               </div>
             </div>
@@ -527,7 +530,7 @@ export default function OrbitProfileDropdown() {
                   text-white/30
                 "
               >
-                Workspaces
+                {tNav("workspaces")}
               </p>
 
               <div
@@ -555,7 +558,7 @@ export default function OrbitProfileDropdown() {
                           );
 
                           toast.success(
-                            `Switched to ${workspace.name}`
+                            t("switchedToWorkspace", { name: workspace.name })
                           );
 
                           setOpen(false);
@@ -564,7 +567,7 @@ export default function OrbitProfileDropdown() {
                             "/dashboard";
                         } else {
                           toast.error(
-                            "Failed to switch workspace"
+                            t("switchWorkspaceFailed")
                           );
                         }
                       }}
@@ -720,7 +723,7 @@ export default function OrbitProfileDropdown() {
                 </div>
 
                 <span className="font-medium">
-                  Create Workspace
+                  {tNav("createWorkspace")}
                 </span>
               </button>
             </div>
@@ -763,7 +766,7 @@ export default function OrbitProfileDropdown() {
                   size={16}
                 />
 
-                Profile Settings
+                {tNav("profileSettings")}
               </button>
 
               <button
@@ -797,7 +800,7 @@ export default function OrbitProfileDropdown() {
                   size={16}
                 />
 
-                Workspace Settings
+                {tNav("workspaceSettings")}
               </button>
 
               <button
@@ -827,7 +830,7 @@ export default function OrbitProfileDropdown() {
                   size={16}
                 />
 
-                Logout
+                {tNav("logout")}
               </button>
             </div>
           </motion.div>

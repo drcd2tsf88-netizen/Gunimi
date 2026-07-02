@@ -15,9 +15,17 @@ export default function OrbitInput({ loading, onSend, initialValue }: OrbitInput
   const [message, setMessage] = useState(initialValue ?? "");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
+  const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
+
+  if (initialValue !== prevInitialValue) {
+    setPrevInitialValue(initialValue);
     if (initialValue) {
       setMessage(initialValue);
+    }
+  }
+
+  useEffect(() => {
+    if (initialValue) {
       inputRef.current?.focus();
     }
   }, [initialValue]);

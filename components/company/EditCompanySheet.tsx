@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -20,7 +20,6 @@ import {
 import OrbitButton from "@/components/ui/OrbitButton";
 import OrbitField from "@/components/ui/OrbitField";
 import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
 
 import { Company } from "@/types/company";
 
@@ -51,7 +50,12 @@ export default function EditCompanySheet({
     company.annual_value != null ? String(company.annual_value) : ""
   );
 
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevCompanyId, setPrevCompanyId] = useState(company.id);
+
+  if (open !== prevOpen || company.id !== prevCompanyId) {
+    setPrevOpen(open);
+    setPrevCompanyId(company.id);
     if (open) {
       setName(company.name ?? "");
       setWebsite(company.website ?? "");
@@ -60,7 +64,7 @@ export default function EditCompanySheet({
       setCompanySize(company.company_size ?? "");
       setAnnualValue(company.annual_value != null ? String(company.annual_value) : "");
     }
-  }, [open, company]);
+  }
 
   function handleClose() {
     onOpenChange(false);

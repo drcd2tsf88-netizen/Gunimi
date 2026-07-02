@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import { useTranslations } from "next-intl";
+
 import {
   motion,
 } from "framer-motion";
@@ -18,6 +20,9 @@ from "@/server/actions/workspace/getWorkspaceMembers";
 
 import { getWorkspaceMembership }
 from "@/server/actions/workspace/getWorkspaceMembership";
+
+import type { MemberRowData }
+from "@/components/settings/members/MemberRow";
 
 type WorkspaceData = {
   workspace: {
@@ -34,8 +39,10 @@ type WorkspaceData = {
 };
 
 export default function OrbitWorkspaceStatus() {
+  const tNav = useTranslations("nav");
+  const tAuth = useTranslations("auth");
   const [members, setMembers] =
-    useState<any[]>([]);
+    useState<MemberRowData[]>([]);
 
   const [workspaceData, setWorkspaceData] =
     useState<WorkspaceData | null>(
@@ -52,7 +59,7 @@ export default function OrbitWorkspaceStatus() {
         await getWorkspaceMembers();
 
       setMembers(
-        membersData
+        membersData as unknown as MemberRowData[]
       );
 
       // WORKSPACE
@@ -167,10 +174,7 @@ export default function OrbitWorkspaceStatus() {
               text-zinc-500
             "
           >
-            {
-              members.length
-            }{" "}
-            members online
+            {tNav("membersOnline", { count: members.length })}
           </p>
         </div>
 
@@ -188,7 +192,7 @@ export default function OrbitWorkspaceStatus() {
             text-violet-300
           "
         >
-          AI Workspace Active
+          {tAuth("aiWorkspaceActive")}
         </p>
       </div>
     </motion.div>

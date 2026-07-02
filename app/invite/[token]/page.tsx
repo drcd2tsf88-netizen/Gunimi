@@ -77,82 +77,7 @@ export default function InvitePage() {
     const [isAuthenticated, setIsAuthenticated] =
   useState(false);
 
-  async function loadInvite() {
-  try {
-    const {
-      data: { session },
-    } =
-      await supabase.auth.getSession();
-
-    setIsAuthenticated(
-      !!session
-    );
-
-    const response =
-      await fetch(
-        `/api/workspace/invite/${token}`
-      );
-
-    const result =
-      await response.json();
-
-    if (!response.ok) {
-      setError(
-        result.error ||
-          "Invalid invitation."
-      );
-
-      setLoading(false);
-
-      return;
-    }
-
-    const data =
-      result.invite;
-
-    if (
-      data.status !==
-      "pending"
-    ) {
-      setError(
-        "This invite is no longer active."
-      );
-
-      setLoading(false);
-
-      return;
-    }
-
-    const expired =
-      new Date(
-        data.expires_at
-      ) < new Date();
-
-    if (expired) {
-      setError(
-        "This invitation has expired."
-      );
-
-      setLoading(false);
-
-      return;
-    }
-
-    setInvite(data);
-
-    setLoading(false);
-  } catch (error) {
-    console.error(error);
-
-    setError(
-      "Failed to load invitation."
-    );
-
-    setLoading(false);
-  }
-}
-
-async function acceptInvite() {
+  async function acceptInvite() {
   if (!invite) {
     return;
   }
@@ -222,10 +147,48 @@ async function acceptInvite() {
 }
 
   useEffect(() => {
-  if (!token) return;
+    if (!token) return;
 
-  loadInvite();
-}, [token]);
+    async function loadInvite() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setIsAuthenticated(!!session);
+
+        const response = await fetch(`/api/workspace/invite/${token}`);
+        const result = await response.json();
+
+        if (!response.ok) {
+          setError(result.error || "Invalid invitation.");
+          setLoading(false);
+          return;
+        }
+
+        const data = result.invite;
+
+        if (data.status !== "pending") {
+          setError("This invite is no longer active.");
+          setLoading(false);
+          return;
+        }
+
+        const expired = new Date(data.expires_at) < new Date();
+        if (expired) {
+          setError("This invitation has expired.");
+          setLoading(false);
+          return;
+        }
+
+        setInvite(data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load invitation.");
+        setLoading(false);
+      }
+    }
+
+    void loadInvite();
+  }, [token]);
 
   // ERROR STATE
 

@@ -49,188 +49,105 @@ OrbitRuntimeProvider({
   } =
     useOrbitRuntimeStore();
 
-  async function
-  initializeRuntime() {
-    try {
-      console.log(
-        "ORBIT RUNTIME INIT"
-      );
-
-      setLoading(true);
-
-      // AUTH USER
-
-      const {
-        data: { user },
-      } =
-        await supabase.auth.getUser();
-
-      console.log(
-        "RUNTIME USER",
-        user
-      );
-
-      if (!user) {
-        setLoading(false);
-
-        setInitialized(
-          true
+  useEffect(() => {
+    async function initializeRuntime() {
+      try {
+        console.log(
+          "ORBIT RUNTIME INIT"
         );
 
-        return;
-      }
+        setLoading(true);
 
-      // PROFILE
+        const {
+          data: { user },
+        } =
+          await supabase.auth.getUser();
 
-      const {
-        data: profile,
+        console.log(
+          "RUNTIME USER",
+          user
+        );
 
-        error:
-          profileError,
-      } =
-        await supabase
-          .from("profiles")
-          .select("*")
-          .eq(
-            "id",
-            user.id
-          )
-          .single();
+        if (!user) {
+          setLoading(false);
+          setInitialized(true);
+          return;
+        }
 
-      console.log(
-        "RUNTIME PROFILE",
-        profile
-      );
+        const {
+          data: profile,
+          error: profileError,
+        } =
+          await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", user.id)
+            .single();
 
-      console.log(
-        "PROFILE ERROR",
-        profileError
-      );
+        console.log("RUNTIME PROFILE", profile);
+        console.log("PROFILE ERROR", profileError);
 
-      if (profile) {
-        setUser({
-          id: profile.id,
-
-          email:
-            profile.email,
-
-          full_name:
-            profile.full_name,
-
-          avatar_url:
-            profile.avatar_url,
-
-          platform_role:
-            profile.platform_role,
-        });
-      }
-
-      // MEMBERSHIP
-
-      const {
-        data: membership,
-
-        error:
-          membershipError,
-      } =
-        await supabase
-          .from(
-            "workspace_members"
-          )
-          .select(`
-            *,
-            workspaces (
-              id,
-              name,
-              slug
-            )
-          `)
-          .eq(
-            "user_id",
-            user.id
-          )
-          .maybeSingle();
-
-      console.log(
-        "RUNTIME MEMBERSHIP",
-        membership
-      );
-
-      console.log(
-        "MEMBERSHIP ERROR",
-        membershipError
-      );
-
-      if (membership) {
-        setMembership({
-          id: membership.id,
-
-          role:
-            membership.role,
-
-          workspace_id:
-            membership.workspace_id,
-        });
-
-        if (
-          membership.workspaces
-        ) {
-          setWorkspace({
-            id:
-              membership
-                .workspaces
-                .id,
-
-            name:
-              membership
-                .workspaces
-                .name,
-
-            slug:
-              membership
-                .workspaces
-                .slug,
+        if (profile) {
+          setUser({
+            id: profile.id,
+            email: profile.email,
+            full_name: profile.full_name,
+            avatar_url: profile.avatar_url,
+            platform_role: profile.platform_role,
           });
         }
-      }
 
-      // EMIT EVENT
+        const {
+          data: membership,
+          error: membershipError,
+        } =
+          await supabase
+            .from("workspace_members")
+            .select(`
+              *,
+              workspaces (
+                id,
+                name,
+                slug
+              )
+            `)
+            .eq("user_id", user.id)
+            .maybeSingle();
 
-      emitEvent(
-        "runtime.initialized",
-        {
-          user,
-          membership,
+        console.log("RUNTIME MEMBERSHIP", membership);
+        console.log("MEMBERSHIP ERROR", membershipError);
+
+        if (membership) {
+          setMembership({
+            id: membership.id,
+            role: membership.role,
+            workspace_id: membership.workspace_id,
+          });
+
+          if (membership.workspaces) {
+            setWorkspace({
+              id: membership.workspaces.id,
+              name: membership.workspaces.name,
+              slug: membership.workspaces.slug,
+            });
+          }
         }
-      );
 
-      setInitialized(
-        true
-      );
-
-      setLoading(false);
-
-      console.log(
-        "ORBIT RUNTIME READY"
-      );
-    } catch (error) {
-      console.error(
-        "RUNTIME INIT FAILED",
-        error
-      );
-
-      setLoading(false);
-
-      setInitialized(
-        true
-      );
+        emitEvent("runtime.initialized", { user, membership });
+        setInitialized(true);
+        setLoading(false);
+        console.log("ORBIT RUNTIME READY");
+      } catch (error) {
+        console.error("RUNTIME INIT FAILED", error);
+        setLoading(false);
+        setInitialized(true);
+      }
     }
-  }
 
-  useEffect(() => {
-    initializeRuntime();
+    void initializeRuntime();
 
     // AUTH LISTENER
+
 
     const {
       data: listener,
@@ -258,7 +175,7 @@ OrbitRuntimeProvider({
     return () => {
       listener.subscription.unsubscribe();
     };
-  }, []);
+  }, [setInitialized, setLoading, setMembership, setUser, setWorkspace]);
 
   return (
     <OrbitRuntimeContext.Provider

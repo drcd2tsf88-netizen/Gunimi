@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -55,7 +55,12 @@ export default function EditContactSheet({
   const [position, setPosition] = useState(contact.position ?? "");
   const [notes, setNotes] = useState(contact.notes ?? "");
 
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevContactId, setPrevContactId] = useState(contact.id);
+
+  if (open !== prevOpen || contact.id !== prevContactId) {
+    setPrevOpen(open);
+    setPrevContactId(contact.id);
     if (open) {
       setName(contact.name ?? "");
       setEmail(contact.email ?? "");
@@ -63,7 +68,7 @@ export default function EditContactSheet({
       setPosition(contact.position ?? "");
       setNotes(contact.notes ?? "");
     }
-  }, [open, contact]);
+  }
 
   function handleClose() {
     onOpenChange(false);

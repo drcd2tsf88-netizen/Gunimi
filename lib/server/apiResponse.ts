@@ -2,7 +2,7 @@ import { NextResponse }
 from "next/server";
 
 export function successResponse(
-  data?: any
+  data?: unknown
 ) {
 
   return NextResponse.json({

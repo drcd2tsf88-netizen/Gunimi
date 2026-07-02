@@ -94,7 +94,10 @@
     "completeWorkspaceFailed": "Vytvoření pracovního prostoru selhalo. Zkuste znovu.",
     "completeSessionTimedOut": "Relace vypršela. Přihlaste se znovu.",
     "logoutSuccess": "Relace ukončena. Na shledanou.",
-    "logoutFailed": "Odhlášení selhalo. Zkuste znovu."
+    "logoutFailed": "Odhlášení selhalo. Zkuste znovu.",
+    "workspaceSynchronized": "Pracovní prostor synchronizován",
+    "switchedToWorkspace": "Přepnuto na {name}",
+    "switchWorkspaceFailed": "Přepnutí pracovního prostoru selhalo"
   },
   "dashboard": {
     "quickActions": "Rychlé akce",
@@ -239,7 +242,12 @@
     "insightReview": "Zkontrolovat",
     "insightReachOut": "Oslovit",
     "insightView": "Zobrazit",
-    "insightFollowUp": "Navázat"
+    "insightFollowUp": "Navázat",
+    "allDay": "Celý den",
+    "stageLead": "Potenciální zákazník",
+    "stageQualified": "Kvalifikovaný",
+    "stageProposal": "Nabídka",
+    "stageNegotiation": "Jednání"
   },
   "crm": {
     "title": "Zákaznické vztahy",
@@ -1310,7 +1318,15 @@
     "groupSales": "Prodej",
     "groupWork": "Pracovní prostor",
     "groupCommunication": "Komunikace",
-    "groupIntelligence": "Inteligence"
+    "groupIntelligence": "Inteligence",
+    "profileSettings": "Nastavení profilu",
+    "workspaceSettings": "Nastavení pracovního prostoru",
+    "logout": "Odhlásit se",
+    "workspaces": "Pracovní prostory",
+    "createWorkspace": "Vytvořit pracovní prostor",
+    "teamWorkspace": "Týmový pracovní prostor",
+    "activeMembers": "{count} aktivních členů",
+    "membersOnline": "{count} členů online"
   },
   "aiPanel": {
     "orbitAi": "Orbit AI",

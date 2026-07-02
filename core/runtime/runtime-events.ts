@@ -1,6 +1,8 @@
+type OrbitEventPayload = Record<string, unknown> | string | number | boolean | null | undefined;
+
 type OrbitEventHandler =
   (
-    payload?: any
+    payload?: OrbitEventPayload
   ) => void;
 
 const listeners =
@@ -12,7 +14,7 @@ const listeners =
 export function emitEvent(
   event: string,
 
-  payload?: any
+  payload?: OrbitEventPayload
 ) {
   const handlers =
     listeners.get(event);

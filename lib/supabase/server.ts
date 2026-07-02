@@ -26,7 +26,7 @@ export async function createClient() {
         set(
           name: string,
           value: string,
-          options: any
+          options: Record<string, unknown>
         ) {
           try {
             cookieStore.set({
@@ -39,7 +39,7 @@ export async function createClient() {
 
         remove(
           name: string,
-          options: any
+          options: Record<string, unknown>
         ) {
           try {
             cookieStore.set({

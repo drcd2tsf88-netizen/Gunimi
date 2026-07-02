@@ -12,12 +12,6 @@ type Props = {
   pipeline: PipelineBreakdown;
 };
 
-const STAGE_LABELS: Record<string, string> = {
-  lead: "Lead",
-  qualified: "Qualified",
-  proposal: "Proposal",
-  negotiation: "Negotiation",
-};
 
 function formatCurrency(value: number): string {
   if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
@@ -27,6 +21,13 @@ function formatCurrency(value: number): string {
 
 export default function BusinessHealthWidget({ tasks, pipeline }: Props) {
   const t = useTranslations("dashboard");
+
+  const stageLabels: Record<string, string> = {
+    lead: t("stageLead"),
+    qualified: t("stageQualified"),
+    proposal: t("stageProposal"),
+    negotiation: t("stageNegotiation"),
+  };
 
   const totalTasks = tasks.length;
   const doneTasks = tasks.filter((t) => t.status === "done").length;
@@ -78,7 +79,7 @@ export default function BusinessHealthWidget({ tasks, pipeline }: Props) {
                   className="group flex items-center gap-3 rounded-lg px-1 py-0.5 transition-colors hover:bg-white/[0.03]"
                 >
                   <p className="w-24 shrink-0 text-xs text-white/50 group-hover:text-white/70 transition-colors">
-                    {STAGE_LABELS[stage.stage] ?? stage.stage}
+                    {stageLabels[stage.stage] ?? stage.stage}
                   </p>
                   <div className="flex-1 overflow-hidden rounded-full bg-white/[0.05]">
                     <div

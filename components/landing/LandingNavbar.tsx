@@ -8,7 +8,6 @@ import {
 } from "react";
 
 import {
-  ArrowRight,
   Menu,
   Orbit,
 } from "lucide-react";

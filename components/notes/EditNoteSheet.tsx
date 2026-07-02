@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -49,12 +49,17 @@ export default function EditNoteSheet({
   const [title, setTitle] = useState(note.title ?? "");
   const [content, setContent] = useState(note.content ?? "");
 
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevNoteId, setPrevNoteId] = useState(note.id);
+
+  if (open !== prevOpen || note.id !== prevNoteId) {
+    setPrevOpen(open);
+    setPrevNoteId(note.id);
     if (open) {
       setTitle(note.title ?? "");
       setContent(note.content ?? "");
     }
-  }, [open, note]);
+  }
 
   function handleClose() {
     onOpenChange(false);

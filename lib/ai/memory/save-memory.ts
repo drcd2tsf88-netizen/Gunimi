@@ -6,10 +6,6 @@ type SaveMemoryProps = {
   content: string;
 };
 
-export async function saveMemory({
-  workspaceId,
-  role,
-  content,
-}: SaveMemoryProps) {
+export async function saveMemory(_props: SaveMemoryProps) {
   return true;
 }

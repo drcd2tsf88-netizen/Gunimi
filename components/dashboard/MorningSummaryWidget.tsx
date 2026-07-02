@@ -75,9 +75,9 @@ export default function MorningSummaryWidget({
           <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
             {t("commandCenter")}
           </p>
-          <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">
+          <h2 className="mt-1.5 text-2xl font-semibold tracking-tight">
             {greeting}, {displayName}
-          </h1>
+          </h2>
           <p className="mt-1 text-xs text-white/35">{today}</p>
         </div>
 

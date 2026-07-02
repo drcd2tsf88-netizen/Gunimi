@@ -164,6 +164,7 @@ function SidebarFooter({
   profile: { full_name: string; avatar_url: string | null } | null;
   onLinkClick?: () => void;
 }) {
+  const tNav = useTranslations("nav");
   return (
     <div className="border-t border-white/5 p-4">
       <Link
@@ -188,7 +189,7 @@ function SidebarFooter({
             <p className="truncate text-sm font-medium text-white/80">
               {profile?.full_name ?? "Profile"}
             </p>
-            <p className="text-[10px] text-white/30">Profile Settings</p>
+            <p className="text-[10px] text-white/30">{tNav("profileSettings")}</p>
           </div>
         </div>
       </Link>
