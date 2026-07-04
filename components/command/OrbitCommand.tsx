@@ -229,10 +229,8 @@ export default function OrbitCommandPalette({
       setCurrentThought(t("thinkingCurrentThought"));
       try {
         await executeOrbitCommand({ action: command.action });
-      } catch (err) {
-        if (!(err instanceof Error && err.name === "AbortError")) {
-          console.error("[OrbitCommand] execution failed:", err);
-        }
+      } catch {
+        // execution errors are surfaced via toast in child components
       } finally {
         activeExecutionRef.current = null;
         setThinking(false);

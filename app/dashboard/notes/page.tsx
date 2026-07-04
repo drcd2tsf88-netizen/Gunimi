@@ -64,8 +64,7 @@ export default function NotesPage() {
     try {
       const data = await getWorkspaceNotes();
       setNotes(data);
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error(t("failedToLoad"));
     } finally {
       setLoading(false);
@@ -92,8 +91,7 @@ export default function NotesPage() {
       setTitle("");
       setContent("");
       await loadNotes();
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error(t("failedToCreate"));
     } finally {
       setCreating(false);
@@ -120,8 +118,7 @@ export default function NotesPage() {
       try {
         const data = await getWorkspaceNotes();
         setNotes(data);
-      } catch (err) {
-        console.error(err);
+      } catch {
         toast.error(t("failedToLoad"));
       } finally {
         setLoading(false);

@@ -117,9 +117,7 @@ export default function CreateOrganizationModal({
       setNotes("");
 
       onClose();
-    } catch (error) {
-      console.error(error);
-
+    } catch {
       toast.error(
         "Failed to create organization"
       );

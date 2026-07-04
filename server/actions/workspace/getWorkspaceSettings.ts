@@ -31,7 +31,6 @@ export async function getWorkspaceSettings(): Promise<WorkspaceSettings | null> 
       .single();
 
     if (error) {
-      console.error("getWorkspaceSettings error:", error);
       return null;
     }
 

@@ -288,8 +288,7 @@ export default function DashboardLayoutClient({
         if (!hasAccess) { window.location.href = "/waitlist"; return; }
 
         setLoading(false);
-      } catch (error) {
-        console.error(error);
+      } catch {
         setLoading(false);
       }
     }

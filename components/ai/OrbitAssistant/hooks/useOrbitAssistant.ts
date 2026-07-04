@@ -328,11 +328,7 @@ export function useOrbitAssistant() {
           setCurrentThought(
             t("thinkingComplete")
           );
-        } catch (error) {
-          console.error(
-            error
-          );
-
+        } catch {
           toast.error(
             t("processingError")
           );

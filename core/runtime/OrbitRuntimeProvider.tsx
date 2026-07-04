@@ -52,21 +52,12 @@ OrbitRuntimeProvider({
   useEffect(() => {
     async function initializeRuntime() {
       try {
-        console.log(
-          "ORBIT RUNTIME INIT"
-        );
-
         setLoading(true);
 
         const {
           data: { user },
         } =
           await supabase.auth.getUser();
-
-        console.log(
-          "RUNTIME USER",
-          user
-        );
 
         if (!user) {
           setLoading(false);
@@ -76,16 +67,12 @@ OrbitRuntimeProvider({
 
         const {
           data: profile,
-          error: profileError,
         } =
           await supabase
             .from("profiles")
             .select("*")
             .eq("id", user.id)
             .single();
-
-        console.log("RUNTIME PROFILE", profile);
-        console.log("PROFILE ERROR", profileError);
 
         if (profile) {
           setUser({
@@ -99,7 +86,6 @@ OrbitRuntimeProvider({
 
         const {
           data: membership,
-          error: membershipError,
         } =
           await supabase
             .from("workspace_members")
@@ -113,9 +99,6 @@ OrbitRuntimeProvider({
             `)
             .eq("user_id", user.id)
             .maybeSingle();
-
-        console.log("RUNTIME MEMBERSHIP", membership);
-        console.log("MEMBERSHIP ERROR", membershipError);
 
         if (membership) {
           setMembership({
@@ -136,18 +119,13 @@ OrbitRuntimeProvider({
         emitEvent("runtime.initialized", { user, membership });
         setInitialized(true);
         setLoading(false);
-        console.log("ORBIT RUNTIME READY");
-      } catch (error) {
-        console.error("RUNTIME INIT FAILED", error);
+      } catch {
         setLoading(false);
         setInitialized(true);
       }
     }
 
     void initializeRuntime();
-
-    // AUTH LISTENER
-
 
     const {
       data: listener,
@@ -157,11 +135,6 @@ OrbitRuntimeProvider({
           event,
           session
         ) => {
-          console.log(
-            "AUTH EVENT",
-            event
-          );
-
           emitEvent(
             "auth.changed",
             {

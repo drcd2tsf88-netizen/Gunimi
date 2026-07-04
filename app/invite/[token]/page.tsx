@@ -135,9 +135,7 @@ export default function InvitePage() {
     router.push(
       "/dashboard"
     );
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     toast.error(
       "Failed to accept invitation."
     );
@@ -180,8 +178,7 @@ export default function InvitePage() {
 
         setInvite(data);
         setLoading(false);
-      } catch (err) {
-        console.error(err);
+      } catch {
         setError("Failed to load invitation.");
         setLoading(false);
       }

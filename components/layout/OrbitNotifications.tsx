@@ -52,13 +52,7 @@ export default function OrbitNotifications() {
     )
     .limit(10);
 
-if (error) {
-  console.error(
-    error
-  );
-
-  return;
-}
+if (error) return;
 
 setActivity(data || []);
   }

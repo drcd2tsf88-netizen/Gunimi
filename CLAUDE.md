@@ -156,13 +156,57 @@ Never refactor the entire repository without approval.
 
 ---
 
+# Production Logger Policy — Rule #2
+
+**Production must never output developer logging to the browser console.**
+
+## Rules
+
+1. **`console.log`, `console.debug`, `console.info`** — forbidden in all files. No exceptions.
+2. **`console.error` in client components** — forbidden. Errors must be captured by Sentry (automatic) or surfaced via toast. Never via console.
+3. **`console.error` in server actions / API routes** — permitted only for unexpected infrastructure failures. Use `logger.error()` from `lib/logger.ts`.
+4. **`console.warn` in server code** — permitted only for optional config degradation. Use `logger.warn()`.
+5. **All catch blocks** — use `catch { }` (no variable) unless the error object is actually used. Never log caught errors in client code.
+6. **Sentry is the error transport** — not the console. Sentry captures all unhandled rejections and error boundaries automatically.
+
+## Logger
+
+Use `lib/logger.ts` in server-side code. Never import it in client components.
+
+---
+
+# Engineering Quality Gates — Rule #3
+
+A feature is **not complete** until ALL of the following pass:
+
+| Gate | Command / Check |
+|------|----------------|
+| TypeScript | `npm run type-check` — zero errors |
+| ESLint | `npm run lint` — zero errors, no new warnings |
+| Production Build | `npm run build` — compiles clean |
+| Localization Audit | Every visible string in all three locale files |
+| GDL Compliance | Uses OrbitOS components, no page-specific design patterns |
+| Runtime Audit | Browser DevTools console clean, no avoidable errors |
+
+## Runtime Audit Checklist
+
+Before marking any feature complete, open the browser with DevTools and verify:
+
+- [ ] Console: no `console.log`, no `console.error`, no unhandled rejections
+- [ ] Network: no unexpected 404, 500, 401, 403
+- [ ] React: no hydration errors, no failed suspense boundaries
+- [ ] Supabase: no PGRST116 errors (use `maybeSingle()` where 0 rows is valid)
+- [ ] Assets: all referenced icons, fonts, images return 200
+
+---
+
 # Mission
 
 Build a production-ready AI Workspace Operating System.
 
 Every implementation must be scalable, maintainable and enterprise-ready.
- 
-  ---
+
+---
 
 1. npm run lint
 2. npm run type-check

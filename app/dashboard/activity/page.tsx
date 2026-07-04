@@ -46,8 +46,8 @@ export default function ActivityPage() {
 
         setActivity(data);
         setTotalCount(count);
-      } catch (error) {
-        console.error(error);
+      } catch {
+        // silent — activity feed degrades gracefully
       } finally {
         setLoading(false);
       }

@@ -34,20 +34,14 @@ const {
           }
         )
         .limit(1)
-        .single();
+        .maybeSingle();
 
     if (error) {
-      console.error(
-        error
-      );
-
       return null;
     }
 
     return data;
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     return null;
   }
 }

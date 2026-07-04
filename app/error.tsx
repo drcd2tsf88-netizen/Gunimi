@@ -16,9 +16,7 @@ export default function GlobalError({
   const t = useTranslations("public.error");
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") {
-      console.error("[Gunimi Error]", error.digest ?? error.message);
-    }
+    // Sentry captures this automatically via instrumentation-client.ts
   }, [error]);
 
   return (

@@ -21,10 +21,7 @@ export default function OrbitAIStatus() {
         .limit(1)
         .maybeSingle();
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+      if (error) return;
 
       setAIState(data);
     }

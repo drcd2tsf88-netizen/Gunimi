@@ -73,6 +73,10 @@ const nextConfig: NextConfig = {
                 https://*.sentry.io
                 ${process.env.NODE_ENV === "development" ? "ws://localhost:3000 ws://127.0.0.1:3000" : ""};
 
+              worker-src
+                blob:
+                'self';
+
               frame-ancestors 'none';
 
               base-uri 'self';
