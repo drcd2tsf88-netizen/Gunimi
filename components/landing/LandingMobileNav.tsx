@@ -158,7 +158,7 @@ export default function LandingMobileNav({
                       font-semibold
                     "
                   >
-                    OrbitDesk
+                    Gunimi
                   </h2>
 
                   <p

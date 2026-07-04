@@ -122,7 +122,7 @@ export default function LandingNavbar() {
                   font-semibold
                 "
               >
-                OrbitDesk
+                Gunimi
               </h2>
 
               <p

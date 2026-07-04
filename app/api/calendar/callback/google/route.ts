@@ -3,6 +3,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getProvider } from "@/lib/calendar/providers";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { syncCalendarConnection } from "@/lib/calendar/sync";
+import { verifyOAuthState } from "@/lib/server/oauth/state";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL!;
 
@@ -27,16 +28,11 @@ export async function GET(req: Request) {
     return redirect("/dashboard/calendar?error=invalid_state");
   }
 
-  let stateWorkspaceId: string;
-  let stateUserId: string;
-  try {
-    const parsed = JSON.parse(Buffer.from(stateParam, "base64url").toString());
-    stateWorkspaceId = parsed.workspaceId;
-    stateUserId = parsed.userId;
-    if (!stateWorkspaceId || !stateUserId) throw new Error("Incomplete state");
-  } catch {
+  const verified = verifyOAuthState(stateParam);
+  if (!verified) {
     return redirect("/dashboard/calendar?error=invalid_state");
   }
+  const { workspaceId: stateWorkspaceId, userId: stateUserId } = verified;
 
   try {
     const user = await getUser();

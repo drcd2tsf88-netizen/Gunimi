@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Privacy Policy — OrbitDesk",
+  title: "Privacy Policy",
 };
 
 export default function PrivacyPage() {
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
               hover:text-white
             "
           >
-            ← OrbitDesk
+            ← Gunimi
           </Link>
 
           <div
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
         >
           <section>
             <p className="leading-relaxed">
-              OrbitDesk (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;) operates an
+              Gunimi (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;) operates an
               AI-first workspace operating system for business teams. This Privacy
               Policy explains what data we collect, how we use it, and your rights
               as a user. By creating an account you agree to the practices described
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
             </p>
 
             <p className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-300">
-              OrbitDesk is currently in private alpha. Features, data practices, and
+              Gunimi is currently in private alpha. Features, data practices, and
               this policy may evolve. We will notify registered users of material
               changes by email.
             </p>
@@ -120,7 +120,7 @@ export default function PrivacyPage() {
               <div>
                 <p className="font-medium text-white">Workspace Data</p>
                 <p className="mt-1 text-zinc-400">
-                  All content you create inside OrbitDesk — companies, contacts,
+                  All content you create inside Gunimi — companies, contacts,
                   deals, notes, tasks, and activity records — is stored in your
                   workspace and associated with your account.
                 </p>
@@ -167,7 +167,7 @@ export default function PrivacyPage() {
             >
               <li className="flex gap-2">
                 <span className="mt-0.5 text-violet-400">→</span>
-                To provide and operate the OrbitDesk platform
+                To provide and operate the Gunimi platform
               </li>
               <li className="flex gap-2">
                 <span className="mt-0.5 text-violet-400">→</span>
@@ -224,7 +224,7 @@ export default function PrivacyPage() {
               <span className="font-medium text-white">Alpha note:</span> During the
               private alpha period, workspace data may be reset, migrated, or
               deleted without advance notice as we iterate on the product. We
-              recommend not storing business-critical information in OrbitDesk
+              recommend not storing business-critical information in Gunimi
               during this phase.
             </p>
           </section>
@@ -329,10 +329,10 @@ export default function PrivacyPage() {
             <p className="mt-4 text-sm text-zinc-400">
               To exercise any of these rights, email{" "}
               <a
-                href="mailto:support@orbitdesk.online"
+                href="mailto:support@gunimi.com"
                 className="text-violet-400 underline"
               >
-                support@orbitdesk.online
+                support@gunimi.com
               </a>
               . We will respond within 30 days.
             </p>
@@ -371,7 +371,7 @@ export default function PrivacyPage() {
             </h2>
 
             <p className="text-sm leading-relaxed text-zinc-400">
-              OrbitDesk uses session cookies provided by Supabase Auth to keep you
+              Gunimi uses session cookies provided by Supabase Auth to keep you
               logged in. These are strictly necessary for the service to function and
               do not track you across third-party websites. We do not use advertising
               cookies or third-party tracking scripts.
@@ -393,10 +393,10 @@ export default function PrivacyPage() {
             <p className="text-sm leading-relaxed text-zinc-400">
               For privacy questions, data requests, or concerns, contact us at{" "}
               <a
-                href="mailto:support@orbitdesk.online"
+                href="mailto:support@gunimi.com"
                 className="text-violet-400 underline"
               >
-                support@orbitdesk.online
+                support@gunimi.com
               </a>
               .
             </p>
@@ -429,7 +429,7 @@ export default function PrivacyPage() {
               </Link>
 
               <a
-                href="mailto:support@orbitdesk.online"
+                href="mailto:support@gunimi.com"
                 className="transition hover:text-zinc-300"
               >
                 Support
@@ -437,7 +437,7 @@ export default function PrivacyPage() {
             </div>
 
             <p className="mt-4 text-zinc-700">
-              © 2026 OrbitDesk. All rights reserved.
+              © 2026 Gunimi. All rights reserved.
             </p>
           </div>
         </div>

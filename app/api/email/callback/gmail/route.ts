@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/lib/server/auth";
 import { getProvider } from "@/lib/email/providers";
 import { syncEmailConnection } from "@/lib/email/sync";
+import { verifyOAuthState } from "@/lib/server/oauth/state";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -22,18 +23,13 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  let workspaceId: string;
-  let userId: string;
-  try {
-    const parsed = JSON.parse(Buffer.from(state, "base64url").toString());
-    workspaceId = parsed.workspaceId;
-    userId = parsed.userId;
-    if (!workspaceId || !userId) throw new Error("Invalid state");
-  } catch {
+  const verified = verifyOAuthState(state);
+  if (!verified) {
     return NextResponse.redirect(
       new URL("/dashboard/email?error=invalid_state", request.url)
     );
   }
+  const { workspaceId, userId } = verified;
 
   // Verify the authenticated session matches the OAuth state
   const sessionUser = await getUser();

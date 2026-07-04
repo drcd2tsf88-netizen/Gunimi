@@ -22,7 +22,10 @@
       "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
       "Bash(find \"c:\\\\Users\\\\guoth\\\\OrbitDesk\" -type f -name \"*.sql\" 2>/dev/null | head -20)",
       "Read(//c/Users/guoth/OrbitDesk/**)",
-      "Bash(xargs -I {} sh -c 'echo \"=== {} ===\" && wc -l \"{}\"')"
+      "Bash(xargs -I {} sh -c 'echo \"=== {} ===\" && wc -l \"{}\"')",
+      "Bash(grep -E \"\\\\.\\(sql|ts|js\\)$\")",
+      "Bash(xargs -0 grep -l \"use server\")",
+      "Bash(grep -E \"\\\\.md$|\\\\.json$\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\guoth\\OrbitDesk\\OrbitDesk\\app\\dashboard\\crm\\[id]"

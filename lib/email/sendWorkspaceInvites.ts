@@ -1,10 +1,7 @@
-import { Resend }
-from "resend";
+import { Resend } from "resend";
+import { APP_CONFIG } from "@/lib/config/app";
 
-const resend =
-  new Resend(
-    process.env.RESEND_API_KEY
-  );
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 type Props = {
   email: string;
@@ -27,8 +24,7 @@ export async function sendWorkspaceInvite({
 
   const result =
     await resend.emails.send({
-      from:
-        "Orbit <noreply@orbitdesk.online>",
+      from: APP_CONFIG.email.from,
 
       to: email,
 
@@ -45,7 +41,7 @@ export async function sendWorkspaceInvite({
           "
         >
           <h1>
-            Orbit Workspace Invite
+            Gunimi Workspace Invite
           </h1>
 
           <p>

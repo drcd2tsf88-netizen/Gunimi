@@ -126,7 +126,7 @@ export default function LandingFooter() {
                   font-semibold
                 "
               >
-                OrbitDesk
+                Gunimi
               </h3>
 
               <p
@@ -297,7 +297,7 @@ export default function LandingFooter() {
         "
       >
         <p>
-          © 2026 OrbitDesk AI OS.
+          © 2026 Gunimi.
           All rights reserved.
         </p>
 

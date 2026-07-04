@@ -221,7 +221,7 @@ export default function LandingWorkspacePreview() {
               text-white/60
             "
           >
-            OrbitDesk transforms
+            Gunimi transforms
             traditional dashboards
             into intelligent realtime
             operational environments
@@ -391,7 +391,7 @@ export default function LandingWorkspacePreview() {
                       font-medium
                     "
                   >
-                    OrbitDesk OS
+                    Gunimi OS
                   </p>
 
                   <p

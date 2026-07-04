@@ -1,34 +1,61 @@
 import "./globals.css";
 
-import { Inter }
-from "next/font/google";
-
-import { Toaster }
-from "react-hot-toast";
-
-import { NextIntlClientProvider }
-from "next-intl";
-
-import messages
-from "@/locales/en.json";
-
-import {
-  OrbitRuntimeProvider,
-} from "@/core/runtime/OrbitRuntimeProvider";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import { NextIntlClientProvider } from "next-intl";
+import messages from "@/locales/en.json";
+import { OrbitRuntimeProvider } from "@/core/runtime/OrbitRuntimeProvider";
+import { APP_CONFIG } from "@/lib/config/app";
 
 const inter = Inter({
   subsets: ["latin"],
-
   display: "swap",
-
   preload: false,
 });
 
-export const metadata = {
-  title: "OrbitDesk",
-
-  description:
-    "AI Business Operating System",
+export const metadata: Metadata = {
+  metadataBase: new URL(APP_CONFIG.url),
+  title: {
+    default: APP_CONFIG.name,
+    template: `%s — ${APP_CONFIG.name}`,
+  },
+  description: APP_CONFIG.description,
+  openGraph: {
+    type: "website",
+    siteName: APP_CONFIG.name,
+    title: APP_CONFIG.name,
+    description: APP_CONFIG.description,
+    url: APP_CONFIG.url,
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: APP_CONFIG.social.twitter,
+    title: APP_CONFIG.name,
+    description: APP_CONFIG.description,
+    images: ["/og-image.png"],
+  },
+  applicationName: APP_CONFIG.name,
+  referrer: "origin-when-cross-origin",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

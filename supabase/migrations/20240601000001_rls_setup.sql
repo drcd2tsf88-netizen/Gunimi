@@ -438,17 +438,19 @@ CREATE POLICY "memory_select_member"
 
 
 -- ────────────────────────────────────────────────────────────
--- STEP 16 — Make guoth123@gmail.com a platform admin
+-- STEP 16 — Platform admin bootstrap
 -- ────────────────────────────────────────────────────────────
-
-UPDATE profiles
-SET platform_role = 'admin'
-WHERE email = 'guoth123@gmail.com';
+-- Intentionally empty. Hardcoded admin emails must not live in
+-- version-controlled SQL. Run supabase/seed.sql.example manually
+-- in the Supabase SQL Editor after first deployment.
+-- ────────────────────────────────────────────────────────────
 
 
 -- ============================================================
 -- DONE
--- 1. guoth123@gmail.com → log in → go to /orbit-control
+-- 1. Run supabase/seed.sql.example in Supabase SQL Editor
+--    (after replacing the placeholder email with your own)
+--    to grant the first platform admin.
 -- 2. New registrations → /waitlist
 -- 3. Admin clicks "Approve Beta" → user gets /dashboard access
 -- ============================================================

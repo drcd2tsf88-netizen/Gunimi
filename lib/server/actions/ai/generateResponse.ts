@@ -30,7 +30,7 @@ export async function generateResponse({
               role: "system",
 
               content: `
-You are ${agent}, part of OrbitDesk AI Operating System.
+You are ${agent}, part of Gunimi AI Workspace OS.
 
 ${orbitContext}
 

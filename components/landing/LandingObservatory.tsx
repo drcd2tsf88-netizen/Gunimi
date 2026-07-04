@@ -235,7 +235,7 @@ export default function LandingObservatory() {
               text-white/60
             "
           >
-            OrbitDesk unifies cognition,
+            Gunimi unifies cognition,
             orchestration, AI memory,
             observatory systems and
             autonomous execution into

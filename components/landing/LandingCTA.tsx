@@ -238,7 +238,7 @@ export default function LandingCTA() {
                 text-white/60
               "
             >
-              OrbitDesk transforms
+              Gunimi transforms
               your workspace into a
               living AI operating
               system powered by
@@ -360,7 +360,7 @@ export default function LandingCTA() {
                   hover:bg-violet-400
                 "
               >
-                Launch OrbitDesk
+                Launch Gunimi
 
                 <ArrowRight
                   size={16}

@@ -1,15 +1,15 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { DB_CONFIG } from "@/lib/db/config";
 
 let _instance: SupabaseClient | null = null;
 
 function getInstance(): SupabaseClient {
   if (!_instance) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) {
+    const { supabaseUrl, supabaseServiceRoleKey } = DB_CONFIG;
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
       throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
     }
-    _instance = createClient(url, key);
+    _instance = createClient(supabaseUrl, supabaseServiceRoleKey);
   }
   return _instance;
 }

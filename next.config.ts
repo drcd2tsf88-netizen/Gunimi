@@ -71,8 +71,7 @@ const nextConfig: NextConfig = {
                 ${supabaseWss}
                 https://*.upstash.io
                 https://*.sentry.io
-                ws://localhost:3000
-                ws://127.0.0.1:3000;
+                ${process.env.NODE_ENV === "development" ? "ws://localhost:3000 ws://127.0.0.1:3000" : ""};
 
               frame-ancestors 'none';
 

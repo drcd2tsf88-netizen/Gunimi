@@ -135,7 +135,7 @@ function SidebarHeader({ onClose }: { onClose?: () => void }) {
         </div>
 
         <div>
-          <h1 className="text-sm font-semibold text-white">OrbitDesk</h1>
+          <h1 className="text-sm font-semibold text-white">Gunimi</h1>
           <p className="mt-0.5 text-[10px] text-zinc-500">AI Workspace OS</p>
         </div>
       </div>

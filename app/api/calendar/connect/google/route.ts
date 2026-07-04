@@ -2,6 +2,7 @@ import { getUser } from "@/lib/server/auth";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getProvider } from "@/lib/calendar/providers";
 import { errorResponse } from "@/lib/server/apiResponse";
+import { createOAuthState } from "@/lib/server/oauth/state";
 
 export async function GET() {
   try {
@@ -12,9 +13,7 @@ export async function GET() {
     if (!workspace) return errorResponse("Workspace not found", 404);
 
     const provider = getProvider("google");
-    const state = Buffer.from(
-      JSON.stringify({ workspaceId: workspace.id, userId: user.id })
-    ).toString("base64url");
+    const state = createOAuthState(workspace.id, user.id);
 
     const authUrl = provider.getAuthUrl(state);
 

@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Supabase — local secrets (never commit actual admin emails)
+supabase/seed.sql
+.supabase/

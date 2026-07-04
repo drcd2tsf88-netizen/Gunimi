@@ -263,7 +263,7 @@ export default function LandingFeatures() {
               text-white/60
             "
           >
-            OrbitDesk combines
+            Gunimi combines
             realtime cognition,
             autonomous orchestration,
             AI memory and intelligent

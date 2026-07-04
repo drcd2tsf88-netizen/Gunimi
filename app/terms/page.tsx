@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Terms of Service — OrbitDesk",
+  title: "Terms of Service",
 };
 
 export default function TermsPage() {
@@ -37,7 +37,7 @@ export default function TermsPage() {
               hover:text-white
             "
           >
-            ← OrbitDesk
+            ← Gunimi
           </Link>
 
           <div
@@ -83,13 +83,13 @@ export default function TermsPage() {
           <section>
             <p className="leading-relaxed">
               These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of
-              OrbitDesk, an AI-first workspace operating system (&ldquo;Service&rdquo;) operated
-              by OrbitDesk (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;). By creating an account, you
+              Gunimi, an AI-first workspace operating system (&ldquo;Service&rdquo;) operated
+              by Gunimi (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;). By creating an account, you
               agree to these Terms.
             </p>
 
             <p className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-300">
-              OrbitDesk is in private alpha. You have been granted early access to
+              Gunimi is in private alpha. You have been granted early access to
               test the platform. The Service is provided as-is. Features may change,
               and data may be reset without notice during this period.
             </p>
@@ -118,10 +118,10 @@ export default function TermsPage() {
                 You are responsible for maintaining the security of your account
                 credentials. Do not share your password. Notify us immediately at{" "}
                 <a
-                  href="mailto:support@orbitdesk.online"
+                  href="mailto:support@gunimi.com"
                   className="text-violet-400 underline"
                 >
-                  support@orbitdesk.online
+                  support@gunimi.com
                 </a>{" "}
                 if you suspect unauthorized access.
               </p>
@@ -146,7 +146,7 @@ export default function TermsPage() {
             </h2>
 
             <p className="mb-3 text-sm text-zinc-400">
-              You agree to use OrbitDesk only for lawful business purposes. You
+              You agree to use Gunimi only for lawful business purposes. You
               must not:
             </p>
 
@@ -204,13 +204,13 @@ export default function TermsPage() {
             <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
               <p>
                 You retain ownership of all content and data you create in
-                OrbitDesk (companies, contacts, deals, notes, tasks, and other
+                Gunimi (companies, contacts, deals, notes, tasks, and other
                 workspace data). We do not claim intellectual property rights over
                 your content.
               </p>
 
               <p>
-                You grant OrbitDesk a limited license to store, process, and display
+                You grant Gunimi a limited license to store, process, and display
                 your content solely as necessary to provide the Service to you.
               </p>
 
@@ -237,7 +237,7 @@ export default function TermsPage() {
 
             <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
               <p>
-                OrbitDesk includes AI features powered by OpenAI&rsquo;s API. When you
+                Gunimi includes AI features powered by OpenAI&rsquo;s API. When you
                 use these features, relevant content from your workspace may be sent
                 to OpenAI for processing.
               </p>
@@ -376,10 +376,10 @@ export default function TermsPage() {
               Either party may terminate your access to the Service at any time.
               You may close your account by contacting us at{" "}
               <a
-                href="mailto:support@orbitdesk.online"
+                href="mailto:support@gunimi.com"
                 className="text-violet-400 underline"
               >
-                support@orbitdesk.online
+                support@gunimi.com
               </a>
               . We may terminate or suspend your account if you violate these Terms.
               Upon termination, your right to access the Service ceases immediately.
@@ -421,10 +421,10 @@ export default function TermsPage() {
             <p className="text-sm leading-relaxed text-zinc-400">
               For questions about these Terms, contact us at{" "}
               <a
-                href="mailto:support@orbitdesk.online"
+                href="mailto:support@gunimi.com"
                 className="text-violet-400 underline"
               >
-                support@orbitdesk.online
+                support@gunimi.com
               </a>
               .
             </p>
@@ -457,7 +457,7 @@ export default function TermsPage() {
               </Link>
 
               <a
-                href="mailto:support@orbitdesk.online"
+                href="mailto:support@gunimi.com"
                 className="transition hover:text-zinc-300"
               >
                 Support
@@ -465,7 +465,7 @@ export default function TermsPage() {
             </div>
 
             <p className="mt-4 text-zinc-700">
-              © 2026 OrbitDesk. All rights reserved.
+              © 2026 Gunimi. All rights reserved.
             </p>
           </div>
         </div>

@@ -28,5 +28,5 @@ export const ratelimit =
     analytics: false,
 
     prefix:
-      "orbitdesk",
+      "gunimi",
   });

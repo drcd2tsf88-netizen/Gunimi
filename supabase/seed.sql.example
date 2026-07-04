@@ -1,0 +1,26 @@
+-- ============================================================
+-- Platform Admin Bootstrap — seed.sql.example
+--
+-- HOW TO USE:
+--   1. Copy this file to supabase/seed.sql
+--   2. Replace YOUR_ADMIN_EMAIL with the actual admin email
+--   3. Run in Supabase Dashboard → SQL Editor → New Query → Run
+--      (or: supabase db execute --file supabase/seed.sql)
+--
+-- IMPORTANT:
+--   - supabase/seed.sql is .gitignored — never commit admin emails
+--   - Run this ONCE after the user has registered their account
+--   - Only grant 'admin' to users you fully trust
+-- ============================================================
+
+-- Grant platform admin role to the first operator account.
+-- The user must have registered and confirmed their email before running this.
+
+UPDATE profiles
+SET platform_role = 'admin'
+WHERE email = 'YOUR_ADMIN_EMAIL';
+
+-- Verify the update
+SELECT id, email, platform_role
+FROM profiles
+WHERE email = 'YOUR_ADMIN_EMAIL';
