@@ -1,475 +1,173 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import PublicLayout from "@/components/public/PublicLayout";
 
-export const metadata = {
-  title: "Terms of Service",
+export const metadata: Metadata = {
+  title: "Terms of Service — Gunimi",
+  description: "Terms governing your use of the Gunimi platform.",
+  openGraph: {
+    title: "Terms of Service — Gunimi",
+    description: "Terms governing your use of the Gunimi platform.",
+    type: "website",
+    url: "https://gunimi.com/terms",
+  },
 };
 
-export default function TermsPage() {
+const LAST_UPDATED = "June 17, 2026";
+
+export default async function TermsPage() {
+  const t = await getTranslations("public.terms");
+
   return (
-    <main
-      className="
-        min-h-screen
-        bg-[#060816]
-        text-white
-      "
-    >
-      <div
-        className="
-          mx-auto
-          max-w-3xl
-          px-6
-          py-16
-        "
-      >
+    <PublicLayout>
+      <div className="relative overflow-hidden">
+
+        {/* AMBIENT */}
+        <div className="pointer-events-none absolute inset-0">
+          <div
+            className="absolute left-1/2 top-0 h-[360px] w-[560px] -translate-x-1/2"
+            style={{ background: "radial-gradient(ellipse, rgba(109,91,255,0.05), transparent 65%)", filter: "blur(80px)" }}
+          />
+        </div>
+
         {/* HEADER */}
-
-        <div className="mb-12">
-          <Link
-            href="/"
-            className="
-              mb-8
-              inline-flex
-              items-center
-              gap-2
-              text-sm
-              text-zinc-500
-              transition
-              hover:text-white
-            "
-          >
-            ← Gunimi
-          </Link>
-
-          <div
-            className="
-              mt-6
-              inline-flex
-              rounded-full
-              border
-              border-zinc-800
-              bg-zinc-900
-              px-4
-              py-1.5
-              text-xs
-              text-zinc-500
-            "
-          >
-            Private Alpha — June 2026
+        <section className="relative mx-auto max-w-3xl px-6 pb-12 pt-24 md:pt-32">
+          <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.03] px-3 py-1">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9AA3B2]/60">{t("badge")}</span>
           </div>
-
-          <h1
-            className="
-              mt-4
-              text-4xl
-              font-bold
-            "
-          >
-            Terms of Service
+          <h1 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC]">
+            {t("headline")}
           </h1>
+          <p className="mt-3 text-[14px] text-[#9AA3B2]/50">{t("lastUpdated")} {LAST_UPDATED}</p>
+        </section>
 
-          <p className="mt-3 text-zinc-500">
-            Last updated: June 17, 2026
-          </p>
-        </div>
+        {/* BODY */}
+        <section className="relative mx-auto max-w-3xl px-6 pb-32">
+          <div className="space-y-10 text-[15px] leading-[1.8] text-[#9AA3B2]">
 
-        {/* CONTENT */}
-
-        <div
-          className="
-            space-y-10
-            text-zinc-300
-          "
-        >
-          <section>
-            <p className="leading-relaxed">
-              These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of
-              Gunimi, an AI-first workspace operating system (&ldquo;Service&rdquo;) operated
-              by Gunimi (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;). By creating an account, you
-              agree to these Terms.
-            </p>
-
-            <p className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-300">
-              Gunimi is in private alpha. You have been granted early access to
-              test the platform. The Service is provided as-is. Features may change,
-              and data may be reset without notice during this period.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              1. Eligibility & Account
-            </h2>
-
-            <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
+            <div>
               <p>
-                You must be at least 18 years old and have the legal capacity to
-                enter into these Terms. By registering, you represent that all
-                information you provide is accurate and complete.
+                These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of Gunimi,
+                an AI-first workspace operating system (&ldquo;Service&rdquo;) operated by Gunimi
+                (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;). By creating an account, you agree to these Terms.
               </p>
-
-              <p>
-                You are responsible for maintaining the security of your account
-                credentials. Do not share your password. Notify us immediately at{" "}
-                <a
-                  href="mailto:support@gunimi.com"
-                  className="text-violet-400 underline"
-                >
-                  support@gunimi.com
-                </a>{" "}
-                if you suspect unauthorized access.
-              </p>
-
-              <p>
-                One account per person. Sharing accounts between multiple users is
-                not permitted.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              2. Acceptable Use
-            </h2>
-
-            <p className="mb-3 text-sm text-zinc-400">
-              You agree to use Gunimi only for lawful business purposes. You
-              must not:
-            </p>
-
-            <ul
-              className="
-                space-y-2
-                text-sm
-                leading-relaxed
-                text-zinc-400
-              "
-            >
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-red-400">✕</span>
-                Use the Service to store or transmit illegal, harmful, or
-                fraudulent content
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-red-400">✕</span>
-                Attempt to circumvent authentication, rate limits, or security
-                controls
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-red-400">✕</span>
-                Use automated scripts to scrape, overload, or abuse the Service
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-red-400">✕</span>
-                Reverse engineer, decompile, or attempt to extract the source
-                code of the Service
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-red-400">✕</span>
-                Resell, sublicense, or otherwise commercialize access to the
-                Service without written permission
-              </li>
-            </ul>
-
-            <p className="mt-4 text-sm text-zinc-400">
-              Violation of these terms may result in immediate account termination.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              3. Your Data
-            </h2>
-
-            <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
-              <p>
-                You retain ownership of all content and data you create in
-                Gunimi (companies, contacts, deals, notes, tasks, and other
-                workspace data). We do not claim intellectual property rights over
-                your content.
-              </p>
-
-              <p>
-                You grant Gunimi a limited license to store, process, and display
-                your content solely as necessary to provide the Service to you.
-              </p>
-
-              <p>
-                During the private alpha, workspace data may be reset, migrated, or
-                permanently deleted as part of development. We will make reasonable
-                efforts to notify registered users in advance of any planned data
-                resets.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              4. AI Features
-            </h2>
-
-            <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
-              <p>
-                Gunimi includes AI features powered by OpenAI&rsquo;s API. When you
-                use these features, relevant content from your workspace may be sent
-                to OpenAI for processing.
-              </p>
-
-              <p>
-                You are responsible for ensuring that any content you submit through
-                AI features does not violate applicable laws or third-party rights.
-                Do not submit confidential information belonging to others without
-                appropriate authorization.
-              </p>
-
-              <p>
-                AI-generated outputs are provided for informational purposes only.
-                We do not guarantee the accuracy, completeness, or suitability of
-                AI-generated content for any purpose.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              5. Alpha Program
-            </h2>
-
-            <div className="space-y-3 text-sm leading-relaxed text-zinc-400">
-              <p>
-                As a private alpha participant, you acknowledge that:
-              </p>
-
-              <ul className="space-y-2">
-                <li className="flex gap-2">
-                  <span className="mt-0.5 text-violet-400">→</span>
-                  The Service is unfinished and may contain bugs, incomplete features,
-                  and unstable behavior
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-0.5 text-violet-400">→</span>
-                  Features shown as &ldquo;Coming Soon&rdquo; are in development and not yet
-                  available
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-0.5 text-violet-400">→</span>
-                  Your feedback is valuable and may be used to improve the product
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-0.5 text-violet-400">→</span>
-                  Alpha access may be revoked at any time at our discretion
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              6. Service Availability
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              We strive for high availability but make no guarantees regarding
-              uptime during the alpha period. The Service may be taken offline for
-              maintenance, updates, or debugging at any time. We will make
-              reasonable efforts to communicate planned downtime via email.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              7. Disclaimer of Warranties
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              THE SERVICE IS PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE&rdquo; WITHOUT
-              WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT
-              LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-              PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE
-              SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF HARMFUL
-              COMPONENTS.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              8. Limitation of Liability
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              TO THE FULLEST EXTENT PERMITTED BY LAW, GUNIMI SHALL NOT BE LIABLE
-              FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE
-              DAMAGES, INCLUDING LOSS OF DATA, LOSS OF PROFITS, OR BUSINESS
-              INTERRUPTION, ARISING FROM YOUR USE OF OR INABILITY TO USE THE SERVICE,
-              EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              9. Termination
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              Either party may terminate your access to the Service at any time.
-              You may close your account by contacting us at{" "}
-              <a
-                href="mailto:support@gunimi.com"
-                className="text-violet-400 underline"
-              >
-                support@gunimi.com
-              </a>
-              . We may terminate or suspend your account if you violate these Terms.
-              Upon termination, your right to access the Service ceases immediately.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              10. Changes to Terms
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              We may update these Terms from time to time. We will notify registered
-              users of material changes by email at least 7 days before they take
-              effect. Continued use of the Service after changes constitute
-              acceptance of the new Terms.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              11. Contact
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              For questions about these Terms, contact us at{" "}
-              <a
-                href="mailto:support@gunimi.com"
-                className="text-violet-400 underline"
-              >
-                support@gunimi.com
-              </a>
-              .
-            </p>
-          </section>
-
-          {/* FOOTER NAV */}
-
-          <div
-            className="
-              border-t
-              border-zinc-800
-              pt-8
-              text-sm
-              text-zinc-600
-            "
-          >
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/privacy"
-                className="transition hover:text-zinc-300"
-              >
-                Privacy Policy
-              </Link>
-
-              <Link
-                href="/register"
-                className="transition hover:text-zinc-300"
-              >
-                Create Account
-              </Link>
-
-              <a
-                href="mailto:support@gunimi.com"
-                className="transition hover:text-zinc-300"
-              >
-                Support
-              </a>
+              <div className="mt-4 rounded-[14px] border border-amber-500/[0.16] bg-amber-500/[0.05] p-4 text-[14px] text-amber-400/80">
+                Gunimi is in private alpha. You have been granted early access to test the platform.
+                The Service is provided as-is. Features may change, and data may be reset without
+                notice during this period.
+              </div>
             </div>
 
-            <p className="mt-4 text-zinc-700">
-              © 2026 Gunimi. All rights reserved.
-            </p>
+            {[
+              {
+                title: "1. Eligibility & Account",
+                content: (
+                  <div className="space-y-3 text-[14px]">
+                    <p>You must be at least 18 years old and have the legal capacity to enter into these Terms. By registering, you represent that all information you provide is accurate and complete.</p>
+                    <p>You are responsible for maintaining the security of your account credentials. Do not share your password. Notify us immediately at <a href="mailto:support@gunimi.com" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">support@gunimi.com</a> if you suspect unauthorized access.</p>
+                    <p>One account per person. Sharing accounts between multiple users is not permitted.</p>
+                  </div>
+                ),
+              },
+              {
+                title: "2. Acceptable Use",
+                content: (
+                  <div className="text-[14px]">
+                    <p className="mb-3">You agree to use Gunimi only for lawful business purposes. You must not:</p>
+                    <ul className="space-y-2">
+                      {[
+                        "Use the Service to store or transmit illegal, harmful, or fraudulent content",
+                        "Attempt to circumvent authentication, rate limits, or security controls",
+                        "Use automated scripts to scrape, overload, or abuse the Service",
+                        "Reverse engineer, decompile, or attempt to extract the source code of the Service",
+                        "Resell, sublicense, or otherwise commercialize access to the Service without written permission",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2.5">
+                          <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-red-500/40" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-3">Violation of these terms may result in immediate account termination.</p>
+                  </div>
+                ),
+              },
+              {
+                title: "3. Your Data",
+                content: (
+                  <div className="space-y-3 text-[14px]">
+                    <p>You retain ownership of all content and data you create in Gunimi. We do not claim intellectual property rights over your content.</p>
+                    <p>You grant Gunimi a limited license to store, process, and display your content solely as necessary to provide the Service to you.</p>
+                    <p>During the private alpha, workspace data may be reset, migrated, or permanently deleted as part of development. We will make reasonable efforts to notify registered users in advance of any planned data resets.</p>
+                  </div>
+                ),
+              },
+              {
+                title: "4. AI Features",
+                content: (
+                  <div className="space-y-3 text-[14px]">
+                    <p>Gunimi includes AI features powered by third-party AI model APIs. When you use these features, relevant content from your workspace may be sent to the AI provider for processing.</p>
+                    <p>You are responsible for ensuring that any content you submit through AI features does not violate applicable laws or third-party rights.</p>
+                    <p>AI-generated outputs are provided for informational purposes only. We do not guarantee the accuracy, completeness, or suitability of AI-generated content for any purpose.</p>
+                  </div>
+                ),
+              },
+              {
+                title: "5. Alpha Program",
+                content: (
+                  <div className="text-[14px]">
+                    <p className="mb-3">As a private alpha participant, you acknowledge that:</p>
+                    <ul className="space-y-2">
+                      {[
+                        "The Service is unfinished and may contain bugs, incomplete features, and unstable behavior",
+                        "Features shown as \"Coming Soon\" are in development and not yet available",
+                        "Your feedback is valuable and may be used to improve the product",
+                        "Alpha access may be revoked at any time at our discretion",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2.5">
+                          <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#6D5BFF]/50" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ),
+              },
+              {
+                title: "6. Service Availability",
+                content: <p className="text-[14px]">We strive for high availability but make no guarantees regarding uptime during the alpha period. The Service may be taken offline for maintenance, updates, or debugging at any time. We will make reasonable efforts to communicate planned downtime via email.</p>,
+              },
+              {
+                title: "7. Disclaimer of Warranties",
+                content: <p className="text-[14px] uppercase">The service is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo; without warranties of any kind, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the service will be uninterrupted, error-free, or free of harmful components.</p>,
+              },
+              {
+                title: "8. Limitation of Liability",
+                content: <p className="text-[14px] uppercase">To the fullest extent permitted by law, Gunimi shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of data, loss of profits, or business interruption, arising from your use of or inability to use the service.</p>,
+              },
+              {
+                title: "9. Termination",
+                content: <p className="text-[14px]">Either party may terminate your access to the Service at any time. You may close your account by contacting us at <a href="mailto:support@gunimi.com" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">support@gunimi.com</a>. We may suspend your account if you violate these Terms.</p>,
+              },
+              {
+                title: "10. Changes to Terms",
+                content: <p className="text-[14px]">We may update these Terms from time to time. We will notify registered users of material changes by email at least 7 days before they take effect. Continued use of the Service after changes constitutes acceptance of the new Terms.</p>,
+              },
+              {
+                title: "11. Contact",
+                content: <p className="text-[14px]">For questions about these Terms, contact us at <a href="mailto:support@gunimi.com" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">support@gunimi.com</a>.</p>,
+              },
+            ].map(({ title, content }) => (
+              <div key={title}>
+                <h2 className="mb-4 text-[19px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">{title}</h2>
+                {content}
+              </div>
+            ))}
+
           </div>
-        </div>
+        </section>
+
       </div>
-    </main>
+    </PublicLayout>
   );
 }

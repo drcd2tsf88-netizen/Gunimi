@@ -4,11 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
+
 import { supabase } from "@/lib/supabase";
 import OrbitInput from "@/components/ui/OrbitInput";
+import AiCore from "@/components/ui/AiCore";
+import AuthCard from "@/components/auth/AuthCard";
 
 function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
@@ -18,36 +21,31 @@ export default function RegisterPage() {
   const t = useTranslations("auth");
   const router = useRouter();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [fullName, setFullName]             = useState("");
+  const [email, setEmail]                   = useState("");
+  const [password, setPassword]             = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]               = useState(false);
 
   async function handleRegister() {
     if (!fullName || !email || !password || !confirmPassword) {
       toast.error(t("fillAllFields"));
       return;
     }
-
     if (!isValidEmail(email)) {
       toast.error(t("invalidEmail"));
       return;
     }
-
     if (password.length < 8) {
       toast.error(t("passwordTooShort"));
       return;
     }
-
     if (password !== confirmPassword) {
       toast.error(t("passwordsMustMatch"));
       return;
     }
-
     try {
       setLoading(true);
-
       toast.loading(t("loginInitializing"), { id: "orbit-register" });
 
       const { error } = await supabase.auth.signUp({
@@ -65,7 +63,6 @@ export default function RegisterPage() {
       }
 
       toast.success(t("verificationSent"), { id: "orbit-register" });
-
       router.push(`/register/verify?email=${encodeURIComponent(email)}`);
     } catch {
       toast.error(t("registerFailed"), { id: "orbit-register" });
@@ -75,140 +72,119 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#050816] px-6 text-white">
-      {/* BACKGROUND */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-120px] h-[360px] w-[360px] rounded-full bg-violet-500/15 blur-[160px]" />
-        <div className="absolute bottom-[-120px] right-[-120px] h-[360px] w-[360px] rounded-full bg-cyan-500/10 blur-[180px]" />
-        <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] [background-size:80px_80px]" />
+    <AuthCard maxWidth="max-w-[520px]">
+
+      {/* BRAND MARK */}
+      <div className="mb-8 flex items-center gap-2.5">
+        <AiCore size={24} showRings={false} showParticles={false} intensity="strong" />
+        <span className="text-[13px] font-semibold tracking-[-0.01em] text-[#F7F8FC]">Gunimi</span>
       </div>
 
-      {/* CARD */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-        className="relative z-10 w-full max-w-xl overflow-hidden rounded-[32px] border border-white/[0.08] bg-white/[0.035] p-8 backdrop-blur-3xl shadow-[0_0_80px_rgba(124,58,237,0.10)]"
+      {/* BADGE */}
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-[#6D5BFF]/[0.18] bg-[#6D5BFF]/[0.08] px-3 py-1">
+        <motion.span
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 2.2, repeat: Infinity }}
+          className="h-1.5 w-1.5 rounded-full bg-[#8B7DFF]"
+        />
+        <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#8B7DFF]">
+          {t("registerBadge")}
+        </span>
+      </div>
+
+      {/* HEADER */}
+      <div className="mt-6">
+        <h1 className="text-[26px] font-semibold leading-[1.1] tracking-[-0.03em] text-[#F7F8FC]">
+          {t("registerTitle")}
+        </h1>
+        <p className="mt-2 text-[14px] leading-[1.65] text-[#9AA3B2]">
+          {t("registerSubtitle")}
+        </p>
+      </div>
+
+      {/* FORM */}
+      <form
+        className="mt-8 space-y-3"
+        onSubmit={(e) => { e.preventDefault(); handleRegister(); }}
       >
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        <div className="pointer-events-none absolute right-[-80px] top-[-80px] h-[220px] w-[220px] rounded-full bg-violet-500/10 blur-3xl" />
+        <OrbitInput
+          type="text"
+          placeholder={t("fullNamePlaceholder")}
+          value={fullName}
+          disabled={loading}
+          autoComplete="name"
+          onChange={(e) => setFullName(e.target.value)}
+        />
+        <OrbitInput
+          type="email"
+          placeholder={t("emailPlaceholder")}
+          value={email}
+          disabled={loading}
+          autoComplete="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <OrbitInput
+          type="password"
+          placeholder={t("passwordPlaceholder")}
+          value={password}
+          disabled={loading}
+          autoComplete="new-password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <OrbitInput
+          type="password"
+          placeholder={t("confirmPasswordPlaceholder")}
+          value={confirmPassword}
+          disabled={loading}
+          autoComplete="new-password"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
-        <div className="relative z-10">
-          {/* BADGE */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-violet-300">
-            <motion.div
-              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="h-2 w-2 rounded-full bg-violet-400"
-            />
-            {t("registerBadge")}
-          </div>
-
-          {/* HEADER */}
-          <div className="mt-6">
-            <h1 className="text-4xl font-semibold tracking-tight">{t("registerTitle")}</h1>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-zinc-400">
-              {t("registerSubtitle")}
+        {/* VERIFICATION NOTICE */}
+        <div className="flex items-start gap-3 rounded-[10px] border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.06] px-4 py-3.5">
+          <ShieldCheck size={15} className="mt-0.5 shrink-0 text-[#8B7DFF]" />
+          <div>
+            <p className="text-[13px] font-medium text-[#C8CDD8]">{t("emailVerificationTitle")}</p>
+            <p className="mt-0.5 text-[12px] leading-relaxed text-[#9AA3B2]">
+              {t("emailVerificationDesc")}
             </p>
           </div>
-
-          {/* FORM */}
-          <form
-            className="mt-8 space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleRegister();
-            }}
-          >
-            <OrbitInput
-              type="text"
-              placeholder={t("fullNamePlaceholder")}
-              value={fullName}
-              disabled={loading}
-              autoComplete="name"
-              onChange={(e) => setFullName(e.target.value)}
-            />
-
-            <OrbitInput
-              type="email"
-              placeholder={t("emailPlaceholder")}
-              value={email}
-              disabled={loading}
-              autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <OrbitInput
-              type="password"
-              placeholder={t("passwordPlaceholder")}
-              value={password}
-              disabled={loading}
-              autoComplete="new-password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <OrbitInput
-              type="password"
-              placeholder={t("confirmPasswordPlaceholder")}
-              value={confirmPassword}
-              disabled={loading}
-              autoComplete="new-password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-
-            {/* VERIFICATION NOTICE */}
-            <div className="flex items-start gap-3 rounded-2xl border border-cyan-500/10 bg-cyan-500/5 p-4">
-              <ShieldCheck size={18} className="mt-0.5 text-cyan-300" />
-              <div>
-                <p className="text-sm font-medium text-cyan-200">{t("emailVerificationTitle")}</p>
-                <p className="mt-1 text-xs leading-relaxed text-cyan-100/60">
-                  {t("emailVerificationDesc")}
-                </p>
-              </div>
-            </div>
-
-            {/* SUBMIT */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative inline-flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-violet-500/20 bg-violet-500/10 text-sm font-medium text-violet-100 transition-all duration-300 hover:border-violet-500/30 hover:bg-violet-500/15 disabled:opacity-50"
-            >
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_top,rgba(124,58,237,0.16),transparent_45%)]" />
-              <span className="relative z-10">
-                {loading ? t("creatingAccount") : t("signUp")}
-              </span>
-              {!loading && <ArrowRight size={16} className="relative z-10" />}
-            </button>
-          </form>
-
-          {/* FOOTER */}
-          <div className="mt-8 flex flex-col gap-5 border-t border-white/[0.06] pt-6 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-2 text-xs text-zinc-500">
-              <Brain size={14} className="text-cyan-300" />
-              {t("aiIdentityLayer")}
-            </div>
-            <div className="text-sm text-zinc-500">
-              {t("alreadyHaveAccount")}{" "}
-              <Link href="/login" className="text-white transition-opacity hover:opacity-80">
-                {t("login")}
-              </Link>
-            </div>
-          </div>
-
-          {/* TERMS */}
-          <p className="mt-6 text-center text-xs leading-relaxed text-zinc-600">
-            {t("termsPrefix")}{" "}
-            <Link href="/terms" className="text-zinc-400 underline underline-offset-2 transition hover:text-white">
-              {t("termsLink")}
-            </Link>{" "}
-            {t("and")}{" "}
-            <Link href="/privacy" className="text-zinc-400 underline underline-offset-2 transition hover:text-white">
-              {t("privacyLink")}
-            </Link>
-            .
-          </p>
         </div>
-      </motion.div>
-    </main>
+
+        {/* PRIMARY CTA */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] transition-all duration-300 hover:bg-[#7B6BFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.55)] disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.10),transparent_55%)]" />
+          <span className="relative z-10">
+            {loading ? t("creatingAccount") : t("signUp")}
+          </span>
+          {!loading && <ArrowRight size={15} className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5" />}
+        </button>
+      </form>
+
+      {/* FOOTER */}
+      <div className="mt-7 flex flex-col gap-4 border-t border-white/[0.05] pt-6 md:flex-row md:items-center md:justify-between">
+        <p className="text-[13px] text-[#9AA3B2]/60">
+          {t("alreadyHaveAccount")}{" "}
+          <Link href="/login" className="text-[#C8CDD8] transition-colors duration-200 hover:text-[#F7F8FC]">
+            {t("login")}
+          </Link>
+        </p>
+        <p className="text-[11.5px] leading-relaxed text-[#9AA3B2]/35">
+          {t("termsPrefix")}{" "}
+          <Link href="/terms" className="underline underline-offset-2 transition-colors hover:text-[#9AA3B2]/60">
+            {t("termsLink")}
+          </Link>
+          {" "}{t("and")}{" "}
+          <Link href="/privacy" className="underline underline-offset-2 transition-colors hover:text-[#9AA3B2]/60">
+            {t("privacyLink")}
+          </Link>
+        </p>
+      </div>
+
+    </AuthCard>
   );
 }

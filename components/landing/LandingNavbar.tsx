@@ -3,22 +3,19 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu } from "lucide-react";
+import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 import LandingMobileNav from "@/components/landing/LandingMobileNav";
 
-// ─────────────────────────────────────────────────────────────
-// LandingNavbar — Fixed top bar. GDL v1.0 compliant.
-// AiCore replaces the old Orbit icon. No old violet classes.
-// ─────────────────────────────────────────────────────────────
-
-const NAV_LINKS = [
-  { label: "Features",   href: "#systems" },
-  { label: "AI",         href: "#ai" },
-  { label: "Pricing",    href: "#pricing" },
-];
-
 export default function LandingNavbar() {
+  const t = useTranslations("landing.nav");
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const NAV_LINKS = [
+    { label: t("links.features"), href: "#systems" },
+    { label: t("links.ai"),       href: "#ai" },
+    { label: t("links.pricing"),  href: "#pricing" },
+  ];
 
   return (
     <>
@@ -33,7 +30,7 @@ export default function LandingNavbar() {
                 Gunimi
               </span>
               <span className="block text-[10.5px] text-[#9AA3B2]/50 tracking-[0.04em]">
-                AI Workspace OS
+                {t("tagline")}
               </span>
             </div>
           </Link>
@@ -42,7 +39,7 @@ export default function LandingNavbar() {
           <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
             {NAV_LINKS.map((item) => (
               <a
-                key={item.label}
+                key={item.href}
                 href={item.href}
                 className="text-[13px] text-[#9AA3B2]/70 transition-colors duration-200 hover:text-[#F7F8FC]"
               >
@@ -62,7 +59,7 @@ export default function LandingNavbar() {
                 md:flex
               "
             >
-              Sign in
+              {t("signIn")}
             </Link>
             <Link
               href="/register"
@@ -75,13 +72,13 @@ export default function LandingNavbar() {
                 hover:bg-[#7B6BFF] hover:shadow-[0_0_28px_rgba(109,91,255,0.50)]
               "
             >
-              Get started
+              {t("getStarted")}
             </Link>
 
             {/* MOBILE TOGGLE */}
             <button
               onClick={() => setMobileOpen(true)}
-              aria-label="Open navigation menu"
+              aria-label={t("openMenu")}
               className="
                 flex h-9 w-9 items-center justify-center
                 rounded-[9px] border border-white/[0.07]

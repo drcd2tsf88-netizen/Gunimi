@@ -1374,5 +1374,432 @@
     "importanceLow": "Nízke",
     "entityBadge": "Pamäťové upozornenia",
     "entityTitle": "Kľúčové momenty"
+  },
+  "landing": {
+    "nav": {
+      "tagline": "AI Workspace OS",
+      "links": {
+        "features": "Funkcie",
+        "ai": "AI",
+        "pricing": "Cenník",
+        "enterprise": "Enterprise"
+      },
+      "signIn": "Prihlásiť sa",
+      "getStarted": "Začať",
+      "openMenu": "Otvoriť navigačné menu",
+      "closeMenu": "Zatvoriť menu"
+    },
+    "footer": {
+      "tagline": "AI Workspace OS",
+      "description": "Vzťahy, znalosti a príležitosti — v jednom inteligentnom workspace.",
+      "groups": {
+        "product": "Produkt",
+        "company": "Spoločnosť",
+        "legal": "Právne"
+      },
+      "links": {
+        "features": "Funkcie",
+        "ai": "AI",
+        "pricing": "Cenník",
+        "changelog": "Changelog",
+        "roadmap": "Roadmap",
+        "about": "O nás",
+        "press": "Tlač",
+        "contact": "Kontakt",
+        "brand": "Brand",
+        "privacy": "Ochrana súkromia",
+        "terms": "Podmienky",
+        "cookies": "Cookies",
+        "security": "Bezpečnosť",
+        "aiTransparency": "Transparentnosť AI"
+      },
+      "copyright": "© 2026 Gunimi. Všetky práva vyhradené.",
+      "signIn": "Prihlásiť sa",
+      "getStarted": "Začať"
+    }
+  },
+  "public": {
+    "cookieConsent": {
+      "title": "Nastavenia cookies",
+      "description": "Používame nevyhnutné cookies, aby ste zostali prihlásení. Žiadna reklama ani sledovanie tretích strán.",
+      "policyLink": "Zásady cookies",
+      "accept": "Prijať",
+      "decline": "Odmietnuť",
+      "dismissAriaLabel": "Zatvoriť banner cookies"
+    },
+    "notFound": {
+      "label": "404",
+      "headline": "Stratili ste sa?",
+      "subline": "Vrátime vás späť.",
+      "description": "Táto stránka neexistuje alebo bola presunutá. Workspace je tu stále — len ste odbočili nesprávnym smerom.",
+      "returnHome": "Späť domov",
+      "goToWorkspace": "Prejsť do Workspace"
+    },
+    "error": {
+      "label": "Systémová chyba",
+      "headline": "Niečo sa pokazilo.",
+      "description": "Nastala neočakávaná chyba. Bola zaznamenaná. Skúste to znova alebo sa vráťte na hlavnú stránku.",
+      "tryAgain": "Skúsiť znova",
+      "home": "Domov"
+    },
+    "maintenance": {
+      "badge": "Plánovaná údržba",
+      "headline": "Vylepšujeme sa.",
+      "description": "Gunimi je dočasne offline z dôvodu plánovanej údržby. Pracujeme na vylepšeniach — čoskoro budeme späť.",
+      "statusLabel": "Očakávaná dostupnosť: skontrolujte neskôr",
+      "urgent": "Urgentné?"
+    },
+    "about": {
+      "badge": "O Gunimi",
+      "headline": "Workspace, ktorý myslí.",
+      "subline": "Gunimi bol postavený na jednom predpoklade: nástroje, ktoré podniky používajú na správu vzťahov, znalostí a komunikácie, by mali byť rovnako inteligentné ako ľudia, ktorí ich používajú.",
+      "story0": "Väčšina workspacov bola navrhnutá pred érou AI. Bola navrhnutá okolo záznamov — riadky, stĺpce, stavy. Žiada vás vyplniť polia, udržiavať pipeline a aktualizovať tabuľky. Je optimalizovaná pre systém, nie pre vás.",
+      "story1Start": "Gunimi je navrhnutý od iného východiska:",
+      "story1Emphasis": "čo keby váš workspace rozumel kontextu?",
+      "story1End": "Čo keby prepojil deal s poznámkou, s emailom, so spoločnosťou? Čo keby vám zobrazil to správne skôr, ako by ste to museli hľadať?",
+      "story2": "Budujeme AI Workspace Operating System — platformu, kde spoločnosti, kontakty, dealy, úlohy, poznámky a komunikácia existujú v spoločnej inteligenčnej vrstve. Jeden systém. Plný kontext. Vždy dostupné.",
+      "pillarsHeadline": "Za čím stojíme.",
+      "pillars": [
+        { "title": "Jeden workspace", "body": "Kontakty, dealy, poznámky, úlohy, email a inteligencia — zjednotené v jednej operačnej vrstve. Žiadne prepínanie záložiek. Žiadna strata kontextu." },
+        { "title": "Inteligencia na prvom mieste", "body": "AI nie je doplnok. Prechádza každým povrchom: vytváranie, zobrazovanie signálov, prepájanie bodov vo vašom relačnom grafe." },
+        { "title": "Enterprise dôvera", "body": "Izolácia workspace, šifrované dáta v kľude aj počas prenosu, jemné oprávnenia a audit záznamy zabudované od prvého dňa." },
+        { "title": "Postavené pre tímy", "body": "Multi-workspace architektúra podporuje spôsob, akým je vaša firma skutočne štruktúrovaná — nie idealizovaný org chart." }
+      ],
+      "quote": "\"Vzťahy sú tým najdôležitejším aktívom v každom podniku. Budujeme OS na ich správu.\"",
+      "quoteAttrib": "— Tím Gunimi"
+    },
+    "contact": {
+      "badge": "Kontakt",
+      "headline": "Kontaktujte nás.",
+      "subline": "Vyberte kategóriu a presmerujeme vašu správu na správny tím. Odpovieme do jedného pracovného dňa.",
+      "categoryLabel": "Kategória",
+      "categories": {
+        "general": "Všeobecné",
+        "support": "Podpora",
+        "security": "Bezpečnosť",
+        "enterprise": "Enterprise"
+      },
+      "nameLabel": "Meno",
+      "namePlaceholder": "Vaše meno",
+      "emailLabel": "Email",
+      "emailPlaceholder": "vy@spolocnost.com",
+      "messageLabel": "Správa",
+      "messagePlaceholder": "Ako vám môžeme pomôcť?",
+      "successMessage": "Správa odoslaná. Čoskoro sa vám ozveme.",
+      "sendingLabel": "Odosiela sa…",
+      "submitLabel": "Odoslať správu"
+    },
+    "security": {
+      "badge": "Dôvera a bezpečnosť",
+      "headline": "Podniková úroveň",
+      "headlineAccent": "bezpečnosti.",
+      "subline": "Vaše obchodné dáta si zaslúžia serióznu ochranu. Tu je presne to, ako ich Gunimi zabezpečuje — od ukladania cez prístup až po spracovanie AI.",
+      "ctaText": "Otázky k bezpečnosti alebo súladu?",
+      "sections": [
+        {
+          "title": "Šifrovanie",
+          "items": [
+            "Všetky dáta šifrované v kľude pomocou AES-256",
+            "Všetky dáta šifrované počas prenosu cez TLS 1.3",
+            "Prihlasovacie údaje a tajné kľúče databáz spravované cez premenné prostredia, nikdy v zdrojovom kóde",
+            "API kľúče nikdy nie sú exponované na strane klienta"
+          ]
+        },
+        {
+          "title": "Infraštruktúra",
+          "items": [
+            "Hostované na Supabase — infraštruktúra certifikovaná SOC 2 Type II",
+            "Dáta ukladané štandardne v regiónoch EÚ",
+            "Automatické zálohy s obnovou k určitému bodu v čase",
+            "Redundantná, vysoko dostupná architektúra"
+          ]
+        },
+        {
+          "title": "Izolácia workspace",
+          "items": [
+            "Každý workspace je striktne izolovaný na úrovni dát",
+            "Zabezpečenie na úrovni riadkov (RLS) presadené na úrovni databázy, nielen aplikácie",
+            "Krížový prístup k dátam workspace nie je možný zo zámerného dôvodu",
+            "Oprávnenia obmedzené na workspace pre každý zdroj"
+          ]
+        },
+        {
+          "title": "Autentifikácia a prístup",
+          "items": [
+            "Bezpečná autentifikácia emailom a heslom cez Supabase Auth",
+            "Podpora OAuth 2.0 s overením stavu na strane servera",
+            "Session tokeny sú krátkodobé a automaticky rotované",
+            "Toky obnovenia hesla sú rate-limitované a podpísané"
+          ]
+        },
+        {
+          "title": "Ochrana súkromia v návrhu",
+          "items": [
+            "Vaše dáta nepredávame ani nezdieľame s tretími stranami",
+            "Dáta kontaktov a spoločností sú súkromné pre workspace",
+            "Monitorovanie chýb vylučuje osobne identifikovateľné informácie",
+            "Nástroje na záznam relácie sú nakonfigurované s plným maskovaním textu"
+          ]
+        },
+        {
+          "title": "AI a prístup k dátam",
+          "items": [
+            "AI funkcie operujú len s dátami v rámci vášho workspace",
+            "Vaše dáta sa nikdy nepoužívajú na trénovanie modelov tretích strán",
+            "Výzvy a odpovede AI sa neukladajú mimo aktuálnej relácie",
+            "Pre úplné podrobnosti pozrite našu stránku Transparentnosť AI"
+          ]
+        },
+        {
+          "title": "Zodpovedné zverejňovanie",
+          "items": [
+            "Bezpečnostné správy berieme vážne a odpovedáme do 48 hodín",
+            "Zodpovedné zverejňovanie posielajte na security@gunimi.com",
+            "Nesledujeme právne kroky proti výskumníkom bezpečnosti konajúcim v dobrej viere"
+          ]
+        }
+      ]
+    },
+    "aiTransparency": {
+      "badge": "Transparentnosť AI",
+      "headline": "AI, ktorá pracuje",
+      "headlineAccent": "pre vás.",
+      "subline": "Veríme, že máte právo vedieť presne, k čomu má naša AI prístup, čo nemôže robiť a ako sú vaše dáta spravované.",
+      "canTitle": "AI môže",
+      "cannotTitle": "AI nemôže",
+      "can": [
+        "Čítať dáta workspace (kontakty, spoločnosti, dealy, poznámky, úlohy), ktoré explicitne zdieľate vo výzve",
+        "Generovať koncepty, zhrnutia a návrhy na základe týchto dát",
+        "Zobrazovať súvisiace záznamy z vášho workspace, keď je to relevantné",
+        "Pomáhať vám skladať emaily, poznámky a akčné položky"
+      ],
+      "cannot": [
+        "Pristupovať k iným workspacom alebo dátam patriacim iným organizáciám",
+        "Upravovať záznamy bez explicitného potvrdenia používateľa",
+        "Pristupovať k externým URL, webstránkam alebo API vo vašom mene",
+        "Vidieť dáta z workspacov, ktorých nie ste členom",
+        "Pamätať si predchádzajúce konverzácie naprieč oddelenými reláciami"
+      ],
+      "principlesHeadline": "Naše princípy.",
+      "principles": [
+        { "title": "Vaše dáta nie sú trénovacie dáta", "body": "Obsah, ktorý vytvárate v Gunimi — kontakty, dealy, poznámky, správy — sa nikdy nepoužíva na trénovanie AI modelov, naše ani nikoho iného. Vaše obchodné dáta sú vaše." },
+        { "title": "Kontext obmedzený na workspace", "body": "AI funkcie operujú len s dátami vo vašom aktívnom workspace. Nikdy neexistuje krížový kontext AI medzi workspacmi." },
+        { "title": "Ľudské potvrdenie pre zápisy", "body": "AI môže navrhovať a tvoriť koncepty, ale nemôže upravovať, vytvárať ani mazať záznamy bez explicitnej akcie od človeka. Každý zápis je zámerný." },
+        { "title": "Halucinácie sú realita", "body": "AI môže a generuje nesprávne informácie. Zaobchádzajte s výstupom AI ako s konceptom, nie zdrojom pravdy. Vždy overte dôležité fakty z primárnych zdrojov." },
+        { "title": "Výzvy sa neukladajú", "body": "Vaše výzvy a odpovede AI sa neukladajú v našej databáze mimo aktuálnej relácie. Nie sú dostupné iným používateľom ani členom tímu." },
+        { "title": "Modely tretích strán", "body": "Gunimi využíva poskytovateľov AI modelov tretích strán na napájanie inteligenčných funkcií. Máme dohody o spracovaní dát, ktoré zakazujú použitie vašich dát na trénovanie modelov." }
+      ],
+      "warningTitle": "AI sa môže mýliť.",
+      "warningBody": "Obsah generovaný AI v Gunimi je východiskový bod, nie autoritatívny záznam. Vždy overte kritické obchodné informácie z primárnych zdrojov. Zodpovednosť za rozhodnutia prijaté pomocou informácií asistovaných AI zostáva na človeku, ktorý toto rozhodnutie robí."
+    },
+    "changelog": {
+      "badge": "Changelog",
+      "headline": "Čo je nové.",
+      "subline": "Každá aktualizácia, vylepšenie a oprava — na jednom mieste.",
+      "tags": {
+        "new": "Nové",
+        "improved": "Vylepšené",
+        "security": "Bezpečnosť",
+        "fixed": "Opravené"
+      },
+      "releases": [
+        {
+          "version": "0.9",
+          "date": "Jún 2026",
+          "title": "Workspace Intelligence",
+          "description": "AI vrstva je teraz dostupná v celom workspace. Orbit Intelligence môže zobrazovať súvisiace záznamy, tvoriť komunikáciu a sumarizovať históriu dealov v kontexte.",
+          "changes": [
+            { "tag": "new", "text": "Panel Orbit Intelligence — AI asistent obmedzený na váš workspace" },
+            { "tag": "new", "text": "Zhrnutie dealu: AI-generovaný brief z poznámok, úloh a emailov" },
+            { "tag": "new", "text": "Analytický dashboard s metrikami pipeline v reálnom čase" },
+            { "tag": "improved", "text": "Prepínanie medzi workspacmi — okamžité prechody so zachovaním stavu" },
+            { "tag": "improved", "text": "Shell workspace prepracovaný: atmosféra Deep Space, kinematické nadpisy" },
+            { "tag": "security", "text": "Zabezpečenie na úrovni riadkov posilnené vo všetkých typoch zdrojov" }
+          ]
+        },
+        {
+          "version": "0.8",
+          "date": "Apríl 2026",
+          "title": "Pipeline & Dealy",
+          "description": "Kompletný pipeline dealov so správou fáz, kartami dealov a prepojením vzťahov. Prepojte kontakty a spoločnosti s aktívnymi príležitosťami.",
+          "changes": [
+            { "tag": "new", "text": "Pipeline dealov s drag-and-drop správou fáz" },
+            { "tag": "new", "text": "Detailné zobrazenie dealu s časovou osou, poznámkami a prepojenými kontaktmi" },
+            { "tag": "new", "text": "Prepojenie spoločnosti a kontaktu z kontextu dealu" },
+            { "tag": "improved", "text": "Zoznamové zobrazenie CRM s inline filtrovaním a triedením" },
+            { "tag": "fixed", "text": "Feed aktivity sa neaktualizoval po vytvorení poznámky" }
+          ]
+        },
+        {
+          "version": "0.7",
+          "date": "Február 2026",
+          "title": "Kontakty & Spoločnosti",
+          "description": "Základ relačnej inteligencie — kompletná správa kontaktov a spoločností s časovými osami aktivity a zachytávaním poznámok.",
+          "changes": [
+            { "tag": "new", "text": "Detailné zobrazenie kontaktu s časovou osou aktivity" },
+            { "tag": "new", "text": "Profily spoločností s asociáciou kontaktov" },
+            { "tag": "new", "text": "Zachytávanie poznámok pri kontaktoch, spoločnostiach a dealoch" },
+            { "tag": "improved", "text": "Globálne vyhľadávanie naprieč kontaktmi, spoločnosťami a dealmi" },
+            { "tag": "security", "text": "Kontrola prístupu obmedzená na workspace pre všetky CRM dáta" }
+          ]
+        },
+        {
+          "version": "0.6",
+          "date": "December 2025",
+          "title": "Základ Workspace",
+          "description": "Multi-workspace architektúra, tok vytvárania workspace, pozvánky a prevádzkový shell workspace.",
+          "changes": [
+            { "tag": "new", "text": "Podpora viacerých workspacov — vytváranie a prepínanie medzi workspacmi" },
+            { "tag": "new", "text": "Sprievodca vytváraním workspace s nahrávaním loga" },
+            { "tag": "new", "text": "Pozvánky členov tímu cez email" },
+            { "tag": "improved", "text": "Tok onboardingu prepracovaný ako sprievodný zoznam" },
+            { "tag": "fixed", "text": "Vypršanie relácie presmerovávalo nesprávne na stránkach workspace" }
+          ]
+        }
+      ]
+    },
+    "roadmap": {
+      "badge": "Roadmap",
+      "headline": "Kam smerujeme.",
+      "subline": "Transparentný pohľad na to, čo sa buduje, čo príde ďalej, a dlhodobú víziu pre Gunimi.",
+      "disclaimer": "Roadmap odráža aktuálne záujmy a môže sa meniť. Priorita a načasovanie sa môžu meniť podľa smerovania produktu.",
+      "columns": {
+        "inProgress": { "label": "V priebehu", "description": "Aktuálne aktívne" },
+        "planned": { "label": "Plánované", "description": "Ďalšie v poradí" },
+        "future": { "label": "Budúca vízia", "description": "Dlhodobý horizont" }
+      },
+      "inProgress": [
+        { "title": "Emailová integrácia", "description": "Odosielajte a prijímajte emaily priamo v Gunimi. Úplné zobrazenie vlákien s AI-asistovanými odpoveďami." },
+        { "title": "Graf relačnej inteligencie", "description": "Vizualizujte spojenia medzi kontaktmi, spoločnosťami a dealmi. Identifikujte teplé cesty." },
+        { "title": "AI príprava na stretnutie", "description": "Automatický brief pred každým plánovaným stretnutím. Zobrazí relevantné dealy, poznámky a históriu." },
+        { "title": "Automatizácia úloh", "description": "Spúšťajte úlohy zo zmien fáz dealu, aktivity kontaktu alebo udalostí kalendára." }
+      ],
+      "planned": [
+        { "title": "Integrácia kalendára", "description": "Pripojte Google Calendar alebo Outlook. Sledujte stretnutia vedľa kontaktov a dealov." },
+        { "title": "Mobilná aplikácia", "description": "iOS a Android aplikácie s plnou offline podporou a push notifikáciami." },
+        { "title": "Vlastné polia", "description": "Pridajte polia špecifické pre workspace do kontaktov, spoločností, dealov a úloh." },
+        { "title": "API a webhooky", "description": "Verejné API s podporou webhookov na integráciu Gunimi do vášho existujúceho stacku." },
+        { "title": "Pokročilé reportovanie", "description": "Rýchlosť pipeline, miery výhry, metriky aktivity a vlastné dashboardy." }
+      ],
+      "future": [
+        { "title": "Autonómni agenti", "description": "AI agenti, ktorí vykonávajú akcie — plánovanie, follow-upy, obohacovanie dát — s vaším schválením." },
+        { "title": "Revenue intelligence", "description": "Prediktívne skórovanie dealov, signály rizika odchodu a prognózovanie príjmov." },
+        { "title": "Partnerský ekosystém", "description": "Natívne integrácie s Hubspot, Salesforce, Stripe, Notion a ďalšími." },
+        { "title": "White-label workspaces", "description": "Agentúry a konzultanti môžu nasadiť Gunimi pod vlastnou značkou pre klientov." },
+        { "title": "Orbit Memory", "description": "Dlhodobá trvalá AI pamäť pre workspace — kontext, ktorý sa buduje v priebehu času." }
+      ]
+    },
+    "press": {
+      "badge": "Tlač a médiá",
+      "headline": "Press kit.",
+      "subline": "Všetko, čo potrebujete na písanie o Gunimi — prehľad spoločnosti, brandové materiály a mediálny kontakt.",
+      "brandmarkTitle": "Brand mark",
+      "brandmarkBody": "Orbitálny mark AiCore s logom Gunimi v rovnakej váhe.",
+      "brandmarkMinSize": "Minimálna veľkosť: 24px výška. Vždy na tmavom pozadí.",
+      "brandmarkDarkLabel": "Tmavé pozadie",
+      "brandmarkLightLabel": "Svetlé pozadie",
+      "downloadAssetsLabel": "Stiahnuť materiály — čoskoro",
+      "brandColorsTitle": "Farby značky",
+      "companyTitle": "Spoločnosť",
+      "companyBody": "Gunimi je AI-first Workspace Operating System, ktorý spája správu vzťahov, znalosti, komunikáciu a sledovanie príležitostí v jednej inteligentnej platforme. Postavené pre moderné tímy, ktoré potrebujú kontext — nie viac softvéru.",
+      "mediaContactTitle": "Mediálny kontakt",
+      "mediaContactDescription": "Pre mediálne dopyty, žiadosti o rozhovor alebo redakčnú spoluprácu.",
+      "brandColors": [
+        { "name": "Primárna", "hex": "#6D5BFF", "description": "Primárna firemná fialová" },
+        { "name": "Primárna 300", "hex": "#8B7DFF", "description": "Interaktívne stavy" },
+        { "name": "Primárna 200", "hex": "#A998FF", "description": "Svetlé akcenty" },
+        { "name": "Deep Space", "hex": "#05060A", "description": "Pozadie" },
+        { "name": "Dark Titanium", "hex": "#0A0E17", "description": "Povrch karty" },
+        { "name": "Text Primary", "hex": "#F7F8FC", "description": "Nadpisy a text" }
+      ],
+      "facts": [
+        { "label": "Založená", "value": "2025" },
+        { "label": "Fáza", "value": "Early Access" },
+        { "label": "Kategória", "value": "AI Workspace OS" },
+        { "label": "Sídlo", "value": "Remote — Európa" }
+      ]
+    },
+    "brand": {
+      "badge": "Brandové smernice",
+      "headline": "Identita Gunimi.",
+      "subline": "Ako vyzeráme, hovoríme a prezentujeme sa. Použite tieto smernice na konzistentné a profesionálne zastupovanie Gunimi.",
+      "logomarkTitle": "Logomark",
+      "logomarkBody": "Orbitálny mark AiCore s logom Gunimi v rovnakej váhe.",
+      "logomarkMinSize": "Minimálna veľkosť: 24px výška. Vždy na tmavom pozadí.",
+      "logomarkCorrect": "Gunimi — správne",
+      "logomarkIncorrect": "GUNIMI / gunimi — nesprávne",
+      "colorSystemTitle": "Farebný systém",
+      "typographyTitle": "Typografia",
+      "typefaceLabel": "Písmo:",
+      "typefaceName": "Geist",
+      "typefaceDesc": "— bezpätkové, variabilná váha.",
+      "trackingLabel": "tracking",
+      "voiceTitle": "Hlas a tón",
+      "voiceDescription": "Gunimi hovorí ako skúsený operátor: pokojne, priamo, presne. Žiadna hystéria. Žiadne fluff.",
+      "doLabel": "Správne",
+      "dontLabel": "Nesprávne",
+      "typography": [
+        { "sample": "Workspace, ktorý myslí.", "size": "64px", "weight": "Bold / 700", "tracking": "-0.04em", "use": "Hero nadpisy" },
+        { "sample": "Relačná inteligencia.", "size": "40px", "weight": "Bold / 700", "tracking": "-0.03em", "use": "Sekčné nadpisy" },
+        { "sample": "Prepojte to, čo záleží.", "size": "26px", "weight": "Semibold / 600", "tracking": "-0.02em", "use": "Názvy stránok" },
+        { "sample": "Každý deal. Každý kontakt. Jeden workspace.", "size": "16px", "weight": "Regular / 400", "tracking": "0", "use": "Text tela" }
+      ],
+      "colors": [
+        {
+          "group": "Primárne",
+          "swatches": [
+            { "name": "Primárna", "hex": "#6D5BFF" },
+            { "name": "Primárna 300", "hex": "#8B7DFF" },
+            { "name": "Primárna 200", "hex": "#A998FF" }
+          ]
+        },
+        {
+          "group": "Pozadie",
+          "swatches": [
+            { "name": "Deep Space", "hex": "#05060A" },
+            { "name": "Dark Titanium", "hex": "#0A0E17" },
+            { "name": "Povrch 2", "hex": "#10151F" }
+          ]
+        },
+        {
+          "group": "Text",
+          "swatches": [
+            { "name": "Text Primary", "hex": "#F7F8FC" },
+            { "name": "Text Secondary", "hex": "#C8CDD8" },
+            { "name": "Text Tertiary", "hex": "#9AA3B2" }
+          ]
+        }
+      ],
+      "voice": [
+        { "title": "Presný, nie vykecaný", "do": "\"AI, ktorá rozumie vášmu biznisu.\"", "dont": "\"Výkonné AI funkcie navrhnuté na pomoc firmám ako je vaša.\"" },
+        { "title": "Sebavedomý, nie arogantný", "do": "\"Postavené pre spôsob, akým moderné tímy pracujú.\"", "dont": "\"Najlepšia workspace platforma na svete.\"" },
+        { "title": "Ľudský, nie robotický", "do": "\"Vaše kontakty, váš kontext, vždy.\"", "dont": "\"Optimalizujte pracovné postupy správy kontaktných vzťahov.\"" }
+      ]
+    },
+    "cookies": {
+      "badge": "Právne",
+      "headline": "Zásady cookies",
+      "lastUpdated": "Posledná aktualizácia:",
+      "section1Title": "1. Čo sú cookies?",
+      "section2Title": "2. Ako používame cookies",
+      "section3Title": "3. Nevyhnutné vs. nepodstatné cookies",
+      "section4Title": "4. Lokálne úložisko",
+      "section5Title": "5. Správa cookies",
+      "section6Title": "6. Zmeny tejto politiky",
+      "section7Title": "7. Kontakt",
+      "tableHeaderCookie": "Cookie",
+      "tableHeaderPurpose": "Účel",
+      "tableHeaderDuration": "Trvanie"
+    },
+    "privacy": {
+      "badge": "Právne",
+      "headline": "Zásady ochrany súkromia",
+      "lastUpdated": "Posledná aktualizácia:"
+    },
+    "terms": {
+      "badge": "Právne",
+      "headline": "Podmienky používania",
+      "lastUpdated": "Posledná aktualizácia:"
+    }
   }
 }

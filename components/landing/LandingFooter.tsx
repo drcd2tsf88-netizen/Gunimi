@@ -1,25 +1,63 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 
-// ─────────────────────────────────────────────────────────────
-// LandingFooter — Simple. Premium. Nothing unnecessary.
-// GDL v1.0: AiCore mark, correct bg, no Orbit references.
-// ─────────────────────────────────────────────────────────────
-
-const LINKS = [
-  { label: "Features",  href: "#systems" },
-  { label: "AI",        href: "#ai" },
-  { label: "Pricing",   href: "#pricing" },
-  { label: "Privacy",   href: "/privacy" },
-  { label: "Terms",     href: "/terms" },
-];
+function NavGroup({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+  return (
+    <div>
+      <p className="mb-3 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#9AA3B2]/35">
+        {title}
+      </p>
+      <ul className="space-y-2">
+        {links.map(({ label, href }) => (
+          <li key={href}>
+            {href.startsWith("#") ? (
+              <a href={href} className="text-[13px] text-[#9AA3B2]/55 transition-colors duration-200 hover:text-[#9AA3B2]">
+                {label}
+              </a>
+            ) : (
+              <Link href={href} className="text-[13px] text-[#9AA3B2]/55 transition-colors duration-200 hover:text-[#9AA3B2]">
+                {label}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function LandingFooter() {
+  const t = useTranslations("landing.footer");
+  const tNav = useTranslations("landing.nav");
+
+  const PRODUCT_LINKS = [
+    { label: t("links.features"),  href: "#systems" },
+    { label: t("links.ai"),        href: "#ai" },
+    { label: t("links.pricing"),   href: "#pricing" },
+    { label: t("links.changelog"), href: "/changelog" },
+    { label: t("links.roadmap"),   href: "/roadmap" },
+  ];
+
+  const COMPANY_LINKS = [
+    { label: t("links.about"),   href: "/about" },
+    { label: t("links.press"),   href: "/press" },
+    { label: t("links.contact"), href: "/contact" },
+    { label: t("links.brand"),   href: "/brand" },
+  ];
+
+  const LEGAL_LINKS = [
+    { label: t("links.privacy"),         href: "/privacy" },
+    { label: t("links.terms"),           href: "/terms" },
+    { label: t("links.cookies"),         href: "/cookies" },
+    { label: t("links.security"),        href: "/security" },
+    { label: t("links.aiTransparency"),  href: "/ai-transparency" },
+  ];
+
   return (
-    <footer className="relative border-t border-white/[0.04] bg-[#05060A] px-6 py-12">
-      {/* Subtle top ambient */}
+    <footer className="relative border-t border-white/[0.04] bg-[#05060A] px-6 py-16">
       <div
         className="pointer-events-none absolute left-0 right-0 top-0 h-[200px]"
         style={{ background: "radial-gradient(ellipse at top center, rgba(109,91,255,0.05), transparent 70%)" }}
@@ -27,64 +65,38 @@ export default function LandingFooter() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
 
-        {/* MAIN ROW */}
-        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        {/* MAIN GRID */}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1fr_auto_auto_auto]">
 
           {/* BRAND */}
-          <div className="flex items-center gap-3">
-            <AiCore size={28} showRings={false} showParticles={false} intensity="medium" />
-            <div>
-              <p className="text-[14px] font-semibold text-[#F7F8FC]">Gunimi</p>
-              <p className="text-[11px] text-[#9AA3B2]/45">AI Workspace Operating System</p>
+          <div>
+            <div className="mb-4 flex items-center gap-3">
+              <AiCore size={28} showRings={false} showParticles={false} intensity="medium" />
+              <div>
+                <p className="text-[14px] font-semibold text-[#F7F8FC]">Gunimi</p>
+                <p className="text-[11px] text-[#9AA3B2]/45">{t("tagline")}</p>
+              </div>
             </div>
+            <p className="max-w-[26ch] text-[13px] leading-[1.65] text-[#9AA3B2]/40">
+              {t("description")}
+            </p>
           </div>
 
-          {/* NAV LINKS */}
-          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-7 gap-y-2">
-            {LINKS.map((link) =>
-              link.href.startsWith("#") ? (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-[13px] text-[#9AA3B2]/55 transition-colors duration-200 hover:text-[#9AA3B2]"
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-[13px] text-[#9AA3B2]/55 transition-colors duration-200 hover:text-[#9AA3B2]"
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
-          </nav>
+          <NavGroup title={t("groups.product")} links={PRODUCT_LINKS} />
+          <NavGroup title={t("groups.company")} links={COMPANY_LINKS} />
+          <NavGroup title={t("groups.legal")}   links={LEGAL_LINKS} />
 
-          {/* GET STARTED */}
-          <Link
-            href="/register"
-            className="
-              hidden items-center gap-2 rounded-[10px]
-              border border-[#6D5BFF]/[0.22] bg-[rgba(109,91,255,0.08)]
-              px-4 py-2 text-[13px] font-medium text-[#A998FF]
-              transition-all duration-300 hover:border-[#6D5BFF]/[0.35] hover:bg-[rgba(109,91,255,0.14)]
-              md:flex
-            "
-          >
-            Get started
-          </Link>
         </div>
 
         {/* BOTTOM ROW */}
-        <div className="mt-8 flex flex-col gap-3 border-t border-white/[0.04] pt-8 text-[12px] text-[#9AA3B2]/35 md:flex-row md:items-center md:justify-between">
-          <p>© 2026 Gunimi. All rights reserved.</p>
+        <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.04] pt-8 text-[12px] text-[#9AA3B2]/35 sm:flex-row sm:items-center sm:justify-between">
+          <p>{t("copyright")}</p>
           <div className="flex items-center gap-5">
-            <Link href="/login"     className="transition-colors hover:text-[#9AA3B2]/60">Sign in</Link>
-            <Link href="/register"  className="transition-colors hover:text-[#9AA3B2]/60">Get started</Link>
+            <Link href="/login"    className="transition-colors hover:text-[#9AA3B2]/60">{tNav("signIn")}</Link>
+            <Link href="/register" className="transition-colors hover:text-[#9AA3B2]/60">{tNav("getStarted")}</Link>
           </div>
         </div>
+
       </div>
     </footer>
   );

@@ -4,10 +4,13 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, Mail, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
+
 import { supabase } from "@/lib/supabase";
+import AiCore from "@/components/ui/AiCore";
+import AuthCard from "@/components/auth/AuthCard";
 
 function VerifyContent() {
   const t = useTranslations("auth");
@@ -15,20 +18,17 @@ function VerifyContent() {
   const email = searchParams.get("email") || "";
 
   const [resending, setResending] = useState(false);
-  const [resent, setResent] = useState(false);
+  const [resent, setResent]       = useState(false);
 
   async function handleResend() {
     if (!email || resending) return;
-
     try {
       setResending(true);
       const { error } = await supabase.auth.resend({ type: "signup", email });
-
       if (error) {
         toast.error(t("resendFailed"));
         return;
       }
-
       setResent(true);
       toast.success(t("emailResent"));
     } catch {
@@ -39,109 +39,99 @@ function VerifyContent() {
   }
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#050816] px-6 text-white">
-      {/* BACKGROUND */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-120px] h-[360px] w-[360px] rounded-full bg-violet-500/15 blur-[160px]" />
-        <div className="absolute bottom-[-120px] right-[-120px] h-[360px] w-[360px] rounded-full bg-cyan-500/10 blur-[180px]" />
-        <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] [background-size:80px_80px]" />
-      </div>
+    <AuthCard maxWidth="max-w-[512px]" centered>
 
-      {/* CARD */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-        className="relative z-10 w-full max-w-xl overflow-hidden rounded-[32px] border border-white/[0.08] bg-white/[0.035] p-8 text-center backdrop-blur-3xl shadow-[0_0_80px_rgba(124,58,237,0.10)]"
-      >
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        <div className="pointer-events-none absolute right-[-80px] top-[-80px] h-[220px] w-[220px] rounded-full bg-violet-500/10 blur-3xl" />
-
-        <div className="relative z-10">
-          {/* ICON */}
+      {/* FOCAL VISUAL — AiCore with Mail overlay */}
+      <div className="mb-7 flex justify-center">
+        <div className="relative">
+          {/* Ambient ring */}
           <motion.div
-            animate={{ boxShadow: ["0 0 0px rgba(124,58,237,0)", "0 0 40px rgba(124,58,237,0.35)", "0 0 0px rgba(124,58,237,0)"] }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-3xl border border-violet-500/20 bg-violet-500/10"
-            aria-hidden="true"
-          >
-            <motion.div
-              animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-              className="absolute h-8 w-8 rounded-full bg-violet-400/40"
-            />
-            <Mail className="h-8 w-8 text-violet-200" />
-          </motion.div>
-
-          {/* BADGE */}
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-violet-300">
-            <Sparkles size={12} />
-            {t("verifyBadge")}
-          </div>
-
-          {/* HEADER */}
-          <h1 className="mt-8 text-4xl font-semibold tracking-tight">{t("verifyTitle")}</h1>
-          <p className="mt-5 text-sm leading-relaxed text-zinc-400">{t("verifyDescription")}</p>
-
-          {/* EMAIL */}
-          {email && (
-            <div className="mt-6 rounded-2xl border border-cyan-500/10 bg-cyan-500/5 p-5">
-              <div className="flex items-center justify-center gap-2">
-                <ShieldCheck size={16} className="text-cyan-300" />
-                <p className="text-sm text-cyan-100">{t("verifyDestination")}</p>
-              </div>
-              <p className="mt-3 break-all text-sm font-medium text-white">{email}</p>
-            </div>
-          )}
-
-          {/* STEPS */}
-          <div className="mt-6 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-5 text-left">
-            <p className="text-sm font-medium">{t("whatsNext")}</p>
-            <div className="mt-4 space-y-4">
-              {[t("step1"), t("step2"), t("step3")].map((step, index) => (
-                <div key={step} className="flex items-center gap-3">
-                  <div
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-500/10 text-xs text-violet-300"
-                    aria-hidden="true"
-                  >
-                    {index + 1}
-                  </div>
-                  <p className="text-sm text-zinc-400">{step}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ACTIONS */}
-          <div className="mt-8 flex flex-col gap-4">
-            <Link
-              href="/login"
-              className="group inline-flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-violet-500/20 bg-violet-500/10 text-sm font-medium text-violet-100 transition-all duration-300 hover:border-violet-500/30 hover:bg-violet-500/15"
-            >
-              {t("continueToLogin")}
-              <ArrowRight size={16} />
-            </Link>
-
-            <p className="text-xs text-zinc-600">
-              {t("didntReceive")}{" "}
-              {t("checkSpam")}{" "}
-              {resent ? (
-                <span className="text-emerald-400/70">{t("emailResent")}</span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleResend}
-                  disabled={resending || !email}
-                  className="text-violet-400/70 underline underline-offset-2 transition hover:text-violet-300 disabled:opacity-40"
-                >
-                  {resending ? t("resending") : t("resend")}
-                </button>
-              )}
-            </p>
+            animate={{ scale: [1, 1.08, 1], opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-0 rounded-full"
+            style={{ boxShadow: "0 0 40px rgba(109,91,255,0.28)" }}
+          />
+          <AiCore size={80} showRings showParticles={false} intensity="strong" />
+          {/* Mail icon floating below */}
+          <div className="absolute -bottom-3 left-1/2 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full border border-[#6D5BFF]/[0.22] bg-[#0A0E17]">
+            <Mail size={13} className="text-[#8B7DFF]" aria-hidden />
           </div>
         </div>
-      </motion.div>
-    </main>
+      </div>
+
+      {/* BADGE */}
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-[#6D5BFF]/[0.18] bg-[#6D5BFF]/[0.08] px-3 py-1">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#8B7DFF]" />
+        <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#8B7DFF]">
+          {t("verifyBadge")}
+        </span>
+      </div>
+
+      {/* HEADER */}
+      <h1 className="mt-6 text-[26px] font-semibold leading-[1.1] tracking-[-0.03em] text-[#F7F8FC]">
+        {t("verifyTitle")}
+      </h1>
+      <p className="mt-2.5 text-[14px] leading-[1.65] text-[#9AA3B2]">
+        {t("verifyDescription")}
+      </p>
+
+      {/* EMAIL DISPLAY */}
+      {email && (
+        <div className="mt-5 flex items-center justify-center gap-2.5 rounded-[10px] border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.06] px-4 py-3.5">
+          <Mail size={13} className="shrink-0 text-[#8B7DFF]" aria-hidden />
+          <p className="text-[13px] font-medium text-[#F7F8FC] break-all">{email}</p>
+        </div>
+      )}
+
+      {/* WHAT'S NEXT */}
+      <div className="mt-5 rounded-[10px] border border-white/[0.055] bg-white/[0.02] p-4 text-left">
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-[#9AA3B2]/60">
+          {t("whatsNext")}
+        </p>
+        <div className="mt-3.5 space-y-3">
+          {[t("step1"), t("step2"), t("step3")].map((step, index) => (
+            <div key={step} className="flex items-center gap-3">
+              <div
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#6D5BFF]/[0.12] text-[10px] font-semibold text-[#8B7DFF]"
+                aria-hidden
+              >
+                {index + 1}
+              </div>
+              <p className="text-[13px] text-[#9AA3B2]">{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ACTIONS */}
+      <div className="mt-7 flex flex-col gap-3">
+        <Link
+          href="/login"
+          className="group flex h-12 w-full items-center justify-center gap-2 rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] transition-all duration-300 hover:bg-[#7B6BFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.55)]"
+        >
+          {t("continueToLogin")}
+          <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+        </Link>
+
+        <p className="text-[12px] text-[#9AA3B2]/40">
+          {t("didntReceive")}{" "}
+          {t("checkSpam")}{" "}
+          {resent ? (
+            <span className="text-emerald-400/70">{t("emailResent")}</span>
+          ) : (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={resending || !email}
+              className="text-[#8B7DFF]/60 underline underline-offset-2 transition-colors hover:text-[#8B7DFF] disabled:opacity-40"
+            >
+              {resending ? t("resending") : t("resend")}
+            </button>
+          )}
+        </p>
+      </div>
+
+    </AuthCard>
   );
 }
 

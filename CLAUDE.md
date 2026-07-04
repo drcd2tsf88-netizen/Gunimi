@@ -67,6 +67,27 @@ Do not introduce page-specific design patterns.
 
 ---
 
+# Localization — Rule #1
+
+**Never ship user-facing text as hardcoded strings.**
+
+Every visible string must live in `locales/en.json`, `locales/sk.json`, and `locales/cs.json`.
+
+---
+
+## LOCALIZATION POLICY
+
+1. **No hardcoded strings** — ever. Not in server components, not in client components, not in data arrays.
+2. **Three locales required** — every key added to `en.json` must also exist in `sk.json` and `cs.json` with an authentic translation.
+3. **Server components** use `const t = await getTranslations('namespace')` from `next-intl/server`.
+4. **Client components** use `const t = useTranslations('namespace')` from `next-intl`.
+5. **Data arrays with text** use `t.raw('key') as SomeType[]` — never inline hardcoded arrays.
+6. **Brand terms NOT translated**: Gunimi, AI Core, Workspace, Command Center, Memory, Observatory, Automation, Gunimi AI, Living Workspace, Living Interface — these stay as-is.
+7. **No missing keys, no orphan keys, no duplicate keys** across all three locale files.
+8. **Localization audit before commit**: confirm every visible string has a key in all three locales.
+
+---
+
 # Internationalization
 
 Never hardcode user-facing text.

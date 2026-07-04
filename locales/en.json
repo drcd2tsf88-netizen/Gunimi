@@ -1374,5 +1374,432 @@
     "importanceLow": "Low",
     "entityBadge": "Memory Highlights",
     "entityTitle": "Key Moments"
+  },
+  "landing": {
+    "nav": {
+      "tagline": "AI Workspace OS",
+      "links": {
+        "features": "Features",
+        "ai": "AI",
+        "pricing": "Pricing",
+        "enterprise": "Enterprise"
+      },
+      "signIn": "Sign in",
+      "getStarted": "Get started",
+      "openMenu": "Open navigation menu",
+      "closeMenu": "Close menu"
+    },
+    "footer": {
+      "tagline": "AI Workspace OS",
+      "description": "Relationships, knowledge, and opportunity — inside one intelligent workspace.",
+      "groups": {
+        "product": "Product",
+        "company": "Company",
+        "legal": "Legal"
+      },
+      "links": {
+        "features": "Features",
+        "ai": "AI",
+        "pricing": "Pricing",
+        "changelog": "Changelog",
+        "roadmap": "Roadmap",
+        "about": "About",
+        "press": "Press",
+        "contact": "Contact",
+        "brand": "Brand",
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "cookies": "Cookies",
+        "security": "Security",
+        "aiTransparency": "AI Transparency"
+      },
+      "copyright": "© 2026 Gunimi. All rights reserved.",
+      "signIn": "Sign in",
+      "getStarted": "Get started"
+    }
+  },
+  "public": {
+    "cookieConsent": {
+      "title": "Cookie Preferences",
+      "description": "We use essential cookies to keep you signed in. No advertising or third-party tracking.",
+      "policyLink": "Cookie policy",
+      "accept": "Accept",
+      "decline": "Decline",
+      "dismissAriaLabel": "Dismiss cookie banner"
+    },
+    "notFound": {
+      "label": "404",
+      "headline": "Lost?",
+      "subline": "Let's get you back.",
+      "description": "This page doesn't exist or has moved. The workspace is still here — you just took a wrong turn.",
+      "returnHome": "Return Home",
+      "goToWorkspace": "Go to Workspace"
+    },
+    "error": {
+      "label": "System Error",
+      "headline": "Something went wrong.",
+      "description": "An unexpected error occurred. This has been noted. Please try again, or return to the home page.",
+      "tryAgain": "Try again",
+      "home": "Home"
+    },
+    "maintenance": {
+      "badge": "Scheduled Maintenance",
+      "headline": "We're upgrading.",
+      "description": "Gunimi is temporarily offline for scheduled maintenance. We're making things better — we'll be back shortly.",
+      "statusLabel": "Expected availability: check back soon",
+      "urgent": "Urgent?"
+    },
+    "about": {
+      "badge": "About Gunimi",
+      "headline": "The workspace that thinks.",
+      "subline": "Gunimi was built on a single premise: the tools businesses use to manage relationships, knowledge and communication should be as intelligent as the people using them.",
+      "story0": "Most workspace software was designed before AI existed. It was designed around records — rows, columns, statuses. It asks you to fill in fields, maintain pipelines and update boards. It is optimized for the system, not for you.",
+      "story1Start": "Gunimi is designed from a different starting point:",
+      "story1Emphasis": "what if your workspace understood context?",
+      "story1End": "What if it connected the deal to the note to the email to the company? What if it surfaced the right thing before you had to go looking for it?",
+      "story2": "We are building an AI Workspace Operating System — a platform where companies, contacts, deals, tasks, notes and communication exist inside a shared intelligence layer. One system. Full context. Always available.",
+      "pillarsHeadline": "What we stand for.",
+      "pillars": [
+        { "title": "One workspace", "body": "Contacts, deals, notes, tasks, email and intelligence — unified inside a single operating layer. No tab switching. No context loss." },
+        { "title": "Intelligence first", "body": "AI is not an add-on. It runs through every surface: drafting, surfacing signals, connecting the dots across your relationship graph." },
+        { "title": "Enterprise trust", "body": "Workspace isolation, encrypted data at rest and in transit, fine-grained permissions, and audit trails built in from day one." },
+        { "title": "Built for teams", "body": "Multi-workspace architecture supports the way your business is actually structured — not an idealized org chart." }
+      ],
+      "quote": "\"Relationships are the most important asset in any business. We're building the OS to manage them.\"",
+      "quoteAttrib": "— Gunimi Team"
+    },
+    "contact": {
+      "badge": "Contact",
+      "headline": "Get in touch.",
+      "subline": "Select a category and we'll route your message to the right team. We aim to respond within one business day.",
+      "categoryLabel": "Category",
+      "categories": {
+        "general": "General",
+        "support": "Support",
+        "security": "Security",
+        "enterprise": "Enterprise"
+      },
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@company.com",
+      "messageLabel": "Message",
+      "messagePlaceholder": "How can we help?",
+      "successMessage": "Message sent. We'll be in touch soon.",
+      "sendingLabel": "Sending…",
+      "submitLabel": "Send message"
+    },
+    "security": {
+      "badge": "Trust & Security",
+      "headline": "Enterprise-grade",
+      "headlineAccent": "security.",
+      "subline": "Your business data deserves serious protection. Here is exactly how Gunimi secures it — from storage to access to AI processing.",
+      "ctaText": "Questions about security or compliance?",
+      "sections": [
+        {
+          "title": "Encryption",
+          "items": [
+            "All data encrypted at rest using AES-256",
+            "All data encrypted in transit via TLS 1.3",
+            "Database credentials and secrets managed via environment-level secrets, never in source code",
+            "API keys are never exposed client-side"
+          ]
+        },
+        {
+          "title": "Infrastructure",
+          "items": [
+            "Hosted on Supabase — SOC 2 Type II compliant infrastructure",
+            "Data stored in EU regions by default",
+            "Automatic backups with point-in-time recovery",
+            "Redundant, highly available architecture"
+          ]
+        },
+        {
+          "title": "Workspace isolation",
+          "items": [
+            "Every workspace is strictly isolated at the data layer",
+            "Row-level security (RLS) enforced at the database level, not just the application layer",
+            "No cross-workspace data access is possible by design",
+            "Workspace-scoped permissions for every resource"
+          ]
+        },
+        {
+          "title": "Authentication & access",
+          "items": [
+            "Secure email + password authentication via Supabase Auth",
+            "OAuth 2.0 support with server-side state verification",
+            "Session tokens are short-lived and rotated automatically",
+            "Password reset flows are rate-limited and signed"
+          ]
+        },
+        {
+          "title": "Privacy by design",
+          "items": [
+            "We do not sell or share your data with third parties",
+            "Contact and company data is workspace-private",
+            "Error monitoring excludes personally identifiable information",
+            "Session replay tools are configured with full text masking"
+          ]
+        },
+        {
+          "title": "AI & data access",
+          "items": [
+            "AI features operate only on data within your workspace",
+            "Your data is never used to train third-party models",
+            "AI prompts and outputs are not stored beyond the session",
+            "See our AI Transparency page for full details"
+          ]
+        },
+        {
+          "title": "Responsible disclosure",
+          "items": [
+            "We take security reports seriously and respond within 48 hours",
+            "Email security@gunimi.com for responsible disclosure",
+            "We do not pursue legal action against good-faith security researchers"
+          ]
+        }
+      ]
+    },
+    "aiTransparency": {
+      "badge": "AI Transparency",
+      "headline": "AI that works",
+      "headlineAccent": "for you.",
+      "subline": "We believe you have a right to know exactly what our AI can access, what it cannot do, and how your data is handled.",
+      "canTitle": "AI can",
+      "cannotTitle": "AI cannot",
+      "can": [
+        "Read workspace data (contacts, companies, deals, notes, tasks) that you explicitly share in a prompt",
+        "Generate drafts, summaries and suggestions based on that data",
+        "Surface related records from your workspace when relevant",
+        "Help you compose emails, notes and action items"
+      ],
+      "cannot": [
+        "Access other workspaces or data that belongs to other organizations",
+        "Modify records without explicit user confirmation",
+        "Access external URLs, websites or APIs on your behalf",
+        "See data from workspaces you are not a member of",
+        "Remember previous conversations across separate sessions"
+      ],
+      "principlesHeadline": "Our principles.",
+      "principles": [
+        { "title": "Your data is not training data", "body": "Content you create in Gunimi — contacts, deals, notes, messages — is never used to train AI models, ours or anyone else's. Your business data is yours." },
+        { "title": "Workspace-scoped context only", "body": "AI features only operate on data within your active workspace. There is no cross-workspace AI context — ever." },
+        { "title": "Human confirmation for writes", "body": "AI can draft and suggest, but it cannot modify, create or delete records without an explicit action from a human. Every write is intentional." },
+        { "title": "Hallucinations are real", "body": "AI can and does generate incorrect information. Treat AI output as a draft, not a source of truth. Always verify important facts from primary sources." },
+        { "title": "Prompts are not stored", "body": "Your prompts and AI responses are not stored in our database beyond the current session. They are not accessible to other users or team members." },
+        { "title": "Third-party models", "body": "Gunimi uses third-party AI model providers to power intelligence features. We have data processing agreements in place that prohibit use of your data for model training." }
+      ],
+      "warningTitle": "AI can be wrong.",
+      "warningBody": "AI-generated content in Gunimi is a starting point, not an authoritative record. Always verify critical business information against primary sources. The responsibility for decisions made using AI-assisted information remains with the human making that decision."
+    },
+    "changelog": {
+      "badge": "Changelog",
+      "headline": "What's new.",
+      "subline": "Every update, improvement and fix — in one place.",
+      "tags": {
+        "new": "New",
+        "improved": "Improved",
+        "security": "Security",
+        "fixed": "Fixed"
+      },
+      "releases": [
+        {
+          "version": "0.9",
+          "date": "June 2026",
+          "title": "Workspace Intelligence",
+          "description": "The AI layer is now available across the entire workspace. Orbit Intelligence can surface related records, draft communication, and summarise deal history in context.",
+          "changes": [
+            { "tag": "new", "text": "Orbit Intelligence panel — AI assistant scoped to your workspace" },
+            { "tag": "new", "text": "Deal summary: AI-generated brief from notes, tasks and emails" },
+            { "tag": "new", "text": "Analytics dashboard with real-time pipeline metrics" },
+            { "tag": "improved", "text": "Multi-workspace switching — instant transitions with state preservation" },
+            { "tag": "improved", "text": "Workspace shell redesigned: Deep Space atmosphere, cinematic headings" },
+            { "tag": "security", "text": "Row-level security reinforced across all resource types" }
+          ]
+        },
+        {
+          "version": "0.8",
+          "date": "April 2026",
+          "title": "Pipeline & Deals",
+          "description": "Full deal pipeline with stage management, deal cards, and relationship linking. Connect contacts and companies to active opportunities.",
+          "changes": [
+            { "tag": "new", "text": "Deal pipeline with drag-and-drop stage management" },
+            { "tag": "new", "text": "Deal detail view with timeline, notes and linked contacts" },
+            { "tag": "new", "text": "Company and contact linking from deal context" },
+            { "tag": "improved", "text": "CRM list view with inline filtering and sorting" },
+            { "tag": "fixed", "text": "Activity feed not updating after note creation" }
+          ]
+        },
+        {
+          "version": "0.7",
+          "date": "February 2026",
+          "title": "Contacts & Companies",
+          "description": "Relationship intelligence foundation — full contact and company management with activity timelines and note capture.",
+          "changes": [
+            { "tag": "new", "text": "Contact detail view with activity timeline" },
+            { "tag": "new", "text": "Company profiles with contact association" },
+            { "tag": "new", "text": "Note capture on contacts, companies and deals" },
+            { "tag": "improved", "text": "Global search across contacts, companies and deals" },
+            { "tag": "security", "text": "Workspace-scoped access control for all CRM data" }
+          ]
+        },
+        {
+          "version": "0.6",
+          "date": "December 2025",
+          "title": "Workspace Foundation",
+          "description": "Multi-workspace architecture, workspace creation flow, invites, and the workspace operating shell.",
+          "changes": [
+            { "tag": "new", "text": "Multi-workspace support — create and switch between workspaces" },
+            { "tag": "new", "text": "Workspace creation wizard with logo upload" },
+            { "tag": "new", "text": "Team member invitations via email" },
+            { "tag": "improved", "text": "Onboarding flow redesigned as a guided checklist" },
+            { "tag": "fixed", "text": "Session expiry not redirecting correctly on workspace pages" }
+          ]
+        }
+      ]
+    },
+    "roadmap": {
+      "badge": "Roadmap",
+      "headline": "Where we're going.",
+      "subline": "A transparent view of what's being built, what's coming next, and the longer-term vision for Gunimi.",
+      "disclaimer": "Roadmap reflects current intentions and is subject to change. Priority and timing may shift based on product direction.",
+      "columns": {
+        "inProgress": { "label": "In Progress", "description": "Active now" },
+        "planned": { "label": "Planned", "description": "Next up" },
+        "future": { "label": "Future Vision", "description": "Long horizon" }
+      },
+      "inProgress": [
+        { "title": "Email integration", "description": "Send and receive email inside Gunimi. Full thread view with AI-assisted replies." },
+        { "title": "Relationship intelligence graph", "description": "Visualise connections between contacts, companies and deals. Identify warm paths." },
+        { "title": "AI meeting prep", "description": "Automatic brief before any scheduled meeting. Surface relevant deals, notes and history." },
+        { "title": "Task automation", "description": "Trigger tasks from deal stage changes, contact activity or calendar events." }
+      ],
+      "planned": [
+        { "title": "Calendar integration", "description": "Connect Google Calendar or Outlook. See meetings alongside contacts and deals." },
+        { "title": "Mobile application", "description": "iOS and Android apps with full offline support and push notifications." },
+        { "title": "Custom fields", "description": "Add workspace-specific fields to contacts, companies, deals and tasks." },
+        { "title": "API & webhooks", "description": "Public API with webhook support for integrating Gunimi into your existing stack." },
+        { "title": "Advanced reporting", "description": "Pipeline velocity, win rates, activity metrics and custom dashboards." }
+      ],
+      "future": [
+        { "title": "Autonomous agents", "description": "AI agents that take actions — scheduling, follow-ups, data enrichment — with your approval." },
+        { "title": "Revenue intelligence", "description": "Predictive deal scoring, churn risk signals and revenue forecasting." },
+        { "title": "Partner ecosystem", "description": "Native integrations with Hubspot, Salesforce, Stripe, Notion and more." },
+        { "title": "White-label workspaces", "description": "Agencies and consultancies can deploy Gunimi under their own brand for clients." },
+        { "title": "Orbit Memory", "description": "Long-term persistent AI memory per workspace — context that builds over time." }
+      ]
+    },
+    "press": {
+      "badge": "Press & Media",
+      "headline": "Press kit.",
+      "subline": "Everything you need to write about Gunimi — company overview, brand assets, and media contact.",
+      "brandmarkTitle": "Brand mark",
+      "brandmarkBody": "The AiCore orbital mark with the wordmark Gunimi in the same weight.",
+      "brandmarkMinSize": "Minimum size: 24px height. Always on dark backgrounds.",
+      "brandmarkDarkLabel": "Dark background",
+      "brandmarkLightLabel": "Light background",
+      "downloadAssetsLabel": "Download assets — coming soon",
+      "brandColorsTitle": "Brand colors",
+      "companyTitle": "Company",
+      "companyBody": "Gunimi is an AI-first Workspace Operating System that unifies relationship management, knowledge, communication and opportunity tracking inside a single intelligent platform. Built for modern teams that need context — not more software.",
+      "mediaContactTitle": "Media contact",
+      "mediaContactDescription": "For press enquiries, interview requests, or editorial collaboration.",
+      "brandColors": [
+        { "name": "Primary", "hex": "#6D5BFF", "description": "Primary brand violet" },
+        { "name": "Primary 300", "hex": "#8B7DFF", "description": "Interactive states" },
+        { "name": "Primary 200", "hex": "#A998FF", "description": "Light accents" },
+        { "name": "Deep Space", "hex": "#05060A", "description": "Background" },
+        { "name": "Dark Titanium", "hex": "#0A0E17", "description": "Card surface" },
+        { "name": "Text Primary", "hex": "#F7F8FC", "description": "Headings & body" }
+      ],
+      "facts": [
+        { "label": "Founded", "value": "2025" },
+        { "label": "Stage", "value": "Early Access" },
+        { "label": "Category", "value": "AI Workspace OS" },
+        { "label": "HQ", "value": "Remote — Europe" }
+      ]
+    },
+    "brand": {
+      "badge": "Brand Guidelines",
+      "headline": "The Gunimi identity.",
+      "subline": "How we look, speak and present ourselves. Use these guidelines to represent Gunimi consistently and professionally.",
+      "logomarkTitle": "Logomark",
+      "logomarkBody": "The AiCore orbital mark with the wordmark Gunimi in the same weight.",
+      "logomarkMinSize": "Minimum size: 24px height. Always on dark backgrounds.",
+      "logomarkCorrect": "Gunimi — correct",
+      "logomarkIncorrect": "GUNIMI / gunimi — incorrect",
+      "colorSystemTitle": "Color system",
+      "typographyTitle": "Typography",
+      "typefaceLabel": "Typeface:",
+      "typefaceName": "Geist",
+      "typefaceDesc": "— sans-serif, variable weight.",
+      "trackingLabel": "tracking",
+      "voiceTitle": "Voice & tone",
+      "voiceDescription": "Gunimi speaks like a senior operator: calm, direct, precise. Never hype. Never fluff.",
+      "doLabel": "Do",
+      "dontLabel": "Don't",
+      "typography": [
+        { "sample": "The workspace that thinks.", "size": "64px", "weight": "Bold / 700", "tracking": "-0.04em", "use": "Hero headings" },
+        { "sample": "Relationship intelligence.", "size": "40px", "weight": "Bold / 700", "tracking": "-0.03em", "use": "Section headings" },
+        { "sample": "Connect what matters.", "size": "26px", "weight": "Semibold / 600", "tracking": "-0.02em", "use": "Page titles" },
+        { "sample": "Every deal. Every contact. One workspace.", "size": "16px", "weight": "Regular / 400", "tracking": "0", "use": "Body text" }
+      ],
+      "colors": [
+        {
+          "group": "Primary",
+          "swatches": [
+            { "name": "Primary", "hex": "#6D5BFF" },
+            { "name": "Primary 300", "hex": "#8B7DFF" },
+            { "name": "Primary 200", "hex": "#A998FF" }
+          ]
+        },
+        {
+          "group": "Background",
+          "swatches": [
+            { "name": "Deep Space", "hex": "#05060A" },
+            { "name": "Dark Titanium", "hex": "#0A0E17" },
+            { "name": "Surface 2", "hex": "#10151F" }
+          ]
+        },
+        {
+          "group": "Text",
+          "swatches": [
+            { "name": "Text Primary", "hex": "#F7F8FC" },
+            { "name": "Text Secondary", "hex": "#C8CDD8" },
+            { "name": "Text Tertiary", "hex": "#9AA3B2" }
+          ]
+        }
+      ],
+      "voice": [
+        { "title": "Precise, not verbose", "do": "\"AI that understands your business.\"", "dont": "\"Powerful AI features designed to help businesses like yours succeed.\"" },
+        { "title": "Confident, not arrogant", "do": "\"Built for the way modern teams work.\"", "dont": "\"The best workspace platform in the world.\"" },
+        { "title": "Human, not robotic", "do": "\"Your contacts, your context, always.\"", "dont": "\"Optimize contact relationship management workflows.\"" }
+      ]
+    },
+    "cookies": {
+      "badge": "Legal",
+      "headline": "Cookie Policy",
+      "lastUpdated": "Last updated:",
+      "section1Title": "1. What are cookies?",
+      "section2Title": "2. How we use cookies",
+      "section3Title": "3. Essential vs non-essential cookies",
+      "section4Title": "4. Local storage",
+      "section5Title": "5. Managing cookies",
+      "section6Title": "6. Changes to this policy",
+      "section7Title": "7. Contact",
+      "tableHeaderCookie": "Cookie",
+      "tableHeaderPurpose": "Purpose",
+      "tableHeaderDuration": "Duration"
+    },
+    "privacy": {
+      "badge": "Legal",
+      "headline": "Privacy Policy",
+      "lastUpdated": "Last updated:"
+    },
+    "terms": {
+      "badge": "Legal",
+      "headline": "Terms of Service",
+      "lastUpdated": "Last updated:"
+    }
   }
 }

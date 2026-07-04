@@ -7,6 +7,7 @@ import { NextIntlClientProvider } from "next-intl";
 import messages from "@/locales/en.json";
 import { OrbitRuntimeProvider } from "@/core/runtime/OrbitRuntimeProvider";
 import { APP_CONFIG } from "@/lib/config/app";
+import CookieConsent from "@/components/public/CookieConsent";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -118,6 +119,7 @@ export default function RootLayout({
           />
 
           {children}
+          <CookieConsent />
         </OrbitRuntimeProvider>
         </NextIntlClientProvider>
       </body>

@@ -1,447 +1,180 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import PublicLayout from "@/components/public/PublicLayout";
 
-export const metadata = {
-  title: "Privacy Policy",
+export const metadata: Metadata = {
+  title: "Privacy Policy — Gunimi",
+  description: "How Gunimi collects, uses, and protects your personal data.",
+  openGraph: {
+    title: "Privacy Policy — Gunimi",
+    description: "How Gunimi collects, uses, and protects your personal data.",
+    type: "website",
+    url: "https://gunimi.com/privacy",
+  },
 };
 
-export default function PrivacyPage() {
+const LAST_UPDATED = "June 17, 2026";
+
+export default async function PrivacyPage() {
+  const t = await getTranslations("public.privacy");
+
   return (
-    <main
-      className="
-        min-h-screen
-        bg-[#060816]
-        text-white
-      "
-    >
-      <div
-        className="
-          mx-auto
-          max-w-3xl
-          px-6
-          py-16
-        "
-      >
+    <PublicLayout>
+      <div className="relative overflow-hidden">
+
+        {/* AMBIENT */}
+        <div className="pointer-events-none absolute inset-0">
+          <div
+            className="absolute left-1/2 top-0 h-[360px] w-[560px] -translate-x-1/2"
+            style={{ background: "radial-gradient(ellipse, rgba(109,91,255,0.05), transparent 65%)", filter: "blur(80px)" }}
+          />
+        </div>
+
         {/* HEADER */}
-
-        <div className="mb-12">
-          <Link
-            href="/"
-            className="
-              mb-8
-              inline-flex
-              items-center
-              gap-2
-              text-sm
-              text-zinc-500
-              transition
-              hover:text-white
-            "
-          >
-            ← Gunimi
-          </Link>
-
-          <div
-            className="
-              mt-6
-              inline-flex
-              rounded-full
-              border
-              border-zinc-800
-              bg-zinc-900
-              px-4
-              py-1.5
-              text-xs
-              text-zinc-500
-            "
-          >
-            Private Alpha — June 2026
+        <section className="relative mx-auto max-w-3xl px-6 pb-12 pt-24 md:pt-32">
+          <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.03] px-3 py-1">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9AA3B2]/60">
+              {t("badge")}
+            </span>
           </div>
-
-          <h1
-            className="
-              mt-4
-              text-4xl
-              font-bold
-            "
-          >
-            Privacy Policy
+          <h1 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC]">
+            {t("headline")}
           </h1>
+          <p className="mt-3 text-[14px] text-[#9AA3B2]/50">{t("lastUpdated")} {LAST_UPDATED}</p>
+        </section>
 
-          <p className="mt-3 text-zinc-500">
-            Last updated: June 17, 2026
-          </p>
-        </div>
+        {/* BODY */}
+        <section className="relative mx-auto max-w-3xl px-6 pb-32">
+          <div className="space-y-10 text-[15px] leading-[1.8] text-[#9AA3B2]">
 
-        {/* CONTENT */}
-
-        <div
-          className="
-            space-y-10
-            text-zinc-300
-          "
-        >
-          <section>
-            <p className="leading-relaxed">
-              Gunimi (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;) operates an
-              AI-first workspace operating system for business teams. This Privacy
-              Policy explains what data we collect, how we use it, and your rights
-              as a user. By creating an account you agree to the practices described
-              here.
-            </p>
-
-            <p className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-300">
-              Gunimi is currently in private alpha. Features, data practices, and
-              this policy may evolve. We will notify registered users of material
-              changes by email.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              1. Data We Collect
-            </h2>
-
-            <div className="space-y-4 text-sm leading-relaxed">
-              <div>
-                <p className="font-medium text-white">Account Information</p>
-                <p className="mt-1 text-zinc-400">
-                  When you register, we collect your email address, full name, and
-                  any profile information you choose to provide (job title, avatar).
-                </p>
-              </div>
-
-              <div>
-                <p className="font-medium text-white">Workspace Data</p>
-                <p className="mt-1 text-zinc-400">
-                  All content you create inside Gunimi — companies, contacts,
-                  deals, notes, tasks, and activity records — is stored in your
-                  workspace and associated with your account.
-                </p>
-              </div>
-
-              <div>
-                <p className="font-medium text-white">Usage Activity</p>
-                <p className="mt-1 text-zinc-400">
-                  We record workspace activity events (e.g. &ldquo;deal created&rdquo;,
-                  &ldquo;task completed&rdquo;) to power your activity feed and workspace
-                  analytics.
-                </p>
-              </div>
-
-              <div>
-                <p className="font-medium text-white">Technical Data</p>
-                <p className="mt-1 text-zinc-400">
-                  Standard server logs including IP addresses, browser type, and
-                  request timestamps for security and debugging purposes.
-                </p>
+            <div>
+              <p>
+                Gunimi (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;) operates an AI-first workspace
+                operating system for business teams. This Privacy Policy explains what data we collect,
+                how we use it, and your rights as a user. By creating an account you agree to the
+                practices described here.
+              </p>
+              <div className="mt-4 rounded-[14px] border border-amber-500/[0.16] bg-amber-500/[0.05] p-4 text-[14px] text-amber-400/80">
+                Gunimi is currently in private alpha. Features, data practices, and this policy may
+                evolve. We will notify registered users of material changes by email.
               </div>
             </div>
-          </section>
 
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              2. How We Use Your Data
-            </h2>
-
-            <ul
-              className="
-                space-y-2
-                text-sm
-                leading-relaxed
-                text-zinc-400
-              "
-            >
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                To provide and operate the Gunimi platform
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                To authenticate your identity and secure your workspace
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                To power AI features: note content may be sent to OpenAI&rsquo;s
-                API to generate summaries and insights (see Section 4)
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                To send transactional emails (workspace invites, verification)
-                via Resend
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                To improve the product during the alpha period based on usage
-                patterns
-              </li>
-            </ul>
-
-            <p className="mt-4 text-sm text-zinc-500">
-              We do not sell your data. We do not use your data for advertising.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              3. Data Storage & Security
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              Your data is stored in Supabase, a managed PostgreSQL platform. Data
-              may be stored in the US or EU depending on your region. We enforce
-              row-level security (RLS) so that workspace data is only accessible to
-              authenticated members of that workspace.
-            </p>
-
-            <p className="mt-3 text-sm leading-relaxed text-zinc-400">
-              Authentication is handled by Supabase Auth using email and password.
-              Passwords are never stored in plain text. All connections are
-              encrypted via TLS.
-            </p>
-
-            <p className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 text-sm text-zinc-400">
-              <span className="font-medium text-white">Alpha note:</span> During the
-              private alpha period, workspace data may be reset, migrated, or
-              deleted without advance notice as we iterate on the product. We
-              recommend not storing business-critical information in Gunimi
-              during this phase.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              4. AI & Third-Party Services
-            </h2>
-
-            <div className="space-y-4 text-sm leading-relaxed">
-              <div>
-                <p className="font-medium text-white">OpenAI</p>
-                <p className="mt-1 text-zinc-400">
-                  When you use AI features (note summarization, AI assistant),
-                  the relevant content is sent to OpenAI&rsquo;s API for processing.
-                  OpenAI&rsquo;s{" "}
-                  <span className="text-zinc-300">
-                    data usage policies apply
-                  </span>
-                  . We do not send your account credentials or payment information
-                  to OpenAI.
-                </p>
+            {[
+              {
+                title: "1. Data We Collect",
+                content: (
+                  <div className="space-y-4 text-[14px]">
+                    <div>
+                      <p className="font-medium text-[#C8CDD8]">Account Information</p>
+                      <p className="mt-1">When you register, we collect your email address, full name, and any profile information you choose to provide (job title, avatar).</p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-[#C8CDD8]">Workspace Data</p>
+                      <p className="mt-1">All content you create inside Gunimi — companies, contacts, deals, notes, tasks, and activity records — is stored in your workspace and associated with your account.</p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-[#C8CDD8]">Usage Activity</p>
+                      <p className="mt-1">We record workspace activity events (e.g. &ldquo;deal created&rdquo;, &ldquo;task completed&rdquo;) to power your activity feed and workspace analytics.</p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-[#C8CDD8]">Technical Data</p>
+                      <p className="mt-1">Standard server logs including IP addresses, browser type, and request timestamps for security and debugging purposes.</p>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                title: "2. How We Use Your Data",
+                content: (
+                  <ul className="space-y-2 text-[14px]">
+                    {[
+                      "To provide and operate the Gunimi platform",
+                      "To authenticate your identity and secure your workspace",
+                      "To power AI features: note content may be sent to AI model providers to generate summaries and insights (see Section 4)",
+                      "To send transactional emails (workspace invites, verification) via Resend",
+                      "To improve the product during the alpha period based on usage patterns",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2.5">
+                        <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#6D5BFF]/50" />
+                        {item}
+                      </li>
+                    ))}
+                    <li className="text-[#9AA3B2]/50">We do not sell your data. We do not use your data for advertising.</li>
+                  </ul>
+                ),
+              },
+              {
+                title: "3. Data Storage & Security",
+                content: (
+                  <div className="space-y-3 text-[14px]">
+                    <p>Your data is stored in Supabase, a managed PostgreSQL platform. Data may be stored in the EU depending on your region. We enforce row-level security (RLS) so that workspace data is only accessible to authenticated members of that workspace.</p>
+                    <p>Authentication is handled by Supabase Auth using email and password. Passwords are never stored in plain text. All connections are encrypted via TLS 1.3.</p>
+                    <div className="rounded-[12px] border border-white/[0.055] bg-[#0A0E17] p-4">
+                      <span className="font-medium text-[#C8CDD8]">Alpha note: </span>
+                      During the private alpha period, workspace data may be reset, migrated, or deleted without advance notice as we iterate on the product. We recommend not storing business-critical information in Gunimi during this phase.
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                title: "4. AI & Third-Party Services",
+                content: (
+                  <div className="space-y-4 text-[14px]">
+                    {[
+                      { name: "AI Model Providers", body: "When you use AI features, the relevant content is sent to third-party AI model APIs for processing. We have data processing agreements that prohibit use of your data for model training. We do not send credentials or payment information to AI providers." },
+                      { name: "Supabase", body: "Database, authentication, and real-time features are provided by Supabase, Inc." },
+                      { name: "Resend", body: "Transactional emails are sent via Resend. Email addresses are shared with Resend only for delivery purposes." },
+                      { name: "Upstash Redis", body: "User IDs are stored temporarily in Upstash Redis for rate limiting purposes. No personal data beyond user ID is stored." },
+                    ].map(({ name, body }) => (
+                      <div key={name}>
+                        <p className="font-medium text-[#C8CDD8]">{name}</p>
+                        <p className="mt-1">{body}</p>
+                      </div>
+                    ))}
+                  </div>
+                ),
+              },
+              {
+                title: "5. Your Rights",
+                content: (
+                  <div className="space-y-3 text-[14px]">
+                    <p>Depending on your jurisdiction, you may have rights including:</p>
+                    <ul className="space-y-2">
+                      {["Access to the personal data we hold about you", "Correction of inaccurate data", "Deletion of your account and associated data", "Export of your workspace data"].map((r) => (
+                        <li key={r} className="flex items-start gap-2.5">
+                          <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#6D5BFF]/50" />
+                          {r}
+                        </li>
+                      ))}
+                    </ul>
+                    <p>To exercise any of these rights, email <a href="mailto:support@gunimi.com" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">support@gunimi.com</a>. We will respond within 30 days.</p>
+                  </div>
+                ),
+              },
+              {
+                title: "6. Data Retention",
+                content: <p className="text-[14px]">We retain your account and workspace data for as long as your account is active. If you request account deletion, we will remove your personal data within 30 days, except where we are required to retain it by law.</p>,
+              },
+              {
+                title: "7. Cookies",
+                content: <p className="text-[14px]">Gunimi uses session cookies provided by Supabase Auth to keep you logged in. These are strictly necessary for the service to function and do not track you across third-party websites. See our <a href="/cookies" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">Cookie Policy</a> for full details.</p>,
+              },
+              {
+                title: "8. Contact",
+                content: <p className="text-[14px]">For privacy questions, data requests, or concerns, contact us at <a href="mailto:support@gunimi.com" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">support@gunimi.com</a>.</p>,
+              },
+            ].map(({ title, content }) => (
+              <div key={title}>
+                <h2 className="mb-4 text-[19px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">{title}</h2>
+                {content}
               </div>
+            ))}
 
-              <div>
-                <p className="font-medium text-white">Supabase</p>
-                <p className="mt-1 text-zinc-400">
-                  Database, authentication, and real-time features are provided by
-                  Supabase, Inc.
-                </p>
-              </div>
-
-              <div>
-                <p className="font-medium text-white">Resend</p>
-                <p className="mt-1 text-zinc-400">
-                  Transactional emails (workspace invites, account verification) are
-                  sent via Resend. Email addresses are shared with Resend only for
-                  delivery purposes.
-                </p>
-              </div>
-
-              <div>
-                <p className="font-medium text-white">Upstash Redis</p>
-                <p className="mt-1 text-zinc-400">
-                  User IDs are stored temporarily in Upstash Redis for rate limiting
-                  purposes. No personal data beyond user ID is stored.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              5. Your Rights
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              Depending on your jurisdiction, you may have rights including:
-            </p>
-
-            <ul
-              className="
-                mt-3
-                space-y-2
-                text-sm
-                leading-relaxed
-                text-zinc-400
-              "
-            >
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                Access to the personal data we hold about you
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                Correction of inaccurate data
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                Deletion of your account and associated data
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-0.5 text-violet-400">→</span>
-                Export of your workspace data
-              </li>
-            </ul>
-
-            <p className="mt-4 text-sm text-zinc-400">
-              To exercise any of these rights, email{" "}
-              <a
-                href="mailto:support@gunimi.com"
-                className="text-violet-400 underline"
-              >
-                support@gunimi.com
-              </a>
-              . We will respond within 30 days.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              6. Data Retention
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              We retain your account and workspace data for as long as your account
-              is active. If you request account deletion, we will remove your
-              personal data within 30 days, except where we are required to retain
-              it by law.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              7. Cookies
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              Gunimi uses session cookies provided by Supabase Auth to keep you
-              logged in. These are strictly necessary for the service to function and
-              do not track you across third-party websites. We do not use advertising
-              cookies or third-party tracking scripts.
-            </p>
-          </section>
-
-          <section>
-            <h2
-              className="
-                mb-4
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              8. Contact
-            </h2>
-
-            <p className="text-sm leading-relaxed text-zinc-400">
-              For privacy questions, data requests, or concerns, contact us at{" "}
-              <a
-                href="mailto:support@gunimi.com"
-                className="text-violet-400 underline"
-              >
-                support@gunimi.com
-              </a>
-              .
-            </p>
-          </section>
-
-          {/* FOOTER NAV */}
-
-          <div
-            className="
-              border-t
-              border-zinc-800
-              pt-8
-              text-sm
-              text-zinc-600
-            "
-          >
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/terms"
-                className="transition hover:text-zinc-300"
-              >
-                Terms of Service
-              </Link>
-
-              <Link
-                href="/register"
-                className="transition hover:text-zinc-300"
-              >
-                Create Account
-              </Link>
-
-              <a
-                href="mailto:support@gunimi.com"
-                className="transition hover:text-zinc-300"
-              >
-                Support
-              </a>
-            </div>
-
-            <p className="mt-4 text-zinc-700">
-              © 2026 Gunimi. All rights reserved.
-            </p>
           </div>
-        </div>
+        </section>
+
       </div>
-    </main>
+    </PublicLayout>
   );
 }

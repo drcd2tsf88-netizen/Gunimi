@@ -371,9 +371,14 @@ export default function DashboardLayoutClient({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1"
+            className="relative flex-1 px-5 py-6 lg:px-8 lg:py-8"
           >
-            {children}
+            {/* Subtle deep-space ambient — very faint top-right nebula */}
+            <div
+              className="pointer-events-none absolute right-0 top-0 h-[400px] w-[600px] opacity-[0.04]"
+              style={{ background: "radial-gradient(ellipse at top right, #6D5BFF, transparent 60%)" }}
+            />
+            <div className="relative z-10">{children}</div>
           </motion.main>
         </AnimatePresence>
       </div>

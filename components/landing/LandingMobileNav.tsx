@@ -3,25 +3,24 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
-
-// ─────────────────────────────────────────────────────────────
-// LandingMobileNav — Slide-in nav drawer. GDL v1.0.
-// ─────────────────────────────────────────────────────────────
 
 type LandingMobileNavProps = {
   open: boolean;
   onClose: () => void;
 };
 
-const LINKS = [
-  { label: "Features",  href: "#systems" },
-  { label: "AI",        href: "#ai" },
-  { label: "Pricing",   href: "#pricing" },
-  { label: "Enterprise",href: "#enterprise" },
-];
-
 export default function LandingMobileNav({ open, onClose }: LandingMobileNavProps) {
+  const t = useTranslations("landing.nav");
+
+  const LINKS = [
+    { label: t("links.features"),   href: "#systems" },
+    { label: t("links.ai"),         href: "#ai" },
+    { label: t("links.pricing"),    href: "#pricing" },
+    { label: t("links.enterprise"), href: "#enterprise" },
+  ];
+
   return (
     <AnimatePresence>
       {open && (
@@ -50,12 +49,12 @@ export default function LandingMobileNav({ open, onClose }: LandingMobileNavProp
                 <AiCore size={28} showRings={false} showParticles={false} intensity="strong" />
                 <div>
                   <p className="text-[14px] font-semibold text-[#F7F8FC]">Gunimi</p>
-                  <p className="text-[10.5px] text-[#9AA3B2]/45">AI Workspace OS</p>
+                  <p className="text-[10.5px] text-[#9AA3B2]/45">{t("tagline")}</p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                aria-label="Close menu"
+                aria-label={t("closeMenu")}
                 className="flex h-9 w-9 items-center justify-center rounded-[9px] border border-white/[0.07] bg-white/[0.025] text-[#9AA3B2] transition-colors hover:text-[#F7F8FC]"
               >
                 <X size={16} />
@@ -66,7 +65,7 @@ export default function LandingMobileNav({ open, onClose }: LandingMobileNavProp
             <nav className="mt-10 flex flex-col gap-1.5">
               {LINKS.map((item) => (
                 <a
-                  key={item.label}
+                  key={item.href}
                   href={item.href}
                   onClick={onClose}
                   className="rounded-[12px] border border-transparent px-4 py-3.5 text-[14px] font-medium text-[#C8CDD8] transition-all duration-200 hover:border-white/[0.07] hover:bg-white/[0.03]"
@@ -83,14 +82,14 @@ export default function LandingMobileNav({ open, onClose }: LandingMobileNavProp
                 onClick={onClose}
                 className="flex h-12 w-full items-center justify-center rounded-[12px] border border-white/[0.08] bg-white/[0.03] text-[14px] font-medium text-[#9AA3B2] transition-all hover:border-white/[0.14] hover:text-[#F7F8FC]"
               >
-                Sign in
+                {t("signIn")}
               </Link>
               <Link
                 href="/register"
                 onClick={onClose}
                 className="flex h-12 w-full items-center justify-center gap-2 rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] transition-all hover:bg-[#7B6BFF]"
               >
-                Get started
+                {t("getStarted")}
                 <ArrowRight size={15} />
               </Link>
             </div>
