@@ -1416,6 +1416,140 @@
       "copyright": "© 2026 Gunimi. All rights reserved.",
       "signIn": "Sign in",
       "getStarted": "Get started"
+    },
+    "hero": {
+      "badge": "AI Workspace Operating System",
+      "headlineLine1": "Your business,",
+      "headlineLine2": "fully intelligent.",
+      "subtitle": "Gunimi unifies your relationships, deals, tasks, and knowledge into a single workspace — with AI that actually understands your business.",
+      "ctaPrimary": "Start for free",
+      "ctaSecondary": "Sign in to workspace",
+      "trustSignals": ["SOC 2 Type II", "End-to-end encrypted", "GDPR compliant"]
+    },
+    "workspacePreview": {
+      "eyebrow": "Inside the workspace",
+      "headlineLine1": "Everything visible.",
+      "headlineLine2": "Nothing missed.",
+      "subtitle": "A live view of your entire business — metrics, relationships, tasks, and AI signals — all in one place.",
+      "browserLabel": "Workspace",
+      "aiActive": "AI active",
+      "intelligenceCore": "Intelligence Core",
+      "analyzingWorkspace": "Analyzing workspace",
+      "recentAiActivityLabel": "Recent AI Activity",
+      "revenueLabel": "Revenue",
+      "revenueChange": "+18% vs last month",
+      "activeDealsLabel": "Active Deals",
+      "aiInsight": "AI insight",
+      "thisMonth": "this month",
+      "openWorkspace": "Open your workspace",
+      "metrics": [
+        { "label": "New deals", "value": "+12", "change": "+34%" },
+        { "label": "Revenue", "value": "€84.2k", "change": "+18%" },
+        { "label": "Tasks done", "value": "47/52", "change": "90%" }
+      ],
+      "activity": [
+        "AI analyzed Acme Corp deal",
+        "Automation triggered: Follow-up",
+        "Task closed by AI suggestion",
+        "New contact linked to deal"
+      ]
+    },
+    "features": {
+      "eyebrow": "Every system in one place",
+      "headlineLine1": "Eleven modules.",
+      "headlineLine2": "One operating system.",
+      "subtitle": "Everything your business needs. Not as separate apps — as a single intelligent workspace where every module knows about every other module.",
+      "statusLive": "Live",
+      "modules": [
+        { "title": "AI Intelligence", "desc": "Real-time analysis, summaries, and insights generated continuously across your workspace." },
+        { "title": "Memory", "desc": "Everything Gunimi learns about your business, customers, and history stays permanently accessible." },
+        { "title": "Automation", "desc": "Build workflows that run on their own. Trigger actions, send notifications, update records." },
+        { "title": "Command Center", "desc": "One keyboard shortcut. Every action. Ask Gunimi anything about your business." },
+        { "title": "Contacts & CRM", "desc": "A living graph of every company, contact, and relationship. Always up to date." },
+        { "title": "Deals & Pipeline", "desc": "See your pipeline, track progress, and get AI guidance on which deals to prioritize." },
+        { "title": "Analytics", "desc": "Revenue, activity, and performance tracked automatically. No manual reporting." },
+        { "title": "Calendar", "desc": "Scheduling, time blocks, and meeting preparation — integrated with your workspace context." },
+        { "title": "Email", "desc": "Send, track, and automate outreach. AI writes the first draft. You approve and send." },
+        { "title": "Notes", "desc": "Capture decisions, meeting notes, and knowledge. AI links them to the right context." },
+        { "title": "Observatory", "desc": "A live view of everything happening in your workspace — automated signals, alerts, and intelligence." }
+      ]
+    },
+    "observatory": {
+      "eyebrow": "Intelligence layer",
+      "headlineLine1": "AI that operates",
+      "headlineLine2": "while you focus.",
+      "subtitle": "Five AI systems running continuously — memory, automation, agents, observatory, and command. Not features you switch on. An operating layer always running underneath.",
+      "coreName": "Gunimi Intelligence Core",
+      "coreSubtitle": "Always on. Always learning.",
+      "exploreCta": "Explore the AI layer",
+      "nodes": [
+        { "title": "Memory", "desc": "Persistent context across every interaction" },
+        { "title": "Automation", "desc": "Triggers, actions, and workflow orchestration" },
+        { "title": "Agents", "desc": "Autonomous task runners with workspace access" },
+        { "title": "Observatory", "desc": "Real-time signals, alerts, and activity monitoring" },
+        { "title": "Command", "desc": "Natural language interface to your entire workspace" }
+      ]
+    },
+    "trust": {
+      "eyebrow": "Enterprise ready",
+      "headlineLine1": "Secure.",
+      "headlineLine2": "Private.",
+      "headlineLine3": "Reliable.",
+      "subtitle": "Built from day one for organizations that require compliance, privacy, and enterprise-grade reliability.",
+      "stats": [
+        { "value": "99.9%", "label": "Uptime SLA" },
+        { "value": "< 80ms", "label": "Average response" },
+        { "value": "SOC 2", "label": "Type II certified" },
+        { "value": "GDPR", "label": "Fully compliant" }
+      ],
+      "trustPoints": [
+        { "title": "Enterprise security", "desc": "SOC 2 Type II certified. Data encrypted at rest and in transit. Role-based access control across every workspace." },
+        { "title": "Your data stays yours", "desc": "We never train AI models on your data. Your workspace memory is isolated and only accessible to your team." },
+        { "title": "Built for performance", "desc": "Sub-100ms response times. Global CDN. Designed to handle enterprise workloads without degradation." },
+        { "title": "Globally available", "desc": "Multi-region infrastructure. Automatic failover. 99.9% uptime SLA with full incident transparency." }
+      ],
+      "badges": ["SOC 2 Type II", "GDPR", "ISO 27001 ready", "CCPA", "End-to-end encryption", "Zero-knowledge AI"]
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "headlineLine1": "Simple pricing.",
+      "headlineLine2": "No surprises.",
+      "footerNote": "All plans include a 14-day free trial. No credit card required.",
+      "mostPopular": "Most popular",
+      "plans": [
+        {
+          "name": "Free",
+          "price": "$0",
+          "period": "",
+          "tagline": "Start building your AI workspace.",
+          "cta": "Get started free",
+          "features": ["Up to 3 users", "500 AI actions / month", "Contacts, deals & tasks", "Basic automation", "AI command center"]
+        },
+        {
+          "name": "Pro",
+          "price": "$29",
+          "period": "/user/month",
+          "tagline": "Unlimited intelligence for growing teams.",
+          "cta": "Start free trial",
+          "features": ["Unlimited users", "Unlimited AI actions", "Full automation engine", "Memory & context recall", "AI agents", "Priority support"]
+        },
+        {
+          "name": "Enterprise",
+          "price": "Custom",
+          "period": "",
+          "tagline": "Your operating system. Your rules.",
+          "cta": "Talk to sales",
+          "features": ["Everything in Pro", "Custom AI models", "SSO & SCIM", "Dedicated infrastructure", "SLA guarantee", "White-glove onboarding"]
+        }
+      ]
+    },
+    "cta": {
+      "headlineLine1": "Your business,",
+      "headlineLine2": "at full intelligence.",
+      "subtitle": "Join teams building the future of work with Gunimi. Start free — your workspace is ready in minutes.",
+      "ctaPrimary": "Start for free",
+      "ctaSecondary": "Sign in",
+      "statusItems": ["No credit card", "14-day free trial", "Cancel anytime"]
     }
   },
   "public": {

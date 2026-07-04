@@ -3,14 +3,13 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 
-// ─────────────────────────────────────────────────────────────
-// LandingCTA — Final call to action. GDL v1.0.
-// Cinematic. Centered. The last thing a visitor sees.
-// ─────────────────────────────────────────────────────────────
-
 export default function LandingCTA() {
+  const t = useTranslations("landing.cta");
+  const statusItems = t.raw("statusItems") as string[];
+
   return (
     <section className="relative overflow-hidden px-6 py-36 md:px-12">
 
@@ -56,7 +55,7 @@ export default function LandingCTA() {
 
         {/* HEADLINE */}
         <h2 className="text-[48px] font-bold leading-[0.92] tracking-[-0.055em] text-[#F7F8FC] md:text-[80px]">
-          Your business,
+          {t("headlineLine1")}
           <br />
           <span
             style={{
@@ -66,14 +65,13 @@ export default function LandingCTA() {
               backgroundClip: "text",
             }}
           >
-            at full intelligence.
+            {t("headlineLine2")}
           </span>
         </h2>
 
         {/* SUBTITLE */}
         <p className="mx-auto mt-10 max-w-[46ch] text-[16px] leading-[1.65] text-[#9AA3B2] md:text-[18px]">
-          Join teams building the future of work with Gunimi.
-          Start free — your workspace is ready in minutes.
+          {t("subtitle")}
         </p>
 
         {/* CTAs */}
@@ -92,7 +90,7 @@ export default function LandingCTA() {
             "
           >
             <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.14),transparent_55%)]" />
-            <span className="relative z-10">Start for free</span>
+            <span className="relative z-10">{t("ctaPrimary")}</span>
             <ArrowRight size={16} className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
 
@@ -107,13 +105,13 @@ export default function LandingCTA() {
               hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-[#F7F8FC]
             "
           >
-            Sign in
+            {t("ctaSecondary")}
           </Link>
         </div>
 
         {/* STATUS LINE */}
         <div className="mt-12 flex flex-wrap items-center justify-center gap-6">
-          {["No credit card", "14-day free trial", "Cancel anytime"].map((s) => (
+          {statusItems.map((s) => (
             <span key={s} className="flex items-center gap-1.5 text-[12px] text-[#9AA3B2]/40">
               <span className="h-1 w-1 rounded-full bg-[#9AA3B2]/30" />
               {s}

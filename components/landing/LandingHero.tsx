@@ -3,21 +3,13 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 
-// ─────────────────────────────────────────────────────────────
-// LandingHero — Cinematic first impression. GDL v1.0.
-// AI Core is the visual center. Whitespace. Confidence.
-// Apple-style: short, declarative, unmistakable.
-// ─────────────────────────────────────────────────────────────
-
-const TRUST_SIGNALS = [
-  "SOC 2 Type II",
-  "End-to-end encrypted",
-  "GDPR compliant",
-];
-
 export default function LandingHero() {
+  const t = useTranslations("landing.hero");
+  const trustSignals = t.raw("trustSignals") as string[];
+
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-24 pb-32 md:px-12">
 
@@ -26,10 +18,20 @@ export default function LandingHero() {
 
         {/* Primary nebula — top center */}
         <div
-          className="absolute left-1/2 top-[-10%] h-[800px] w-[800px] -translate-x-1/2"
+          className="absolute left-1/2 top-[-10%] h-[900px] w-[900px] -translate-x-1/2"
           style={{
-            background: "radial-gradient(ellipse, rgba(109,91,255,0.12) 0%, transparent 65%)",
+            background: "radial-gradient(ellipse, rgba(109,91,255,0.14) 0%, transparent 62%)",
             filter: "blur(80px)",
+          }}
+        />
+
+        {/* Subtle grid overlay for depth */}
+        <div
+          className="absolute inset-0 opacity-[0.018]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(139,125,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(139,125,255,1) 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
           }}
         />
 
@@ -55,10 +57,10 @@ export default function LandingHero() {
       <motion.div
         initial={{ opacity: 0, scale: 0.88 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-        className="pointer-events-none absolute left-1/2 top-[18%] -translate-x-1/2 opacity-35 sm:top-[10%] sm:opacity-40"
+        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+        className="pointer-events-none absolute left-1/2 top-[16%] -translate-x-1/2 opacity-[0.38] sm:top-[8%] sm:opacity-[0.44]"
       >
-        <AiCore size={640} showRings showParticles intensity="subtle" />
+        <AiCore size={680} showRings showParticles intensity="subtle" />
       </motion.div>
 
       {/* ── CONTENT ── */}
@@ -78,17 +80,17 @@ export default function LandingHero() {
           "
         >
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#22c55e]" />
-          AI Workspace Operating System
+          {t("badge")}
         </motion.div>
 
         {/* HEADLINE */}
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.1, duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto max-w-[18ch] text-[52px] font-bold leading-[0.92] tracking-[-0.055em] text-[#F7F8FC] md:text-[88px]"
         >
-          Your business,
+          {t("headlineLine1")}
           <br />
           <span
             style={{
@@ -98,7 +100,7 @@ export default function LandingHero() {
               backgroundClip: "text",
             }}
           >
-            fully intelligent.
+            {t("headlineLine2")}
           </span>
         </motion.h1>
 
@@ -106,18 +108,17 @@ export default function LandingHero() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.22, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.24, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto mt-10 max-w-[52ch] text-[16px] leading-[1.65] text-[#9AA3B2] md:text-[18px]"
         >
-          Gunimi unifies your relationships, deals, tasks, and knowledge
-          into a single workspace — with AI that actually understands your business.
+          {t("subtitle")}
         </motion.p>
 
         {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.32, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.34, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="mt-14 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           {/* Primary */}
@@ -135,7 +136,7 @@ export default function LandingHero() {
             "
           >
             <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent_55%)]" />
-            <span className="relative z-10">Start for free</span>
+            <span className="relative z-10">{t("ctaPrimary")}</span>
             <ArrowRight size={15} className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
 
@@ -151,7 +152,7 @@ export default function LandingHero() {
               hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-[#F7F8FC]
             "
           >
-            Sign in to workspace
+            {t("ctaSecondary")}
           </Link>
         </motion.div>
 
@@ -159,10 +160,10 @@ export default function LandingHero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.52, duration: 0.8 }}
+          transition={{ delay: 0.54, duration: 0.9 }}
           className="mt-12 flex flex-wrap items-center justify-center gap-6"
         >
-          {TRUST_SIGNALS.map((s) => (
+          {trustSignals.map((s) => (
             <div key={s} className="flex items-center gap-2 text-[12px] text-[#9AA3B2]/45">
               <span className="h-1 w-1 rounded-full bg-[#9AA3B2]/30" />
               {s}

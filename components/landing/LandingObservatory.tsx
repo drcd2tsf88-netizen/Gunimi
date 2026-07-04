@@ -3,53 +3,23 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Database, Zap, Bot, Eye, Command } from "lucide-react";
+import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 
-// ─────────────────────────────────────────────────────────────
-// LandingObservatory — AI Ecosystem visualization.
-// Shows the AI intelligence network: Memory, Automation,
-// Agents, Observatory, Command — all around a living center.
-// ─────────────────────────────────────────────────────────────
+type Node = { title: string; desc: string };
 
-const AI_NODES = [
-  {
-    icon: Database,
-    title: "Memory",
-    desc: "Persistent context across every interaction",
-    color: "#8B7DFF",
-    position: "top-0 left-[10%]",
-  },
-  {
-    icon: Zap,
-    title: "Automation",
-    desc: "Triggers, actions, and workflow orchestration",
-    color: "#6D5BFF",
-    position: "top-0 right-[10%]",
-  },
-  {
-    icon: Bot,
-    title: "Agents",
-    desc: "Autonomous task runners with workspace access",
-    color: "#22D3EE",
-    position: "bottom-0 left-[10%]",
-  },
-  {
-    icon: Eye,
-    title: "Observatory",
-    desc: "Real-time signals, alerts, and activity monitoring",
-    color: "#A998FF",
-    position: "bottom-0 right-[10%]",
-  },
-  {
-    icon: Command,
-    title: "Command",
-    desc: "Natural language interface to your entire workspace",
-    color: "#6D5BFF",
-    position: "top-1/2 right-0 -translate-y-1/2",
-  },
+const NODE_CONFIGS = [
+  { icon: Database, color: "#8B7DFF" },
+  { icon: Zap,      color: "#6D5BFF" },
+  { icon: Bot,      color: "#22D3EE" },
+  { icon: Eye,      color: "#A998FF" },
+  { icon: Command,  color: "#6D5BFF" },
 ];
 
 export default function LandingObservatory() {
+  const t = useTranslations("landing.observatory");
+  const nodes = t.raw("nodes") as Node[];
+
   return (
     <section id="ai" className="relative overflow-hidden px-6 py-32 md:px-12">
 
@@ -72,10 +42,10 @@ export default function LandingObservatory() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.18em] text-[#22D3EE]">
-            Intelligence layer
+            {t("eyebrow")}
           </p>
           <h2 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[56px]">
-            AI that operates
+            {t("headlineLine1")}
             <br />
             <span
               style={{
@@ -85,12 +55,11 @@ export default function LandingObservatory() {
                 backgroundClip: "text",
               }}
             >
-              while you focus.
+              {t("headlineLine2")}
             </span>
           </h2>
           <p className="mx-auto mt-7 max-w-[50ch] text-[16px] leading-[1.65] text-[#9AA3B2]">
-            Five AI systems running continuously — memory, automation, agents, observatory, and command.
-            Not features you switch on. An operating layer always running underneath.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -123,18 +92,19 @@ export default function LandingObservatory() {
 
               <div className="mt-4 text-center">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#6D5BFF]">
-                  Gunimi Intelligence Core
+                  {t("coreName")}
                 </p>
                 <p className="mt-1 text-[12px] text-[#9AA3B2]/60">
-                  Always on. Always learning.
+                  {t("coreSubtitle")}
                 </p>
               </div>
             </div>
 
             {/* AI Nodes — grid layout below core */}
             <div className="relative z-10 mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-              {AI_NODES.map((node, index) => {
-                const Icon = node.icon;
+              {nodes.map((node, index) => {
+                const cfg = NODE_CONFIGS[index];
+                const Icon = cfg.icon;
                 return (
                   <motion.div
                     key={node.title}
@@ -146,7 +116,7 @@ export default function LandingObservatory() {
                   >
                     <div
                       className="mb-3 flex h-9 w-9 items-center justify-center rounded-[9px]"
-                      style={{ background: `${node.color}18`, color: node.color }}
+                      style={{ background: `${cfg.color}18`, color: cfg.color }}
                     >
                       <Icon size={16} strokeWidth={1.75} />
                     </div>
@@ -178,7 +148,7 @@ export default function LandingObservatory() {
               hover:border-[#6D5BFF]/[0.35] hover:bg-[rgba(109,91,255,0.14)]
             "
           >
-            Explore the AI layer
+            {t("exploreCta")}
             <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
         </motion.div>

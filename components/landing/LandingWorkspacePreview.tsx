@@ -3,28 +3,23 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, TrendingUp, Users, CheckCircle2, Brain, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 
-// ─────────────────────────────────────────────────────────────
-// LandingWorkspacePreview — Premium product showcase.
-// Layered floating panels. Not a screenshot. A composition.
-// Deep Space background, ambient glow, live metric cards.
-// ─────────────────────────────────────────────────────────────
+type Metric = { label: string; value: string; change: string };
 
-const METRICS = [
-  { label: "New deals", value: "+12", change: "+34%", positive: true },
-  { label: "Revenue",   value: "€84.2k", change: "+18%", positive: true },
-  { label: "Tasks done", value: "47/52", change: "90%", positive: true },
-];
-
-const RECENT_ACTIVITY = [
-  { icon: Brain,    text: "AI analyzed Acme Corp deal",      time: "2m ago",  accent: "#6D5BFF" },
-  { icon: Zap,      text: "Automation triggered: Follow-up", time: "8m ago",  accent: "#22D3EE" },
-  { icon: CheckCircle2, text: "Task closed by AI suggestion", time: "15m ago", accent: "#22c55e" },
-  { icon: Users,    text: "New contact linked to deal",      time: "1h ago",  accent: "#8B7DFF" },
+const ACTIVITY_CONFIGS = [
+  { icon: Brain,        accent: "#6D5BFF", time: "2m ago" },
+  { icon: Zap,          accent: "#22D3EE", time: "8m ago" },
+  { icon: CheckCircle2, accent: "#22c55e", time: "15m ago" },
+  { icon: Users,        accent: "#8B7DFF", time: "1h ago" },
 ];
 
 export default function LandingWorkspacePreview() {
+  const t = useTranslations("landing.workspacePreview");
+  const metrics = t.raw("metrics") as Metric[];
+  const activity = t.raw("activity") as string[];
+
   return (
     <section className="relative overflow-hidden px-6 py-32 md:px-12">
 
@@ -55,16 +50,15 @@ export default function LandingWorkspacePreview() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.18em] text-[#9AA3B2]/60">
-            Inside the workspace
+            {t("eyebrow")}
           </p>
           <h2 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[52px]">
-            Everything visible.
+            {t("headlineLine1")}
             <br />
-            <span className="text-[#9AA3B2]">Nothing missed.</span>
+            <span className="text-[#9AA3B2]">{t("headlineLine2")}</span>
           </h2>
           <p className="mx-auto mt-7 max-w-[50ch] text-[16px] leading-[1.65] text-[#9AA3B2]">
-            A live view of your entire business — metrics, relationships, tasks,
-            and AI signals — all in one place.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -95,11 +89,11 @@ export default function LandingWorkspacePreview() {
             <div className="flex items-center gap-2">
               <AiCore size={18} showRings={false} showParticles={false} intensity="strong" />
               <span className="text-[13px] font-medium text-[#F7F8FC]">Gunimi</span>
-              <span className="text-[12px] text-[#9AA3B2]/40">— Workspace</span>
+              <span className="text-[12px] text-[#9AA3B2]/40">— {t("browserLabel")}</span>
             </div>
             <div className="ml-auto flex items-center gap-2">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#22c55e]" />
-              <span className="text-[12px] text-[#9AA3B2]/50">AI active</span>
+              <span className="text-[12px] text-[#9AA3B2]/50">{t("aiActive")}</span>
             </div>
           </div>
 
@@ -111,7 +105,7 @@ export default function LandingWorkspacePreview() {
 
               {/* Metrics row */}
               <div className="grid grid-cols-3 gap-4">
-                {METRICS.map((m, i) => (
+                {metrics.map((m, i) => (
                   <motion.div
                     key={m.label}
                     initial={{ opacity: 0, y: 8 }}
@@ -123,7 +117,7 @@ export default function LandingWorkspacePreview() {
                     <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
                     <p className="text-[11px] text-[#9AA3B2]/60">{m.label}</p>
                     <p className="mt-2 text-[22px] font-bold tracking-[-0.04em] text-[#F7F8FC]">{m.value}</p>
-                    <p className="mt-1 text-[11px] text-[#22c55e]">{m.change} this month</p>
+                    <p className="mt-1 text-[11px] text-[#22c55e]">{m.change} {t("thisMonth")}</p>
                   </motion.div>
                 ))}
               </div>
@@ -133,12 +127,12 @@ export default function LandingWorkspacePreview() {
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/50">Revenue</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/50">{t("revenueLabel")}</p>
                     <p className="mt-1 text-[18px] font-bold tracking-[-0.03em] text-[#F7F8FC]">€84,200</p>
                   </div>
                   <div className="flex items-center gap-1.5 rounded-full border border-[rgba(34,197,94,0.20)] bg-[rgba(34,197,94,0.08)] px-3 py-1">
                     <TrendingUp size={11} className="text-[#22c55e]" />
-                    <span className="text-[11px] text-[#22c55e]">+18% vs last month</span>
+                    <span className="text-[11px] text-[#22c55e]">{t("revenueChange")}</span>
                   </div>
                 </div>
                 {/* Simple SVG bar chart */}
@@ -161,10 +155,10 @@ export default function LandingWorkspacePreview() {
               </div>
 
               {/* Deals table mini */}
-              <div className="overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#0F1520]">
+              <div className="relative overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#0F1520]">
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
                 <div className="border-b border-white/[0.04] px-5 py-3">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/50">Active Deals</p>
+                  <p className="text-[11px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/50">{t("activeDealsLabel")}</p>
                 </div>
                 {[
                   { company: "Acme Corp",       stage: "Negotiation",  value: "€42k", ai: true },
@@ -179,7 +173,7 @@ export default function LandingWorkspacePreview() {
                     <div className="flex items-center gap-2">
                       {deal.ai && (
                         <span className="rounded-full border border-[rgba(34,211,238,0.15)] bg-[rgba(34,211,238,0.06)] px-2 py-0.5 text-[10px] text-[#22D3EE]">
-                          AI insight
+                          {t("aiInsight")}
                         </span>
                       )}
                       <span className="text-[13px] font-mono text-[#F7F8FC]">{deal.value}</span>
@@ -200,10 +194,10 @@ export default function LandingWorkspacePreview() {
                 <div className="relative z-10 flex items-center gap-3">
                   <AiCore size={44} showRings showParticles={false} intensity="medium" />
                   <div>
-                    <p className="text-[12px] font-semibold text-[#F7F8FC]">Intelligence Core</p>
+                    <p className="text-[12px] font-semibold text-[#F7F8FC]">{t("intelligenceCore")}</p>
                     <div className="mt-0.5 flex items-center gap-1.5">
                       <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#22D3EE]" />
-                      <span className="text-[11px] text-[#22D3EE]">Analyzing workspace</span>
+                      <span className="text-[11px] text-[#22D3EE]">{t("analyzingWorkspace")}</span>
                     </div>
                   </div>
                 </div>
@@ -213,14 +207,15 @@ export default function LandingWorkspacePreview() {
               <div className="rounded-[16px] border border-white/[0.055] bg-[#0F1520] p-4">
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
                 <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/50">
-                  Recent AI Activity
+                  {t("recentAiActivityLabel")}
                 </p>
                 <div className="space-y-3">
-                  {RECENT_ACTIVITY.map((item, i) => {
-                    const Icon = item.icon;
+                  {activity.map((text, i) => {
+                    const cfg = ACTIVITY_CONFIGS[i];
+                    const Icon = cfg.icon;
                     return (
                       <motion.div
-                        key={item.text}
+                        key={text}
                         initial={{ opacity: 0, x: 8 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -229,13 +224,13 @@ export default function LandingWorkspacePreview() {
                       >
                         <div
                           className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px]"
-                          style={{ background: `${item.accent}15`, color: item.accent }}
+                          style={{ background: `${cfg.accent}15`, color: cfg.accent }}
                         >
                           <Icon size={12} strokeWidth={2} />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-[12px] leading-[1.5] text-[#C8CDD8]">{item.text}</p>
-                          <p className="mt-0.5 text-[10.5px] text-[#9AA3B2]/45">{item.time}</p>
+                          <p className="text-[12px] leading-[1.5] text-[#C8CDD8]">{text}</p>
+                          <p className="mt-0.5 text-[10.5px] text-[#9AA3B2]/45">{cfg.time}</p>
                         </div>
                       </motion.div>
                     );
@@ -255,7 +250,7 @@ export default function LandingWorkspacePreview() {
                   hover:bg-[#7B6BFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.50)]
                 "
               >
-                Open your workspace
+                {t("openWorkspace")}
                 <ArrowRight size={13} />
               </Link>
             </div>

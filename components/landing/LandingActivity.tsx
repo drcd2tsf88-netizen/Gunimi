@@ -1,44 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Shield, Lock, Zap, Globe, CheckCircle2 } from "lucide-react";
 
-// ─────────────────────────────────────────────────────────────
-// LandingActivity — Trust & Enterprise section.
-// Security, privacy, performance. Premium and minimal.
-// ─────────────────────────────────────────────────────────────
+type Stat = { value: string; label: string };
+type TrustPoint = { title: string; desc: string };
 
-const TRUST_STATS = [
-  { value: "99.9%",  label: "Uptime SLA" },
-  { value: "< 80ms", label: "Average response" },
-  { value: "SOC 2",  label: "Type II certified" },
-  { value: "GDPR",   label: "Fully compliant" },
-];
-
-const TRUST_POINTS = [
-  {
-    icon: Shield,
-    title: "Enterprise security",
-    desc: "SOC 2 Type II certified. Data encrypted at rest and in transit. Role-based access control across every workspace.",
-  },
-  {
-    icon: Lock,
-    title: "Your data stays yours",
-    desc: "We never train AI models on your data. Your workspace memory is isolated and only accessible to your team.",
-  },
-  {
-    icon: Zap,
-    title: "Built for performance",
-    desc: "Sub-100ms response times. Global CDN. Designed to handle enterprise workloads without degradation.",
-  },
-  {
-    icon: Globe,
-    title: "Globally available",
-    desc: "Multi-region infrastructure. Automatic failover. 99.9% uptime SLA with full incident transparency.",
-  },
-];
+const TRUST_ICONS = [Shield, Lock, Zap, Globe];
 
 export default function LandingActivity() {
+  const t = useTranslations("landing.trust");
+  const stats = t.raw("stats") as Stat[];
+  const trustPoints = t.raw("trustPoints") as TrustPoint[];
+  const badges = t.raw("badges") as string[];
+
   return (
     <section id="enterprise" className="relative overflow-hidden px-6 py-32 md:px-12">
 
@@ -66,16 +42,15 @@ export default function LandingActivity() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.18em] text-[#9AA3B2]/60">
-            Enterprise ready
+            {t("eyebrow")}
           </p>
           <h2 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[52px]">
-            Secure.
-            <span className="text-[#9AA3B2]"> Private. </span>
-            Reliable.
+            {t("headlineLine1")}
+            <span className="text-[#9AA3B2]"> {t("headlineLine2")} </span>
+            {t("headlineLine3")}
           </h2>
           <p className="mx-auto mt-7 max-w-[50ch] text-[16px] leading-[1.65] text-[#9AA3B2]">
-            Built from day one for organizations that require
-            compliance, privacy, and enterprise-grade reliability.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -88,14 +63,14 @@ export default function LandingActivity() {
           className="mx-auto mt-16 max-w-3xl"
         >
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {TRUST_STATS.map((stat, i) => (
+            {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.12 + i * 0.06, duration: 0.6 }}
-                className="flex flex-col items-center rounded-[16px] border border-white/[0.055] bg-[#0A0E17] px-5 py-5 text-center shadow-[0_4px_20px_rgba(109,91,255,0.06)]"
+                className="relative flex flex-col items-center rounded-[16px] border border-white/[0.055] bg-[#0A0E17] px-5 py-5 text-center shadow-[0_4px_20px_rgba(109,91,255,0.06)]"
               >
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
                 <span className="text-[24px] font-bold tracking-[-0.04em] text-[#F7F8FC]">
@@ -109,8 +84,8 @@ export default function LandingActivity() {
 
         {/* TRUST GRID */}
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {TRUST_POINTS.map((point, index) => {
-            const Icon = point.icon;
+          {trustPoints.map((point, index) => {
+            const Icon = TRUST_ICONS[index];
             return (
               <motion.div
                 key={point.title}
@@ -147,7 +122,7 @@ export default function LandingActivity() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="mt-12 flex flex-wrap items-center justify-center gap-3"
         >
-          {["SOC 2 Type II", "GDPR", "ISO 27001 ready", "CCPA", "End-to-end encryption", "Zero-knowledge AI"].map((badge) => (
+          {badges.map((badge) => (
             <div
               key={badge}
               className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-white/[0.025] px-4 py-2 text-[12px] text-[#9AA3B2]/70"

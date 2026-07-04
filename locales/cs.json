@@ -1416,6 +1416,140 @@
       "copyright": "© 2026 Gunimi. Všechna práva vyhrazena.",
       "signIn": "Přihlásit se",
       "getStarted": "Začít"
+    },
+    "hero": {
+      "badge": "AI Workspace Operating System",
+      "headlineLine1": "Vaše podnikání,",
+      "headlineLine2": "plně inteligentní.",
+      "subtitle": "Gunimi sjednocuje vaše vztahy, obchody, úkoly a znalosti do jednoho workspace — s AI, která skutečně rozumí vašemu podnikání.",
+      "ctaPrimary": "Začít zdarma",
+      "ctaSecondary": "Přihlásit se do workspace",
+      "trustSignals": ["SOC 2 Type II", "End-to-end šifrování", "Soulad s GDPR"]
+    },
+    "workspacePreview": {
+      "eyebrow": "Uvnitř workspace",
+      "headlineLine1": "Vše viditelné.",
+      "headlineLine2": "Nic přehlédnuto.",
+      "subtitle": "Živý pohled na celé vaše podnikání — metriky, vztahy, úkoly a AI signály — vše na jednom místě.",
+      "browserLabel": "Workspace",
+      "aiActive": "AI aktivní",
+      "intelligenceCore": "Intelligence Core",
+      "analyzingWorkspace": "Analyzuji workspace",
+      "recentAiActivityLabel": "Nedávná AI aktivita",
+      "revenueLabel": "Tržby",
+      "revenueChange": "+18 % oproti minulému měsíci",
+      "activeDealsLabel": "Aktivní obchody",
+      "aiInsight": "AI insight",
+      "thisMonth": "tento měsíc",
+      "openWorkspace": "Otevřít workspace",
+      "metrics": [
+        { "label": "Nové obchody", "value": "+12", "change": "+34 %" },
+        { "label": "Tržby", "value": "€84,2 tis.", "change": "+18 %" },
+        { "label": "Splněné úkoly", "value": "47/52", "change": "90 %" }
+      ],
+      "activity": [
+        "AI analyzovala obchod Acme Corp",
+        "Spuštěna automatizace: Sledování",
+        "Úkol uzavřen na základě návrhu AI",
+        "Nový kontakt propojen s obchodem"
+      ]
+    },
+    "features": {
+      "eyebrow": "Každý systém na jednom místě",
+      "headlineLine1": "Jedenáct modulů.",
+      "headlineLine2": "Jeden operační systém.",
+      "subtitle": "Vše, co vaše podnikání potřebuje. Ne jako samostatné aplikace — ale jako jeden inteligentní workspace, kde každý modul ví o každém jiném modulu.",
+      "statusLive": "Aktivní",
+      "modules": [
+        { "title": "AI inteligence", "desc": "Analýza v reálném čase, shrnutí a poznatky generované nepřetržitě v celém workspace." },
+        { "title": "Memory", "desc": "Vše, co se Gunimi naučí o vašem podnikání, zákaznících a historii, zůstává trvale dostupné." },
+        { "title": "Automation", "desc": "Vytvářejte pracovní postupy, které běží samostatně. Spouštějte akce, posílejte upozornění, aktualizujte záznamy." },
+        { "title": "Command Center", "desc": "Jedna klávesová zkratka. Každá akce. Zeptejte se Gunimi na cokoli o vašem podnikání." },
+        { "title": "Kontakty a CRM", "desc": "Živý graf každé společnosti, kontaktu a vztahu. Vždy aktuální." },
+        { "title": "Obchody a pipeline", "desc": "Přehled vašeho pipeline, sledování pokroku a AI poradenství o prioritizaci obchodů." },
+        { "title": "Analytika", "desc": "Tržby, aktivita a výkonnost sledovány automaticky. Žádné ruční reportování." },
+        { "title": "Kalendář", "desc": "Plánování, časové bloky a příprava na schůzky — integrované s kontextem workspace." },
+        { "title": "Email", "desc": "Odesílejte, sledujte a automatizujte oslovení. AI napíše první návrh. Vy schválíte a odešlete." },
+        { "title": "Poznámky", "desc": "Zachyťte rozhodnutí, zápisky a znalosti. AI je propojí se správným kontextem." },
+        { "title": "Observatory", "desc": "Živý pohled na vše, co se děje ve vašem workspace — automatické signály, upozornění a inteligence." }
+      ]
+    },
+    "observatory": {
+      "eyebrow": "Vrstva inteligence",
+      "headlineLine1": "AI, která pracuje,",
+      "headlineLine2": "zatímco se vy soustředíte.",
+      "subtitle": "Pět AI systémů běžících nepřetržitě — Memory, Automation, agenti, Observatory a příkazy. Ne funkce, které zapínáte. Operační vrstva, která vždy běží na pozadí.",
+      "coreName": "Gunimi Intelligence Core",
+      "coreSubtitle": "Vždy zapnuto. Vždy se učí.",
+      "exploreCta": "Prozkoumat AI vrstvu",
+      "nodes": [
+        { "title": "Memory", "desc": "Trvalý kontext napříč každou interakcí" },
+        { "title": "Automation", "desc": "Spouštěče, akce a orchestrace pracovních toků" },
+        { "title": "Agenti", "desc": "Autonomní vykonavatelé úkolů s přístupem k workspace" },
+        { "title": "Observatory", "desc": "Signály v reálném čase, upozornění a monitorování aktivity" },
+        { "title": "Příkazy", "desc": "Rozhraní v přirozeném jazyce pro celý workspace" }
+      ]
+    },
+    "trust": {
+      "eyebrow": "Připraveno pro enterprise",
+      "headlineLine1": "Bezpečné.",
+      "headlineLine2": "Soukromé.",
+      "headlineLine3": "Spolehlivé.",
+      "subtitle": "Postaveno od prvního dne pro organizace, které vyžadují soulad s předpisy, soukromí a enterprise spolehlivost.",
+      "stats": [
+        { "value": "99,9 %", "label": "SLA dostupnosti" },
+        { "value": "< 80 ms", "label": "Průměrná odezva" },
+        { "value": "SOC 2", "label": "Type II certifikát" },
+        { "value": "GDPR", "label": "Plný soulad" }
+      ],
+      "trustPoints": [
+        { "title": "Enterprise bezpečnost", "desc": "SOC 2 Type II certifikované. Data šifrována v klidu i při přenosu. Řízení přístupu na základě rolí ve všech workspace." },
+        { "title": "Vaše data zůstávají vaše", "desc": "Na AI modelech nikdy netrénujeme na vašich datech. Paměť workspace je izolovaná a přístupná pouze vašemu týmu." },
+        { "title": "Postaveno pro výkon", "desc": "Časy odezvy pod 100 ms. Globální CDN. Navrženo pro enterprise zátěže bez degradace." },
+        { "title": "Globálně dostupné", "desc": "Infrastruktura s více regiony. Automatické přepnutí. 99,9 % SLA s plnou transparentností incidentů." }
+      ],
+      "badges": ["SOC 2 Type II", "GDPR", "ISO 27001 ready", "CCPA", "End-to-end šifrování", "Zero-knowledge AI"]
+    },
+    "pricing": {
+      "eyebrow": "Ceník",
+      "headlineLine1": "Jednoduché ceny.",
+      "headlineLine2": "Žádná překvapení.",
+      "footerNote": "Všechny plány zahrnují 14denní bezplatnou zkušební verzi. Není potřeba kreditní karta.",
+      "mostPopular": "Nejpopulárnější",
+      "plans": [
+        {
+          "name": "Free",
+          "price": "$0",
+          "period": "",
+          "tagline": "Začněte budovat váš AI workspace.",
+          "cta": "Začít zdarma",
+          "features": ["Až 3 uživatelé", "500 AI akcí / měsíc", "Kontakty, obchody a úkoly", "Základní automatizace", "AI command center"]
+        },
+        {
+          "name": "Pro",
+          "price": "$29",
+          "period": "/uživatel/měsíc",
+          "tagline": "Neomezená inteligence pro rostoucí týmy.",
+          "cta": "Začít zdarma",
+          "features": ["Neomezení uživatelé", "Neomezené AI akce", "Plný engine automatizace", "Memory a kontextové vzpomínky", "AI agenti", "Prioritní podpora"]
+        },
+        {
+          "name": "Enterprise",
+          "price": "Individuálně",
+          "period": "",
+          "tagline": "Váš operační systém. Vaše pravidla.",
+          "cta": "Kontaktovat obchod",
+          "features": ["Vše z Pro", "Vlastní AI modely", "SSO a SCIM", "Dedikovaná infrastruktura", "Garance SLA", "Prémiové zavádění"]
+        }
+      ]
+    },
+    "cta": {
+      "headlineLine1": "Vaše podnikání,",
+      "headlineLine2": "s plnou inteligencí.",
+      "subtitle": "Připojte se k týmům budujícím budoucnost práce s Gunimi. Začněte zdarma — váš workspace je připraven za minuty.",
+      "ctaPrimary": "Začít zdarma",
+      "ctaSecondary": "Přihlásit se",
+      "statusItems": ["Bez kreditní karty", "14denní bezplatná zkouška", "Zrušení kdykoli"]
     }
   },
   "public": {

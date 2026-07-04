@@ -3,67 +3,24 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-// ─────────────────────────────────────────────────────────────
-// LandingPricingButtons — Pricing section. GDL v1.0.
-// Three tiers. Lots of breathing room. Clear hierarchy.
-// No color chaos. Premium and understated.
-// ─────────────────────────────────────────────────────────────
+type Plan = {
+  name: string;
+  price: string;
+  period: string;
+  tagline: string;
+  cta: string;
+  features: string[];
+};
 
-const PLANS = [
-  {
-    name:     "Free",
-    price:    "$0",
-    period:   null,
-    tagline:  "Start building your AI workspace.",
-    cta:      "Get started free",
-    ctaHref:  "/register",
-    featured: false,
-    features: [
-      "Up to 3 users",
-      "500 AI actions / month",
-      "Contacts, deals & tasks",
-      "Basic automation",
-      "AI command center",
-    ],
-  },
-  {
-    name:     "Pro",
-    price:    "$29",
-    period:   "/user/month",
-    tagline:  "Unlimited intelligence for growing teams.",
-    cta:      "Start free trial",
-    ctaHref:  "/register",
-    featured: true,
-    features: [
-      "Unlimited users",
-      "Unlimited AI actions",
-      "Full automation engine",
-      "Memory & context recall",
-      "AI agents",
-      "Priority support",
-    ],
-  },
-  {
-    name:     "Enterprise",
-    price:    "Custom",
-    period:   null,
-    tagline:  "Your operating system. Your rules.",
-    cta:      "Talk to sales",
-    ctaHref:  "/register",
-    featured: false,
-    features: [
-      "Everything in Pro",
-      "Custom AI models",
-      "SSO & SCIM",
-      "Dedicated infrastructure",
-      "SLA guarantee",
-      "White-glove onboarding",
-    ],
-  },
-];
+const PLAN_FEATURED = [false, true, false];
+const PLAN_HREFS = ["/register", "/register", "/register"];
 
 export default function LandingPricingButtons() {
+  const t = useTranslations("landing.pricing");
+  const plans = t.raw("plans") as Plan[];
+
   return (
     <section id="pricing" className="relative overflow-hidden px-6 py-32 md:px-12">
 
@@ -90,18 +47,20 @@ export default function LandingPricingButtons() {
           className="mx-auto max-w-2xl text-center"
         >
           <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.18em] text-[#9AA3B2]/60">
-            Pricing
+            {t("eyebrow")}
           </p>
           <h2 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[52px]">
-            Simple pricing.
+            {t("headlineLine1")}
             <br />
-            <span className="text-[#9AA3B2]">No surprises.</span>
+            <span className="text-[#9AA3B2]">{t("headlineLine2")}</span>
           </h2>
         </motion.div>
 
         {/* PLANS GRID */}
         <div className="mt-16 grid gap-5 lg:grid-cols-3">
-          {PLANS.map((plan, index) => (
+          {plans.map((plan, index) => {
+            const featured = PLAN_FEATURED[index];
+            return (
             <motion.div
               key={plan.name}
               initial={{ opacity: 0, y: 18 }}
@@ -110,7 +69,7 @@ export default function LandingPricingButtons() {
               transition={{ delay: index * 0.08, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
               className={[
                 "relative overflow-hidden rounded-[24px] border p-8 transition-all duration-300",
-                plan.featured
+                featured
                   ? "border-[rgba(109,91,255,0.30)] bg-[#0A0E17] shadow-[0_16px_50px_rgba(109,91,255,0.18),0_0_0_1px_rgba(109,91,255,0.10)]"
                   : "border-white/[0.055] bg-[#0A0E17] shadow-[0_4px_20px_rgba(109,91,255,0.06)] hover:border-white/[0.09]",
               ].join(" ")}
@@ -119,19 +78,27 @@ export default function LandingPricingButtons() {
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
 
               {/* Featured ambient glow */}
-              {plan.featured && (
+              {featured && (
                 <div
                   className="pointer-events-none absolute inset-0"
-                  style={{ background: "radial-gradient(ellipse at top, rgba(109,91,255,0.08), transparent 55%)" }}
+                  style={{ background: "radial-gradient(ellipse at top, rgba(109,91,255,0.09), transparent 55%)" }}
+                />
+              )}
+
+              {/* Featured bottom glow line */}
+              {featured && (
+                <div
+                  className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
+                  style={{ background: "linear-gradient(to right, transparent, rgba(109,91,255,0.40), transparent)" }}
                 />
               )}
 
               <div className="relative z-10">
                 {/* Badge */}
-                {plan.featured && (
+                {featured && (
                   <div className="mb-5 inline-flex items-center rounded-full border border-[rgba(109,91,255,0.25)] bg-[rgba(109,91,255,0.10)] px-3 py-1">
                     <span className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-[#A998FF]">
-                      Most popular
+                      {t("mostPopular")}
                     </span>
                   </div>
                 )}
@@ -152,10 +119,10 @@ export default function LandingPricingButtons() {
 
                 {/* CTA */}
                 <Link
-                  href={plan.ctaHref}
+                  href={PLAN_HREFS[index]}
                   className={[
                     "mt-7 flex items-center justify-center gap-2 rounded-[12px] px-5 py-3 text-[13px] font-semibold transition-all duration-300",
-                    plan.featured
+                    featured
                       ? "border border-[#6D5BFF]/30 bg-[#6D5BFF] text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] hover:bg-[#7B6BFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.55)]"
                       : "border border-white/[0.09] bg-white/[0.04] text-[#C8CDD8] hover:border-white/[0.14] hover:bg-white/[0.07] hover:text-[#F7F8FC]",
                   ].join(" ")}
@@ -175,7 +142,8 @@ export default function LandingPricingButtons() {
                 </div>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         {/* FOOTER NOTE */}
@@ -186,7 +154,7 @@ export default function LandingPricingButtons() {
           transition={{ delay: 0.4, duration: 0.7 }}
           className="mt-10 text-center text-[12px] text-[#9AA3B2]/40"
         >
-          All plans include a 14-day free trial. No credit card required.
+          {t("footerNote")}
         </motion.p>
       </div>
     </section>

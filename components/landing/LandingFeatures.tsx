@@ -1,98 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import {
   Brain, Database, Zap, Command, Users, TrendingUp,
   BarChart3, Mail, Calendar, FileText, Search,
 } from "lucide-react";
 
-// ─────────────────────────────────────────────────────────────
-// LandingFeatures — 11 intelligent workspace modules.
-// Dark Titanium cards, GDL hover lighting, ambient glow.
-// Each card is a module, not a bullet point.
-// ─────────────────────────────────────────────────────────────
+type Module = { title: string; desc: string };
 
-const MODULES = [
-  {
-    icon:  Brain,
-    title: "AI Intelligence",
-    desc:  "Real-time analysis, summaries, and insights generated continuously across your workspace.",
-    accent: "#6D5BFF",
-    glow:   "rgba(109,91,255,0.10)",
-  },
-  {
-    icon:  Database,
-    title: "Memory",
-    desc:  "Everything Gunimi learns about your business, customers, and history stays permanently accessible.",
-    accent: "#8B7DFF",
-    glow:   "rgba(139,125,255,0.10)",
-  },
-  {
-    icon:  Zap,
-    title: "Automation",
-    desc:  "Build workflows that run on their own. Trigger actions, send notifications, update records.",
-    accent: "#6D5BFF",
-    glow:   "rgba(109,91,255,0.10)",
-  },
-  {
-    icon:  Command,
-    title: "Command Center",
-    desc:  "One keyboard shortcut. Every action. Ask Gunimi anything about your business.",
-    accent: "#22D3EE",
-    glow:   "rgba(34,211,238,0.08)",
-  },
-  {
-    icon:  Users,
-    title: "Contacts & CRM",
-    desc:  "A living graph of every company, contact, and relationship. Always up to date.",
-    accent: "#6D5BFF",
-    glow:   "rgba(109,91,255,0.10)",
-  },
-  {
-    icon:  TrendingUp,
-    title: "Deals & Pipeline",
-    desc:  "See your pipeline, track progress, and get AI guidance on which deals to prioritize.",
-    accent: "#22c55e",
-    glow:   "rgba(34,197,94,0.08)",
-  },
-  {
-    icon:  BarChart3,
-    title: "Analytics",
-    desc:  "Revenue, activity, and performance tracked automatically. No manual reporting.",
-    accent: "#6D5BFF",
-    glow:   "rgba(109,91,255,0.10)",
-  },
-  {
-    icon:  Calendar,
-    title: "Calendar",
-    desc:  "Scheduling, time blocks, and meeting preparation — integrated with your workspace context.",
-    accent: "#8B7DFF",
-    glow:   "rgba(139,125,255,0.10)",
-  },
-  {
-    icon:  Mail,
-    title: "Email",
-    desc:  "Send, track, and automate outreach. AI writes the first draft. You approve and send.",
-    accent: "#6D5BFF",
-    glow:   "rgba(109,91,255,0.10)",
-  },
-  {
-    icon:  FileText,
-    title: "Notes",
-    desc:  "Capture decisions, meeting notes, and knowledge. AI links them to the right context.",
-    accent: "#8B7DFF",
-    glow:   "rgba(139,125,255,0.10)",
-  },
-  {
-    icon:  Search,
-    title: "Observatory",
-    desc:  "A live view of everything happening in your workspace — automated signals, alerts, and intelligence.",
-    accent: "#22D3EE",
-    glow:   "rgba(34,211,238,0.08)",
-  },
+const MODULE_CONFIGS = [
+  { icon: Brain,      accent: "#6D5BFF", glow: "rgba(109,91,255,0.10)" },
+  { icon: Database,   accent: "#8B7DFF", glow: "rgba(139,125,255,0.10)" },
+  { icon: Zap,        accent: "#6D5BFF", glow: "rgba(109,91,255,0.10)" },
+  { icon: Command,    accent: "#22D3EE", glow: "rgba(34,211,238,0.08)" },
+  { icon: Users,      accent: "#6D5BFF", glow: "rgba(109,91,255,0.10)" },
+  { icon: TrendingUp, accent: "#22c55e", glow: "rgba(34,197,94,0.08)" },
+  { icon: BarChart3,  accent: "#6D5BFF", glow: "rgba(109,91,255,0.10)" },
+  { icon: Calendar,   accent: "#8B7DFF", glow: "rgba(139,125,255,0.10)" },
+  { icon: Mail,       accent: "#6D5BFF", glow: "rgba(109,91,255,0.10)" },
+  { icon: FileText,   accent: "#8B7DFF", glow: "rgba(139,125,255,0.10)" },
+  { icon: Search,     accent: "#22D3EE", glow: "rgba(34,211,238,0.08)" },
 ];
 
 export default function LandingFeatures() {
+  const t = useTranslations("landing.features");
+  const modules = t.raw("modules") as Module[];
+
   return (
     <section id="systems" className="relative overflow-hidden px-6 py-32 md:px-12">
 
@@ -119,10 +53,10 @@ export default function LandingFeatures() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6D5BFF]">
-            Every system in one place
+            {t("eyebrow")}
           </p>
           <h2 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[56px]">
-            Eleven modules.
+            {t("headlineLine1")}
             <br />
             <span
               style={{
@@ -132,28 +66,28 @@ export default function LandingFeatures() {
                 backgroundClip: "text",
               }}
             >
-              One operating system.
+              {t("headlineLine2")}
             </span>
           </h2>
           <p className="mx-auto mt-7 max-w-[52ch] text-[16px] leading-[1.65] text-[#9AA3B2]">
-            Everything your business needs. Not as separate apps — as a single intelligent workspace
-            where every module knows about every other module.
+            {t("subtitle")}
           </p>
         </motion.div>
 
         {/* MODULES GRID */}
         <div className="mt-20 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {MODULES.map((mod, index) => {
-            const Icon = mod.icon;
+          {modules.map((mod, index) => {
+            const cfg = MODULE_CONFIGS[index];
+            const Icon = cfg.icon;
             return (
               <motion.div
                 key={mod.title}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.055, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: index * 0.055, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative overflow-hidden rounded-[22px] border border-white/[0.055] bg-[#0A0E17] p-6 transition-all duration-300 hover:border-white/[0.09] hover:shadow-[0_8px_40px_rgba(109,91,255,0.12),0_0_0_1px_rgba(255,255,255,0.04)]"
-                style={{ boxShadow: "0 4px_20px_rgba(109,91,255,0.06),0_0_0_1px_rgba(255,255,255,0.03)" }}
+                style={{ boxShadow: "0 4px 20px rgba(109,91,255,0.06), 0 0 0 1px rgba(255,255,255,0.03)" }}
               >
                 {/* Top sheen */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
@@ -161,7 +95,13 @@ export default function LandingFeatures() {
                 {/* Hover ambient from top-left */}
                 <div
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  style={{ background: `radial-gradient(circle at top left, ${mod.glow}, transparent 50%)` }}
+                  style={{ background: `radial-gradient(circle at top left, ${cfg.glow}, transparent 50%)` }}
+                />
+
+                {/* Bottom accent glow on hover */}
+                <div
+                  className="pointer-events-none absolute bottom-0 left-0 right-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{ background: `linear-gradient(to right, transparent, ${cfg.accent}50, transparent)` }}
                 />
 
                 {/* Content */}
@@ -170,9 +110,9 @@ export default function LandingFeatures() {
                   <div
                     className="mb-5 flex h-11 w-11 items-center justify-center rounded-[10px] border"
                     style={{
-                      background: `${mod.glow}`,
-                      borderColor: `${mod.accent}30`,
-                      color: mod.accent,
+                      background: cfg.glow,
+                      borderColor: `${cfg.accent}30`,
+                      color: cfg.accent,
                     }}
                   >
                     <Icon size={18} strokeWidth={1.75} />
@@ -190,7 +130,7 @@ export default function LandingFeatures() {
                   <div className="mt-5 flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#22c55e]" />
                     <span className="text-[11px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/45">
-                      Live
+                      {t("statusLive")}
                     </span>
                   </div>
                 </div>
