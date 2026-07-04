@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
 import { supabase } from "@/lib/supabase";
+import { createWorkspace } from "@/server/actions/workspace/createWorkspace";
 import type { User } from "@supabase/supabase-js";
 import AiCore from "@/components/ui/AiCore";
 
@@ -83,41 +84,12 @@ export default function RegisterCompletePage() {
       if (!existingMembership) {
         setStatus(t("completeInitializingWorkspace"));
 
-        const workspaceSlug = `orbit-${user.id.slice(0, 8)}`;
-
-        const { data: existingWorkspace } = await supabase
-          .from("workspaces")
-          .select("*")
-          .eq("slug", workspaceSlug)
-          .limit(1)
-          .maybeSingle();
-
-        let workspace = existingWorkspace;
+        // createWorkspace uses supabaseAdmin server-side — bypasses RLS entirely.
+        // Never use the browser client for workspace bootstrapping.
+        const workspace = await createWorkspace({ name: "My Workspace" });
 
         if (!workspace) {
-          const { data: newWorkspace, error: workspaceError } = await supabase
-            .from("workspaces")
-            .insert({ name: "My Workspace", slug: workspaceSlug })
-            .select()
-            .single();
-
-          if (workspaceError || !newWorkspace) {
-            toast.error(t("completeWorkspaceFailed"));
-            setLoading(false);
-            return;
-          }
-
-          workspace = newWorkspace;
-        }
-
-        const { error: membershipError } = await supabase
-          .from("workspace_members")
-          .insert({ workspace_id: workspace.id, user_id: user.id, role: "owner" })
-          .select()
-          .single();
-
-        if (membershipError) {
-          toast.error(t("completeMembershipFailed"));
+          toast.error(t("completeWorkspaceFailed"));
           setLoading(false);
           return;
         }

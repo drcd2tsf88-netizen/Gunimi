@@ -11,10 +11,6 @@ export async function initializeWorkspace(
 ) {
   try {
     if (!userId) {
-      console.error(
-        "Missing userId"
-      );
-
       return null;
     }
     const supabase =
@@ -42,14 +38,15 @@ export async function initializeWorkspace(
       return existingMembership;
     }
 
-    // CREATE WORKSPACE
+    // CREATE WORKSPACE — always use supabaseAdmin to bypass RLS.
+    // The workspace row doesn't exist yet so member-scoped policies cannot pass.
 
     const {
       data: workspace,
       error:
         workspaceError,
     } =
-      await supabase
+      await supabaseAdmin
         .from("workspaces")
         .insert({
           name:
@@ -67,22 +64,17 @@ export async function initializeWorkspace(
       workspaceError ||
       !workspace
     ) {
-      console.error(
-        "Workspace creation failed:",
-        workspaceError
-      );
-
       return null;
     }
 
-    // CREATE MEMBERSHIP
+    // CREATE MEMBERSHIP — use supabaseAdmin for the same reason.
 
     const {
       data: membership,
       error:
         membershipError,
     } =
-      await supabase
+      await supabaseAdmin
         .from(
           "workspace_members"
         )
@@ -102,11 +94,8 @@ export async function initializeWorkspace(
       membershipError ||
       !membership
     ) {
-      console.error(
-        "Membership creation failed:",
-        membershipError
-      );
-
+      // Clean up orphaned workspace row
+      await supabaseAdmin.from("workspaces").delete().eq("id", workspace.id);
       return null;
     }
 
@@ -124,12 +113,7 @@ export async function initializeWorkspace(
       workspace,
       membership,
     };
-  } catch (error) {
-    console.error(
-      "initializeWorkspace error:",
-      error
-    );
-
+  } catch {
     return null;
   }
 }
