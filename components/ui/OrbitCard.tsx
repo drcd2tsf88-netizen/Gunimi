@@ -1,9 +1,14 @@
-
 "use client";
 
 import { motion } from "framer-motion";
-
 import { cn } from "@/lib/utils";
+
+// ─────────────────────────────────────────────────────────────
+// OrbitCard — Dark Titanium Glass material.
+//
+// Deep matte surface, almost-invisible border, ambient purple
+// lighting on hover. No heavy blur. Floats on interaction.
+// ─────────────────────────────────────────────────────────────
 
 type OrbitCardProps = {
   children: React.ReactNode;
@@ -35,121 +40,50 @@ export default function OrbitCard({
             }
           : undefined
       }
-      whileHover={isInteractive ? { y: -2 } : undefined}
-      transition={{
-        duration: 0.18,
-        ease: "easeOut",
-      }}
+      whileHover={isInteractive ? { y: -2, transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] } } : undefined}
       className={cn(
-        `
-          group
-          relative
-
-          overflow-hidden
-
-          rounded-2xl
-
-          border
-          border-white/[0.08]
-
-          bg-white/[0.025]
-
-          backdrop-blur-2xl
-
-          shadow-[0_0_20px_rgba(124,58,237,0.05)]
-
-          transition-all
-          duration-300
-
-          hover:border-white/[0.14]
-
-          hover:bg-white/[0.04]
-
-          hover:shadow-[0_0_40px_rgba(124,58,237,0.08)]
-        `,
-
-        onClick &&
-          `
-            cursor-pointer
-            focus-visible:outline-none
-            focus-visible:ring-2
-            focus-visible:ring-violet-500/50
-            focus-visible:ring-offset-2
-            focus-visible:ring-offset-[#050816]
-          `,
-
+        // Dark Titanium Glass — deep matte surface
+        "group relative overflow-hidden rounded-[18px]",
+        "border border-white/[0.055]",
+        "bg-[#0A0E17]",
+        // Ambient purple shadow, not black
+        "shadow-[0_4px_20px_rgba(109,91,255,0.08),0_0_0_1px_rgba(255,255,255,0.03)]",
+        "transition-all duration-300",
+        // Hover — subtle elevation and glow
+        "hover:border-white/[0.09]",
+        "hover:shadow-[0_8px_40px_rgba(109,91,255,0.14),0_0_0_1px_rgba(255,255,255,0.05)]",
+        onClick && [
+          "cursor-pointer",
+          "focus-visible:outline-none",
+          "focus-visible:ring-2",
+          "focus-visible:ring-[#6D5BFF]/50",
+          "focus-visible:ring-offset-2",
+          "focus-visible:ring-offset-[#05060A]",
+        ],
         className
       )}
     >
-      {/* TOP LIGHT */}
-
+      {/* TOP SHEEN — titanium edge catch */}
       <div
         className="
-          pointer-events-none
-
-          absolute
-          inset-x-0
-          top-0
-
+          pointer-events-none absolute inset-x-0 top-0
           h-px
-
-          bg-gradient-to-r
-          from-transparent
-          via-white/20
-          to-transparent
+          bg-gradient-to-r from-transparent via-white/[0.07] to-transparent
         "
       />
 
-      {/* AMBIENT */}
-
+      {/* HOVER AMBIENT — radial glow from top-left */}
       <div
         className="
-          pointer-events-none
-
-          absolute
-          inset-0
-
-          opacity-0
-
-          transition-opacity
-          duration-500
-
+          pointer-events-none absolute inset-0
+          opacity-0 transition-opacity duration-500
           group-hover:opacity-100
-
-          bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.10),transparent_40%)]
-        "
-      />
-
-      {/* BORDER GLOW */}
-
-      <div
-        className="
-          pointer-events-none
-
-          absolute
-          inset-0
-
-          rounded-2xl
-
-          opacity-0
-
-          transition-opacity
-          duration-500
-
-          group-hover:opacity-100
-
-          shadow-[inset_0_0_0_1px_rgba(255,255,255,0.03)]
+          bg-[radial-gradient(circle_at_top_left,rgba(109,91,255,0.07),transparent_45%)]
         "
       />
 
       {/* CONTENT */}
-
-      <div
-        className="
-          relative
-          z-10
-        "
-      >
+      <div className="relative z-10">
         {children}
       </div>
     </motion.div>

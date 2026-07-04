@@ -1,635 +1,186 @@
 "use client";
 
-import Link
-from "next/link";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight, Database, Zap, Bot, Eye, Command } from "lucide-react";
+import AiCore from "@/components/ui/AiCore";
 
-import {
-  motion,
-} from "framer-motion";
+// ─────────────────────────────────────────────────────────────
+// LandingObservatory — AI Ecosystem visualization.
+// Shows the AI intelligence network: Memory, Automation,
+// Agents, Observatory, Command — all around a living center.
+// ─────────────────────────────────────────────────────────────
 
-import {
-  Activity,
-  ArrowRight,
-  Bot,
-  Brain,
-  Cpu,
-  Orbit,
-  Sparkles,
-} from "lucide-react";
-
-const systems = [
+const AI_NODES = [
   {
-    title:
-      "Orbit AI Core",
-
-    status:
-      "Operational",
-
-    description:
-      "Realtime cognition engine continuously analyzing workspace execution systems and operational awareness.",
-
-    icon: Brain,
-
-    glow:
-      "from-violet-500/20 to-fuchsia-500/10",
+    icon: Database,
+    title: "Memory",
+    desc: "Persistent context across every interaction",
+    color: "#8B7DFF",
+    position: "top-0 left-[10%]",
   },
-
   {
-    title:
-      "Workflow Engine",
-
-    status:
-      "Realtime Active",
-
-    description:
-      "Autonomous workflow orchestration system generating intelligent execution sequences and recovery flows.",
-
-    icon: Cpu,
-
-    glow:
-      "from-cyan-500/20 to-blue-500/10",
+    icon: Zap,
+    title: "Automation",
+    desc: "Triggers, actions, and workflow orchestration",
+    color: "#6D5BFF",
+    position: "top-0 right-[10%]",
   },
-
   {
-    title:
-      "Agent System",
-
-    status:
-      "4 Agents Online",
-
-    description:
-      "AI agents coordinating collaborative execution, observatory monitoring and workspace cognition.",
-
     icon: Bot,
-
-    glow:
-      "from-emerald-500/20 to-teal-500/10",
+    title: "Agents",
+    desc: "Autonomous task runners with workspace access",
+    color: "#22D3EE",
+    position: "bottom-0 left-[10%]",
   },
-
   {
-    title:
-      "Workspace Stream",
-
-    status:
-      "Live Sync",
-
-    description:
-      "Realtime operational synchronization layer connecting memory, activity and autonomous intelligence.",
-
-    icon: Activity,
-
-    glow:
-      "from-orange-500/20 to-amber-500/10",
+    icon: Eye,
+    title: "Observatory",
+    desc: "Real-time signals, alerts, and activity monitoring",
+    color: "#A998FF",
+    position: "bottom-0 right-[10%]",
+  },
+  {
+    icon: Command,
+    title: "Command",
+    desc: "Natural language interface to your entire workspace",
+    color: "#6D5BFF",
+    position: "top-1/2 right-0 -translate-y-1/2",
   },
 ];
 
 export default function LandingObservatory() {
   return (
-    <section
-      id="workflows"
-      className="
-        relative
-        overflow-hidden
+    <section id="ai" className="relative overflow-hidden px-6 py-32 md:px-12">
 
-        px-6
-        py-28
-      "
-    >
-      {/* ATMOSPHERE */}
-
-      <div
-        className="
-          absolute
-          inset-0
-          overflow-hidden
-        "
-      >
+      {/* BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0">
         <div
-          className="
-            absolute
-            left-[5%]
-            top-[10%]
-
-            h-[320px]
-            w-[320px]
-
-            rounded-full
-
-            bg-violet-500/10
-
-            blur-[140px]
-          "
-        />
-
-        <div
-          className="
-            absolute
-            bottom-[5%]
-            right-[10%]
-
-            h-[300px]
-            w-[300px]
-
-            rounded-full
-
-            bg-cyan-500/10
-
-            blur-[120px]
-          "
+          className="absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2"
+          style={{ background: "radial-gradient(ellipse, rgba(109,91,255,0.08) 0%, transparent 60%)", filter: "blur(80px)" }}
         />
       </div>
 
-      <div
-        className="
-          relative
-          z-10
+      <div className="relative z-10 mx-auto max-w-7xl">
 
-          mx-auto
-          max-w-7xl
-        "
-      >
         {/* HEADER */}
-
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.7,
-          }}
-          className="
-            mx-auto
-            max-w-4xl
-
-            text-center
-          "
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto max-w-3xl text-center"
         >
-          <div
-            className="
-              mx-auto
-
-              flex
-              w-fit
-              items-center
-              gap-2
-
-              rounded-full
-
-              border
-              border-cyan-500/20
-
-              bg-cyan-500/10
-
-              px-4
-              py-2
-
-              text-sm
-              text-cyan-200
-            "
-          >
-            <Sparkles
-              size={14}
-            />
-
-            AI Observatory Systems
-          </div>
-
-          <h2
-            className="
-              mx-auto
-              mt-8
-
-              max-w-4xl
-
-              text-5xl
-              font-semibold
-              leading-tight
-
-              tracking-[-0.04em]
-
-              md:text-6xl
-            "
-          >
-            Realtime Workspace
-            Intelligence Architecture
+          <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.18em] text-[#22D3EE]">
+            Intelligence layer
+          </p>
+          <h2 className="text-[40px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[56px]">
+            AI that operates
+            <br />
+            <span
+              style={{
+                background: "linear-gradient(135deg, #A998FF 0%, #F7F8FC 50%, #22D3EE 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              while you focus.
+            </span>
           </h2>
-
-          <p
-            className="
-              mx-auto
-              mt-6
-
-              max-w-3xl
-
-              text-lg
-              leading-relaxed
-
-              text-white/60
-            "
-          >
-            Gunimi unifies cognition,
-            orchestration, AI memory,
-            observatory systems and
-            autonomous execution into
-            a living workspace operating
-            system.
+          <p className="mx-auto mt-7 max-w-[50ch] text-[16px] leading-[1.65] text-[#9AA3B2]">
+            Five AI systems running continuously — memory, automation, agents, observatory, and command.
+            Not features you switch on. An operating layer always running underneath.
           </p>
         </motion.div>
 
-        {/* GRID */}
-
-        <div
-          className="
-            mt-20
-
-            grid
-            gap-6
-
-            md:grid-cols-2
-            xl:grid-cols-4
-          "
-        >
-          {systems.map(
-            (
-              system,
-              index
-            ) => {
-              const Icon =
-                system.icon;
-
-              return (
-                <motion.div
-                  key={
-                    system.title
-                  }
-                  initial={{
-                    opacity: 0,
-                    y: 20,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                  }}
-                  transition={{
-                    delay:
-                      index * 0.08,
-
-                    duration: 0.6,
-                  }}
-                  className="
-                    group
-                    relative
-
-                    overflow-hidden
-
-                    rounded-[34px]
-
-                    border
-                    border-white/10
-
-                    bg-white/[0.03]
-
-                    p-7
-
-                    backdrop-blur-2xl
-
-                    transition-all
-
-                    hover:border-white/20
-                    hover:bg-white/[0.05]
-                  "
-                >
-                  {/* GLOW */}
-
-                  <div
-                    className={`
-                      absolute
-                      inset-0
-
-                      opacity-0
-
-                      transition-opacity
-                      duration-500
-
-                      group-hover:opacity-100
-
-                      bg-gradient-to-br
-                      ${system.glow}
-                    `}
-                  />
-
-                  {/* CONTENT */}
-
-                  <div
-                    className="
-                      relative
-                      z-10
-                    "
-                  >
-                    {/* ICON */}
-
-                    <div
-                      className="
-                        flex
-                        h-16
-                        w-16
-
-                        items-center
-                        justify-center
-
-                        rounded-3xl
-
-                        border
-                        border-white/10
-
-                        bg-white/[0.04]
-                      "
-                    >
-                      <Icon
-                        size={28}
-                      />
-                    </div>
-
-                    {/* TITLE */}
-
-                    <h3
-                      className="
-                        mt-8
-
-                        text-2xl
-                        font-semibold
-                      "
-                    >
-                      {
-                        system.title
-                      }
-                    </h3>
-
-                    {/* DESCRIPTION */}
-
-                    <p
-                      className="
-                        mt-5
-
-                        text-sm
-                        leading-relaxed
-
-                        text-white/60
-                      "
-                    >
-                      {
-                        system.description
-                      }
-                    </p>
-
-                    {/* STATUS */}
-
-                    <div
-                      className="
-                        mt-8
-
-                        flex
-                        items-center
-                        gap-3
-                      "
-                    >
-                      <div
-                        className="
-                          relative
-                        "
-                      >
-                        <div
-                          className="
-                            h-2
-                            w-2
-
-                            rounded-full
-
-                            bg-emerald-400
-                          "
-                        />
-
-                        <div
-                          className="
-                            absolute
-                            inset-0
-
-                            animate-ping
-
-                            rounded-full
-
-                            bg-emerald-400/40
-                          "
-                        />
-                      </div>
-
-                      <p
-                        className="
-                          text-sm
-                          text-white/60
-                        "
-                      >
-                        {
-                          system.status
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            }
-          )}
-        </div>
-
-        {/* COMMAND CENTER */}
-
+        {/* AI ECOSYSTEM — center composition */}
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 30,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            delay: 0.2,
-            duration: 0.8,
-          }}
-          className="
-            relative
-
-            mt-20
-            overflow-hidden
-
-            rounded-[40px]
-
-            border
-            border-white/10
-
-            bg-white/[0.04]
-
-            p-8
-
-            backdrop-blur-2xl
-
-            md:p-10
-          "
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mx-auto mt-20 max-w-4xl"
         >
-          {/* GLOW */}
-
-          <div
-            className="
-              absolute
-              inset-0
-
-              bg-[radial-gradient(circle_at_top,rgba(124,58,237,0.14),transparent_60%)]
-            "
-          />
-
-          <div
-            className="
-              relative
-              z-10
-
-              flex
-              flex-col
-              gap-8
-
-              lg:flex-row
-              lg:items-center
-              lg:justify-between
-            "
-          >
-            {/* LEFT */}
-
+          {/* Outer container card */}
+          <div className="relative overflow-hidden rounded-[28px] border border-white/[0.055] bg-[#0A0E17] p-8 shadow-[0_20px_60px_rgba(109,91,255,0.14),0_0_0_1px_rgba(255,255,255,0.03)] md:p-12">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
             <div
-              className="
-                max-w-3xl
-              "
-            >
-              <div
-                className="
-                  flex
-                  items-center
-                  gap-4
-                "
+              className="pointer-events-none absolute inset-0"
+              style={{ background: "radial-gradient(circle at center, rgba(109,91,255,0.06), transparent 60%)" }}
+            />
+
+            {/* Central AI Core with label */}
+            <div className="relative z-10 flex flex-col items-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div
-                  className="
-                    flex
-                    h-16
-                    w-16
+                <AiCore size={180} showRings showParticles intensity="strong" />
+              </motion.div>
 
-                    items-center
-                    justify-center
-
-                    rounded-3xl
-
-                    bg-violet-500/10
-
-                    text-violet-300
-                  "
-                >
-                  <Orbit
-                    size={28}
-                  />
-                </div>
-
-                <div>
-                  <p
-                    className="
-                      text-xs
-                      uppercase
-                      tracking-[0.3em]
-
-                      text-violet-300/60
-                    "
-                  >
-                    Orbit Command Layer
-                  </p>
-
-                  <h3
-                    className="
-                      mt-2
-
-                      text-3xl
-                      font-semibold
-                    "
-                  >
-                    Autonomous Operational
-                    Intelligence
-                  </h3>
-                </div>
+              <div className="mt-4 text-center">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#6D5BFF]">
+                  Gunimi Intelligence Core
+                </p>
+                <p className="mt-1 text-[12px] text-[#9AA3B2]/60">
+                  Always on. Always learning.
+                </p>
               </div>
-
-              <p
-                className="
-                  mt-6
-
-                  text-lg
-                  leading-relaxed
-
-                  text-white/60
-                "
-              >
-                AI systems continuously
-                monitoring workspace
-                execution, generating
-                contextual intelligence
-                and orchestrating realtime
-                operational awareness.
-              </p>
             </div>
 
-            {/* ACTION */}
-
-            <Link
-              href="/dashboard"
-              className="
-                flex
-                items-center
-                justify-center
-                gap-2
-
-                rounded-2xl
-
-                bg-violet-500
-
-                px-6
-                py-4
-
-                text-sm
-                font-medium
-
-                text-white
-
-                transition-all
-
-                hover:bg-violet-400
-              "
-            >
-              Open AI Observatory
-
-              <ArrowRight
-                size={16}
-              />
-            </Link>
+            {/* AI Nodes — grid layout below core */}
+            <div className="relative z-10 mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+              {AI_NODES.map((node, index) => {
+                const Icon = node.icon;
+                return (
+                  <motion.div
+                    key={node.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.25 + index * 0.07, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className="group flex flex-col items-center rounded-[16px] border border-white/[0.05] bg-white/[0.025] p-4 text-center transition-all duration-300 hover:border-white/[0.09] hover:bg-white/[0.04]"
+                  >
+                    <div
+                      className="mb-3 flex h-9 w-9 items-center justify-center rounded-[9px]"
+                      style={{ background: `${node.color}18`, color: node.color }}
+                    >
+                      <Icon size={16} strokeWidth={1.75} />
+                    </div>
+                    <p className="text-[12px] font-semibold text-[#F7F8FC]">{node.title}</p>
+                    <p className="mt-1 text-[11px] leading-[1.5] text-[#9AA3B2]/60">{node.desc}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
+        </motion.div>
+
+        {/* BOTTOM CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-12 flex justify-center"
+        >
+          <Link
+            href="/register"
+            className="
+              group flex items-center gap-2.5
+              rounded-[12px] border border-[#6D5BFF]/[0.20]
+              bg-[rgba(109,91,255,0.08)] px-6 py-3.5
+              text-[13px] font-medium text-[#A998FF]
+              transition-all duration-300
+              hover:border-[#6D5BFF]/[0.35] hover:bg-[rgba(109,91,255,0.14)]
+            "
+          >
+            Explore the AI layer
+            <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+          </Link>
         </motion.div>
       </div>
     </section>

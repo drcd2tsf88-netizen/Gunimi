@@ -80,13 +80,13 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
---background: #060816;
---foreground: #ffffff;
+  --background: var(--g-bg);
+  --foreground: var(--g-text);
 }
 
 .dark {
-  --background: #060816;
---foreground: #ffffff;
+  --background: var(--g-bg);
+  --foreground: var(--g-text);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -118,6 +118,54 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   AI CORE — keyframe animations
+   Driving orbit ring rotations. Times chosen for elegant slowness.
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes gunimi-orbit-1 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes gunimi-orbit-2 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes gunimi-orbit-3 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes gunimi-breathe {
+  0%, 100% { opacity: 0.35; transform: scale(0.92); }
+  50%       { opacity: 0.70; transform: scale(1.08); }
+}
+
+@keyframes gunimi-pulse-core {
+  0%, 100% { transform: scale(0.88); }
+  50%       { transform: scale(1.12); }
+}
+
+@keyframes gunimi-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes gunimi-grain {
+  0%, 100% { transform: translate(0, 0); }
+  10%       { transform: translate(-1%, -1%); }
+  30%       { transform: translate(1%, -2%); }
+  50%       { transform: translate(-2%, 1%); }
+  70%       { transform: translate(2%, 2%); }
+  90%       { transform: translate(-1%, 2%); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BASE
+   ───────────────────────────────────────────────────────────── */
+
 @layer base {
 
   * {
@@ -125,95 +173,98 @@
   }
 
   html {
-
-    background:
-      #060816;
-
+    background: var(--g-bg);
+    /* Deep space — ambient nebula gradients fixed to viewport */
+    background-image:
+      radial-gradient(ellipse 90% 55% at 12% 8%,  rgba(109,91,255,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 45% at 88% 85%, rgba(34,211,238,0.04) 0%, transparent 55%),
+      radial-gradient(ellipse 110% 70% at 50% 50%, rgba(109,91,255,0.03) 0%, transparent 65%);
+    background-attachment: fixed;
   }
 
   body {
-
     @apply text-foreground;
+    background: transparent;
+    min-height: 100vh;
+    position: relative;
+  }
 
-    background:
-      #060816;
-
-    min-height:
-      100vh;
-
+  /* Grain texture overlay — very subtle, adds material depth */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.018;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: gunimi-grain 8s steps(10) infinite;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   SELECT (Radix)
+   ───────────────────────────────────────────────────────────── */
+
 [data-slot="select-content"] {
-
-  background:
-    #0f1729 !important;
-
-  border:
-    1px solid rgba(255,255,255,0.08) !important;
-
-  border-radius:
-    1rem !important;
-
-  color:
-    white !important;
-
-  backdrop-filter:
-    blur(24px);
-
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.45);
-
+  background: var(--g-surface-2) !important;
+  border: 1px solid var(--g-border) !important;
+  border-radius: 14px !important;
+  color: var(--g-text) !important;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--g-shadow-lg);
 }
 
 [data-slot="select-item"] {
-
-  color:
-    white !important;
-
-  border-radius:
-    0.75rem;
-
-  transition:
-    all 0.2s ease;
-
+  color: var(--g-text) !important;
+  border-radius: 10px;
+  transition: background var(--g-duration-sm) var(--g-ease);
 }
 
-[data-slot="select-item"]:hover {
-
-  background:
-    rgba(255,255,255,0.06);
-
-}
-
+[data-slot="select-item"]:hover,
 [data-slot="select-item"][data-highlighted] {
-
-  background:
-    rgba(255,255,255,0.08);
-
-  color:
-    white;
-
+  background: rgba(109, 91, 255, 0.08);
+  color: var(--g-text);
 }
+
+/* ─────────────────────────────────────────────────────────────
+   COMMAND
+   ───────────────────────────────────────────────────────────── */
+
 .orbit-command-item {
-
   display: flex;
-
   align-items: center;
-
-  border-radius: 18px;
-
-  padding: 14px 16px;
-
-  color: white;
-
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--g-text);
   cursor: pointer;
-
-  transition: all 0.25s ease;
-
+  transition: background var(--g-duration-sm) var(--g-ease);
 }
 
 .orbit-command-item:hover {
+  background: rgba(109, 91, 255, 0.07);
+}
 
-  background: rgba(255,255,255,0.06);
+/* ─────────────────────────────────────────────────────────────
+   SCROLLBAR — barely visible
+   ───────────────────────────────────────────────────────────── */
 
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(109, 91, 255, 0.20);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(109, 91, 255, 0.35);
 }

@@ -1,321 +1,97 @@
 "use client";
 
-import Link
-from "next/link";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, X } from "lucide-react";
+import AiCore from "@/components/ui/AiCore";
 
-import {
-  motion,
-  AnimatePresence,
-} from "framer-motion";
-
-import {
-  ArrowRight,
-  Orbit,
-  X,
-} from "lucide-react";
+// ─────────────────────────────────────────────────────────────
+// LandingMobileNav — Slide-in nav drawer. GDL v1.0.
+// ─────────────────────────────────────────────────────────────
 
 type LandingMobileNavProps = {
   open: boolean;
-
   onClose: () => void;
 };
 
-const links = [
-  {
-    label:
-      "Observatory",
-
-    href:
-      "#observatory",
-  },
-
-  {
-    label:
-      "AI Systems",
-
-    href:
-      "#systems",
-  },
-
-  {
-    label:
-      "Workflows",
-
-    href:
-      "#workflows",
-  },
-
-  {
-    label:
-      "Enterprise",
-
-    href:
-      "#enterprise",
-  },
+const LINKS = [
+  { label: "Features",  href: "#systems" },
+  { label: "AI",        href: "#ai" },
+  { label: "Pricing",   href: "#pricing" },
+  { label: "Enterprise",href: "#enterprise" },
 ];
 
-export default function LandingMobileNav({
-  open,
-  onClose,
-}: LandingMobileNavProps) {
+export default function LandingMobileNav({ open, onClose }: LandingMobileNavProps) {
   return (
     <AnimatePresence>
       {open && (
         <motion.div
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
-          className="
-            fixed
-            inset-0
-            z-[999]
-
-            bg-black/80
-
-            backdrop-blur-2xl
-          "
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[999] bg-[#05060A]/80 backdrop-blur-[18px]"
+          onClick={onClose}
         >
           <motion.div
-            initial={{
-              x: "100%",
-            }}
-            animate={{
-              x: 0,
-            }}
-            exit={{
-              x: "100%",
-            }}
-            transition={{
-              type: "spring",
-              damping: 30,
-            }}
-            className="
-              absolute
-              right-0
-              top-0
-
-              flex
-              h-full
-              w-[88%]
-              max-w-sm
-
-              flex-col
-
-              border-l
-              border-white/10
-
-              bg-[#050816]
-
-              p-6
-            "
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 28, stiffness: 220 }}
+            className="absolute right-0 top-0 flex h-full w-[88%] max-w-sm flex-col border-l border-white/[0.055] bg-[#05060A] p-6"
+            onClick={(e) => e.stopPropagation()}
           >
+            {/* Top sheen */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b from-[#6D5BFF]/20 via-transparent to-transparent" />
+
             {/* HEADER */}
-
-            <div
-              className="
-                flex
-                items-center
-                justify-between
-              "
-            >
-              <div
-                className="
-                  flex
-                  items-center
-                  gap-3
-                "
-              >
-                <div
-                  className="
-                    flex
-                    h-11
-                    w-11
-
-                    items-center
-                    justify-center
-
-                    rounded-2xl
-
-                    bg-violet-500/10
-
-                    text-violet-300
-                  "
-                >
-                  <Orbit
-                    size={20}
-                  />
-                </div>
-
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <AiCore size={28} showRings={false} showParticles={false} intensity="strong" />
                 <div>
-                  <h2
-                    className="
-                      font-semibold
-                    "
-                  >
-                    Gunimi
-                  </h2>
-
-                  <p
-                    className="
-                      text-xs
-                      text-white/40
-                    "
-                  >
-                    AI Workspace OS
-                  </p>
+                  <p className="text-[14px] font-semibold text-[#F7F8FC]">Gunimi</p>
+                  <p className="text-[10.5px] text-[#9AA3B2]/45">AI Workspace OS</p>
                 </div>
               </div>
-
               <button
-                onClick={
-                  onClose
-                }
-                className="
-                  flex
-                  h-11
-                  w-11
-
-                  items-center
-                  justify-center
-
-                  rounded-2xl
-
-                  border
-                  border-white/10
-
-                  bg-white/[0.03]
-
-                  text-white/60
-                "
+                onClick={onClose}
+                aria-label="Close menu"
+                className="flex h-9 w-9 items-center justify-center rounded-[9px] border border-white/[0.07] bg-white/[0.025] text-[#9AA3B2] transition-colors hover:text-[#F7F8FC]"
               >
-                <X
-                  size={18}
-                />
+                <X size={16} />
               </button>
             </div>
 
             {/* LINKS */}
-
-            <div
-              className="
-                mt-12
-
-                flex
-                flex-col
-                gap-4
-              "
-            >
-              {links.map(
-                (item) => (
-                  <a
-                    key={
-                      item.label
-                    }
-                    href={
-                      item.href
-                    }
-                    onClick={
-                      onClose
-                    }
-                    className="
-                      rounded-2xl
-
-                      border
-                      border-white/5
-
-                      bg-white/[0.03]
-
-                      px-5
-                      py-4
-
-                      text-sm
-                      text-white/70
-
-                      transition-all
-
-                      hover:border-white/10
-                      hover:bg-white/[0.05]
-                    "
-                  >
-                    {item.label}
-                  </a>
-                )
-              )}
-            </div>
+            <nav className="mt-10 flex flex-col gap-1.5">
+              {LINKS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={onClose}
+                  className="rounded-[12px] border border-transparent px-4 py-3.5 text-[14px] font-medium text-[#C8CDD8] transition-all duration-200 hover:border-white/[0.07] hover:bg-white/[0.03]"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
 
             {/* ACTIONS */}
-
-            <div
-              className="
-                mt-auto
-
-                space-y-3
-              "
-            >
+            <div className="mt-auto space-y-3">
               <Link
                 href="/login"
-                onClick={
-                  onClose
-                }
-                className="
-                  flex
-                  h-14
-                  w-full
-
-                  items-center
-                  justify-center
-
-                  rounded-2xl
-
-                  border
-                  border-white/10
-
-                  bg-white/[0.03]
-
-                  text-sm
-                  font-medium
-
-                  text-white/70
-                "
+                onClick={onClose}
+                className="flex h-12 w-full items-center justify-center rounded-[12px] border border-white/[0.08] bg-white/[0.03] text-[14px] font-medium text-[#9AA3B2] transition-all hover:border-white/[0.14] hover:text-[#F7F8FC]"
               >
-                Login
+                Sign in
               </Link>
-
               <Link
-                href="/dashboard"
-                onClick={
-                  onClose
-                }
-                className="
-                  flex
-                  h-14
-                  w-full
-
-                  items-center
-                  justify-center
-                  gap-2
-
-                  rounded-2xl
-
-                  bg-violet-500
-
-                  text-sm
-                  font-medium
-
-                  text-white
-                "
+                href="/register"
+                onClick={onClose}
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] transition-all hover:bg-[#7B6BFF]"
               >
-                Launch Orbit
-
-                <ArrowRight
-                  size={16}
-                />
+                Get started
+                <ArrowRight size={15} />
               </Link>
             </div>
           </motion.div>

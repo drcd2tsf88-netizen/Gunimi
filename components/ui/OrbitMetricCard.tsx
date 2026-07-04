@@ -1,64 +1,29 @@
 "use client";
 
-import { LucideIcon }
-from "lucide-react";
-
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import { LucideIcon } from "lucide-react";
+import OrbitCard from "@/components/ui/OrbitCard";
 
 type Props = {
   label: string;
-
-  value:
-    | string
-    | number;
-
+  value: string | number;
   icon: LucideIcon;
 };
 
-export default function OrbitMetricCard({
-  label,
-  value,
-  icon: Icon,
-}: Props) {
+export default function OrbitMetricCard({ label, value, icon: Icon }: Props) {
   return (
-    <OrbitCard
-      className="
-        p-5
-      "
-    >
-      <div
-        className="
-          flex
-          items-center
-          justify-between
-        "
-      >
-        <p
-          className="
-            text-sm
-            text-white/50
-          "
-        >
+    <OrbitCard className="p-5">
+      {/* HEADER */}
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-[#9AA3B2]/55">
           {label}
         </p>
-
-        <Icon
-          size={18}
-          className="
-            text-violet-300
-          "
-        />
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] bg-[#6D5BFF]/[0.10] text-[#8B7DFF]">
+          <Icon size={13} strokeWidth={1.75} />
+        </div>
       </div>
 
-      <h3
-        className="
-          mt-4
-
-          text-2xl
-          font-semibold
-        "
-      >
+      {/* VALUE — numbers dominate */}
+      <h3 className="mt-4 text-[36px] font-bold leading-none tracking-[-0.05em] text-[#F7F8FC]">
         {value}
       </h3>
     </OrbitCard>

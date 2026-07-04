@@ -71,7 +71,7 @@ export default function OrbitSkeleton({
           absolute
           inset-0
 
-          bg-[radial-gradient(circle_at_top,rgba(124,58,237,0.06),transparent_50%)]
+          bg-[radial-gradient(circle_at_top,rgba(109,91,255,0.06),transparent_50%)]
         "
       />
 

@@ -1,204 +1,92 @@
 "use client";
 
-import {
-  Menu,
-  Search,
-} from "lucide-react";
-
+import { Menu, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import OrbitTeamPresence
-from "@/components/layout/OrbitTeamPresence";
+import OrbitTeamPresence    from "@/components/layout/OrbitTeamPresence";
+import OrbitNotifications   from "@/components/layout/OrbitNotifications";
+import OrbitProfileDropdown from "@/components/layout/OrbitProfileDropdown";
+import OrbitAIStatus        from "../ai/OrbitAIStatus";
 
-import OrbitNotifications
-from "@/components/layout/OrbitNotifications";
-
-import OrbitProfileDropdown
-from "@/components/layout/OrbitProfileDropdown";
-
-import OrbitAIStatus
-from "../ai/OrbitAIStatus";
-
-import { useOrbitCommandStore }
-from "@/lib/store/orbit-command-store";
+import { useOrbitCommandStore } from "@/lib/store/orbit-command-store";
 
 type OrbitTopbarProps = {
-  mobileOpen: boolean;
-
-  setMobileOpen: (
-    value: boolean
-  ) => void;
+  mobileOpen:    boolean;
+  setMobileOpen: (value: boolean) => void;
 };
 
-export default function OrbitTopbar({
-  mobileOpen,
+// ─────────────────────────────────────────────────────────────
+// OrbitTopbar — Minimal, almost invisible.
+// The product should speak, not the chrome.
+// ─────────────────────────────────────────────────────────────
 
-  setMobileOpen,
-}: OrbitTopbarProps) {
-  const t = useTranslations("command");
-
-  const {
-    setOpen,
-  } =
-    useOrbitCommandStore();
+export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarProps) {
+  const t      = useTranslations("command");
+  const { setOpen } = useOrbitCommandStore();
 
   return (
     <header
       className="
-        sticky
-        top-0
-        z-50
-
-        border-b
-        border-white/5
-
-        bg-[#050816]/75
-
-        backdrop-blur-2xl
+        sticky top-0 z-50
+        border-b border-white/[0.04]
+        bg-[#05060A]/80
+        backdrop-blur-[18px]
       "
     >
-      <div
-        className="
-          flex
-          items-center
-          justify-between
+      <div className="flex items-center justify-between gap-3 px-4 py-2.5 lg:px-5">
 
-          gap-3
-
-          px-4
-          py-3
-
-          lg:px-6
-        "
-      >
         {/* LEFT */}
+        <div className="flex flex-1 items-center gap-3">
 
-        <div
-          className="
-            flex
-            flex-1
-            items-center
-
-            gap-3
-          "
-        >
-          {/* MOBILE */}
-
+          {/* Mobile menu toggle */}
           <button
-            onClick={() =>
-              setMobileOpen(
-                !mobileOpen
-              )
-            }
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle navigation"
             className="
-              flex
-              h-10
-              w-10
-
-              shrink-0
-
-              items-center
-              justify-center
-
-              rounded-xl
-
-              border
-              border-white/10
-
-              bg-white/[0.03]
-
-              text-white/70
-
-              transition-all
-
-              hover:border-white/20
-
+              flex h-9 w-9 shrink-0 items-center justify-center
+              rounded-lg
+              border border-white/[0.06] bg-white/[0.02]
+              text-[#9AA3B2]/60
+              transition-all duration-[220ms]
+              hover:border-white/[0.10] hover:text-white/80
               lg:hidden
             "
           >
-            <Menu
-              size={18}
-            />
+            <Menu size={16} strokeWidth={1.75} />
           </button>
 
-          {/* COMMAND */}
-
+          {/* Command search */}
           <button
-            onClick={() =>
-              setOpen(true)
-            }
+            onClick={() => setOpen(true)}
             className="
-              relative
-
-              hidden
-              h-11
-              w-full
-              max-w-md
-
-              items-center
-
-              rounded-xl
-
-              border
-              border-white/10
-
-              bg-white/[0.03]
-
-              pl-11
-              pr-4
-
+              relative hidden h-10 w-full max-w-[340px] items-center
+              rounded-[10px]
+              border border-white/[0.05]
+              bg-white/[0.02]
+              pl-10 pr-12
               text-left
-
-              transition-all
-
-              hover:border-white/20
-              hover:bg-white/[0.05]
-
+              transition-all duration-[220ms]
+              hover:border-white/[0.09] hover:bg-white/[0.035]
               md:flex
             "
           >
             <Search
-              size={16}
-              className="
-                absolute
-                left-4
-                top-1/2
-
-                -translate-y-1/2
-
-                text-white/30
-              "
+              size={14}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9AA3B2]/40"
             />
 
-            <span
-              className="
-                text-sm
-                text-white/30
-              "
-            >
+            <span className="text-[13px] text-[#9AA3B2]/40">
               {t("topbarPlaceholder")}
             </span>
 
             <div
               className="
-                absolute
-                right-3
-                top-1/2
-
-                -translate-y-1/2
-
-                rounded-md
-
-                border
-                border-white/10
-
-                bg-white/[0.03]
-
-                px-1.5
-                py-1
-
-                text-[9px]
-                text-white/40
+                absolute right-3 top-1/2 -translate-y-1/2
+                rounded-[5px]
+                border border-white/[0.07]
+                bg-white/[0.025]
+                px-1.5 py-0.5
+                text-[9px] font-medium text-[#9AA3B2]/45
               "
             >
               ⌘K
@@ -207,23 +95,13 @@ export default function OrbitTopbar({
         </div>
 
         {/* RIGHT */}
-
-        <div
-          className="
-            flex
-            items-center
-
-            gap-2
-          "
-        >
+        <div className="flex items-center gap-1.5">
           <OrbitAIStatus />
-
           <OrbitTeamPresence />
-
           <OrbitNotifications />
-
           <OrbitProfileDropdown />
         </div>
+
       </div>
     </header>
   );

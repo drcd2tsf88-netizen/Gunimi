@@ -8,19 +8,20 @@ import { useEffect, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { ChevronDown, ChevronRight, Sparkles, X } from "lucide-react";
+import { ChevronDown, ChevronRight, X } from "lucide-react";
 
 import { NAV_GROUPS, isNavItemActive, type NavGroup } from "@/config/navigation";
 
 import OrbitCommand from "@/components/command/OrbitCommand";
 import OrbitTopbar from "@/components/layout/OrbitTopbar";
 import OrbitLoader from "@/components/system/OrbitLoader";
+import AiCore from "@/components/ui/AiCore";
 
 import { supabase } from "@/lib/supabase";
 
-// ---------------------------------------------------------------------------
-// Sidebar nav body — shared between desktop and mobile
-// ---------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────
+// SidebarNav
+// ─────────────────────────────────────────────────────────────
 
 function SidebarNav({
   groups,
@@ -46,9 +47,9 @@ function SidebarNav({
             key={group.id}
             className={
               group.separator
-                ? "mt-3 border-t border-white/5 pt-3"
+                ? "mt-4 border-t border-white/[0.04] pt-4"
                 : groupIndex > 0
-                ? "mt-1"
+                ? "mt-0.5"
                 : ""
             }
           >
@@ -57,19 +58,18 @@ function SidebarNav({
                 <button
                   type="button"
                   onClick={() => onToggleGroup(group.id)}
-                  className="flex w-full items-center justify-between px-3 pb-1 pt-4"
+                  className="flex w-full items-center justify-between px-3 pb-1.5 pt-4"
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-600">
+                  <p className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-[#9AA3B2]/40">
                     {t(group.labelKey)}
                   </p>
-                  {isCollapsed ? (
-                    <ChevronRight size={11} className="text-zinc-700" />
-                  ) : (
-                    <ChevronDown size={11} className="text-zinc-700" />
-                  )}
+                  {isCollapsed
+                    ? <ChevronRight size={10} className="text-white/20" />
+                    : <ChevronDown  size={10} className="text-white/20" />
+                  }
                 </button>
               ) : (
-                <p className="px-3 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-widest text-zinc-600">
+                <p className="px-3 pb-1.5 pt-4 text-[9.5px] font-semibold uppercase tracking-[0.14em] text-[#9AA3B2]/40">
                   {t(group.labelKey)}
                 </p>
               )
@@ -86,29 +86,38 @@ function SidebarNav({
                   onClick={onLinkClick}
                 >
                   <div
-                    className={`
-                      group flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all
-                      ${
-                        active
-                          ? "border border-violet-500/20 bg-violet-500/10 text-white"
-                          : "border border-transparent text-zinc-400 hover:border-white/[0.06] hover:bg-white/[0.03] hover:text-white"
-                      }
-                    `}
+                    className={[
+                      "group relative flex items-center gap-3 rounded-xl px-3 py-2.5",
+                      "transition-all duration-[220ms]",
+                      active
+                        ? [
+                            // Active: left indicator line + very subtle fill
+                            "bg-[#0F1520]",
+                            "text-[#F7F8FC]",
+                            // Left accent via box-shadow (doesn't affect layout)
+                            "shadow-[inset_2px_0_0_#6D5BFF]",
+                          ].join(" ")
+                        : [
+                            "text-[#9AA3B2]/65",
+                            "hover:bg-white/[0.025]",
+                            "hover:text-[#F7F8FC]/80",
+                          ].join(" "),
+                    ].join(" ")}
                   >
+                    {/* Icon */}
                     <div
-                      className={`
-                        flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors
-                        ${
-                          active
-                            ? "bg-violet-500/10 text-violet-300"
-                            : "bg-white/[0.03] text-zinc-500 group-hover:text-zinc-300"
-                        }
-                      `}
+                      className={[
+                        "flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg",
+                        "transition-colors duration-[220ms]",
+                        active
+                          ? "bg-[#6D5BFF]/12 text-[#8B7DFF]"
+                          : "text-[#9AA3B2]/50 group-hover:text-[#9AA3B2]/80",
+                      ].join(" ")}
                     >
-                      <Icon size={15} />
+                      <Icon size={14} strokeWidth={1.75} />
                     </div>
 
-                    <span className="text-sm font-medium">
+                    <span className="text-[13px] font-medium tracking-[-0.01em]">
                       {t(item.labelKey)}
                     </span>
                   </div>
@@ -122,21 +131,31 @@ function SidebarNav({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Sidebar header — shared between desktop and mobile
-// ---------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────
+// SidebarHeader
+// ─────────────────────────────────────────────────────────────
 
 function SidebarHeader({ onClose }: { onClose?: () => void }) {
   return (
-    <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-5">
+    <div className="flex items-center justify-between border-b border-white/[0.04] px-4 py-4">
       <div className="flex items-center gap-3">
-        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-400 shadow-[0_0_24px_rgba(124,58,237,0.3)]">
-          <Sparkles size={15} className="text-white" />
+        {/* AI Core miniature — the Gunimi identity mark */}
+        <div className="relative h-9 w-9 shrink-0">
+          <AiCore
+            size={36}
+            showRings={false}
+            showParticles={false}
+            intensity="strong"
+          />
         </div>
 
         <div>
-          <h1 className="text-sm font-semibold text-white">Gunimi</h1>
-          <p className="mt-0.5 text-[10px] text-zinc-500">AI Workspace OS</p>
+          <h1 className="text-[13px] font-semibold tracking-[-0.01em] text-[#F7F8FC]">
+            Gunimi
+          </h1>
+          <p className="mt-px text-[10px] tracking-[0.06em] text-[#9AA3B2]/45">
+            AI Workspace OS
+          </p>
         </div>
       </div>
 
@@ -144,18 +163,18 @@ function SidebarHeader({ onClose }: { onClose?: () => void }) {
         <button
           onClick={onClose}
           aria-label="Close navigation"
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-zinc-400 transition hover:text-white lg:hidden"
+          className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#9AA3B2]/60 transition hover:text-white/80 lg:hidden"
         >
-          <X size={14} />
+          <X size={13} />
         </button>
       )}
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Sidebar footer (profile link)
-// ---------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────
+// SidebarFooter
+// ─────────────────────────────────────────────────────────────
 
 function SidebarFooter({
   profile,
@@ -166,30 +185,40 @@ function SidebarFooter({
 }) {
   const tNav = useTranslations("nav");
   return (
-    <div className="border-t border-white/5 p-4">
-      <Link
-        href="/dashboard/settings?section=profile"
-        onClick={onLinkClick}
-      >
-        <div className="flex items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.02] px-3 py-3 transition-all hover:border-violet-500/20 hover:bg-violet-500/5">
-          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-violet-500/15 text-sm font-semibold text-violet-300">
+    <div className="border-t border-white/[0.04] p-3">
+      <Link href="/dashboard/settings?section=profile" onClick={onLinkClick}>
+        <div
+          className="
+            flex items-center gap-3 rounded-xl px-3 py-3
+            border border-white/[0.04]
+            bg-[#0A0E17]/60
+            transition-all duration-[220ms]
+            hover:border-[#6D5BFF]/15
+            hover:bg-[#0F1520]
+          "
+        >
+          {/* Avatar */}
+          <div
+            className="
+              relative flex h-8 w-8 shrink-0 items-center justify-center
+              overflow-hidden rounded-lg
+              bg-[#6D5BFF]/15 text-[12px] font-semibold text-[#8B7DFF]
+            "
+          >
             {profile?.avatar_url ? (
-              <Image
-                src={profile.avatar_url}
-                alt=""
-                fill
-                className="object-cover"
-              />
+              <Image src={profile.avatar_url} alt="" fill className="object-cover" />
             ) : (
-              (profile?.full_name?.[0] ?? "O").toUpperCase()
+              (profile?.full_name?.[0] ?? "G").toUpperCase()
             )}
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-white/80">
+            <p className="truncate text-[12.5px] font-medium text-[#F7F8FC]/75">
               {profile?.full_name ?? "Profile"}
             </p>
-            <p className="text-[10px] text-white/30">{tNav("profileSettings")}</p>
+            <p className="text-[10px] text-[#9AA3B2]/40">
+              {tNav("profileSettings")}
+            </p>
           </div>
         </div>
       </Link>
@@ -197,9 +226,9 @@ function SidebarFooter({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Layout
-// ---------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────
+// DashboardLayoutClient
+// ─────────────────────────────────────────────────────────────
 
 export default function DashboardLayoutClient({
   children,
@@ -209,22 +238,19 @@ export default function DashboardLayoutClient({
   const pathname = usePathname();
   const tNav = useTranslations("nav");
 
-  const [loading, setLoading] = useState(true);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [userRole, setUserRole] = useState("member");
+  const [loading, setLoading]         = useState(true);
+  const [mobileOpen, setMobileOpen]   = useState(false);
+  const [userRole, setUserRole]       = useState("member");
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
   function toggleGroup(id: string) {
     setCollapsedGroups((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
+      if (next.has(id)) next.delete(id); else next.add(id);
       return next;
     });
   }
+
   const [sidebarProfile, setSidebarProfile] = useState<{
     full_name: string;
     avatar_url: string | null;
@@ -233,14 +259,8 @@ export default function DashboardLayoutClient({
   useEffect(() => {
     async function initialize() {
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!session) {
-          window.location.href = "/login";
-          return;
-        }
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) { window.location.href = "/login"; return; }
 
         const { data: profile } = await supabase
           .from("profiles")
@@ -250,7 +270,7 @@ export default function DashboardLayoutClient({
 
         if (profile) {
           setSidebarProfile({
-            full_name: profile.full_name ?? session.user.email ?? "",
+            full_name:  profile.full_name ?? session.user.email ?? "",
             avatar_url: profile.avatar_url ?? null,
           });
         }
@@ -264,13 +284,8 @@ export default function DashboardLayoutClient({
         const role = profile?.platform_role || "user";
         setUserRole(role);
 
-        const hasAccess =
-          role === "beta" || role === "team" || role === "admin";
-
-        if (!hasAccess) {
-          window.location.href = "/waitlist";
-          return;
-        }
+        const hasAccess = role === "beta" || role === "team" || role === "admin";
+        if (!hasAccess) { window.location.href = "/waitlist"; return; }
 
         setLoading(false);
       } catch (error) {
@@ -278,28 +293,26 @@ export default function DashboardLayoutClient({
         setLoading(false);
       }
     }
-
     initialize();
   }, []);
 
-  if (loading) {
-    return <OrbitLoader />;
-  }
+  if (loading) return <OrbitLoader />;
 
   const closeMobile = () => setMobileOpen(false);
 
+  const sidebarClasses = [
+    "flex flex-col h-full",
+    "bg-[#05060A]",
+    "border-r border-white/[0.04]",
+  ].join(" ");
+
   return (
-    <div className="flex min-h-screen bg-[#050816] text-white">
+    <div className="flex min-h-screen bg-[#05060A] text-white">
 
       {/* DESKTOP SIDEBAR */}
-
-      <aside className="hidden w-[260px] shrink-0 flex-col border-r border-white/5 bg-white/[0.02] backdrop-blur-2xl lg:flex">
+      <aside className={`hidden w-[248px] shrink-0 lg:flex ${sidebarClasses}`}>
         <SidebarHeader />
-
-        <nav
-          aria-label="Main navigation"
-          className="flex-1 overflow-y-auto px-3 py-4"
-        >
+        <nav aria-label="Main navigation" className="flex-1 overflow-y-auto px-2.5 py-3">
           <SidebarNav
             groups={NAV_GROUPS}
             pathname={pathname}
@@ -308,12 +321,10 @@ export default function DashboardLayoutClient({
             onToggleGroup={toggleGroup}
           />
         </nav>
-
         <SidebarFooter profile={sidebarProfile} />
       </aside>
 
       {/* MOBILE SIDEBAR */}
-
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -322,22 +333,17 @@ export default function DashboardLayoutClient({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeMobile}
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
             />
-
             <motion.aside
-              initial={{ x: -280 }}
+              initial={{ x: -260 }}
               animate={{ x: 0 }}
-              exit={{ x: -280 }}
-              transition={{ type: "spring", damping: 24, stiffness: 200 }}
-              className="fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col border-r border-white/10 bg-[#050816] backdrop-blur-2xl lg:hidden"
+              exit={{ x: -260 }}
+              transition={{ type: "spring", damping: 26, stiffness: 220 }}
+              className={`fixed left-0 top-0 z-50 h-screen w-[248px] lg:hidden ${sidebarClasses}`}
             >
               <SidebarHeader onClose={closeMobile} />
-
-              <nav
-                aria-label="Main navigation"
-                className="flex-1 overflow-y-auto px-3 py-4"
-              >
+              <nav aria-label="Main navigation" className="flex-1 overflow-y-auto px-2.5 py-3">
                 <SidebarNav
                   groups={NAV_GROUPS}
                   pathname={pathname}
@@ -347,7 +353,6 @@ export default function DashboardLayoutClient({
                   onLinkClick={closeMobile}
                 />
               </nav>
-
               <SidebarFooter profile={sidebarProfile} onLinkClick={closeMobile} />
             </motion.aside>
           </>
@@ -355,19 +360,17 @@ export default function DashboardLayoutClient({
       </AnimatePresence>
 
       {/* MAIN */}
-
       <div className="flex min-h-screen flex-1 flex-col">
         <OrbitTopbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
-
         <OrbitCommand userRole={userRole} />
 
         <AnimatePresence mode="wait">
           <motion.main
             key={pathname}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="flex-1"
           >
             {children}

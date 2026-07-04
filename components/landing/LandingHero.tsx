@@ -1,701 +1,179 @@
 "use client";
 
-import Link
-from "next/link";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import AiCore from "@/components/ui/AiCore";
 
-import {
-  motion,
-} from "framer-motion";
+// ─────────────────────────────────────────────────────────────
+// LandingHero — Cinematic first impression. GDL v1.0.
+// AI Core is the visual center. Whitespace. Confidence.
+// Apple-style: short, declarative, unmistakable.
+// ─────────────────────────────────────────────────────────────
 
-import {
-  ArrowRight,
-  Brain,
-  Shield,
-  Sparkles,
-} from "lucide-react";
+const TRUST_SIGNALS = [
+  "SOC 2 Type II",
+  "End-to-end encrypted",
+  "GDPR compliant",
+];
 
 export default function LandingHero() {
-  const liveSignals = [
-    "Orbit AI synchronized workspace cognition",
-
-    "Realtime operational awareness online",
-
-    "Enterprise automation pipeline stabilized",
-  ];
-
   return (
-    <section
-      className="
-        relative
-        overflow-hidden
+    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-24 pb-32 md:px-12">
 
-        px-6
-        pb-36
-        pt-44
+      {/* ── DEEP SPACE BACKGROUND ── */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
 
-        md:px-12
-      "
-    >
-      {/* BACKGROUND */}
-
-      <div
-        className="
-          absolute
-          inset-0
-          overflow-hidden
-        "
-      >
-        {/* ORB */}
-
+        {/* Primary nebula — top center */}
         <div
-          className="
-            absolute
-            left-[-160px]
-            top-[-140px]
-
-            h-[520px]
-            w-[520px]
-
-            rounded-full
-
-            bg-violet-500/20
-
-            blur-[180px]
-          "
+          className="absolute left-1/2 top-[-10%] h-[800px] w-[800px] -translate-x-1/2"
+          style={{
+            background: "radial-gradient(ellipse, rgba(109,91,255,0.12) 0%, transparent 65%)",
+            filter: "blur(80px)",
+          }}
         />
 
+        {/* AI accent nebula — bottom right */}
         <div
-          className="
-            absolute
-            bottom-[-220px]
-            right-[-120px]
-
-            h-[520px]
-            w-[520px]
-
-            rounded-full
-
-            bg-cyan-500/10
-
-            blur-[200px]
-          "
+          className="absolute bottom-[-20%] right-[-10%] h-[600px] w-[600px]"
+          style={{
+            background: "radial-gradient(ellipse, rgba(34,211,238,0.05) 0%, transparent 65%)",
+            filter: "blur(100px)",
+          }}
         />
 
-        {/* GRID */}
-
+        {/* Horizon glow — bottom */}
         <div
-          className="
-            absolute
-            inset-0
-
-            opacity-[0.04]
-
-            [background-image:linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)]
-
-            [background-size:80px_80px]
-          "
-        />
-
-        {/* RADIAL */}
-
-        <div
-          className="
-            absolute
-            inset-0
-
-            bg-[radial-gradient(circle_at_center,rgba(124,58,237,0.08),transparent_60%)]
-          "
+          className="absolute bottom-0 left-0 right-0 h-[1px]"
+          style={{
+            background: "linear-gradient(to right, transparent, rgba(109,91,255,0.15), transparent)",
+          }}
         />
       </div>
 
-      {/* CONTENT */}
-
-      <div
-        className="
-          relative
-          z-10
-
-          mx-auto
-          max-w-7xl
-        "
+      {/* ── AI CORE — the visual center ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+        className="pointer-events-none absolute left-1/2 top-[18%] -translate-x-1/2 opacity-35 sm:top-[10%] sm:opacity-40"
       >
-        {/* BADGE */}
+        <AiCore size={640} showRings showParticles intensity="subtle" />
+      </motion.div>
 
+      {/* ── CONTENT ── */}
+      <div className="relative z-10 mx-auto max-w-6xl text-center">
+
+        {/* EYEBROW BADGE */}
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 10,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="
-            mx-auto
-
-            flex
-            w-fit
-            items-center
-            gap-2
-
-            rounded-full
-
-            border
-            border-violet-500/20
-
-            bg-violet-500/10
-
-            px-5
-            py-2.5
-
-            text-sm
-            text-violet-200
-
+            mx-auto mb-12 flex w-fit items-center gap-2
+            rounded-full border border-[#6D5BFF]/[0.18]
+            bg-[rgba(109,91,255,0.06)] px-5 py-2.5
+            text-[11.5px] font-medium uppercase tracking-[0.14em] text-[#A998FF]
             backdrop-blur-xl
           "
         >
-          <Sparkles
-            size={14}
-          />
-
-          Orbit AI Operating System
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#22c55e]" />
+          AI Workspace Operating System
         </motion.div>
 
-        {/* TITLE */}
-
+        {/* HEADLINE */}
         <motion.h1
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: 0.08,
-            duration: 0.7,
-          }}
-          className="
-            mx-auto
-            mt-10
-
-            max-w-6xl
-
-            text-center
-
-            text-5xl
-            font-semibold
-            leading-[0.95]
-            tracking-[-0.05em]
-
-            text-white
-
-            md:text-8xl
-          "
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto max-w-[18ch] text-[52px] font-bold leading-[0.92] tracking-[-0.055em] text-[#F7F8FC] md:text-[88px]"
         >
-          The Future Of
+          Your business,
           <br />
-
           <span
-            className="
-              bg-gradient-to-r
-              from-violet-300
-              via-white
-              to-cyan-300
-
-              bg-clip-text
-
-              text-transparent
-            "
+            style={{
+              background: "linear-gradient(135deg, #A998FF 0%, #F7F8FC 50%, #22D3EE 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
           >
-            Autonomous Work
+            fully intelligent.
           </span>
         </motion.h1>
 
         {/* SUBTITLE */}
-
         <motion.p
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: 0.16,
-            duration: 0.7,
-          }}
-          className="
-            mx-auto
-            mt-10
-
-            max-w-3xl
-
-            text-center
-            text-lg
-            leading-relaxed
-
-            text-white/60
-
-            md:text-xl
-          "
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto mt-10 max-w-[52ch] text-[16px] leading-[1.65] text-[#9AA3B2] md:text-[18px]"
         >
-          Orbit transforms your
-          company into an intelligent
-          operational system with
-          AI cognition, realtime
-          coordination, automation
-          layers and enterprise
-          workspace orchestration.
+          Gunimi unifies your relationships, deals, tasks, and knowledge
+          into a single workspace — with AI that actually understands your business.
         </motion.p>
 
-        {/* ACTIONS */}
-
+        {/* CTAs */}
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: 0.24,
-            duration: 0.7,
-          }}
-          className="
-            mt-14
-
-            flex
-            flex-col
-            items-center
-            justify-center
-            gap-4
-
-            sm:flex-row
-          "
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.32, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-14 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
+          {/* Primary */}
           <Link
             href="/register"
             className="
-              group
-              relative
-
-              flex
-              items-center
-              gap-2
-
-              overflow-hidden
-
-              rounded-2xl
-
-              border
-              border-violet-400/20
-
-              bg-violet-500/90
-
-              px-7
-              py-4
-
-              text-sm
-              font-medium
-
-              text-white
-
-              transition-all
-              duration-300
-
-              hover:scale-[1.02]
-              hover:bg-violet-400
+              group relative flex items-center gap-2.5 overflow-hidden
+              rounded-[14px] border border-[#6D5BFF]/30 bg-[#6D5BFF]
+              px-8 py-4 text-[14px] font-semibold text-white
+              shadow-[0_0_28px_rgba(109,91,255,0.42),0_4px_16px_rgba(109,91,255,0.30)]
+              transition-all duration-300
+              hover:bg-[#7B6BFF]
+              hover:shadow-[0_0_48px_rgba(109,91,255,0.58),0_8px_24px_rgba(109,91,255,0.36)]
+              hover:scale-[1.02] active:scale-[0.99]
             "
           >
-            <div
-              className="
-                absolute
-                inset-0
-
-                opacity-0
-
-                transition-opacity
-                duration-500
-
-                group-hover:opacity-100
-
-                bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)]
-              "
-            />
-
-            <span
-              className="
-                relative
-                z-10
-              "
-            >
-              Launch Orbit
-            </span>
-
-            <ArrowRight
-              size={16}
-              className="
-                relative
-                z-10
-              "
-            />
+            <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent_55%)]" />
+            <span className="relative z-10">Start for free</span>
+            <ArrowRight size={15} className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
 
+          {/* Secondary */}
           <Link
             href="/login"
             className="
-              flex
-              items-center
-              gap-2
-
-              rounded-2xl
-
-              border
-              border-white/10
-
-              bg-white/[0.03]
-
-              px-7
-              py-4
-
-              text-sm
-              font-medium
-
-              text-white/70
-
-              backdrop-blur-xl
-
-              transition-all
-              duration-300
-
-              hover:border-white/20
-              hover:bg-white/[0.05]
-              hover:text-white
+              flex items-center gap-2
+              rounded-[14px] border border-white/[0.08]
+              bg-white/[0.03] px-8 py-4
+              text-[14px] font-medium text-[#9AA3B2]
+              backdrop-blur-xl transition-all duration-300
+              hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-[#F7F8FC]
             "
           >
-            Access Workspace
+            Sign in to workspace
           </Link>
         </motion.div>
 
-        {/* AI PANEL */}
-
+        {/* TRUST SIGNALS */}
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: 0.34,
-            duration: 0.7,
-          }}
-          className="
-            mx-auto
-            mt-20
-
-            max-w-5xl
-          "
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.52, duration: 0.8 }}
+          className="mt-12 flex flex-wrap items-center justify-center gap-6"
         >
-          <div
-            className="
-              relative
-
-              overflow-hidden
-
-              rounded-[34px]
-
-              border
-              border-white/10
-
-              bg-white/[0.04]
-
-              backdrop-blur-3xl
-            "
-          >
-            {/* GLOW */}
-
-            <div
-              className="
-                absolute
-                inset-0
-
-                bg-gradient-to-r
-                from-violet-500/5
-                via-transparent
-                to-cyan-500/5
-              "
-            />
-
-            <div
-              className="
-                relative
-                z-10
-
-                flex
-                flex-col
-                gap-8
-
-                p-8
-
-                lg:flex-row
-                lg:items-center
-              "
-            >
-              {/* ICON */}
-
-              <div
-                className="
-                  flex
-                  h-20
-                  w-20
-
-                  shrink-0
-
-                  items-center
-                  justify-center
-
-                  rounded-[28px]
-
-                  border
-                  border-violet-500/20
-
-                  bg-violet-500/10
-
-                  text-violet-300
-                "
-              >
-                <Brain
-                  size={34}
-                />
-              </div>
-
-              {/* CONTENT */}
-
-              <div className="flex-1">
-                <div
-                  className="
-                    inline-flex
-                    items-center
-                    gap-2
-
-                    rounded-full
-
-                    border
-                    border-cyan-500/10
-
-                    bg-cyan-500/5
-
-                    px-3
-                    py-1.5
-
-                    text-[11px]
-                    uppercase
-
-                    tracking-[0.18em]
-
-                    text-cyan-300
-                  "
-                >
-                  Autonomous Intelligence Core
-                </div>
-
-                <h3
-                  className="
-                    mt-5
-
-                    text-3xl
-                    font-semibold
-
-                    tracking-tight
-
-                    text-white
-                  "
-                >
-                  Orbit AI Command Layer
-                </h3>
-
-                <p
-                  className="
-                    mt-5
-
-                    max-w-2xl
-
-                    text-base
-                    leading-relaxed
-
-                    text-white/60
-                  "
-                >
-                  AI-powered workspace
-                  orchestration with
-                  operational memory,
-                  enterprise automation,
-                  realtime awareness and
-                  intelligent execution
-                  systems designed for
-                  modern organizations.
-                </p>
-              </div>
-
-              {/* SIDE */}
-
-              <div
-                className="
-                  flex
-                  flex-col
-                  gap-4
-                "
-              >
-                <div
-                  className="
-                    flex
-                    items-center
-                    gap-3
-
-                    rounded-2xl
-
-                    border
-                    border-white/10
-
-                    bg-white/[0.03]
-
-                    px-4
-                    py-4
-
-                    text-sm
-                    text-white/70
-                  "
-                >
-                  <Shield
-                    size={18}
-                    className="
-                      text-emerald-300
-                    "
-                  />
-
-                  Enterprise Secure
-                </div>
-
-                <Link
-                  href="/register"
-                  className="
-                    flex
-                    items-center
-                    justify-center
-                    gap-2
-
-                    rounded-2xl
-
-                    bg-violet-500/15
-
-                    px-5
-                    py-4
-
-                    text-sm
-                    font-medium
-
-                    text-violet-200
-
-                    transition-all
-                    duration-300
-
-                    hover:bg-violet-500/25
-                  "
-                >
-                  Initialize Workspace
-
-                  <ArrowRight
-                    size={16}
-                  />
-                </Link>
-              </div>
+          {TRUST_SIGNALS.map((s) => (
+            <div key={s} className="flex items-center gap-2 text-[12px] text-[#9AA3B2]/45">
+              <span className="h-1 w-1 rounded-full bg-[#9AA3B2]/30" />
+              {s}
             </div>
-          </div>
+          ))}
         </motion.div>
 
-        {/* LIVE SIGNALS */}
-
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: 0.46,
-            duration: 0.7,
-          }}
-          className="
-            mx-auto
-            mt-12
-
-            flex
-            max-w-6xl
-            flex-wrap
-            items-center
-            justify-center
-            gap-4
-          "
-        >
-          {liveSignals.map(
-            (item) => (
-              <div
-                key={item}
-                className="
-                  flex
-                  items-center
-                  gap-3
-
-                  rounded-2xl
-
-                  border
-                  border-white/10
-
-                  bg-white/[0.03]
-
-                  px-5
-                  py-3.5
-
-                  text-sm
-                  text-white/60
-
-                  backdrop-blur-xl
-                "
-              >
-                <div
-                  className="
-                    h-2
-                    w-2
-
-                    animate-pulse
-
-                    rounded-full
-
-                    bg-emerald-400
-                  "
-                />
-
-                {item}
-              </div>
-            )
-          )}
-        </motion.div>
       </div>
+
+      {/* ── SCROLL FADE — connects to next section ── */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#05060A] to-transparent" />
     </section>
   );
 }

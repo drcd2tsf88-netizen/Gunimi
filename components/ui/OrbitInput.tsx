@@ -1,97 +1,55 @@
-import * as React
-from "react";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import { cn }
-from "@/lib/utils";
+// ─────────────────────────────────────────────────────────────
+// OrbitInput — Titanium Glass input field.
+// Focus ring glows with primary color. No hard borders.
+// ─────────────────────────────────────────────────────────────
 
 export type OrbitInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-const OrbitInput =
-  React.forwardRef<
-    HTMLInputElement,
-    OrbitInputProps
-  >(
-    (
-      {
-        className,
-        ...props
-      },
-
-      ref
-    ) => {
-      return (
+const OrbitInput = React.forwardRef<HTMLInputElement, OrbitInputProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div className="relative">
+        {/* Top edge sheen */}
         <div
           className="
-            relative
+            pointer-events-none absolute inset-x-0 top-0
+            h-px
+            bg-gradient-to-r from-transparent via-white/[0.06] to-transparent
           "
-        >
-          {/* TOP LIGHT */}
+        />
 
-          <div
-            className="
-              pointer-events-none
+        <input
+          ref={ref}
+          className={cn(
+            "flex h-11 w-full",
+            "rounded-[11px]",
+            "border border-white/[0.06]",
+            "bg-[#0A0E17]",
+            "px-4",
+            "text-sm text-[#F7F8FC]",
+            "placeholder:text-[#9AA3B2]/55",
+            "shadow-[0_2px_8px_rgba(109,91,255,0.05)]",
+            "transition-all duration-[280ms]",
+            // Hover
+            "hover:border-white/[0.10]",
+            // Focus — primary glow
+            "focus:border-[#6D5BFF]/35",
+            "focus:bg-[#0F1520]",
+            "focus:shadow-[0_0_0_3px_rgba(109,91,255,0.12),0_2px_8px_rgba(109,91,255,0.08)]",
+            "focus:outline-none",
+            // Disabled
+            "disabled:cursor-not-allowed disabled:opacity-45",
+            className
+          )}
+          {...props}
+        />
+      </div>
+    );
+  }
+);
 
-              absolute
-              inset-x-0
-              top-0
-
-              h-px
-
-              bg-gradient-to-r
-              from-transparent
-              via-white/20
-              to-transparent
-            "
-          />
-
-          <input
-            ref={ref}
-            className={cn(
-              `
-              flex
-              h-12
-              w-full
-
-              rounded-xl
-
-              border
-              border-white/[0.08]
-
-              bg-white/[0.025]
-
-              px-4
-
-              text-sm
-              text-white
-
-              placeholder:text-zinc-500
-
-              backdrop-blur-2xl
-
-              transition-all
-              duration-300
-
-              hover:border-white/[0.12]
-
-              focus:border-violet-500/30
-              focus:bg-white/[0.04]
-
-              focus:outline-none
-
-              disabled:cursor-not-allowed
-              disabled:opacity-50
-              `,
-
-              className
-            )}
-            {...props}
-          />
-        </div>
-      );
-    }
-  );
-
-OrbitInput.displayName =
-  "OrbitInput";
-
+OrbitInput.displayName = "OrbitInput";
 export default OrbitInput;

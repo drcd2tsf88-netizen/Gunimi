@@ -1,67 +1,226 @@
 :root {
 
-  /* COLORS */
-  --orbit-bg:
-    #060816;
+  /* ══════════════════════════════════════════════════════════════
+     GUNIMI DESIGN LANGUAGE (GDL) v1.0
+     Single source of truth for every visual decision.
+     DO NOT introduce values outside this file.
+     ══════════════════════════════════════════════════════════════ */
 
-  --orbit-surface:
-    rgba(15, 23, 42, 0.72);
 
-  --orbit-card:
-    rgba(17, 25, 40, 0.78);
+  /* ──────────────────────────────────────────────
+     FOUNDATIONS — Background Levels
+     Level 0 = deepest, Level 3 = highest surface
+     ────────────────────────────────────────────── */
+  --g-bg:              #05060A;   /* L0 Deep Space — page canvas */
+  --g-surface:         #0A0E17;   /* L1 Nebula     — panel/card fill */
+  --g-surface-2:       #0F1520;   /* L2 Noise      — elevated card */
+  --g-surface-3:       #161E2E;   /* L3 Ambient    — tooltip / floating */
+  --g-overlay:         rgba(5, 6, 10, 0.82);    /* modal backdrop */
 
-  --orbit-border:
-    rgba(255,255,255,0.08);
 
-  --orbit-text:
-    #ffffff;
+  /* ──────────────────────────────────────────────
+     PRIMARY IDENTITY — Indigo-violet scale
+     Not startup-purple. Refined, deep, precise.
+     ────────────────────────────────────────────── */
+  --g-primary:         #6D5BFF;
+  --g-primary-2:       #8B7DFF;
+  --g-primary-3:       #A998FF;
+  --g-primary-4:       #C4B5FF;   /* lightest, text-on-dark accents */
+  --g-primary-glow:    rgba(109, 91, 255, 0.18);
+  --g-primary-soft:    rgba(109, 91, 255, 0.08);
+  --g-primary-subtle:  rgba(109, 91, 255, 0.04);
 
-  --orbit-muted:
-    #94a3b8;
 
-  --orbit-primary:
-    #7c3aed;
+  /* ──────────────────────────────────────────────
+     AI ACCENT — Cyan
+     Used ONLY where AI is actively operating.
+     Do not use for decoration.
+     ────────────────────────────────────────────── */
+  --g-ai:              #22D3EE;
+  --g-ai-2:            #67E8F9;   /* lighter AI highlight */
+  --g-ai-glow:         rgba(34, 211, 238, 0.12);
+  --g-ai-soft:         rgba(34, 211, 238, 0.06);
 
-  --orbit-primary-2:
-    #06b6d4;
 
-  --orbit-success:
-    #22c55e;
+  /* ──────────────────────────────────────────────
+     TEXT SCALE
+     ────────────────────────────────────────────── */
+  --g-text:            #F7F8FC;   /* primary text */
+  --g-text-2:          #C8CDD8;   /* secondary text */
+  --g-muted:           #9AA3B2;   /* tertiary / labels */
+  --g-faint:           rgba(247, 248, 252, 0.28);  /* ghost text */
+  --g-disabled:        rgba(247, 248, 252, 0.22);  /* disabled states */
 
-  --orbit-warning:
-    #f59e0b;
 
-  --orbit-danger:
-    #ef4444;
+  /* ──────────────────────────────────────────────
+     BORDERS — Titanium, barely present
+     ────────────────────────────────────────────── */
+  --g-border:          rgba(255, 255, 255, 0.055);
+  --g-border-hover:    rgba(255, 255, 255, 0.100);
+  --g-border-active:   rgba(109, 91, 255, 0.200);
+  --g-border-focus:    rgba(109, 91, 255, 0.350);
+  --g-border-ai:       rgba(34, 211, 238, 0.150);
 
-  /* GRADIENTS */
-  --orbit-gradient:
 
-    linear-gradient(
-      135deg,
-      rgba(124,58,237,0.18),
-      rgba(6,182,212,0.12)
-    );
+  /* ──────────────────────────────────────────────
+     STATUS
+     ────────────────────────────────────────────── */
+  --g-success:         #22c55e;
+  --g-success-soft:    rgba(34, 197, 94,  0.10);
+  --g-warning:         #f59e0b;
+  --g-warning-soft:    rgba(245, 158, 11, 0.10);
+  --g-danger:          #ef4444;
+  --g-danger-soft:     rgba(239, 68,  68, 0.10);
+  --g-info:            #3b82f6;
+  --g-info-soft:       rgba(59, 130, 246,  0.10);
 
-  --orbit-glow:
 
-    0 0 40px
-    rgba(124,58,237,0.18);
+  /* ──────────────────────────────────────────────
+     CHART PALETTE
+     Each color is distinct at small sizes and dark backgrounds.
+     ────────────────────────────────────────────── */
+  --g-chart-1:         #6D5BFF;   /* primary violet */
+  --g-chart-2:         #22D3EE;   /* AI cyan */
+  --g-chart-3:         #A998FF;   /* light violet */
+  --g-chart-4:         #34d399;   /* emerald */
+  --g-chart-5:         #f59e0b;   /* amber */
+  --g-chart-6:         #f472b6;   /* rose */
+  --g-chart-7:         #60a5fa;   /* blue */
+  --g-chart-8:         #fb923c;   /* orange */
 
-  /* RADIUS */
-  --orbit-radius:
-    24px;
 
-  /* BLUR */
-  --orbit-blur:
-    blur(18px);
+  /* ──────────────────────────────────────────────
+     SHADOWS — Ambient purple. Never black.
+     ────────────────────────────────────────────── */
+  --g-shadow-xs:  0 1px  4px rgba(109,91,255,0.06), 0 0 0 1px rgba(255,255,255,0.03);
+  --g-shadow-sm:  0 3px 12px rgba(109,91,255,0.09), 0 0 0 1px rgba(255,255,255,0.04);
+  --g-shadow-md:  0 8px 28px rgba(109,91,255,0.13), 0 0 0 1px rgba(255,255,255,0.04);
+  --g-shadow-lg:  0 16px 48px rgba(109,91,255,0.17), 0 0 0 1px rgba(255,255,255,0.05);
+  --g-shadow-xl:  0 28px 70px rgba(109,91,255,0.22), 0 0 0 1px rgba(255,255,255,0.06);
 
-  /* SPACING */
-  --orbit-space:
-    24px;
 
-  /* TRANSITIONS */
-  --orbit-transition:
-    all 0.25s ease;
+  /* ──────────────────────────────────────────────
+     GLOW SYSTEM — Soft light emission
+     ────────────────────────────────────────────── */
+  --g-glow-xs:    0 0  8px rgba(109,91,255,0.20);
+  --g-glow-sm:    0 0 18px rgba(109,91,255,0.28);
+  --g-glow-md:    0 0 36px rgba(109,91,255,0.35);
+  --g-glow-lg:    0 0 56px rgba(109,91,255,0.42);
+  --g-glow-xl:    0 0 80px rgba(109,91,255,0.50);
+  --g-glow-ai:    0 0 28px rgba(34,211,238,0.30);
+
+
+  /* ──────────────────────────────────────────────
+     LIGHTING TOKENS
+     Semantic lighting contexts.
+     ────────────────────────────────────────────── */
+  --g-light-ambient:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(109,91,255,0.06) 0%, transparent 60%);
+  --g-light-focused:
+    radial-gradient(circle at center, rgba(109,91,255,0.14) 0%, transparent 55%);
+  --g-light-ai-active:
+    radial-gradient(circle at center, rgba(34,211,238,0.12) 0%, transparent 50%);
+  --g-light-ai-thinking:
+    radial-gradient(circle at center, rgba(109,91,255,0.20) 0%, rgba(34,211,238,0.08) 40%, transparent 70%);
+  --g-light-hero:
+    radial-gradient(ellipse 100% 70% at 50% -10%, rgba(109,91,255,0.18) 0%, transparent 65%);
+  --g-light-card:
+    radial-gradient(circle at top left, rgba(109,91,255,0.07) 0%, transparent 45%);
+  --g-light-hover:
+    radial-gradient(circle at top left, rgba(109,91,255,0.10) 0%, transparent 45%);
+
+
+  /* ──────────────────────────────────────────────
+     RADIUS
+     ────────────────────────────────────────────── */
+  --g-radius-xs:   4px;   /* tags, badges */
+  --g-radius-sm:   6px;   /* inline elements */
+  --g-radius-md:   10px;  /* dropdowns, tooltips */
+  --g-radius-lg:   14px;  /* inputs, small cards */
+  --g-radius-xl:   18px;  /* buttons */
+  --g-radius-2xl:  22px;  /* cards */
+  --g-radius-3xl:  28px;  /* dialogs */
+  --g-radius-pill: 9999px;/* badges, status chips */
+
+
+  /* ──────────────────────────────────────────────
+     SPACING SCALE
+     Every value is a multiple of 4.
+     Nothing should use an off-scale value.
+     ────────────────────────────────────────────── */
+  --g-space-1:    4px;
+  --g-space-2:    8px;
+  --g-space-3:    12px;
+  --g-space-4:    16px;
+  --g-space-5:    20px;
+  --g-space-6:    24px;
+  --g-space-8:    32px;
+  --g-space-10:   40px;
+  --g-space-12:   48px;
+  --g-space-16:   64px;
+  --g-space-20:   80px;
+  --g-space-24:   96px;
+  --g-space-32:   128px;
+
+
+  /* ──────────────────────────────────────────────
+     MOTION TOKENS
+     Durations, easings, animation variants.
+     Nothing should animate outside these tokens.
+     ────────────────────────────────────────────── */
+
+  /* Durations */
+  --g-duration-instant:  80ms;   /* micro feedback (icon swap) */
+  --g-duration-xs:       120ms;  /* tooltip show/hide */
+  --g-duration-sm:       200ms;  /* hover states */
+  --g-duration-md:       300ms;  /* standard transitions */
+  --g-duration-lg:       450ms;  /* panel open/close */
+  --g-duration-xl:       650ms;  /* page entrances */
+  --g-duration-2xl:      950ms;  /* hero animations */
+
+  /* AI-specific durations — always slower, more deliberate */
+  --g-duration-ai-pulse:     3200ms;
+  --g-duration-ai-breathe:   4500ms;
+  --g-duration-ai-orbit-fast:36000ms;
+  --g-duration-ai-orbit-mid: 58000ms;
+  --g-duration-ai-orbit-slow:88000ms;
+  --g-duration-ai-particle:  4800ms;
+
+  /* Easings */
+  --g-ease:           cubic-bezier(0.16, 1, 0.3, 1);       /* primary — fast start, slow end */
+  --g-ease-out:       cubic-bezier(0.0,  0.0, 0.2, 1);     /* decelerate */
+  --g-ease-in:        cubic-bezier(0.4,  0.0, 1.0, 1);     /* accelerate */
+  --g-ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);   /* bouncy spring */
+  --g-ease-linear:    linear;
+  --g-ease-smooth:    cubic-bezier(0.25, 0.46, 0.45, 0.94);/* silky smooth */
+
+  /* Transition shorthands */
+  --g-transition-fast:  all var(--g-duration-sm) var(--g-ease);
+  --g-transition-base:  all var(--g-duration-md) var(--g-ease);
+  --g-transition-slow:  all var(--g-duration-lg) var(--g-ease);
+
+
+  /* ──────────────────────────────────────────────
+     LEGACY ALIASES
+     Existing components that reference --orbit-*
+     continue working without changes.
+     ────────────────────────────────────────────── */
+  --orbit-bg:          var(--g-bg);
+  --orbit-surface:     rgba(10, 14, 23, 0.88);
+  --orbit-card:        rgba(10, 14, 23, 0.92);
+  --orbit-border:      var(--g-border);
+  --orbit-text:        var(--g-text);
+  --orbit-muted:       var(--g-muted);
+  --orbit-primary:     var(--g-primary);
+  --orbit-primary-2:   var(--g-ai);
+  --orbit-success:     var(--g-success);
+  --orbit-warning:     var(--g-warning);
+  --orbit-danger:      var(--g-danger);
+  --orbit-glow:        var(--g-glow-md);
+  --orbit-radius:      var(--g-radius-2xl);
+  --orbit-blur:        blur(12px);
+  --orbit-transition:  var(--g-transition-base);
+  --orbit-gradient:    linear-gradient(135deg, rgba(109,91,255,0.14), rgba(34,211,238,0.08));
+  --orbit-space:       var(--g-space-6);
 
 }
