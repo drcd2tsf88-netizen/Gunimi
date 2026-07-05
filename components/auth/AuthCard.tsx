@@ -48,9 +48,9 @@ export default function AuthCard({
 
       {/* CARD */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
           "relative z-10 w-full overflow-hidden",
           "rounded-[28px] border border-white/[0.055] bg-[#0A0E17]",

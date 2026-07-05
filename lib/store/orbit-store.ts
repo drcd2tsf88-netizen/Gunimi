@@ -51,7 +51,7 @@ export const useOrbitStore =
         role: "assistant",
 
         content:
-          "Good morning, Michal. Orbit AI analyzed your workspace and detected 3 priority insights requiring attention today.",
+          "Good morning. Gunimi AI is ready to help you manage your workspace.",
       },
     ],
 

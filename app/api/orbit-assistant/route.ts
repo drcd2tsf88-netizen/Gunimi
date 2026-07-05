@@ -11,8 +11,12 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const AGENT_ROLES: Record<string, string> = {
   "Task Agent": "You specialize in task management, execution tracking, and productivity workflows.",
-  "CRM Agent": "You specialize in CRM intelligence, deal pipelines, contact relationships, and sales workflows.",
-  "Orbit Core": "You are the general workspace operating system intelligence.",
+  "Deals Agent": "You specialize in deal pipeline intelligence, revenue forecasting, and sales opportunity analysis.",
+  "CRM Agent": "You specialize in contact relationships, company accounts, lead nurturing, and CRM intelligence.",
+  "Calendar Agent": "You specialize in meetings, scheduling, calendar events, and time management.",
+  "Email Agent": "You specialize in email threads, inbox management, and communication intelligence.",
+  "Analytics Agent": "You specialize in workspace analytics, performance metrics, growth insights, and business reporting.",
+  "Gunimi AI": "You are the general Gunimi workspace intelligence — capable of answering any question about the workspace.",
 };
 
 export async function POST(req: Request) {
@@ -23,9 +27,11 @@ export async function POST(req: Request) {
   if (!success) return errorResponse("Rate limit exceeded", 429);
 
   try {
-    const body = await req.json() as { message?: string; agent?: string };
+    type HistoryMessage = { role: "user" | "assistant"; content: string };
+    const body = await req.json() as { message?: string; agent?: string; history?: HistoryMessage[] };
     const message: string = body.message ?? "";
-    const agentName: string = body.agent ?? "Orbit Core";
+    const agentName: string = body.agent ?? "Gunimi AI";
+    const history: HistoryMessage[] = (body.history ?? []).slice(-10);
 
     if (!message.trim()) return errorResponse("Message required", 400);
 
@@ -35,13 +41,13 @@ export async function POST(req: Request) {
     ]);
 
     const systemPrompt = ctx
-      ? `You are ${agentName} within Orbit AI, the intelligent assistant for ${ctx.workspaceName}.
+      ? `You are ${agentName}, the intelligent workspace assistant for ${ctx.workspaceName} powered by Gunimi AI.
 ${AGENT_ROLES[agentName] ?? ""}
 
 ${buildChatSystemPrompt(ctx)}
 
 Give a focused, actionable response. Be concise.`
-      : `You are ${agentName} within Orbit AI. ${AGENT_ROLES[agentName] ?? ""} Give a focused, actionable response.`;
+      : `You are ${agentName}, powered by Gunimi AI. ${AGENT_ROLES[agentName] ?? ""} Give a focused, actionable response.`;
 
     // Start actions call concurrently — completes while prose streams
     const actionsPromise = openai.chat.completions.create({
@@ -64,6 +70,10 @@ Give a focused, actionable response. Be concise.`
       stream: true,
       messages: [
         { role: "system", content: systemPrompt },
+        ...history.map((m) => ({
+          role: m.role as "user" | "assistant",
+          content: m.content.slice(0, 2000),
+        })),
         { role: "user", content: message.slice(0, 4000) },
       ],
     });

@@ -61,7 +61,7 @@ export default function AiCore({
           opacity: [0.28 * g, 0.55 * g, 0.28 * g],
           scale:   [0.94, 1.06, 0.94],
         }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         className="pointer-events-none absolute inset-0 rounded-full"
         style={{
           background: `radial-gradient(circle at center,
@@ -181,10 +181,10 @@ export default function AiCore({
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <motion.div
           animate={{
-            scale:   [0.78, 1.22, 0.78],
+            scale:   [0.86, 1.14, 0.86],
             opacity: [0.28 * g, 0.58 * g, 0.28 * g],
           }}
-          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 6.0, repeat: Infinity, ease: "easeInOut" }}
           style={{
             width:        size * 0.24,
             height:       size * 0.24,
@@ -198,7 +198,7 @@ export default function AiCore({
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <motion.div
           animate={{ scale: [0.86, 1.14, 0.86] }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
           style={{
             width:        coreDot,
             height:       coreDot,

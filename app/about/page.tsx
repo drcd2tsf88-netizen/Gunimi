@@ -44,7 +44,7 @@ export default async function AboutPage() {
         {/* HERO */}
         <section className="relative mx-auto max-w-5xl px-6 pb-24 pt-24 text-center md:pt-32">
           <div className="mb-8 flex justify-center">
-            <div className="pointer-events-none opacity-[0.28]">
+            <div className="pointer-events-none opacity-[0.36]">
               <AiCore size={100} showRings showParticles={false} intensity="medium" />
             </div>
           </div>
@@ -95,6 +95,7 @@ export default async function AboutPage() {
                   className="group relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#0A0E17] p-6 transition-all duration-500 hover:border-[#6D5BFF]/[0.15] hover:shadow-[0_8px_32px_rgba(109,91,255,0.08)]"
                 >
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_top_left,rgba(109,91,255,0.07),transparent_55%)]" />
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-[11px] border border-[#6D5BFF]/[0.14] bg-[#6D5BFF]/[0.08] text-[#8B7DFF]">
                     <Icon size={18} strokeWidth={1.75} />
                   </div>

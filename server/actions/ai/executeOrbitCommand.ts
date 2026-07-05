@@ -21,7 +21,7 @@ export async function executeOrbitCommand({
         type: "ai",
 
         title:
-          "Orbit AI analyzed workspace performance",
+          "Gunimi AI analyzed workspace performance",
 
         description:
           "AI cognition systems completed workspace observatory analysis.",
@@ -31,16 +31,14 @@ export async function executeOrbitCommand({
         success: true,
 
         response:
-          "Orbit AI completed workspace analysis.",
+          "Gunimi AI completed workspace analysis.",
       };
     }
 
     return {
       success: false,
     };
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     return {
       success: false,
     };

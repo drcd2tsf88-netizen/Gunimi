@@ -302,7 +302,7 @@ export default function InvitePage() {
               hover:text-white
             "
           >
-            Orbit Homepage
+            Back to Gunimi
 
             <ArrowRight
               size={16}
@@ -468,8 +468,7 @@ export default function InvitePage() {
                 text-zinc-400
               "
             >
-              Synchronizing Orbit
-              collaboration systems...
+              Verifying invitation...
             </p>
           </div>
         )}
@@ -542,7 +541,7 @@ export default function InvitePage() {
                   size={12}
                 />
 
-                Orbit Workspace Invite
+                Gunimi Workspace Invite
               </div>
 
               {/* TITLE */}
@@ -592,8 +591,7 @@ export default function InvitePage() {
               >
                 You have been invited
                 to collaborate inside
-                the Orbit AI Operating
-                System workspace.
+                the Gunimi workspace.
               </p>
 
               {/* INFO */}

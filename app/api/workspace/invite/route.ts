@@ -339,7 +339,7 @@ await sendWorkspaceInvite({
     normalizedEmail,
 
   workspaceName:
-    "Orbit Workspace",
+    "Gunimi Workspace",
 
   role,
 

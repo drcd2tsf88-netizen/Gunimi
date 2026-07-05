@@ -41,10 +41,6 @@ export async function runWorkspaceWatcher() {
       );
 
     if (tasksError) {
-      console.error(
-        tasksError
-      );
-
       return false;
     }
 
@@ -64,10 +60,6 @@ export async function runWorkspaceWatcher() {
       );
 
     if (contactsError) {
-      console.error(
-        contactsError
-      );
-
       return false;
     }
 
@@ -92,7 +84,7 @@ export async function runWorkspaceWatcher() {
     "critical_overload",
 
   context:
-    "Orbit AI detected elevated high-priority workload pressure.",
+    "Gunimi AI detected elevated high-priority workload pressure.",
 });
      
       await createActivity({
@@ -100,7 +92,7 @@ export async function runWorkspaceWatcher() {
           "ai_signal",
 
         title:
-          "Orbit AI detected critical task overload",
+          "Gunimi AI detected critical task overload",
 
         description: `
           ${overdueTasks.length}
@@ -115,7 +107,7 @@ export async function runWorkspaceWatcher() {
           "workspace_insight",
 
         content:
-          "Orbit AI detected critical high-priority workload pressure.",
+          "Gunimi AI detected critical high-priority workload pressure.",
       });
     }
     await createAIAction({
@@ -123,7 +115,7 @@ export async function runWorkspaceWatcher() {
     "Resolve critical workload pressure",
 
   description:
-    "Orbit AI recommends resolving elevated high-priority tasks to stabilize workspace execution systems.",
+    "Gunimi AI recommends resolving elevated high-priority tasks to stabilize workspace execution systems.",
 
   action_label:
     "Open Tasks",
@@ -146,7 +138,7 @@ export async function runWorkspaceWatcher() {
     "crm_inactive",
 
   context:
-    "Orbit AI detected inactive CRM pipeline.",
+    "Gunimi AI detected inactive CRM pipeline.",
 });
       await createActivity({
         type:
@@ -156,7 +148,7 @@ export async function runWorkspaceWatcher() {
           "CRM pipeline inactive",
 
         description:
-          "Orbit AI detected no active customer records inside workspace CRM.",
+          "Gunimi AI detected no active customer records inside workspace CRM.",
       });
 
       await createMemory({
@@ -164,7 +156,7 @@ export async function runWorkspaceWatcher() {
           "crm_insight",
 
         content:
-          "Orbit AI detected inactive CRM pipeline with no active customer records.",
+          "Gunimi AI detected inactive CRM pipeline with no active customer records.",
       });
     }
     await setWorkspaceAIState({
@@ -172,14 +164,14 @@ export async function runWorkspaceWatcher() {
     "workspace_stable",
 
   context:
-    "Orbit AI monitoring workspace systems.",
+    "Gunimi AI monitoring workspace systems.",
 });
     await createAIAction({
   title:
     "Initialize CRM recovery workflow",
 
   description:
-    "Orbit AI detected inactive CRM systems and recommends rebuilding customer engagement pipelines.",
+    "Gunimi AI detected inactive CRM systems and recommends rebuilding customer engagement pipelines.",
 
   action_label:
     "Open CRM",
@@ -191,9 +183,7 @@ export async function runWorkspaceWatcher() {
     "medium",
 });
     return true;
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     return false;
   }
 }

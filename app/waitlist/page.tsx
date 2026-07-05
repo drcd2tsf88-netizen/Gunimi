@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, LogOut, Shield } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
 import AiCore from "@/components/ui/AiCore";
 
 export default function WaitlistPage() {
+  const t = useTranslations("public.waitlist");
+
   async function handleLogout() {
     await supabase.auth.signOut();
     window.location.href = "/login";
@@ -42,7 +45,7 @@ export default function WaitlistPage() {
       <motion.div
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 w-full max-w-[600px] overflow-hidden rounded-[28px] border border-white/[0.055] bg-[#0A0E17] p-10 text-center shadow-[0_8px_60px_rgba(109,91,255,0.14)]"
       >
         {/* TOP SHEEN */}
@@ -55,27 +58,22 @@ export default function WaitlistPage() {
 
         <div className="relative z-10">
 
-          {/* FOCAL VISUAL */}
+          {/* FOCAL VISUAL — AiCore breathes naturally; no wrapper animation */}
           <div className="mb-7 flex justify-center">
-            <motion.div
-              animate={{ scale: [0.97, 1.03, 0.97], opacity: [0.75, 1, 0.75] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <AiCore size={100} showRings showParticles intensity="strong" />
-            </motion.div>
+            <AiCore size={100} showRings showParticles intensity="strong" />
           </div>
 
           {/* BADGE */}
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[#6D5BFF]/[0.18] bg-[#6D5BFF]/[0.08] px-3 py-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#8B7DFF]" />
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#8B7DFF]" />
             <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#8B7DFF]">
-              Gunimi Early Access
+              {t("badgeLabel")}
             </span>
           </div>
 
           {/* TITLE */}
           <h1 className="mx-auto mt-7 max-w-[440px] text-[40px] font-bold leading-[1] tracking-[-0.04em] text-[#F7F8FC] md:text-[52px]">
-            Access{" "}
+            {t("headlinePart1")}{" "}
             <span
               style={{
                 background: "linear-gradient(135deg, #A998FF 0%, #F7F8FC 50%, #22D3EE 100%)",
@@ -84,14 +82,13 @@ export default function WaitlistPage() {
                 backgroundClip: "text",
               }}
             >
-              Pending
+              {t("headlinePart2")}
             </span>
           </h1>
 
           {/* SUBTITLE */}
           <p className="mx-auto mt-5 max-w-[400px] text-[15px] leading-[1.65] text-[#9AA3B2]">
-            Your Gunimi identity has been synchronized with the AI Operating System.
-            Platform access is awaiting early access approval.
+            {t("subtitle")}
           </p>
 
           {/* STATUS PANEL */}
@@ -101,9 +98,9 @@ export default function WaitlistPage() {
                 <Shield className="h-5 w-5 text-[#8B7DFF]" />
               </div>
               <div className="text-left">
-                <h2 className="text-[15px] font-semibold text-[#F7F8FC]">Access Queue</h2>
+                <h2 className="text-[15px] font-semibold text-[#F7F8FC]">{t("panelTitle")}</h2>
                 <p className="mt-1 text-[13px] leading-relaxed text-[#9AA3B2]">
-                  Your account is securely registered and pending platform activation.
+                  {t("panelDescription")}
                 </p>
               </div>
             </div>
@@ -115,7 +112,7 @@ export default function WaitlistPage() {
               href="/"
               className="group flex items-center justify-center gap-2 rounded-[12px] border border-white/[0.08] bg-white/[0.03] px-6 py-3 text-[13px] font-medium text-[#9AA3B2] transition-all duration-300 hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-[#F7F8FC]"
             >
-              Back to Home
+              {t("backToHome")}
               <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
 
@@ -124,14 +121,13 @@ export default function WaitlistPage() {
               className="flex items-center justify-center gap-2 rounded-[12px] border border-red-500/[0.10] bg-red-500/[0.04] px-6 py-3 text-[13px] font-medium text-red-300/70 transition-all duration-300 hover:border-red-500/[0.18] hover:bg-red-500/[0.08] hover:text-red-300"
             >
               <LogOut size={14} />
-              Sign out
+              {t("signOut")}
             </button>
           </div>
 
           {/* FOOTER NOTE */}
           <p className="mt-9 border-t border-white/[0.04] pt-7 text-[12px] leading-relaxed text-[#9AA3B2]/35">
-            Gunimi is onboarding selected companies, operators and collaborators.
-            You&apos;ll receive an email when your access is confirmed.
+            {t("footerNote")}
           </p>
 
         </div>

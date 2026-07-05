@@ -1,12 +1,10 @@
 "use client";
 
-import {
-  memo,
-} from "react";
+import { memo } from "react";
 
-import {
-  motion,
-} from "framer-motion";
+import { motion } from "framer-motion";
+
+import { useTranslations } from "next-intl";
 
 type OrbitMessageProps = {
   msg: {
@@ -23,9 +21,8 @@ type OrbitMessageProps = {
 function OrbitMessage({
   msg,
 }: OrbitMessageProps) {
-  const isAssistant =
-    msg.role ===
-    "assistant";
+  const t = useTranslations("aiPanel");
+  const isAssistant = msg.role === "assistant";
 
   return (
     <motion.div
@@ -127,10 +124,7 @@ function OrbitMessage({
                 text-violet-300
               "
             >
-              {msg
-                .metadata
-                ?.agent ??
-                "Orbit AI"}
+              {msg.metadata?.agent ?? t("orbitAi")}
             </p>
           </div>
         )}

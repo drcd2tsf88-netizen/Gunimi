@@ -140,7 +140,7 @@ export default function OrbitWorkspaceStatus() {
             workspaceData
               ?.workspace
               ?.name ||
-            "Orbit Workspace"
+            "Workspace"
           }
         </p>
 

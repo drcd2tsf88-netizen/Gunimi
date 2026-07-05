@@ -1,8 +1,8 @@
 {
   "auth": {
-    "badge": "Orbit AI Systems",
+    "badge": "Gunimi AI",
     "loginTitle": "Welcome back",
-    "loginSubtitle": "Sign in to your Orbit workspace to continue.",
+    "loginSubtitle": "Sign in to your Gunimi workspace to continue.",
     "emailPlaceholder": "Email address",
     "passwordPlaceholder": "Password",
     "signIn": "Sign In",
@@ -10,7 +10,7 @@
     "forgotPassword": "Forgot password?",
     "noAccount": "Don't have an account?",
     "createAccount": "Create account",
-    "registerBadge": "Orbit Identity System",
+    "registerBadge": "Gunimi Identity",
     "registerTitle": "Create your account",
     "registerSubtitle": "Launch your AI-powered workspace with enterprise CRM, tasks and workflow intelligence.",
     "fullNamePlaceholder": "Full name",
@@ -21,12 +21,12 @@
     "creatingAccount": "Creating account...",
     "alreadyHaveAccount": "Already have an account?",
     "login": "Sign in",
-    "aiIdentityLayer": "Orbit AI Identity",
+    "aiIdentityLayer": "Gunimi AI Identity",
     "termsPrefix": "By creating an account you agree to our",
     "termsLink": "Terms of Service",
     "privacyLink": "Privacy Policy",
     "and": "and",
-    "verifyBadge": "Orbit Verification System",
+    "verifyBadge": "Gunimi Verification",
     "verifyTitle": "Check your email",
     "verifyDescription": "We sent a secure activation link to your email address.",
     "verifyDestination": "Verification sent to",
@@ -41,7 +41,7 @@
     "resending": "Resending...",
     "emailResent": "Verification email resent.",
     "resendFailed": "Failed to resend. Please try again.",
-    "forgotBadge": "Orbit Recovery System",
+    "forgotBadge": "Gunimi Recovery",
     "forgotTitle": "Reset your password",
     "forgotSubtitle": "Enter your email address and we will send you a recovery link.",
     "secureFlowTitle": "Secure recovery",
@@ -52,9 +52,9 @@
     "sentDesc": "Check your inbox and click the recovery link to reset your password.",
     "rememberedPassword": "Remembered your password?",
     "returnToLogin": "Back to Login",
-    "resetBadge": "Orbit Security Layer",
+    "resetBadge": "Gunimi Security",
     "resetTitle": "Set a new password",
-    "resetSubtitle": "Choose a strong password for your Orbit account.",
+    "resetSubtitle": "Choose a strong password for your Gunimi account.",
     "newPasswordPlaceholder": "New password (min. 8 characters)",
     "confirmPasswordPlaceholder2": "Confirm new password",
     "secureUpdateTitle": "Secure password update",
@@ -184,7 +184,7 @@
     "briefLoading": "Analyzing workspace...",
     "briefUnavailable": "Workspace intelligence unavailable.",
     "briefAllClear": "All clear — no items require attention today.",
-    "briefOnboardingIntro": "Hi, I'm Orbit AI. I can help you manage customers, deals, tasks and meetings.",
+    "briefOnboardingIntro": "Hi, I'm Gunimi AI. I can help you manage customers, deals, tasks and meetings.",
     "briefOnboardingHint": "Connect your tools or create your first records to unlock workspace intelligence.",
     "workspaceChanges": "Changes Today",
     "todaysFocusBadge": "Your Focus",
@@ -266,7 +266,7 @@
     "workspaceCrmContacts": "Workspace CRM contacts.",
     "results": "results",
     "crmReady": "Your CRM is ready",
-    "crmReadyDescription": "Start building your AI-powered customer workspace. Add contacts, manage pipelines and let Orbit AI optimize business relationships.",
+    "crmReadyDescription": "Start building your AI-powered customer workspace. Add contacts, manage pipelines and let Gunimi AI optimize business relationships.",
     "addFirstContact": "Add First Contact",
     "onboardingEmptyTitle": "No contacts yet",
     "onboardingEmptyDescription": "Create your first contact or import contacts via CSV to start building your network.",
@@ -574,7 +574,7 @@
     "productivityBoost": "Productivity Boost",
     "configureAutomation": "Configure Automation",
     "suggestedWorkflows": "Suggested AI Workflows",
-    "orbitAi": "Orbit AI",
+    "orbitAi": "Gunimi AI",
     "statusActive": "Active",
     "statusComingSoon": "Coming Soon",
     "suggestion1": "Create tasks from meeting notes automatically",
@@ -687,7 +687,7 @@
     "no": "No"
   },
   "ai": {
-    "badge": "Orbit AI",
+    "badge": "Gunimi AI",
     "title": "AI Mission Control",
     "subtitle": "Central command for all intelligence systems in your workspace.",
     "overviewLabel": "Workspace",
@@ -840,7 +840,7 @@
     "aiExecutions": "AI Executions",
     "taskEvents": "Task Events",
     "noActivity": "No activity yet",
-    "noActivityDescription": "Orbit AI activity and workflow events will appear here live.",
+    "noActivityDescription": "Gunimi AI activity and workflow events will appear here live.",
     "workspaceEvent": "Workspace event"
   },
   "analytics": {
@@ -862,7 +862,7 @@
     "teamTitle": "Team Performance",
     "teamDesc": "Monitor individual and team productivity, task completion rates and collaboration metrics.",
     "aiTitle": "AI Forecasting",
-    "aiDesc": "Orbit AI will analyze workspace patterns and surface intelligent forecasts and recommendations.",
+    "aiDesc": "Gunimi AI will analyze workspace patterns and surface intelligent forecasts and recommendations.",
     "statUpcomingMeetings": "Upcoming Meetings",
     "statEmailThreads": "Email Threads",
     "pipelineFunnelTitle": "Pipeline Funnel",
@@ -1109,7 +1109,7 @@
     "stepContact": "Create First Contact",
     "stepCompany": "Create First Company",
     "stepDeal": "Create First Deal",
-    "stepAI": "Ask Orbit AI",
+    "stepAI": "Ask Gunimi AI",
     "stepOptionalLabel": "Enhance Your Workspace",
     "quickActionsTitle": "Quick Actions",
     "actionConnectEmail": "Connect Email",
@@ -1122,7 +1122,7 @@
     "completionSubtitle": "You're all set. Your workspace is ready to use."
   },
   "command": {
-    "title": "Orbit Command Center",
+    "title": "Gunimi Command Center",
     "subtitle": "AI-powered workspace control",
     "placeholder": "Search workspace, AI actions or workflows...",
     "topbarPlaceholder": "Search Orbit systems...",
@@ -1209,7 +1209,7 @@
       },
       "analyze": {
         "title": "Analyze Workspace",
-        "description": "Orbit AI reviews workspace performance"
+        "description": "Gunimi AI reviews workspace performance"
       },
       "activity": {
         "title": "Open Activity",
@@ -1332,18 +1332,18 @@
     "membersOnline": "{count} members online"
   },
   "aiPanel": {
-    "orbitAi": "Orbit AI",
+    "orbitAi": "Gunimi AI",
     "memoryLabel": "Workspace Memory",
     "suggest1": "Analyze workspace activity",
     "suggest2": "Summarize open tasks",
     "suggest3": "Review recent deals",
     "suggest4": "Workspace briefing",
-    "processingLabel": "Orbit AI processing...",
-    "inputPlaceholder": "Ask Orbit AI...",
+    "processingLabel": "Gunimi AI processing...",
+    "inputPlaceholder": "Ask Gunimi AI...",
     "sendButton": "Send",
     "workspaceNotFound": "Workspace not found.",
-    "processingError": "Orbit AI failed to process request.",
-    "thinkingAnalyzing": "Orbit AI analyzing workspace...",
+    "processingError": "Gunimi AI failed to process request.",
+    "thinkingAnalyzing": "Gunimi AI analyzing workspace...",
     "thinkingDelegating": "Delegating to {agent}...",
     "thinkingComplete": "Analysis complete.",
     "closePanel": "Close AI panel",
@@ -1353,7 +1353,7 @@
     "showMore": "Show {count} more"
   },
   "memory": {
-    "badge": "Orbit Memory",
+    "badge": "Gunimi Memory",
     "title": "Workspace Timeline",
     "subtitle": "Every business event, remembered. One continuous story of your workspace.",
     "statTotal": "Total Events",
@@ -1820,7 +1820,7 @@
         { "title": "Revenue intelligence", "description": "Predictive deal scoring, churn risk signals and revenue forecasting." },
         { "title": "Partner ecosystem", "description": "Native integrations with Hubspot, Salesforce, Stripe, Notion and more." },
         { "title": "White-label workspaces", "description": "Agencies and consultancies can deploy Gunimi under their own brand for clients." },
-        { "title": "Orbit Memory", "description": "Long-term persistent AI memory per workspace — context that builds over time." }
+        { "title": "Gunimi Memory", "description": "Long-term persistent AI memory per workspace — context that builds over time." }
       ]
     },
     "press": {
@@ -1934,6 +1934,17 @@
       "badge": "Legal",
       "headline": "Terms of Service",
       "lastUpdated": "Last updated:"
+    },
+    "waitlist": {
+      "badgeLabel": "Gunimi Early Access",
+      "headlinePart1": "Access",
+      "headlinePart2": "Pending",
+      "subtitle": "Your Gunimi identity has been synchronized with the AI Operating System. Platform access is awaiting early access approval.",
+      "panelTitle": "Access Queue",
+      "panelDescription": "Your account is securely registered and pending platform activation.",
+      "backToHome": "Back to Home",
+      "signOut": "Sign out",
+      "footerNote": "Gunimi is onboarding selected companies, operators and collaborators. You'll receive an email when your access is confirmed."
     }
   }
 }

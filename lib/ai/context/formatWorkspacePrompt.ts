@@ -20,7 +20,7 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
   const { derived } = ctx;
 
   const lines: string[] = [
-    `ORBIT WORKSPACE CONTEXT`,
+    `WORKSPACE CONTEXT`,
     `Workspace: ${ctx.workspaceName}`,
     `Today: ${dateStr}`,
     ``,
@@ -213,7 +213,7 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
 export function buildChatSystemPrompt(ctx: WorkspaceAIContext): string {
   const contextBlock = formatWorkspacePrompt(ctx);
 
-  return `You are Orbit AI, the intelligent workspace assistant for ${ctx.workspaceName}.
+  return `You are Gunimi AI, the intelligent workspace assistant for ${ctx.workspaceName}.
 
 You have live access to this workspace's current data. Answer every question with specific, actionable insights grounded in actual workspace data — never generic responses.
 

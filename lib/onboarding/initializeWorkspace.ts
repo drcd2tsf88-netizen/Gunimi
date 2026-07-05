@@ -50,9 +50,9 @@ export async function initializeWorkspace(
         .from("workspaces")
         .insert({
           name:
-            "Orbit Workspace",
+            "My Workspace",
 
-          slug: `orbit-${userId.slice(
+          slug: `workspace-${userId.slice(
             0,
             8
           )}`,

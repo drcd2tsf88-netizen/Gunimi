@@ -350,7 +350,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
 
     const workspaceName =
       (workspaceResult.data as unknown as WorkspaceRow | null)?.name ??
-      "Orbit Workspace";
+      "Workspace";
 
     const companies = ((companiesResult.data ?? []) as unknown as CompanyRow[]);
 

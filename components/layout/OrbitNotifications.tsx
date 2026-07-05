@@ -200,7 +200,7 @@ setActivity(data || []);
                   font-semibold
                 "
               >
-                Orbit Signals
+                Gunimi Signals
               </h3>
 
               <p
@@ -246,8 +246,7 @@ setActivity(data || []);
                       text-white/50
                     "
                   >
-                    Orbit AI observatory
-                    systems are active and
+                    Gunimi AI is actively
                     monitoring workspace
                     activity.
                   </p>

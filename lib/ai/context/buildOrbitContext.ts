@@ -46,7 +46,7 @@ export function buildOrbitContext({
       .slice(-6)
       .map(
         (msg) =>
-          `${msg.role.toUpperCase()} (${msg.metadata?.agent ?? "Orbit Core"}):
+          `${msg.role.toUpperCase()} (${msg.metadata?.agent ?? "Gunimi AI"}):
 
 ${msg.content}`
       )
@@ -59,10 +59,10 @@ ${msg.content}`
     workflowTimeline.join("\n");
 
   return `
-ORBIT AI SYSTEM CONTEXT
+GUNIMI AI SYSTEM CONTEXT
 
 WORKSPACE:
-${workspaceContext.workspaceName ?? "Orbit Workspace"}
+${workspaceContext.workspaceName ?? "Gunimi Workspace"}
 
 ACTIVE AGENT:
 ${activeAgent}
@@ -94,6 +94,6 @@ RECENT CONVERSATION:
 ${recentMessages}
 
 SYSTEM DIRECTIVE:
-Orbit AI is an intelligent business operating system focused on operational clarity, workflow execution, AI orchestration, analytics, CRM intelligence, and strategic productivity enhancement.
+Gunimi AI is an intelligent business operating system focused on operational clarity, workflow execution, AI orchestration, analytics, CRM intelligence, and strategic productivity enhancement.
 `;
 }

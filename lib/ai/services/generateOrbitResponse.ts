@@ -1,25 +1,12 @@
+type HistoryMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 type GenerateOrbitResponseProps = {
   input: string;
-
-  context: string;
-
-  agent: {
-    name: string;
-  };
-
-  workspaceMemory: string[];
-
-  workspaceContext: {
-    activeTasks: number;
-
-    overdueTasks: number;
-
-    crmLeads: number;
-
-    aiActions: number;
-
-    productivity: string;
-  };
+  agent: { name: string };
+  history?: HistoryMessage[];
 };
 
 type OrbitResponse = {
@@ -33,13 +20,17 @@ export async function generateOrbitResponse(
   props: GenerateOrbitResponseProps,
   onToken?: (token: string) => void
 ): Promise<OrbitResponse> {
-  const { input, agent } = props;
+  const { input, agent, history } = props;
 
   try {
     const res = await fetch("/api/orbit-assistant", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input, agent: agent.name }),
+      body: JSON.stringify({
+        message: input,
+        agent: agent.name,
+        history: history ?? [],
+      }),
     });
 
     if (!res.ok || !res.body) {
@@ -81,16 +72,14 @@ export async function generateOrbitResponse(
     }
 
     return {
-      response: fullText || "Orbit AI could not generate a response.",
+      response: fullText || "Gunimi AI could not generate a response.",
       generatedActions,
       generatedTimeline: [],
       generatedMemory: [],
     };
-  } catch (error) {
-    console.error("generateOrbitResponse failed:", error);
-
+  } catch {
     return {
-      response: "Orbit AI encountered an error while processing the request.",
+      response: "Gunimi AI encountered an error while processing your request.",
       generatedActions: [],
       generatedTimeline: [],
       generatedMemory: [],

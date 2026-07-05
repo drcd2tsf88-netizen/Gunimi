@@ -114,7 +114,7 @@ export default function OrbitControlView({
                 </span>
               </h1>
               <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/60">
-                Internal operational management layer for Orbit AI Operating
+                Internal operational management layer for Gunimi AI Operating
                 System beta access, memberships, platform governance and user
                 infrastructure.
               </p>
@@ -278,7 +278,7 @@ export default function OrbitControlView({
 
         {/* FOOTER */}
         <div className="mt-10 flex items-center justify-between rounded-[28px] border border-white/[0.06] bg-white/[0.03] p-6 text-sm text-zinc-500">
-          <div>Orbit AI Operating System governance infrastructure.</div>
+          <div>Gunimi AI Operating System governance infrastructure.</div>
           <div className="flex items-center gap-2 text-violet-300">
             Internal Platform Layer
             <ArrowUpRight size={16} />

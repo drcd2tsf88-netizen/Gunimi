@@ -1,8 +1,8 @@
 {
   "auth": {
-    "badge": "Orbit AI Systémy",
+    "badge": "Gunimi AI",
     "loginTitle": "Vítejte zpět",
-    "loginSubtitle": "Přihlaste se do svého Orbit pracovního prostoru.",
+    "loginSubtitle": "Přihlaste se do svého Gunimi pracovního prostoru.",
     "emailPlaceholder": "E-mailová adresa",
     "passwordPlaceholder": "Heslo",
     "signIn": "Přihlásit se",
@@ -10,7 +10,7 @@
     "forgotPassword": "Zapomněli jste heslo?",
     "noAccount": "Nemáte účet?",
     "createAccount": "Vytvořit účet",
-    "registerBadge": "Orbit Identity System",
+    "registerBadge": "Gunimi Identity",
     "registerTitle": "Vytvořit účet",
     "registerSubtitle": "Spusťte AI pracovní prostor s CRM, úkoly a inteligencí pracovních toků.",
     "fullNamePlaceholder": "Celé jméno",
@@ -21,12 +21,12 @@
     "creatingAccount": "Vytváření účtu...",
     "alreadyHaveAccount": "Máte již účet?",
     "login": "Přihlásit se",
-    "aiIdentityLayer": "Orbit AI Identity",
+    "aiIdentityLayer": "Gunimi AI Identity",
     "termsPrefix": "Vytvořením účtu souhlasíte s našimi",
     "termsLink": "Podmínkami služby",
     "privacyLink": "Zásadami ochrany soukromí",
     "and": "a",
-    "verifyBadge": "Orbit Verification System",
+    "verifyBadge": "Gunimi Verification",
     "verifyTitle": "Zkontrolujte e-mail",
     "verifyDescription": "Zaslali jsme vám bezpečný aktivační odkaz.",
     "verifyDestination": "Ověření odesláno na",
@@ -41,7 +41,7 @@
     "resending": "Odesílání...",
     "emailResent": "Ověřovací e-mail byl znovu odeslán.",
     "resendFailed": "Opětovné odeslání selhalo. Zkuste znovu.",
-    "forgotBadge": "Orbit Recovery System",
+    "forgotBadge": "Gunimi Recovery",
     "forgotTitle": "Obnova hesla",
     "forgotSubtitle": "Zadejte svou e-mailovou adresu a zašleme vám odkaz na obnovu.",
     "secureFlowTitle": "Bezpečná obnova",
@@ -52,9 +52,9 @@
     "sentDesc": "Zkontrolujte doručenou poštu a klikněte na odkaz pro obnovu hesla.",
     "rememberedPassword": "Vzpomněli jste si na heslo?",
     "returnToLogin": "Zpět na přihlášení",
-    "resetBadge": "Orbit Security Layer",
+    "resetBadge": "Gunimi Security",
     "resetTitle": "Nastavit nové heslo",
-    "resetSubtitle": "Zvolte si silné heslo pro svůj Orbit účet.",
+    "resetSubtitle": "Zvolte si silné heslo pro svůj Gunimi účet.",
     "newPasswordPlaceholder": "Nové heslo (min. 8 znaků)",
     "confirmPasswordPlaceholder2": "Potvrdit nové heslo",
     "secureUpdateTitle": "Bezpečná aktualizace hesla",
@@ -184,7 +184,7 @@
     "briefLoading": "Analyzuji pracovní prostor...",
     "briefUnavailable": "Inteligence pracovního prostoru nedostupná.",
     "briefAllClear": "Vše v pořádku — žádné položky nevyžadují pozornost.",
-    "briefOnboardingIntro": "Ahoj, jsem Orbit AI. Mohu vám pomoci spravovat zákazníky, obchody, úkoly a schůzky.",
+    "briefOnboardingIntro": "Ahoj, jsem Gunimi AI. Mohu vám pomoci spravovat zákazníky, obchody, úkoly a schůzky.",
     "briefOnboardingHint": "Připojte své nástroje nebo vytvořte první záznamy pro aktivaci pracovní inteligence.",
     "workspaceChanges": "Dnešní změny",
     "todaysFocusBadge": "Váš fokus",
@@ -266,7 +266,7 @@
     "workspaceCrmContacts": "Kontakty CRM pracovního prostoru.",
     "results": "výsledků",
     "crmReady": "Vaše CRM je připraveno",
-    "crmReadyDescription": "Začněte budovat váš AI zákaznický pracovní prostor. Přidávejte kontakty, spravujte pipeline a nechte Orbit AI optimalizovat obchodní vztahy.",
+    "crmReadyDescription": "Začněte budovat váš AI zákaznický pracovní prostor. Přidávejte kontakty, spravujte pipeline a nechte Gunimi AI optimalizovat obchodní vztahy.",
     "addFirstContact": "Přidat první kontakt",
     "onboardingEmptyTitle": "Zatím žádné kontakty",
     "onboardingEmptyDescription": "Vytvořte první kontakt nebo importujte kontakty přes CSV a začněte budovat síť.",
@@ -574,7 +574,7 @@
     "productivityBoost": "Zlepšení produktivity",
     "configureAutomation": "Konfigurovat automatizaci",
     "suggestedWorkflows": "Navrhovaná AI workflow",
-    "orbitAi": "Orbit AI",
+    "orbitAi": "Gunimi AI",
     "statusActive": "Aktivní",
     "statusComingSoon": "Brzy",
     "suggestion1": "Automaticky vytvářet úkoly z poznámek ze schůzek",
@@ -687,7 +687,7 @@
     "no": "Ne"
   },
   "ai": {
-    "badge": "Orbit AI",
+    "badge": "Gunimi AI",
     "title": "AI Mission Control",
     "subtitle": "Centrální velení pro všechny inteligentní systémy vašeho pracovního prostoru.",
     "overviewLabel": "Pracovní prostor",
@@ -840,7 +840,7 @@
     "aiExecutions": "AI provádění",
     "taskEvents": "Úlohové události",
     "noActivity": "Zatím žádná aktivita",
-    "noActivityDescription": "Orbit AI aktivity a události workflow se zde budou zobrazovat živě.",
+    "noActivityDescription": "Gunimi AI aktivity a události workflow se zde budou zobrazovat živě.",
     "workspaceEvent": "Událost pracovního prostoru"
   },
   "analytics": {
@@ -862,7 +862,7 @@
     "teamTitle": "Výkonnost týmu",
     "teamDesc": "Monitorujte produktivitu jednotlivců a týmu, míry plnění úkolů a metriky spolupráce.",
     "aiTitle": "AI prognózování",
-    "aiDesc": "Orbit AI analyzuje vzory pracovního prostoru a poskytne inteligentní prognózy a doporučení.",
+    "aiDesc": "Gunimi AI analyzuje vzory pracovního prostoru a poskytne inteligentní prognózy a doporučení.",
     "statUpcomingMeetings": "Nadcházející schůzky",
     "statEmailThreads": "E-mailová vlákna",
     "pipelineFunnelTitle": "Trychtýř Pipeline",
@@ -1109,7 +1109,7 @@
     "stepContact": "Vytvořit první kontakt",
     "stepCompany": "Vytvořit první společnost",
     "stepDeal": "Vytvořit první obchod",
-    "stepAI": "Zeptat se Orbit AI",
+    "stepAI": "Zeptat se Gunimi AI",
     "stepOptionalLabel": "Vylepšete svůj pracovní prostor",
     "quickActionsTitle": "Rychlé akce",
     "actionConnectEmail": "Připojit e-mail",
@@ -1122,7 +1122,7 @@
     "completionSubtitle": "Vše je připraveno. Váš pracovní prostor je připraven k použití."
   },
   "command": {
-    "title": "Orbit Command Center",
+    "title": "Gunimi Command Center",
     "subtitle": "Správa pracovního prostoru pomocí AI",
     "placeholder": "Hledejte stránky, akce AI nebo pracovní postupy...",
     "topbarPlaceholder": "Hledejte v systémech Orbit...",
@@ -1209,7 +1209,7 @@
       },
       "analyze": {
         "title": "Analyzovat Pracovní Prostor",
-        "description": "Orbit AI přezkoumá výkon pracovního prostoru"
+        "description": "Gunimi AI přezkoumá výkon pracovního prostoru"
       },
       "activity": {
         "title": "Otevřít Aktivitu",
@@ -1332,18 +1332,18 @@
     "membersOnline": "{count} členů online"
   },
   "aiPanel": {
-    "orbitAi": "Orbit AI",
+    "orbitAi": "Gunimi AI",
     "memoryLabel": "Paměť pracovního prostoru",
     "suggest1": "Analyzovat aktivity pracovního prostoru",
     "suggest2": "Shrnout otevřené úkoly",
     "suggest3": "Přehled posledních obchodů",
     "suggest4": "Přehled pracovního prostoru",
-    "processingLabel": "Orbit AI zpracovává...",
-    "inputPlaceholder": "Zeptejte se Orbit AI...",
+    "processingLabel": "Gunimi AI zpracovává...",
+    "inputPlaceholder": "Zeptejte se Gunimi AI...",
     "sendButton": "Odeslat",
     "workspaceNotFound": "Pracovní prostor nebyl nalezen.",
-    "processingError": "Orbit AI nedokázalo zpracovat požadavek.",
-    "thinkingAnalyzing": "Orbit AI analyzuje pracovní prostor...",
+    "processingError": "Gunimi AI nedokázalo zpracovat požadavek.",
+    "thinkingAnalyzing": "Gunimi AI analyzuje pracovní prostor...",
     "thinkingDelegating": "Delegování na {agent}...",
     "thinkingComplete": "Analýza dokončena.",
     "closePanel": "Zavřít panel AI",
@@ -1353,7 +1353,7 @@
     "showMore": "Zobrazit {count} dalších"
   },
   "memory": {
-    "badge": "Orbit Paměť",
+    "badge": "Gunimi Memory",
     "title": "Časová osa pracovního prostoru",
     "subtitle": "Každá obchodní událost, zapamatovaná. Jeden nepřetržitý příběh vašeho pracovního prostoru.",
     "statTotal": "Celkový počet událostí",
@@ -1820,7 +1820,7 @@
         { "title": "Revenue intelligence", "description": "Prediktivní skórování dealů, signály rizika odchodu a prognózování příjmů." },
         { "title": "Partnerský ekosystém", "description": "Nativní integrace s Hubspot, Salesforce, Stripe, Notion a dalšími." },
         { "title": "White-label workspaces", "description": "Agentury a konzultanti mohou nasadit Gunimi pod vlastní značkou pro klienty." },
-        { "title": "Orbit Memory", "description": "Dlouhodobá trvalá AI paměť pro workspace — kontext, který se buduje v průběhu času." }
+        { "title": "Gunimi Memory", "description": "Dlouhodobá trvalá AI paměť pro workspace — kontext, který se buduje v průběhu času." }
       ]
     },
     "press": {
@@ -1934,6 +1934,17 @@
       "badge": "Právní",
       "headline": "Podmínky používání",
       "lastUpdated": "Poslední aktualizace:"
+    },
+    "waitlist": {
+      "badgeLabel": "Gunimi Early Access",
+      "headlinePart1": "Přístup",
+      "headlinePart2": "Čeká",
+      "subtitle": "Vaše identita Gunimi byla synchronizována s AI Operačním Systémem. Přístup na platformu čeká na schválení přednostního přístupu.",
+      "panelTitle": "Fronta přístupu",
+      "panelDescription": "Váš účet je bezpečně registrován a čeká na aktivaci platformy.",
+      "backToHome": "Zpět na hlavní stránku",
+      "signOut": "Odhlásit se",
+      "footerNote": "Gunimi přijímá vybrané společnosti, operátory a spolupracovníky. Jakmile bude váš přístup potvrzen, obdržíte e-mail."
     }
   }
 }

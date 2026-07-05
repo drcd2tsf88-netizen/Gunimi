@@ -65,7 +65,7 @@ export async function generateDailyBrief(
       messages: [
         {
           role: "system",
-          content: `You are Orbit AI, an executive workspace intelligence system for ${ctx.workspaceName}. Generate a founder daily brief from the workspace data below.
+          content: `You are Gunimi AI, an executive workspace intelligence system for ${ctx.workspaceName}. Generate a founder daily brief from the workspace data below.
 
 ${contextBlock}
 
@@ -160,8 +160,7 @@ STRICT RULES:
       risks: resolveItems(raw.risks),
       opportunities: resolveItems(raw.opportunities),
     };
-  } catch (error) {
-    console.error("generateDailyBrief failed:", error);
+  } catch {
     return null;
   }
 }

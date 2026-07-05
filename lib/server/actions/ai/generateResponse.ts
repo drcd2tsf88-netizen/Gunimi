@@ -55,11 +55,9 @@ Focus on:
     return (
       completion.choices[0]
         ?.message?.content ??
-      "Orbit AI could not generate a response."
+      "Gunimi AI could not generate a response."
     );
-  } catch (error) {
-    console.error(error);
-
-    return "Orbit AI encountered an error while processing the request.";
+  } catch {
+    return "Gunimi AI encountered an error while processing the request.";
   }
 }

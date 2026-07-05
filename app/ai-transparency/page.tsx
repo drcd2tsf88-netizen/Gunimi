@@ -42,7 +42,7 @@ export default async function AiTransparencyPage() {
         {/* HERO */}
         <section className="relative mx-auto max-w-4xl px-6 pb-20 pt-24 text-center md:pt-32">
           <div className="mb-8 flex justify-center">
-            <div className="pointer-events-none opacity-[0.30]">
+            <div className="pointer-events-none opacity-[0.38]">
               <AiCore size={92} showRings showParticles={false} intensity="medium" />
             </div>
           </div>

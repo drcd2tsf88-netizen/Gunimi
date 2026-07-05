@@ -1,366 +1,160 @@
 "use client";
 
-import {
-  useCallback,
-  useState,
-} from "react";
+import { useCallback, useState } from "react";
 
-import toast
-from "react-hot-toast";
+import toast from "react-hot-toast";
 
-import { useTranslations }
-from "next-intl";
+import { useTranslations } from "next-intl";
 
-import { useAIStateStore }
-from "@/lib/store/ai-state-store";
+import { useAIStateStore } from "@/lib/store/ai-state-store";
 
-import { useWorkspaceStore }
-from "@/lib/store/useWorkspaceStore";
+import { useWorkspaceStore } from "@/lib/store/useWorkspaceStore";
 
-import { buildOrbitContext }
-from "@/lib/ai/context/buildOrbitContext";
+import { generateOrbitResponse } from "@/lib/ai/services/generateOrbitResponse";
 
-import { generateOrbitResponse }
-from "@/lib/ai/services/generateOrbitResponse";
+import { routeAgent } from "@/lib/ai/agents/route-agent";
 
-import { routeAgent }
-from "@/lib/ai/agents/route-agent";
+import { executeOrbitActions } from "@/lib/ai/execution/executeOrbitActions";
 
-import { executeOrbitActions }
-from "@/lib/ai/execution/executeOrbitActions";
+import { loadMemory } from "@/lib/ai/memory/load-memory";
 
-import { loadMemory }
-from "@/lib/ai/memory/load-memory";
-
-import { saveMemory }
-from "@/lib/ai/memory/save-memory";
+import { saveMemory } from "@/lib/ai/memory/save-memory";
 
 export function useOrbitAssistant() {
   const t = useTranslations("aiPanel");
 
-  const [
-    loading,
-    setLoading,
-  ] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // AI STORE
 
-  const addMessage =
-    useAIStateStore(
-      (state) =>
-        state.addMessage
-    );
+  const addMessage = useAIStateStore((state) => state.addMessage);
 
-  const appendToMessage =
-    useAIStateStore(
-      (state) =>
-        state.appendToMessage
-    );
+  const appendToMessage = useAIStateStore((state) => state.appendToMessage);
 
-  const setMessageMetadata =
-    useAIStateStore(
-      (state) =>
-        state.setMessageMetadata
-    );
+  const setMessageMetadata = useAIStateStore((state) => state.setMessageMetadata);
 
-  const messages =
-    useAIStateStore(
-      (state) =>
-        state.messages
-    );
+  const messages = useAIStateStore((state) => state.messages);
 
-  const aiMemory =
-    useAIStateStore(
-      (state) =>
-        state.memory
-    );
+  const setThinking = useAIStateStore((state) => state.setThinking);
 
-  const workflowTimeline =
-    useAIStateStore(
-      (state) =>
-        state.workflowTimeline
-    );
-
-  const setThinking =
-    useAIStateStore(
-      (state) =>
-        state.setThinking
-    );
-
-  const setCurrentThought =
-    useAIStateStore(
-      (state) =>
-        state.setCurrentThought
-    );
+  const setCurrentThought = useAIStateStore((state) => state.setCurrentThought);
 
   // WORKSPACE
 
-  const workspace =
-    useWorkspaceStore(
-      (state) =>
-        state.workspace
-    );
+  const workspace = useWorkspaceStore((state) => state.workspace);
 
-  const workspaceId =
-    workspace?.id;
+  const workspaceId = workspace?.id;
 
   // SEND MESSAGE
 
-  const sendMessage =
-    useCallback(
-      async (
-        input: string
-      ) => {
-        if (
-          !input.trim()
-        ) {
-          return;
-        }
+  const sendMessage = useCallback(
+    async (input: string) => {
+      if (!input.trim()) return;
 
-        if (
-          !workspaceId
-        ) {
-          toast.error(
-            t("workspaceNotFound")
-          );
+      if (!workspaceId) {
+        toast.error(t("workspaceNotFound"));
+        return;
+      }
 
-          return;
-        }
+      try {
+        // LOADING
 
-        try {
-          // LOADING
+        setLoading(true);
+        setThinking(true);
+        setCurrentThought(t("thinkingAnalyzing"));
 
-          setLoading(true);
+        // USER MESSAGE
 
-          setThinking(
-            true
-          );
+        addMessage({
+          id: crypto.randomUUID(),
+          role: "user",
+          content: input,
+          createdAt: new Date().toISOString(),
+        });
 
-          setCurrentThought(
-            t("thinkingAnalyzing")
-          );
+        // LOAD MEMORY
 
-          // USER MESSAGE
+        await loadMemory(workspaceId);
 
-          addMessage({
-            id:
-              crypto.randomUUID(),
+        // AGENT
 
-            role:
-              "user",
+        const agent = routeAgent(input);
 
-            content:
-              input,
+        setCurrentThought(t("thinkingDelegating", { agent: agent.name }));
 
-            createdAt:
-              new Date().toISOString(),
-          });
+        // PLACEHOLDER ASSISTANT MESSAGE (streams into it)
 
-          // LOAD MEMORY
+        const assistantId = crypto.randomUUID();
 
-          await loadMemory(
-            workspaceId
-          );
+        addMessage({
+          id: assistantId,
+          role: "assistant",
+          content: "",
+          createdAt: new Date().toISOString(),
+        });
 
-          // AGENT
+        // GENERATE RESPONSE (streaming) — pass conversation history for multi-turn context
 
-          const agent =
-            routeAgent(
-              input
-            );
+        const response = await generateOrbitResponse(
+          {
+            input,
+            agent,
+            history: messages.map((m) => ({ role: m.role, content: m.content })),
+          },
+          (token) => appendToMessage(assistantId, token)
+        );
 
-          setCurrentThought(
-            t("thinkingDelegating", { agent: agent.name })
-          );
+        // SAVE MEMORY
 
-          // CONTEXT
+        await saveMemory({ workspaceId, role: "user", content: input });
 
-          const context =
-            buildOrbitContext({
-              messages,
+        await saveMemory({
+          workspaceId,
+          role: "assistant",
+          content: response.response,
+        });
 
-              aiMemory:
-                aiMemory.map(
-                  (
-                    item
-                  ) =>
-                    item.content
-                ),
+        // EXECUTION
 
-              workflowTimeline:
-                workflowTimeline.map(
-                  (
-                    item
-                  ) =>
-                    item.title
-                ),
+        const execution = await executeOrbitActions({
+          input,
+          response: response.response,
+          workspaceId,
+        });
 
-              activeAgent:
-                agent.name,
+        // FINALIZE ASSISTANT MESSAGE METADATA
 
-              workspaceContext:
-                {
-                  workspaceName:
-                    workspace?.name,
+        setMessageMetadata(assistantId, {
+          agent: agent.name,
+          execution,
+          actions: response.generatedActions,
+        });
 
-                  activeTasks:
-                    workspace
-                      ?.stats
-                      ?.tasks ??
-                    0,
+        // COMPLETE
 
-                  overdueTasks: 0,
+        setCurrentThought(t("thinkingComplete"));
+      } catch {
+        toast.error(t("processingError"));
+      } finally {
+        setLoading(false);
+        setThinking(false);
+      }
+    },
 
-                  crmLeads:
-                    workspace
-                      ?.stats
-                      ?.contacts ??
-                    0,
-
-                  aiActions: 0,
-
-                  productivity:
-                    "Operational",
-                },
-            });
-
-          // PLACEHOLDER ASSISTANT MESSAGE (streams into it)
-
-          const assistantId = crypto.randomUUID();
-
-          addMessage({
-            id: assistantId,
-            role: "assistant",
-            content: "",
-            createdAt: new Date().toISOString(),
-          });
-
-          // GENERATE RESPONSE (streaming)
-
-          const response =
-            await generateOrbitResponse(
-              {
-                input,
-
-                context,
-
-                agent,
-
-                workspaceMemory:
-                  aiMemory.map(
-                    (
-                      item
-                    ) =>
-                      item.content
-                  ),
-
-                workspaceContext:
-                  {
-                    activeTasks:
-                      workspace
-                        ?.stats
-                        ?.tasks ??
-                      0,
-
-                    overdueTasks: 0,
-
-                    crmLeads:
-                      workspace
-                        ?.stats
-                        ?.contacts ??
-                      0,
-
-                    aiActions: 0,
-
-                    productivity:
-                      "Operational",
-                  },
-              },
-              (token) => appendToMessage(assistantId, token)
-            );
-
-          // SAVE MEMORY
-
-          await saveMemory({
-            workspaceId,
-
-            role:
-              "user",
-
-            content:
-              input,
-          });
-
-          await saveMemory({
-            workspaceId,
-
-            role:
-              "assistant",
-
-            content:
-              response.response,
-          });
-
-          // EXECUTION
-
-          const execution =
-            await executeOrbitActions(
-              {
-                input,
-
-                response:
-                  response.response,
-
-                workspaceId,
-              }
-            );
-
-          // FINALIZE ASSISTANT MESSAGE METADATA
-
-          setMessageMetadata(assistantId, {
-            agent: agent.name,
-            execution,
-            actions: response.generatedActions,
-          });
-
-          // COMPLETE
-
-          setCurrentThought(
-            t("thinkingComplete")
-          );
-        } catch {
-          toast.error(
-            t("processingError")
-          );
-        } finally {
-          setLoading(
-            false
-          );
-
-          setThinking(
-            false
-          );
-        }
-      },
-
-      [
-        t,
-        addMessage,
-        appendToMessage,
-        setMessageMetadata,
-        aiMemory,
-        messages,
-        workflowTimeline,
-        workspace,
-        workspaceId,
-        setThinking,
-        setCurrentThought,
-      ]
-    );
+    [
+      t,
+      addMessage,
+      appendToMessage,
+      setMessageMetadata,
+      messages,
+      workspaceId,
+      setThinking,
+      setCurrentThought,
+    ]
+  );
 
   return {
     loading,
-
     sendMessage,
   };
 }

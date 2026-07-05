@@ -12,7 +12,7 @@ const openai = new OpenAI({
 });
 
 const FALLBACK_SYSTEM =
-  "You are Orbit AI, an intelligent business workspace assistant. Answer concisely and helpfully.";
+  "You are Gunimi AI, an intelligent business workspace assistant. Answer concisely and helpfully.";
 
 export async function POST(req: Request) {
   const user = await getUser();
@@ -73,9 +73,7 @@ export async function POST(req: Request) {
     return Response.json({
       reply: completion.choices[0].message.content,
     });
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     return errorResponse("AI request failed");
   }
 }

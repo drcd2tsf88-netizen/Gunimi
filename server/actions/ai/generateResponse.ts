@@ -94,7 +94,7 @@ Focus on:
     if (!content) {
       return {
         response:
-          "Orbit AI could not generate a response.",
+          "Gunimi AI could not generate a response.",
 
         actions: [],
 
@@ -105,12 +105,10 @@ Focus on:
     }
 
     return JSON.parse(content);
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     return {
       response:
-        "Orbit AI encountered an error while processing the request.",
+        "Gunimi AI encountered an error while processing the request.",
 
       actions: [],
 
