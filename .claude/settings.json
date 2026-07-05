@@ -25,7 +25,8 @@
       "Bash(xargs -I {} sh -c 'echo \"=== {} ===\" && wc -l \"{}\"')",
       "Bash(grep -E \"\\\\.\\(sql|ts|js\\)$\")",
       "Bash(xargs -0 grep -l \"use server\")",
-      "Bash(grep -E \"\\\\.md$|\\\\.json$\")"
+      "Bash(grep -E \"\\\\.md$|\\\\.json$\")",
+      "Bash(NEXT_FONT_GOOGLE_DISABLED=1 npm run build)"
     ],
     "additionalDirectories": [
       "c:\\Users\\guoth\\OrbitDesk\\OrbitDesk\\app\\dashboard\\crm\\[id]"

@@ -113,7 +113,7 @@
     "workspaceInsight": "Přehled pracovního prostoru",
     "workspaceOperational": "Pracovní prostor funguje bez problémů.",
     "workspaceIntelligence": "Inteligence pracovního prostoru",
-    "orbitIntelligence": "Orbit Intelligence",
+    "orbitIntelligence": "Gunimi Inteligence",
     "orbitIntelligenceSubtitle": "Přehled provozu a doporučení napříč pracovním prostorem.",
     "recommendedActions": "Doporučené akce",
     "noRecommendedActions": "Momentálně nejsou dostupné žádné doporučené akce.",
@@ -133,11 +133,11 @@
     "heroSubtitle": "Systémy pracovního prostoru jsou aktivní. AI monitoruje provádění ve vašem prostředí.",
     "workspaceStatus": "Stav pracovního prostoru",
     "allSystemsOperational": "Všechny systémy jsou funkční. Nebyly zjištěny žádné kritické problémy.",
-    "openOrbit": "Otevřít Orbit",
+    "openOrbit": "Otevřít Gunimi AI",
     "workspaceActions": "Akce pracovního prostoru",
     "workspaceActionsSubtitle": "Provádějte akce napříč pracovním prostředím.",
-    "askOrbit": "Zeptat se Orbit",
-    "askOrbitDescription": "Spustit AI asistenta pracovního prostoru.",
+    "askOrbit": "Zeptat se Gunimi AI",
+    "askOrbitDescription": "Spustit asistenta Gunimi AI.",
     "assignWork": "Přiřadit práci",
     "assignWorkDescription": "Vytvořit úkol pracovního prostoru.",
     "addRelationship": "Přidat vztah",
@@ -169,8 +169,6 @@
     "dueTodayBadge": "Dnes",
     "highPriorityBadge": "Vysoká",
     "viewAll": "Zobrazit vše",
-    "dailyBrief": "Orbit Daily Brief",
-    "dailyBriefSubtitle": "Souhrn pracovního prostoru z živých dat",
     "openTasksCount": "otevřených úkolů",
     "overdueCount": "po termínu",
     "meetingsTodayCount": "schůzek dnes",
@@ -178,14 +176,8 @@
     "activityTodayCount": "událostí dnes",
     "noUrgentItems": "Žádné urgentní položky. Pracovní prostor funguje normálně.",
     "unread": "Nepřečtené",
-    "briefPriorities": "Dnešní priority",
-    "briefRisks": "Rizika",
-    "briefOpportunities": "Příležitosti",
-    "briefLoading": "Analyzuji pracovní prostor...",
-    "briefUnavailable": "Inteligence pracovního prostoru nedostupná.",
-    "briefAllClear": "Vše v pořádku — žádné položky nevyžadují pozornost.",
-    "briefOnboardingIntro": "Ahoj, jsem Gunimi AI. Mohu vám pomoci spravovat zákazníky, obchody, úkoly a schůzky.",
-    "briefOnboardingHint": "Připojte své nástroje nebo vytvořte první záznamy pro aktivaci pracovní inteligence.",
+    "briefUnavailable": "Nepodařilo se mi připravit přehled. Zkuste obnovit.",
+    "briefAllClear": "Dnes nic nalehavého. Vaše podnikání vypadá zdravě.",
     "workspaceChanges": "Dnešní změny",
     "todaysFocusBadge": "Váš fokus",
     "todaysPriorities": "Dnešní priority",
@@ -207,7 +199,7 @@
     "noPipelineDeals": "Žádné aktivní obchody v pipeline",
     "noPipelineDealsDesc": "Vytvořte obchod pro sledování výkonnosti pipeline.",
     "recommendationsBadge": "Akce",
-    "recommendations": "Doporučení Orbit",
+    "recommendations": "Doporučení",
     "recommendationsSubtitle": "Signály pracovního prostoru vyžadující vaši pozornost.",
     "noRecommendations": "Pracovní prostor v pořádku",
     "noRecommendationsDesc": "Žádné okamžité akce. Vše v pořádku.",
@@ -247,7 +239,25 @@
     "stageLead": "Potenciální zákazník",
     "stageQualified": "Kvalifikovaný",
     "stageProposal": "Nabídka",
-    "stageNegotiation": "Jednání"
+    "stageNegotiation": "Jednání",
+    "briefSectionSchedule": "Dnes",
+    "briefRefresh": "Obnovit",
+    "briefRefreshing": "Obnovuje se…",
+    "briefJumpTasks": "Úkoly",
+    "briefJumpDeals": "Obchody",
+    "briefJumpCalendar": "Kalendář",
+    "briefSectionPriorities": "Kde bych začal",
+    "briefSectionSuggestion": "Jeden návrh",
+    "briefSectionRisks": "Stojí za pozornost",
+    "briefSectionOpportunities": "Příležitost",
+    "briefLoadingPhrase1": "Procházím dnešní rozvrh…",
+    "briefLoadingPhrase2": "Kontroluji aktivní obchody…",
+    "briefLoadingPhrase3": "Procházím aktivitu zákazníků…",
+    "briefLoadingPhrase4": "Připravuji dnešní přehled…",
+    "briefAskGunimi": "Zeptat se Gunimi",
+    "briefGreetingMorning": "Dobré ráno",
+    "briefGreetingAfternoon": "Dobré odpoledne",
+    "briefGreetingEvening": "Dobrý večer"
   },
   "crm": {
     "title": "Zákaznické vztahy",
@@ -463,7 +473,7 @@
     "probability": "Pravděpodobnost",
     "description": "Popis",
     "create": "Vytvořit",
-    "creating": "Vytváření...",
+    "creating": "Vytváření příležitosti...",
     "noDeals": "Žádné příležitosti",
     "noDealsDescription": "Vytvořte první obchodní příležitost a začněte sledovat obchodní výkonnost.",
     "onboardingEmptyTitle": "Zatím žádné příležitosti",
@@ -471,7 +481,6 @@
     "onboardingCreateDeal": "Vytvořit obchod",
     "expectedRevenue": "Očekávané příjmy",
     "selectOrganizationFirst": "Vybrat organizaci jako první",
-    "creating": "Vytváření příležitosti...",
     "saving": "Ukládání změn...",
     "deleting": "Odstraňování...",
     "opportunityCreated": "Příležitost vytvořena úspěšně",
@@ -855,7 +864,7 @@
     "modulesTitle": "Analytické moduly",
     "modulesSubtitle": "Pokročilé analytické moduly jsou ve vývoji. Sledujte nejdůležitější metriky níže.",
     "comingSoonBadge": "Brzy k dispozici",
-    "revenueTitle": "Analýza příjmů",
+    "revenueTitle": "Přehled tržeb",
     "revenueDesc": "Sledujte příjmy z obchodů, předpovídejte hodnotu pipeline a monitorujte finanční výkonnost.",
     "pipelineTitle": "Přehledy pipeline",
     "pipelineDesc": "Pochopte postup obchodů, identifikujte úzká místa a optimalizujte výkon prodejního pipeline.",
@@ -874,7 +883,6 @@
     "winRateLabel": "míra úspěšnosti",
     "wonLabel": "Vyhrané",
     "lostLabel": "Prohrané",
-    "revenueTitle": "Přehled tržeb",
     "revenueSubtitle": "Hodnota pipeline a realizované tržby",
     "pipelineValue": "Hodnota Pipeline",
     "wonRevenue": "Vyhrané tržby",
@@ -1424,7 +1432,11 @@
       "subtitle": "Gunimi sjednocuje vaše vztahy, obchody, úkoly a znalosti do jednoho workspace — s AI, která skutečně rozumí vašemu podnikání.",
       "ctaPrimary": "Začít zdarma",
       "ctaSecondary": "Přihlásit se do workspace",
-      "trustSignals": ["SOC 2 Type II", "End-to-end šifrování", "Soulad s GDPR"]
+      "trustSignals": [
+        "SOC 2 Type II",
+        "End-to-end šifrování",
+        "Soulad s GDPR"
+      ]
     },
     "workspacePreview": {
       "eyebrow": "Uvnitř workspace",
@@ -1443,9 +1455,21 @@
       "thisMonth": "tento měsíc",
       "openWorkspace": "Otevřít workspace",
       "metrics": [
-        { "label": "Nové obchody", "value": "+12", "change": "+34 %" },
-        { "label": "Tržby", "value": "€84,2 tis.", "change": "+18 %" },
-        { "label": "Splněné úkoly", "value": "47/52", "change": "90 %" }
+        {
+          "label": "Nové obchody",
+          "value": "+12",
+          "change": "+34 %"
+        },
+        {
+          "label": "Tržby",
+          "value": "€84,2 tis.",
+          "change": "+18 %"
+        },
+        {
+          "label": "Splněné úkoly",
+          "value": "47/52",
+          "change": "90 %"
+        }
       ],
       "activity": [
         "AI analyzovala obchod Acme Corp",
@@ -1461,17 +1485,50 @@
       "subtitle": "Vše, co vaše podnikání potřebuje. Ne jako samostatné aplikace — ale jako jeden inteligentní workspace, kde každý modul ví o každém jiném modulu.",
       "statusLive": "Aktivní",
       "modules": [
-        { "title": "AI inteligence", "desc": "Analýza v reálném čase, shrnutí a poznatky generované nepřetržitě v celém workspace." },
-        { "title": "Memory", "desc": "Vše, co se Gunimi naučí o vašem podnikání, zákaznících a historii, zůstává trvale dostupné." },
-        { "title": "Automation", "desc": "Vytvářejte pracovní postupy, které běží samostatně. Spouštějte akce, posílejte upozornění, aktualizujte záznamy." },
-        { "title": "Command Center", "desc": "Jedna klávesová zkratka. Každá akce. Zeptejte se Gunimi na cokoli o vašem podnikání." },
-        { "title": "Kontakty a CRM", "desc": "Živý graf každé společnosti, kontaktu a vztahu. Vždy aktuální." },
-        { "title": "Obchody a pipeline", "desc": "Přehled vašeho pipeline, sledování pokroku a AI poradenství o prioritizaci obchodů." },
-        { "title": "Analytika", "desc": "Tržby, aktivita a výkonnost sledovány automaticky. Žádné ruční reportování." },
-        { "title": "Kalendář", "desc": "Plánování, časové bloky a příprava na schůzky — integrované s kontextem workspace." },
-        { "title": "Email", "desc": "Odesílejte, sledujte a automatizujte oslovení. AI napíše první návrh. Vy schválíte a odešlete." },
-        { "title": "Poznámky", "desc": "Zachyťte rozhodnutí, zápisky a znalosti. AI je propojí se správným kontextem." },
-        { "title": "Observatory", "desc": "Živý pohled na vše, co se děje ve vašem workspace — automatické signály, upozornění a inteligence." }
+        {
+          "title": "AI inteligence",
+          "desc": "Analýza v reálném čase, shrnutí a poznatky generované nepřetržitě v celém workspace."
+        },
+        {
+          "title": "Memory",
+          "desc": "Vše, co se Gunimi naučí o vašem podnikání, zákaznících a historii, zůstává trvale dostupné."
+        },
+        {
+          "title": "Automation",
+          "desc": "Vytvářejte pracovní postupy, které běží samostatně. Spouštějte akce, posílejte upozornění, aktualizujte záznamy."
+        },
+        {
+          "title": "Command Center",
+          "desc": "Jedna klávesová zkratka. Každá akce. Zeptejte se Gunimi na cokoli o vašem podnikání."
+        },
+        {
+          "title": "Kontakty a CRM",
+          "desc": "Živý graf každé společnosti, kontaktu a vztahu. Vždy aktuální."
+        },
+        {
+          "title": "Obchody a pipeline",
+          "desc": "Přehled vašeho pipeline, sledování pokroku a AI poradenství o prioritizaci obchodů."
+        },
+        {
+          "title": "Analytika",
+          "desc": "Tržby, aktivita a výkonnost sledovány automaticky. Žádné ruční reportování."
+        },
+        {
+          "title": "Kalendář",
+          "desc": "Plánování, časové bloky a příprava na schůzky — integrované s kontextem workspace."
+        },
+        {
+          "title": "Email",
+          "desc": "Odesílejte, sledujte a automatizujte oslovení. AI napíše první návrh. Vy schválíte a odešlete."
+        },
+        {
+          "title": "Poznámky",
+          "desc": "Zachyťte rozhodnutí, zápisky a znalosti. AI je propojí se správným kontextem."
+        },
+        {
+          "title": "Observatory",
+          "desc": "Živý pohled na vše, co se děje ve vašem workspace — automatické signály, upozornění a inteligence."
+        }
       ]
     },
     "observatory": {
@@ -1483,11 +1540,26 @@
       "coreSubtitle": "Vždy zapnuto. Vždy se učí.",
       "exploreCta": "Prozkoumat AI vrstvu",
       "nodes": [
-        { "title": "Memory", "desc": "Trvalý kontext napříč každou interakcí" },
-        { "title": "Automation", "desc": "Spouštěče, akce a orchestrace pracovních toků" },
-        { "title": "Agenti", "desc": "Autonomní vykonavatelé úkolů s přístupem k workspace" },
-        { "title": "Observatory", "desc": "Signály v reálném čase, upozornění a monitorování aktivity" },
-        { "title": "Příkazy", "desc": "Rozhraní v přirozeném jazyce pro celý workspace" }
+        {
+          "title": "Memory",
+          "desc": "Trvalý kontext napříč každou interakcí"
+        },
+        {
+          "title": "Automation",
+          "desc": "Spouštěče, akce a orchestrace pracovních toků"
+        },
+        {
+          "title": "Agenti",
+          "desc": "Autonomní vykonavatelé úkolů s přístupem k workspace"
+        },
+        {
+          "title": "Observatory",
+          "desc": "Signály v reálném čase, upozornění a monitorování aktivity"
+        },
+        {
+          "title": "Příkazy",
+          "desc": "Rozhraní v přirozeném jazyce pro celý workspace"
+        }
       ]
     },
     "trust": {
@@ -1497,18 +1569,49 @@
       "headlineLine3": "Spolehlivé.",
       "subtitle": "Postaveno od prvního dne pro organizace, které vyžadují soulad s předpisy, soukromí a enterprise spolehlivost.",
       "stats": [
-        { "value": "99,9 %", "label": "SLA dostupnosti" },
-        { "value": "< 80 ms", "label": "Průměrná odezva" },
-        { "value": "SOC 2", "label": "Type II certifikát" },
-        { "value": "GDPR", "label": "Plný soulad" }
+        {
+          "value": "99,9 %",
+          "label": "SLA dostupnosti"
+        },
+        {
+          "value": "< 80 ms",
+          "label": "Průměrná odezva"
+        },
+        {
+          "value": "SOC 2",
+          "label": "Type II certifikát"
+        },
+        {
+          "value": "GDPR",
+          "label": "Plný soulad"
+        }
       ],
       "trustPoints": [
-        { "title": "Enterprise bezpečnost", "desc": "SOC 2 Type II certifikované. Data šifrována v klidu i při přenosu. Řízení přístupu na základě rolí ve všech workspace." },
-        { "title": "Vaše data zůstávají vaše", "desc": "Na AI modelech nikdy netrénujeme na vašich datech. Paměť workspace je izolovaná a přístupná pouze vašemu týmu." },
-        { "title": "Postaveno pro výkon", "desc": "Časy odezvy pod 100 ms. Globální CDN. Navrženo pro enterprise zátěže bez degradace." },
-        { "title": "Globálně dostupné", "desc": "Infrastruktura s více regiony. Automatické přepnutí. 99,9 % SLA s plnou transparentností incidentů." }
+        {
+          "title": "Enterprise bezpečnost",
+          "desc": "SOC 2 Type II certifikované. Data šifrována v klidu i při přenosu. Řízení přístupu na základě rolí ve všech workspace."
+        },
+        {
+          "title": "Vaše data zůstávají vaše",
+          "desc": "Na AI modelech nikdy netrénujeme na vašich datech. Paměť workspace je izolovaná a přístupná pouze vašemu týmu."
+        },
+        {
+          "title": "Postaveno pro výkon",
+          "desc": "Časy odezvy pod 100 ms. Globální CDN. Navrženo pro enterprise zátěže bez degradace."
+        },
+        {
+          "title": "Globálně dostupné",
+          "desc": "Infrastruktura s více regiony. Automatické přepnutí. 99,9 % SLA s plnou transparentností incidentů."
+        }
       ],
-      "badges": ["SOC 2 Type II", "GDPR", "ISO 27001 ready", "CCPA", "End-to-end šifrování", "Zero-knowledge AI"]
+      "badges": [
+        "SOC 2 Type II",
+        "GDPR",
+        "ISO 27001 ready",
+        "CCPA",
+        "End-to-end šifrování",
+        "Zero-knowledge AI"
+      ]
     },
     "pricing": {
       "eyebrow": "Ceník",
@@ -1523,7 +1626,13 @@
           "period": "",
           "tagline": "Začněte budovat váš AI workspace.",
           "cta": "Začít zdarma",
-          "features": ["Až 3 uživatelé", "500 AI akcí / měsíc", "Kontakty, obchody a úkoly", "Základní automatizace", "AI command center"]
+          "features": [
+            "Až 3 uživatelé",
+            "500 AI akcí / měsíc",
+            "Kontakty, obchody a úkoly",
+            "Základní automatizace",
+            "AI command center"
+          ]
         },
         {
           "name": "Pro",
@@ -1531,7 +1640,14 @@
           "period": "/uživatel/měsíc",
           "tagline": "Neomezená inteligence pro rostoucí týmy.",
           "cta": "Začít zdarma",
-          "features": ["Neomezení uživatelé", "Neomezené AI akce", "Plný engine automatizace", "Memory a kontextové vzpomínky", "AI agenti", "Prioritní podpora"]
+          "features": [
+            "Neomezení uživatelé",
+            "Neomezené AI akce",
+            "Plný engine automatizace",
+            "Memory a kontextové vzpomínky",
+            "AI agenti",
+            "Prioritní podpora"
+          ]
         },
         {
           "name": "Enterprise",
@@ -1539,7 +1655,14 @@
           "period": "",
           "tagline": "Váš operační systém. Vaše pravidla.",
           "cta": "Kontaktovat obchod",
-          "features": ["Vše z Pro", "Vlastní AI modely", "SSO a SCIM", "Dedikovaná infrastruktura", "Garance SLA", "Prémiové zavádění"]
+          "features": [
+            "Vše z Pro",
+            "Vlastní AI modely",
+            "SSO a SCIM",
+            "Dedikovaná infrastruktura",
+            "Garance SLA",
+            "Prémiové zavádění"
+          ]
         }
       ]
     },
@@ -1549,7 +1672,11 @@
       "subtitle": "Připojte se k týmům budujícím budoucnost práce s Gunimi. Začněte zdarma — váš workspace je připraven za minuty.",
       "ctaPrimary": "Začít zdarma",
       "ctaSecondary": "Přihlásit se",
-      "statusItems": ["Bez kreditní karty", "14denní bezplatná zkouška", "Zrušení kdykoli"]
+      "statusItems": [
+        "Bez kreditní karty",
+        "14denní bezplatná zkouška",
+        "Zrušení kdykoli"
+      ]
     }
   },
   "public": {
@@ -1594,10 +1721,22 @@
       "story2": "Budujeme AI Workspace Operating System — platformu, kde společnosti, kontakty, dealy, úkoly, poznámky a komunikace existují ve společné inteligentní vrstvě. Jeden systém. Plný kontext. Vždy dostupné.",
       "pillarsHeadline": "Za čím stojíme.",
       "pillars": [
-        { "title": "Jeden workspace", "body": "Kontakty, dealy, poznámky, úkoly, e-mail a inteligence — sjednocené v jedné operační vrstvě. Žádné přepínání záložek. Žádná ztráta kontextu." },
-        { "title": "Inteligence na prvním místě", "body": "AI není doplněk. Prochází každým povrchem: tvorba, zobrazování signálů, propojování bodů ve vašem relačním grafu." },
-        { "title": "Podniková důvěra", "body": "Izolace workspace, šifrovaná data v klidu i při přenosu, jemná oprávnění a auditní záznamy zabudované od prvního dne." },
-        { "title": "Postaveno pro týmy", "body": "Multi-tenant architektura podporuje způsob, jakým je vaše firma skutečně strukturována — ne idealizovaný org chart." }
+        {
+          "title": "Jeden workspace",
+          "body": "Kontakty, dealy, poznámky, úkoly, e-mail a inteligence — sjednocené v jedné operační vrstvě. Žádné přepínání záložek. Žádná ztráta kontextu."
+        },
+        {
+          "title": "Inteligence na prvním místě",
+          "body": "AI není doplněk. Prochází každým povrchem: tvorba, zobrazování signálů, propojování bodů ve vašem relačním grafu."
+        },
+        {
+          "title": "Podniková důvěra",
+          "body": "Izolace workspace, šifrovaná data v klidu i při přenosu, jemná oprávnění a auditní záznamy zabudované od prvního dne."
+        },
+        {
+          "title": "Postaveno pro týmy",
+          "body": "Multi-tenant architektura podporuje způsob, jakým je vaše firma skutečně strukturována — ne idealizovaný org chart."
+        }
       ],
       "quote": "\"Vztahy jsou tím nejdůležitějším aktivem v každém podniku. Budujeme OS pro jejich správu.\"",
       "quoteAttrib": "— Tým Gunimi"
@@ -1716,12 +1855,30 @@
       ],
       "principlesHeadline": "Naše principy.",
       "principles": [
-        { "title": "Vaše data nejsou trénovací data", "body": "Obsah, který vytváříte v Gunimi — kontakty, dealy, poznámky, zprávy — se nikdy nepoužívá k trénování AI modelů, našich ani nikoho jiného. Vaše obchodní data jsou vaše." },
-        { "title": "Kontext omezený na workspace", "body": "AI funkce operují pouze s daty ve vašem aktivním workspace. Nikdy neexistuje křížový kontext AI mezi workspacemi." },
-        { "title": "Lidské potvrzení pro zápisy", "body": "AI může navrhovat a tvořit koncepty, ale nemůže upravovat, vytvářet ani mazat záznamy bez explicitní akce od člověka. Každý zápis je záměrný." },
-        { "title": "Halucinace jsou realita", "body": "AI může a generuje nesprávné informace. Zacházejte s výstupem AI jako s konceptem, ne zdrojem pravdy. Vždy ověřte důležité fakty z primárních zdrojů." },
-        { "title": "Výzvy se neukládají", "body": "Vaše výzvy a odpovědi AI se neukládají v naší databázi mimo aktuální relaci. Nejsou dostupné jiným uživatelům ani členům týmu." },
-        { "title": "Modely třetích stran", "body": "Gunimi využívá poskytovatele AI modelů třetích stran k napájení inteligentních funkcí. Máme smlouvy o zpracování dat, které zakazují použití vašich dat k trénování modelů." }
+        {
+          "title": "Vaše data nejsou trénovací data",
+          "body": "Obsah, který vytváříte v Gunimi — kontakty, dealy, poznámky, zprávy — se nikdy nepoužívá k trénování AI modelů, našich ani nikoho jiného. Vaše obchodní data jsou vaše."
+        },
+        {
+          "title": "Kontext omezený na workspace",
+          "body": "AI funkce operují pouze s daty ve vašem aktivním workspace. Nikdy neexistuje křížový kontext AI mezi workspacemi."
+        },
+        {
+          "title": "Lidské potvrzení pro zápisy",
+          "body": "AI může navrhovat a tvořit koncepty, ale nemůže upravovat, vytvářet ani mazat záznamy bez explicitní akce od člověka. Každý zápis je záměrný."
+        },
+        {
+          "title": "Halucinace jsou realita",
+          "body": "AI může a generuje nesprávné informace. Zacházejte s výstupem AI jako s konceptem, ne zdrojem pravdy. Vždy ověřte důležité fakty z primárních zdrojů."
+        },
+        {
+          "title": "Výzvy se neukládají",
+          "body": "Vaše výzvy a odpovědi AI se neukládají v naší databázi mimo aktuální relaci. Nejsou dostupné jiným uživatelům ani členům týmu."
+        },
+        {
+          "title": "Modely třetích stran",
+          "body": "Gunimi využívá poskytovatele AI modelů třetích stran k napájení inteligentních funkcí. Máme smlouvy o zpracování dat, které zakazují použití vašich dat k trénování modelů."
+        }
       ],
       "warningTitle": "AI se může mýlit.",
       "warningBody": "Obsah generovaný AI v Gunimi je výchozím bodem, ne autoritativním záznamem. Vždy ověřte kritické obchodní informace z primárních zdrojů. Odpovědnost za rozhodnutí přijatá pomocí informací asistovaných AI zůstává na člověku, který toto rozhodnutí činí."
@@ -1743,12 +1900,30 @@
           "title": "Workspace Intelligence",
           "description": "AI vrstva je nyní dostupná v celém workspace. Orbit Intelligence může zobrazovat související záznamy, tvořit komunikaci a sumarizovat historii dealů v kontextu.",
           "changes": [
-            { "tag": "new", "text": "Panel Orbit Intelligence — AI asistent omezený na váš workspace" },
-            { "tag": "new", "text": "Shrnutí dealu: AI-generovaný brief z poznámek, úkolů a e-mailů" },
-            { "tag": "new", "text": "Analytický dashboard s metrikami pipeline v reálném čase" },
-            { "tag": "improved", "text": "Přepínání mezi workspacemi — okamžité přechody se zachováním stavu" },
-            { "tag": "improved", "text": "Shell workspace přepracován: atmosféra Deep Space, filmové nadpisy" },
-            { "tag": "security", "text": "Zabezpečení na úrovni řádků posíleno ve všech typech zdrojů" }
+            {
+              "tag": "new",
+              "text": "Panel Orbit Intelligence — AI asistent omezený na váš workspace"
+            },
+            {
+              "tag": "new",
+              "text": "Shrnutí dealu: AI-generovaný brief z poznámek, úkolů a e-mailů"
+            },
+            {
+              "tag": "new",
+              "text": "Analytický dashboard s metrikami pipeline v reálném čase"
+            },
+            {
+              "tag": "improved",
+              "text": "Přepínání mezi workspacemi — okamžité přechody se zachováním stavu"
+            },
+            {
+              "tag": "improved",
+              "text": "Shell workspace přepracován: atmosféra Deep Space, filmové nadpisy"
+            },
+            {
+              "tag": "security",
+              "text": "Zabezpečení na úrovni řádků posíleno ve všech typech zdrojů"
+            }
           ]
         },
         {
@@ -1757,11 +1932,26 @@
           "title": "Pipeline & Dealy",
           "description": "Kompletní pipeline dealů se správou fází, kartami dealů a propojením vztahů. Propojte kontakty a společnosti s aktivními příležitostmi.",
           "changes": [
-            { "tag": "new", "text": "Pipeline dealů s drag-and-drop správou fází" },
-            { "tag": "new", "text": "Detailní zobrazení dealu s časovou osou, poznámkami a propojenými kontakty" },
-            { "tag": "new", "text": "Propojení společnosti a kontaktu z kontextu dealu" },
-            { "tag": "improved", "text": "Seznamové zobrazení CRM s inline filtrováním a řazením" },
-            { "tag": "fixed", "text": "Feed aktivity se neaktualizoval po vytvoření poznámky" }
+            {
+              "tag": "new",
+              "text": "Pipeline dealů s drag-and-drop správou fází"
+            },
+            {
+              "tag": "new",
+              "text": "Detailní zobrazení dealu s časovou osou, poznámkami a propojenými kontakty"
+            },
+            {
+              "tag": "new",
+              "text": "Propojení společnosti a kontaktu z kontextu dealu"
+            },
+            {
+              "tag": "improved",
+              "text": "Seznamové zobrazení CRM s inline filtrováním a řazením"
+            },
+            {
+              "tag": "fixed",
+              "text": "Feed aktivity se neaktualizoval po vytvoření poznámky"
+            }
           ]
         },
         {
@@ -1770,11 +1960,26 @@
           "title": "Kontakty & Společnosti",
           "description": "Základ relační inteligence — kompletní správa kontaktů a společností s časovými osami aktivity a zachycováním poznámek.",
           "changes": [
-            { "tag": "new", "text": "Detailní zobrazení kontaktu s časovou osou aktivity" },
-            { "tag": "new", "text": "Profily společností s asociací kontaktů" },
-            { "tag": "new", "text": "Zachycování poznámek u kontaktů, společností a dealů" },
-            { "tag": "improved", "text": "Globální vyhledávání napříč kontakty, společnostmi a dealy" },
-            { "tag": "security", "text": "Řízení přístupu omezené na workspace pro všechna CRM data" }
+            {
+              "tag": "new",
+              "text": "Detailní zobrazení kontaktu s časovou osou aktivity"
+            },
+            {
+              "tag": "new",
+              "text": "Profily společností s asociací kontaktů"
+            },
+            {
+              "tag": "new",
+              "text": "Zachycování poznámek u kontaktů, společností a dealů"
+            },
+            {
+              "tag": "improved",
+              "text": "Globální vyhledávání napříč kontakty, společnostmi a dealy"
+            },
+            {
+              "tag": "security",
+              "text": "Řízení přístupu omezené na workspace pro všechna CRM data"
+            }
           ]
         },
         {
@@ -1783,11 +1988,26 @@
           "title": "Základ Workspace",
           "description": "Multi-workspace architektura, tok vytváření workspace, pozvánky a provozní shell workspace.",
           "changes": [
-            { "tag": "new", "text": "Podpora více workspaců — vytváření a přepínání mezi workspacemi" },
-            { "tag": "new", "text": "Průvodce vytvářením workspace s nahráváním loga" },
-            { "tag": "new", "text": "Pozvánky členů týmu přes e-mail" },
-            { "tag": "improved", "text": "Tok onboardingu přepracován jako průvodní kontrolní seznam" },
-            { "tag": "fixed", "text": "Vypršení relace nepřesměrovávalo správně na stránkách workspace" }
+            {
+              "tag": "new",
+              "text": "Podpora více workspaců — vytváření a přepínání mezi workspacemi"
+            },
+            {
+              "tag": "new",
+              "text": "Průvodce vytvářením workspace s nahráváním loga"
+            },
+            {
+              "tag": "new",
+              "text": "Pozvánky členů týmu přes e-mail"
+            },
+            {
+              "tag": "improved",
+              "text": "Tok onboardingu přepracován jako průvodní kontrolní seznam"
+            },
+            {
+              "tag": "fixed",
+              "text": "Vypršení relace nepřesměrovávalo správně na stránkách workspace"
+            }
           ]
         }
       ]
@@ -1798,29 +2018,80 @@
       "subline": "Transparentní pohled na to, co se buduje, co přijde dále, a dlouhodobou vizi pro Gunimi.",
       "disclaimer": "Roadmap odráží aktuální záměry a může se měnit. Priorita a načasování se mohou měnit podle směřování produktu.",
       "columns": {
-        "inProgress": { "label": "V průběhu", "description": "Aktuálně aktivní" },
-        "planned": { "label": "Plánováno", "description": "Další v pořadí" },
-        "future": { "label": "Budoucí vize", "description": "Dlouhodobý horizont" }
+        "inProgress": {
+          "label": "V průběhu",
+          "description": "Aktuálně aktivní"
+        },
+        "planned": {
+          "label": "Plánováno",
+          "description": "Další v pořadí"
+        },
+        "future": {
+          "label": "Budoucí vize",
+          "description": "Dlouhodobý horizont"
+        }
       },
       "inProgress": [
-        { "title": "E-mailová integrace", "description": "Odesílejte a přijímejte e-maily přímo v Gunimi. Úplné zobrazení vláken s AI-asistovanými odpověďmi." },
-        { "title": "Graf relační inteligence", "description": "Vizualizujte spojení mezi kontakty, společnostmi a dealy. Identifikujte teplé cesty." },
-        { "title": "AI příprava na schůzku", "description": "Automatický brief před každou plánovanou schůzkou. Zobrazí relevantní dealy, poznámky a historii." },
-        { "title": "Automatizace úkolů", "description": "Spouštějte úkoly ze změn fází dealu, aktivity kontaktu nebo událostí kalendáře." }
+        {
+          "title": "E-mailová integrace",
+          "description": "Odesílejte a přijímejte e-maily přímo v Gunimi. Úplné zobrazení vláken s AI-asistovanými odpověďmi."
+        },
+        {
+          "title": "Graf relační inteligence",
+          "description": "Vizualizujte spojení mezi kontakty, společnostmi a dealy. Identifikujte teplé cesty."
+        },
+        {
+          "title": "AI příprava na schůzku",
+          "description": "Automatický brief před každou plánovanou schůzkou. Zobrazí relevantní dealy, poznámky a historii."
+        },
+        {
+          "title": "Automatizace úkolů",
+          "description": "Spouštějte úkoly ze změn fází dealu, aktivity kontaktu nebo událostí kalendáře."
+        }
       ],
       "planned": [
-        { "title": "Integrace kalendáře", "description": "Připojte Google Calendar nebo Outlook. Sledujte schůzky vedle kontaktů a dealů." },
-        { "title": "Mobilní aplikace", "description": "iOS a Android aplikace s plnou offline podporou a push notifikacemi." },
-        { "title": "Vlastní pole", "description": "Přidejte pole specifická pro workspace do kontaktů, společností, dealů a úkolů." },
-        { "title": "API a webhooky", "description": "Veřejné API s podporou webhooků pro integraci Gunimi do vašeho stávajícího stacku." },
-        { "title": "Pokročilé reportování", "description": "Rychlost pipeline, míry výhry, metriky aktivity a vlastní dashboardy." }
+        {
+          "title": "Integrace kalendáře",
+          "description": "Připojte Google Calendar nebo Outlook. Sledujte schůzky vedle kontaktů a dealů."
+        },
+        {
+          "title": "Mobilní aplikace",
+          "description": "iOS a Android aplikace s plnou offline podporou a push notifikacemi."
+        },
+        {
+          "title": "Vlastní pole",
+          "description": "Přidejte pole specifická pro workspace do kontaktů, společností, dealů a úkolů."
+        },
+        {
+          "title": "API a webhooky",
+          "description": "Veřejné API s podporou webhooků pro integraci Gunimi do vašeho stávajícího stacku."
+        },
+        {
+          "title": "Pokročilé reportování",
+          "description": "Rychlost pipeline, míry výhry, metriky aktivity a vlastní dashboardy."
+        }
       ],
       "future": [
-        { "title": "Autonomní agenti", "description": "AI agenti, kteří provádějí akce — plánování, follow-upy, obohacování dat — s vaším schválením." },
-        { "title": "Revenue intelligence", "description": "Prediktivní skórování dealů, signály rizika odchodu a prognózování příjmů." },
-        { "title": "Partnerský ekosystém", "description": "Nativní integrace s Hubspot, Salesforce, Stripe, Notion a dalšími." },
-        { "title": "White-label workspaces", "description": "Agentury a konzultanti mohou nasadit Gunimi pod vlastní značkou pro klienty." },
-        { "title": "Gunimi Memory", "description": "Dlouhodobá trvalá AI paměť pro workspace — kontext, který se buduje v průběhu času." }
+        {
+          "title": "Autonomní agenti",
+          "description": "AI agenti, kteří provádějí akce — plánování, follow-upy, obohacování dat — s vaším schválením."
+        },
+        {
+          "title": "Revenue intelligence",
+          "description": "Prediktivní skórování dealů, signály rizika odchodu a prognózování příjmů."
+        },
+        {
+          "title": "Partnerský ekosystém",
+          "description": "Nativní integrace s Hubspot, Salesforce, Stripe, Notion a dalšími."
+        },
+        {
+          "title": "White-label workspaces",
+          "description": "Agentury a konzultanti mohou nasadit Gunimi pod vlastní značkou pro klienty."
+        },
+        {
+          "title": "Gunimi Memory",
+          "description": "Dlouhodobá trvalá AI paměť pro workspace — kontext, který se buduje v průběhu času."
+        }
       ]
     },
     "press": {
@@ -1839,18 +2110,54 @@
       "mediaContactTitle": "Mediální kontakt",
       "mediaContactDescription": "Pro mediální dotazy, žádosti o rozhovor nebo redakční spolupráci.",
       "brandColors": [
-        { "name": "Primární", "hex": "#6D5BFF", "description": "Primární firemní fialová" },
-        { "name": "Primární 300", "hex": "#8B7DFF", "description": "Interaktivní stavy" },
-        { "name": "Primární 200", "hex": "#A998FF", "description": "Světlé akcenty" },
-        { "name": "Deep Space", "hex": "#05060A", "description": "Pozadí" },
-        { "name": "Dark Titanium", "hex": "#0A0E17", "description": "Povrch karty" },
-        { "name": "Text Primary", "hex": "#F7F8FC", "description": "Nadpisy a text" }
+        {
+          "name": "Primární",
+          "hex": "#6D5BFF",
+          "description": "Primární firemní fialová"
+        },
+        {
+          "name": "Primární 300",
+          "hex": "#8B7DFF",
+          "description": "Interaktivní stavy"
+        },
+        {
+          "name": "Primární 200",
+          "hex": "#A998FF",
+          "description": "Světlé akcenty"
+        },
+        {
+          "name": "Deep Space",
+          "hex": "#05060A",
+          "description": "Pozadí"
+        },
+        {
+          "name": "Dark Titanium",
+          "hex": "#0A0E17",
+          "description": "Povrch karty"
+        },
+        {
+          "name": "Text Primary",
+          "hex": "#F7F8FC",
+          "description": "Nadpisy a text"
+        }
       ],
       "facts": [
-        { "label": "Založena", "value": "2025" },
-        { "label": "Fáze", "value": "Early Access" },
-        { "label": "Kategorie", "value": "AI Workspace OS" },
-        { "label": "Sídlo", "value": "Remote — Evropa" }
+        {
+          "label": "Založena",
+          "value": "2025"
+        },
+        {
+          "label": "Fáze",
+          "value": "Early Access"
+        },
+        {
+          "label": "Kategorie",
+          "value": "AI Workspace OS"
+        },
+        {
+          "label": "Sídlo",
+          "value": "Remote — Evropa"
+        }
       ]
     },
     "brand": {
@@ -1873,41 +2180,104 @@
       "doLabel": "Správně",
       "dontLabel": "Nesprávně",
       "typography": [
-        { "sample": "Workspace, který myslí.", "size": "64px", "weight": "Bold / 700", "tracking": "-0.04em", "use": "Hero nadpisy" },
-        { "sample": "Relační inteligence.", "size": "40px", "weight": "Bold / 700", "tracking": "-0.03em", "use": "Sekční nadpisy" },
-        { "sample": "Propojte, na čem záleží.", "size": "26px", "weight": "Semibold / 600", "tracking": "-0.02em", "use": "Názvy stránek" },
-        { "sample": "Každý deal. Každý kontakt. Jeden workspace.", "size": "16px", "weight": "Regular / 400", "tracking": "0", "use": "Text těla" }
+        {
+          "sample": "Workspace, který myslí.",
+          "size": "64px",
+          "weight": "Bold / 700",
+          "tracking": "-0.04em",
+          "use": "Hero nadpisy"
+        },
+        {
+          "sample": "Relační inteligence.",
+          "size": "40px",
+          "weight": "Bold / 700",
+          "tracking": "-0.03em",
+          "use": "Sekční nadpisy"
+        },
+        {
+          "sample": "Propojte, na čem záleží.",
+          "size": "26px",
+          "weight": "Semibold / 600",
+          "tracking": "-0.02em",
+          "use": "Názvy stránek"
+        },
+        {
+          "sample": "Každý deal. Každý kontakt. Jeden workspace.",
+          "size": "16px",
+          "weight": "Regular / 400",
+          "tracking": "0",
+          "use": "Text těla"
+        }
       ],
       "colors": [
         {
           "group": "Primární",
           "swatches": [
-            { "name": "Primární", "hex": "#6D5BFF" },
-            { "name": "Primární 300", "hex": "#8B7DFF" },
-            { "name": "Primární 200", "hex": "#A998FF" }
+            {
+              "name": "Primární",
+              "hex": "#6D5BFF"
+            },
+            {
+              "name": "Primární 300",
+              "hex": "#8B7DFF"
+            },
+            {
+              "name": "Primární 200",
+              "hex": "#A998FF"
+            }
           ]
         },
         {
           "group": "Pozadí",
           "swatches": [
-            { "name": "Deep Space", "hex": "#05060A" },
-            { "name": "Dark Titanium", "hex": "#0A0E17" },
-            { "name": "Povrch 2", "hex": "#10151F" }
+            {
+              "name": "Deep Space",
+              "hex": "#05060A"
+            },
+            {
+              "name": "Dark Titanium",
+              "hex": "#0A0E17"
+            },
+            {
+              "name": "Povrch 2",
+              "hex": "#10151F"
+            }
           ]
         },
         {
           "group": "Text",
           "swatches": [
-            { "name": "Text Primary", "hex": "#F7F8FC" },
-            { "name": "Text Secondary", "hex": "#C8CDD8" },
-            { "name": "Text Tertiary", "hex": "#9AA3B2" }
+            {
+              "name": "Text Primary",
+              "hex": "#F7F8FC"
+            },
+            {
+              "name": "Text Secondary",
+              "hex": "#C8CDD8"
+            },
+            {
+              "name": "Text Tertiary",
+              "hex": "#9AA3B2"
+            }
           ]
         }
       ],
       "voice": [
-        { "title": "Přesný, ne upovídaný", "do": "\"AI, která rozumí vašemu businessu.\"", "dont": "\"Výkonné AI funkce navržené na pomoc firmám jako je ta vaše.\"" },
-        { "title": "Sebevědomý, ne arogantní", "do": "\"Postaveno pro způsob, jakým moderní týmy pracují.\"", "dont": "\"Nejlepší workspace platforma na světě.\"" },
-        { "title": "Lidský, ne robotický", "do": "\"Vaše kontakty, váš kontext, vždy.\"", "dont": "\"Optimalizujte pracovní postupy správy kontaktních vztahů.\"" }
+        {
+          "title": "Přesný, ne upovídaný",
+          "do": "\"AI, která rozumí vašemu businessu.\"",
+          "dont": "\"Výkonné AI funkce navržené na pomoc firmám jako je ta vaše.\""
+        },
+        {
+          "title": "Sebevědomý, ne arogantní",
+          "do": "\"Postaveno pro způsob, jakým moderní týmy pracují.\"",
+          "dont": "\"Nejlepší workspace platforma na světě.\""
+        },
+        {
+          "title": "Lidský, ne robotický",
+          "do": "\"Vaše kontakty, váš kontext, vždy.\"",
+          "dont": "\"Optimalizujte pracovní postupy správy kontaktních vztahů.\""
+        }
       ]
     },
     "cookies": {

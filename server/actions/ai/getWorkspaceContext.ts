@@ -528,8 +528,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
         pipelineMomentum: { wonCount, wonValue, lostCount, lostValue, winRate },
       },
     };
-  } catch (error) {
-    console.error("getWorkspaceContext failed:", error);
+  } catch {
     return null;
   }
 }

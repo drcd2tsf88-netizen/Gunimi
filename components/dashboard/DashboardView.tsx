@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import OrbitAssistant from "@/components/ai/OrbitAssistant";
+import MorningIntelligenceCard from "./MorningIntelligenceCard";
 
 import MorningSummaryWidget, {
   type DashboardActivityItem,
@@ -48,6 +49,8 @@ export default function DashboardView({
 
   return (
     <div className="space-y-6">
+      <MorningIntelligenceCard onOpenAI={() => setAssistantOpen(true)} displayName={displayName} />
+
       {showOnboarding && (
         <OnboardingWidget
           status={onboardingStatus}

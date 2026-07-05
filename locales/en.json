@@ -113,7 +113,7 @@
     "workspaceInsight": "Workspace Insight",
     "workspaceOperational": "Workspace operating normally.",
     "workspaceIntelligence": "Workspace Intelligence",
-    "orbitIntelligence": "Orbit Intelligence",
+    "orbitIntelligence": "Gunimi Intelligence",
     "orbitIntelligenceSubtitle": "Operational awareness and recommendations across your workspace.",
     "recommendedActions": "Recommended Actions",
     "noRecommendedActions": "No recommended actions available.",
@@ -133,11 +133,11 @@
     "heroSubtitle": "Workspace systems operational. AI monitoring active execution across your environment.",
     "workspaceStatus": "Workspace Status",
     "allSystemsOperational": "All systems operational. No critical issues detected.",
-    "openOrbit": "Open Orbit",
+    "openOrbit": "Open Gunimi AI",
     "workspaceActions": "Workspace Actions",
     "workspaceActionsSubtitle": "Execute actions across your workspace environment.",
-    "askOrbit": "Ask Orbit",
-    "askOrbitDescription": "Launch AI workspace assistant.",
+    "askOrbit": "Ask Gunimi AI",
+    "askOrbitDescription": "Launch Gunimi AI assistant.",
     "assignWork": "Assign Work",
     "assignWorkDescription": "Create workspace task.",
     "addRelationship": "Add Relationship",
@@ -169,8 +169,6 @@
     "dueTodayBadge": "Today",
     "highPriorityBadge": "High",
     "viewAll": "View All",
-    "dailyBrief": "Orbit Daily Brief",
-    "dailyBriefSubtitle": "Workspace summary from live data",
     "openTasksCount": "open tasks",
     "overdueCount": "overdue",
     "meetingsTodayCount": "meetings today",
@@ -178,14 +176,8 @@
     "activityTodayCount": "events today",
     "noUrgentItems": "No urgent items. Workspace is on track.",
     "unread": "Unread",
-    "briefPriorities": "Today's Priorities",
-    "briefRisks": "Risks",
-    "briefOpportunities": "Opportunities",
-    "briefLoading": "Analyzing workspace...",
-    "briefUnavailable": "Workspace intelligence unavailable.",
-    "briefAllClear": "All clear — no items require attention today.",
-    "briefOnboardingIntro": "Hi, I'm Gunimi AI. I can help you manage customers, deals, tasks and meetings.",
-    "briefOnboardingHint": "Connect your tools or create your first records to unlock workspace intelligence.",
+    "briefUnavailable": "I wasn't able to prepare a briefing. Try refreshing.",
+    "briefAllClear": "Nothing needs your attention today. Your business looks healthy.",
     "workspaceChanges": "Changes Today",
     "todaysFocusBadge": "Your Focus",
     "todaysPriorities": "Today's Priorities",
@@ -207,7 +199,7 @@
     "noPipelineDeals": "No active deals in pipeline",
     "noPipelineDealsDesc": "Create a deal to start tracking pipeline performance.",
     "recommendationsBadge": "Actions",
-    "recommendations": "Orbit Recommendations",
+    "recommendations": "Recommendations",
     "recommendationsSubtitle": "Rule-based workspace signals requiring your attention.",
     "noRecommendations": "Workspace on track",
     "noRecommendationsDesc": "No immediate actions detected. All clear.",
@@ -247,7 +239,25 @@
     "stageLead": "Lead",
     "stageQualified": "Qualified",
     "stageProposal": "Proposal",
-    "stageNegotiation": "Negotiation"
+    "stageNegotiation": "Negotiation",
+    "briefSectionSchedule": "Today",
+    "briefRefresh": "Refresh",
+    "briefRefreshing": "Refreshing…",
+    "briefJumpTasks": "Tasks",
+    "briefJumpDeals": "Deals",
+    "briefJumpCalendar": "Calendar",
+    "briefSectionPriorities": "Where I'd start",
+    "briefSectionSuggestion": "One suggestion",
+    "briefSectionRisks": "Worth keeping an eye on",
+    "briefSectionOpportunities": "One opportunity",
+    "briefLoadingPhrase1": "Looking through today's schedule…",
+    "briefLoadingPhrase2": "Checking active deals…",
+    "briefLoadingPhrase3": "Reviewing customer activity…",
+    "briefLoadingPhrase4": "Preparing today's briefing…",
+    "briefAskGunimi": "Ask Gunimi",
+    "briefGreetingMorning": "Good morning",
+    "briefGreetingAfternoon": "Good afternoon",
+    "briefGreetingEvening": "Good evening"
   },
   "crm": {
     "title": "Customer Relationships",
@@ -463,7 +473,7 @@
     "probability": "Probability",
     "description": "Description",
     "create": "Create",
-    "creating": "Creating...",
+    "creating": "Creating opportunity...",
     "noDeals": "No opportunities",
     "noDealsDescription": "Create your first opportunity to start tracking commercial execution.",
     "onboardingEmptyTitle": "No opportunities yet",
@@ -471,7 +481,6 @@
     "onboardingCreateDeal": "Create Deal",
     "expectedRevenue": "Expected Revenue",
     "selectOrganizationFirst": "Select organization first",
-    "creating": "Creating opportunity...",
     "saving": "Saving changes...",
     "deleting": "Deleting...",
     "opportunityCreated": "Opportunity created successfully",
@@ -855,7 +864,7 @@
     "modulesTitle": "Analytics Modules",
     "modulesSubtitle": "Advanced analytics modules are in development. Track your most important metrics below.",
     "comingSoonBadge": "Coming Soon",
-    "revenueTitle": "Revenue Analytics",
+    "revenueTitle": "Revenue Summary",
     "revenueDesc": "Track deal revenue, forecast pipeline value and monitor financial performance across your workspace.",
     "pipelineTitle": "Pipeline Insights",
     "pipelineDesc": "Understand deal progression, identify bottlenecks and optimize your sales pipeline performance.",
@@ -874,7 +883,6 @@
     "winRateLabel": "win rate",
     "wonLabel": "Won",
     "lostLabel": "Lost",
-    "revenueTitle": "Revenue Summary",
     "revenueSubtitle": "Pipeline value and realized revenue",
     "pipelineValue": "Pipeline Value",
     "wonRevenue": "Won Revenue",
@@ -1424,7 +1432,11 @@
       "subtitle": "Gunimi unifies your relationships, deals, tasks, and knowledge into a single workspace — with AI that actually understands your business.",
       "ctaPrimary": "Start for free",
       "ctaSecondary": "Sign in to workspace",
-      "trustSignals": ["SOC 2 Type II", "End-to-end encrypted", "GDPR compliant"]
+      "trustSignals": [
+        "SOC 2 Type II",
+        "End-to-end encrypted",
+        "GDPR compliant"
+      ]
     },
     "workspacePreview": {
       "eyebrow": "Inside the workspace",
@@ -1443,9 +1455,21 @@
       "thisMonth": "this month",
       "openWorkspace": "Open your workspace",
       "metrics": [
-        { "label": "New deals", "value": "+12", "change": "+34%" },
-        { "label": "Revenue", "value": "€84.2k", "change": "+18%" },
-        { "label": "Tasks done", "value": "47/52", "change": "90%" }
+        {
+          "label": "New deals",
+          "value": "+12",
+          "change": "+34%"
+        },
+        {
+          "label": "Revenue",
+          "value": "€84.2k",
+          "change": "+18%"
+        },
+        {
+          "label": "Tasks done",
+          "value": "47/52",
+          "change": "90%"
+        }
       ],
       "activity": [
         "AI analyzed Acme Corp deal",
@@ -1461,17 +1485,50 @@
       "subtitle": "Everything your business needs. Not as separate apps — as a single intelligent workspace where every module knows about every other module.",
       "statusLive": "Live",
       "modules": [
-        { "title": "AI Intelligence", "desc": "Real-time analysis, summaries, and insights generated continuously across your workspace." },
-        { "title": "Memory", "desc": "Everything Gunimi learns about your business, customers, and history stays permanently accessible." },
-        { "title": "Automation", "desc": "Build workflows that run on their own. Trigger actions, send notifications, update records." },
-        { "title": "Command Center", "desc": "One keyboard shortcut. Every action. Ask Gunimi anything about your business." },
-        { "title": "Contacts & CRM", "desc": "A living graph of every company, contact, and relationship. Always up to date." },
-        { "title": "Deals & Pipeline", "desc": "See your pipeline, track progress, and get AI guidance on which deals to prioritize." },
-        { "title": "Analytics", "desc": "Revenue, activity, and performance tracked automatically. No manual reporting." },
-        { "title": "Calendar", "desc": "Scheduling, time blocks, and meeting preparation — integrated with your workspace context." },
-        { "title": "Email", "desc": "Send, track, and automate outreach. AI writes the first draft. You approve and send." },
-        { "title": "Notes", "desc": "Capture decisions, meeting notes, and knowledge. AI links them to the right context." },
-        { "title": "Observatory", "desc": "A live view of everything happening in your workspace — automated signals, alerts, and intelligence." }
+        {
+          "title": "AI Intelligence",
+          "desc": "Real-time analysis, summaries, and insights generated continuously across your workspace."
+        },
+        {
+          "title": "Memory",
+          "desc": "Everything Gunimi learns about your business, customers, and history stays permanently accessible."
+        },
+        {
+          "title": "Automation",
+          "desc": "Build workflows that run on their own. Trigger actions, send notifications, update records."
+        },
+        {
+          "title": "Command Center",
+          "desc": "One keyboard shortcut. Every action. Ask Gunimi anything about your business."
+        },
+        {
+          "title": "Contacts & CRM",
+          "desc": "A living graph of every company, contact, and relationship. Always up to date."
+        },
+        {
+          "title": "Deals & Pipeline",
+          "desc": "See your pipeline, track progress, and get AI guidance on which deals to prioritize."
+        },
+        {
+          "title": "Analytics",
+          "desc": "Revenue, activity, and performance tracked automatically. No manual reporting."
+        },
+        {
+          "title": "Calendar",
+          "desc": "Scheduling, time blocks, and meeting preparation — integrated with your workspace context."
+        },
+        {
+          "title": "Email",
+          "desc": "Send, track, and automate outreach. AI writes the first draft. You approve and send."
+        },
+        {
+          "title": "Notes",
+          "desc": "Capture decisions, meeting notes, and knowledge. AI links them to the right context."
+        },
+        {
+          "title": "Observatory",
+          "desc": "A live view of everything happening in your workspace — automated signals, alerts, and intelligence."
+        }
       ]
     },
     "observatory": {
@@ -1483,11 +1540,26 @@
       "coreSubtitle": "Always on. Always learning.",
       "exploreCta": "Explore the AI layer",
       "nodes": [
-        { "title": "Memory", "desc": "Persistent context across every interaction" },
-        { "title": "Automation", "desc": "Triggers, actions, and workflow orchestration" },
-        { "title": "Agents", "desc": "Autonomous task runners with workspace access" },
-        { "title": "Observatory", "desc": "Real-time signals, alerts, and activity monitoring" },
-        { "title": "Command", "desc": "Natural language interface to your entire workspace" }
+        {
+          "title": "Memory",
+          "desc": "Persistent context across every interaction"
+        },
+        {
+          "title": "Automation",
+          "desc": "Triggers, actions, and workflow orchestration"
+        },
+        {
+          "title": "Agents",
+          "desc": "Autonomous task runners with workspace access"
+        },
+        {
+          "title": "Observatory",
+          "desc": "Real-time signals, alerts, and activity monitoring"
+        },
+        {
+          "title": "Command",
+          "desc": "Natural language interface to your entire workspace"
+        }
       ]
     },
     "trust": {
@@ -1497,18 +1569,49 @@
       "headlineLine3": "Reliable.",
       "subtitle": "Built from day one for organizations that require compliance, privacy, and enterprise-grade reliability.",
       "stats": [
-        { "value": "99.9%", "label": "Uptime SLA" },
-        { "value": "< 80ms", "label": "Average response" },
-        { "value": "SOC 2", "label": "Type II certified" },
-        { "value": "GDPR", "label": "Fully compliant" }
+        {
+          "value": "99.9%",
+          "label": "Uptime SLA"
+        },
+        {
+          "value": "< 80ms",
+          "label": "Average response"
+        },
+        {
+          "value": "SOC 2",
+          "label": "Type II certified"
+        },
+        {
+          "value": "GDPR",
+          "label": "Fully compliant"
+        }
       ],
       "trustPoints": [
-        { "title": "Enterprise security", "desc": "SOC 2 Type II certified. Data encrypted at rest and in transit. Role-based access control across every workspace." },
-        { "title": "Your data stays yours", "desc": "We never train AI models on your data. Your workspace memory is isolated and only accessible to your team." },
-        { "title": "Built for performance", "desc": "Sub-100ms response times. Global CDN. Designed to handle enterprise workloads without degradation." },
-        { "title": "Globally available", "desc": "Multi-region infrastructure. Automatic failover. 99.9% uptime SLA with full incident transparency." }
+        {
+          "title": "Enterprise security",
+          "desc": "SOC 2 Type II certified. Data encrypted at rest and in transit. Role-based access control across every workspace."
+        },
+        {
+          "title": "Your data stays yours",
+          "desc": "We never train AI models on your data. Your workspace memory is isolated and only accessible to your team."
+        },
+        {
+          "title": "Built for performance",
+          "desc": "Sub-100ms response times. Global CDN. Designed to handle enterprise workloads without degradation."
+        },
+        {
+          "title": "Globally available",
+          "desc": "Multi-region infrastructure. Automatic failover. 99.9% uptime SLA with full incident transparency."
+        }
       ],
-      "badges": ["SOC 2 Type II", "GDPR", "ISO 27001 ready", "CCPA", "End-to-end encryption", "Zero-knowledge AI"]
+      "badges": [
+        "SOC 2 Type II",
+        "GDPR",
+        "ISO 27001 ready",
+        "CCPA",
+        "End-to-end encryption",
+        "Zero-knowledge AI"
+      ]
     },
     "pricing": {
       "eyebrow": "Pricing",
@@ -1523,7 +1626,13 @@
           "period": "",
           "tagline": "Start building your AI workspace.",
           "cta": "Get started free",
-          "features": ["Up to 3 users", "500 AI actions / month", "Contacts, deals & tasks", "Basic automation", "AI command center"]
+          "features": [
+            "Up to 3 users",
+            "500 AI actions / month",
+            "Contacts, deals & tasks",
+            "Basic automation",
+            "AI command center"
+          ]
         },
         {
           "name": "Pro",
@@ -1531,7 +1640,14 @@
           "period": "/user/month",
           "tagline": "Unlimited intelligence for growing teams.",
           "cta": "Start free trial",
-          "features": ["Unlimited users", "Unlimited AI actions", "Full automation engine", "Memory & context recall", "AI agents", "Priority support"]
+          "features": [
+            "Unlimited users",
+            "Unlimited AI actions",
+            "Full automation engine",
+            "Memory & context recall",
+            "AI agents",
+            "Priority support"
+          ]
         },
         {
           "name": "Enterprise",
@@ -1539,7 +1655,14 @@
           "period": "",
           "tagline": "Your operating system. Your rules.",
           "cta": "Talk to sales",
-          "features": ["Everything in Pro", "Custom AI models", "SSO & SCIM", "Dedicated infrastructure", "SLA guarantee", "White-glove onboarding"]
+          "features": [
+            "Everything in Pro",
+            "Custom AI models",
+            "SSO & SCIM",
+            "Dedicated infrastructure",
+            "SLA guarantee",
+            "White-glove onboarding"
+          ]
         }
       ]
     },
@@ -1549,7 +1672,11 @@
       "subtitle": "Join teams building the future of work with Gunimi. Start free — your workspace is ready in minutes.",
       "ctaPrimary": "Start for free",
       "ctaSecondary": "Sign in",
-      "statusItems": ["No credit card", "14-day free trial", "Cancel anytime"]
+      "statusItems": [
+        "No credit card",
+        "14-day free trial",
+        "Cancel anytime"
+      ]
     }
   },
   "public": {
@@ -1594,10 +1721,22 @@
       "story2": "We are building an AI Workspace Operating System — a platform where companies, contacts, deals, tasks, notes and communication exist inside a shared intelligence layer. One system. Full context. Always available.",
       "pillarsHeadline": "What we stand for.",
       "pillars": [
-        { "title": "One workspace", "body": "Contacts, deals, notes, tasks, email and intelligence — unified inside a single operating layer. No tab switching. No context loss." },
-        { "title": "Intelligence first", "body": "AI is not an add-on. It runs through every surface: drafting, surfacing signals, connecting the dots across your relationship graph." },
-        { "title": "Enterprise trust", "body": "Workspace isolation, encrypted data at rest and in transit, fine-grained permissions, and audit trails built in from day one." },
-        { "title": "Built for teams", "body": "Multi-workspace architecture supports the way your business is actually structured — not an idealized org chart." }
+        {
+          "title": "One workspace",
+          "body": "Contacts, deals, notes, tasks, email and intelligence — unified inside a single operating layer. No tab switching. No context loss."
+        },
+        {
+          "title": "Intelligence first",
+          "body": "AI is not an add-on. It runs through every surface: drafting, surfacing signals, connecting the dots across your relationship graph."
+        },
+        {
+          "title": "Enterprise trust",
+          "body": "Workspace isolation, encrypted data at rest and in transit, fine-grained permissions, and audit trails built in from day one."
+        },
+        {
+          "title": "Built for teams",
+          "body": "Multi-workspace architecture supports the way your business is actually structured — not an idealized org chart."
+        }
       ],
       "quote": "\"Relationships are the most important asset in any business. We're building the OS to manage them.\"",
       "quoteAttrib": "— Gunimi Team"
@@ -1716,12 +1855,30 @@
       ],
       "principlesHeadline": "Our principles.",
       "principles": [
-        { "title": "Your data is not training data", "body": "Content you create in Gunimi — contacts, deals, notes, messages — is never used to train AI models, ours or anyone else's. Your business data is yours." },
-        { "title": "Workspace-scoped context only", "body": "AI features only operate on data within your active workspace. There is no cross-workspace AI context — ever." },
-        { "title": "Human confirmation for writes", "body": "AI can draft and suggest, but it cannot modify, create or delete records without an explicit action from a human. Every write is intentional." },
-        { "title": "Hallucinations are real", "body": "AI can and does generate incorrect information. Treat AI output as a draft, not a source of truth. Always verify important facts from primary sources." },
-        { "title": "Prompts are not stored", "body": "Your prompts and AI responses are not stored in our database beyond the current session. They are not accessible to other users or team members." },
-        { "title": "Third-party models", "body": "Gunimi uses third-party AI model providers to power intelligence features. We have data processing agreements in place that prohibit use of your data for model training." }
+        {
+          "title": "Your data is not training data",
+          "body": "Content you create in Gunimi — contacts, deals, notes, messages — is never used to train AI models, ours or anyone else's. Your business data is yours."
+        },
+        {
+          "title": "Workspace-scoped context only",
+          "body": "AI features only operate on data within your active workspace. There is no cross-workspace AI context — ever."
+        },
+        {
+          "title": "Human confirmation for writes",
+          "body": "AI can draft and suggest, but it cannot modify, create or delete records without an explicit action from a human. Every write is intentional."
+        },
+        {
+          "title": "Hallucinations are real",
+          "body": "AI can and does generate incorrect information. Treat AI output as a draft, not a source of truth. Always verify important facts from primary sources."
+        },
+        {
+          "title": "Prompts are not stored",
+          "body": "Your prompts and AI responses are not stored in our database beyond the current session. They are not accessible to other users or team members."
+        },
+        {
+          "title": "Third-party models",
+          "body": "Gunimi uses third-party AI model providers to power intelligence features. We have data processing agreements in place that prohibit use of your data for model training."
+        }
       ],
       "warningTitle": "AI can be wrong.",
       "warningBody": "AI-generated content in Gunimi is a starting point, not an authoritative record. Always verify critical business information against primary sources. The responsibility for decisions made using AI-assisted information remains with the human making that decision."
@@ -1743,12 +1900,30 @@
           "title": "Workspace Intelligence",
           "description": "The AI layer is now available across the entire workspace. Orbit Intelligence can surface related records, draft communication, and summarise deal history in context.",
           "changes": [
-            { "tag": "new", "text": "Orbit Intelligence panel — AI assistant scoped to your workspace" },
-            { "tag": "new", "text": "Deal summary: AI-generated brief from notes, tasks and emails" },
-            { "tag": "new", "text": "Analytics dashboard with real-time pipeline metrics" },
-            { "tag": "improved", "text": "Multi-workspace switching — instant transitions with state preservation" },
-            { "tag": "improved", "text": "Workspace shell redesigned: Deep Space atmosphere, cinematic headings" },
-            { "tag": "security", "text": "Row-level security reinforced across all resource types" }
+            {
+              "tag": "new",
+              "text": "Orbit Intelligence panel — AI assistant scoped to your workspace"
+            },
+            {
+              "tag": "new",
+              "text": "Deal summary: AI-generated brief from notes, tasks and emails"
+            },
+            {
+              "tag": "new",
+              "text": "Analytics dashboard with real-time pipeline metrics"
+            },
+            {
+              "tag": "improved",
+              "text": "Multi-workspace switching — instant transitions with state preservation"
+            },
+            {
+              "tag": "improved",
+              "text": "Workspace shell redesigned: Deep Space atmosphere, cinematic headings"
+            },
+            {
+              "tag": "security",
+              "text": "Row-level security reinforced across all resource types"
+            }
           ]
         },
         {
@@ -1757,11 +1932,26 @@
           "title": "Pipeline & Deals",
           "description": "Full deal pipeline with stage management, deal cards, and relationship linking. Connect contacts and companies to active opportunities.",
           "changes": [
-            { "tag": "new", "text": "Deal pipeline with drag-and-drop stage management" },
-            { "tag": "new", "text": "Deal detail view with timeline, notes and linked contacts" },
-            { "tag": "new", "text": "Company and contact linking from deal context" },
-            { "tag": "improved", "text": "CRM list view with inline filtering and sorting" },
-            { "tag": "fixed", "text": "Activity feed not updating after note creation" }
+            {
+              "tag": "new",
+              "text": "Deal pipeline with drag-and-drop stage management"
+            },
+            {
+              "tag": "new",
+              "text": "Deal detail view with timeline, notes and linked contacts"
+            },
+            {
+              "tag": "new",
+              "text": "Company and contact linking from deal context"
+            },
+            {
+              "tag": "improved",
+              "text": "CRM list view with inline filtering and sorting"
+            },
+            {
+              "tag": "fixed",
+              "text": "Activity feed not updating after note creation"
+            }
           ]
         },
         {
@@ -1770,11 +1960,26 @@
           "title": "Contacts & Companies",
           "description": "Relationship intelligence foundation — full contact and company management with activity timelines and note capture.",
           "changes": [
-            { "tag": "new", "text": "Contact detail view with activity timeline" },
-            { "tag": "new", "text": "Company profiles with contact association" },
-            { "tag": "new", "text": "Note capture on contacts, companies and deals" },
-            { "tag": "improved", "text": "Global search across contacts, companies and deals" },
-            { "tag": "security", "text": "Workspace-scoped access control for all CRM data" }
+            {
+              "tag": "new",
+              "text": "Contact detail view with activity timeline"
+            },
+            {
+              "tag": "new",
+              "text": "Company profiles with contact association"
+            },
+            {
+              "tag": "new",
+              "text": "Note capture on contacts, companies and deals"
+            },
+            {
+              "tag": "improved",
+              "text": "Global search across contacts, companies and deals"
+            },
+            {
+              "tag": "security",
+              "text": "Workspace-scoped access control for all CRM data"
+            }
           ]
         },
         {
@@ -1783,11 +1988,26 @@
           "title": "Workspace Foundation",
           "description": "Multi-workspace architecture, workspace creation flow, invites, and the workspace operating shell.",
           "changes": [
-            { "tag": "new", "text": "Multi-workspace support — create and switch between workspaces" },
-            { "tag": "new", "text": "Workspace creation wizard with logo upload" },
-            { "tag": "new", "text": "Team member invitations via email" },
-            { "tag": "improved", "text": "Onboarding flow redesigned as a guided checklist" },
-            { "tag": "fixed", "text": "Session expiry not redirecting correctly on workspace pages" }
+            {
+              "tag": "new",
+              "text": "Multi-workspace support — create and switch between workspaces"
+            },
+            {
+              "tag": "new",
+              "text": "Workspace creation wizard with logo upload"
+            },
+            {
+              "tag": "new",
+              "text": "Team member invitations via email"
+            },
+            {
+              "tag": "improved",
+              "text": "Onboarding flow redesigned as a guided checklist"
+            },
+            {
+              "tag": "fixed",
+              "text": "Session expiry not redirecting correctly on workspace pages"
+            }
           ]
         }
       ]
@@ -1798,29 +2018,80 @@
       "subline": "A transparent view of what's being built, what's coming next, and the longer-term vision for Gunimi.",
       "disclaimer": "Roadmap reflects current intentions and is subject to change. Priority and timing may shift based on product direction.",
       "columns": {
-        "inProgress": { "label": "In Progress", "description": "Active now" },
-        "planned": { "label": "Planned", "description": "Next up" },
-        "future": { "label": "Future Vision", "description": "Long horizon" }
+        "inProgress": {
+          "label": "In Progress",
+          "description": "Active now"
+        },
+        "planned": {
+          "label": "Planned",
+          "description": "Next up"
+        },
+        "future": {
+          "label": "Future Vision",
+          "description": "Long horizon"
+        }
       },
       "inProgress": [
-        { "title": "Email integration", "description": "Send and receive email inside Gunimi. Full thread view with AI-assisted replies." },
-        { "title": "Relationship intelligence graph", "description": "Visualise connections between contacts, companies and deals. Identify warm paths." },
-        { "title": "AI meeting prep", "description": "Automatic brief before any scheduled meeting. Surface relevant deals, notes and history." },
-        { "title": "Task automation", "description": "Trigger tasks from deal stage changes, contact activity or calendar events." }
+        {
+          "title": "Email integration",
+          "description": "Send and receive email inside Gunimi. Full thread view with AI-assisted replies."
+        },
+        {
+          "title": "Relationship intelligence graph",
+          "description": "Visualise connections between contacts, companies and deals. Identify warm paths."
+        },
+        {
+          "title": "AI meeting prep",
+          "description": "Automatic brief before any scheduled meeting. Surface relevant deals, notes and history."
+        },
+        {
+          "title": "Task automation",
+          "description": "Trigger tasks from deal stage changes, contact activity or calendar events."
+        }
       ],
       "planned": [
-        { "title": "Calendar integration", "description": "Connect Google Calendar or Outlook. See meetings alongside contacts and deals." },
-        { "title": "Mobile application", "description": "iOS and Android apps with full offline support and push notifications." },
-        { "title": "Custom fields", "description": "Add workspace-specific fields to contacts, companies, deals and tasks." },
-        { "title": "API & webhooks", "description": "Public API with webhook support for integrating Gunimi into your existing stack." },
-        { "title": "Advanced reporting", "description": "Pipeline velocity, win rates, activity metrics and custom dashboards." }
+        {
+          "title": "Calendar integration",
+          "description": "Connect Google Calendar or Outlook. See meetings alongside contacts and deals."
+        },
+        {
+          "title": "Mobile application",
+          "description": "iOS and Android apps with full offline support and push notifications."
+        },
+        {
+          "title": "Custom fields",
+          "description": "Add workspace-specific fields to contacts, companies, deals and tasks."
+        },
+        {
+          "title": "API & webhooks",
+          "description": "Public API with webhook support for integrating Gunimi into your existing stack."
+        },
+        {
+          "title": "Advanced reporting",
+          "description": "Pipeline velocity, win rates, activity metrics and custom dashboards."
+        }
       ],
       "future": [
-        { "title": "Autonomous agents", "description": "AI agents that take actions — scheduling, follow-ups, data enrichment — with your approval." },
-        { "title": "Revenue intelligence", "description": "Predictive deal scoring, churn risk signals and revenue forecasting." },
-        { "title": "Partner ecosystem", "description": "Native integrations with Hubspot, Salesforce, Stripe, Notion and more." },
-        { "title": "White-label workspaces", "description": "Agencies and consultancies can deploy Gunimi under their own brand for clients." },
-        { "title": "Gunimi Memory", "description": "Long-term persistent AI memory per workspace — context that builds over time." }
+        {
+          "title": "Autonomous agents",
+          "description": "AI agents that take actions — scheduling, follow-ups, data enrichment — with your approval."
+        },
+        {
+          "title": "Revenue intelligence",
+          "description": "Predictive deal scoring, churn risk signals and revenue forecasting."
+        },
+        {
+          "title": "Partner ecosystem",
+          "description": "Native integrations with Hubspot, Salesforce, Stripe, Notion and more."
+        },
+        {
+          "title": "White-label workspaces",
+          "description": "Agencies and consultancies can deploy Gunimi under their own brand for clients."
+        },
+        {
+          "title": "Gunimi Memory",
+          "description": "Long-term persistent AI memory per workspace — context that builds over time."
+        }
       ]
     },
     "press": {
@@ -1839,18 +2110,54 @@
       "mediaContactTitle": "Media contact",
       "mediaContactDescription": "For press enquiries, interview requests, or editorial collaboration.",
       "brandColors": [
-        { "name": "Primary", "hex": "#6D5BFF", "description": "Primary brand violet" },
-        { "name": "Primary 300", "hex": "#8B7DFF", "description": "Interactive states" },
-        { "name": "Primary 200", "hex": "#A998FF", "description": "Light accents" },
-        { "name": "Deep Space", "hex": "#05060A", "description": "Background" },
-        { "name": "Dark Titanium", "hex": "#0A0E17", "description": "Card surface" },
-        { "name": "Text Primary", "hex": "#F7F8FC", "description": "Headings & body" }
+        {
+          "name": "Primary",
+          "hex": "#6D5BFF",
+          "description": "Primary brand violet"
+        },
+        {
+          "name": "Primary 300",
+          "hex": "#8B7DFF",
+          "description": "Interactive states"
+        },
+        {
+          "name": "Primary 200",
+          "hex": "#A998FF",
+          "description": "Light accents"
+        },
+        {
+          "name": "Deep Space",
+          "hex": "#05060A",
+          "description": "Background"
+        },
+        {
+          "name": "Dark Titanium",
+          "hex": "#0A0E17",
+          "description": "Card surface"
+        },
+        {
+          "name": "Text Primary",
+          "hex": "#F7F8FC",
+          "description": "Headings & body"
+        }
       ],
       "facts": [
-        { "label": "Founded", "value": "2025" },
-        { "label": "Stage", "value": "Early Access" },
-        { "label": "Category", "value": "AI Workspace OS" },
-        { "label": "HQ", "value": "Remote — Europe" }
+        {
+          "label": "Founded",
+          "value": "2025"
+        },
+        {
+          "label": "Stage",
+          "value": "Early Access"
+        },
+        {
+          "label": "Category",
+          "value": "AI Workspace OS"
+        },
+        {
+          "label": "HQ",
+          "value": "Remote — Europe"
+        }
       ]
     },
     "brand": {
@@ -1873,41 +2180,104 @@
       "doLabel": "Do",
       "dontLabel": "Don't",
       "typography": [
-        { "sample": "The workspace that thinks.", "size": "64px", "weight": "Bold / 700", "tracking": "-0.04em", "use": "Hero headings" },
-        { "sample": "Relationship intelligence.", "size": "40px", "weight": "Bold / 700", "tracking": "-0.03em", "use": "Section headings" },
-        { "sample": "Connect what matters.", "size": "26px", "weight": "Semibold / 600", "tracking": "-0.02em", "use": "Page titles" },
-        { "sample": "Every deal. Every contact. One workspace.", "size": "16px", "weight": "Regular / 400", "tracking": "0", "use": "Body text" }
+        {
+          "sample": "The workspace that thinks.",
+          "size": "64px",
+          "weight": "Bold / 700",
+          "tracking": "-0.04em",
+          "use": "Hero headings"
+        },
+        {
+          "sample": "Relationship intelligence.",
+          "size": "40px",
+          "weight": "Bold / 700",
+          "tracking": "-0.03em",
+          "use": "Section headings"
+        },
+        {
+          "sample": "Connect what matters.",
+          "size": "26px",
+          "weight": "Semibold / 600",
+          "tracking": "-0.02em",
+          "use": "Page titles"
+        },
+        {
+          "sample": "Every deal. Every contact. One workspace.",
+          "size": "16px",
+          "weight": "Regular / 400",
+          "tracking": "0",
+          "use": "Body text"
+        }
       ],
       "colors": [
         {
           "group": "Primary",
           "swatches": [
-            { "name": "Primary", "hex": "#6D5BFF" },
-            { "name": "Primary 300", "hex": "#8B7DFF" },
-            { "name": "Primary 200", "hex": "#A998FF" }
+            {
+              "name": "Primary",
+              "hex": "#6D5BFF"
+            },
+            {
+              "name": "Primary 300",
+              "hex": "#8B7DFF"
+            },
+            {
+              "name": "Primary 200",
+              "hex": "#A998FF"
+            }
           ]
         },
         {
           "group": "Background",
           "swatches": [
-            { "name": "Deep Space", "hex": "#05060A" },
-            { "name": "Dark Titanium", "hex": "#0A0E17" },
-            { "name": "Surface 2", "hex": "#10151F" }
+            {
+              "name": "Deep Space",
+              "hex": "#05060A"
+            },
+            {
+              "name": "Dark Titanium",
+              "hex": "#0A0E17"
+            },
+            {
+              "name": "Surface 2",
+              "hex": "#10151F"
+            }
           ]
         },
         {
           "group": "Text",
           "swatches": [
-            { "name": "Text Primary", "hex": "#F7F8FC" },
-            { "name": "Text Secondary", "hex": "#C8CDD8" },
-            { "name": "Text Tertiary", "hex": "#9AA3B2" }
+            {
+              "name": "Text Primary",
+              "hex": "#F7F8FC"
+            },
+            {
+              "name": "Text Secondary",
+              "hex": "#C8CDD8"
+            },
+            {
+              "name": "Text Tertiary",
+              "hex": "#9AA3B2"
+            }
           ]
         }
       ],
       "voice": [
-        { "title": "Precise, not verbose", "do": "\"AI that understands your business.\"", "dont": "\"Powerful AI features designed to help businesses like yours succeed.\"" },
-        { "title": "Confident, not arrogant", "do": "\"Built for the way modern teams work.\"", "dont": "\"The best workspace platform in the world.\"" },
-        { "title": "Human, not robotic", "do": "\"Your contacts, your context, always.\"", "dont": "\"Optimize contact relationship management workflows.\"" }
+        {
+          "title": "Precise, not verbose",
+          "do": "\"AI that understands your business.\"",
+          "dont": "\"Powerful AI features designed to help businesses like yours succeed.\""
+        },
+        {
+          "title": "Confident, not arrogant",
+          "do": "\"Built for the way modern teams work.\"",
+          "dont": "\"The best workspace platform in the world.\""
+        },
+        {
+          "title": "Human, not robotic",
+          "do": "\"Your contacts, your context, always.\"",
+          "dont": "\"Optimize contact relationship management workflows.\""
+        }
       ]
     },
     "cookies": {
