@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { syncCalendarConnection } from "@/lib/calendar/sync";
 import { errorResponse, successResponse } from "@/lib/server/apiResponse";
 import { ratelimit } from "@/lib/ratelimit";
+import { logger } from "@/lib/logger";
 
 export async function POST() {
   try {
@@ -31,7 +32,7 @@ export async function POST() {
 
     return successResponse(result);
   } catch (error) {
-    console.error("calendar sync error:", error);
+    logger.error("Calendar sync failed", error);
     return errorResponse("Sync failed", 500);
   }
 }

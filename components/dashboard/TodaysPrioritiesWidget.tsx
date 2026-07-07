@@ -14,7 +14,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import { updateTask } from "@/server/actions/tasks/updateTask";
 import type { CalendarEventRow } from "@/types/calendar";
 
@@ -129,7 +129,7 @@ export default function TodaysPrioritiesWidget({ tasks, events, staleDealsCount 
   };
 
   return (
-    <OrbitCard className="p-5">
+    <GunimiCard className="p-5">
       {/* Header */}
       <div className="flex items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
         <div>
@@ -268,6 +268,6 @@ export default function TodaysPrioritiesWidget({ tasks, events, staleDealsCount 
           </div>
         </div>
       )}
-    </OrbitCard>
+    </GunimiCard>
   );
 }

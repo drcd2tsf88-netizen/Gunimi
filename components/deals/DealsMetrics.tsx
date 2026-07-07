@@ -10,8 +10,8 @@ import {
 import { useTranslations }
 from "next-intl";
 
-import OrbitMetricGrid
-from "@/components/ui/OrbitMetricGrid";
+import GunimiMetricGrid
+from "@/components/ui/GunimiMetricGrid";
 
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 
@@ -61,7 +61,7 @@ export default function DealsMetrics({
       : 0;
 
   return (
-    <OrbitMetricGrid
+    <GunimiMetricGrid
       items={[
         {
           label: t("openOpportunities"),

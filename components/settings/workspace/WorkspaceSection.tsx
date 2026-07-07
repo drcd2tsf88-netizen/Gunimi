@@ -10,10 +10,10 @@ import toast from "react-hot-toast";
 
 import { updateWorkspace } from "@/server/actions/workspace/updateWorkspace";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiButton from "@/components/ui/GunimiButton";
 
 import { WorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import { WorkspaceSummary } from "@/server/actions/workspace/getUserWorkspaceSummaries";
@@ -79,7 +79,7 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
         <p className="mt-1 text-sm text-white/40">{t("workspaceIdentitySubtitle")}</p>
       </div>
 
-      <OrbitCard className="p-6">
+      <GunimiCard className="p-6">
         {/* AVATAR + NAME ROW */}
         <div className="flex items-center gap-4">
           <WorkspaceAvatar name={name || workspace.name} />
@@ -90,26 +90,26 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
         </div>
 
         <div className="mt-6 space-y-5">
-          <OrbitField label={t("workspaceName")}>
-            <OrbitInput
+          <GunimiField label={t("workspaceName")}>
+            <GunimiInput
               value={name}
               disabled={isPending}
               placeholder={t("workspaceNamePlaceholder")}
               onChange={(e) => setName(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
         </div>
 
         <div className="mt-6 flex justify-end">
-          <OrbitButton
+          <GunimiButton
             onClick={handleSave}
             loading={isPending}
             disabled={!isDirty || isPending}
           >
             {isPending ? t("saving") : t("saveChanges")}
-          </OrbitButton>
+          </GunimiButton>
         </div>
-      </OrbitCard>
+      </GunimiCard>
 
       {/* MY WORKSPACES DIRECTORY */}
       {workspaceSummaries.length > 0 && (
@@ -119,7 +119,7 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
             <p className="mt-1 text-sm text-white/40">{t("myWorkspacesSubtitle")}</p>
           </div>
 
-          <OrbitCard className="divide-y divide-white/[0.05] overflow-hidden p-0">
+          <GunimiCard className="divide-y divide-white/[0.05] overflow-hidden p-0">
             {workspaceSummaries.map((ws) => {
               const isCurrent = ws.id === workspace.id;
 
@@ -173,7 +173,7 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
                 </div>
               );
             })}
-          </OrbitCard>
+          </GunimiCard>
         </div>
       )}
     </div>

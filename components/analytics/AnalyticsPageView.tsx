@@ -11,10 +11,10 @@ import {
   Mail,
 } from "lucide-react";
 
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitStatCard from "@/components/ui/OrbitStatCard";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiStatCard from "@/components/ui/GunimiStatCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 
 import { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
 import { AnalyticsCharts } from "@/server/actions/analytics/getAnalyticsCharts";
@@ -234,13 +234,13 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <OrbitCard className="p-6">
+    <GunimiCard className="p-6">
       <div className="mb-4 border-b border-white/[0.05] pb-4">
         <p className="text-sm font-semibold text-white/90">{title}</p>
         <p className="mt-0.5 text-xs text-white/35">{subtitle}</p>
       </div>
       {children}
-    </OrbitCard>
+    </GunimiCard>
   );
 }
 
@@ -252,55 +252,55 @@ export default function AnalyticsPageView({ stats, charts }: Props) {
   return (
     <div className="space-y-8">
       {/* HEADER + STAT CARDS */}
-      <OrbitSection>
-        <OrbitHeading
+      <GunimiSection>
+        <GunimiHeading
           badge={t("badge")}
           title={t("title")}
           subtitle={t("subtitle")}
         />
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statCompanies")}
             value={stats.companies}
             icon={Building2}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statDeals")}
             value={stats.deals}
             icon={TrendingUp}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statOpenTasks")}
             value={stats.openTasks}
             icon={CheckSquare2}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statMembers")}
             value={stats.members}
             icon={Users}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statUpcomingMeetings")}
             value={stats.upcomingMeetings}
             icon={CalendarDays}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statEmailThreads")}
             value={stats.emailThreads}
             icon={Mail}
             animated
           />
         </div>
-      </OrbitSection>
+      </GunimiSection>
 
       {/* CHARTS ROW 1 */}
-      <OrbitSection>
+      <GunimiSection>
         <div className="grid gap-6 lg:grid-cols-2">
           <ChartCard
             title={t("pipelineFunnelTitle")}
@@ -316,10 +316,10 @@ export default function AnalyticsPageView({ stats, charts }: Props) {
             <MonthlyDealsChart monthlyDeals={charts.monthlyDeals} t={t} />
           </ChartCard>
         </div>
-      </OrbitSection>
+      </GunimiSection>
 
       {/* CHARTS ROW 2 */}
-      <OrbitSection>
+      <GunimiSection>
         <div className="grid gap-6 lg:grid-cols-2">
           <ChartCard
             title={t("winRateTitle")}
@@ -362,7 +362,7 @@ export default function AnalyticsPageView({ stats, charts }: Props) {
             </div>
           </ChartCard>
         </div>
-      </OrbitSection>
+      </GunimiSection>
     </div>
   );
 }

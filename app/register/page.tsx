@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
 import { supabase } from "@/lib/supabase";
-import OrbitInput from "@/components/ui/OrbitInput";
+import GunimiInput from "@/components/ui/GunimiInput";
 import AiCore from "@/components/ui/AiCore";
 import AuthCard from "@/components/auth/AuthCard";
 
@@ -107,7 +107,7 @@ export default function RegisterPage() {
         className="mt-8 space-y-3"
         onSubmit={(e) => { e.preventDefault(); handleRegister(); }}
       >
-        <OrbitInput
+        <GunimiInput
           type="text"
           placeholder={t("fullNamePlaceholder")}
           value={fullName}
@@ -115,7 +115,7 @@ export default function RegisterPage() {
           autoComplete="name"
           onChange={(e) => setFullName(e.target.value)}
         />
-        <OrbitInput
+        <GunimiInput
           type="email"
           placeholder={t("emailPlaceholder")}
           value={email}
@@ -123,7 +123,7 @@ export default function RegisterPage() {
           autoComplete="email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <OrbitInput
+        <GunimiInput
           type="password"
           placeholder={t("passwordPlaceholder")}
           value={password}
@@ -131,7 +131,7 @@ export default function RegisterPage() {
           autoComplete="new-password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <OrbitInput
+        <GunimiInput
           type="password"
           placeholder={t("confirmPasswordPlaceholder")}
           value={confirmPassword}

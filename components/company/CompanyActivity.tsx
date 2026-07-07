@@ -1,16 +1,16 @@
 "use client";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import GunimiSection
+from "@/components/layout/GunimiSection";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState
+from "@/components/ui/GunimiEmptyState";
 
 import { Activity }
 from "lucide-react";
@@ -30,15 +30,15 @@ export default function CompanyActivity({
   const t = useTranslations("companies");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("operationsTimeline")}
         title={t("relationshipActivity")}
         subtitle={t("activitySubtitle")}
       />
 
       {activity.length === 0 && (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noActivity")}
           description={t("noActivityDescription")}
           icon={Activity}
@@ -54,7 +54,7 @@ export default function CompanyActivity({
       >
         {activity.map(
           (item) => (
-            <OrbitCard
+            <GunimiCard
               key={item.id}
               className="
                 p-4
@@ -105,11 +105,11 @@ export default function CompanyActivity({
                   ).toLocaleDateString()}
                 </p>
               </div>
-            </OrbitCard>
+            </GunimiCard>
           )
         )}
       </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

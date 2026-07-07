@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import AiCore from "@/components/ui/AiCore";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitInput from "@/components/ui/OrbitInput";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiInput from "@/components/ui/GunimiInput";
 import {
   Cpu, Layers, Type, Space, Circle, BoxSelect, Zap, Wind,
   Sparkles, MousePointerClick, BarChart3, Table2, AlertCircle,
@@ -413,22 +413,22 @@ export default function DesignSystemView() {
           />
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
             {/* Dark Titanium */}
-            <OrbitCard className="p-5">
+            <GunimiCard className="p-5">
               <p className="text-[12px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/50 mb-2">
                 Dark Titanium
               </p>
               <p className="text-[14px] font-semibold text-[#F7F8FC]">Standard Card</p>
               <p className="text-[12px] text-[#9AA3B2] mt-1">bg-[#0A0E17] border-white/5.5%</p>
-            </OrbitCard>
+            </GunimiCard>
 
             {/* Interactive */}
-            <OrbitCard hoverable className="p-5">
+            <GunimiCard hoverable className="p-5">
               <p className="text-[12px] font-medium uppercase tracking-[0.10em] text-[#9AA3B2]/50 mb-2">
                 Interactive
               </p>
               <p className="text-[14px] font-semibold text-[#F7F8FC]">Hoverable Card</p>
               <p className="text-[12px] text-[#9AA3B2] mt-1">Hover to see lift + ambient light</p>
-            </OrbitCard>
+            </GunimiCard>
 
             {/* AI Surface */}
             <div className="relative overflow-hidden rounded-[18px] border border-[rgba(34,211,238,0.15)] bg-[#0A0E17] p-5 shadow-[0_8px_28px_rgba(109,91,255,0.13),0_0_28px_rgba(34,211,238,0.10)]">
@@ -488,10 +488,10 @@ export default function DesignSystemView() {
                 Variants
               </p>
               <div className="flex flex-wrap gap-3">
-                <OrbitButton variant="primary">Primary</OrbitButton>
-                <OrbitButton variant="secondary">Secondary</OrbitButton>
-                <OrbitButton variant="ghost">Ghost</OrbitButton>
-                <OrbitButton variant="danger">Danger</OrbitButton>
+                <GunimiButton variant="primary">Primary</GunimiButton>
+                <GunimiButton variant="secondary">Secondary</GunimiButton>
+                <GunimiButton variant="ghost">Ghost</GunimiButton>
+                <GunimiButton variant="danger">Danger</GunimiButton>
               </div>
             </div>
 
@@ -500,15 +500,15 @@ export default function DesignSystemView() {
                 States
               </p>
               <div className="flex flex-wrap gap-3">
-                <OrbitButton variant="primary" loading={loadingBtn} onClick={simulateLoad}>
+                <GunimiButton variant="primary" loading={loadingBtn} onClick={simulateLoad}>
                   Loading State
-                </OrbitButton>
-                <OrbitButton variant="primary" disabled>
+                </GunimiButton>
+                <GunimiButton variant="primary" disabled>
                   Disabled
-                </OrbitButton>
-                <OrbitButton variant="secondary" disabled>
+                </GunimiButton>
+                <GunimiButton variant="secondary" disabled>
                   Disabled
-                </OrbitButton>
+                </GunimiButton>
               </div>
             </div>
 
@@ -517,12 +517,12 @@ export default function DesignSystemView() {
                 Large CTA (landing)
               </p>
               <div className="flex flex-wrap gap-3">
-                <OrbitButton variant="primary" className="py-3.5 px-7 text-[14px]">
+                <GunimiButton variant="primary" className="py-3.5 px-7 text-[14px]">
                   Get Started
-                </OrbitButton>
-                <OrbitButton variant="secondary" className="py-3.5 px-7 text-[14px]">
+                </GunimiButton>
+                <GunimiButton variant="secondary" className="py-3.5 px-7 text-[14px]">
                   Watch Demo
-                </OrbitButton>
+                </GunimiButton>
               </div>
             </div>
           </div>
@@ -538,19 +538,19 @@ export default function DesignSystemView() {
           <div className="max-w-sm space-y-4">
             <div>
               <p className="mb-2 text-[12px] text-[#9AA3B2]">Default</p>
-              <OrbitInput placeholder="Enter value…" />
+              <GunimiInput placeholder="Enter value…" />
             </div>
             <div>
               <p className="mb-2 text-[12px] text-[#9AA3B2]">With value</p>
-              <OrbitInput defaultValue="Gunimi AI Workspace" />
+              <GunimiInput defaultValue="Gunimi AI Workspace" />
             </div>
             <div>
               <p className="mb-2 text-[12px] text-[#9AA3B2]">Disabled</p>
-              <OrbitInput placeholder="Disabled input" disabled />
+              <GunimiInput placeholder="Disabled input" disabled />
             </div>
             <div>
               <p className="mb-2 text-[12px] text-[#9AA3B2]">Error state (via CSS override)</p>
-              <OrbitInput
+              <GunimiInput
                 defaultValue="invalid@"
                 className="border-[rgba(239,68,68,0.35)] focus:border-[rgba(239,68,68,0.55)] focus:shadow-[0_0_0_3px_rgba(239,68,68,0.10)]"
               />
@@ -568,7 +568,7 @@ export default function DesignSystemView() {
           />
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
             {AI_CORE_USAGES.map((u) => (
-              <OrbitCard key={u.label} className="p-5 text-center">
+              <GunimiCard key={u.label} className="p-5 text-center">
                 <div className="flex justify-center mb-3">
                   <AiCore
                     size={u.size}
@@ -580,7 +580,7 @@ export default function DesignSystemView() {
                 <p className="text-[13px] font-semibold text-[#F7F8FC]">{u.label}</p>
                 <p className="text-[11px] text-[#9AA3B2] mt-0.5">{`size=${u.size}`}</p>
                 <p className="text-[11px] text-[#9AA3B2]/70 mt-1 leading-snug">{u.desc}</p>
-              </OrbitCard>
+              </GunimiCard>
             ))}
           </div>
 

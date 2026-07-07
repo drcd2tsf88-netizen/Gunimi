@@ -7,6 +7,9 @@ from "next/server";
 import { getUser }
 from "@/lib/server/auth";
 
+import { ratelimit } from "@/lib/ratelimit";
+import { logger } from "@/lib/logger";
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -21,6 +24,14 @@ export async function GET(
     return NextResponse.json(
       { error: "Unauthorized" },
       { status: 401 }
+    );
+  }
+
+  const { success } = await ratelimit.limit(user.id);
+  if (!success) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded" },
+      { status: 429 }
     );
   }
 
@@ -71,7 +82,7 @@ export async function GET(
         .eq("workspace_id", workspaceId);
 
     if (error) {
-      console.error(error);
+      logger.error("Failed to load workspace members", error);
 
       return NextResponse.json(
         { error: "Failed to load members" },
@@ -83,7 +94,7 @@ export async function GET(
       members: data || [],
     });
   } catch (error) {
-    console.error(error);
+    logger.error("Workspace members route failed", error);
 
     return NextResponse.json(
       { error: "Internal server error" },

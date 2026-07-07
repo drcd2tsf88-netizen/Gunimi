@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Calendar, CheckCircle2, Loader2, RefreshCw, Trash2, Unplug } from "lucide-react";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiButton from "@/components/ui/GunimiButton";
 import {
   Dialog,
   DialogContent,
@@ -74,7 +74,7 @@ export default function CalendarConnectionCard({ connections }: Props) {
 
   if (connections.length === 0) {
     return (
-      <OrbitCard className="p-8">
+      <GunimiCard className="p-8">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.02]">
             <Calendar size={22} className="text-zinc-500" />
@@ -86,12 +86,12 @@ export default function CalendarConnectionCard({ connections }: Props) {
             </p>
           </div>
           <a href="/api/calendar/connect/google">
-            <OrbitButton variant="primary" className="mt-2">
+            <GunimiButton variant="primary" className="mt-2">
               {t("connectGoogle")}
-            </OrbitButton>
+            </GunimiButton>
           </a>
         </div>
-      </OrbitCard>
+      </GunimiCard>
     );
   }
 
@@ -99,7 +99,7 @@ export default function CalendarConnectionCard({ connections }: Props) {
     <>
       <div className="space-y-3">
         {connections.map((conn) => (
-          <OrbitCard key={conn.id} className="p-5">
+          <GunimiCard key={conn.id} className="p-5">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4 min-w-0">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10">
@@ -122,7 +122,7 @@ export default function CalendarConnectionCard({ connections }: Props) {
               </div>
 
               <div className="flex shrink-0 items-center gap-2">
-                <OrbitButton
+                <GunimiButton
                   variant="secondary"
                   className="h-8 gap-1.5 px-3 text-xs"
                   disabled={syncing}
@@ -134,26 +134,26 @@ export default function CalendarConnectionCard({ connections }: Props) {
                     <RefreshCw size={12} />
                   )}
                   {syncing ? t("syncing") : t("sync")}
-                </OrbitButton>
+                </GunimiButton>
 
-                <OrbitButton
+                <GunimiButton
                   variant="danger"
                   className="h-8 gap-1.5 px-3 text-xs"
                   onClick={() => setDisconnectTarget(conn)}
                 >
                   <Unplug size={12} />
                   {t("disconnect")}
-                </OrbitButton>
+                </GunimiButton>
               </div>
             </div>
-          </OrbitCard>
+          </GunimiCard>
         ))}
 
         {connections.length === 0 && (
           <a href="/api/calendar/connect/google">
-            <OrbitButton variant="secondary">
+            <GunimiButton variant="secondary">
               {t("connectGoogle")}
-            </OrbitButton>
+            </GunimiButton>
           </a>
         )}
       </div>
@@ -168,21 +168,21 @@ export default function CalendarConnectionCard({ connections }: Props) {
             <DialogDescription>{t("disconnectConfirm")}</DialogDescription>
           </DialogHeader>
           <DialogFooter className="mt-6">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={isDisconnecting}
               onClick={() => setDisconnectTarget(null)}
             >
               {tc("cancel")}
-            </OrbitButton>
-            <OrbitButton
+            </GunimiButton>
+            <GunimiButton
               variant="danger"
               loading={isDisconnecting}
               onClick={handleDisconnectConfirm}
             >
               <Trash2 size={13} />
               {t("disconnect")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

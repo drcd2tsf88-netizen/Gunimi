@@ -2,10 +2,10 @@
 
 import { FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Contact } from "@/types/contact";
 import { ContactNote } from "@/server/actions/crm/getContactNotes";
 
@@ -21,15 +21,15 @@ export default function ContactNotes({ contact, notes }: Props) {
   const hasNotes = hasInlineNotes || notes.length > 0;
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("notesBadge")}
         title={t("notes")}
         subtitle={t("notesSubtitle")}
       />
 
       {!hasNotes ? (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noNotes")}
           description={t("noNotesDescription")}
           icon={FileText}
@@ -37,18 +37,18 @@ export default function ContactNotes({ contact, notes }: Props) {
       ) : (
         <div className="mt-6 space-y-3">
           {hasInlineNotes && (
-            <OrbitCard className="p-5">
+            <GunimiCard className="p-5">
               <div className="flex items-start gap-3">
                 <FileText size={15} className="mt-0.5 shrink-0 text-zinc-500" />
                 <p className="text-sm leading-relaxed text-white/70">
                   {contact.notes}
                 </p>
               </div>
-            </OrbitCard>
+            </GunimiCard>
           )}
 
           {notes.map((note) => (
-            <OrbitCard key={note.id} className="p-5">
+            <GunimiCard key={note.id} className="p-5">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-sm font-medium">{note.title}</h3>
@@ -62,10 +62,10 @@ export default function ContactNotes({ contact, notes }: Props) {
                   {new Date(note.created_at).toLocaleDateString()}
                 </p>
               </div>
-            </OrbitCard>
+            </GunimiCard>
           ))}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

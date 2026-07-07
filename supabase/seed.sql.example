@@ -18,9 +18,9 @@
 
 UPDATE profiles
 SET platform_role = 'admin'
-WHERE email = 'YOUR_ADMIN_EMAIL';
+WHERE email = 'guoth123@gmail.com';
 
 -- Verify the update
 SELECT id, email, platform_role
 FROM profiles
-WHERE email = 'YOUR_ADMIN_EMAIL';
+WHERE email = 'guoth123@gmail.com';

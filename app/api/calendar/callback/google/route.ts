@@ -4,6 +4,7 @@ import { getProvider } from "@/lib/calendar/providers";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { syncCalendarConnection } from "@/lib/calendar/sync";
 import { verifyOAuthState } from "@/lib/server/oauth/state";
+import { logger } from "@/lib/logger";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL!;
 
@@ -39,9 +40,7 @@ export async function GET(req: Request) {
     if (!user) return redirect("/login");
 
     if (user.id !== stateUserId) {
-      console.error(
-        `[Security] Calendar OAuth state mismatch: session user ${user.id} !== state userId ${stateUserId}`
-      );
+      logger.error(`Calendar OAuth state mismatch: session user ${user.id} !== state userId ${stateUserId}`);
       return redirect("/dashboard/calendar?error=session_mismatch");
     }
 
@@ -49,9 +48,7 @@ export async function GET(req: Request) {
     if (!workspace) return redirect("/dashboard/calendar?error=workspace_not_found");
 
     if (workspace.id !== stateWorkspaceId) {
-      console.error(
-        `[Security] Calendar OAuth workspace mismatch: active workspace ${workspace.id} !== state workspaceId ${stateWorkspaceId}`
-      );
+      logger.error(`Calendar OAuth workspace mismatch: active workspace ${workspace.id} !== state workspaceId ${stateWorkspaceId}`);
       return redirect("/dashboard/calendar?error=workspace_mismatch");
     }
 
@@ -81,7 +78,7 @@ export async function GET(req: Request) {
       .single();
 
     if (dbError || !connection) {
-      console.error("calendar_connections upsert failed:", dbError);
+      logger.error("Calendar connection upsert failed", dbError);
       return redirect("/dashboard/calendar?error=connection_failed");
     }
 
@@ -95,12 +92,12 @@ export async function GET(req: Request) {
 
     // Initial sync — fire and forget, do not block redirect
     syncCalendarConnection(connection.id as string).catch((err) =>
-      console.error("Initial calendar sync failed:", err)
+      logger.error("Initial calendar sync failed", err)
     );
 
     return redirect("/dashboard/calendar?connected=true");
   } catch (error) {
-    console.error("calendar callback error:", error);
+    logger.error("Calendar OAuth callback failed", error);
     return redirect("/dashboard/calendar?error=server_error");
   }
 }

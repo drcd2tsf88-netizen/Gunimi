@@ -8,7 +8,7 @@ import { getDealRelatedNotes } from "@/server/actions/deals/getDealRelatedNotes"
 import { getDealRelatedTasks } from "@/server/actions/deals/getDealRelatedTasks";
 
 import DealDetailView from "@/components/deals/detail/DealDetailView";
-import OrbitBreadcrumbs from "@/components/ui/OrbitBreadcrumbs";
+import GunimiBreadcrumbs from "@/components/ui/GunimiBreadcrumbs";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -33,7 +33,7 @@ export default async function DealPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
-      <OrbitBreadcrumbs
+      <GunimiBreadcrumbs
         items={[
           { label: t("breadcrumbDeals"), href: "/dashboard/deals" },
           { label: dealData.deal.title },

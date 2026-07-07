@@ -18,6 +18,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 import { ratelimit }
 from "@/lib/ratelimit";
+import { logger } from "@/lib/logger";
 
 export async function POST(
   req: Request
@@ -224,10 +225,7 @@ const {
         contact.id,
     });
   } catch (error) {
-    console.error(
-      "CRM CREATE ERROR",
-      error
-    );
+    logger.error("Contact creation failed", error);
 
     return errorResponse(
       "Server error"

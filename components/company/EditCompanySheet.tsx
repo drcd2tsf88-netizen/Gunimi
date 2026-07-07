@@ -17,9 +17,9 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitInput from "@/components/ui/OrbitInput";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiInput from "@/components/ui/GunimiInput";
 
 import { Company } from "@/types/company";
 
@@ -112,71 +112,71 @@ export default function EditCompanySheet({
         </SheetHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
-          <OrbitField label={t("organizationName")}>
-            <OrbitInput
+          <GunimiField label={t("organizationName")}>
+            <GunimiInput
               value={name}
               disabled={isPending}
               placeholder={t("organizationName")}
               onChange={(e) => setName(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("website")}>
-            <OrbitInput
+          <GunimiField label={t("website")}>
+            <GunimiInput
               value={website}
               disabled={isPending}
               placeholder="https://example.com"
               onChange={(e) => setWebsite(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
           <div className="grid grid-cols-2 gap-4">
-            <OrbitField label={t("industry")}>
-              <OrbitInput
+            <GunimiField label={t("industry")}>
+              <GunimiInput
                 value={industry}
                 disabled={isPending}
                 placeholder={t("industry")}
                 onChange={(e) => setIndustry(e.target.value)}
               />
-            </OrbitField>
+            </GunimiField>
 
-            <OrbitField label={t("country")}>
-              <OrbitInput
+            <GunimiField label={t("country")}>
+              <GunimiInput
                 value={country}
                 disabled={isPending}
                 placeholder={t("country")}
                 onChange={(e) => setCountry(e.target.value)}
               />
-            </OrbitField>
+            </GunimiField>
           </div>
 
-          <OrbitField label={t("companySize")}>
-            <OrbitInput
+          <GunimiField label={t("companySize")}>
+            <GunimiInput
               value={companySize}
               disabled={isPending}
               placeholder="e.g. 50–200"
               onChange={(e) => setCompanySize(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("annualValue")}>
-            <OrbitInput
+          <GunimiField label={t("annualValue")}>
+            <GunimiInput
               type="number"
               value={annualValue}
               disabled={isPending}
               placeholder="0"
               onChange={(e) => setAnnualValue(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
         </div>
 
         <SheetFooter>
-          <OrbitButton variant="secondary" disabled={isPending} onClick={handleClose}>
+          <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
-          </OrbitButton>
-          <OrbitButton loading={isPending} onClick={handleSave}>
+          </GunimiButton>
+          <GunimiButton loading={isPending} onClick={handleSave}>
             {tc("save")}
-          </OrbitButton>
+          </GunimiButton>
         </SheetFooter>
       </SheetContent>
     </Sheet>

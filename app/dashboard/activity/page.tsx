@@ -6,10 +6,10 @@ import { useTranslations } from "next-intl";
 
 import CountUp from "react-countup";
 
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitActivityFeed from "@/components/ui/OrbitActivityFeed";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiActivityFeed from "@/components/ui/GunimiActivityFeed";
 
 import { supabase } from "@/lib/supabase";
 
@@ -81,56 +81,56 @@ export default function ActivityPage() {
 
   return (
     <div className="space-y-8">
-      <OrbitSection>
-        <OrbitHeading
+      <GunimiSection>
+        <GunimiHeading
           badge={t("badge")}
           title={t("title")}
           subtitle={t("subtitle")}
         />
-      </OrbitSection>
+      </GunimiSection>
 
-      <OrbitSection>
+      <GunimiSection>
         <div className="grid gap-5 md:grid-cols-3">
-          <OrbitCard className="p-6">
+          <GunimiCard className="p-6">
             <p className="text-sm text-white/50">{t("totalEvents")}</p>
             <h2 className="mt-4 text-4xl font-semibold">
               <CountUp end={totalCount} />
             </h2>
-          </OrbitCard>
+          </GunimiCard>
 
-          <OrbitCard className="p-6">
+          <GunimiCard className="p-6">
             <p className="text-sm text-white/50">{t("aiExecutions")}</p>
             <h2 className="mt-4 text-4xl font-semibold">
               <CountUp end={aiCount} />
             </h2>
-          </OrbitCard>
+          </GunimiCard>
 
-          <OrbitCard className="p-6">
+          <GunimiCard className="p-6">
             <p className="text-sm text-white/50">{t("taskEvents")}</p>
             <h2 className="mt-4 text-4xl font-semibold">
               <CountUp end={taskCount} />
             </h2>
-          </OrbitCard>
+          </GunimiCard>
         </div>
-      </OrbitSection>
+      </GunimiSection>
 
       {loading && (
-        <OrbitSection>
+        <GunimiSection>
           <div className="space-y-5">
             {[1, 2, 3].map((item) => (
-              <OrbitCard key={item} className="p-6">
+              <GunimiCard key={item} className="p-6">
                 <div className="animate-pulse">
                   <div className="h-4 w-40 rounded-full bg-white/10" />
                   <div className="mt-5 h-5 w-full rounded-full bg-white/10" />
                 </div>
-              </OrbitCard>
+              </GunimiCard>
             ))}
           </div>
-        </OrbitSection>
+        </GunimiSection>
       )}
 
       {!loading && (
-        <OrbitActivityFeed
+        <GunimiActivityFeed
           items={activity}
           emptyTitle={t("noActivity")}
           emptyDescription={t("noActivityDescription")}

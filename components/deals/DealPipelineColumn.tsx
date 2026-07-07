@@ -12,11 +12,11 @@ import {
 
 import { cn } from "@/lib/utils";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState
+from "@/components/ui/GunimiEmptyState";
 
 import DealPipelineCard
 from "./dealPipelineCard";
@@ -127,7 +127,7 @@ export default function DealPipelineColumn({
   }
 
   return (
-    <OrbitCard
+    <GunimiCard
       className="
         h-full
 
@@ -221,7 +221,7 @@ export default function DealPipelineColumn({
       >
         {deals.length ===
           0 && (
-          <OrbitEmptyState
+          <GunimiEmptyState
             title={t(
               "noDeals"
             )}
@@ -288,6 +288,6 @@ export default function DealPipelineColumn({
           </div>
         )}
       </div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Building2, Mail, User } from "lucide-react";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import type { EmailThread } from "@/types/email";
 
 type Props = {
@@ -41,12 +41,12 @@ export default function EmailThreadList({ threads }: Props) {
 
   if (threads.length === 0) {
     return (
-      <OrbitCard className="p-8">
+      <GunimiCard className="p-8">
         <div className="flex flex-col items-center gap-3 text-center">
           <Mail size={22} className="text-zinc-600" />
           <p className="text-sm text-white/40">{t("noThreads")}</p>
         </div>
-      </OrbitCard>
+      </GunimiCard>
     );
   }
 

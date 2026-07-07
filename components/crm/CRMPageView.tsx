@@ -20,12 +20,12 @@ import toast from "react-hot-toast";
 import { getCRMContacts } from "@/server/actions/crm/getCRMContacts";
 import { deleteContact } from "@/server/actions/crm/deleteContact";
 
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import CreateContactSheet from "@/components/crm/CreateContactSheet";
 import EditContactSheet from "@/components/crm/EditContactSheet";
@@ -126,34 +126,34 @@ export default function CRMPageView({ initialContacts }: Props) {
     <div className="space-y-8">
 
       {/* Hero */}
-      <OrbitSection>
+      <GunimiSection>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <OrbitHeading
+          <GunimiHeading
             badge={t("badge")}
             title={t("title")}
             subtitle={t("subtitle")}
           />
 
-          <OrbitButton
+          <GunimiButton
             onClick={() => setCreateOpen(true)}
             className="shrink-0 self-start"
           >
             <UserPlus size={15} />
             {t("createContact")}
-          </OrbitButton>
+          </GunimiButton>
         </div>
-      </OrbitSection>
+      </GunimiSection>
 
       {/* Search */}
-      <OrbitSection>
-        <OrbitCard className="p-6">
+      <GunimiSection>
+        <GunimiCard className="p-6">
           <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <h2 className="text-xl font-semibold">{t("customerDatabase")}</h2>
               <p className="mt-2 text-zinc-400">{t("searchAndManage")}</p>
             </div>
 
-            <OrbitInput
+            <GunimiInput
               type="text"
               placeholder={t("searchCustomers")}
               value={search}
@@ -161,32 +161,32 @@ export default function CRMPageView({ initialContacts }: Props) {
               className="xl:w-96"
             />
           </div>
-        </OrbitCard>
-      </OrbitSection>
+        </GunimiCard>
+      </GunimiSection>
 
       {/* Stats */}
-      <OrbitSection>
+      <GunimiSection>
         <div className="grid gap-6 lg:grid-cols-3">
-          <OrbitCard className="p-6">
+          <GunimiCard className="p-6">
             <p className="text-zinc-400">{t("totalCustomers")}</p>
             <h2 className="mt-5 text-4xl font-semibold">{contacts.length}</h2>
-          </OrbitCard>
+          </GunimiCard>
 
-          <OrbitCard className="p-6">
+          <GunimiCard className="p-6">
             <p className="text-zinc-400">{t("activeLeads")}</p>
             <h2 className="mt-5 text-4xl font-semibold">{leadCount}</h2>
-          </OrbitCard>
+          </GunimiCard>
 
-          <OrbitCard className="p-6">
+          <GunimiCard className="p-6">
             <p className="text-zinc-400">{t("wonDeals")}</p>
             <h2 className="mt-5 text-4xl font-semibold">{wonCount}</h2>
-          </OrbitCard>
+          </GunimiCard>
         </div>
-      </OrbitSection>
+      </GunimiSection>
 
       {/* Contact list */}
-      <OrbitSection>
-        <OrbitCard className="p-6">
+      <GunimiSection>
+        <GunimiCard className="p-6">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold">{t("customers")}</h2>
@@ -200,28 +200,28 @@ export default function CRMPageView({ initialContacts }: Props) {
 
           <div className="mt-8 space-y-3">
             {contacts.length === 0 ? (
-              <OrbitEmptyState
+              <GunimiEmptyState
                 icon={Users}
                 title={t("onboardingEmptyTitle")}
                 description={t("onboardingEmptyDescription")}
                 action={
                   <div className="flex flex-wrap justify-center gap-3">
-                    <OrbitButton onClick={() => setCreateOpen(true)}>
+                    <GunimiButton onClick={() => setCreateOpen(true)}>
                       <UserPlus size={14} />
                       {t("onboardingCreateContact")}
-                    </OrbitButton>
+                    </GunimiButton>
 
                     <Link href="/dashboard/import">
-                      <OrbitButton variant="secondary">
+                      <GunimiButton variant="secondary">
                         <FileUp size={14} />
                         {t("onboardingImportCSV")}
-                      </OrbitButton>
+                      </GunimiButton>
                     </Link>
                   </div>
                 }
               />
             ) : filtered.length === 0 ? (
-              <OrbitEmptyState
+              <GunimiEmptyState
                 icon={Search}
                 title={t("noSearchResults")}
               />
@@ -276,30 +276,30 @@ export default function CRMPageView({ initialContacts }: Props) {
                     className="flex shrink-0 items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <OrbitButton
+                    <GunimiButton
                       variant="secondary"
                       className="h-8 w-8 p-0"
                       onClick={() => setEditContact(contact)}
                       title={tc("edit")}
                     >
                       <Pencil size={13} />
-                    </OrbitButton>
+                    </GunimiButton>
 
-                    <OrbitButton
+                    <GunimiButton
                       variant="danger"
                       className="h-8 w-8 p-0"
                       onClick={() => setDeleteTarget(contact)}
                       title={tc("delete")}
                     >
                       <Trash2 size={13} />
-                    </OrbitButton>
+                    </GunimiButton>
                   </div>
                 </div>
               ))
             )}
           </div>
-        </OrbitCard>
-      </OrbitSection>
+        </GunimiCard>
+      </GunimiSection>
 
       {/* Create sheet */}
       <CreateContactSheet
@@ -334,21 +334,21 @@ export default function CRMPageView({ initialContacts }: Props) {
           </DialogHeader>
 
           <DialogFooter className="mt-6">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={isDeleting}
               onClick={() => setDeleteTarget(null)}
             >
               {tc("cancel")}
-            </OrbitButton>
+            </GunimiButton>
 
-            <OrbitButton
+            <GunimiButton
               variant="danger"
               loading={isDeleting}
               onClick={handleDeleteConfirm}
             >
               {tc("delete")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

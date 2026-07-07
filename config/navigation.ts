@@ -1,21 +1,15 @@
 import type { LucideIcon } from "lucide-react";
 
 import {
-  Activity,
   BarChart3,
-  Brain,
   Building2,
   CalendarDays,
   CheckSquare,
-  FileText,
   LayoutDashboard,
   Mail,
   Settings,
-  Sparkles,
   TrendingUp,
-  Upload,
   Users,
-  Zap,
 } from "lucide-react";
 
 export type NavItemId =
@@ -24,15 +18,9 @@ export type NavItemId =
   | "companies"
   | "deals"
   | "tasks"
-  | "notes"
   | "email"
   | "calendar"
   | "analytics"
-  | "ai"
-  | "activity"
-  | "automations"
-  | "memory"
-  | "import"
   | "settings";
 
 export type NavGroupId =
@@ -40,7 +28,6 @@ export type NavGroupId =
   | "relationships"
   | "sales"
   | "work"
-  | "intelligence"
   | "system";
 
 export type NavItem = {
@@ -82,8 +69,8 @@ export const NAV_GROUPS: NavGroup[] = [
     id: "relationships",
     labelKey: "groupRelationships",
     items: [
-      { id: "crm",       labelKey: "contacts",  href: "/dashboard/contacts",       icon: Users      },
-      { id: "companies", labelKey: "companies",  href: "/dashboard/companies", icon: Building2  },
+      { id: "crm",       labelKey: "contacts",  href: "/dashboard/contacts",  icon: Users     },
+      { id: "companies", labelKey: "companies",  href: "/dashboard/companies", icon: Building2 },
     ],
   },
   {
@@ -97,22 +84,9 @@ export const NAV_GROUPS: NavGroup[] = [
     id: "work",
     labelKey: "groupWork",
     items: [
-      { id: "tasks",    labelKey: "tasks",    href: "/dashboard/tasks",    icon: CheckSquare },
-      { id: "notes",    labelKey: "notes",    href: "/dashboard/notes",    icon: FileText    },
-      { id: "email",    labelKey: "email",    href: "/dashboard/email",    icon: Mail        },
+      { id: "tasks",    labelKey: "tasks",    href: "/dashboard/tasks",    icon: CheckSquare  },
+      { id: "email",    labelKey: "email",    href: "/dashboard/email",    icon: Mail         },
       { id: "calendar", labelKey: "calendar", href: "/dashboard/calendar", icon: CalendarDays },
-    ],
-  },
-  {
-    id: "intelligence",
-    labelKey: "groupIntelligence",
-    collapsible: true,
-    items: [
-      { id: "ai",          labelKey: "ai",          href: "/dashboard/ai",          icon: Sparkles  },
-      { id: "automations", labelKey: "automations", href: "/dashboard/automations", icon: Zap       },
-      { id: "memory",      labelKey: "memory",      href: "/dashboard/memory",      icon: Brain     },
-      { id: "analytics",   labelKey: "analytics",   href: "/dashboard/analytics",   icon: BarChart3 },
-      { id: "activity",    labelKey: "activity",    href: "/dashboard/activity",    icon: Activity  },
     ],
   },
   {
@@ -120,8 +94,8 @@ export const NAV_GROUPS: NavGroup[] = [
     labelKey: null,
     separator: true,
     items: [
-      { id: "import",   labelKey: "import",   href: "/dashboard/import",   icon: Upload   },
-      { id: "settings", labelKey: "settings", href: "/dashboard/settings", icon: Settings },
+      { id: "analytics", labelKey: "analytics", href: "/dashboard/analytics", icon: BarChart3 },
+      { id: "settings",  labelKey: "settings",  href: "/dashboard/settings",  icon: Settings  },
     ],
   },
 ];

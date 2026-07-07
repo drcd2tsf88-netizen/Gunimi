@@ -21,6 +21,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 
 import { ratelimit }
 from "@/lib/ratelimit";
+import { logger } from "@/lib/logger";
 
 export async function POST(
   req: Request
@@ -188,8 +189,7 @@ export async function POST(
     return successResponse();
 
   } catch (error) {
-
-    console.error(error);
+    logger.error("Task creation failed", error);
 
     return errorResponse(
       "Server error"

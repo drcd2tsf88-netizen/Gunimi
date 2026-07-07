@@ -24,10 +24,10 @@ import {
 
 import toast from "react-hot-toast";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitStatCard from "@/components/ui/OrbitStatCard";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiStatCard from "@/components/ui/GunimiStatCard";
+import GunimiButton from "@/components/ui/GunimiButton";
 import CalendarConnectionCard from "@/components/calendar/CalendarConnectionCard";
 import type { CalendarConnection, CalendarEventRow } from "@/types/calendar";
 import type { CalendarContact } from "@/server/actions/calendar/getCalendarContacts";
@@ -271,7 +271,7 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
             {t("actionsLabel")}
           </p>
           <div className="flex flex-wrap gap-2">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               loading={creatingNote}
               onClick={handleCreateMeetingNote}
@@ -279,23 +279,23 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
             >
               <FileText size={13} />
               {t("createMeetingNote")}
-            </OrbitButton>
+            </GunimiButton>
 
             {crmContact && (
               <Link href={`/dashboard/contacts/${crmContact.id}`}>
-                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                <GunimiButton variant="secondary" className="gap-2 text-xs">
                   <User size={13} />
                   {t("viewContact")}
-                </OrbitButton>
+                </GunimiButton>
               </Link>
             )}
 
             {event.html_link && (
               <a href={event.html_link} target="_blank" rel="noopener noreferrer">
-                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                <GunimiButton variant="secondary" className="gap-2 text-xs">
                   <ExternalLink size={13} />
                   {t("viewInCalendar")}
-                </OrbitButton>
+                </GunimiButton>
               </a>
             )}
           </div>
@@ -319,7 +319,7 @@ type WidgetProps = {
 
 function Widget({ icon: Icon, iconColor, iconBg, title, subtitle, count, children }: WidgetProps) {
   return (
-    <OrbitCard className="flex h-full flex-col">
+    <GunimiCard className="flex h-full flex-col">
       <div className="flex items-center gap-3 border-b border-white/[0.05] px-5 py-4">
         <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border ${iconBg}`}>
           <Icon size={14} className={iconColor} />
@@ -335,7 +335,7 @@ function Widget({ icon: Icon, iconColor, iconBg, title, subtitle, count, childre
         )}
       </div>
       <div className="flex-1">{children}</div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }
 
@@ -877,13 +877,13 @@ function NoConnectionState({
 }) {
   return (
     <div className="space-y-8">
-      <OrbitHeading
+      <GunimiHeading
         badge={t("commandCenterBadge")}
         title={t("commandCenterTitle")}
         subtitle={t("commandCenterSubtitle")}
       />
 
-      <OrbitCard className="p-10">
+      <GunimiCard className="p-10">
         <div className="flex flex-col items-center gap-5 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.02]">
             <CalendarDays size={26} className="text-zinc-500" />
@@ -895,12 +895,12 @@ function NoConnectionState({
             </p>
           </div>
           <a href="/api/calendar/connect/google">
-            <OrbitButton variant="primary" className="mt-2">
+            <GunimiButton variant="primary" className="mt-2">
               {t("connectGoogle")}
-            </OrbitButton>
+            </GunimiButton>
           </a>
         </div>
-      </OrbitCard>
+      </GunimiCard>
 
       <div>
         <p className="mb-4 text-[11px] uppercase tracking-[0.15em] text-zinc-500">
@@ -979,25 +979,25 @@ export default function CalendarCommandCenter({ events, connections, contacts }:
       <div className="space-y-6">
         {/* HEADER */}
         <div className="flex items-start justify-between gap-4">
-          <OrbitHeading
+          <GunimiHeading
             badge={t("commandCenterBadge")}
             title={t("commandCenterTitle")}
             subtitle={t("commandCenterSubtitle")}
           />
           <a href="/api/calendar/connect/google" className="mt-1 shrink-0">
-            <OrbitButton variant="secondary" className="gap-2 text-sm">
+            <GunimiButton variant="secondary" className="gap-2 text-sm">
               <CalendarDays size={14} />
               {t("addCalendar")}
-            </OrbitButton>
+            </GunimiButton>
           </a>
         </div>
 
         {/* STATS STRIP */}
         <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-          <OrbitStatCard title={t("statsUpcoming")} value={events.length} icon={CalendarDays} animated />
-          <OrbitStatCard title={t("statsThisWeek")} value={thisWeekEvents.length} icon={Clock} animated />
-          <OrbitStatCard title={t("statsConnected")} value={connections.length} icon={CheckCircle2} animated />
-          <OrbitStatCard title={t("statsRevenueMeetings")} value={crmEventsCount} icon={TrendingUp} animated />
+          <GunimiStatCard title={t("statsUpcoming")} value={events.length} icon={CalendarDays} animated />
+          <GunimiStatCard title={t("statsThisWeek")} value={thisWeekEvents.length} icon={Clock} animated />
+          <GunimiStatCard title={t("statsConnected")} value={connections.length} icon={CheckCircle2} animated />
+          <GunimiStatCard title={t("statsRevenueMeetings")} value={crmEventsCount} icon={TrendingUp} animated />
         </div>
 
         {/* ROW 1: Today (2/3) + Intelligence (1/3) */}

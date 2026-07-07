@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { errorResponse } from "@/lib/server/apiResponse";
 import { DEAL_FIELDS, validateRow } from "@/lib/csv/schemas";
 import { NextResponse } from "next/server";
+import { ratelimit } from "@/lib/ratelimit";
 
 const MAX_ROWS = 500;
 
@@ -11,6 +12,9 @@ export async function POST(req: Request) {
   try {
     const user = await getUser();
     if (!user) return errorResponse("Unauthorized", 401);
+
+    const { success } = await ratelimit.limit(user.id);
+    if (!success) return errorResponse("Rate limit exceeded", 429);
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return errorResponse("Workspace not found", 404);

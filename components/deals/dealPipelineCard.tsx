@@ -14,11 +14,11 @@ import {
 import { useTranslations }
 from "next-intl";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitButton
-from "@/components/ui/OrbitButton";
+import GunimiButton
+from "@/components/ui/GunimiButton";
 
 import { Deal }
 from "@/types/deal";
@@ -68,7 +68,7 @@ export default function DealPipelineCard({
       : null;
 
   return (
-    <OrbitCard
+    <GunimiCard
       className="
         p-4
 
@@ -153,7 +153,7 @@ export default function DealPipelineCard({
             gap-2
           "
         >
-          <OrbitButton
+          <GunimiButton
             variant="secondary"
             disabled={!canMoveBack}
             onClick={onMoveBack}
@@ -163,9 +163,9 @@ export default function DealPipelineCard({
             "
           >
             <ChevronLeft size={14} />
-          </OrbitButton>
+          </GunimiButton>
 
-          <OrbitButton
+          <GunimiButton
             className="
               flex-1
             "
@@ -176,9 +176,9 @@ export default function DealPipelineCard({
             }
           >
             {t("open")}
-          </OrbitButton>
+          </GunimiButton>
 
-          <OrbitButton
+          <GunimiButton
             variant="secondary"
             onClick={onEdit}
             className="
@@ -187,9 +187,9 @@ export default function DealPipelineCard({
             "
           >
             <Pencil size={13} />
-          </OrbitButton>
+          </GunimiButton>
 
-          <OrbitButton
+          <GunimiButton
             variant="secondary"
             disabled={!canMoveForward}
             onClick={onMoveForward}
@@ -199,9 +199,9 @@ export default function DealPipelineCard({
             "
           >
             <ChevronRight size={14} />
-          </OrbitButton>
+          </GunimiButton>
         </div>
       </div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }

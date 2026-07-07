@@ -11,17 +11,17 @@ import {
   PlusCircle,
 } from "lucide-react";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import GunimiSection
+from "@/components/layout/GunimiSection";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState
+from "@/components/ui/GunimiEmptyState";
 
-import OrbitButton
-from "@/components/ui/OrbitButton";
+import GunimiButton
+from "@/components/ui/GunimiButton";
 
 import { useTranslations }
 from "next-intl";
@@ -52,28 +52,28 @@ export default function CompaniesGrid({
 
   if (companies.length === 0) {
     return (
-      <OrbitSection>
-        <OrbitEmptyState
+      <GunimiSection>
+        <GunimiEmptyState
           icon={Building2}
           title={t("companies.onboardingEmptyTitle")}
           description={t("companies.onboardingEmptyDescription")}
           action={
-            <OrbitButton onClick={() => setCreateOpen(true)}>
+            <GunimiButton onClick={() => setCreateOpen(true)}>
               <PlusCircle size={14} />
               {t("companies.onboardingCreateCompany")}
-            </OrbitButton>
+            </GunimiButton>
           }
         />
         <CreateOrganizationModal
           open={createOpen}
           onClose={() => setCreateOpen(false)}
         />
-      </OrbitSection>
+      </GunimiSection>
     );
   }
 
   return (
-    <OrbitSection>
+    <GunimiSection>
       <div
         className="
           grid
@@ -84,7 +84,7 @@ export default function CompaniesGrid({
       >
         {companies.map(
           (company) => (
-            <OrbitCard
+            <GunimiCard
               key={
                 company.id
               }
@@ -296,10 +296,10 @@ export default function CompaniesGrid({
                   "
                 />
               </div>
-            </OrbitCard>
+            </GunimiCard>
           )
         )}
       </div>
-    </OrbitSection>
+    </GunimiSection>
   );
 }

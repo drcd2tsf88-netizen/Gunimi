@@ -18,9 +18,9 @@ import {
 
 import { cn } from "@/lib/utils";
 
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import DealsMetricStrip from "./DealsMetricStrip";
 import DealsPipeline from "./DealsPipeline";
@@ -195,9 +195,9 @@ export default function DealsPageView({
               </button>
             </div>
 
-            <OrbitButton onClick={() => setOpen(true)}>
+            <GunimiButton onClick={() => setOpen(true)}>
               {t("createOpportunity")}
-            </OrbitButton>
+            </GunimiButton>
           </div>
         </div>
 
@@ -213,7 +213,7 @@ export default function DealsPageView({
             max-w-sm
           "
         >
-          <OrbitInput
+          <GunimiInput
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("searchOpportunities")}
@@ -225,15 +225,15 @@ export default function DealsPageView({
 
       <div className="mt-6">
         {deals.length === 0 ? (
-          <OrbitEmptyState
+          <GunimiEmptyState
             icon={TrendingUp}
             title={t("onboardingEmptyTitle")}
             description={t("onboardingEmptyDescription")}
             action={
-              <OrbitButton onClick={() => setOpen(true)}>
+              <GunimiButton onClick={() => setOpen(true)}>
                 <PlusCircle size={14} />
                 {t("onboardingCreateDeal")}
-              </OrbitButton>
+              </GunimiButton>
             }
           />
         ) : view === "list" ? (

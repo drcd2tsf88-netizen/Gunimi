@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
 import { supabase } from "@/lib/supabase";
-import OrbitInput from "@/components/ui/OrbitInput";
+import GunimiInput from "@/components/ui/GunimiInput";
 import AiCore from "@/components/ui/AiCore";
 import AuthCard from "@/components/auth/AuthCard";
 
@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
           className="mt-8 space-y-3"
           onSubmit={(e) => { e.preventDefault(); handleReset(); }}
         >
-          <OrbitInput
+          <GunimiInput
             type="email"
             placeholder={t("emailPlaceholder")}
             value={email}

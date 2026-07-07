@@ -135,10 +135,10 @@ export default function OrbitControlView({
 
         {/* STATS */}
         <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          <OrbitStatCard title="Platform Users" value={totalUsers} icon={<Users size={20} />} />
-          <OrbitStatCard title="Beta Access" value={betaUsers} icon={<CheckCircle2 size={20} />} />
-          <OrbitStatCard title="Admins" value={admins} icon={<Crown size={20} />} />
-          <OrbitStatCard title="Pending Access" value={pendingUsers} icon={<Shield size={20} />} />
+          <GunimiStatCard title="Platform Users" value={totalUsers} icon={<Users size={20} />} />
+          <GunimiStatCard title="Beta Access" value={betaUsers} icon={<CheckCircle2 size={20} />} />
+          <GunimiStatCard title="Admins" value={admins} icon={<Crown size={20} />} />
+          <GunimiStatCard title="Pending Access" value={pendingUsers} icon={<Shield size={20} />} />
         </div>
 
         {/* USER TABLE */}
@@ -289,7 +289,7 @@ export default function OrbitControlView({
   );
 }
 
-function OrbitStatCard({
+function GunimiStatCard({
   title,
   value,
   icon,

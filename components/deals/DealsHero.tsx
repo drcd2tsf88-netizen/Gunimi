@@ -8,14 +8,14 @@ import {
   Plus,
 } from "lucide-react";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import GunimiSection
+from "@/components/layout/GunimiSection";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
-import OrbitButton
-from "@/components/ui/OrbitButton";
+import GunimiButton
+from "@/components/ui/GunimiButton";
 
 type Props = {
   onCreate: () => void;
@@ -28,7 +28,7 @@ export default function DealsHero({
     useTranslations();
 
   return (
-    <OrbitSection>
+    <GunimiSection>
       <div
         className="
           flex
@@ -40,7 +40,7 @@ export default function DealsHero({
           lg:justify-between
         "
       >
-        <OrbitHeading
+        <GunimiHeading
           badge={t(
             "deals.commercialPipeline"
           )}
@@ -52,7 +52,7 @@ export default function DealsHero({
           )}
         />
 
-        <OrbitButton
+        <GunimiButton
           onClick={onCreate}
         >
           <Plus size={16} />
@@ -60,8 +60,8 @@ export default function DealsHero({
           {t(
             "deals.createOpportunity"
           )}
-        </OrbitButton>
+        </GunimiButton>
       </div>
-    </OrbitSection>
+    </GunimiSection>
   );
 }

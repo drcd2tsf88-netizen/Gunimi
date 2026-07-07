@@ -2,10 +2,10 @@
 
 import { CheckSquare2, Clock, AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { ContactTask } from "@/server/actions/crm/getContactTasks";
 
 type Props = {
@@ -35,15 +35,15 @@ export default function ContactTasks({ tasks }: Props) {
   const tTasks = useTranslations("tasks");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("tasksBadge")}
         title={t("tasks")}
         subtitle={t("tasksSubtitle")}
       />
 
       {tasks.length === 0 ? (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noTasks")}
           description={t("noTasksDescription")}
           icon={CheckSquare2}
@@ -57,7 +57,7 @@ export default function ContactTasks({ tasks }: Props) {
               new Date(task.due_date) < new Date();
 
             return (
-              <OrbitCard key={task.id} className="p-4">
+              <GunimiCard key={task.id} className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex min-w-0 flex-1 items-start gap-2.5">
                     {getPriorityIcon(task.priority)}
@@ -97,11 +97,11 @@ export default function ContactTasks({ tasks }: Props) {
                     </span>
                   </div>
                 </div>
-              </OrbitCard>
+              </GunimiCard>
             );
           })}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

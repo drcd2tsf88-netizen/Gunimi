@@ -4,10 +4,10 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Briefcase, TrendingUp } from "lucide-react";
 import { useTranslations } from "next-intl";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 
@@ -37,15 +37,15 @@ export default function ContactDeals({ deals }: Props) {
   const tDeals = useTranslations("deals");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("dealsBadge")}
         title={t("openDeals")}
         subtitle={t("openDealsSubtitle")}
       />
 
       {deals.length === 0 ? (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noDeals")}
           description={t("noDealsDescription")}
           icon={Briefcase}
@@ -63,7 +63,7 @@ export default function ContactDeals({ deals }: Props) {
                 href={`/dashboard/deals/${deal.id}`}
                 className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50"
               >
-                <OrbitCard className="p-5">
+                <GunimiCard className="p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <h3 className="text-lg font-semibold">{deal.title}</h3>
@@ -109,12 +109,12 @@ export default function ContactDeals({ deals }: Props) {
                       </p>
                     </div>
                   </div>
-                </OrbitCard>
+                </GunimiCard>
               </Link>
             </motion.div>
           ))}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

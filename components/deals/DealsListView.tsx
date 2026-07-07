@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, Briefcase, Pencil } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 
@@ -40,7 +40,7 @@ export default function DealsListView({ deals, onEdit }: Props) {
           py-16
         "
       >
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noDeals")}
           description={t("noDealsDescription")}
           icon={Briefcase}

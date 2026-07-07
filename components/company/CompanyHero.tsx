@@ -10,10 +10,10 @@ import { Pencil, Trash2 } from "lucide-react";
 
 import toast from "react-hot-toast";
 
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiButton from "@/components/ui/GunimiButton";
 import EditCompanySheet from "@/components/company/EditCompanySheet";
 
 import {
@@ -85,14 +85,14 @@ export default function CompanyHero({ company }: Props) {
 
   return (
     <>
-      <OrbitSection>
-        <OrbitHeading
+      <GunimiSection>
+        <GunimiHeading
           badge={t("intelligence")}
           title={company?.name || "Company"}
           subtitle={`${company?.industry || t("unknownIndustry")} • ${company?.country || t("unknownRegion")}`}
         />
 
-        <OrbitCard className="p-6">
+        <GunimiCard className="p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-3">
               <div
@@ -109,23 +109,23 @@ export default function CompanyHero({ company }: Props) {
             </div>
 
             <div className="flex items-center gap-2">
-              <OrbitButton
+              <GunimiButton
                 variant="secondary"
                 className="gap-1.5 px-3 py-2 text-xs"
                 onClick={() => setEditOpen(true)}
               >
                 <Pencil size={13} />
                 {tc("edit")}
-              </OrbitButton>
+              </GunimiButton>
 
-              <OrbitButton
+              <GunimiButton
                 variant="danger"
                 className="gap-1.5 px-3 py-2 text-xs"
                 onClick={() => setDeleteOpen(true)}
               >
                 <Trash2 size={13} />
                 {tc("delete")}
-              </OrbitButton>
+              </GunimiButton>
             </div>
           </div>
 
@@ -166,8 +166,8 @@ export default function CompanyHero({ company }: Props) {
               </p>
             </div>
           </div>
-        </OrbitCard>
-      </OrbitSection>
+        </GunimiCard>
+      </GunimiSection>
 
       <EditCompanySheet
         company={company}
@@ -184,21 +184,21 @@ export default function CompanyHero({ company }: Props) {
           </DialogHeader>
 
           <DialogFooter className="mt-6">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={isDeleting}
               onClick={() => setDeleteOpen(false)}
             >
               {tc("cancel")}
-            </OrbitButton>
+            </GunimiButton>
 
-            <OrbitButton
+            <GunimiButton
               variant="danger"
               loading={isDeleting}
               onClick={handleDeleted}
             >
               {tc("delete")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

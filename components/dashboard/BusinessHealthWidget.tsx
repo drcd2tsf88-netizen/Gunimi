@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { TrendingUp } from "lucide-react";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import type { PipelineBreakdown } from "@/server/actions/dashboard/getPipelineBreakdown";
 import type { DashboardTask } from "./TodaysPrioritiesWidget";
 
@@ -35,7 +35,7 @@ export default function BusinessHealthWidget({ tasks, pipeline }: Props) {
   const maxCount = Math.max(...pipeline.stages.map((s) => s.count), 1);
 
   return (
-    <OrbitCard className="flex flex-col p-5">
+    <GunimiCard className="flex flex-col p-5">
       <div className="flex items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
         <div>
           <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
@@ -136,6 +136,6 @@ export default function BusinessHealthWidget({ tasks, pipeline }: Props) {
           </Link>
         </div>
       </div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }

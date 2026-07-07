@@ -8,9 +8,9 @@ import Image from "next/image";
 import { User } from "lucide-react";
 import { updateUserProfile } from "@/server/actions/profile/updateUserProfile";
 import { type UserProfile } from "@/server/actions/profile/getUserProfile";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiButton from "@/components/ui/GunimiButton";
 
 type Props = {
   profile: UserProfile;
@@ -73,7 +73,7 @@ export default function ProfileSection({ profile }: Props) {
         <p className="mt-1 text-sm text-white/40">{t("profileSubtitle")}</p>
       </div>
 
-      <OrbitCard className="p-6">
+      <GunimiCard className="p-6">
         <div className="flex items-center gap-4">
           <ProfileAvatar name={fullName || profile.email} avatarUrl={profile.avatar_url} />
           <div className="min-w-0 flex-1">
@@ -82,11 +82,11 @@ export default function ProfileSection({ profile }: Props) {
             <p className="mt-2 text-[10px] text-white/25">{t("profileAvatarSubtitle")}</p>
           </div>
         </div>
-      </OrbitCard>
+      </GunimiCard>
 
-      <OrbitCard className="p-6">
+      <GunimiCard className="p-6">
         <div className="grid gap-5 sm:grid-cols-2">
-          <OrbitField label={t("profileName")}>
+          <GunimiField label={t("profileName")}>
             <div className="relative">
               <User
                 size={14}
@@ -101,24 +101,24 @@ export default function ProfileSection({ profile }: Props) {
                 className="h-10 w-full rounded-xl border border-white/[0.06] bg-white/[0.02] pl-9 pr-3 text-sm text-white placeholder:text-white/25 focus:border-violet-500/40 focus:outline-none focus:ring-1 focus:ring-violet-500/20 disabled:opacity-50"
               />
             </div>
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("profileEmail")}>
+          <GunimiField label={t("profileEmail")}>
             <div className="flex h-10 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3">
               <span className="flex-1 truncate text-sm text-white/40">{profile.email}</span>
               <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/30">
                 {t("readOnly")}
               </span>
             </div>
-          </OrbitField>
+          </GunimiField>
         </div>
 
         <div className="mt-6 flex justify-end">
-          <OrbitButton onClick={handleSave} loading={isPending} disabled={!fullName.trim()}>
+          <GunimiButton onClick={handleSave} loading={isPending} disabled={!fullName.trim()}>
             {isPending ? t("saving") : t("saveChanges")}
-          </OrbitButton>
+          </GunimiButton>
         </div>
-      </OrbitCard>
+      </GunimiCard>
     </div>
   );
 }

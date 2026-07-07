@@ -10,17 +10,17 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import GunimiSection
+from "@/components/layout/GunimiSection";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState
+from "@/components/ui/GunimiEmptyState";
 
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
@@ -83,8 +83,8 @@ export default function CompanyDeals({
 
   return (
   
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t(
   "deals.commercialPipeline"
 )}
@@ -97,7 +97,7 @@ export default function CompanyDeals({
       />
 
       {deals.length === 0 && (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("deals.noDeals")}
           description={t("deals.noDealsDescription")}
           icon={Briefcase}
@@ -139,7 +139,7 @@ export default function CompanyDeals({
                   href={`/dashboard/deals/${deal.id}`}
                   className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50"
                 >
-                <OrbitCard
+                <GunimiCard
                   className="
                     p-5
                   "
@@ -314,13 +314,13 @@ export default function CompanyDeals({
                       </p>
                     </div>
                   </div>
-                </OrbitCard>
+                </GunimiCard>
                 </Link>
               </motion.div>
             )
           )}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

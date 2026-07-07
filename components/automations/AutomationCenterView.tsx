@@ -15,7 +15,7 @@ import {
   User,
   Zap,
 } from "lucide-react";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import { AUTOMATION_REGISTRY } from "@/lib/automation/registry";
 import type { AutomationHistoryItem } from "@/server/actions/automation/getAutomationHistory";
 
@@ -104,21 +104,21 @@ export default function AutomationCenterView({ history, stats }: Props) {
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <OrbitCard className="p-4">
+        <GunimiCard className="p-4">
           <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
             {t("activeCount")}
           </p>
           <p className="mt-2 text-3xl font-bold text-white/90">
             {AUTOMATION_REGISTRY.length}
           </p>
-        </OrbitCard>
-        <OrbitCard className="p-4">
+        </GunimiCard>
+        <GunimiCard className="p-4">
           <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
             {t("totalExecutions")}
           </p>
           <p className="mt-2 text-3xl font-bold text-white/90">{stats.total}</p>
-        </OrbitCard>
-        <OrbitCard className="p-4">
+        </GunimiCard>
+        <GunimiCard className="p-4">
           <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
             {t("successRate")}
           </p>
@@ -126,13 +126,13 @@ export default function AutomationCenterView({ history, stats }: Props) {
             {successRate}
             <span className="text-sm font-normal text-white/30">%</span>
           </p>
-        </OrbitCard>
+        </GunimiCard>
       </div>
 
       {/* Two-column layout */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Automation Registry */}
-        <OrbitCard className="flex flex-col">
+        <GunimiCard className="flex flex-col">
           <div className="border-b border-white/[0.06] px-5 py-4">
             <div className="flex items-center gap-2.5">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-violet-500/20 bg-violet-500/10">
@@ -170,10 +170,10 @@ export default function AutomationCenterView({ history, stats }: Props) {
               );
             })}
           </div>
-        </OrbitCard>
+        </GunimiCard>
 
         {/* Execution History */}
-        <OrbitCard className="flex flex-col">
+        <GunimiCard className="flex flex-col">
           <div className="border-b border-white/[0.06] px-5 py-4">
             <div className="flex items-center gap-2.5">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-cyan-500/20 bg-cyan-500/10">
@@ -277,11 +277,11 @@ export default function AutomationCenterView({ history, stats }: Props) {
               </div>
             )}
           </div>
-        </OrbitCard>
+        </GunimiCard>
       </div>
 
       {/* Architecture Note */}
-      <OrbitCard className="p-5">
+      <GunimiCard className="p-5">
         <div className="flex items-start gap-3">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-violet-500/20 bg-violet-500/10">
             <Cpu size={14} className="text-violet-300" />
@@ -299,7 +299,7 @@ export default function AutomationCenterView({ history, stats }: Props) {
           </div>
           <ArrowRight size={14} className="mt-0.5 shrink-0 text-white/15" />
         </div>
-      </OrbitCard>
+      </GunimiCard>
     </div>
   );
 }

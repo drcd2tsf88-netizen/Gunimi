@@ -2,11 +2,15 @@ import { getUser } from "@/lib/server/auth";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { generateCSV } from "@/lib/csv/generator";
+import { ratelimit } from "@/lib/ratelimit";
 
 export async function GET() {
   try {
     const user = await getUser();
     if (!user) return new Response("Unauthorized", { status: 401 });
+
+    const { success } = await ratelimit.limit(user.id);
+    if (!success) return new Response("Rate limit exceeded", { status: 429 });
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return new Response("Workspace not found", { status: 404 });

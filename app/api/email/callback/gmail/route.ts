@@ -4,6 +4,7 @@ import { getUser } from "@/lib/server/auth";
 import { getProvider } from "@/lib/email/providers";
 import { syncEmailConnection } from "@/lib/email/sync";
 import { verifyOAuthState } from "@/lib/server/oauth/state";
+import { logger } from "@/lib/logger";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -40,9 +41,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (sessionUser.id !== userId) {
-    console.error(
-      `[Security] Email OAuth state mismatch: session user ${sessionUser.id} !== state userId ${userId}`
-    );
+    logger.error(`Email OAuth state mismatch: session user ${sessionUser.id} !== state userId ${userId}`);
     return NextResponse.redirect(
       new URL("/dashboard/email?error=session_mismatch", request.url)
     );
@@ -56,9 +55,7 @@ export async function GET(request: NextRequest) {
     .single();
 
   if (!membership) {
-    console.error(
-      `[Security] Email OAuth workspace not accessible: user ${sessionUser.id} not a member of ${workspaceId}`
-    );
+    logger.error(`Email OAuth workspace not accessible: user ${sessionUser.id} not a member of ${workspaceId}`);
     return NextResponse.redirect(
       new URL("/dashboard/email?error=workspace_forbidden", request.url)
     );
@@ -90,7 +87,7 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (upsertError || !connection) {
-      console.error("Email connection upsert error:", upsertError);
+      logger.error("Email connection upsert failed", upsertError);
       return NextResponse.redirect(
         new URL("/dashboard/email?error=connection_failed", request.url)
       );
@@ -105,13 +102,13 @@ export async function GET(request: NextRequest) {
     });
 
     // Fire-and-forget initial sync
-    syncEmailConnection(connection.id).catch(console.error);
+    syncEmailConnection(connection.id).catch((err) => logger.error("Initial email sync failed", err));
 
     return NextResponse.redirect(
       new URL("/dashboard/email?connected=true", request.url)
     );
   } catch (err) {
-    console.error("Gmail OAuth callback error:", err);
+    logger.error("Gmail OAuth callback failed", err);
     return NextResponse.redirect(
       new URL("/dashboard/email?error=oauth_failed", request.url)
     );

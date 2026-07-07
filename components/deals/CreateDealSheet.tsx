@@ -11,10 +11,10 @@ import toast from "react-hot-toast";
 
 import { createDeal } from "@/server/actions/deals/createDeal";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
-import OrbitField from "@/components/ui/OrbitField";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiTextarea from "@/components/ui/GunimiTextarea";
+import GunimiField from "@/components/ui/GunimiField";
 
 import {
   Sheet,
@@ -167,17 +167,17 @@ export default function CreateDealSheet({
             {/* LEFT COLUMN */}
 
             <div className="space-y-5">
-              <OrbitField
+              <GunimiField
                 label={t("deals.opportunityName")}
               >
-                <OrbitInput
+                <GunimiInput
                   value={title}
                   disabled={loading}
                   onChange={(e) => setTitle(e.target.value)}
                 />
-              </OrbitField>
+              </GunimiField>
 
-              <OrbitField label={t("deals.company")}>
+              <GunimiField label={t("deals.company")}>
                 <Select
                   value={companyId}
                   onValueChange={(val) => {
@@ -204,9 +204,9 @@ export default function CreateDealSheet({
                     ))}
                   </SelectContent>
                 </Select>
-              </OrbitField>
+              </GunimiField>
 
-              <OrbitField label={t("deals.contact")}>
+              <GunimiField label={t("deals.contact")}>
                 <Select
                   disabled={!companyId}
                   value={contactId}
@@ -235,10 +235,10 @@ export default function CreateDealSheet({
                     ))}
                   </SelectContent>
                 </Select>
-              </OrbitField>
+              </GunimiField>
 
-              <OrbitField label={t("deals.description")}>
-                <OrbitTextarea
+              <GunimiField label={t("deals.description")}>
+                <GunimiTextarea
                   value={description}
                   disabled={loading}
                   onChange={(e) =>
@@ -246,16 +246,16 @@ export default function CreateDealSheet({
                   }
                   className="min-h-[100px]"
                 />
-              </OrbitField>
+              </GunimiField>
             </div>
 
             {/* RIGHT COLUMN */}
 
             <div className="space-y-5">
-              <OrbitField
+              <GunimiField
                 label={t("deals.opportunityValue")}
               >
-                <OrbitInput
+                <GunimiInput
                   type="number"
                   min="0"
                   value={value}
@@ -263,9 +263,9 @@ export default function CreateDealSheet({
                   placeholder="0"
                   onChange={(e) => setValue(e.target.value)}
                 />
-              </OrbitField>
+              </GunimiField>
 
-              <OrbitField
+              <GunimiField
                 label={`${t("deals.probability")} — ${probability}%`}
               >
                 <div className="space-y-2 pt-1">
@@ -295,7 +295,7 @@ export default function CreateDealSheet({
                     <span>100%</span>
                   </div>
                 </div>
-              </OrbitField>
+              </GunimiField>
 
               {/* EXPECTED REVENUE */}
 
@@ -336,10 +336,10 @@ export default function CreateDealSheet({
                 </p>
               </div>
 
-              <OrbitField
+              <GunimiField
                 label={t("deals.expectedCloseDate")}
               >
-                <OrbitInput
+                <GunimiInput
                   type="date"
                   value={expectedCloseDate}
                   disabled={loading}
@@ -347,26 +347,26 @@ export default function CreateDealSheet({
                     setExpectedCloseDate(e.target.value)
                   }
                 />
-              </OrbitField>
+              </GunimiField>
             </div>
           </div>
         </div>
 
         <SheetFooter>
-          <OrbitButton
+          <GunimiButton
             variant="secondary"
             disabled={loading}
             onClick={handleClose}
           >
             {t("common.cancel")}
-          </OrbitButton>
+          </GunimiButton>
 
-          <OrbitButton
+          <GunimiButton
             loading={loading}
             onClick={handleSubmit}
           >
             {t("deals.createOpportunity")}
-          </OrbitButton>
+          </GunimiButton>
         </SheetFooter>
       </SheetContent>
     </Sheet>

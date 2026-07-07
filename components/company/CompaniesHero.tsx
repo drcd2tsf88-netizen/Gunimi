@@ -3,14 +3,14 @@
 import { useState }
 from "react";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import GunimiSection
+from "@/components/layout/GunimiSection";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
-import OrbitButton
-from "@/components/ui/OrbitButton";
+import GunimiButton
+from "@/components/ui/GunimiButton";
 
 import CreateOrganizationModal
 from "./CreateOrganizationModal";
@@ -29,8 +29,8 @@ export default function CompaniesHero() {
 
   return (
     <>
-      <OrbitSection>
-        <OrbitHeading
+      <GunimiSection>
+        <GunimiHeading
           badge={t(
             "companies.organizationIntelligence"
           )}
@@ -42,13 +42,13 @@ export default function CompaniesHero() {
           )}
         />
 
-        <OrbitButton
+        <GunimiButton
           onClick={() => setOpen(true)}
           className="mt-6"
         >
           {t("companies.createOrganization")}
-        </OrbitButton>
-      </OrbitSection>
+        </GunimiButton>
+      </GunimiSection>
 
       <CreateOrganizationModal
         open={open}

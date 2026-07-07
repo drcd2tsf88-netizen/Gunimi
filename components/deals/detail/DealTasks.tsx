@@ -4,10 +4,10 @@ import Link from "next/link";
 import { AlertCircle, CheckSquare2, Clock, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import type { DealRelatedTask } from "@/server/actions/deals/getDealRelatedTasks";
 
@@ -36,15 +36,15 @@ export default function DealTasks({ tasks, contactId }: Props) {
   const tTasks = useTranslations("tasks");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("relatedTasksBadge")}
         title={t("relatedTasks")}
         subtitle={t("relatedTasksSubtitle")}
       />
 
       {tasks.length === 0 ? (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noRelatedTasks")}
           description={t("noRelatedTasksDescription")}
           icon={CheckSquare2}
@@ -69,7 +69,7 @@ export default function DealTasks({ tasks, contactId }: Props) {
               new Date(task.due_date) < NOW;
 
             return (
-              <OrbitCard key={task.id} className="p-4">
+              <GunimiCard key={task.id} className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex min-w-0 flex-1 items-start gap-2.5">
                     {task.priority === "high" && (
@@ -109,11 +109,11 @@ export default function DealTasks({ tasks, contactId }: Props) {
                     </span>
                   </div>
                 </div>
-              </OrbitCard>
+              </GunimiCard>
             );
           })}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

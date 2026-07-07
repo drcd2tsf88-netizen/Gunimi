@@ -16,7 +16,7 @@ import {
   Zap,
 } from "lucide-react";
 
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import { isMilestone, getImportance } from "@/lib/memory/importance";
 import type { MemoryImportance } from "@/lib/memory/types";
 import type { WorkspaceActivity } from "@/types/activity";
@@ -83,7 +83,7 @@ export default function EntityMemoryPanel({ activities }: Props) {
   if (milestones.length === 0) return null;
 
   return (
-    <OrbitCard className="flex flex-col">
+    <GunimiCard className="flex flex-col">
       <div className="border-b border-white/[0.06] px-5 py-4">
         <p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">
           {t("entityBadge")}
@@ -131,6 +131,6 @@ export default function EntityMemoryPanel({ activities }: Props) {
           );
         })}
       </div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }

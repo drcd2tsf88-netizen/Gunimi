@@ -10,9 +10,9 @@ import toast from "react-hot-toast";
 
 import { updateWorkspacePreferences, WorkspacePreferences } from "@/server/actions/workspace/updateWorkspacePreferences";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiButton from "@/components/ui/GunimiButton";
 
 import {
   Select,
@@ -93,18 +93,18 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
         <p className="mt-1 text-sm text-white/40">{t("preferencesSubtitle")}</p>
       </div>
 
-      <OrbitCard className="p-6">
+      <GunimiCard className="p-6">
         <div className="grid gap-5 sm:grid-cols-2">
-          <OrbitField label={t("language")}>
+          <GunimiField label={t("language")}>
             <div className="flex h-10 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3">
               <span className="flex-1 text-sm text-white/25">{t("languageComingSoon")}</span>
               <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-300">
                 {t("comingSoon")}
               </span>
             </div>
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("currency")}>
+          <GunimiField label={t("currency")}>
             <Select value={currency} onValueChange={setCurrency} disabled={!canEdit || isPending}>
               <SelectTrigger>
                 <SelectValue />
@@ -115,9 +115,9 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
                 ))}
               </SelectContent>
             </Select>
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("timezone")}>
+          <GunimiField label={t("timezone")}>
             <Select value={timezone} onValueChange={setTimezone} disabled={!canEdit || isPending}>
               <SelectTrigger>
                 <SelectValue />
@@ -128,9 +128,9 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
                 ))}
               </SelectContent>
             </Select>
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("dateFormat")}>
+          <GunimiField label={t("dateFormat")}>
             <Select value={dateFormat} onValueChange={setDateFormat} disabled={!canEdit || isPending}>
               <SelectTrigger>
                 <SelectValue />
@@ -141,17 +141,17 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
                 ))}
               </SelectContent>
             </Select>
-          </OrbitField>
+          </GunimiField>
         </div>
 
         {canEdit && (
           <div className="mt-6 flex justify-end">
-            <OrbitButton onClick={handleSave} loading={isPending}>
+            <GunimiButton onClick={handleSave} loading={isPending}>
               {isPending ? t("saving") : t("saveChanges")}
-            </OrbitButton>
+            </GunimiButton>
           </div>
         )}
-      </OrbitCard>
+      </GunimiCard>
     </div>
   );
 }

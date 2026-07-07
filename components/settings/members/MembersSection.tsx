@@ -15,9 +15,9 @@ import { revokeInvite } from "@/server/actions/workspace/revokeInvite";
 
 import { WorkspaceInvite } from "@/server/actions/workspace/getWorkspaceInvites";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import {
   Dialog,
@@ -96,17 +96,17 @@ export default function MembersSection({ members, invites, currentUserId, curren
         </div>
 
         {canInvite && (
-          <OrbitButton onClick={() => setInviteOpen(true)}>
+          <GunimiButton onClick={() => setInviteOpen(true)}>
             <UserPlus size={14} />
             {t("inviteMember")}
-          </OrbitButton>
+          </GunimiButton>
         )}
       </div>
 
       {/* MEMBERS LIST */}
-      <OrbitCard className="p-5">
+      <GunimiCard className="p-5">
         {members.length === 0 ? (
-          <OrbitEmptyState
+          <GunimiEmptyState
             icon={Users}
             title={t("noMembers")}
             description={t("noMembersDescription")}
@@ -124,7 +124,7 @@ export default function MembersSection({ members, invites, currentUserId, curren
             ))}
           </div>
         )}
-      </OrbitCard>
+      </GunimiCard>
 
       {/* PENDING INVITES */}
       {invites.length > 0 && (
@@ -133,7 +133,7 @@ export default function MembersSection({ members, invites, currentUserId, curren
             {t("pendingInvites")} · {invites.length}
           </p>
 
-          <OrbitCard className="divide-y divide-white/[0.05] p-0 overflow-hidden">
+          <GunimiCard className="divide-y divide-white/[0.05] p-0 overflow-hidden">
             {invites.map((invite) => (
               <div
                 key={invite.id}
@@ -159,18 +159,18 @@ export default function MembersSection({ members, invites, currentUserId, curren
                 </span>
 
                 {canInvite && (
-                  <OrbitButton
+                  <GunimiButton
                     variant="secondary"
                     className="h-8 px-3 text-xs"
                     disabled={isPending}
                     onClick={() => handleRevoke(invite.id)}
                   >
                     {t("revokeInvite")}
-                  </OrbitButton>
+                  </GunimiButton>
                 )}
               </div>
             ))}
-          </OrbitCard>
+          </GunimiCard>
         </div>
       )}
 
@@ -192,12 +192,12 @@ export default function MembersSection({ members, invites, currentUserId, curren
           </DialogHeader>
 
           <DialogFooter className="mt-6">
-            <OrbitButton variant="secondary" onClick={() => setRemovingId(null)}>
+            <GunimiButton variant="secondary" onClick={() => setRemovingId(null)}>
               {t("cancel")}
-            </OrbitButton>
-            <OrbitButton variant="danger" loading={isPending} onClick={handleRemoveConfirm}>
+            </GunimiButton>
+            <GunimiButton variant="danger" loading={isPending} onClick={handleRemoveConfirm}>
               {t("remove")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -3,11 +3,16 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { syncEmailConnection } from "@/lib/email/sync";
+import { ratelimit } from "@/lib/ratelimit";
 
 export async function POST() {
   const [user, workspace] = await Promise.all([getUser(), getCurrentWorkspace()]);
 
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { success } = await ratelimit.limit(user.id);
+  if (!success) return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+
   if (!workspace) return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
 
   const { data: connection, error: connError } = await supabaseAdmin

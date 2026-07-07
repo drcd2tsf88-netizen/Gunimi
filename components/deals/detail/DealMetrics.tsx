@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import GunimiSection
+from "@/components/layout/GunimiSection";
 
-import OrbitStatCard
-from "@/components/ui/OrbitStatCard";
+import GunimiStatCard
+from "@/components/ui/GunimiStatCard";
 
 import {
   TrendingUp,
@@ -44,7 +44,7 @@ export default function DealMetrics({
       ) / 100
     );
 
-  const [now] = useState(Date.now);
+  const [now] = useState(() => Date.now());
 
   const daysOpen =
     Math.max(
@@ -61,7 +61,7 @@ export default function DealMetrics({
     );
 
   return (
-    <OrbitSection>
+    <GunimiSection>
       <div
         className="
           grid
@@ -71,13 +71,13 @@ export default function DealMetrics({
           xl:grid-cols-4
         "
       >
-        <OrbitStatCard
+        <GunimiStatCard
           title={t("value")}
           value={formatCurrency(Number(deal.value || 0))}
           icon={TrendingUp}
         />
 
-        <OrbitStatCard
+        <GunimiStatCard
           title={t(
             "probability"
           )}
@@ -85,7 +85,7 @@ export default function DealMetrics({
           icon={Target}
         />
 
-        <OrbitStatCard
+        <GunimiStatCard
           title={t(
             "expectedRevenue"
           )}
@@ -93,7 +93,7 @@ export default function DealMetrics({
           icon={Activity}
         />
 
-        <OrbitStatCard
+        <GunimiStatCard
           title={t(
             "daysOpen"
           )}
@@ -101,6 +101,6 @@ export default function DealMetrics({
           icon={Calendar}
         />
       </div>
-    </OrbitSection>
+    </GunimiSection>
   );
 }

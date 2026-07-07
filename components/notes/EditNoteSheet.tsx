@@ -17,10 +17,10 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiTextarea from "@/components/ui/GunimiTextarea";
 
 type Note = {
   id: string;
@@ -103,33 +103,33 @@ export default function EditNoteSheet({
         </SheetHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
-          <OrbitField label={t("noteTitlePlaceholder")}>
-            <OrbitInput
+          <GunimiField label={t("noteTitlePlaceholder")}>
+            <GunimiInput
               value={title}
               disabled={isPending}
               placeholder={t("noteTitlePlaceholder")}
               onChange={(e) => setTitle(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("writePlaceholder")}>
-            <OrbitTextarea
+          <GunimiField label={t("writePlaceholder")}>
+            <GunimiTextarea
               value={content}
               disabled={isPending}
               placeholder={t("writePlaceholder")}
               className="min-h-[200px]"
               onChange={(e) => setContent(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
         </div>
 
         <SheetFooter>
-          <OrbitButton variant="secondary" disabled={isPending} onClick={handleClose}>
+          <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
-          </OrbitButton>
-          <OrbitButton loading={isPending} onClick={handleSave}>
+          </GunimiButton>
+          <GunimiButton loading={isPending} onClick={handleSave}>
             {tc("save")}
-          </OrbitButton>
+          </GunimiButton>
         </SheetFooter>
       </SheetContent>
     </Sheet>

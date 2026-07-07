@@ -7,7 +7,7 @@ import { XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiButton from "@/components/ui/GunimiButton";
 
 function Dialog(
   props: React.ComponentProps<
@@ -167,7 +167,7 @@ function DialogContent({
           <DialogPrimitive.Close
             asChild
           >
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               className="
                 absolute
@@ -193,7 +193,7 @@ function DialogContent({
                   "common.close"
                 )}
               </span>
-            </OrbitButton>
+            </GunimiButton>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>

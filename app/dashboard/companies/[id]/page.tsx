@@ -6,7 +6,7 @@ import { getCompanyNotes } from "@/server/actions/company/getCompanyNotes";
 import { getCompanyEmails } from "@/server/actions/company/getCompanyEmails";
 import { getTranslations } from "next-intl/server";
 
-import OrbitBreadcrumbs from "@/components/ui/OrbitBreadcrumbs";
+import GunimiBreadcrumbs from "@/components/ui/GunimiBreadcrumbs";
 import CompanyHero from "@/components/company/CompanyHero";
 import CompanyMetrics from "@/components/company/CompanyMetrics";
 import CompanyContacts from "@/components/company/CompanyContacts";
@@ -40,7 +40,7 @@ export default async function CompanyPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
-      <OrbitBreadcrumbs
+      <GunimiBreadcrumbs
         items={[
           { label: t("breadcrumbCompanies"), href: "/dashboard/companies" },
           { label: company.name },

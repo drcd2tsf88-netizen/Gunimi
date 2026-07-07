@@ -16,7 +16,7 @@ import Image from "next/image";
 
 import { updateMemberRole } from "@/server/actions/workspace/updateMemberRole";
 
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiButton from "@/components/ui/GunimiButton";
 
 import {
   Select,
@@ -156,14 +156,14 @@ export default function MemberRow({ member, currentUserId, currentUserRole, onRe
         )}
 
         {canRemove && (
-          <OrbitButton
+          <GunimiButton
             variant="danger"
             className="h-8 w-8 p-0"
             onClick={() => onRemoveRequest(member.id, name)}
             disabled={isPending}
           >
             <Trash2 size={13} />
-          </OrbitButton>
+          </GunimiButton>
         )}
       </div>
     </div>

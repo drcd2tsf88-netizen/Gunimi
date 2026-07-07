@@ -8,14 +8,14 @@ from "@radix-ui/react-dialog";
 import toast
 from "react-hot-toast";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitInput
-from "@/components/ui/OrbitInput";
+import GunimiInput
+from "@/components/ui/GunimiInput";
 
-import OrbitTextarea
-from "@/components/ui/OrbitTextarea";
+import GunimiTextarea
+from "@/components/ui/GunimiTextarea";
 
 import { createCompany }
 from "@/server/actions/company/createCompanies";
@@ -158,7 +158,7 @@ export default function CreateOrganizationModal({
             -translate-y-1/2
           "
         >
-          <OrbitCard
+          <GunimiCard
             className="
               p-6
             "
@@ -182,7 +182,7 @@ export default function CreateOrganizationModal({
                 gap-4
               "
             >
-              <OrbitInput
+              <GunimiInput
                 placeholder={t(
                   "companies.organizationName"
                 )}
@@ -194,7 +194,7 @@ export default function CreateOrganizationModal({
                 }
               />
 
-              <OrbitInput
+              <GunimiInput
                 placeholder={t(
                   "companies.website"
                 )}
@@ -214,7 +214,7 @@ export default function CreateOrganizationModal({
                   md:grid-cols-2
                 "
               >
-                <OrbitInput
+                <GunimiInput
                   placeholder={t(
                     "companies.industry"
                   )}
@@ -226,7 +226,7 @@ export default function CreateOrganizationModal({
                   }
                 />
 
-                <OrbitInput
+                <GunimiInput
                   placeholder={t(
                     "companies.country"
                   )}
@@ -239,7 +239,7 @@ export default function CreateOrganizationModal({
                 />
               </div>
 
-              <OrbitInput
+              <GunimiInput
                 type="number"
                 placeholder={t(
                   "companies.annualValue"
@@ -254,7 +254,7 @@ export default function CreateOrganizationModal({
                 }
               />
 
-              <OrbitTextarea
+              <GunimiTextarea
                 placeholder={t(
                   "companies.notes"
                 )}
@@ -321,7 +321,7 @@ export default function CreateOrganizationModal({
                 </button>
               </div>
             </div>
-          </OrbitCard>
+          </GunimiCard>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

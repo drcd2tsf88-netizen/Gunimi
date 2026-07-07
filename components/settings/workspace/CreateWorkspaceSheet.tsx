@@ -17,9 +17,9 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitInput from "@/components/ui/OrbitInput";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiInput from "@/components/ui/GunimiInput";
 
 type Props = {
   open: boolean;
@@ -72,24 +72,24 @@ export default function CreateWorkspaceSheet({ open, onOpenChange }: Props) {
         </SheetHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
-          <OrbitField label={t("workspaceName")}>
-            <OrbitInput
+          <GunimiField label={t("workspaceName")}>
+            <GunimiInput
               value={name}
               disabled={isPending}
               placeholder={t("workspaceNamePlaceholder")}
               onChange={(e) => setName(e.target.value)}
               autoFocus
             />
-          </OrbitField>
+          </GunimiField>
         </div>
 
         <SheetFooter>
-          <OrbitButton variant="secondary" disabled={isPending} onClick={handleClose}>
+          <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
-          </OrbitButton>
-          <OrbitButton loading={isPending} disabled={!name.trim()} onClick={handleCreate}>
+          </GunimiButton>
+          <GunimiButton loading={isPending} disabled={!name.trim()} onClick={handleCreate}>
             {t("createWorkspace")}
-          </OrbitButton>
+          </GunimiButton>
         </SheetFooter>
       </SheetContent>
     </Sheet>

@@ -4,11 +4,11 @@ import {
   useTranslations,
 } from "next-intl";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
 import { Deal } from "@/types/deal";
 
@@ -25,12 +25,12 @@ export default function DealOverview({
     );
 
   return (
-    <OrbitCard
+    <GunimiCard
       className="
         p-6
       "
     >
-      <OrbitHeading
+      <GunimiHeading
         title={t(
           "overview"
         )}
@@ -117,6 +117,6 @@ export default function DealOverview({
           </div>
         )}
       </div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }

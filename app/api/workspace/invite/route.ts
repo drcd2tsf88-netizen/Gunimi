@@ -12,6 +12,9 @@ from "@/lib/email/sendWorkspaceInvites";
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
 
+import { ratelimit } from "@/lib/ratelimit";
+import { logger } from "@/lib/logger";
+
 const ALLOWED_ROLES = [
   "admin",
   "member",
@@ -111,6 +114,11 @@ export async function POST(
           status: 401,
         }
       );
+    }
+
+    const { success: rateLimitOk } = await ratelimit.limit(user.id);
+    if (!rateLimitOk) {
+      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
     }
 
     // MEMBERSHIP
@@ -318,10 +326,7 @@ export async function POST(
     if (
       inviteError
     ) {
-      console.error(
-        "INVITE ERROR",
-        inviteError
-      );
+      logger.error("Invite creation failed", inviteError);
 
       return NextResponse.json(
         {
@@ -362,10 +367,7 @@ await sendWorkspaceInvite({
       invite,
     });
   } catch (error) {
-    console.error(
-      "INVITE ROUTE ERROR",
-      error
-    );
+    logger.error("Invite route error", error);
 
     return NextResponse.json(
       {

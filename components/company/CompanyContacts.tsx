@@ -10,17 +10,17 @@ import {
   Phone,
 } from "lucide-react";
 
-import OrbitSection
-from "@/components/layout/OrbitSection";
+import GunimiSection
+from "@/components/layout/GunimiSection";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState
+from "@/components/ui/GunimiEmptyState";
 
 import getRelativeTime
 from "@/lib/utils/getRelativeTime";
@@ -64,15 +64,15 @@ export default function CompanyContacts({
   const t = useTranslations("companies");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("relationshipIntelligence")}
         title={t("activeRelationships")}
         subtitle={t("contactsSubtitle")}
       />
 
       {contacts.length === 0 && (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noRelationships")}
           description={t("noRelationshipsDescription")}
           icon={Users}
@@ -92,7 +92,7 @@ export default function CompanyContacts({
         >
           {contacts.map(
             (contact) => (
-              <OrbitCard
+              <GunimiCard
                 key={contact.id}
                 className="
                   p-5
@@ -276,11 +276,11 @@ export default function CompanyContacts({
                     {contact.notes}
                   </p>
                 )}
-              </OrbitCard>
+              </GunimiCard>
             )
           )}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

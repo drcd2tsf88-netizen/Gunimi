@@ -13,14 +13,14 @@ import {
   useTranslations,
 } from "next-intl";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState
+from "@/components/ui/GunimiEmptyState";
 
 import { Deal } from "@/types/deal";
 
@@ -42,12 +42,12 @@ export default function DealRelations({
     deal.owner;
 
   return (
-    <OrbitCard
+    <GunimiCard
       className="
         p-6
       "
     >
-      <OrbitHeading
+      <GunimiHeading
         title={t(
           "relationships"
         )}
@@ -59,7 +59,7 @@ export default function DealRelations({
             mt-6
           "
         >
-          <OrbitEmptyState
+          <GunimiEmptyState
             title={t(
               "noRelationships"
             )}
@@ -274,6 +274,6 @@ export default function DealRelations({
           )}
         </div>
       )}
-    </OrbitCard>
+    </GunimiCard>
   );
 }

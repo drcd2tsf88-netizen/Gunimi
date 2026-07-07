@@ -45,21 +45,22 @@ Focus on productivity, context and intelligence.
 
 ---
 
-# Orbit OS Design System
+# Gunimi Design Language (GDL)
 
-Always use existing Orbit OS components.
+Always use existing GDL components.
 
 Prefer:
 
-- OrbitPage
-- OrbitSection
-- OrbitHeading
-- OrbitCard
-- OrbitMetricCard
-- OrbitTimeline
-- OrbitDialog
-- OrbitTable
-- OrbitEmptyState
+- GunimiSection
+- GunimiHeading
+- GunimiCard
+- GunimiMetricCard
+- GunimiStatCard
+- GunimiButton
+- GunimiInput
+- GunimiField
+- GunimiEmptyState
+- GunimiWorkspaceTabs
 
 Do not create duplicate UI systems.
 

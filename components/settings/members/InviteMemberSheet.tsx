@@ -8,9 +8,9 @@ import toast from "react-hot-toast";
 
 import { createWorkspaceInvite } from "@/server/actions/workspace/createWorkspaceInvite";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitInput from "@/components/ui/OrbitInput";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiInput from "@/components/ui/GunimiInput";
 
 import {
   Select,
@@ -86,8 +86,8 @@ export default function InviteMemberSheet({ open, onOpenChange, onInvited }: Pro
         </SheetHeader>
 
         <div className="flex-1 px-6 py-6 space-y-4">
-          <OrbitField label={t("emailAddress")}>
-            <OrbitInput
+          <GunimiField label={t("emailAddress")}>
+            <GunimiInput
               type="email"
               value={email}
               disabled={isPending}
@@ -95,9 +95,9 @@ export default function InviteMemberSheet({ open, onOpenChange, onInvited }: Pro
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("inviteRole")}>
+          <GunimiField label={t("inviteRole")}>
             <Select
               value={role}
               onValueChange={(v) => setRole(v as "admin" | "member")}
@@ -111,16 +111,16 @@ export default function InviteMemberSheet({ open, onOpenChange, onInvited }: Pro
                 <SelectItem value="admin">{t("roleAdmin")}</SelectItem>
               </SelectContent>
             </Select>
-          </OrbitField>
+          </GunimiField>
         </div>
 
         <SheetFooter>
-          <OrbitButton variant="secondary" disabled={isPending} onClick={handleClose}>
+          <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {t("cancel")}
-          </OrbitButton>
-          <OrbitButton loading={isPending} onClick={handleSubmit}>
+          </GunimiButton>
+          <GunimiButton loading={isPending} onClick={handleSubmit}>
             {t("sendInvite")}
-          </OrbitButton>
+          </GunimiButton>
         </SheetFooter>
       </SheetContent>
     </Sheet>

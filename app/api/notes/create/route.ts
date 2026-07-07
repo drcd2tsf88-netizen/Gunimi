@@ -15,6 +15,7 @@ import { ratelimit }
 from "@/lib/ratelimit";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function POST(
   req: Request
@@ -126,17 +127,13 @@ export async function POST(
       });
 
     if (activityError) {
-      console.error(
-        "note activity insert failed:",
-        activityError
-      );
+      logger.error("Note activity insert failed", activityError);
     }
 
     return successResponse();
 
   } catch (error) {
-
-    console.error(error);
+    logger.error("Notes creation failed", error);
 
     return errorResponse(
       "Server error"

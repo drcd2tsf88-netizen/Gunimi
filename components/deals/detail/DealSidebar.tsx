@@ -15,7 +15,7 @@ import {
 
 import { useTranslations } from "next-intl";
 
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
@@ -145,7 +145,7 @@ export default function DealSidebar({ deal }: Props) {
     <div className="space-y-4">
       {/* DEAL HEALTH */}
 
-      <OrbitCard className="p-5">
+      <GunimiCard className="p-5">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <ShieldCheck size={13} className={healthColor.text} />
@@ -173,11 +173,11 @@ export default function DealSidebar({ deal }: Props) {
             {t("healthScoreHint")}
           </p>
         </div>
-      </OrbitCard>
+      </GunimiCard>
 
       {/* DEAL METRICS */}
 
-      <OrbitCard className="p-5">
+      <GunimiCard className="p-5">
         <p
           className="
             text-[10px]
@@ -269,12 +269,12 @@ export default function DealSidebar({ deal }: Props) {
             </p>
           </div>
         )}
-      </OrbitCard>
+      </GunimiCard>
 
       {/* RELATIONS */}
 
       {hasRelations && (
-        <OrbitCard className="p-5">
+        <GunimiCard className="p-5">
           <p
             className="
               text-[10px]
@@ -456,7 +456,7 @@ export default function DealSidebar({ deal }: Props) {
               </div>
             )}
           </div>
-        </OrbitCard>
+        </GunimiCard>
       )}
     </div>
   );

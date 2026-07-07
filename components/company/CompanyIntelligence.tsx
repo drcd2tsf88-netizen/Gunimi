@@ -10,7 +10,7 @@ import {
   Clock,
   Lightbulb,
 } from "lucide-react";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import { Company } from "@/types/company";
 import { Deal } from "@/types/deal";
 import { Contact } from "@/types/contact";
@@ -139,7 +139,7 @@ export default function CompanyIntelligence({ company, deals, contacts }: Props)
 
   return (
     <div className="px-6 pb-8 lg:px-8">
-      <OrbitCard className="p-5">
+      <GunimiCard className="p-5">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-violet-500/20 bg-violet-500/10">
@@ -178,7 +178,7 @@ export default function CompanyIntelligence({ company, deals, contacts }: Props)
             <p className="mt-0.5 text-xs leading-relaxed text-white/55">{nextAction}</p>
           </div>
         </div>
-      </OrbitCard>
+      </GunimiCard>
     </div>
   );
 }

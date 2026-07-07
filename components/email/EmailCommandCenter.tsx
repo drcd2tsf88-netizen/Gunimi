@@ -23,10 +23,10 @@ import {
 
 import toast from "react-hot-toast";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitStatCard from "@/components/ui/OrbitStatCard";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiStatCard from "@/components/ui/GunimiStatCard";
+import GunimiButton from "@/components/ui/GunimiButton";
 import EmailConnectionCard from "@/components/email/EmailConnectionCard";
 import type { EmailConnection, EmailThread } from "@/types/email";
 
@@ -258,7 +258,7 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
         <div className="border-t border-white/[0.06] px-6 py-4">
           <p className="mb-3 text-[10px] uppercase tracking-[0.15em] text-zinc-500">{t("actionsLabel")}</p>
           <div className="flex flex-wrap gap-2">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               loading={creatingTask}
               onClick={handleCreateTask}
@@ -266,8 +266,8 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
             >
               <CheckSquare2 size={13} />
               {t("createTask")}
-            </OrbitButton>
-            <OrbitButton
+            </GunimiButton>
+            <GunimiButton
               variant="secondary"
               loading={creatingNote}
               onClick={handleCreateNote}
@@ -275,21 +275,21 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
             >
               <FileText size={13} />
               {t("createNote")}
-            </OrbitButton>
+            </GunimiButton>
             {thread.contact && (
               <Link href={`/dashboard/contacts/${thread.contact.id}`}>
-                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                <GunimiButton variant="secondary" className="gap-2 text-xs">
                   <User size={13} />
                   {t("viewContact")}
-                </OrbitButton>
+                </GunimiButton>
               </Link>
             )}
             {thread.company && (
               <Link href={`/dashboard/companies/${thread.company.id}`}>
-                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                <GunimiButton variant="secondary" className="gap-2 text-xs">
                   <Building2 size={13} />
                   {t("viewCompany")}
-                </OrbitButton>
+                </GunimiButton>
               </Link>
             )}
           </div>
@@ -402,7 +402,7 @@ type WidgetProps = {
 
 function Widget({ icon: Icon, iconColor, iconBg, title, subtitle, count, children }: WidgetProps) {
   return (
-    <OrbitCard className="flex h-full flex-col">
+    <GunimiCard className="flex h-full flex-col">
       <div className="flex items-center gap-3 border-b border-white/[0.05] px-5 py-4">
         <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border ${iconBg}`}>
           <Icon size={14} className={iconColor} />
@@ -418,7 +418,7 @@ function Widget({ icon: Icon, iconColor, iconBg, title, subtitle, count, childre
         )}
       </div>
       <div className="flex-1">{children}</div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }
 
@@ -725,13 +725,13 @@ function NoConnectionState({
 }) {
   return (
     <div className="space-y-8">
-      <OrbitHeading
+      <GunimiHeading
         badge={t("commandCenterBadge")}
         title={t("commandCenterTitle")}
         subtitle={t("commandCenterSubtitle")}
       />
 
-      <OrbitCard className="p-10">
+      <GunimiCard className="p-10">
         <div className="flex flex-col items-center gap-5 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.02]">
             <Mail size={26} className="text-zinc-500" />
@@ -743,12 +743,12 @@ function NoConnectionState({
             </p>
           </div>
           <a href="/api/email/connect/gmail">
-            <OrbitButton variant="primary" className="mt-2">
+            <GunimiButton variant="primary" className="mt-2">
               {t("connectGmail")}
-            </OrbitButton>
+            </GunimiButton>
           </a>
         </div>
-      </OrbitCard>
+      </GunimiCard>
 
       <div>
         <p className="mb-4 text-[11px] uppercase tracking-[0.15em] text-zinc-500">
@@ -820,25 +820,25 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
       <div className="space-y-6">
         {/* HEADER */}
         <div className="flex items-start justify-between gap-4">
-          <OrbitHeading
+          <GunimiHeading
             badge={t("commandCenterBadge")}
             title={t("commandCenterTitle")}
             subtitle={t("commandCenterSubtitle")}
           />
           <a href="/api/email/connect/gmail" className="mt-1 shrink-0">
-            <OrbitButton variant="secondary" className="gap-2 text-sm">
+            <GunimiButton variant="secondary" className="gap-2 text-sm">
               <Mail size={14} />
               {t("addEmail")}
-            </OrbitButton>
+            </GunimiButton>
           </a>
         </div>
 
         {/* STATS STRIP */}
         <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-          <OrbitStatCard title={t("statsTotalThreads")} value={threads.length} icon={MessageSquare} animated />
-          <OrbitStatCard title={t("statsUnread")} value={unreadThreads.length} icon={Mail} animated />
-          <OrbitStatCard title={t("statsLinkedContacts")} value={linkedContacts.length} icon={User} animated />
-          <OrbitStatCard title={t("statsLinkedCompanies")} value={linkedCompanies.length} icon={Building2} animated />
+          <GunimiStatCard title={t("statsTotalThreads")} value={threads.length} icon={MessageSquare} animated />
+          <GunimiStatCard title={t("statsUnread")} value={unreadThreads.length} icon={Mail} animated />
+          <GunimiStatCard title={t("statsLinkedContacts")} value={linkedContacts.length} icon={User} animated />
+          <GunimiStatCard title={t("statsLinkedCompanies")} value={linkedCompanies.length} icon={Building2} animated />
         </div>
 
         {/* ROW 1: Unread + Follow-Up */}

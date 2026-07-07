@@ -17,7 +17,7 @@ import {
 
 import toast from "react-hot-toast";
 
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiButton from "@/components/ui/GunimiButton";
 import type { EmailThread } from "@/types/email";
 import { createTask } from "@/server/actions/tasks/createTask";
 import { createNote } from "@/server/actions/notes/createNote";
@@ -211,7 +211,7 @@ function ThreadPanel({ thread, onClose }: PanelProps) {
         <div className="border-t border-white/[0.06] px-6 py-4">
           <p className="mb-3 text-[10px] uppercase tracking-[0.15em] text-zinc-500">{t("actionsLabel")}</p>
           <div className="flex flex-wrap gap-2">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               loading={creatingTask}
               onClick={handleCreateTask}
@@ -219,8 +219,8 @@ function ThreadPanel({ thread, onClose }: PanelProps) {
             >
               <CheckSquare2 size={13} />
               {t("createTask")}
-            </OrbitButton>
-            <OrbitButton
+            </GunimiButton>
+            <GunimiButton
               variant="secondary"
               loading={creatingNote}
               onClick={handleCreateNote}
@@ -228,21 +228,21 @@ function ThreadPanel({ thread, onClose }: PanelProps) {
             >
               <FileText size={13} />
               {t("createNote")}
-            </OrbitButton>
+            </GunimiButton>
             {thread.contact && (
               <Link href={`/dashboard/contacts/${thread.contact.id}`}>
-                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                <GunimiButton variant="secondary" className="gap-2 text-xs">
                   <User size={13} />
                   {t("viewContact")}
-                </OrbitButton>
+                </GunimiButton>
               </Link>
             )}
             {thread.company && (
               <Link href={`/dashboard/companies/${thread.company.id}`}>
-                <OrbitButton variant="secondary" className="gap-2 text-xs">
+                <GunimiButton variant="secondary" className="gap-2 text-xs">
                   <Building2 size={13} />
                   {t("viewCompany")}
-                </OrbitButton>
+                </GunimiButton>
               </Link>
             )}
           </div>

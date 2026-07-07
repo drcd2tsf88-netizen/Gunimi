@@ -13,8 +13,8 @@ import toast from "react-hot-toast";
 import { leaveWorkspace } from "@/server/actions/workspace/leaveWorkspace";
 import { deleteWorkspace } from "@/server/actions/workspace/deleteWorkspace";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitInput from "@/components/ui/OrbitInput";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiInput from "@/components/ui/GunimiInput";
 
 import {
   Dialog,
@@ -95,7 +95,7 @@ export default function DangerSection({ currentUserRole, workspaceName }: Props)
             </div>
           </div>
 
-          <OrbitButton
+          <GunimiButton
             variant="danger"
             className="shrink-0"
             disabled={isOwner}
@@ -103,7 +103,7 @@ export default function DangerSection({ currentUserRole, workspaceName }: Props)
             title={isOwner ? t("ownerCannotLeave") : undefined}
           >
             {t("leave")}
-          </OrbitButton>
+          </GunimiButton>
         </div>
 
         {/* DELETE WORKSPACE — owner only */}
@@ -122,13 +122,13 @@ export default function DangerSection({ currentUserRole, workspaceName }: Props)
               </div>
             </div>
 
-            <OrbitButton
+            <GunimiButton
               variant="danger"
               className="shrink-0"
               onClick={() => { setDeleteConfirm(""); setDeleteOpen(true); }}
             >
               {t("deleteWorkspace")}
-            </OrbitButton>
+            </GunimiButton>
           </div>
         )}
       </div>
@@ -145,12 +145,12 @@ export default function DangerSection({ currentUserRole, workspaceName }: Props)
           </DialogHeader>
 
           <DialogFooter className="mt-6">
-            <OrbitButton variant="secondary" disabled={isPending} onClick={() => setLeaveOpen(false)}>
+            <GunimiButton variant="secondary" disabled={isPending} onClick={() => setLeaveOpen(false)}>
               {t("cancel")}
-            </OrbitButton>
-            <OrbitButton variant="danger" loading={isPending} onClick={handleLeave}>
+            </GunimiButton>
+            <GunimiButton variant="danger" loading={isPending} onClick={handleLeave}>
               {t("leave")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -170,7 +170,7 @@ export default function DangerSection({ currentUserRole, workspaceName }: Props)
 
           <div className="mt-4 space-y-2">
             <p className="text-xs text-white/40">{t("typeToConfirm")}</p>
-            <OrbitInput
+            <GunimiInput
               value={deleteConfirm}
               onChange={(e) => setDeleteConfirm(e.target.value)}
               placeholder={t("confirmDeleteWord")}
@@ -179,21 +179,21 @@ export default function DangerSection({ currentUserRole, workspaceName }: Props)
           </div>
 
           <DialogFooter className="mt-6">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={isPending}
               onClick={() => { setDeleteOpen(false); setDeleteConfirm(""); }}
             >
               {t("cancel")}
-            </OrbitButton>
-            <OrbitButton
+            </GunimiButton>
+            <GunimiButton
               variant="danger"
               loading={isPending}
               disabled={deleteConfirm !== t("confirmDeleteWord")}
               onClick={handleDelete}
             >
               {isPending ? t("deleting") : t("deleteWorkspace")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import type { MemoryEvent, MemoryImportance } from "@/lib/memory/types";
 
 type Stats = {
@@ -228,33 +228,33 @@ export default function MemoryTimelineView({ timeline, milestones, stats }: Prop
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <OrbitCard className="p-4">
+        <GunimiCard className="p-4">
           <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
             {t("statTotal")}
           </p>
           <p className="mt-2 text-3xl font-bold text-white/90">{stats.total}</p>
-        </OrbitCard>
-        <OrbitCard className="p-4">
+        </GunimiCard>
+        <GunimiCard className="p-4">
           <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
             {t("statMilestones")}
           </p>
           <p className="mt-2 text-3xl font-bold text-violet-300">
             {stats.milestones}
           </p>
-        </OrbitCard>
-        <OrbitCard className="p-4">
+        </GunimiCard>
+        <GunimiCard className="p-4">
           <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
             {t("statCritical")}
           </p>
           <p className="mt-2 text-3xl font-bold text-rose-300">
             {stats.critical}
           </p>
-        </OrbitCard>
+        </GunimiCard>
       </div>
 
       {/* Milestones */}
       {milestones.length > 0 && (
-        <OrbitCard className="flex flex-col">
+        <GunimiCard className="flex flex-col">
           <div className="border-b border-white/[0.06] px-5 py-4">
             <p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">
               {t("milestonesBadge")}
@@ -270,11 +270,11 @@ export default function MemoryTimelineView({ timeline, milestones, stats }: Prop
               ))}
             </div>
           </div>
-        </OrbitCard>
+        </GunimiCard>
       )}
 
       {/* Full Timeline */}
-      <OrbitCard className="flex flex-col">
+      <GunimiCard className="flex flex-col">
         <div className="border-b border-white/[0.06] px-5 py-4">
           <p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">
             {t("timelineBadge")}
@@ -303,7 +303,7 @@ export default function MemoryTimelineView({ timeline, milestones, stats }: Prop
             ))}
           </div>
         )}
-      </OrbitCard>
+      </GunimiCard>
     </div>
   );
 }

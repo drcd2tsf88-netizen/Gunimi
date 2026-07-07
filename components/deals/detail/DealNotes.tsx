@@ -4,10 +4,10 @@ import Link from "next/link";
 import { FileText, User, Building2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import type { DealRelatedNote } from "@/server/actions/deals/getDealRelatedNotes";
 
@@ -21,15 +21,15 @@ export default function DealNotes({ notes, contactId, companyId }: Props) {
   const t = useTranslations("deals");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("relatedNotesBadge")}
         title={t("relatedNotes")}
         subtitle={t("relatedNotesSubtitle")}
       />
 
       {notes.length === 0 ? (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noRelatedNotes")}
           description={t("noRelatedNotesDescription")}
           icon={FileText}
@@ -59,7 +59,7 @@ export default function DealNotes({ notes, contactId, companyId }: Props) {
       ) : (
         <div className="mt-6 space-y-3">
           {notes.map((note) => (
-            <OrbitCard key={note.id} className="p-5">
+            <GunimiCard key={note.id} className="p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -91,10 +91,10 @@ export default function DealNotes({ notes, contactId, companyId }: Props) {
                   </span>
                 </div>
               </div>
-            </OrbitCard>
+            </GunimiCard>
           ))}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { CalendarClock, ExternalLink, MapPin, User } from "lucide-react";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import type { CalendarEventRow } from "@/types/calendar";
 
 type Props = {
@@ -42,7 +42,7 @@ export default function CalendarEventList({ events }: Props) {
 
   if (events.length === 0) {
     return (
-      <OrbitEmptyState
+      <GunimiEmptyState
         icon={CalendarClock}
         title={t("noEvents")}
         description={t("noEventsDescription")}
@@ -62,7 +62,7 @@ export default function CalendarEventList({ events }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.04 }}
           >
-            <OrbitCard className="p-5">
+            <GunimiCard className="p-5">
               <div className="flex items-start gap-4">
                 {/* Time column */}
                 <div className="w-16 shrink-0 text-right">
@@ -144,7 +144,7 @@ export default function CalendarEventList({ events }: Props) {
                   )}
                 </div>
               </div>
-            </OrbitCard>
+            </GunimiCard>
           </motion.div>
         );
       })}

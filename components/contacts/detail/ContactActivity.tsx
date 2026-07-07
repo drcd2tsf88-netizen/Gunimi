@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { Activity } from "lucide-react";
 import { useTranslations } from "next-intl";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { WorkspaceActivity } from "@/types/activity";
 
 type ActivityWithLinks = WorkspaceActivity & {
@@ -28,15 +28,15 @@ export default function ContactActivity({ activity }: Props) {
   const t = useTranslations("contacts");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("activityBadge")}
         title={t("activity")}
         subtitle={t("activitySubtitle")}
       />
 
       {activity.length === 0 ? (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noActivity")}
           description={t("noActivityDescription")}
           icon={Activity}
@@ -47,7 +47,7 @@ export default function ContactActivity({ activity }: Props) {
             const href = getEntityHref(item);
 
             const card = (
-              <OrbitCard className="p-4">
+              <GunimiCard className="p-4">
                 <div className="flex justify-between gap-4">
                   <div>
                     <h3 className="text-sm font-medium">{item.title}</h3>
@@ -59,7 +59,7 @@ export default function ContactActivity({ activity }: Props) {
                     {new Date(item.created_at).toLocaleDateString()}
                   </p>
                 </div>
-              </OrbitCard>
+              </GunimiCard>
             );
 
             return href ? (
@@ -76,6 +76,6 @@ export default function ContactActivity({ activity }: Props) {
           })}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

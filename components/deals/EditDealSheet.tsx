@@ -12,10 +12,10 @@ import toast from "react-hot-toast";
 import { updateDeal } from "@/server/actions/deals/updateDeal";
 import { deleteDeal } from "@/server/actions/deals/deleteDeal";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
-import OrbitField from "@/components/ui/OrbitField";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiTextarea from "@/components/ui/GunimiTextarea";
+import GunimiField from "@/components/ui/GunimiField";
 
 import {
   Sheet,
@@ -177,15 +177,15 @@ export default function EditDealSheet({
               {/* LEFT COLUMN */}
 
               <div className="space-y-5">
-                <OrbitField label={t("deals.opportunityName")}>
-                  <OrbitInput
+                <GunimiField label={t("deals.opportunityName")}>
+                  <GunimiInput
                     value={title}
                     disabled={loading}
                     onChange={(e) => setTitle(e.target.value)}
                   />
-                </OrbitField>
+                </GunimiField>
 
-                <OrbitField label={t("deals.company")}>
+                <GunimiField label={t("deals.company")}>
                   <Select
                     value={companyId}
                     onValueChange={(val) => {
@@ -207,9 +207,9 @@ export default function EditDealSheet({
                       ))}
                     </SelectContent>
                   </Select>
-                </OrbitField>
+                </GunimiField>
 
-                <OrbitField label={t("deals.contact")}>
+                <GunimiField label={t("deals.contact")}>
                   <Select
                     value={contactId}
                     onValueChange={setContactId}
@@ -228,23 +228,23 @@ export default function EditDealSheet({
                       ))}
                     </SelectContent>
                   </Select>
-                </OrbitField>
+                </GunimiField>
 
-                <OrbitField label={t("deals.description")}>
-                  <OrbitTextarea
+                <GunimiField label={t("deals.description")}>
+                  <GunimiTextarea
                     value={description}
                     disabled={loading}
                     onChange={(e) => setDescription(e.target.value)}
                     className="min-h-[100px]"
                   />
-                </OrbitField>
+                </GunimiField>
               </div>
 
               {/* RIGHT COLUMN */}
 
               <div className="space-y-5">
-                <OrbitField label={t("deals.opportunityValue")}>
-                  <OrbitInput
+                <GunimiField label={t("deals.opportunityValue")}>
+                  <GunimiInput
                     type="number"
                     min="0"
                     value={value}
@@ -252,9 +252,9 @@ export default function EditDealSheet({
                     placeholder="0"
                     onChange={(e) => setValue(e.target.value)}
                   />
-                </OrbitField>
+                </GunimiField>
 
-                <OrbitField
+                <GunimiField
                   label={`${t("deals.probability")} — ${probability}%`}
                 >
                   <div className="space-y-2 pt-1">
@@ -276,7 +276,7 @@ export default function EditDealSheet({
                       <span>100%</span>
                     </div>
                   </div>
-                </OrbitField>
+                </GunimiField>
 
                 {/* EXPECTED REVENUE */}
 
@@ -290,40 +290,40 @@ export default function EditDealSheet({
                   </p>
                 </div>
 
-                <OrbitField label={t("deals.expectedCloseDate")}>
-                  <OrbitInput
+                <GunimiField label={t("deals.expectedCloseDate")}>
+                  <GunimiInput
                     type="date"
                     value={expectedCloseDate}
                     disabled={loading}
                     onChange={(e) => setExpectedCloseDate(e.target.value)}
                   />
-                </OrbitField>
+                </GunimiField>
               </div>
             </div>
           </div>
 
           <SheetFooter>
-            <OrbitButton
+            <GunimiButton
               variant="danger"
               disabled={loading}
               onClick={() => setDeleteOpen(true)}
             >
               {t("deals.deleteOpportunity")}
-            </OrbitButton>
+            </GunimiButton>
 
             <div className="flex-1" />
 
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={loading}
               onClick={() => onOpenChange(false)}
             >
               {t("common.cancel")}
-            </OrbitButton>
+            </GunimiButton>
 
-            <OrbitButton loading={loading} onClick={handleSave}>
+            <GunimiButton loading={loading} onClick={handleSave}>
               {t("common.save")}
-            </OrbitButton>
+            </GunimiButton>
           </SheetFooter>
         </SheetContent>
       </Sheet>
@@ -341,21 +341,21 @@ export default function EditDealSheet({
           </DialogHeader>
 
           <DialogFooter>
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={deleting}
               onClick={() => setDeleteOpen(false)}
             >
               {t("common.cancel")}
-            </OrbitButton>
+            </GunimiButton>
 
-            <OrbitButton
+            <GunimiButton
               variant="danger"
               loading={deleting}
               onClick={handleDelete}
             >
               {t("deals.deleteOpportunity")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

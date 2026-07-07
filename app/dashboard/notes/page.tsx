@@ -18,14 +18,14 @@ import { getWorkspaceNotes } from "@/server/actions/notes/getWorkspaceNotes";
 import { createNote } from "@/server/actions/notes/createNote";
 import { deleteNote } from "@/server/actions/notes/deleteNote";
 
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
-import OrbitSkeleton from "@/components/ui/OrbitSkeleton";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitSection from "@/components/layout/OrbitSection";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiTextarea from "@/components/ui/GunimiTextarea";
+import GunimiSkeleton from "@/components/ui/GunimiSkeleton";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiSection from "@/components/layout/GunimiSection";
 import EditNoteSheet from "@/components/notes/EditNoteSheet";
 
 import {
@@ -130,20 +130,20 @@ export default function NotesPage() {
   return (
     <div className="space-y-8">
       {/* HEADER */}
-      <OrbitSection>
-        <OrbitHeading badge={t("badge")} title={t("title")} subtitle={t("subtitle")} />
-      </OrbitSection>
+      <GunimiSection>
+        <GunimiHeading badge={t("badge")} title={t("title")} subtitle={t("subtitle")} />
+      </GunimiSection>
 
       {/* CREATE */}
-      <OrbitSection>
-        <OrbitCard className="p-6">
+      <GunimiSection>
+        <GunimiCard className="p-6">
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-violet-300">
             <Sparkles size={12} />
             {t("newNote")}
           </div>
 
           <div className="mt-5 space-y-4">
-            <OrbitInput
+            <GunimiInput
               type="text"
               placeholder={t("noteTitlePlaceholder")}
               value={title}
@@ -151,31 +151,31 @@ export default function NotesPage() {
               onChange={(e) => setTitle(e.target.value)}
             />
 
-            <OrbitTextarea
+            <GunimiTextarea
               placeholder={t("writePlaceholder")}
               value={content}
               disabled={creating}
               onChange={(e) => setContent(e.target.value)}
             />
 
-            <OrbitButton onClick={handleCreate} loading={creating}>
+            <GunimiButton onClick={handleCreate} loading={creating}>
               <Plus size={14} />
               {t("createNote")}
-            </OrbitButton>
+            </GunimiButton>
           </div>
-        </OrbitCard>
-      </OrbitSection>
+        </GunimiCard>
+      </GunimiSection>
 
       {/* NOTES LIST */}
-      <OrbitSection>
+      <GunimiSection>
         {loading ? (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <OrbitSkeleton key={i} className="h-40" />
+              <GunimiSkeleton key={i} className="h-40" />
             ))}
           </div>
         ) : notes.length === 0 ? (
-          <OrbitEmptyState
+          <GunimiEmptyState
             icon={FileText}
             title={t("noNotes")}
             description={t("noNotesDescription")}
@@ -189,7 +189,7 @@ export default function NotesPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.04 }}
               >
-                <OrbitCard className="flex h-full flex-col p-5">
+                <GunimiCard className="flex h-full flex-col p-5">
                   <div className="flex items-start justify-between gap-3">
                     <h3 className="line-clamp-2 text-sm font-semibold leading-snug">
                       {note.title}
@@ -216,31 +216,31 @@ export default function NotesPage() {
                     </p>
 
                     <div className="mt-3 flex gap-2">
-                      <OrbitButton
+                      <GunimiButton
                         variant="secondary"
                         className="h-8 gap-1.5 px-3 text-xs"
                         onClick={() => setEditNote(note)}
                       >
                         <Pencil size={12} />
                         {tc("edit")}
-                      </OrbitButton>
+                      </GunimiButton>
 
-                      <OrbitButton
+                      <GunimiButton
                         variant="danger"
                         className="h-8 gap-1.5 px-3 text-xs"
                         onClick={() => setDeleteTarget(note)}
                       >
                         <Trash2 size={12} />
                         {tc("delete")}
-                      </OrbitButton>
+                      </GunimiButton>
                     </div>
                   </div>
-                </OrbitCard>
+                </GunimiCard>
               </motion.div>
             ))}
           </div>
         )}
-      </OrbitSection>
+      </GunimiSection>
 
       {/* Edit sheet */}
       {editNote && (
@@ -268,17 +268,17 @@ export default function NotesPage() {
           </DialogHeader>
 
           <DialogFooter className="mt-6">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={isDeleting}
               onClick={() => setDeleteTarget(null)}
             >
               {tc("cancel")}
-            </OrbitButton>
+            </GunimiButton>
 
-            <OrbitButton variant="danger" loading={isDeleting} onClick={handleDeleteConfirm}>
+            <GunimiButton variant="danger" loading={isDeleting} onClick={handleDeleteConfirm}>
               {tc("delete")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

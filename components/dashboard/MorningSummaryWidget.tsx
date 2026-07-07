@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Sparkles } from "lucide-react";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import type { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
 
 export type DashboardActivityItem = {
@@ -69,7 +69,7 @@ export default function MorningSummaryWidget({
   ];
 
   return (
-    <OrbitCard className="p-5">
+    <GunimiCard className="p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
@@ -142,6 +142,6 @@ export default function MorningSummaryWidget({
           </div>
         </div>
       )}
-    </OrbitCard>
+    </GunimiCard>
   );
 }

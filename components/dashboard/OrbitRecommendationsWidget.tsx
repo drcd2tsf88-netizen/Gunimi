@@ -14,7 +14,7 @@ import {
   TriangleAlert,
   Users,
 } from "lucide-react";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import type { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
 import type { OnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
@@ -223,7 +223,7 @@ export default function OrbitRecommendationsWidget({
     .slice(0, 6);
 
   return (
-    <OrbitCard className="flex flex-col p-5">
+    <GunimiCard className="flex flex-col p-5">
       <div className="pb-4 border-b border-white/[0.06]">
         <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
           {t("recommendationsBadge")}
@@ -268,6 +268,6 @@ export default function OrbitRecommendationsWidget({
           })
         )}
       </div>
-    </OrbitCard>
+    </GunimiCard>
   );
 }

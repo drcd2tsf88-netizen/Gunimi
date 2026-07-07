@@ -10,8 +10,8 @@ import {
 import { useTranslations }
 from "next-intl";
 
-import OrbitMetricGrid
-from "@/components/ui/OrbitMetricGrid";
+import GunimiMetricGrid
+from "@/components/ui/GunimiMetricGrid";
 
 import { Company }
 from "@/types/company";
@@ -43,7 +43,7 @@ export default function CompanyMetrics({
   );
 
   return (
-    <OrbitMetricGrid
+    <GunimiMetricGrid
       items={[
         {
           label: t("companies.relationships"),

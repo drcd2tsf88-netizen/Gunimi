@@ -3,10 +3,10 @@
 import { FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import type { CompanyNote } from "@/server/actions/company/getCompanyNotes";
 
@@ -18,15 +18,15 @@ export default function CompanyNotes({ notes }: Props) {
   const t = useTranslations("companies");
 
   return (
-    <OrbitSection>
-      <OrbitHeading
+    <GunimiSection>
+      <GunimiHeading
         badge={t("notesBadge")}
         title={t("notesTitle")}
         subtitle={t("notesSubtitle")}
       />
 
       {notes.length === 0 ? (
-        <OrbitEmptyState
+        <GunimiEmptyState
           title={t("noNotes")}
           description={t("noNotesDescription")}
           icon={FileText}
@@ -34,7 +34,7 @@ export default function CompanyNotes({ notes }: Props) {
       ) : (
         <div className="mt-6 space-y-3">
           {notes.map((note) => (
-            <OrbitCard key={note.id} className="p-5">
+            <GunimiCard key={note.id} className="p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -51,10 +51,10 @@ export default function CompanyNotes({ notes }: Props) {
                   {new Date(note.created_at).toLocaleDateString()}
                 </p>
               </div>
-            </OrbitCard>
+            </GunimiCard>
           ))}
         </div>
       )}
-    </OrbitSection>
+    </GunimiSection>
   );
 }

@@ -11,13 +11,14 @@ import {
   ChevronDown,
   ChevronUp,
   Circle,
+  LayoutGrid,
   Mail,
   Sparkles,
   TrendingUp,
   Users,
 } from "lucide-react";
 
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import type { OnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
 
 type Props = {
@@ -99,7 +100,7 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
 
   if (completedCore === totalCore) {
     return (
-      <OrbitCard className="p-5">
+      <GunimiCard className="p-5">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-emerald-500/[0.18] bg-emerald-500/[0.08]">
             <CheckCircle2 size={14} className="text-emerald-400" />
@@ -109,12 +110,12 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
             <p className="text-[11.5px] text-[#9AA3B2]/50">{t("completionSubtitle")}</p>
           </div>
         </div>
-      </OrbitCard>
+      </GunimiCard>
     );
   }
 
   return (
-    <OrbitCard className="overflow-visible">
+    <GunimiCard className="overflow-visible">
       {/* HEADER + TOGGLE */}
       <button
         type="button"
@@ -123,7 +124,7 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
       >
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#6D5BFF]/[0.16] bg-[#6D5BFF]/[0.08]">
-            <Sparkles size={14} className="text-[#8B7DFF]" />
+            <LayoutGrid size={14} className="text-[#8B7DFF]" />
           </div>
           <div>
             <p className="text-[13.5px] font-semibold text-[#F7F8FC]/90">{t("welcomeTitle")}</p>
@@ -202,6 +203,6 @@ export default function OnboardingWidget({ status, onOpenAI }: Props) {
           </div>
         </>
       )}
-    </OrbitCard>
+    </GunimiCard>
   );
 }

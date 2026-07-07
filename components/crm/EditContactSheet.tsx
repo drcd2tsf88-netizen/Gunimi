@@ -17,10 +17,10 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitField from "@/components/ui/OrbitField";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitTextarea from "@/components/ui/OrbitTextarea";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiField from "@/components/ui/GunimiField";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiTextarea from "@/components/ui/GunimiTextarea";
 
 type Contact = {
   id: string;
@@ -115,60 +115,60 @@ export default function EditContactSheet({
         </SheetHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
-          <OrbitField label={t("contactName")}>
-            <OrbitInput
+          <GunimiField label={t("contactName")}>
+            <GunimiInput
               value={name}
               disabled={isPending}
               placeholder={t("contactName")}
               onChange={(e) => setName(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("contactEmail")}>
-            <OrbitInput
+          <GunimiField label={t("contactEmail")}>
+            <GunimiInput
               type="email"
               value={email}
               disabled={isPending}
               placeholder="name@company.com"
               onChange={(e) => setEmail(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("contactPhone")}>
-            <OrbitInput
+          <GunimiField label={t("contactPhone")}>
+            <GunimiInput
               value={phone}
               disabled={isPending}
               placeholder="+1 555 000 0000"
               onChange={(e) => setPhone(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("contactPosition")}>
-            <OrbitInput
+          <GunimiField label={t("contactPosition")}>
+            <GunimiInput
               value={position}
               disabled={isPending}
               placeholder={t("contactPosition")}
               onChange={(e) => setPosition(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
 
-          <OrbitField label={t("contactNotes")}>
-            <OrbitTextarea
+          <GunimiField label={t("contactNotes")}>
+            <GunimiTextarea
               value={notes}
               disabled={isPending}
               placeholder={t("contactNotes")}
               onChange={(e) => setNotes(e.target.value)}
             />
-          </OrbitField>
+          </GunimiField>
         </div>
 
         <SheetFooter>
-          <OrbitButton variant="secondary" disabled={isPending} onClick={handleClose}>
+          <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
-          </OrbitButton>
-          <OrbitButton loading={isPending} onClick={handleSave}>
+          </GunimiButton>
+          <GunimiButton loading={isPending} onClick={handleSave}>
             {tc("save")}
-          </OrbitButton>
+          </GunimiButton>
         </SheetFooter>
       </SheetContent>
     </Sheet>

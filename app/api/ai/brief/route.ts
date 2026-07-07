@@ -1,6 +1,7 @@
 import { getUser } from "@/lib/server/auth";
 import { ratelimit } from "@/lib/ratelimit";
 import { errorResponse } from "@/lib/server/apiResponse";
+import { logger } from "@/lib/logger";
 import { getWorkspaceContext } from "@/server/actions/ai/getWorkspaceContext";
 import { generateDailyBrief } from "@/server/actions/ai/generateDailyBrief";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
@@ -36,7 +37,7 @@ export async function GET() {
       { headers: { "Cache-Control": "private, max-age=300" } }
     );
   } catch (error) {
-    console.error("ai/brief error:", error);
+    logger.error("AI brief generation failed", error);
     return errorResponse("AI request failed");
   }
 }

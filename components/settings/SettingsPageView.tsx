@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useTranslations } from "next-intl";
 
-import OrbitHeading from "@/components/ui/OrbitHeading";
+import GunimiHeading from "@/components/ui/GunimiHeading";
 
 import { WorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import { WorkspaceInvite } from "@/server/actions/workspace/getWorkspaceInvites";
@@ -46,7 +46,7 @@ export default function SettingsPageView({
   return (
     <div className="space-y-6">
       {/* PAGE HEADING */}
-      <OrbitHeading badge={t("badge")} title={t("title")} />
+      <GunimiHeading badge={t("badge")} title={t("title")} />
 
       {/* LAYOUT */}
       <div className="flex gap-8">

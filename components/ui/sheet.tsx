@@ -4,7 +4,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiButton from "@/components/ui/GunimiButton";
 
 const Sheet = DialogPrimitive.Root;
 const SheetTrigger = DialogPrimitive.Trigger;
@@ -97,7 +97,7 @@ function SheetContent({
 
         {showCloseButton && (
           <DialogPrimitive.Close asChild>
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               className="
                 absolute
@@ -112,7 +112,7 @@ function SheetContent({
             >
               <XIcon size={16} />
               <span className="sr-only">Close</span>
-            </OrbitButton>
+            </GunimiButton>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>

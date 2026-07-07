@@ -8,6 +8,9 @@ from "@supabase/ssr";
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
 
+import { ratelimit } from "@/lib/ratelimit";
+import { logger } from "@/lib/logger";
+
 export async function POST(
   request: Request
 ) {
@@ -69,6 +72,11 @@ export async function POST(
           status: 401,
         }
       );
+    }
+
+    const { success: rateLimitOk } = await ratelimit.limit(user.id);
+    if (!rateLimitOk) {
+      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
     }
 
     // INVITE — use supabaseAdmin so non-members can read their own invite
@@ -218,9 +226,7 @@ export async function POST(
     if (
       membershipError
     ) {
-      console.error(
-        membershipError
-      );
+      logger.error("Membership creation failed", membershipError);
 
       return NextResponse.json(
         {
@@ -284,9 +290,7 @@ export async function POST(
       success: true,
     });
   } catch (error) {
-    console.error(
-      error
-    );
+    logger.error("Invite accept failed", error);
 
     return NextResponse.json(
       {

@@ -8,14 +8,14 @@ import {
   useTranslations,
 } from "next-intl";
 
-import OrbitCard
-from "@/components/ui/OrbitCard";
+import GunimiCard
+from "@/components/ui/GunimiCard";
 
-import OrbitHeading
-from "@/components/ui/OrbitHeading";
+import GunimiHeading
+from "@/components/ui/GunimiHeading";
 
-import OrbitEmptyState
-from "@/components/ui/OrbitEmptyState";
+import GunimiEmptyState
+from "@/components/ui/GunimiEmptyState";
 
 import { WorkspaceActivity } from "@/types/activity";
 
@@ -32,12 +32,12 @@ export default function DealActivity({
     );
 
   return (
-    <OrbitCard
+    <GunimiCard
       className="
         p-6
       "
     >
-      <OrbitHeading
+      <GunimiHeading
         title={t(
           "activity"
         )}
@@ -50,7 +50,7 @@ export default function DealActivity({
             mt-6
           "
         >
-          <OrbitEmptyState
+          <GunimiEmptyState
             title={t(
               "noActivity"
             )}
@@ -167,6 +167,6 @@ export default function DealActivity({
           )}
         </div>
       )}
-    </OrbitCard>
+    </GunimiCard>
   );
 }

@@ -6,10 +6,10 @@ import { useTranslations } from "next-intl";
 import { Mail, Phone, Briefcase, Calendar, Pencil, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitCard from "@/components/ui/OrbitCard";
-import OrbitButton from "@/components/ui/OrbitButton";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiButton from "@/components/ui/GunimiButton";
 import EditContactSheet from "@/components/crm/EditContactSheet";
 
 import {
@@ -66,14 +66,14 @@ export default function ContactHeader({ contact }: Props) {
 
   return (
     <>
-      <OrbitSection>
-        <OrbitHeading
+      <GunimiSection>
+        <GunimiHeading
           badge={t("badge")}
           title={contact.name}
           subtitle={`${contact.position || t("unknownPosition")}${contact.company_name ? ` • ${contact.company_name}` : ""}`}
         />
 
-        <OrbitCard className="p-6">
+        <GunimiCard className="p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-3">
               {contact.status && (
@@ -86,23 +86,23 @@ export default function ContactHeader({ contact }: Props) {
             </div>
 
             <div className="flex items-center gap-2">
-              <OrbitButton
+              <GunimiButton
                 variant="secondary"
                 className="gap-1.5 px-3 py-2 text-xs"
                 onClick={() => setEditOpen(true)}
               >
                 <Pencil size={13} />
                 {tc("edit")}
-              </OrbitButton>
+              </GunimiButton>
 
-              <OrbitButton
+              <GunimiButton
                 variant="danger"
                 className="gap-1.5 px-3 py-2 text-xs"
                 onClick={() => setDeleteOpen(true)}
               >
                 <Trash2 size={13} />
                 {tc("delete")}
-              </OrbitButton>
+              </GunimiButton>
             </div>
           </div>
 
@@ -169,8 +169,8 @@ export default function ContactHeader({ contact }: Props) {
               </p>
             </div>
           </div>
-        </OrbitCard>
-      </OrbitSection>
+        </GunimiCard>
+      </GunimiSection>
 
       <EditContactSheet
         key={contact.id}
@@ -191,21 +191,21 @@ export default function ContactHeader({ contact }: Props) {
           </DialogHeader>
 
           <DialogFooter className="mt-6">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={isDeleting}
               onClick={() => setDeleteOpen(false)}
             >
               {tc("cancel")}
-            </OrbitButton>
+            </GunimiButton>
 
-            <OrbitButton
+            <GunimiButton
               variant="danger"
               loading={isDeleting}
               onClick={handleDelete}
             >
               {tc("delete")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

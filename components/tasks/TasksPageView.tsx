@@ -18,11 +18,11 @@ import { useTranslations } from "next-intl";
 
 import toast from "react-hot-toast";
 
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitButton from "@/components/ui/OrbitButton";
-import OrbitEmptyState from "@/components/ui/OrbitEmptyState";
-import OrbitInput from "@/components/ui/OrbitInput";
-import OrbitStatCard from "@/components/ui/OrbitStatCard";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
+import GunimiInput from "@/components/ui/GunimiInput";
+import GunimiStatCard from "@/components/ui/GunimiStatCard";
 
 import {
   Dialog,
@@ -263,42 +263,42 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
     <>
       {/* HEADER */}
       <div className="flex items-start justify-between gap-4">
-        <OrbitHeading
+        <GunimiHeading
           badge={t("workspace")}
           title={t("tasks")}
           subtitle={t("tasksSubtitle")}
         />
 
-        <OrbitButton
+        <GunimiButton
           onClick={handleCreate}
           className="mt-1 shrink-0"
         >
           <Plus size={14} />
           {t("newTask")}
-        </OrbitButton>
+        </GunimiButton>
       </div>
 
       {/* METRICS STRIP */}
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <OrbitStatCard
+        <GunimiStatCard
           title={t("tasks")}
           value={metrics.total}
           icon={ListTodo}
           animated
         />
-        <OrbitStatCard
+        <GunimiStatCard
           title={t("statusTodo")}
           value={metrics.todo}
           icon={CheckSquare}
           animated
         />
-        <OrbitStatCard
+        <GunimiStatCard
           title={t("statusInProgress")}
           value={metrics.inProgress}
           icon={Clock}
           animated
         />
-        <OrbitStatCard
+        <GunimiStatCard
           title={t("statusDone")}
           value={metrics.done}
           icon={CheckCircle2}
@@ -314,7 +314,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
             size={14}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
           />
-          <OrbitInput
+          <GunimiInput
             value={search}
             placeholder={t("searchPlaceholder")}
             onChange={(e) => setSearch(e.target.value)}
@@ -367,33 +367,33 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
 
         {/* Clear filters */}
         {hasActiveFilters && (
-          <OrbitButton
+          <GunimiButton
             variant="secondary"
             className="shrink-0 h-9 px-3 gap-1.5"
             onClick={clearFilters}
           >
             <X size={12} />
             {t("clearFilters")}
-          </OrbitButton>
+          </GunimiButton>
         )}
       </div>
 
       {/* CONTENT */}
       <section className="mt-4 space-y-6">
         {tasks.length === 0 ? (
-          <OrbitEmptyState
+          <GunimiEmptyState
             icon={CheckSquare}
             title={t("noTasks")}
             description={t("noTasksDescription")}
             action={
-              <OrbitButton onClick={handleCreate}>
+              <GunimiButton onClick={handleCreate}>
                 <Plus size={14} />
                 {t("newTask")}
-              </OrbitButton>
+              </GunimiButton>
             }
           />
         ) : filteredTasks.length === 0 ? (
-          <OrbitEmptyState
+          <GunimiEmptyState
             icon={Search}
             title={t("noResults")}
             description={t("clearFilters")}
@@ -495,21 +495,21 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
                       {/* ACTIONS */}
                       <td className="px-4 py-4">
                         <div className="flex items-center justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                          <OrbitButton
+                          <GunimiButton
                             variant="secondary"
                             className="h-8 w-8 p-0"
                             onClick={() => handleEdit(task)}
                           >
                             <Pencil size={12} />
-                          </OrbitButton>
+                          </GunimiButton>
 
-                          <OrbitButton
+                          <GunimiButton
                             variant="danger"
                             className="h-8 w-8 p-0"
                             onClick={() => setDeleteTarget(task)}
                           >
                             <Trash2 size={12} />
-                          </OrbitButton>
+                          </GunimiButton>
                         </div>
                       </td>
                     </tr>
@@ -551,21 +551,21 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
           </DialogHeader>
 
           <DialogFooter className="mt-6">
-            <OrbitButton
+            <GunimiButton
               variant="secondary"
               disabled={deleteLoading}
               onClick={() => setDeleteTarget(null)}
             >
               {tc("cancel")}
-            </OrbitButton>
+            </GunimiButton>
 
-            <OrbitButton
+            <GunimiButton
               variant="danger"
               loading={deleteLoading}
               onClick={confirmDelete}
             >
               {tc("delete")}
-            </OrbitButton>
+            </GunimiButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

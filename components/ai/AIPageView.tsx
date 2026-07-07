@@ -21,10 +21,10 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import OrbitHeading from "@/components/ui/OrbitHeading";
-import OrbitSection from "@/components/layout/OrbitSection";
-import OrbitStatCard from "@/components/ui/OrbitStatCard";
-import OrbitCard from "@/components/ui/OrbitCard";
+import GunimiHeading from "@/components/ui/GunimiHeading";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiStatCard from "@/components/ui/GunimiStatCard";
+import GunimiCard from "@/components/ui/GunimiCard";
 import OrbitAssistant from "@/components/ai/OrbitAssistant";
 
 import { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
@@ -124,16 +124,16 @@ export default function AIPageView({ stats }: Props) {
 
   return (
     <div className="space-y-10">
-      <OrbitSection>
-        <OrbitHeading
+      <GunimiSection>
+        <GunimiHeading
           badge={t("badge")}
           title={t("title")}
           subtitle={t("subtitle")}
         />
-      </OrbitSection>
+      </GunimiSection>
 
       {/* WORKSPACE CONTEXT */}
-      <OrbitSection>
+      <GunimiSection>
         <div className="mb-6">
           <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
             {t("contextCardTitle")}
@@ -143,36 +143,36 @@ export default function AIPageView({ stats }: Props) {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statCompanies")}
             value={stats.companies}
             icon={Building2}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statDeals")}
             value={stats.deals}
             icon={TrendingUp}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statOpenTasks")}
             value={stats.openTasks}
             icon={CheckSquare2}
             animated
           />
-          <OrbitStatCard
+          <GunimiStatCard
             title={t("statUpcomingMeetings")}
             value={stats.upcomingMeetings}
             icon={CalendarDays}
             animated
           />
         </div>
-      </OrbitSection>
+      </GunimiSection>
 
       {/* AI CHAT — PRIMARY CTA */}
-      <OrbitSection>
-        <OrbitCard className="relative overflow-hidden p-0">
+      <GunimiSection>
+        <GunimiCard className="relative overflow-hidden p-0">
           <div className="pointer-events-none absolute right-[-80px] top-[-80px] h-[240px] w-[240px] rounded-full bg-violet-500/10 blur-3xl" />
 
           <div className="relative flex flex-col gap-6 p-8 sm:flex-row sm:items-center sm:justify-between">
@@ -217,11 +217,11 @@ export default function AIPageView({ stats }: Props) {
               ))}
             </div>
           </div>
-        </OrbitCard>
-      </OrbitSection>
+        </GunimiCard>
+      </GunimiSection>
 
       {/* LIVE INTELLIGENCE MODULES */}
-      <OrbitSection>
+      <GunimiSection>
         <div className="mb-6">
           <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
             {t("intelligenceLabel")}
@@ -236,7 +236,7 @@ export default function AIPageView({ stats }: Props) {
             const c = COLOR_CLASSES[mod.color];
             return (
               <Link key={mod.titleKey} href={mod.href} className="group block">
-                <OrbitCard className="flex h-full flex-col gap-4 p-5 transition-all group-hover:border-white/[0.1]">
+                <GunimiCard className="flex h-full flex-col gap-4 p-5 transition-all group-hover:border-white/[0.1]">
                   <div className="flex items-start justify-between">
                     <div
                       className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${c.border} ${c.bg}`}
@@ -263,12 +263,12 @@ export default function AIPageView({ stats }: Props) {
                     <span>{t("openModule")}</span>
                     <ChevronRight size={9} />
                   </div>
-                </OrbitCard>
+                </GunimiCard>
               </Link>
             );
           })}
         </div>
-      </OrbitSection>
+      </GunimiSection>
 
       <OrbitAssistant
         open={assistantOpen}

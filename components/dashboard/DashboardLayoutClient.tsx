@@ -14,7 +14,7 @@ import { NAV_GROUPS, isNavItemActive, type NavGroup } from "@/config/navigation"
 
 import OrbitCommand from "@/components/command/OrbitCommand";
 import OrbitTopbar from "@/components/layout/OrbitTopbar";
-import OrbitLoader from "@/components/system/OrbitLoader";
+import GunimiLoader from "@/components/system/GunimiLoader";
 import AiCore from "@/components/ui/AiCore";
 
 import { supabase } from "@/lib/supabase";
@@ -295,7 +295,7 @@ export default function DashboardLayoutClient({
     initialize();
   }, []);
 
-  if (loading) return <OrbitLoader />;
+  if (loading) return <GunimiLoader />;
 
   const closeMobile = () => setMobileOpen(false);
 
