@@ -158,7 +158,19 @@ const TIER_ICONS: Record<string, React.ElementType> = {
   business: Building2,
 };
 
-function TierCard({ tier }: { tier: TierLimit }) {
+function TierCard({
+  tier,
+  reqLabel,
+  tokensLabel,
+  foundationLabel,
+  comingSoonLabel,
+}: {
+  tier: TierLimit;
+  reqLabel: string;
+  tokensLabel: string;
+  foundationLabel: string;
+  comingSoonLabel: string;
+}) {
   const Icon = TIER_ICONS[tier.name] ?? Shield;
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4">
@@ -172,13 +184,13 @@ function TierCard({ tier }: { tier: TierLimit }) {
       </div>
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] text-white/30">Req / day</span>
+          <span className="text-[11px] text-white/30">{reqLabel}</span>
           <span className="text-xs tabular-nums text-white/60">
             {tier.requestsPerDay.toLocaleString()}
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-[11px] text-white/30">Tokens / month</span>
+          <span className="text-[11px] text-white/30">{tokensLabel}</span>
           <span className="text-xs tabular-nums text-white/60">
             {fmtTokens(tier.tokensPerMonth)}
           </span>
@@ -189,7 +201,7 @@ function TierCard({ tier }: { tier: TierLimit }) {
           <div className="h-full w-0 rounded-full bg-violet-500/30" />
         </div>
         <p className="mt-1.5 text-[10px] text-white/20">
-          {tier.name === "free" ? "Foundation" : "Coming Soon"}
+          {tier.name === "free" ? foundationLabel : comingSoonLabel}
         </p>
       </div>
     </div>
@@ -485,7 +497,14 @@ export default async function AIOperationsDashboard({ stats }: Props) {
       <Section icon={Shield} title={t("tiersTitle")} subtitle={t("tiersSubtitle")}>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {tierLimits.map((tier: TierLimit) => (
-            <TierCard key={tier.name} tier={tier} />
+            <TierCard
+              key={tier.name}
+              tier={tier}
+              reqLabel={t("tierReqPerDay")}
+              tokensLabel={t("tierTokensPerMonth")}
+              foundationLabel={t("tierFoundation")}
+              comingSoonLabel={t("tierComingSoon")}
+            />
           ))}
         </div>
         <p className="text-[11px] text-white/20">{t("tiersNote")}</p>

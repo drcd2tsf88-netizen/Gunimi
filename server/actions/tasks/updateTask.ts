@@ -6,6 +6,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 type UpdateTaskParams = {
   id: string;
@@ -38,7 +39,7 @@ export async function updateTask({
       .eq("workspace_id", workspace.id);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return false;
     }
 
@@ -59,7 +60,7 @@ export async function updateTask({
 
     return true;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }

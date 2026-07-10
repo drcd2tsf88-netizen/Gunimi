@@ -8,6 +8,7 @@ from "@/server/actions/auth/getUser";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function getWorkspaceMembership() {
   try {
@@ -47,7 +48,7 @@ const supabase =
         .maybeSingle();
 
     if (error) {
-      console.error(
+      logger.error(
         error
       );
 
@@ -60,7 +61,7 @@ const supabase =
       membership: data,
     };
   } catch (error) {
-    console.error(
+    logger.error(
       error
     );
 

@@ -7,6 +7,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
 import { WorkspaceActivity } from "@/types/activity";
+import { logger } from "@/lib/logger";
 
 export async function getCompanyActivity(
   companyId: string
@@ -48,14 +49,14 @@ export async function getCompanyActivity(
       .limit(50);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return [];
     }
 
     return (data || []) as unknown as WorkspaceActivity[];
 
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return [];
   }
 }

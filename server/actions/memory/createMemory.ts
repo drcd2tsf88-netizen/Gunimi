@@ -11,6 +11,7 @@ from "@/lib/server/rateLimit";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 type CreateMemoryProps = {
   type: string;
@@ -62,14 +63,14 @@ export async function createMemory({
         .single();
 
     if (error) {
-      console.error(error);
+      logger.error(error);
 
       return null;
     }
 
     return data;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return null;
   }

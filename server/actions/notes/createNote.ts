@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type CreateNoteProps = {
   title: string;
@@ -38,7 +39,7 @@ export async function createNote({ title, content, companyId, contactId }: Creat
       .single();
 
     if (error || !data) {
-      console.error("createNote error:", error);
+      logger.error("createNote error:", error);
       return null;
     }
 
@@ -55,7 +56,7 @@ export async function createNote({ title, content, companyId, contactId }: Creat
 
     return data;
   } catch (error) {
-    console.error("createNote failed:", error);
+    logger.error("createNote failed:", error);
     return null;
   }
 }

@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type CompanyNote = {
   id: string;
@@ -26,13 +27,13 @@ export async function getCompanyNotes(companyId: string): Promise<CompanyNote[]>
       .limit(10);
 
     if (error) {
-      console.error("getCompanyNotes error:", error);
+      logger.error("getCompanyNotes error:", error);
       return [];
     }
 
     return (data || []) as CompanyNote[];
   } catch (error) {
-    console.error("getCompanyNotes failed:", error);
+    logger.error("getCompanyNotes failed:", error);
     return [];
   }
 }

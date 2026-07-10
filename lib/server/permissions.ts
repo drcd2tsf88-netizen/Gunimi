@@ -6,7 +6,7 @@ export async function getWorkspaceRole(workspaceId: string, userId: string) {
     .select("role")
     .eq("workspace_id", workspaceId)
     .eq("user_id", userId)
-    .single();
+    .maybeSingle();
 
   return data?.role || null;
 }

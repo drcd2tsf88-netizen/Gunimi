@@ -15,6 +15,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 
 import { logAIUsage }
 from "@/lib/ai/logUsage";
+import { logger } from "@/lib/logger";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -75,7 +76,7 @@ export async function POST(req: Request) {
       reply: completion.choices[0].message.content,
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return errorResponse("AI summary failed");
   }

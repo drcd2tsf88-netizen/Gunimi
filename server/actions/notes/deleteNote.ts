@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function deleteNote(noteId: string) {
   try {
@@ -23,7 +24,7 @@ export async function deleteNote(noteId: string) {
       .select("id, title, workspace_id")
       .eq("id", noteId)
       .eq("workspace_id", workspace.id)
-      .single();
+      .maybeSingle();
 
     if (!note) return false;
 
@@ -35,7 +36,7 @@ export async function deleteNote(noteId: string) {
       .eq("workspace_id", workspace.id);
 
     if (deleteError) {
-      console.error("deleteNote error:", deleteError);
+      logger.error("deleteNote error:", deleteError);
       return false;
     }
 
@@ -51,7 +52,7 @@ export async function deleteNote(noteId: string) {
 
     return true;
   } catch (error) {
-    console.error("deleteNote failed:", error);
+    logger.error("deleteNote failed:", error);
     return false;
   }
 }

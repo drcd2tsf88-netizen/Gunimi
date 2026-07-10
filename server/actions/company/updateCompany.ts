@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type UpdateCompanyProps = {
   companyId: string;
@@ -56,10 +57,10 @@ export async function updateCompany({
       .eq("workspace_id", workspace.id)
       .eq("id", companyId)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error || !data) {
-      console.error(error);
+      logger.error(error);
       return null;
     }
 
@@ -77,7 +78,7 @@ export async function updateCompany({
 
     return data;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 }

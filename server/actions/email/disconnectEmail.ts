@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { logger } from "@/lib/logger";
 
 export async function disconnectEmail(connectionId: string): Promise<boolean> {
   const [user, workspace] = await Promise.all([getUser(), getCurrentWorkspace()]);
@@ -16,7 +17,7 @@ export async function disconnectEmail(connectionId: string): Promise<boolean> {
     .eq("id", connectionId)
     .eq("workspace_id", workspace.id)
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
 
   if (fetchError || !connection) return false;
 
@@ -26,7 +27,7 @@ export async function disconnectEmail(connectionId: string): Promise<boolean> {
     .eq("id", connectionId);
 
   if (deleteError) {
-    console.error("disconnectEmail error:", deleteError);
+    logger.error("disconnectEmail error:", deleteError);
     return false;
   }
 

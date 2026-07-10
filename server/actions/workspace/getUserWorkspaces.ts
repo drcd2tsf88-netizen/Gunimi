@@ -5,6 +5,7 @@ from "@/lib/supabase/server";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
+import { logger } from "@/lib/logger";
 
 type Workspace = {
   id: string;
@@ -29,7 +30,7 @@ export async function getUserWorkspaces(): Promise<Workspace[]> {
       .order("created_at", { ascending: true });
 
     if (error) {
-      console.error("getUserWorkspaces error:", error);
+      logger.error("getUserWorkspaces error:", error);
       return [];
     }
 
@@ -37,7 +38,7 @@ export async function getUserWorkspaces(): Promise<Workspace[]> {
     return (data || [])
       .flatMap((m) => (m as unknown as WorkspaceMemberRow).workspaces ?? []);
   } catch (error) {
-    console.error("getUserWorkspaces failed:", error);
+    logger.error("getUserWorkspaces failed:", error);
     return [];
   }
 }

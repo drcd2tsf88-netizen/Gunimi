@@ -7,6 +7,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
 import { Company } from "@/types/company";
+import { logger } from "@/lib/logger";
 
 export async function getCompany(
   companyId: string
@@ -47,17 +48,17 @@ export async function getCompany(
         "id",
         companyId
       )
-      .single();
+      .maybeSingle();
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return null;
     }
 
     return data as unknown as Company;
 
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 }

@@ -9,8 +9,6 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
 import type { WorkspacePreferences } from "./getWorkspaceSettings";
 
-export type { WorkspacePreferences };
-
 export async function updateWorkspacePreferences(
   preferences: WorkspacePreferences
 ): Promise<boolean> {

@@ -5,6 +5,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 type LeaveResult = { ok: boolean; error?: string };
 
@@ -39,12 +40,12 @@ export async function leaveWorkspace(): Promise<LeaveResult> {
       .eq("user_id", user.id);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return { ok: false, error: "db_error" };
     }
 
     if (!count || count === 0) {
-      console.error("leaveWorkspace: no membership row deleted for user", user.id);
+      logger.error("leaveWorkspace: no membership row deleted for user", user.id);
       return { ok: false, error: "not_deleted" };
     }
 

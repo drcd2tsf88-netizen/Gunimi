@@ -5,6 +5,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 type DeleteResult = { ok: boolean; error?: string };
 
@@ -36,12 +37,12 @@ export async function deleteWorkspace(): Promise<DeleteResult> {
       .eq("id", workspace.id);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return { ok: false, error: "db_error" };
     }
 
     if (!count || count === 0) {
-      console.error("deleteWorkspace: no rows deleted for workspace", workspace.id);
+      logger.error("deleteWorkspace: no rows deleted for workspace", workspace.id);
       return { ok: false, error: "not_deleted" };
     }
 

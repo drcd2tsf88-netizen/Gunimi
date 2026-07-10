@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 type CreateActivityProps = {
   type: string;
@@ -43,13 +44,13 @@ export async function createActivity({
       .single();
 
     if (error) {
-      console.error("createActivity error:", error);
+      logger.error("createActivity error:", error);
       throw error;
     }
 
     return data;
   } catch (error) {
-    console.error("createActivity failed:", error);
+    logger.error("createActivity failed:", error);
     return null;
   }
 }

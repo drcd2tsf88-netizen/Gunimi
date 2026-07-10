@@ -3,6 +3,7 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import type { CalendarEventRow } from "@/types/calendar";
+import { logger } from "@/lib/logger";
 
 export async function getCalendarEvents(limit = 20): Promise<CalendarEventRow[]> {
   try {
@@ -21,13 +22,13 @@ export async function getCalendarEvents(limit = 20): Promise<CalendarEventRow[]>
       .limit(limit);
 
     if (error) {
-      console.error("getCalendarEvents error:", error);
+      logger.error("getCalendarEvents error:", error);
       return [];
     }
 
     return (data ?? []) as CalendarEventRow[];
   } catch (error) {
-    console.error("getCalendarEvents failed:", error);
+    logger.error("getCalendarEvents failed:", error);
     return [];
   }
 }

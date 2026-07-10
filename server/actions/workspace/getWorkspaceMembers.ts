@@ -2,6 +2,7 @@
 
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function getWorkspaceMembers() {
   try {
@@ -26,13 +27,13 @@ export async function getWorkspaceMembers() {
       .order("created_at", { ascending: true });
 
     if (error) {
-      console.error("getWorkspaceMembers error:", error);
+      logger.error("getWorkspaceMembers error:", error);
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error("getWorkspaceMembers failed:", error);
+    logger.error("getWorkspaceMembers failed:", error);
     return [];
   }
 }

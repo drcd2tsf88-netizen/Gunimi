@@ -3,6 +3,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getProvider } from "@/lib/calendar/providers";
 import { errorResponse } from "@/lib/server/apiResponse";
 import { createOAuthState } from "@/lib/server/oauth/state";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -22,7 +23,7 @@ export async function GET() {
       headers: { Location: authUrl },
     });
   } catch (error) {
-    console.error("calendar connect error:", error);
+    logger.error("calendar connect error:", error);
     return errorResponse("Server error", 500);
   }
 }

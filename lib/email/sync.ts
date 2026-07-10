@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getProvider } from "./providers";
 import { linkThreadToCrm } from "./crm-linker";
+import { logger } from "@/lib/logger";
 
 const THREAD_BATCH_SIZE = 10;
 
@@ -15,7 +16,7 @@ export async function syncEmailConnection(
     .from("email_connections")
     .select("*")
     .eq("id", connectionId)
-    .single();
+    .maybeSingle();
 
   if (connError || !connection) {
     throw new Error(`Email connection not found: ${connectionId}`);
@@ -47,7 +48,7 @@ export async function syncEmailConnection(
         .eq("id", connectionId);
     } catch (refreshError) {
       if (isRevokedTokenError(refreshError)) {
-        console.error(
+        logger.error(
           `[Email] Token revoked for connection ${connectionId} — clearing credentials`
         );
         await supabaseAdmin
@@ -124,7 +125,7 @@ export async function syncEmailConnection(
         .single();
 
       if (threadError || !upsertedThread) {
-        console.error("Failed to upsert thread:", detail.providerThreadId, threadError);
+        logger.error("Failed to upsert thread:", detail.providerThreadId, threadError);
         continue;
       }
 
@@ -154,7 +155,7 @@ export async function syncEmailConnection(
           .upsert(messageRows, { onConflict: "connection_id,provider_message_id" });
 
         if (msgError) {
-          console.error("Failed to upsert messages for thread:", threadId, msgError);
+          logger.error("Failed to upsert messages for thread:", threadId, msgError);
         }
       }
 

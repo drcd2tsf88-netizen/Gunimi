@@ -6,6 +6,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type UpdateContactProps = {
   contactId: string;
@@ -49,10 +50,10 @@ export async function updateContact({
       .eq("workspace_id", workspace.id)
       .eq("id", contactId)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error || !data) {
-      console.error(error);
+      logger.error(error);
       return null;
     }
 
@@ -71,7 +72,7 @@ export async function updateContact({
 
     return data;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 }

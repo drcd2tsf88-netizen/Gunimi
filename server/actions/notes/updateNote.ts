@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type UpdateNoteProps = {
   noteId: string;
@@ -29,7 +30,7 @@ export async function updateNote({ noteId, title, content }: UpdateNoteProps) {
       .select("id, workspace_id")
       .eq("id", noteId)
       .eq("workspace_id", workspace.id)
-      .single();
+      .maybeSingle();
 
     if (!existing) return null;
 
@@ -42,10 +43,10 @@ export async function updateNote({ noteId, title, content }: UpdateNoteProps) {
       .eq("id", noteId)
       .eq("workspace_id", workspace.id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error || !data) {
-      console.error("updateNote error:", error);
+      logger.error("updateNote error:", error);
       return null;
     }
 
@@ -61,7 +62,7 @@ export async function updateNote({ noteId, title, content }: UpdateNoteProps) {
 
     return data;
   } catch (error) {
-    console.error("updateNote failed:", error);
+    logger.error("updateNote failed:", error);
     return null;
   }
 }

@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type DealRelatedTask = {
   id: string;
@@ -33,13 +34,13 @@ export async function getDealRelatedTasks(
       .limit(8);
 
     if (error) {
-      console.error("getDealRelatedTasks error:", error);
+      logger.error("getDealRelatedTasks error:", error);
       return [];
     }
 
     return (data || []) as DealRelatedTask[];
   } catch (error) {
-    console.error("getDealRelatedTasks failed:", error);
+    logger.error("getDealRelatedTasks failed:", error);
     return [];
   }
 }

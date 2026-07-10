@@ -2,6 +2,7 @@
 
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type CalendarContact = {
   id: string;
@@ -39,7 +40,7 @@ export async function getCalendarContacts(): Promise<CalendarContact[]> {
       .not("email", "is", null);
 
     if (error) {
-      console.error("getCalendarContacts error:", error);
+      logger.error("getCalendarContacts error:", error);
       return [];
     }
 

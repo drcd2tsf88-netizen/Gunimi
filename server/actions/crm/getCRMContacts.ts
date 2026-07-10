@@ -5,6 +5,7 @@ from "@/lib/supabase/server";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function getCRMContacts() {
   try {
@@ -31,13 +32,13 @@ export async function getCRMContacts() {
         .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("getCRMContacts error:", error);
+      logger.error("getCRMContacts error:", error);
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error("getCRMContacts failed:", error);
+    logger.error("getCRMContacts failed:", error);
     return [];
   }
 }

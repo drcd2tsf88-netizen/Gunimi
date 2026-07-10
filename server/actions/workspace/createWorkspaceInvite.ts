@@ -6,6 +6,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { sendWorkspaceInvite } from "@/lib/email";
+import { logger } from "@/lib/logger";
 
 const ALLOWED_ROLES = ["admin", "member"] as const;
 type InviteRole = (typeof ALLOWED_ROLES)[number];
@@ -95,7 +96,7 @@ export async function createWorkspaceInvite({
       });
 
     if (insertError) {
-      console.error("createWorkspaceInvite: insert failed", insertError);
+      logger.error("createWorkspaceInvite: insert failed", insertError);
       return { ok: false, error: "db_error" };
     }
 
@@ -108,7 +109,7 @@ export async function createWorkspaceInvite({
         token,
       });
     } catch (emailErr) {
-      console.error("createWorkspaceInvite: email send failed", emailErr);
+      logger.error("createWorkspaceInvite: email send failed", emailErr);
     }
 
     // Activity log — non-fatal
@@ -123,8 +124,8 @@ export async function createWorkspaceInvite({
       });
 
     return { ok: true };
-  } catch (error) {
-    console.error("createWorkspaceInvite failed:", error);
+  } catch (err) {
+    logger.error("createWorkspaceInvite failed", err);
     return { ok: false, error: "unknown" };
   }
 }

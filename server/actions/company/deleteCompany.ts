@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function deleteCompany(companyId: string) {
   try {
@@ -26,10 +27,10 @@ export async function deleteCompany(companyId: string) {
       .select("id, name")
       .eq("workspace_id", workspace.id)
       .eq("id", companyId)
-      .single();
+      .maybeSingle();
 
     if (fetchError || !company) {
-      console.error(fetchError);
+      logger.error(fetchError);
       return false;
     }
 
@@ -41,7 +42,7 @@ export async function deleteCompany(companyId: string) {
       .eq("id", companyId);
 
     if (deleteError) {
-      console.error(deleteError);
+      logger.error(deleteError);
       return false;
     }
 
@@ -58,7 +59,7 @@ export async function deleteCompany(companyId: string) {
 
     return true;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }

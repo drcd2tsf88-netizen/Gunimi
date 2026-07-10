@@ -5,6 +5,7 @@ from "@/lib/server/supabaseAdmin";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 type CreateAIActionProps = {
   title: string;
@@ -66,7 +67,7 @@ const {
         .single();
 
     if (error) {
-      console.error(
+      logger.error(
         error
       );
 
@@ -75,7 +76,7 @@ const {
 
     return data;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return null;
   }

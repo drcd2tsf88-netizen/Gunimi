@@ -1,5 +1,6 @@
 import { supabase }
 from "@/lib/supabase";
+import { logger } from "@/lib/logger";
 
 export async function getMemoryContext() {
   try {
@@ -18,7 +19,7 @@ export async function getMemoryContext() {
         .limit(10);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
 
       return "";
     }
@@ -34,7 +35,7 @@ export async function getMemoryContext() {
       )
       .join("\n");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return "";
   }

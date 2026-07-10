@@ -5,6 +5,7 @@ from "@/lib/supabase/server";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function getContacts() {
   try {
@@ -46,13 +47,13 @@ export async function getContacts() {
       );
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return [];
   }
 }

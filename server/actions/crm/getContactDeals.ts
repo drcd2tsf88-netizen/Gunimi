@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { Deal } from "@/types/deal";
+import { logger } from "@/lib/logger";
 
 export async function getContactDeals(contactId: string): Promise<Deal[]> {
   try {
@@ -26,13 +27,13 @@ export async function getContactDeals(contactId: string): Promise<Deal[]> {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("getContactDeals error:", error);
+      logger.error("getContactDeals error:", error);
       return [];
     }
 
     return (data || []) as unknown as Deal[];
   } catch (error) {
-    console.error("getContactDeals failed:", error);
+    logger.error("getContactDeals failed:", error);
     return [];
   }
 }

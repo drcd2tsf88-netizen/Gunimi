@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { createClient }
 from "@supabase/supabase-js";
+import { logger } from "@/lib/logger";
 
 
   export async function GET(
@@ -69,7 +70,7 @@ from "@supabase/supabase-js";
       invite,
     });
   } catch (error) {
-    console.error(
+    logger.error(
       "INVITE LOAD ERROR",
       error
     );

@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import type { EmailConnection } from "@/types/email";
+import { logger } from "@/lib/logger";
 
 export async function getEmailConnections(): Promise<EmailConnection[]> {
   try {
@@ -18,13 +19,13 @@ export async function getEmailConnections(): Promise<EmailConnection[]> {
       .order("connected_at", { ascending: false });
 
     if (error) {
-      console.error("getEmailConnections error:", error);
+      logger.error("getEmailConnections error:", error);
       return [];
     }
 
     return (data ?? []) as EmailConnection[];
   } catch (error) {
-    console.error("getEmailConnections failed:", error);
+    logger.error("getEmailConnections failed:", error);
     return [];
   }
 }

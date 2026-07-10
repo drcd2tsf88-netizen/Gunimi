@@ -17,6 +17,7 @@ from "@/lib/server/supabaseAdmin";
 
 import { revalidatePath }
 from "next/cache";
+import { logger } from "@/lib/logger";
 
 export type UpdateDealProps = {
   dealId: string;
@@ -108,7 +109,7 @@ export async function updateDeal({
         "id",
         dealId
       )
-      .single();
+      .maybeSingle();
 
     if (!existingDeal) {
       return null;
@@ -130,7 +131,7 @@ export async function updateDeal({
           "id",
           companyId
         )
-        .single();
+        .maybeSingle();
 
       if (!company) {
         return null;
@@ -153,7 +154,7 @@ export async function updateDeal({
           "id",
           contactId
         )
-        .single();
+        .maybeSingle();
 
       if (!contact) {
         return null;
@@ -213,13 +214,13 @@ export async function updateDeal({
         dealId
       )
       .select()
-      .single();
+      .maybeSingle();
 
     if (
       error ||
       !deal
     ) {
-      console.error(error);
+      logger.error(error);
 
       return null;
     }
@@ -243,7 +244,7 @@ export async function updateDeal({
     return deal;
 
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return null;
   }

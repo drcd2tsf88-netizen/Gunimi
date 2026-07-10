@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type DealsByStage = {
   stage: string;
@@ -106,7 +107,7 @@ export async function getAnalyticsCharts(): Promise<AnalyticsCharts> {
 
     return { dealsByStage, monthlyDeals, wonVsLost };
   } catch (error) {
-    console.error("getAnalyticsCharts failed:", error);
+    logger.error("getAnalyticsCharts failed:", error);
     return FALLBACK;
   }
 }

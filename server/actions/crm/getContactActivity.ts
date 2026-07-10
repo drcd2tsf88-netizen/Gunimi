@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { WorkspaceActivity } from "@/types/activity";
+import { logger } from "@/lib/logger";
 
 export async function getContactActivity(contactId: string): Promise<WorkspaceActivity[]> {
   try {
@@ -20,13 +21,13 @@ export async function getContactActivity(contactId: string): Promise<WorkspaceAc
       .limit(50);
 
     if (error) {
-      console.error("getContactActivity error:", error);
+      logger.error("getContactActivity error:", error);
       return [];
     }
 
     return (data || []) as unknown as WorkspaceActivity[];
   } catch (error) {
-    console.error("getContactActivity failed:", error);
+    logger.error("getContactActivity failed:", error);
     return [];
   }
 }

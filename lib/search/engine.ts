@@ -1,5 +1,6 @@
 import { searchRegistry } from "./registry";
 import type { SearchQuery, SearchResult } from "./types";
+import { logger } from "@/lib/logger";
 
 async function search(query: SearchQuery): Promise<SearchResult[]> {
   if (!query.query.trim()) return [];
@@ -18,7 +19,7 @@ async function search(query: SearchQuery): Promise<SearchResult[]> {
 
   settled.forEach((result, index) => {
     if (result.status === "rejected") {
-      console.error(
+      logger.error(
         `[SearchEngine] provider "${providers[index].id}" failed:`,
         result.reason
       );

@@ -1,5 +1,6 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getProvider } from "./providers";
+import { logger } from "@/lib/logger";
 
 export type SyncResult = {
   synced: number;
@@ -17,7 +18,7 @@ export async function syncCalendarConnection(
     .from("calendar_connections")
     .select("*")
     .eq("id", connectionId)
-    .single();
+    .maybeSingle();
 
   if (error || !connection) {
     throw new Error(`Calendar connection not found: ${connectionId}`);
@@ -49,7 +50,7 @@ export async function syncCalendarConnection(
         .eq("id", connectionId);
     } catch (refreshError) {
       if (isRevokedTokenError(refreshError)) {
-        console.error(
+        logger.error(
           `[Calendar] Token revoked for connection ${connectionId} — clearing credentials`
         );
         await supabaseAdmin

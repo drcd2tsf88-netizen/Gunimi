@@ -19,6 +19,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
 import { executeAutomations } from "@/lib/automation/engine";
+import { logger } from "@/lib/logger";
 
 export type CreateCompanyProps =
   {
@@ -121,7 +122,7 @@ export async function createCompany({
       .single();
 
     if (error) {
-      console.error(error);
+      logger.error(error);
 
       return null;
     }
@@ -153,7 +154,7 @@ export async function createCompany({
       });
 
     if (activityError) {
-      console.error(
+      logger.error(
         "company activity insert failed:",
         activityError
       );
@@ -170,7 +171,7 @@ export async function createCompany({
 
     return data;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return null;
   }

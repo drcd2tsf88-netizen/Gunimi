@@ -5,6 +5,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 export async function removeMember(memberId: string): Promise<boolean> {
   try {
@@ -53,12 +54,12 @@ export async function removeMember(memberId: string): Promise<boolean> {
       .eq("workspace_id", workspace.id);
 
     if (error) {
-      console.error(error);
+      logger.error("removeMember delete failed", error);
       return false;
     }
 
     if (!count || count === 0) {
-      console.error("removeMember: no rows deleted for member", memberId);
+      logger.error("removeMember: no rows deleted for member", memberId);
       return false;
     }
 

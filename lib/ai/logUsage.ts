@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 export type AIFeature = "chat" | "brief" | "assistant" | "summary";
 
@@ -39,6 +40,6 @@ export async function logAIUsage({
       estimated_cost_usd: estimateCostUsd(inputTokens, outputTokens),
     });
   } catch (err) {
-    console.error("[logAIUsage] failed:", err);
+    logger.error("[logAIUsage] failed:", err);
   }
 }

@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type ContactTask = {
   id: string;
@@ -28,13 +29,13 @@ export async function getContactTasks(contactId: string): Promise<ContactTask[]>
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("getContactTasks error:", error);
+      logger.error("getContactTasks error:", error);
       return [];
     }
 
     return (data || []) as ContactTask[];
   } catch (error) {
-    console.error("getContactTasks failed:", error);
+    logger.error("getContactTasks failed:", error);
     return [];
   }
 }

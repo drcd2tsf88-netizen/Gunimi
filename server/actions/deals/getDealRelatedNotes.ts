@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type DealRelatedNote = {
   id: string;
@@ -63,7 +64,7 @@ export async function getDealRelatedNotes(
       (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
   } catch (error) {
-    console.error("getDealRelatedNotes failed:", error);
+    logger.error("getDealRelatedNotes failed:", error);
     return [];
   }
 }

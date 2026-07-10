@@ -55,7 +55,7 @@ export async function GET(
         .select("id")
         .eq("workspace_id", workspaceId)
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
 
     if (!membership) {
       return NextResponse.json(

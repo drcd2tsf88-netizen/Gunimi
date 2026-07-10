@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { Contact } from "@/types/contact";
+import { logger } from "@/lib/logger";
 
 export async function getContact(contactId: string): Promise<Contact | null> {
   try {
@@ -36,16 +37,16 @@ export async function getContact(contactId: string): Promise<Contact | null> {
       `)
       .eq("workspace_id", workspace.id)
       .eq("id", contactId)
-      .single();
+      .maybeSingle();
 
     if (error || !data) {
-      console.error("getContact error:", error);
+      logger.error("getContact error:", error);
       return null;
     }
 
     return data as unknown as Contact;
   } catch (error) {
-    console.error("getContact failed:", error);
+    logger.error("getContact failed:", error);
     return null;
   }
 }

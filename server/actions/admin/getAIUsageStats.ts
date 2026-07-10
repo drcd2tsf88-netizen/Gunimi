@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 export type AIUsageOverview = {
   totalRequests: number;
@@ -259,7 +260,7 @@ export async function getAIUsageStats(): Promise<AIUsageStats> {
       generatedAt: new Date().toISOString(),
     };
   } catch (err) {
-    console.error("[getAIUsageStats] failed:", err);
+    logger.error("[getAIUsageStats] failed:", err);
     return EMPTY;
   }
 }

@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getUser } from "@/server/actions/auth/getUser";
+import { logger } from "@/lib/logger";
 
 export type WorkspaceSummary = {
   id: string;
@@ -33,7 +34,7 @@ export async function getUserWorkspaceSummaries(): Promise<WorkspaceSummary[]> {
       .order("created_at", { ascending: true });
 
     if (error) {
-      console.error("getUserWorkspaceSummaries error:", error);
+      logger.error("getUserWorkspaceSummaries error:", error);
       return [];
     }
 
@@ -57,7 +58,7 @@ export async function getUserWorkspaceSummaries(): Promise<WorkspaceSummary[]> {
       })
       .filter(Boolean) as WorkspaceSummary[];
   } catch (error) {
-    console.error("getUserWorkspaceSummaries failed:", error);
+    logger.error("getUserWorkspaceSummaries failed:", error);
     return [];
   }
 }

@@ -9,6 +9,7 @@ import { createAuditLog } from "@/lib/server/audit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { sanitize } from "@/lib/server/sanitize";
 import { executeAutomations } from "@/lib/automation/engine";
+import { logger } from "@/lib/logger";
 
 type CreateContactProps = {
   name: string;
@@ -49,7 +50,7 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
       .single();
 
     if (error || !data) {
-      console.error("[createContact]", error);
+      logger.error("[createContact]", error);
       return null;
     }
 
@@ -85,7 +86,7 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
 
     return data;
   } catch (error) {
-    console.error("[createContact]", error);
+    logger.error("[createContact]", error);
     return null;
   }
 }

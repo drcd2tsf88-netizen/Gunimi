@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type ContactRow = {
   id: string;
@@ -53,11 +54,11 @@ export async function searchCRMEntities(
     ]);
 
     if (contactsResult.error) {
-      console.error("[searchCRMEntities] contacts query failed:", contactsResult.error);
+      logger.error("[searchCRMEntities] contacts query failed:", contactsResult.error);
     }
 
     if (companiesResult.error) {
-      console.error("[searchCRMEntities] companies query failed:", companiesResult.error);
+      logger.error("[searchCRMEntities] companies query failed:", companiesResult.error);
     }
 
     return {
@@ -65,7 +66,7 @@ export async function searchCRMEntities(
       companies: (companiesResult.data ?? []) as CompanyRow[],
     };
   } catch (err) {
-    console.error("[searchCRMEntities] unexpected error:", err);
+    logger.error("[searchCRMEntities] unexpected error:", err);
     return EMPTY;
   }
 }

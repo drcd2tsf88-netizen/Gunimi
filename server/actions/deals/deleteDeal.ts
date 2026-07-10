@@ -17,6 +17,7 @@ from "@/lib/server/supabaseAdmin";
 
 import { revalidatePath }
 from "next/cache";
+import { logger } from "@/lib/logger";
 
 export async function deleteDeal(
   dealId: string
@@ -53,10 +54,10 @@ export async function deleteDeal(
       .select("id, title, company_id, contact_id, workspace_id")
       .eq("workspace_id", workspace.id)
       .eq("id", dealId)
-      .single();
+      .maybeSingle();
 
     if (dealError || !deal) {
-      console.error(dealError);
+      logger.error(dealError);
       return false;
     }
 
@@ -68,7 +69,7 @@ export async function deleteDeal(
       .eq("id", deal.id);
 
     if (deleteError) {
-      console.error(deleteError);
+      logger.error(deleteError);
       return false;
     }
 
@@ -91,7 +92,7 @@ export async function deleteDeal(
     return true;
 
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return false;
   }

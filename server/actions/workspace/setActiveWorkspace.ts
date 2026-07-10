@@ -8,6 +8,7 @@ from "@/lib/supabase/server";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
+import { logger } from "@/lib/logger";
 
 export async function setActiveWorkspace(
   workspaceId: string
@@ -30,7 +31,7 @@ export async function setActiveWorkspace(
       .maybeSingle();
 
     if (!membership) {
-      console.error("setActiveWorkspace: user is not a member of workspace", workspaceId);
+      logger.error("setActiveWorkspace: user is not a member of workspace", workspaceId);
       return false;
     }
 
@@ -46,7 +47,7 @@ export async function setActiveWorkspace(
 
     return true;
   } catch (error) {
-    console.error("setActiveWorkspace failed:", error);
+    logger.error("setActiveWorkspace failed:", error);
     return false;
   }
 }

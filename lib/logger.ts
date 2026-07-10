@@ -14,8 +14,12 @@ const isDev = process.env.NODE_ENV === "development";
 
 export const logger = {
   /** Unexpected server-side failures. Always logged in production server logs. */
-  error(message: string, ...args: unknown[]): void {
-    console.error(`[orbit] ${message}`, ...args);
+  error(message: unknown, ...args: unknown[]): void {
+    if (typeof message === "string") {
+      console.error(`[orbit] ${message}`, ...args);
+    } else {
+      console.error("[orbit]", message, ...args);
+    }
   },
 
   /** Expected degraded states during development only. */

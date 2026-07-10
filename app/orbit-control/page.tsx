@@ -14,7 +14,7 @@ async function assertPlatformAdmin(): Promise<boolean> {
     .from("profiles")
     .select("platform_role")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   return profile?.platform_role === "admin";
 }

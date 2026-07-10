@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type AnalyticsOverview = {
   companies: number;
@@ -79,7 +80,7 @@ export async function getAnalyticsOverview(): Promise<AnalyticsOverview> {
       emailThreads: emailThreads ?? 0,
     };
   } catch (error) {
-    console.error("getAnalyticsOverview failed:", error);
+    logger.error("getAnalyticsOverview failed:", error);
     return FALLBACK;
   }
 }

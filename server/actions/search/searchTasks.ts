@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type TaskRow = {
   id: string;
@@ -36,13 +37,13 @@ export async function searchTasks(query: string): Promise<TaskSearchRows> {
       .limit(5);
 
     if (error) {
-      console.error("[searchTasks] query failed:", error);
+      logger.error("[searchTasks] query failed:", error);
       return EMPTY;
     }
 
     return { tasks: (data ?? []) as TaskRow[] };
   } catch (err) {
-    console.error("[searchTasks] unexpected error:", err);
+    logger.error("[searchTasks] unexpected error:", err);
     return EMPTY;
   }
 }

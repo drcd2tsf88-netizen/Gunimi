@@ -5,6 +5,7 @@ from "next/headers";
 
 import { createServerClient }
 from "@supabase/ssr";
+import { logger } from "@/lib/logger";
 
 export async function getUser() {
   // NEXT 15+
@@ -62,7 +63,7 @@ export async function getUser() {
     await supabase.auth.getUser();
 
   if (error) {
-    console.error(
+    logger.error(
       "Supabase auth error:",
       error.message
     );

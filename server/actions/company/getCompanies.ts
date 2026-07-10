@@ -7,6 +7,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
 import { Company } from "@/types/company";
+import { logger } from "@/lib/logger";
 
 export async function getCompanies() {
   try {
@@ -50,7 +51,7 @@ export async function getCompanies() {
       error ||
       !companies
     ) {
-      console.error(error);
+      logger.error(error);
 
       return [];
     }
@@ -171,7 +172,7 @@ export async function getCompanies() {
       }
     );
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return [];
   }

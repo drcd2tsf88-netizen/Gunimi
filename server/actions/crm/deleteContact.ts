@@ -6,6 +6,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function deleteContact(contactId: string) {
   try {
@@ -26,10 +27,10 @@ export async function deleteContact(contactId: string) {
       .select("id, name, company_id")
       .eq("workspace_id", workspace.id)
       .eq("id", contactId)
-      .single();
+      .maybeSingle();
 
     if (fetchError || !contact) {
-      console.error(fetchError);
+      logger.error(fetchError);
       return false;
     }
 
@@ -41,7 +42,7 @@ export async function deleteContact(contactId: string) {
       .eq("id", contactId);
 
     if (deleteError) {
-      console.error(deleteError);
+      logger.error(deleteError);
       return false;
     }
 
@@ -60,7 +61,7 @@ export async function deleteContact(contactId: string) {
 
     return true;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }

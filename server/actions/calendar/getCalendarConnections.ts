@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import type { CalendarConnection } from "@/types/calendar";
+import { logger } from "@/lib/logger";
 
 export async function getCalendarConnections(): Promise<CalendarConnection[]> {
   try {
@@ -21,13 +22,13 @@ export async function getCalendarConnections(): Promise<CalendarConnection[]> {
       .order("connected_at", { ascending: false });
 
     if (error) {
-      console.error("getCalendarConnections error:", error);
+      logger.error("getCalendarConnections error:", error);
       return [];
     }
 
     return (data ?? []) as CalendarConnection[];
   } catch (error) {
-    console.error("getCalendarConnections failed:", error);
+    logger.error("getCalendarConnections failed:", error);
     return [];
   }
 }

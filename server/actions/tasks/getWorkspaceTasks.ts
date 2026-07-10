@@ -5,6 +5,7 @@ from "@/lib/supabase/server";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function getWorkspaceTasks() {
   try {
@@ -47,7 +48,7 @@ const supabase =
         );
 
     if (error) {
-      console.error(
+      logger.error(
         error
       );
 
@@ -56,7 +57,7 @@ const supabase =
 
     return data || [];
   } catch (error) {
-    console.error(
+    logger.error(
       error
     );
 

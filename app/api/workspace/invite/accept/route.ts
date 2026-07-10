@@ -96,7 +96,7 @@ export async function POST(
           "token",
           token
         )
-        .single();
+        .maybeSingle();
 
     if (
       inviteError ||

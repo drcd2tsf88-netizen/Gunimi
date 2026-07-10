@@ -6,6 +6,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 export async function deleteTask(taskId: string): Promise<boolean> {
   try {
@@ -23,7 +24,7 @@ export async function deleteTask(taskId: string): Promise<boolean> {
       .select("title")
       .eq("id", taskId)
       .eq("workspace_id", workspace.id)
-      .single();
+      .maybeSingle();
 
     const { error } = await supabase
       .from("workspace_tasks")
@@ -32,7 +33,7 @@ export async function deleteTask(taskId: string): Promise<boolean> {
       .eq("workspace_id", workspace.id);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return false;
     }
 
@@ -52,7 +53,7 @@ export async function deleteTask(taskId: string): Promise<boolean> {
 
     return true;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }

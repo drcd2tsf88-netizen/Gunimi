@@ -8,6 +8,7 @@ from "@/lib/supabase/server";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
+import { logger } from "@/lib/logger";
 
 type Workspace = {
   id: string;
@@ -25,7 +26,7 @@ Promise<Workspace | null> {
       await getUser();
 
     if (!user) {
-      console.error(
+      logger.error(
         "No authenticated user"
       );
 
@@ -85,18 +86,18 @@ Promise<Workspace | null> {
       .maybeSingle();
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return null;
     }
 
     if (!membership?.workspaces) {
-      console.error("No workspace found");
+      logger.error("No workspace found");
       return null;
     }
 
     return membership.workspaces as unknown as Workspace;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 }

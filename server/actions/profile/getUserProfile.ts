@@ -20,7 +20,7 @@ export async function getUserProfile(): Promise<UserProfile | null> {
       .from("profiles")
       .select("id, full_name, email, avatar_url")
       .eq("id", user.id)
-      .single();
+      .maybeSingle();
 
     if (error || !data) return null;
 

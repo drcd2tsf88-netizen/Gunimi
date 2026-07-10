@@ -5,6 +5,7 @@ from "@/lib/server/supabaseAdmin";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 type SetWorkspaceAIStateProps = {
   state: string;
@@ -61,7 +62,7 @@ export async function setWorkspaceAIState({
         .single();
 
     if (error) {
-      console.error(
+      logger.error(
         error
       );
 
@@ -70,7 +71,7 @@ export async function setWorkspaceAIState({
 
     return data;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return null;
   }

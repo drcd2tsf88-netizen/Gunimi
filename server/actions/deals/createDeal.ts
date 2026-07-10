@@ -18,6 +18,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
 import { executeAutomations } from "@/lib/automation/engine";
+import { logger } from "@/lib/logger";
 
 export type CreateDealProps = {
   title: string;
@@ -93,7 +94,7 @@ if (value < 0) {
       "id",
       companyId
     )
-    .single();
+    .maybeSingle();
 
   if (!company) {
     return null;
@@ -116,7 +117,7 @@ if (contactId) {
       "id",
       contactId
     )
-    .single();
+    .maybeSingle();
 
   if (!contact) {
     return null;
@@ -175,7 +176,7 @@ probability =
       error ||
       !deal
     ) {
-      console.error(error);
+      logger.error(error);
 
       return null;
     }
@@ -213,7 +214,7 @@ probability =
       });
 
     if (activityError) {
-      console.error(
+      logger.error(
         "deal activity insert failed:",
         activityError
       );
@@ -233,7 +234,7 @@ probability =
 
     return deal;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return null;
   }

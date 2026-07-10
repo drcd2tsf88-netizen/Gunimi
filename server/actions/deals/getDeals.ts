@@ -7,6 +7,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
 import { Deal } from "@/types/deal";
+import { logger } from "@/lib/logger";
 
 export async function getDeals() {
   try {
@@ -72,14 +73,14 @@ export async function getDeals() {
       );
 
     if (error) {
-      console.error(error);
+      logger.error(error);
 
       return [];
     }
 
     return (data || []) as unknown as Deal[];
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return [];
   }

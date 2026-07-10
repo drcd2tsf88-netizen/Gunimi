@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 // Internal shape of a raw Supabase row with joined contact
 type RawDealResult = {
@@ -67,10 +68,10 @@ export async function searchDeals(query: string): Promise<DealSearchRows> {
     ]);
 
     if (titleStageResult.error) {
-      console.error("[searchDeals] title/stage query failed:", titleStageResult.error);
+      logger.error("[searchDeals] title/stage query failed:", titleStageResult.error);
     }
     if (contactResult.error) {
-      console.error("[searchDeals] contact lookup failed:", contactResult.error);
+      logger.error("[searchDeals] contact lookup failed:", contactResult.error);
     }
 
     const seenIds = new Set<string>();
@@ -99,7 +100,7 @@ export async function searchDeals(query: string): Promise<DealSearchRows> {
         .limit(5);
 
       if (customerDealsError) {
-        console.error("[searchDeals] customer deals query failed:", customerDealsError);
+        logger.error("[searchDeals] customer deals query failed:", customerDealsError);
       }
 
       for (const raw of (customerDeals ?? []) as unknown as RawDealResult[]) {
@@ -111,7 +112,7 @@ export async function searchDeals(query: string): Promise<DealSearchRows> {
 
     return { deals: rows };
   } catch (err) {
-    console.error("[searchDeals] unexpected error:", err);
+    logger.error("[searchDeals] unexpected error:", err);
     return EMPTY;
   }
 }

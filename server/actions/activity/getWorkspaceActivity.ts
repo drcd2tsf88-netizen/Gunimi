@@ -5,6 +5,7 @@ from "@/lib/server/supabaseAdmin";
 
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function getWorkspaceActivity(limit = 6) {
   try {
@@ -36,7 +37,7 @@ export async function getWorkspaceActivity(limit = 6) {
       .limit(limit);
 
     if (error) {
-      console.error(
+      logger.error(
         "getWorkspaceActivity error:",
         error
       );
@@ -46,7 +47,7 @@ export async function getWorkspaceActivity(limit = 6) {
 
     return data || [];
   } catch (error) {
-    console.error(
+    logger.error(
       "getWorkspaceActivity failed:",
       error
     );
@@ -69,7 +70,7 @@ export async function getWorkspaceActivityCount(): Promise<number> {
       .eq("workspace_id", workspace.id);
 
     if (error) {
-      console.error("getWorkspaceActivityCount error:", error);
+      logger.error("getWorkspaceActivityCount error:", error);
       return 0;
     }
 

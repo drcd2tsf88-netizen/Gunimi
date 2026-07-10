@@ -3,6 +3,7 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import type { EmailThread } from "@/types/email";
+import { logger } from "@/lib/logger";
 
 export async function getCompanyEmails(companyId: string, limit = 8): Promise<EmailThread[]> {
   try {
@@ -22,13 +23,13 @@ export async function getCompanyEmails(companyId: string, limit = 8): Promise<Em
       .limit(limit);
 
     if (error) {
-      console.error("getCompanyEmails error:", error);
+      logger.error("getCompanyEmails error:", error);
       return [];
     }
 
     return (data ?? []) as unknown as EmailThread[];
   } catch (error) {
-    console.error("getCompanyEmails failed:", error);
+    logger.error("getCompanyEmails failed:", error);
     return [];
   }
 }

@@ -3,6 +3,7 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
+import { logger } from "@/lib/logger";
 
 type CreateWorkspaceParams = {
   name: string;
@@ -64,7 +65,7 @@ export async function createWorkspace({
       .single();
 
     if (workspaceError || !workspace) {
-      console.error("createWorkspace: workspace insert failed", workspaceError);
+      logger.error("createWorkspace: workspace insert failed", workspaceError);
       return null;
     }
 
@@ -78,7 +79,7 @@ export async function createWorkspace({
       });
 
     if (membershipError) {
-      console.error("createWorkspace: membership insert failed", membershipError);
+      logger.error("createWorkspace: membership insert failed", membershipError);
       // Clean up the workspace row to avoid orphaned workspaces
       await supabaseAdmin.from("workspaces").delete().eq("id", workspace.id);
       return null;
@@ -95,7 +96,7 @@ export async function createWorkspace({
 
     return workspace;
   } catch (error) {
-    console.error("createWorkspace failed:", error);
+    logger.error("createWorkspace failed:", error);
     return null;
   }
 }

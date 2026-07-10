@@ -6,6 +6,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 type UpdateWorkspaceParams = {
   name?: string;
@@ -41,7 +42,7 @@ export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<bo
       .eq("id", workspace.id);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return false;
     }
 
@@ -61,7 +62,7 @@ export async function updateWorkspace(params: UpdateWorkspaceParams): Promise<bo
 
     return true;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }

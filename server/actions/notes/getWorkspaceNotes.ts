@@ -2,6 +2,7 @@
 
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function getWorkspaceNotes() {
   try {
@@ -15,13 +16,13 @@ export async function getWorkspaceNotes() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("getWorkspaceNotes error:", error);
+      logger.error("getWorkspaceNotes error:", error);
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error("getWorkspaceNotes failed:", error);
+    logger.error("getWorkspaceNotes failed:", error);
     return [];
   }
 }

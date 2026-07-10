@@ -5,6 +5,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 export async function revokeInvite(inviteId: string): Promise<boolean> {
   try {
@@ -38,12 +39,12 @@ export async function revokeInvite(inviteId: string): Promise<boolean> {
       .eq("status", "pending");
 
     if (error) {
-      console.error("revokeInvite error:", error);
+      logger.error("revokeInvite error:", error);
       return false;
     }
 
     if (!count || count === 0) {
-      console.error("revokeInvite: no rows updated for invite", inviteId);
+      logger.error("revokeInvite: no rows updated for invite", inviteId);
       return false;
     }
 

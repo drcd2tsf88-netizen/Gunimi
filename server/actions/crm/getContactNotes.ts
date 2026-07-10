@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type ContactNote = {
   id: string;
@@ -25,13 +26,13 @@ export async function getContactNotes(contactId: string): Promise<ContactNote[]>
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("getContactNotes error:", error);
+      logger.error("getContactNotes error:", error);
       return [];
     }
 
     return (data || []) as ContactNote[];
   } catch (error) {
-    console.error("getContactNotes failed:", error);
+    logger.error("getContactNotes failed:", error);
     return [];
   }
 }

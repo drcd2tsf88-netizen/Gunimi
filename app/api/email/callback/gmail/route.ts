@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     .select("id")
     .eq("workspace_id", workspaceId)
     .eq("user_id", sessionUser.id)
-    .single();
+    .maybeSingle();
 
   if (!membership) {
     logger.error(`Email OAuth workspace not accessible: user ${sessionUser.id} not a member of ${workspaceId}`);

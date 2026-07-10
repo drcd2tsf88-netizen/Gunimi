@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export type WorkspaceInvite = {
   id: string;
@@ -26,7 +27,7 @@ export async function getWorkspaceInvites(): Promise<WorkspaceInvite[]> {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error(error);
+      logger.error("getWorkspaceInvites failed", error);
       return [];
     }
 

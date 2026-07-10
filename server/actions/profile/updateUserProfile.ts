@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { revalidatePath } from "next/cache";
+import { logger } from "@/lib/logger";
 
 type UpdateProfileInput = {
   full_name: string;
@@ -26,7 +27,7 @@ export async function updateUserProfile(input: UpdateProfileInput): Promise<bool
       .eq("id", user.id);
 
     if (error) {
-      console.error("updateUserProfile error:", error);
+      logger.error("updateUserProfile error:", error);
       return false;
     }
 

@@ -17,6 +17,7 @@ from "@/lib/server/audit";
 
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 type CreateTaskProps = {
   title: string;
@@ -47,7 +48,7 @@ export async function createTask({
       await getUser();
 
     if (!user) {
-      console.error(
+      logger.error(
         "Unauthorized"
       );
 
@@ -62,7 +63,7 @@ export async function createTask({
       await getCurrentWorkspace();
 
     if (!workspace) {
-      console.error(
+      logger.error(
         "No active workspace"
       );
 
@@ -75,7 +76,7 @@ export async function createTask({
       title?.trim();
 
     if (!cleanTitle) {
-      console.error(
+      logger.error(
         "Task title required"
       );
 
@@ -123,7 +124,7 @@ export async function createTask({
       .single();
 
     if (error) {
-      console.error(
+      logger.error(
         error
       );
 
@@ -183,7 +184,7 @@ export async function createTask({
 
     return data;
   } catch (error) {
-    console.error(
+    logger.error(
       error
     );
 

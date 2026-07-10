@@ -5,6 +5,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 
 export async function updateMemberRole(memberId: string, role: string): Promise<boolean> {
   try {
@@ -42,12 +43,12 @@ export async function updateMemberRole(memberId: string, role: string): Promise<
       .eq("workspace_id", workspace.id);
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return false;
     }
 
     if (!count || count === 0) {
-      console.error("updateMemberRole: no rows updated for member", memberId);
+      logger.error("updateMemberRole: no rows updated for member", memberId);
       return false;
     }
 

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { logger } from "@/lib/logger";
 
 export async function disconnectCalendar(connectionId: string): Promise<boolean> {
   try {
@@ -22,7 +23,7 @@ export async function disconnectCalendar(connectionId: string): Promise<boolean>
       .eq("id", connectionId)
       .eq("workspace_id", workspace.id)
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
     if (!connection) return false;
 
@@ -33,7 +34,7 @@ export async function disconnectCalendar(connectionId: string): Promise<boolean>
       .eq("id", connectionId);
 
     if (error) {
-      console.error("disconnectCalendar error:", error);
+      logger.error("disconnectCalendar error:", error);
       return false;
     }
 
@@ -55,7 +56,7 @@ export async function disconnectCalendar(connectionId: string): Promise<boolean>
 
     return true;
   } catch (error) {
-    console.error("disconnectCalendar failed:", error);
+    logger.error("disconnectCalendar failed:", error);
     return false;
   }
 }

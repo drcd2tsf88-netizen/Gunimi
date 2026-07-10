@@ -101,33 +101,31 @@ export default function OrbitControlView({
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-violet-300">
             <Sparkles size={12} />
-            Orbit Internal Systems
+            {t("orbitInternalSystems")}
           </div>
 
           <div className="mt-8 flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
             <div>
               <h1 className="text-5xl font-semibold tracking-[-0.05em] md:text-7xl">
-                Orbit Control
+                {t("orbitControlTitle")}
                 <br />
                 <span className="bg-gradient-to-r from-violet-300 via-white to-cyan-300 bg-clip-text text-transparent">
-                  Center
+                  {t("orbitControlCenter")}
                 </span>
               </h1>
               <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/60">
-                Internal operational management layer for Gunimi AI Operating
-                System beta access, memberships, platform governance and user
-                infrastructure.
+                {t("orbitDescription")}
               </p>
             </div>
 
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/10 bg-emerald-500/5 px-4 py-3 text-sm text-emerald-200">
                 <Activity size={16} />
-                Systems Online
+                {t("systemsOnline")}
               </div>
               <div className="flex items-center gap-2 rounded-2xl border border-cyan-500/10 bg-cyan-500/5 px-4 py-3 text-sm text-cyan-200">
                 <Brain size={16} />
-                AI Infrastructure
+                {t("aiInfrastructure")}
               </div>
             </div>
           </div>
@@ -135,10 +133,10 @@ export default function OrbitControlView({
 
         {/* STATS */}
         <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          <GunimiStatCard title="Platform Users" value={totalUsers} icon={<Users size={20} />} />
-          <GunimiStatCard title="Beta Access" value={betaUsers} icon={<CheckCircle2 size={20} />} />
-          <GunimiStatCard title="Admins" value={admins} icon={<Crown size={20} />} />
-          <GunimiStatCard title="Pending Access" value={pendingUsers} icon={<Shield size={20} />} />
+          <GunimiStatCard title={t("statPlatformUsers")} value={totalUsers} icon={<Users size={20} />} />
+          <GunimiStatCard title={t("statBetaAccess")} value={betaUsers} icon={<CheckCircle2 size={20} />} />
+          <GunimiStatCard title={t("statAdmins")} value={admins} icon={<Crown size={20} />} />
+          <GunimiStatCard title={t("statPendingAccess")} value={pendingUsers} icon={<Shield size={20} />} />
         </div>
 
         {/* USER TABLE */}
@@ -150,14 +148,13 @@ export default function OrbitControlView({
         >
           <div className="flex flex-col gap-4 border-b border-white/[0.06] p-8 md:flex-row md:items-center md:justify-between">
             <div>
-              <h2 className="text-3xl font-semibold">Platform Users</h2>
+              <h2 className="text-3xl font-semibold">{t("tableTitle")}</h2>
               <p className="mt-3 text-sm text-zinc-400">
-                Manage beta access, platform permissions, approvals and internal
-                Orbit roles.
+                {t("tableSubtitle")}
               </p>
             </div>
             <div className="rounded-2xl border border-violet-500/10 bg-violet-500/5 px-4 py-3 text-sm text-violet-200">
-              {profiles.length} Total Profiles
+              {t("totalProfiles", { count: profiles.length })}
             </div>
           </div>
 
@@ -165,11 +162,11 @@ export default function OrbitControlView({
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/[0.06] text-left text-sm text-zinc-500">
-                  <th className="px-8 py-5">User</th>
-                  <th className="px-8 py-5">Role</th>
-                  <th className="px-8 py-5">Status</th>
-                  <th className="px-8 py-5">Onboarding</th>
-                  <th className="px-8 py-5">Actions</th>
+                  <th className="px-8 py-5">{t("colUser")}</th>
+                  <th className="px-8 py-5">{t("colRole")}</th>
+                  <th className="px-8 py-5">{t("colStatus")}</th>
+                  <th className="px-8 py-5">{t("colOnboarding")}</th>
+                  <th className="px-8 py-5">{t("colActions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -182,7 +179,7 @@ export default function OrbitControlView({
                     <td className="px-8 py-6">
                       <div>
                         <div className="font-medium">
-                          {profile.full_name ?? "Orbit User"}
+                          {profile.full_name ?? t("defaultUserName")}
                         </div>
                         <div className="mt-2 text-sm text-zinc-500">
                           {profile.email}
@@ -225,12 +222,12 @@ export default function OrbitControlView({
                       {profile.onboarding_completed ? (
                         <div className="inline-flex items-center gap-2 text-sm text-emerald-300">
                           <CheckCircle2 size={14} />
-                          Completed
+                          {t("onboardingCompleted")}
                         </div>
                       ) : (
                         <div className="inline-flex items-center gap-2 text-sm text-zinc-500">
                           <XCircle size={14} />
-                          Pending
+                          {t("onboardingPending")}
                         </div>
                       )}
                     </td>
@@ -242,19 +239,19 @@ export default function OrbitControlView({
                           onClick={() => updateRole(profile.id, "beta")}
                           className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 px-3 py-2 text-xs text-emerald-300 transition-all hover:bg-emerald-500/10"
                         >
-                          Approve Beta
+                          {t("actionApproveBeta")}
                         </button>
                         <button
                           onClick={() => updateRole(profile.id, "team")}
                           className="rounded-xl border border-cyan-500/10 bg-cyan-500/5 px-3 py-2 text-xs text-cyan-300 transition-all hover:bg-cyan-500/10"
                         >
-                          Make Team
+                          {t("actionMakeTeam")}
                         </button>
                         <button
                           onClick={() => updateRole(profile.id, "admin")}
                           className="rounded-xl border border-red-500/10 bg-red-500/5 px-3 py-2 text-xs text-red-300 transition-all hover:bg-red-500/10"
                         >
-                          Make Admin
+                          {t("actionMakeAdmin")}
                         </button>
                         <button
                           onClick={() =>
@@ -265,7 +262,7 @@ export default function OrbitControlView({
                           }
                           className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-zinc-300 transition-all hover:bg-white/[0.06]"
                         >
-                          {profile.status === "suspended" ? "Unsuspend" : "Suspend"}
+                          {profile.status === "suspended" ? t("actionUnsuspend") : t("actionSuspend")}
                         </button>
                       </div>
                     </td>
@@ -278,9 +275,9 @@ export default function OrbitControlView({
 
         {/* FOOTER */}
         <div className="mt-10 flex items-center justify-between rounded-[28px] border border-white/[0.06] bg-white/[0.03] p-6 text-sm text-zinc-500">
-          <div>Gunimi AI Operating System governance infrastructure.</div>
+          <div>{t("footerDescription")}</div>
           <div className="flex items-center gap-2 text-violet-300">
-            Internal Platform Layer
+            {t("footerLabel")}
             <ArrowUpRight size={16} />
           </div>
         </div>

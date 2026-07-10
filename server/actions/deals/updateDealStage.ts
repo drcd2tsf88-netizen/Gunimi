@@ -11,6 +11,7 @@ from "@/server/actions/auth/getUser";
 
 import { checkWriteRateLimit }
 from "@/lib/server/rateLimit";
+import { logger } from "@/lib/logger";
 
 type DealStage =
   | "lead"
@@ -95,7 +96,7 @@ if (stage === "lost") {
     "workspace_id",
     workspace.id
   )
-  .single();
+  .maybeSingle();
 
     if (!existingDeal) {
       return false;
@@ -120,7 +121,7 @@ if (stage === "lost") {
         );
 
     if (error) {
-      console.error(error);
+      logger.error(error);
 
       return false;
     }
@@ -208,7 +209,7 @@ if (stage === "lost") {
 
     return true;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return false;
   }

@@ -8,6 +8,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 
 import { Deal } from "@/types/deal";
 import { WorkspaceActivity } from "@/types/activity";
+import { logger } from "@/lib/logger";
 
 export async function getDeal(
   dealId: string
@@ -79,13 +80,13 @@ export async function getDeal(
         "id",
         dealId
       )
-      .single();
+      .maybeSingle();
 
     if (
       dealError ||
       !deal
     ) {
-      console.error(
+      logger.error(
         dealError
       );
 
@@ -135,7 +136,7 @@ export async function getDeal(
     if (
       activitiesError
     ) {
-      console.error(
+      logger.error(
         activitiesError
       );
     }
@@ -147,7 +148,7 @@ export async function getDeal(
         (activities || []) as unknown as WorkspaceActivity[],
     };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return null;
   }

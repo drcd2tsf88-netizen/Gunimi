@@ -7,6 +7,7 @@ import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 
 import { Contact } from "@/types/contact";
+import { logger } from "@/lib/logger";
 
 export async function getCompanyContacts(
   companyId: string
@@ -68,14 +69,14 @@ export async function getCompanyContacts(
       );
 
     if (error) {
-      console.error(error);
+      logger.error(error);
       return [];
     }
 
     return (data || []) as unknown as Contact[];
 
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return [];
   }
 }

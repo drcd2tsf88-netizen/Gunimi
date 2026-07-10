@@ -24,7 +24,7 @@ export async function POST() {
       .eq("user_id", user.id)
       .order("connected_at", { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (!connection) return errorResponse("No calendar connection found", 404);
 

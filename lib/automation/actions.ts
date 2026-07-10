@@ -1,5 +1,6 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import type { AutomationActionResult, AutomationContext } from "./types";
+import { logger } from "@/lib/logger";
 
 export async function automationCreateTask(
   context: AutomationContext,
@@ -96,6 +97,6 @@ export async function automationLogExecution(
       },
     });
   } catch (e) {
-    console.error("[automation] failed to log execution:", e);
+    logger.error("[automation] failed to log execution:", e);
   }
 }
