@@ -3,15 +3,13 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Mail, Phone, Briefcase, Calendar, Pencil, Trash2 } from "lucide-react";
+import { Mail, Pencil, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-import GunimiSection from "@/components/layout/GunimiSection";
-import GunimiHeading from "@/components/ui/GunimiHeading";
-import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiWorkspaceHeader from "@/components/ui/GunimiWorkspaceHeader";
+import type { WorkspaceHealth } from "@/components/ui/GunimiWorkspaceHeader";
 import GunimiButton from "@/components/ui/GunimiButton";
 import EditContactSheet from "@/components/crm/EditContactSheet";
-
 import {
   Dialog,
   DialogContent,
@@ -20,26 +18,52 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-
 import { deleteContact } from "@/server/actions/crm/deleteContact";
-import { Contact } from "@/types/contact";
+import type { Contact } from "@/types/contact";
+import { MS_PER_DAY } from "@/lib/workspace/constants";
+
+const ACTIVE_THRESHOLD_DAYS = 7;
+const ENGAGED_THRESHOLD_DAYS = 30;
+
+function computeContactHealth(
+  contact: Contact,
+  t: (key: string) => string,
+): WorkspaceHealth {
+  if (!contact.last_contacted_at) {
+    return { level: "at-risk", label: t("healthStatusNeverContacted") };
+  }
+  const now = Date.now();
+  const daysSince = Math.floor(
+    (now - new Date(contact.last_contacted_at).getTime()) / MS_PER_DAY,
+  );
+  if (daysSince <= ACTIVE_THRESHOLD_DAYS) {
+    return { level: "healthy", label: t("healthStatusActive") };
+  }
+  if (daysSince <= ENGAGED_THRESHOLD_DAYS) {
+    return { level: "healthy", label: t("healthStatusEngaged") };
+  }
+  return { level: "warning", label: t("healthStatusNeedsAttention") };
+}
+
+function formatLastContacted(
+  lastContactedAt: string | null | undefined,
+  t: (key: string, params?: Record<string, string | number>) => string,
+): string {
+  if (!lastContactedAt) return t("headerLastContactedNever");
+  const days = Math.floor(
+    (Date.now() - new Date(lastContactedAt).getTime()) / MS_PER_DAY,
+  );
+  if (days === 0) return t("headerLastContactedToday");
+  if (days < 7) return t("headerLastContactedDaysAgo", { days });
+  const weeks = Math.floor(days / 7);
+  if (weeks < 5) return t("headerLastContactedWeeksAgo", { weeks });
+  const months = Math.floor(days / 30);
+  return t("headerLastContactedMonthsAgo", { months });
+}
 
 type Props = {
   contact: Contact;
 };
-
-function getStatusStyles(status?: string) {
-  switch (status) {
-    case "customer":
-      return "border-emerald-500/20 bg-emerald-500/10 text-emerald-300";
-    case "qualified":
-      return "border-cyan-500/20 bg-cyan-500/10 text-cyan-300";
-    case "lead":
-      return "border-blue-500/20 bg-blue-500/10 text-blue-300";
-    default:
-      return "border-violet-500/20 bg-violet-500/10 text-violet-300";
-  }
-}
 
 export default function ContactHeader({ contact }: Props) {
   const t = useTranslations("contacts");
@@ -50,6 +74,19 @@ export default function ContactHeader({ contact }: Props) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isDeleting, startDelete] = useTransition();
+
+  const health = computeContactHealth(contact, t);
+
+  const roleAndCompany =
+    contact.position && contact.company_name
+      ? `${contact.position} · ${contact.company_name}`
+      : (contact.position ?? contact.company_name);
+
+  const lastContacted = formatLastContacted(contact.last_contacted_at, t);
+
+  const contextLine = [roleAndCompany, lastContacted]
+    .filter(Boolean)
+    .join(" · ");
 
   function handleDelete() {
     startDelete(async () => {
@@ -66,111 +103,53 @@ export default function ContactHeader({ contact }: Props) {
 
   return (
     <>
-      <GunimiSection>
-        <GunimiHeading
-          badge={t("badge")}
-          title={contact.name}
-          subtitle={`${contact.position || t("unknownPosition")}${contact.company_name ? ` • ${contact.company_name}` : ""}`}
-        />
-
-        <GunimiCard className="p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap gap-3">
-              {contact.status && (
-                <div
-                  className={`inline-flex items-center rounded-full border px-4 py-2 text-xs uppercase tracking-[0.18em] ${getStatusStyles(contact.status)}`}
-                >
-                  {contact.status}
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2">
+      <GunimiWorkspaceHeader
+        type={t("workspaceType")}
+        title={contact.name}
+        context={
+          contextLine ? (
+            <p className="text-sm text-white/40">{contextLine}</p>
+          ) : undefined
+        }
+        owner={contact.owner?.full_name}
+        health={health}
+        backHref="/dashboard/contacts"
+        backLabel={t("backToContacts")}
+        actions={
+          <div className="flex items-center gap-2">
+            {contact.email && (
               <GunimiButton
                 variant="secondary"
                 className="gap-1.5 px-3 py-2 text-xs"
-                onClick={() => setEditOpen(true)}
+                onClick={() => {
+                  window.location.href = `mailto:${contact.email}`;
+                }}
               >
-                <Pencil size={13} />
-                {tc("edit")}
-              </GunimiButton>
-
-              <GunimiButton
-                variant="danger"
-                className="gap-1.5 px-3 py-2 text-xs"
-                onClick={() => setDeleteOpen(true)}
-              >
-                <Trash2 size={13} />
-                {tc("delete")}
-              </GunimiButton>
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
+                <Mail size={13} />
                 {t("email")}
-              </p>
-              {contact.email ? (
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="mt-2 flex items-center gap-1.5 text-sm text-violet-300 transition-colors hover:text-violet-200"
-                >
-                  <Mail size={13} />
-                  {contact.email}
-                </a>
-              ) : (
-                <p className="mt-2 text-sm text-white/40">—</p>
-              )}
-            </div>
+              </GunimiButton>
+            )}
 
-            <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
-                {t("phone")}
-              </p>
-              {contact.phone ? (
-                <a
-                  href={`tel:${contact.phone}`}
-                  className="mt-2 flex items-center gap-1.5 text-sm text-violet-300 transition-colors hover:text-violet-200"
-                >
-                  <Phone size={13} />
-                  {contact.phone}
-                </a>
-              ) : (
-                <p className="mt-2 text-sm text-white/40">—</p>
-              )}
-            </div>
+            <GunimiButton
+              variant="secondary"
+              className="gap-1.5 px-3 py-2 text-xs"
+              onClick={() => setEditOpen(true)}
+            >
+              <Pencil size={13} />
+              {tc("edit")}
+            </GunimiButton>
 
-            <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
-                {t("position")}
-              </p>
-              <p className="mt-2 flex items-center gap-1.5 text-sm text-white/80">
-                {contact.position ? (
-                  <>
-                    <Briefcase size={13} className="text-zinc-500" />
-                    {contact.position}
-                  </>
-                ) : (
-                  "—"
-                )}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
-                {t("created")}
-              </p>
-              <p className="mt-2 flex items-center gap-1.5 text-sm text-white/80">
-                <Calendar size={13} className="text-zinc-500" />
-                {contact.created_at
-                  ? new Date(contact.created_at).toLocaleDateString()
-                  : "—"}
-              </p>
-            </div>
+            <GunimiButton
+              variant="danger"
+              className="gap-1.5 px-3 py-2 text-xs"
+              onClick={() => setDeleteOpen(true)}
+            >
+              <Trash2 size={13} />
+              {tc("delete")}
+            </GunimiButton>
           </div>
-        </GunimiCard>
-      </GunimiSection>
+        }
+      />
 
       <EditContactSheet
         key={contact.id}
@@ -187,7 +166,9 @@ export default function ContactHeader({ contact }: Props) {
         <DialogContent showCloseButton={false} className="max-w-md">
           <DialogHeader>
             <DialogTitle>{tCrm("deleteContact")}</DialogTitle>
-            <DialogDescription>{tCrm("confirmDeleteContact")}</DialogDescription>
+            <DialogDescription>
+              {tCrm("confirmDeleteContact")}
+            </DialogDescription>
           </DialogHeader>
 
           <DialogFooter className="mt-6">

@@ -3,7 +3,7 @@
 import { Flag, Users, Mail, Phone, ArrowRight, MoreHorizontal, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import GunimiCard from "@/components/ui/GunimiCard";
-import type { StoryIconKey } from "@/lib/deals/story";
+import type { StoryIconKey } from "@/lib/workspace/types";
 
 export type RenderedStoryEvent = {
   id: string;

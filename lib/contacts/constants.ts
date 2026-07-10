@@ -1,0 +1,2 @@
+export const STALE_RELATIONSHIP_DAYS = 30;
+export const NEW_RELATIONSHIP_DAYS = 14;

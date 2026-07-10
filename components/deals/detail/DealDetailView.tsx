@@ -86,39 +86,51 @@ export default function DealDetailView({
     ? t(decision.reasonKey, decision.reasonParams ?? {})
     : t("decisionEmptyReason");
 
-  const preparationItems: PreparationItem[] = rawPrep.map((item) => ({
-    icon: PREP_ICONS[item.iconKey],
-    label: t(item.labelKey),
-    value: item.value,
-    href: item.href,
-    secondary: item.secondaryKey
-      ? t(item.secondaryKey, item.secondaryParams ?? {})
-      : item.secondaryRaw,
-  }));
+  const preparationItems: PreparationItem[] = useMemo(
+    () =>
+      rawPrep.map((item) => ({
+        icon: PREP_ICONS[item.iconKey],
+        label: t(item.labelKey),
+        value: item.value,
+        href: item.href,
+        secondary: item.secondaryKey
+          ? t(item.secondaryKey, item.secondaryParams ?? {})
+          : item.secondaryRaw,
+      })),
+    [rawPrep, t],
+  );
 
-  const storyEvents: RenderedStoryEvent[] = rawStory.map((event) => ({
-    id: event.id,
-    iconKey: event.iconKey,
-    badge: t(event.badgeKey),
-    title: event.titleRaw ?? (event.titleKey ? t(event.titleKey, event.titleParams ?? {}) : ""),
-    detail: event.detail,
-    who: event.who,
-    date: event.date,
-  }));
+  const storyEvents: RenderedStoryEvent[] = useMemo(
+    () =>
+      rawStory.map((event) => ({
+        id: event.id,
+        iconKey: event.iconKey,
+        badge: t(event.badgeKey),
+        title: event.titleRaw ?? (event.titleKey ? t(event.titleKey, event.titleParams ?? {}) : ""),
+        detail: event.detail,
+        who: event.who,
+        date: event.date,
+      })),
+    [rawStory, t],
+  );
 
-  const contextSections = rawContext.map((section) => ({
-    id: section.id,
-    title: t(section.titleKey),
-    icon: CONTEXT_ICONS[section.iconKey],
-    entries: section.entries.map((entry): ContextEntry => ({
-      id: entry.id,
-      label: entry.labelKey ? t(entry.labelKey) : undefined,
-      primary: entry.primary,
-      secondary: entry.secondary,
-      href: entry.href,
-      meta: entry.metaRaw,
-    })),
-  }));
+  const contextSections = useMemo(
+    () =>
+      rawContext.map((section) => ({
+        id: section.id,
+        title: t(section.titleKey),
+        icon: CONTEXT_ICONS[section.iconKey],
+        entries: section.entries.map((entry): ContextEntry => ({
+          id: entry.id,
+          label: entry.labelKey ? t(entry.labelKey) : undefined,
+          primary: entry.primary,
+          secondary: entry.secondary,
+          href: entry.href,
+          meta: entry.metaRaw,
+        })),
+      })),
+    [rawContext, t],
+  );
 
   const tabs: WorkspaceTab[] = [
     {

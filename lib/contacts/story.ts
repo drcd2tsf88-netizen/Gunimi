@@ -1,8 +1,7 @@
-import type { Deal } from "@/types/deal";
+import type { Contact } from "@/types/contact";
 import type { WorkspaceActivity } from "@/types/activity";
-import type { StoryIconKey, StoryEvent } from "@/lib/workspace/types";
-
-export type { StoryIconKey, StoryEvent };
+import type { Deal } from "@/types/deal";
+import type { StoryEvent, StoryIconKey } from "@/lib/workspace/types";
 
 const PRIMARY_TYPE_MAP: Record<string, StoryIconKey> = {
   meeting: "meeting",
@@ -29,26 +28,52 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-export function resolveDealStory(
-  deal: Deal,
+export function resolveContactStory(
+  contact: Contact,
   activities: WorkspaceActivity[],
+  deals: Deal[],
 ): StoryEvent[] {
   const events: StoryEvent[] = [];
 
-  // Synthetic first milestone — always present, derived from deal.created_at
   events.push({
-    id: "deal-created",
+    id: "contact-created",
     iconKey: "begin",
     badgeKey: "storyBeginBadge",
     titleKey: "storyBeginTitle",
-    detail: deal.company?.name ?? deal.contact?.name,
-    who: deal.owner?.full_name,
-    date: deal.created_at,
+    detail: contact.company_name,
+    who: contact.owner?.full_name,
+    date: contact.created_at ?? new Date().toISOString(),
   });
 
-  if (activities.length === 0) return events;
+  for (const deal of deals) {
+    if (deal.stage === "won") {
+      events.push({
+        id: `deal-won-${deal.id}`,
+        iconKey: "stage",
+        badgeKey: "storyDealWonBadge",
+        titleKey: "storyDealWonTitle",
+        detail: deal.title,
+        date: deal.updated_at ?? deal.created_at,
+      });
+    } else if (deal.stage === "lost") {
+      events.push({
+        id: `deal-lost-${deal.id}`,
+        iconKey: "stage",
+        badgeKey: "storyDealLostBadge",
+        titleKey: "storyDealLostTitle",
+        detail: deal.title,
+        date: deal.updated_at ?? deal.created_at,
+      });
+    }
+  }
 
-  // Oldest → newest
+  if (activities.length === 0) {
+    events.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
+    return events;
+  }
+
   const sorted = [...activities].sort(
     (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
   );
@@ -67,18 +92,17 @@ export function resolveDealStory(
       id: activity.id,
       iconKey,
       badgeKey: `story${capitalize(iconKey)}Badge`,
-      titleRaw: activity.title || undefined,
+      titleRaw: activity.title ?? undefined,
       titleKey: activity.title ? undefined : `storyFallback${capitalize(iconKey)}`,
       who: activity.user?.full_name,
       date: activity.created_at,
     });
   }
 
-  // Collapse all secondary events into one grouped milestone
   if (secondary.length > 0) {
     const latest = secondary[secondary.length - 1];
     events.push({
-      id: "story-group",
+      id: "contact-story-group",
       iconKey: "group",
       badgeKey: "storyGroupBadge",
       titleKey: "storyGroupTitle",
@@ -87,7 +111,6 @@ export function resolveDealStory(
     });
   }
 
-  // Final chronological sort
   events.sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );

@@ -2,22 +2,9 @@ import type { Deal } from "@/types/deal";
 import type { DealRelatedTask } from "@/server/actions/deals/getDealRelatedTasks";
 import type { DealRelatedNote } from "@/server/actions/deals/getDealRelatedNotes";
 import type { WorkspaceActivity } from "@/types/activity";
+import type { RawContextEntry, RawContextSection } from "@/lib/workspace/types";
 
-export type RawContextEntry = {
-  id: string;
-  labelKey?: string;
-  primary: string;
-  secondary?: string;
-  href?: string;
-  metaRaw?: string;
-};
-
-export type RawContextSection = {
-  id: string;
-  titleKey: string;
-  iconKey: "relationships" | "notes" | "tasks" | "meeting";
-  entries: RawContextEntry[];
-};
+export type { RawContextEntry, RawContextSection };
 
 const MEETING_TYPES = new Set([
   "meeting",
