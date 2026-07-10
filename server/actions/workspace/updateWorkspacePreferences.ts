@@ -6,6 +6,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
 import type { WorkspacePreferences } from "./getWorkspaceSettings";
 
 export type { WorkspacePreferences };
@@ -40,15 +41,15 @@ export async function updateWorkspacePreferences(
       .eq("id", workspace.id);
 
     if (error) {
-      console.error(error);
+      logger.error("updateWorkspacePreferences failed", error);
       return false;
     }
 
     revalidatePath("/dashboard/settings");
 
     return true;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    logger.error("updateWorkspacePreferences unexpected error", err);
     return false;
   }
 }

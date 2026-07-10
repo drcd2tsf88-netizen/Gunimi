@@ -8,7 +8,8 @@ import { useTranslations } from "next-intl";
 
 import toast from "react-hot-toast";
 
-import { updateWorkspacePreferences, WorkspacePreferences } from "@/server/actions/workspace/updateWorkspacePreferences";
+import { updateWorkspacePreferences } from "@/server/actions/workspace/updateWorkspacePreferences";
+import type { WorkspacePreferences } from "@/server/actions/workspace/getWorkspaceSettings";
 
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiField from "@/components/ui/GunimiField";

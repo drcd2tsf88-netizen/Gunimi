@@ -28,7 +28,7 @@ export async function getWorkspaceSettings(): Promise<WorkspaceSettings | null> 
       .from("workspaces")
       .select("id, name, slug, preferences")
       .eq("id", workspace.id)
-      .single();
+      .maybeSingle();
 
     if (error) {
       return null;
