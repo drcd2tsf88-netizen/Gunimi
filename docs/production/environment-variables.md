@@ -21,12 +21,12 @@ openssl rand -base64 32
 
 ---
 
-## Email (Resend)
+## Email (Postmark)
 
 | Variable | Description | Default |
 |---|---|---|
-| `RESEND_API_KEY` | Resend API key | — (email disabled) |
-| `RESEND_FROM_EMAIL` | FROM address | `Gunimi <noreply@gunimi.com>` |
+| `POSTMARK_SERVER_TOKEN` | Postmark Server API token | — (email disabled) |
+| `EMAIL_FROM` | FROM address | `Gunimi <noreply@gunimi.com>` |
 | `SUPPORT_EMAIL` | Support contact | `support@gunimi.com` |
 
 ---

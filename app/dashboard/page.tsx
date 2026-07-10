@@ -1,49 +1,39 @@
+import { getTranslations } from "next-intl/server";
 import { getUser } from "@/lib/server/auth";
 import { createClient } from "@/lib/supabase/server";
-import { getWorkspaceTasks } from "@/server/actions/tasks/getWorkspaceTasks";
-import { getCalendarEvents } from "@/server/actions/calendar/getCalendarEvents";
-import { getOnboardingStatus } from "@/server/actions/onboarding/getOnboardingStatus";
-import { getPipelineBreakdown } from "@/server/actions/dashboard/getPipelineBreakdown";
-import DashboardView from "@/components/dashboard/DashboardView";
-import type { DashboardTask } from "@/components/dashboard/TodaysPrioritiesWidget";
+import { getTodayData } from "@/server/actions/today/getTodayData";
+import TodayView from "@/components/today/TodayView";
 
-export default async function DashboardPage() {
+export async function generateMetadata() {
+  const t = await getTranslations("today");
+  return { title: t("pageTitle") };
+}
+
+export default async function TodayPage() {
   const user = await getUser();
 
   const profilePromise = user
     ? createClient().then((s) =>
-        s.from("profiles").select("full_name").eq("id", user.id).single()
+        s.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
       )
     : Promise.resolve({ data: null });
 
-  const [
-    rawTasks,
-    events,
-    onboardingStatus,
-    pipeline,
-    profileResult,
-  ] = await Promise.all([
-    getWorkspaceTasks(),
-    getCalendarEvents(10),
-    getOnboardingStatus(),
-    getPipelineBreakdown(),
+  const [{ deals, contacts, tasks }, profileResult] = await Promise.all([
+    getTodayData(),
     profilePromise,
   ]);
 
   const displayName =
     (profileResult.data as { full_name?: string } | null)?.full_name ||
     user?.email?.split("@")[0] ||
-    "Operator";
-
-  const tasks = (rawTasks as unknown as DashboardTask[]) ?? [];
+    "—";
 
   return (
-    <DashboardView
+    <TodayView
       displayName={displayName}
+      deals={deals}
+      contacts={contacts}
       tasks={tasks}
-      events={events}
-      onboardingStatus={onboardingStatus}
-      pipeline={pipeline}
     />
   );
 }

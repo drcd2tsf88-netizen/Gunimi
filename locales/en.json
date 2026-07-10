@@ -1442,7 +1442,7 @@
     "noDataYet": "No data yet. AI requests will appear here once the table is created and requests are made."
   },
   "nav": {
-    "dashboard": "Dashboard",
+    "dashboard": "Today",
     "contacts": "Contacts",
     "crm": "CRM",
     "companies": "Companies",
@@ -2449,5 +2449,43 @@
       "signOut": "Sign out",
       "footerNote": "Gunimi is onboarding selected companies, operators and collaborators. You'll receive an email when your access is confirmed."
     }
+  },
+  "today": {
+    "pageTitle": "Today",
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "healthHealthy": "Your business is in good shape.",
+    "healthAttention": "{count} things need your attention today.",
+    "healthUrgent": "Several items need urgent attention.",
+    "focusSectionLabel": "Your focus",
+    "focusEmptyAction": "Your business is in good shape.",
+    "focusEmptyReason": "No immediate priority. All deals and relationships are active.",
+    "focusDealPastCloseAction": "Update or close \"{title}\" — close date passed {days} days ago",
+    "focusDealPastCloseReason": "Deals past their expected close date create pipeline uncertainty. Update the stage or mark as lost.",
+    "focusDealClosingAction": "Prioritise closing \"{title}\" — {days} days remaining",
+    "focusDealClosingReason": "The close window is approaching. Consistent attention in the final week prevents last-minute surprises.",
+    "focusDealStaleAction": "Re-engage \"{title}\" — no activity in {days} days",
+    "focusDealStaleReason": "Deals that go quiet lose momentum. A brief update or follow-up keeps it moving.",
+    "focusContactStaleAction": "Reach out to {name} — no contact in {days} days",
+    "focusContactStaleReason": "An active deal depends on this relationship. Last contact was {days} days ago with {deal} pending.",
+    "focusTaskOverdueAction": "Complete \"{title}\" — {days} days overdue",
+    "focusTaskOverdueReason": "Overdue commitments compound. This task has been pending for {days} days.",
+    "attentionSectionLabel": "Attention required",
+    "attentionDealPastClose": "\"{title}\" — close date passed {days} days ago",
+    "attentionDealClosingSoon": "\"{title}\" — closes in {days} days",
+    "attentionDealStale": "\"{title}\" — no activity in {days} days",
+    "attentionTaskOverdue": "\"{title}\" — {days} days overdue",
+    "attentionContactStale": "{name} — no contact in {days} days",
+    "relationshipsSectionLabel": "Relationships",
+    "relationshipStale": "No contact in {days} days",
+    "relationshipNeverContacted": "Never contacted",
+    "workSectionLabel": "Today's work",
+    "workEmpty": "No tasks due today.",
+    "workTagOverdue": "Overdue",
+    "workTagToday": "Today",
+    "workMarkDone": "Mark complete",
+    "workMarkDoneSuccess": "Task completed",
+    "workMarkDoneFailed": "Could not complete task"
   }
 }

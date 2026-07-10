@@ -1,9 +1,6 @@
 "use server";
 
-import { Resend } from "resend";
-import { APP_CONFIG } from "@/lib/config/app";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendContactEmail } from "@/lib/email";
 
 type ContactPayload = {
   name: string;
@@ -28,13 +25,7 @@ export async function sendContactMessage({
   if (m.length > 2000) return { ok: false, error: "Message too long (max 2000 characters)" };
 
   try {
-    await resend.emails.send({
-      from: APP_CONFIG.email.from,
-      to: APP_CONFIG.email.support,
-      replyTo: e,
-      subject: `[Contact] ${category} — ${n}`,
-      text: `Name: ${n}\nEmail: ${e}\nCategory: ${category}\n\n${m}`,
-    });
+    await sendContactEmail({ name: n, email: e, category, message: m });
     return { ok: true };
   } catch {
     return { ok: false, error: "Failed to send message. Please try again." };

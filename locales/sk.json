@@ -1442,7 +1442,7 @@
     "noDataYet": "Zatiaľ žiadne dáta. Požiadavky AI sa tu objavia po vytvorení tabuľky."
   },
   "nav": {
-    "dashboard": "Prehľad",
+    "dashboard": "Dnes",
     "contacts": "Kontakty",
     "crm": "CRM",
     "companies": "Spoločnosti",
@@ -2449,5 +2449,43 @@
       "signOut": "Odhlásiť sa",
       "footerNote": "Gunimi prijíma vybrané spoločnosti, operátorov a spolupracovníkov. Keď bude váš prístup potvrdený, dostanete e-mail."
     }
+  },
+  "today": {
+    "pageTitle": "Dnes",
+    "greetingMorning": "Dobré ráno",
+    "greetingAfternoon": "Dobrý deň",
+    "greetingEvening": "Dobrý večer",
+    "healthHealthy": "Vaše podnikanie je v dobrom stave.",
+    "healthAttention": "{count} vecí si vyžaduje vašu pozornosť dnes.",
+    "healthUrgent": "Niekoľko položiek si vyžaduje okamžitú pozornosť.",
+    "focusSectionLabel": "Vaše zameranie",
+    "focusEmptyAction": "Vaše podnikanie je v dobrom stave.",
+    "focusEmptyReason": "Žiadna bezprostredná priorita. Všetky obchody a vzťahy sú aktívne.",
+    "focusDealPastCloseAction": "Aktualizujte alebo uzavrite \"{title}\" — dátum uzávierky uplynul pred {days} dňami",
+    "focusDealPastCloseReason": "Obchody po termíne uzávierky vytvárajú neistotu v pipeline. Aktualizujte fázu alebo označte ako stratené.",
+    "focusDealClosingAction": "Prioritizujte uzavretie \"{title}\" — zostáva {days} dní",
+    "focusDealClosingReason": "Okno uzávierky sa blíži. Konzistentná pozornosť v poslednom týždni predchádza prekvapeniam.",
+    "focusDealStaleAction": "Znovu zapojte \"{title}\" — žiadna aktivita počas {days} dní",
+    "focusDealStaleReason": "Obchody, ktoré stíchnú, strácajú dynamiku. Stručná aktualizácia alebo kontakt to udrží v pohybe.",
+    "focusContactStaleAction": "Kontaktujte {name} — bez kontaktu {days} dní",
+    "focusContactStaleReason": "Aktívny obchod závisí od tohto vzťahu. Posledný kontakt bol pred {days} dňami, {deal} čaká.",
+    "focusTaskOverdueAction": "Dokončite \"{title}\" — {days} dní po termíne",
+    "focusTaskOverdueReason": "Oneskorené záväzky sa hromadia. Táto úloha čaká {days} dní.",
+    "attentionSectionLabel": "Vyžaduje pozornosť",
+    "attentionDealPastClose": "\"{title}\" — dátum uzávierky uplynul pred {days} dňami",
+    "attentionDealClosingSoon": "\"{title}\" — uzatvori sa o {days} dní",
+    "attentionDealStale": "\"{title}\" — žiadna aktivita {days} dní",
+    "attentionTaskOverdue": "\"{title}\" — {days} dní po termíne",
+    "attentionContactStale": "{name} — bez kontaktu {days} dní",
+    "relationshipsSectionLabel": "Vzťahy",
+    "relationshipStale": "Bez kontaktu {days} dní",
+    "relationshipNeverContacted": "Nikdy nekontaktovaný",
+    "workSectionLabel": "Dnešná práca",
+    "workEmpty": "Dnes nie sú splatné žiadne úlohy.",
+    "workTagOverdue": "Po termíne",
+    "workTagToday": "Dnes",
+    "workMarkDone": "Označiť ako hotové",
+    "workMarkDoneSuccess": "Úloha dokončená",
+    "workMarkDoneFailed": "Nepodarilo sa dokončiť úlohu"
   }
 }

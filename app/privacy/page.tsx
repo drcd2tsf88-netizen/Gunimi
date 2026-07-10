@@ -92,7 +92,7 @@ export default async function PrivacyPage() {
                       "To provide and operate the Gunimi platform",
                       "To authenticate your identity and secure your workspace",
                       "To power AI features: note content may be sent to AI model providers to generate summaries and insights (see Section 4)",
-                      "To send transactional emails (workspace invites, verification) via Resend",
+                      "To send transactional emails (workspace invites, verification) via Postmark",
                       "To improve the product during the alpha period based on usage patterns",
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-2.5">
@@ -124,7 +124,7 @@ export default async function PrivacyPage() {
                     {[
                       { name: "AI Model Providers", body: "When you use AI features, the relevant content is sent to third-party AI model APIs for processing. We have data processing agreements that prohibit use of your data for model training. We do not send credentials or payment information to AI providers." },
                       { name: "Supabase", body: "Database, authentication, and real-time features are provided by Supabase, Inc." },
-                      { name: "Resend", body: "Transactional emails are sent via Resend. Email addresses are shared with Resend only for delivery purposes." },
+                      { name: "Postmark", body: "Transactional emails are sent via Postmark. Email addresses are shared with Postmark only for delivery purposes." },
                       { name: "Upstash Redis", body: "User IDs are stored temporarily in Upstash Redis for rate limiting purposes. No personal data beyond user ID is stored." },
                     ].map(({ name, body }) => (
                       <div key={name}>

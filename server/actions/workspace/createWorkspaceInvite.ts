@@ -5,7 +5,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
-import { sendWorkspaceInvite } from "@/lib/email/sendWorkspaceInvites";
+import { sendWorkspaceInvite } from "@/lib/email";
 
 const ALLOWED_ROLES = ["admin", "member"] as const;
 type InviteRole = (typeof ALLOWED_ROLES)[number];

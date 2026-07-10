@@ -47,8 +47,8 @@ async function probeUpstash(): Promise<boolean> {
   }
 }
 
-async function probeResend(): Promise<boolean> {
-  return !!process.env.RESEND_API_KEY;
+async function probeEmailProvider(): Promise<boolean> {
+  return !!process.env.POSTMARK_SERVER_TOKEN;
 }
 
 export async function GET() {
@@ -56,7 +56,7 @@ export async function GET() {
     probeSupabase(),
     probeOpenAI(),
     probeUpstash(),
-    probeResend(),
+    probeEmailProvider(),
   ]);
 
   const allHealthy = supabase && openai && upstash && email;

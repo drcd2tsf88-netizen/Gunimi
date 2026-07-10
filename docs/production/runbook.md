@@ -49,9 +49,9 @@ Upstash Redis controls write rate limits. If legitimate users are being blocked:
 
 ### Email not sending
 
-1. Verify `RESEND_API_KEY` is set
-2. Check Resend dashboard for delivery errors
-3. Verify `RESEND_FROM_EMAIL` domain is verified in Resend
+1. Verify `POSTMARK_SERVER_TOKEN` is set
+2. Check Postmark dashboard → Activity for delivery errors
+3. Verify `EMAIL_FROM` domain is verified in Postmark → Sender Signatures
 
 ### Environment validation failure on startup
 

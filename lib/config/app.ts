@@ -13,8 +13,7 @@ export const APP_CONFIG = {
   url: process.env.NEXT_PUBLIC_APP_URL ?? "https://gunimi.com",
 
   email: {
-    // Transactional FROM address — set RESEND_FROM_EMAIL in Vercel to override
-    from: process.env.RESEND_FROM_EMAIL ?? "Gunimi <noreply@gunimi.com>",
+    from: process.env.EMAIL_FROM ?? "Gunimi <noreply@gunimi.com>",
     support: process.env.SUPPORT_EMAIL ?? "support@gunimi.com",
     noreply: "noreply@gunimi.com",
   },

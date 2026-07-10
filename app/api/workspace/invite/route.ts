@@ -6,8 +6,7 @@ from "@supabase/ssr";
 import { cookies }
 from "next/headers";
 
-import { sendWorkspaceInvite }
-from "@/lib/email/sendWorkspaceInvites";
+import { sendWorkspaceInvite } from "@/lib/email";
 
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
