@@ -12,7 +12,24 @@ const eslintConfig = defineConfig([
         varsIgnorePattern: "^_",
         caughtErrorsIgnorePattern: "^_",
       }],
+      // Rule #2: ban all console.* across the codebase
+      "no-console": "error",
     },
+  },
+  // lib/logger.ts is the console wrapper — allow all console methods inside it
+  {
+    files: ["lib/logger.ts"],
+    rules: { "no-console": "off" },
+  },
+  // lib/server/env.ts: startup config degradation — console.warn only
+  {
+    files: ["lib/server/env.ts"],
+    rules: { "no-console": ["error", { allow: ["warn"] }] },
+  },
+  // scripts/ are Node CLI tools — allow console output for user feedback
+  {
+    files: ["scripts/**/*.mjs", "scripts/**/*.js"],
+    rules: { "no-console": "off" },
   },
   // Override default ignores of eslint-config-next.
   globalIgnores([

@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "check:locales": "node scripts/check-locales.mjs",
+    "check:env": "node scripts/check-env.mjs",
+    "gates": "npm run type-check && npm run lint && npm run build && npm run check:locales && npm run check:env"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
