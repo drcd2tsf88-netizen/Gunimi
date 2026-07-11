@@ -132,7 +132,7 @@ export default function OrbitWorkspaceStatus() {
         <p
           className="
             text-xs
-            font-semihold
+            font-semibold
             tracking-wide
           "
         >
@@ -140,7 +140,7 @@ export default function OrbitWorkspaceStatus() {
             workspaceData
               ?.workspace
               ?.name ||
-            "Workspace"
+            tNav("workspaceDefault")
           }
         </p>
 

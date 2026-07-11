@@ -53,7 +53,7 @@ export default function Page() {
           <a
             target="_blank"
             rel="noopener"
-            href="https://orbitdesk-wh.sentry.io/issues/?project=4511581853122640"
+            href="https://gunimi.sentry.io/issues/?project=4511712930168912"
           >
             Issues Page
           </a>

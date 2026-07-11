@@ -12,6 +12,7 @@ export type Company = {
   contacts_count?: number;
   deals_count?: number;
   last_activity_at?: string;
+  created_at?: string;
   owner?: {
     full_name: string;
   };

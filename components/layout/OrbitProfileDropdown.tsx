@@ -103,13 +103,13 @@ export default function OrbitProfileDropdown() {
 
   useEffect(() => {
     async function loadData() {
-      // USER
-
+      // getSession() reads from the local cookie — no network roundtrip.
+      // getUser() validates against the Supabase API on every call — not needed here.
       const {
-        data: { user },
-      } =
-        await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
+      const user = session?.user ?? null;
       setUser(user);
 
       if (user) {
@@ -117,30 +117,24 @@ export default function OrbitProfileDropdown() {
           .from("profiles")
           .select("full_name")
           .eq("id", user.id)
-          .single();
+          .maybeSingle();
         setProfileName(profileRow?.full_name ?? user.email ?? "");
       }
 
-      // WORKSPACE MEMBERSHIP
-
-      const workspace =
-        await getWorkspaceMembership();
+      // Fetch workspace membership and all workspaces in parallel.
+      const [workspace, all] = await Promise.all([
+        getWorkspaceMembership(),
+        getUserWorkspaces(),
+      ]);
 
       if (workspace) {
         setWorkspaceData(workspace);
       }
 
-      // ALL WORKSPACES
-
-      const all =
-        await getUserWorkspaces();
-
       setWorkspaces(all);
 
       if (workspace) {
-        setActiveWorkspaceId(
-          workspace.workspace.id
-        );
+        setActiveWorkspaceId(workspace.workspace.id);
       } else if (all.length > 0) {
         setActiveWorkspaceId(all[0].id);
       }

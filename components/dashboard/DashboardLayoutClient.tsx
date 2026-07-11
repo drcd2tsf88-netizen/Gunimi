@@ -214,7 +214,7 @@ function SidebarFooter({
 
           <div className="min-w-0 flex-1">
             <p className="truncate text-[12.5px] font-medium text-[#F7F8FC]/75">
-              {profile?.full_name ?? "Profile"}
+              {profile?.full_name ?? tNav("profileDefault")}
             </p>
             <p className="text-[10px] text-[#9AA3B2]/40">
               {tNav("profileSettings")}
@@ -257,6 +257,10 @@ export default function DashboardLayoutClient({
   } | null>(null);
 
   useEffect(() => {
+    // Failsafe: if initialize() hangs (auth server unreachable, network stall),
+    // release the loading gate after 10 s so the page is never permanently blocked.
+    const failsafe = setTimeout(() => setLoading(false), 10_000);
+
     async function initialize() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -287,12 +291,16 @@ export default function DashboardLayoutClient({
         const hasAccess = role === "beta" || role === "team" || role === "admin";
         if (!hasAccess) { window.location.href = "/waitlist"; return; }
 
+        clearTimeout(failsafe);
         setLoading(false);
       } catch {
+        clearTimeout(failsafe);
         setLoading(false);
       }
     }
     initialize();
+
+    return () => clearTimeout(failsafe);
   }, []);
 
   if (loading) return <GunimiLoader />;

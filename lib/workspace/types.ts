@@ -33,6 +33,6 @@ export type RawContextEntry = {
 export type RawContextSection = {
   id: string;
   titleKey: string;
-  iconKey: "relationships" | "notes" | "tasks" | "meeting";
+  iconKey: "relationships" | "notes" | "tasks" | "meeting" | "deals";
   entries: RawContextEntry[];
 };

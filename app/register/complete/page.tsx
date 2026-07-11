@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 import { supabase } from "@/lib/supabase";
 import { createWorkspace } from "@/server/actions/workspace/createWorkspace";
+import { setActiveWorkspace } from "@/server/actions/workspace/setActiveWorkspace";
 import type { User } from "@supabase/supabase-js";
 import AiCore from "@/components/ui/AiCore";
 
@@ -93,6 +94,10 @@ export default function RegisterCompletePage() {
           setLoading(false);
           return;
         }
+
+        // Set the workspace cookie immediately so the first dashboard render
+        // uses the fast cookie-based lookup instead of a full DB query.
+        await setActiveWorkspace(workspace.id);
       }
 
       const inviteToken = localStorage.getItem("orbit_invite_token");
@@ -124,32 +129,43 @@ export default function RegisterCompletePage() {
 
     setStatus(t("completeInitializing"));
 
-    const timeout = setTimeout(() => {
+    // Phase 1: wait up to 15 s for the auth session to arrive
+    const sessionTimeout = setTimeout(() => {
       subscription.unsubscribe();
       toast.error(t("completeSessionTimedOut"));
       window.location.href = "/login";
     }, 15_000);
 
+    // Phase 2: once session fires, allow up to 30 s for workspace bootstrapping.
+    // Without this guard, a hung server action leaves the page spinning forever.
+    let registrationTimeout: ReturnType<typeof setTimeout> | null = null;
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN" && session?.user) {
-        clearTimeout(timeout);
+      const hasUser = session?.user;
+
+      if (
+        (event === "SIGNED_IN" && hasUser) ||
+        (event === "INITIAL_SESSION" && hasUser)
+      ) {
+        clearTimeout(sessionTimeout);
         subscription.unsubscribe();
-        await completeRegistration(session.user);
-        return;
-      }
-      if (event === "INITIAL_SESSION") {
-        if (session?.user) {
-          clearTimeout(timeout);
-          subscription.unsubscribe();
-          await completeRegistration(session.user);
-        }
+
+        registrationTimeout = setTimeout(() => {
+          toast.error(t("completeTimedOut"));
+          window.location.href = "/login";
+        }, 30_000);
+
+        await completeRegistration(session!.user);
+
+        if (registrationTimeout !== null) clearTimeout(registrationTimeout);
       }
     });
 
     return () => {
-      clearTimeout(timeout);
+      clearTimeout(sessionTimeout);
+      if (registrationTimeout !== null) clearTimeout(registrationTimeout);
       subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

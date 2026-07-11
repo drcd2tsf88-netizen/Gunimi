@@ -4,40 +4,47 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-import DealHeader from "./DealHeader";
-import DealMetrics from "./DealMetrics";
-import DealOverview from "./DealOverview";
-import DealNotes from "./DealNotes";
-import DealTasks from "./DealTasks";
-import DealIntelligence from "./DealIntelligence";
-import EditDealSheet from "@/components/deals/EditDealSheet";
-import GunimiWorkspaceTabs from "@/components/ui/GunimiWorkspaceTabs";
+import {
+  User,
+  Clock,
+  Briefcase,
+  CheckSquare,
+  FileText,
+  Users,
+  CalendarDays,
+  type LucideIcon,
+} from "lucide-react";
+
+import CompanyWorkspaceHeader from "./CompanyWorkspaceHeader";
+import CompanyWorkspaceMetrics from "./CompanyWorkspaceMetrics";
+import CompanyProfile from "./CompanyProfile";
+import CompanyNotes from "@/components/company/CompanyNotes";
+import CompanyEmails from "@/components/company/CompanyEmails";
+import EditCompanySheet from "@/components/company/EditCompanySheet";
+
+import GunimiWorkspaceTabs, { type WorkspaceTab } from "@/components/ui/GunimiWorkspaceTabs";
 import GunimiDecisionCard from "@/components/ui/GunimiDecisionCard";
 import GunimiPreparationCard, { type PreparationItem } from "@/components/ui/GunimiPreparationCard";
 import GunimiStory, { type RenderedStoryEvent } from "@/components/ui/GunimiStory";
 import GunimiContextCard, { type ContextEntry } from "@/components/ui/GunimiContextCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
-import type { WorkspaceTab } from "@/components/ui/GunimiWorkspaceTabs";
 
-import { resolveDealDecision } from "@/lib/deals/decision";
-import { resolveDealPreparation, type PrepItem } from "@/lib/deals/preparation";
-import { resolveDealStory } from "@/lib/deals/story";
-import { resolveDealContext } from "@/lib/deals/context";
+import { resolveCompanyDecision } from "@/lib/companies/decision";
+import { resolveCompanyPreparation, type CompanyPrepItem } from "@/lib/companies/preparation";
+import { resolveCompanyStory } from "@/lib/companies/story";
+import { resolveCompanyContext } from "@/lib/companies/context";
 
-import { User, Clock, CheckSquare, FileText, LucideIcon, Users, CalendarDays, TrendingUp } from "lucide-react";
+import type { Company } from "@/types/company";
+import type { Contact } from "@/types/contact";
+import type { Deal } from "@/types/deal";
+import type { WorkspaceActivity } from "@/types/activity";
+import type { CompanyNote } from "@/server/actions/company/getCompanyNotes";
+import type { EmailThread } from "@/types/email";
 
-import { Deal } from "@/types/deal";
-import { WorkspaceActivity } from "@/types/activity";
-import { Company } from "@/types/company";
-import { Contact } from "@/types/contact";
-import type { DealRelatedNote } from "@/server/actions/deals/getDealRelatedNotes";
-import type { DealRelatedTask } from "@/server/actions/deals/getDealRelatedTasks";
-
-const PREP_ICONS: Record<PrepItem["iconKey"], LucideIcon> = {
+const PREP_ICONS: Record<CompanyPrepItem["iconKey"], LucideIcon> = {
   contact: User,
   activity: Clock,
-  task: CheckSquare,
-  note: FileText,
+  deal: Briefcase,
 };
 
 const CONTEXT_ICONS: Record<"relationships" | "notes" | "tasks" | "meeting" | "deals", LucideIcon> = {
@@ -45,41 +52,55 @@ const CONTEXT_ICONS: Record<"relationships" | "notes" | "tasks" | "meeting" | "d
   notes: FileText,
   tasks: CheckSquare,
   meeting: CalendarDays,
-  deals: TrendingUp,
+  deals: Briefcase,
 };
 
 type Props = {
-  deal: Deal;
-  activities: WorkspaceActivity[];
-  companies: Company[];
+  company: Company;
   contacts: Contact[];
-  notes: DealRelatedNote[];
-  tasks: DealRelatedTask[];
+  deals: Deal[];
+  activities: WorkspaceActivity[];
+  notes: CompanyNote[];
+  emails: EmailThread[];
 };
 
-export default function DealDetailView({
-  deal,
-  activities,
-  companies,
+export default function CompanyDetailView({
+  company,
   contacts,
+  deals,
+  activities,
   notes,
-  tasks,
+  emails,
 }: Props) {
   const router = useRouter();
-  const t = useTranslations("deals");
+  const t = useTranslations("companies");
   const [editOpen, setEditOpen] = useState(false);
 
-  const pendingTasksCount = tasks.filter((task) => task.status !== "done").length;
-
-  const decision = useMemo(() => resolveDealDecision(deal, tasks), [deal, tasks]);
-  const rawPrep = useMemo(
-    () => resolveDealPreparation(deal, tasks, activities, notes, decision),
-    [deal, tasks, activities, notes, decision],
+  const openDeals = useMemo(
+    () => deals.filter((d) => d.stage !== "won" && d.stage !== "lost"),
+    [deals],
   );
-  const rawStory = useMemo(() => resolveDealStory(deal, activities), [deal, activities]);
+
+  const workBadge = notes.length + emails.length || undefined;
+
+  const decision = useMemo(
+    () => resolveCompanyDecision(company, contacts, deals),
+    [company, contacts, deals],
+  );
+
+  const rawPrep = useMemo(
+    () => resolveCompanyPreparation(activities, decision),
+    [activities, decision],
+  );
+
+  const rawStory = useMemo(
+    () => resolveCompanyStory(company, activities),
+    [company, activities],
+  );
+
   const rawContext = useMemo(
-    () => resolveDealContext(deal, notes, tasks, activities),
-    [deal, notes, tasks, activities],
+    () => resolveCompanyContext(contacts, deals, activities, notes),
+    [contacts, deals, activities, notes],
   );
 
   const decisionAction = decision ? t(decision.actionKey) : t("decisionEmptyLabel");
@@ -139,7 +160,6 @@ export default function DealDetailView({
       label: t("tabOverview"),
       content: (
         <div className="space-y-4">
-          <DealIntelligence deal={deal} activeDecisionAction={decision?.action} />
           <GunimiDecisionCard
             label={t("decisionSuggestedLabel")}
             action={decisionAction}
@@ -147,12 +167,9 @@ export default function DealDetailView({
             isEmpty={!decision}
           />
           {preparationItems.length > 0 && (
-            <GunimiPreparationCard
-              label={t("preparationLabel")}
-              items={preparationItems}
-            />
+            <GunimiPreparationCard label={t("preparationLabel")} items={preparationItems} />
           )}
-          <DealOverview deal={deal} />
+          <CompanyProfile company={company} />
         </div>
       ),
     },
@@ -164,25 +181,20 @@ export default function DealDetailView({
           label={t("storyLabel")}
           events={storyEvents}
           earlyNoteTitle={activities.length === 0 ? t("storyEarlyTitle") : undefined}
-          earlyNoteDescription={activities.length === 0 ? t("storyEarlyDescription") : undefined}
+          earlyNoteDescription={
+            activities.length === 0 ? t("storyEarlyDescription") : undefined
+          }
         />
       ),
     },
     {
       id: "work",
       label: t("tabWork"),
-      badge: pendingTasksCount,
+      badge: workBadge,
       content: (
         <div className="space-y-6">
-          <DealTasks
-            tasks={tasks}
-            contactId={deal.contact?.id}
-          />
-          <DealNotes
-            notes={notes}
-            contactId={deal.contact?.id}
-            companyId={deal.company?.id}
-          />
+          <CompanyNotes notes={notes} />
+          <CompanyEmails threads={emails} />
         </div>
       ),
     },
@@ -213,9 +225,14 @@ export default function DealDetailView({
 
   return (
     <div className="flex flex-col gap-6">
-      <DealHeader deal={deal} onEdit={() => setEditOpen(true)} />
+      <CompanyWorkspaceHeader
+        company={company}
+        contactsCount={contacts.length}
+        openDealsCount={openDeals.length}
+        onEdit={() => setEditOpen(true)}
+      />
 
-      <DealMetrics deal={deal} />
+      <CompanyWorkspaceMetrics company={company} contacts={contacts} deals={deals} />
 
       <GunimiWorkspaceTabs
         tabs={tabs}
@@ -223,15 +240,12 @@ export default function DealDetailView({
         listLabel={t("workspaceTabsLabel")}
       />
 
-      <EditDealSheet
-        key={deal.id}
-        deal={deal}
+      <EditCompanySheet
+        key={company.id}
+        company={company}
         open={editOpen}
         onOpenChange={setEditOpen}
-        companies={companies}
-        contacts={contacts}
-        onUpdated={() => router.refresh()}
-        onDeleted={() => router.push("/dashboard/deals")}
+        onSaved={() => router.refresh()}
       />
     </div>
   );

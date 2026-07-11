@@ -16,6 +16,8 @@ import {
   Bell,
 } from "lucide-react";
 
+import { useTranslations } from "next-intl";
+
 type Activity = {
   id: string;
 
@@ -27,6 +29,7 @@ type Activity = {
 };
 
 export default function OrbitNotifications() {
+  const t = useTranslations("notifications");
   const [open, setOpen] =
     useState(false);
 
@@ -200,7 +203,7 @@ setActivity(data || []);
                   font-semibold
                 "
               >
-                Gunimi Signals
+                {t("title")}
               </h3>
 
               <p
@@ -211,7 +214,7 @@ setActivity(data || []);
                   text-white/40
                 "
               >
-                Live workspace observatory
+                {t("subtitle")}
               </p>
             </div>
 
@@ -246,9 +249,7 @@ setActivity(data || []);
                       text-white/50
                     "
                   >
-                    Gunimi AI is actively
-                    monitoring workspace
-                    activity.
+                    {t("emptyDescription")}
                   </p>
                 </div>
               ) : (

@@ -53,13 +53,14 @@ const CONTACT_PREP_ICONS: Record<ContactPrepItem["iconKey"], LucideIcon> = {
 };
 
 const CONTEXT_ICONS: Record<
-  "relationships" | "notes" | "tasks" | "meeting",
+  "relationships" | "notes" | "tasks" | "meeting" | "deals",
   LucideIcon
 > = {
   relationships: Users,
   notes: FileText,
   tasks: CheckSquare,
   meeting: CalendarDays,
+  deals: TrendingUp,
 };
 
 type Props = {
