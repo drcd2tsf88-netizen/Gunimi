@@ -18,6 +18,8 @@ export type WorkspacePreferences = {
   timeFormat?: "12h" | "24h";
   numberFormat?: "dot" | "comma";
   firstDayOfWeek?: "monday" | "sunday";
+  /** Internal dogfooding mode — never visible to normal customers. */
+  dogfoodEnabled?: boolean;
   /** Internal: scan schedule state per scan type. Not user-facing. */
   scanSchedule?: Record<string, ScanTypeState>;
 };

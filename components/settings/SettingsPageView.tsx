@@ -29,6 +29,7 @@ type Props = {
   workspaceSummaries: WorkspaceSummary[];
   userProfile: UserProfile | null;
   localeSource: "workspace" | "cookie" | "browser";
+  isDogfoodEligible: boolean;
 };
 
 export default function SettingsPageView({
@@ -41,6 +42,7 @@ export default function SettingsPageView({
   workspaceSummaries,
   userProfile,
   localeSource,
+  isDogfoodEligible,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -79,6 +81,7 @@ export default function SettingsPageView({
               preferences={workspace.preferences ?? null}
               currentUserRole={currentUserRole}
               localeSource={localeSource}
+              isDogfoodEligible={isDogfoodEligible}
             />
           )}
 

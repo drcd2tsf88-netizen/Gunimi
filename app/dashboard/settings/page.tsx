@@ -61,6 +61,10 @@ export default async function SettingsPage({
       ? "cookie"
       : "browser";
 
+  const isDogfoodEligible = ["admin", "team"].includes(
+    (userProfile as { platform_role?: string } | null)?.platform_role ?? ""
+  );
+
   return (
     <SettingsPageView
       workspace={settings}
@@ -72,6 +76,7 @@ export default async function SettingsPage({
       workspaceSummaries={workspaceSummaries}
       userProfile={userProfile}
       localeSource={localeSource}
+      isDogfoodEligible={isDogfoodEligible}
     />
   );
 }

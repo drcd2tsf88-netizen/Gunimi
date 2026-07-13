@@ -62,9 +62,10 @@ type Props = {
   preferences: WorkspacePreferences | null;
   currentUserRole: string;
   localeSource: "workspace" | "cookie" | "browser";
+  isDogfoodEligible: boolean;
 };
 
-export default function PreferencesSection({ preferences, currentUserRole, localeSource }: Props) {
+export default function PreferencesSection({ preferences, currentUserRole, localeSource, isDogfoodEligible }: Props) {
   const t = useTranslations("settings");
   const router = useRouter();
 
@@ -88,6 +89,10 @@ export default function PreferencesSection({ preferences, currentUserRole, local
   );
   const [isRegionalPending, startRegionalTransition] = useTransition();
 
+  // ── Dogfood state ─────────────────────────────────────────
+  const [dogfoodEnabled, setDogfoodEnabled] = useState(preferences?.dogfoodEnabled ?? false);
+  const [isDogfoodPending, startDogfoodTransition] = useTransition();
+
   function buildPrefs(): WorkspacePreferences {
     return {
       ...preferences,
@@ -99,6 +104,7 @@ export default function PreferencesSection({ preferences, currentUserRole, local
       timeFormat,
       numberFormat,
       firstDayOfWeek,
+      dogfoodEnabled,
     };
   }
 
@@ -122,6 +128,21 @@ export default function PreferencesSection({ preferences, currentUserRole, local
         toast.success(t("preferencesSaved"));
         router.refresh();
       } else {
+        toast.error(t("failedToSavePreferences"));
+      }
+    });
+  }
+
+  function handleToggleDogfood() {
+    const next = !dogfoodEnabled;
+    setDogfoodEnabled(next);
+    startDogfoodTransition(async () => {
+      const ok = await updateWorkspacePreferences({ ...buildPrefs(), dogfoodEnabled: next });
+      if (ok) {
+        toast.success(t("dogfoodSaved"));
+        router.refresh();
+      } else {
+        setDogfoodEnabled(!next);
         toast.error(t("failedToSavePreferences"));
       }
     });
@@ -344,6 +365,37 @@ export default function PreferencesSection({ preferences, currentUserRole, local
           )}
         </GunimiCard>
       </section>
+
+      {/* ── INTERNAL DOGFOODING ─ (platform team only) ─────── */}
+      {isDogfoodEligible && (
+        <section aria-labelledby="dogfood-heading">
+          <div className="mb-4">
+            <h3 id="dogfood-heading" className="text-[15px] font-semibold text-white">
+              {t("dogfoodMode")}
+            </h3>
+            <p className="mt-0.5 text-sm text-white/40">{t("dogfoodModeDescription")}</p>
+          </div>
+
+          <GunimiCard className="p-6">
+            <div className="flex items-center justify-between gap-6">
+              <div>
+                <p className="text-[13px] font-medium text-white/80">
+                  {dogfoodEnabled ? t("dogfoodModeEnabled") : t("dogfoodModeDisabled")}
+                </p>
+                <p className="mt-0.5 text-[11px] text-white/35">{t("dogfoodModeNote")}</p>
+              </div>
+              <GunimiButton
+                variant={dogfoodEnabled ? "secondary" : "primary"}
+                onClick={handleToggleDogfood}
+                loading={isDogfoodPending}
+                disabled={!canEdit || isDogfoodPending}
+              >
+                {dogfoodEnabled ? t("dogfoodDisable") : t("dogfoodEnable")}
+              </GunimiButton>
+            </div>
+          </GunimiCard>
+        </section>
+      )}
 
     </div>
   );

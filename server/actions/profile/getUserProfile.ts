@@ -8,6 +8,7 @@ export type UserProfile = {
   full_name: string;
   email: string;
   avatar_url: string | null;
+  platform_role: string | null;
 };
 
 export async function getUserProfile(): Promise<UserProfile | null> {
@@ -18,7 +19,7 @@ export async function getUserProfile(): Promise<UserProfile | null> {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("profiles")
-      .select("id, full_name, email, avatar_url")
+      .select("id, full_name, email, avatar_url, platform_role")
       .eq("id", user.id)
       .maybeSingle();
 

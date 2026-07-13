@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, ChevronRight, LogOut, X } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, MessageSquarePlus, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 import { isNavItemActive, type NavGroup } from "@/config/navigation";
+import { useDogfoodStore } from "@/lib/store/dogfood-store";
 
 // ─────────────────────────────────────────────────────────────
 // SidebarNav
@@ -182,6 +183,7 @@ export function SidebarFooter({
   onSignOut?: () => void;
 }) {
   const tNav = useTranslations("nav");
+  const { dogfoodEnabled, openFeedback } = useDogfoodStore();
   return (
     <div className="border-t border-white/[0.04] p-3">
       <div className="flex items-center gap-2">
@@ -221,6 +223,25 @@ export function SidebarFooter({
             </div>
           </div>
         </Link>
+
+        {/* Dogfood feedback button */}
+        {dogfoodEnabled && (
+          <button
+            type="button"
+            onClick={() => { onLinkClick?.(); openFeedback(); }}
+            aria-label="Submit internal feedback"
+            title="Submit feedback (press ? anywhere)"
+            className="
+              flex h-[52px] w-[38px] shrink-0 items-center justify-center
+              rounded-xl border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.05]
+              text-[#6D5BFF]/50
+              transition-all duration-[220ms]
+              hover:border-[#6D5BFF]/25 hover:bg-[#6D5BFF]/[0.10] hover:text-[#8B7DFF]/80
+            "
+          >
+            <MessageSquarePlus size={13} strokeWidth={1.75} />
+          </button>
+        )}
 
         {/* Sign out */}
         {onSignOut && (

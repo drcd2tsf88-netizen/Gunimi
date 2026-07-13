@@ -11,9 +11,11 @@ import { NAV_GROUPS } from "@/config/navigation";
 import OrbitCommand from "@/components/command/OrbitCommand";
 import OrbitTopbar from "@/components/layout/OrbitTopbar";
 import GunimiLoader from "@/components/system/GunimiLoader";
+import FeedbackSheet from "@/components/dogfood/FeedbackSheet";
 
 import { supabase } from "@/lib/supabase";
 import { SidebarNav, SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
+import { useDogfoodStore } from "@/lib/store/dogfood-store";
 
 // ─────────────────────────────────────────────────────────────
 // DashboardLayoutClient
@@ -32,6 +34,8 @@ export default function DashboardLayoutClient({
   const [mobileOpen, setMobileOpen]   = useState(false);
   const [userRole, setUserRole]       = useState("member");
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+
+  const { openFeedback, dogfoodEnabled, setContext } = useDogfoodStore();
 
   function toggleGroup(id: string) {
     setCollapsedGroups((prev) => {
@@ -96,10 +100,18 @@ export default function DashboardLayoutClient({
 
         const { data: ws } = await supabase
           .from("workspaces")
-          .select("name")
+          .select("name, preferences")
           .eq("id", membership.workspace_id)
           .maybeSingle();
-        if (ws) setWorkspaceName(ws.name);
+        if (ws) {
+          setWorkspaceName(ws.name);
+          const prefs = ws.preferences as Record<string, unknown> | null;
+          setContext({
+            dogfoodEnabled: !!prefs?.dogfoodEnabled,
+            workspaceId: membership.workspace_id,
+            userId: session.user.id,
+          });
+        }
 
         clearTimeout(failsafe);
         setLoading(false);
@@ -122,7 +134,21 @@ export default function DashboardLayoutClient({
       clearTimeout(failsafe);
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, [router, setContext]);
+
+  // Keyboard shortcut: ? opens the feedback sheet when dogfood mode is active
+  useEffect(() => {
+    if (!dogfoodEnabled) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "?" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const tag = (e.target as HTMLElement)?.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        openFeedback();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [dogfoodEnabled, openFeedback]);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -196,6 +222,7 @@ export default function DashboardLayoutClient({
       <div className="flex min-h-screen flex-1 flex-col">
         <OrbitTopbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <OrbitCommand userRole={userRole} />
+        {dogfoodEnabled && <FeedbackSheet />}
 
         <AnimatePresence mode="wait">
           <motion.main
