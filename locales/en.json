@@ -1042,6 +1042,7 @@
     "languageSubtitle": "Interface and AI language for this workspace.",
     "workspaceLanguage": "Workspace Language",
     "workspaceLanguageNote": "Changing language reloads the interface for all members.",
+    "detectedFromBrowser": "Detected from your browser.",
     "aiLanguage": "AI Response Language",
     "aiLanguageFollow": "Follow workspace language",
     "lang_en": "English",

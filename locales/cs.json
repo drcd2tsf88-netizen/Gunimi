@@ -1042,6 +1042,7 @@
     "languageSubtitle": "Jazyk rozhraní a AI pro tento pracovní prostor.",
     "workspaceLanguage": "Jazyk pracovního prostoru",
     "workspaceLanguageNote": "Změna jazyka obnoví rozhraní pro všechny členy.",
+    "detectedFromBrowser": "Zjištěno z vašeho prohlížeče.",
     "aiLanguage": "Jazyk odpovědí AI",
     "aiLanguageFollow": "Sledovat jazyk pracovního prostoru",
     "lang_en": "English",

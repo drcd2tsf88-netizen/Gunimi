@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { cookies } from "next/headers";
 
 import { getWorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
@@ -19,6 +20,7 @@ export default async function SettingsPage({
 }: {
   searchParams: Promise<{ section?: string }>;
 }) {
+  const cookieStore = await cookies();
   const [t, params, settings, membership, members, invites, user, workspaceSummaries, userProfile] = await Promise.all([
     getTranslations("settings"),
     searchParams,
@@ -51,6 +53,14 @@ export default async function SettingsPage({
     ? (params.section as SettingsSection)
     : undefined;
 
+  const hasWorkspacePref = !!settings.preferences?.language;
+  const hasCookie = !!cookieStore.get("GUNIMI_LOCALE")?.value;
+  const localeSource: "workspace" | "cookie" | "browser" = hasWorkspacePref
+    ? "workspace"
+    : hasCookie
+      ? "cookie"
+      : "browser";
+
   return (
     <SettingsPageView
       workspace={settings}
@@ -61,6 +71,7 @@ export default async function SettingsPage({
       initialSection={initialSection}
       workspaceSummaries={workspaceSummaries}
       userProfile={userProfile}
+      localeSource={localeSource}
     />
   );
 }

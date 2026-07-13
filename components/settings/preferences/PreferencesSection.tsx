@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { RefreshCw } from "lucide-react";
+import { Globe, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { updateWorkspacePreferences } from "@/server/actions/workspace/updateWorkspacePreferences";
@@ -61,9 +61,10 @@ const DATE_FORMATS = [
 type Props = {
   preferences: WorkspacePreferences | null;
   currentUserRole: string;
+  localeSource: "workspace" | "cookie" | "browser";
 };
 
-export default function PreferencesSection({ preferences, currentUserRole }: Props) {
+export default function PreferencesSection({ preferences, currentUserRole, localeSource }: Props) {
   const t = useTranslations("settings");
   const router = useRouter();
 
@@ -166,6 +167,12 @@ export default function PreferencesSection({ preferences, currentUserRole }: Pro
                   ))}
                 </SelectContent>
               </Select>
+              {localeSource === "browser" && (
+                <p className="mt-1.5 flex items-center gap-1.5 text-[11px] text-white/35">
+                  <Globe size={10} className="shrink-0 text-[#6D5BFF]/60" />
+                  {t("detectedFromBrowser")}
+                </p>
+              )}
             </GunimiField>
 
             <GunimiField label={t("aiLanguage")}>

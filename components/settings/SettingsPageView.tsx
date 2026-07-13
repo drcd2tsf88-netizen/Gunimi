@@ -28,6 +28,7 @@ type Props = {
   initialSection?: SettingsSection;
   workspaceSummaries: WorkspaceSummary[];
   userProfile: UserProfile | null;
+  localeSource: "workspace" | "cookie" | "browser";
 };
 
 export default function SettingsPageView({
@@ -39,6 +40,7 @@ export default function SettingsPageView({
   initialSection,
   workspaceSummaries,
   userProfile,
+  localeSource,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -76,6 +78,7 @@ export default function SettingsPageView({
               key={workspace.id}
               preferences={workspace.preferences ?? null}
               currentUserRole={currentUserRole}
+              localeSource={localeSource}
             />
           )}
 
