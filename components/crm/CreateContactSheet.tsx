@@ -65,19 +65,21 @@ export default function CreateContactSheet({
 
   function handleCreate() {
     if (!name.trim()) {
-      toast.error(t("contactNameRequired"));
+      toast.error(t("contactNameRequired"), { id: "orbit-contact-create" });
       return;
     }
+
+    toast.loading(t("creatingContact"), { id: "orbit-contact-create" });
 
     startTransition(async () => {
       const result = await createContact({ name: name.trim(), email, phone });
 
       if (result) {
-        toast.success(t("contactCreated"));
+        toast.success(t("contactCreated"), { id: "orbit-contact-create" });
         onCreated(result as CreatedContact);
         handleClose();
       } else {
-        toast.error(t("failedToCreateContact"));
+        toast.error(t("failedToCreateContact"), { id: "orbit-contact-create" });
       }
     });
   }

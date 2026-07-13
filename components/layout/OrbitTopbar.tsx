@@ -58,6 +58,7 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
           {/* Command search */}
           <button
             onClick={() => setOpen(true)}
+            aria-label={t("topbarPlaceholder")}
             className="
               relative hidden h-10 w-full max-w-[340px] items-center
               rounded-[10px]

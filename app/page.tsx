@@ -1,40 +1,50 @@
-import LandingNavbar from "@/components/landing/LandingNavbar";
-import LandingHero from "@/components/landing/LandingHero";
-import LandingWorkspacePreview from "@/components/landing/LandingWorkspacePreview";
 import LandingFeatures from "@/components/landing/LandingFeatures";
 import LandingObservatory from "@/components/landing/LandingObservatory";
 import LandingActivity from "@/components/landing/LandingActivity";
 import LandingPricingButtons from "@/components/landing/LandingPircingButtons";
 import LandingCTA from "@/components/landing/LandingCTA";
 import LandingFooter from "@/components/landing/LandingFooter";
+import { MotionProvider, GenesisNavbar, GenesisHero, GenesisActI, GenesisActII, GenesisActIII, GenesisActIV } from "@/components/genesis";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#05060A] text-white">
-      <LandingNavbar />
+    <MotionProvider>
+      <main className="min-h-screen overflow-hidden bg-[var(--g-bg)] text-[var(--g-text)]">
+        {/* Navigation */}
+        <GenesisNavbar />
 
-      {/* 1 — Hero: First impression, AI Core center stage */}
-      <LandingHero />
+        {/* 1 — Hero */}
+        <GenesisHero />
 
-      {/* 2 — Product Preview: Show the workspace early */}
-      <LandingWorkspacePreview />
+        {/* 2 — Act I: the narrative transition */}
+        <GenesisActI />
 
-      {/* 3 — Features: 11 intelligent modules */}
-      <LandingFeatures />
+        {/* 3 — Act II: the fragmentation problem */}
+        <GenesisActII />
 
-      {/* 4 — AI Ecosystem: The intelligence layer */}
-      <LandingObservatory />
+        {/* 4 — Act III: the workspace awakens */}
+        <GenesisActIII />
 
-      {/* 5 — Trust: Enterprise, security, privacy */}
-      <LandingActivity />
+        {/* 5 — Act IV: the reveal */}
+        <GenesisActIV />
 
-      {/* 6 — Pricing */}
-      <LandingPricingButtons />
+        {/* 6 — Features: 11 intelligent modules */}
+        <LandingFeatures />
 
-      {/* 7 — Final CTA */}
-      <LandingCTA />
+        {/* 4 — AI Ecosystem: The intelligence layer */}
+        <LandingObservatory />
 
-      <LandingFooter />
-    </main>
+        {/* 5 — Trust: Enterprise, security, privacy */}
+        <LandingActivity />
+
+        {/* 6 — Pricing */}
+        <LandingPricingButtons />
+
+        {/* 7 — Final CTA */}
+        <LandingCTA />
+
+        <LandingFooter />
+      </main>
+    </MotionProvider>
   );
 }

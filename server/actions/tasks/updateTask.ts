@@ -7,6 +7,7 @@ import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
+import { produceTaskSignals } from "@/lib/signals/producers/taskProducer";
 
 type UpdateTaskParams = {
   id: string;
@@ -54,6 +55,8 @@ export async function updateTask({
           ? `Updated task "${fields.title}"`
           : "Updated a task",
       });
+
+    await produceTaskSignals({ workspaceId: workspace.id, taskId: id });
 
     revalidatePath("/dashboard/tasks");
     revalidatePath("/dashboard");

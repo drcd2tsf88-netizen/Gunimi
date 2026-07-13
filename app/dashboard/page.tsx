@@ -2,7 +2,10 @@ import { getTranslations } from "next-intl/server";
 import { getUser } from "@/lib/server/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getTodayData } from "@/server/actions/today/getTodayData";
+import { getWorkspaceState } from "@/server/actions/workspace/getWorkspaceState";
 import TodayView from "@/components/today/TodayView";
+import WorkspaceAwakening from "@/components/today/WorkspaceAwakening";
+import WorkspaceAwakenedMoment from "@/components/today/WorkspaceAwakenedMoment";
 
 export async function generateMetadata() {
   const t = await getTranslations("today");
@@ -18,9 +21,10 @@ export default async function TodayPage() {
       )
     : Promise.resolve({ data: null });
 
-  const [{ deals, contacts, tasks }, profileResult] = await Promise.all([
+  const [todayData, profileResult, wsState] = await Promise.all([
     getTodayData(),
     profilePromise,
+    getWorkspaceState(),
   ]);
 
   const displayName =
@@ -28,12 +32,20 @@ export default async function TodayPage() {
     user?.email?.split("@")[0] ||
     "—";
 
+  if (wsState === "awakening") {
+    return <WorkspaceAwakening displayName={displayName} />;
+  }
+
   return (
-    <TodayView
-      displayName={displayName}
-      deals={deals}
-      contacts={contacts}
-      tasks={tasks}
-    />
+    <WorkspaceAwakenedMoment>
+      <TodayView
+        displayName={displayName}
+        health={todayData.health}
+        focus={todayData.focus}
+        attention={todayData.attention}
+        relationships={todayData.relationships}
+        work={todayData.work}
+      />
+    </WorkspaceAwakenedMoment>
   );
 }

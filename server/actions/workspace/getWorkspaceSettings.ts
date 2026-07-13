@@ -3,11 +3,23 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 
+export type ScanTypeState = {
+  lastRunAt: string | null;
+  lastFailedAt: string | null;
+  lastError: string | null;
+};
+
 export type WorkspacePreferences = {
   language?: string;
+  aiLanguage?: string;
   currency?: string;
   timezone?: string;
   dateFormat?: string;
+  timeFormat?: "12h" | "24h";
+  numberFormat?: "dot" | "comma";
+  firstDayOfWeek?: "monday" | "sunday";
+  /** Internal: scan schedule state per scan type. Not user-facing. */
+  scanSchedule?: Record<string, ScanTypeState>;
 };
 
 export type WorkspaceSettings = {

@@ -89,8 +89,8 @@ export default function ProfileSection({ profile }: Props) {
           <GunimiField label={t("profileName")}>
             <div className="relative">
               <User
-                size={14}
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
+                size={13}
+                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9AA3B2]/40"
               />
               <input
                 type="text"
@@ -98,7 +98,7 @@ export default function ProfileSection({ profile }: Props) {
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder={t("profileNamePlaceholder")}
                 disabled={isPending}
-                className="h-10 w-full rounded-xl border border-white/[0.06] bg-white/[0.02] pl-9 pr-3 text-sm text-white placeholder:text-white/25 focus:border-violet-500/40 focus:outline-none focus:ring-1 focus:ring-violet-500/20 disabled:opacity-50"
+                className="flex h-11 w-full rounded-[11px] border border-white/[0.06] bg-[#0A0E17] pl-9 pr-4 text-sm text-[#F7F8FC] placeholder:text-[#9AA3B2]/55 shadow-[0_2px_8px_rgba(109,91,255,0.05)] transition-all duration-[280ms] hover:border-white/[0.10] focus:border-[#6D5BFF]/35 focus:bg-[#0F1520] focus:shadow-[0_0_0_3px_rgba(109,91,255,0.12),0_2px_8px_rgba(109,91,255,0.08)] focus:outline-none disabled:cursor-not-allowed disabled:opacity-45"
               />
             </div>
           </GunimiField>

@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 import toast from "react-hot-toast";
 
+import { useLocale } from "next-intl";
 import { updateWorkspace } from "@/server/actions/workspace/updateWorkspace";
 
 import GunimiCard from "@/components/ui/GunimiCard";
@@ -41,6 +42,7 @@ function WorkspaceAvatar({ name }: { name: string }) {
 
 export default function WorkspaceSection({ workspace, workspaceSummaries }: Props) {
   const t = useTranslations("settings");
+  const locale = useLocale();
   const router = useRouter();
 
   const [name, setName] = useState(workspace.name ?? "");
@@ -162,7 +164,7 @@ export default function WorkspaceSection({ workspace, workspaceSummaries }: Prop
                         {t("joinedOn")}
                       </p>
                       <p className="mt-0.5 text-xs text-white/40">
-                        {new Date(ws.joined_at).toLocaleDateString("en-US", {
+                        {new Date(ws.joined_at).toLocaleDateString(locale, {
                           month: "short",
                           day: "numeric",
                           year: "numeric",

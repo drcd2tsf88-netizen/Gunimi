@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 import { getCompany } from "@/server/actions/company/getCompany";
 import { getCompanyContacts } from "@/server/actions/company/getCompanyContacts";
@@ -14,7 +14,6 @@ type Props = {
 };
 
 export default async function CompanyPage({ params }: Props) {
-  const t = await getTranslations("companies");
   const { id: companyId } = await params;
 
   const [company, contacts, deals, activity, notes, emails] = await Promise.all([
@@ -26,9 +25,7 @@ export default async function CompanyPage({ params }: Props) {
     getCompanyEmails(companyId),
   ]);
 
-  if (!company) {
-    return <div className="p-8 text-white">{t("notFound")}</div>;
-  }
+  if (!company) notFound();
 
   return (
     <CompanyDetailView

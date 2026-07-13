@@ -19,6 +19,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 
 import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
+import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
 
 export type CreateDealProps = {
   title: string;
@@ -227,6 +228,18 @@ probability =
       dealTitle: title.trim(),
       companyId: companyId ?? null,
       contactId: contactId ?? null,
+    });
+
+    await produceDealSignals({
+      workspaceId: workspace.id,
+      dealId: deal.id,
+      stage: deal.stage,
+      value: deal.value ?? null,
+      expectedCloseDate: deal.expected_close_date ?? null,
+      updatedAt: deal.updated_at ?? null,
+      contactId: deal.contact_id ?? null,
+      companyId: deal.company_id ?? null,
+      title: deal.title,
     });
 
     revalidatePath("/dashboard/deals");

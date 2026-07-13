@@ -19,6 +19,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 import { ratelimit }
 from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
+import { produceContactSignals } from "@/lib/signals/producers/contactProducer";
 
 export async function POST(
   req: Request
@@ -218,6 +219,16 @@ const {
   assignedTo:
     user.id,
 },
+    });
+
+    await produceContactSignals({
+      workspaceId,
+      contactId: contact.id,
+      lastContactedAt: contact.last_contacted_at ?? null,
+      createdAt: contact.created_at,
+      email: contact.email ?? null,
+      phone: contact.phone ?? null,
+      companyId: contact.company_id ?? null,
     });
 
     return successResponse({

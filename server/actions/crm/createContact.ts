@@ -10,6 +10,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { sanitize } from "@/lib/server/sanitize";
 import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
+import { produceContactSignals } from "@/lib/signals/producers/contactProducer";
 
 type CreateContactProps = {
   name: string;
@@ -80,6 +81,16 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
       userId: user.id,
       contactId: data.id,
       contactName: cleanName,
+    });
+
+    await produceContactSignals({
+      workspaceId: workspace.id,
+      contactId: data.id,
+      lastContactedAt: data.last_contacted_at ?? null,
+      createdAt: data.created_at,
+      email: data.email ?? null,
+      phone: data.phone ?? null,
+      companyId: data.company_id ?? null,
     });
 
     revalidatePath("/dashboard/contacts");

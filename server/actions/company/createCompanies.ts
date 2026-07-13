@@ -20,6 +20,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 
 import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
+import { produceCompanySignals } from "@/lib/signals/producers/companyProducer";
 
 export type CreateCompanyProps =
   {
@@ -167,7 +168,15 @@ export async function createCompany({
       companyName: name.trim(),
     });
 
+    await produceCompanySignals({
+      workspaceId: workspace.id,
+      companyId: data.id,
+      lastActivityAt: data.last_activity_at ?? null,
+      industry: data.industry ?? null,
+    });
+
     revalidatePath("/dashboard/companies");
+    revalidatePath("/dashboard");
 
     return data;
   } catch (error) {

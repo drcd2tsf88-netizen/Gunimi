@@ -280,12 +280,6 @@ export async function POST(
         invite.id
       );
 
-    // TODO
-    // activity log
-
-    // TODO
-    // emit event
-
     return NextResponse.json({
       success: true,
     });

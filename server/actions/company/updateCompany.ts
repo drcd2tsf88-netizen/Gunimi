@@ -8,6 +8,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logger } from "@/lib/logger";
+import { produceCompanySignals } from "@/lib/signals/producers/companyProducer";
 
 export type UpdateCompanyProps = {
   companyId: string;
@@ -71,6 +72,13 @@ export async function updateCompany({
       type: "company_updated",
       title: "Organization Updated",
       description: `Updated organization "${name.trim()}"`,
+    });
+
+    await produceCompanySignals({
+      workspaceId: workspace.id,
+      companyId,
+      lastActivityAt: data.last_activity_at ?? null,
+      industry: data.industry ?? null,
     });
 
     revalidatePath(`/dashboard/companies/${companyId}`);

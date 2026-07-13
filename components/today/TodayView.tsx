@@ -1,21 +1,17 @@
 "use client";
 
-import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { resolveTodayData } from "@/lib/today/resolver";
 import TodayFocusCard from "./TodayFocusCard";
 import TodayAttentionSection from "./TodayAttentionSection";
 import TodayRelationshipsSection from "./TodayRelationshipsSection";
 import TodayWorkSection from "./TodayWorkSection";
-import type { TodayRawDeal, TodayRawContact, TodayRawTask } from "@/lib/today/types";
+import FirstSignalMoment from "./FirstSignalMoment";
+import type { ResolvedTodayData } from "@/lib/today/types";
 
 type Props = {
   displayName: string;
-  deals: TodayRawDeal[];
-  contacts: TodayRawContact[];
-  tasks: TodayRawTask[];
-};
+} & ResolvedTodayData;
 
 function getGreetingKey(): "greetingMorning" | "greetingAfternoon" | "greetingEvening" {
   const hour = new Date().getHours();
@@ -29,17 +25,24 @@ function extractFirstName(displayName: string): string {
   return first ?? displayName;
 }
 
-export default function TodayView({ displayName, deals, contacts, tasks }: Props) {
+export default function TodayView({
+  displayName,
+  health,
+  focus,
+  attention,
+  relationships,
+  work,
+}: Props) {
   const t = useTranslations("today");
-
-  const { health, focus, attention, relationships, work } = useMemo(
-    () => resolveTodayData(deals, contacts, tasks),
-    [deals, contacts, tasks],
-  );
 
   const greeting = t(getGreetingKey());
   const firstName = extractFirstName(displayName);
   const healthLabel = t(health.labelKey, health.labelParams ?? {});
+  const hasSignals =
+    focus !== null ||
+    attention.length > 0 ||
+    relationships.length > 0 ||
+    work.length > 0;
 
   const healthColorClass =
     health.level === "healthy"
@@ -59,6 +62,9 @@ export default function TodayView({ displayName, deals, contacts, tasks }: Props
           {healthLabel}
         </p>
       </div>
+
+      {/* ── First Signal Moment ───────────────────────────────────────────── */}
+      <FirstSignalMoment hasSignals={hasSignals} />
 
       {/* ── Section 1: Focus ──────────────────────────────────────────────── */}
       <TodayFocusCard focus={focus} />

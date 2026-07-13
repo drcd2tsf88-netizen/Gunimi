@@ -1,29 +1,10 @@
-// Raw shapes from the database — minimal fields needed for Today resolution
-export type TodayRawDeal = {
-  id: string;
-  title: string;
-  stage: string;
-  value?: number | null;
-  expected_close_date?: string | null;
-  updated_at?: string | null;
-  contact?: { id: string; name: string } | null;
-};
-
-export type TodayRawContact = {
-  id: string;
-  name: string;
-  last_contacted_at?: string | null;
-};
-
-export type TodayRawTask = {
-  id: string;
-  title: string;
-  status: string;
-  priority?: string | null;
-  due_date?: string | null;
-};
-
-// Resolved shapes for view components — all use locale keys, never raw strings
+// Today Experience — Presentation Types
+// Authority: docs/blueprints/TODAY_EXPERIENCE_BLUEPRINT.md
+//
+// These types define the PRESENTATION MODEL for Today.
+// All business intelligence is computed by the Signal Engine and stored in the
+// Signal Archive. The Signal Query Layer (lib/signals/queries/today.ts) reads
+// the archive and produces these types. No raw entity data flows through Today.
 
 export type TodayFocus = {
   actionKey: string;

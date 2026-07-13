@@ -10,9 +10,9 @@
     "forgotPassword": "Forgot password?",
     "noAccount": "Don't have an account?",
     "createAccount": "Create account",
-    "registerBadge": "Gunimi Identity",
-    "registerTitle": "Create your account",
-    "registerSubtitle": "Manage relationships, track deals and run your business from one place.",
+    "registerBadge": "Open Alpha",
+    "registerTitle": "Your workspace is waiting.",
+    "registerSubtitle": "Everything you experienced is real. Now bring your business into it.",
     "fullNamePlaceholder": "Full name",
     "confirmPasswordPlaceholder": "Confirm password",
     "emailVerificationTitle": "Email verification required",
@@ -70,7 +70,7 @@
     "passwordsMustMatch": "Passwords do not match.",
     "loginFailed": "Sign in failed. Please check your credentials.",
     "loginNoUser": "Authentication failed. Please try again.",
-    "loginSyncing": "Synchronizing workspace...",
+    "loginSyncing": "Signing you in...",
     "loginInitializing": "Signing in...",
     "registerFailed": "Registration failed. Please try again.",
     "verificationSent": "Verification email sent. Check your inbox.",
@@ -79,13 +79,14 @@
     "passwordUpdated": "Password updated successfully.",
     "passwordUpdateFailed": "Failed to update password.",
     "sessionExpired": "Recovery session expired. Please try again.",
+    "sessionExpiredLogin": "Your session has expired. Please sign in again.",
     "aiWorkspaceActive": "AI Workspace Active",
     "enterpriseSystems": "Enterprise Systems",
-    "completeInitializing": "Initializing your workspace...",
+    "completeInitializing": "Confirming your account...",
     "completeSyncing": "Syncing your identity...",
     "completeInitializingWorkspace": "Setting up your workspace...",
-    "completeReady": "Your workspace is ready.",
-    "completeLoading": "Setting up your workspace",
+    "completeReady": "Account confirmed.",
+    "completeLoading": "Confirming your account",
     "completeLoadingDone": "You're all set",
     "completeSuccess": "Welcome to Gunimi.",
     "completeFailed": "Something went wrong. Please try again.",
@@ -93,7 +94,20 @@
     "completeMembershipFailed": "Failed to set up workspace membership. Please try again.",
     "completeWorkspaceFailed": "Failed to create your workspace. Please try again.",
     "completeSessionTimedOut": "Session timed out. Please sign in again.",
-    "completeTimedOut": "Workspace setup took too long. Please sign in again.",
+    "completeTimedOut": "Confirmation timed out. Please sign in again.",
+    "setupTitle": "Setting up your workspace",
+    "setupDone": "You're all set",
+    "setupInitializing": "Initializing your workspace...",
+    "setupSyncing": "Setting up your workspace...",
+    "setupReady": "Your workspace is ready.",
+    "setupSuccess": "Welcome to Gunimi.",
+    "setupFailed": "Workspace setup failed. Please try again.",
+    "setupTimedOut": "Workspace setup took too long. Please sign in again.",
+    "setupNameHeading": "Name your workspace.",
+    "setupNameSubtitle": "This is how Gunimi will identify your workspace. You can change it later.",
+    "setupNamePlaceholder": "e.g. Acme Studio, Northwind Sales",
+    "setupNameCta": "Create workspace",
+    "setupNameRequired": "Please enter a workspace name.",
     "logoutSuccess": "Session terminated. See you next time.",
     "logoutFailed": "Sign out failed. Please try again.",
     "workspaceSynchronized": "Workspace synchronized",
@@ -294,6 +308,7 @@
     "contactPhone": "Phone",
     "contactPosition": "Position",
     "contactNotes": "Notes",
+    "creatingContact": "Creating contact...",
     "contactCreated": "Contact created",
     "failedToCreateContact": "Failed to create contact",
     "createContactSubtitle": "Add a new contact to your workspace.",
@@ -417,7 +432,7 @@
     "confirmDeleteOrganization": "This will permanently delete this organization and all associated data. This action cannot be undone.",
     "companyDeleted": "Organization deleted",
     "failedToDeleteCompany": "Failed to delete organization",
-    "intelligenceBadge": "Orbit Intelligence",
+    "intelligenceBadge": "Gunimi Intelligence",
     "intelligenceTitle": "Company Intelligence",
     "intelligenceOpenDeals": "{count} open deal(s) — ${value} in pipeline",
     "intelligenceWonDeals": "{count} closed deal(s) won — proven revenue relationship",
@@ -699,7 +714,7 @@
     "failedToDeleteNote": "Failed to delete note"
   },
   "automations": {
-    "badge": "Orbit Automation Engine",
+    "badge": "Gunimi Automation Engine",
     "title": "Automation Center",
     "subtitle": "Deterministic automations that react to business events in your workspace.",
     "activeAutomations": "Active Automations",
@@ -783,7 +798,7 @@
     "activitySubtitle": "Historical interactions and events related to this contact.",
     "noActivity": "No activity",
     "noActivityDescription": "Activity related to this contact will appear here.",
-    "intelligenceBadge": "Orbit Intelligence",
+    "intelligenceBadge": "Gunimi Intelligence",
     "intelligenceTitle": "Contact Intelligence",
     "intelligenceNotContacted": "No contact in {days} days — follow up required",
     "intelligenceLastContact": "Last contacted {days} days ago — due for outreach",
@@ -903,7 +918,7 @@
     "statDeals": "Deals",
     "statOpenTasks": "Open Tasks",
     "statMembers": "Team Members",
-    "intelligenceLabel": "Orbit Intelligence",
+    "intelligenceLabel": "Gunimi Intelligence",
     "intelligenceTitle": "Live Intelligence Modules",
     "intelligenceSubtitle": "All AI systems are active and connected to your workspace data.",
     "activeBadge": "Active",
@@ -934,8 +949,8 @@
     "failedToUpdateStatus": "Failed to update status.",
     "roleUpdated": "User role updated to {role}.",
     "statusUpdated": "Status changed to {status}.",
-    "orbitInternalSystems": "Orbit Internal Systems",
-    "orbitControlTitle": "Orbit Control",
+    "orbitInternalSystems": "Gunimi Internal Systems",
+    "orbitControlTitle": "Gunimi Control",
     "orbitControlCenter": "Center",
     "orbitDescription": "Internal operational management layer for Gunimi AI Operating System beta access, memberships, platform governance and user infrastructure.",
     "systemsOnline": "Systems Online",
@@ -952,7 +967,7 @@
     "colStatus": "Status",
     "colOnboarding": "Onboarding",
     "colActions": "Actions",
-    "defaultUserName": "Orbit User",
+    "defaultUserName": "Gunimi User",
     "onboardingCompleted": "Completed",
     "onboardingPending": "Pending",
     "actionApproveBeta": "Approve Beta",
@@ -1022,13 +1037,30 @@
     "remove": "Remove",
     "cancel": "Cancel",
     "preferencesTitle": "Preferences",
-    "preferencesSubtitle": "Configure workspace currency, timezone and date format.",
-    "language": "Language",
-    "languageComingSoon": "User-level language switching is coming soon",
-    "comingSoon": "Coming Soon",
+    "preferencesSubtitle": "Language, region, and AI preferences for your workspace.",
+    "languageTitle": "Language",
+    "languageSubtitle": "Interface and AI language for this workspace.",
+    "workspaceLanguage": "Workspace Language",
+    "workspaceLanguageNote": "Changing language reloads the interface for all members.",
+    "aiLanguage": "AI Response Language",
+    "aiLanguageFollow": "Follow workspace language",
+    "lang_en": "English",
+    "lang_sk": "Slovenský",
+    "lang_cs": "Čeština",
+    "regionalTitle": "Regional",
+    "regionalSubtitle": "Formatting for dates, time, numbers, and currency.",
     "currency": "Currency",
-    "timezone": "Timezone",
+    "timezone": "Time Zone",
     "dateFormat": "Date Format",
+    "timeFormat": "Time Format",
+    "timeFormat_12h": "12-hour (1:00 PM)",
+    "timeFormat_24h": "24-hour (13:00)",
+    "numberFormat": "Number Format",
+    "numberFormat_dot": "1,234.56 — dot decimal",
+    "numberFormat_comma": "1.234,56 — comma decimal",
+    "firstDayOfWeek": "First Day of Week",
+    "firstDayOfWeek_monday": "Monday",
+    "firstDayOfWeek_sunday": "Sunday",
     "preferencesSaved": "Preferences saved",
     "failedToSavePreferences": "Failed to save preferences",
     "dangerZone": "Danger Zone",
@@ -1064,7 +1096,10 @@
     "profileAvatarSubtitle": "Avatar upload coming soon",
     "profileSaved": "Profile saved",
     "failedToSaveProfile": "Failed to save profile",
-    "readOnly": "Read only"
+    "readOnly": "Read only",
+    "errorHeading": "Failed to load settings",
+    "errorDescription": "Could not load workspace data. Please refresh the page. If the issue persists, verify your workspace access.",
+    "errorRefresh": "Refresh"
   },
   "activity": {
     "badge": "Workspace Activity",
@@ -1358,7 +1393,7 @@
     "title": "Gunimi Command Center",
     "subtitle": "AI-powered workspace control",
     "placeholder": "Search workspace, AI actions or workflows...",
-    "topbarPlaceholder": "Search Orbit systems...",
+    "topbarPlaceholder": "Search Gunimi...",
     "badgeAI": "AI",
     "badgeAction": "ACTION",
     "badgeOpen": "OPEN",
@@ -1409,7 +1444,7 @@
     "createDealSuccess": "Deal created",
     "createDealError": "Failed to create deal. Please try again.",
     "escLabel": "ESC",
-    "cognition": "Orbit Cognition",
+    "cognition": "Gunimi Cognition",
     "thinkingCurrentThought": "Processing your request...",
     "emptyTitle": "No results found",
     "emptyDescription": "Try searching for a page, action, or AI command.",
@@ -1631,7 +1666,9 @@
       "signIn": "Sign in",
       "getStarted": "Get started",
       "openMenu": "Open navigation menu",
-      "closeMenu": "Close menu"
+      "closeMenu": "Close menu",
+      "joinAlpha": "Join Open Alpha",
+      "mainNav": "Main navigation"
     },
     "footer": {
       "tagline": "AI Workspace OS",
@@ -1662,16 +1699,66 @@
       "getStarted": "Get started"
     },
     "hero": {
-      "badge": "AI Workspace Operating System",
-      "headlineLine1": "Your business,",
-      "headlineLine2": "fully intelligent.",
+      "badge": "Open Alpha — Now Available",
+      "headlineLine1": "Work doesn't need more software.",
+      "headlineLine2": "Work needs understanding.",
       "subtitle": "Gunimi unifies your relationships, deals, tasks, and knowledge into a single workspace — with AI that actually understands your business.",
-      "ctaPrimary": "Start for free",
-      "ctaSecondary": "Sign in to workspace",
+      "ctaPrimary": "Create your workspace",
+      "ctaSecondary": "Sign in",
       "trustSignals": [
-        "SOC 2 Type II",
-        "End-to-end encrypted",
-        "GDPR compliant"
+        "Your data stays in your workspace.",
+        "We never train AI on your workspace data.",
+        "Your workspace is private by default."
+      ],
+      "productSentenceLine1": "Gunimi doesn't replace your work.",
+      "productSentenceLine2": "It removes the work that shouldn’t exist.",
+      "descriptor": "The AI Business Operating System."
+    },
+    "actI": {
+      "statement1": "Your business already knows things no dashboard has ever shown you.",
+      "statement2": "It lives in emails, in relationships, in the timing of decisions — patterns that form before anyone notices them.",
+      "statement3": "Gunimi is the first system built to hold all of it."
+    },
+    "actII": {
+      "beat1": "Every business leaves traces.",
+      "beat3": "None of them exist in one place.",
+      "beat5": "A pattern forms.",
+      "beat6": "That is the first signal.",
+      "fragments": [
+        "Emails",
+        "Meetings",
+        "Promises",
+        "Decisions",
+        "Delays",
+        "Customers",
+        "Tasks",
+        "Notes",
+        "Conversations",
+        "Relationships"
+      ]
+    },
+    "actIV": {
+      "beat1": "You've already seen how Gunimi thinks.",
+      "beat2": "Now see how it works.",
+      "commandHint": "Search or ask anything...",
+      "cta": {
+        "prompt": "Your workspace is waiting.",
+        "button": "Join Open Alpha"
+      }
+    },
+    "actIII": {
+      "beat1": "A signal changes everything.",
+      "beat4": "The workspace begins to understand.",
+      "beat5": "It no longer waits to be asked.",
+      "observations": [
+        "Relationship fading.",
+        "Decision overdue.",
+        "Customer waiting.",
+        "Momentum growing.",
+        "Conversation returning.",
+        "Promise at risk.",
+        "Meeting becoming important.",
+        "Pattern repeating."
       ]
     },
     "workspacePreview": {
@@ -2134,11 +2221,11 @@
           "version": "0.9",
           "date": "June 2026",
           "title": "Workspace Intelligence",
-          "description": "The AI layer is now available across the entire workspace. Orbit Intelligence can surface related records, draft communication, and summarise deal history in context.",
+          "description": "The AI layer is now available across the entire workspace. Gunimi Intelligence can surface related records, draft communication, and summarise deal history in context.",
           "changes": [
             {
               "tag": "new",
-              "text": "Orbit Intelligence panel — AI assistant scoped to your workspace"
+              "text": "Gunimi Intelligence panel — AI assistant scoped to your workspace"
             },
             {
               "tag": "new",
@@ -2542,15 +2629,19 @@
       "lastUpdated": "Last updated:"
     },
     "waitlist": {
-      "badgeLabel": "Gunimi Early Access",
+      "badgeLabel": "Gunimi Open Alpha",
       "headlinePart1": "Access",
       "headlinePart2": "Pending",
-      "subtitle": "Your Gunimi identity has been synchronized with the AI Operating System. Platform access is awaiting early access approval.",
-      "panelTitle": "Access Queue",
-      "panelDescription": "Your account is securely registered and pending platform activation.",
+      "subtitle": "Your account has been received. Access is granted by invitation — we review every application personally.",
+      "panelTitle": "What happens next",
+      "panelDescription": "Most accounts are reviewed within 48 hours. When approved, you will receive an email with a direct link to activate your workspace.",
+      "checkStatusButton": "Check my access",
+      "checkingStatus": "Checking...",
+      "stillPending": "Still reviewing. You'll receive an email when your access is confirmed.",
+      "accessGranted": "Access confirmed. Setting up your workspace...",
       "backToHome": "Back to Home",
       "signOut": "Sign out",
-      "footerNote": "Gunimi is onboarding selected companies, operators and collaborators. You'll receive an email when your access is confirmed."
+      "footerNote": "Questions? Reach out at hello@gunimi.com"
     }
   },
   "today": {
@@ -2572,14 +2663,18 @@
     "focusDealStaleReason": "Deals that go quiet lose momentum. A brief update or follow-up keeps it moving.",
     "focusContactStaleAction": "Reach out to {name} — no contact in {days} days",
     "focusContactStaleReason": "An active deal depends on this relationship. Last contact was {days} days ago with {deal} pending.",
-    "focusTaskOverdueAction": "Complete \"{title}\" — {days} days overdue",
-    "focusTaskOverdueReason": "Overdue commitments compound. This task has been pending for {days} days.",
+    "focusContactOverdueTaskAction": "Follow up with {name} — task overdue by {days} days",
+    "focusContactOverdueTaskReason": "A commitment linked to this contact is past its due date.",
+    "focusCompanyClosingDealAction": "Act on \"{dealTitle}\" — {days} days to close with {company}",
+    "focusCompanyClosingDealReason": "A deal with this company is approaching its close window.",
     "attentionSectionLabel": "Attention required",
     "attentionDealPastClose": "\"{title}\" — close date passed {days} days ago",
     "attentionDealClosingSoon": "\"{title}\" — closes in {days} days",
     "attentionDealStale": "\"{title}\" — no activity in {days} days",
     "attentionTaskOverdue": "\"{title}\" — {days} days overdue",
     "attentionContactStale": "{name} — no contact in {days} days",
+    "attentionContactOverdueTask": "{name} — task overdue by {days} days",
+    "attentionCompanyClosingDeal": "{company} — \"{dealTitle}\" closes in {days} days",
     "relationshipsSectionLabel": "Relationships",
     "relationshipStale": "No contact in {days} days",
     "relationshipNeverContacted": "Never contacted",
@@ -2589,6 +2684,26 @@
     "workTagToday": "Today",
     "workMarkDone": "Mark complete",
     "workMarkDoneSuccess": "Task completed",
-    "workMarkDoneFailed": "Could not complete task"
+    "workMarkDoneFailed": "Could not complete task",
+    "firstSignalMoment": "Your workspace has found its first opportunity to help.",
+    "firstSignalEvaluating": "Your workspace is still evaluating. Add more context and Gunimi will begin surfacing insights shortly."
+  },
+  "awakening": {
+    "heading": "Your workspace is ready.",
+    "subheading": "Now let's teach it about your business.",
+    "context": "Gunimi learns from context. The more it knows about your business, the more intelligent its signals become.",
+    "company": {
+      "title": "Add your first company.",
+      "description": "Give your workspace its first understanding of your business."
+    },
+    "contact": {
+      "title": "Add your first relationship.",
+      "description": "Relationships become the foundation for future signals."
+    },
+    "deal": {
+      "title": "Create your first opportunity.",
+      "description": "Once work begins, Gunimi can begin understanding it."
+    },
+    "awakenedMoment": "Your workspace has awakened."
   }
 }

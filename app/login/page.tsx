@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -24,6 +24,16 @@ export default function LoginPage() {
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading]   = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("reason") === "session_expired") {
+      const t1 = setTimeout(() => {
+        toast(t("sessionExpiredLogin"), { icon: "🔒" });
+      }, 0);
+      return () => clearTimeout(t1);
+    }
+  }, [t]);
 
   async function handleLogin() {
     if (!email || !password) {

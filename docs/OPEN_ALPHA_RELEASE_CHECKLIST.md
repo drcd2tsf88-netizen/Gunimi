@@ -47,6 +47,10 @@ Required (deployment fails without these):
 - [ ] `NEXT_PUBLIC_APP_URL` = `https://gunimi.com`
 - [ ] `OAUTH_STATE_SECRET` (32+ char, generated fresh for production)
 
+Signal Scanning (scan cron disabled without this):
+
+- [ ] `CRON_SECRET` (32+ char random secret — generate with `openssl rand -hex 32`, must match Vercel Cron configuration)
+
 Email (Postmark):
 
 - [ ] `POSTMARK_SERVER_TOKEN`

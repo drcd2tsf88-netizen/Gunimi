@@ -1,18 +1,50 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, LogOut, Shield } from "lucide-react";
+import { ArrowRight, LogOut, Shield, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
+import toast from "react-hot-toast";
 import { supabase } from "@/lib/supabase";
 import AiCore from "@/components/ui/AiCore";
 
 export default function WaitlistPage() {
   const t = useTranslations("public.waitlist");
+  const [checking, setChecking] = useState(false);
 
   async function handleLogout() {
     await supabase.auth.signOut();
     window.location.href = "/login";
+  }
+
+  async function handleCheckStatus() {
+    setChecking(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.href = "/login";
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("platform_role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      const role = (profile as { platform_role?: string } | null)?.platform_role;
+      const isApproved = role === "beta" || role === "team" || role === "admin";
+
+      if (isApproved) {
+        toast.success(t("accessGranted"));
+        window.location.href = "/register/setup";
+      } else {
+        toast(t("stillPending"));
+      }
+    } finally {
+      setChecking(false);
+    }
   }
 
   return (
@@ -58,7 +90,7 @@ export default function WaitlistPage() {
 
         <div className="relative z-10">
 
-          {/* FOCAL VISUAL — AiCore breathes naturally; no wrapper animation */}
+          {/* FOCAL VISUAL */}
           <div className="mb-7 flex justify-center">
             <AiCore size={100} showRings showParticles intensity="strong" />
           </div>
@@ -91,8 +123,22 @@ export default function WaitlistPage() {
             {t("subtitle")}
           </p>
 
+          {/* CHECK ACCESS — primary CTA */}
+          <button
+            type="button"
+            onClick={handleCheckStatus}
+            disabled={checking}
+            className="group relative mt-9 flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] transition-all duration-300 hover:bg-[#7B6BFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.55)] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.10),transparent_55%)]" />
+            <Sparkles size={14} className="relative z-10 shrink-0" />
+            <span className="relative z-10">
+              {checking ? t("checkingStatus") : t("checkStatusButton")}
+            </span>
+          </button>
+
           {/* STATUS PANEL */}
-          <div className="mt-9 rounded-[14px] border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.05] p-5">
+          <div className="mt-5 rounded-[14px] border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.05] p-5">
             <div className="flex flex-col items-center gap-4 md:flex-row">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#6D5BFF]/[0.14] bg-[#6D5BFF]/[0.08]">
                 <Shield className="h-5 w-5 text-[#8B7DFF]" />
@@ -106,8 +152,8 @@ export default function WaitlistPage() {
             </div>
           </div>
 
-          {/* ACTIONS */}
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          {/* SECONDARY ACTIONS */}
+          <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/"
               className="group flex items-center justify-center gap-2 rounded-[12px] border border-white/[0.08] bg-white/[0.03] px-6 py-3 text-[13px] font-medium text-[#9AA3B2] transition-all duration-300 hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-[#F7F8FC]"

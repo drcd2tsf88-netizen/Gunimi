@@ -84,6 +84,7 @@ This is not a philosophy of caution. It is a philosophy of compound quality. Eve
 | **UX Polish Sprint** | ✅ Complete | CSS bugs fixed, hardcoded strings localized, visual consistency |
 | **Landing Page** | ✅ Complete | `app/page.tsx` — Hero, WorkspacePreview, Features, Observatory, CTA |
 | **Auth System** | ✅ Complete | Register, login, logout, forgot password, reset, verify, invite flow |
+| **Waitlist Flow & Workspace Provisioning** | ✅ Complete | `app/register/complete` — profile only, no workspace · `app/register/setup` — workspace creation on first approved login · `DashboardLayoutClient` — membership guard after role check · see `docs/architecture/USER_LIFECYCLE.md` |
 | **Multi-Workspace Architecture** | ✅ Complete | `server/actions/workspace/` — create, invite, members, leave, delete |
 | **AI Layer** | ✅ Complete | `lib/ai/` — agents, context builders, memory, execution, OpenAI provider |
 | **Memory System** | ✅ Complete | `lib/memory/` + `server/actions/memory/` — workspace timeline, milestones, memory stats |
@@ -103,6 +104,48 @@ This is not a philosophy of caution. It is a philosophy of compound quality. Eve
 | **Demo Workspace** | 🔲 Planned | `docs/OPEN_ALPHA_EXPERIENCE.md` §4 defines interactive pre-registration demo — not yet built |
 | **Gate 4 — Company Workspace** | 🔲 Planned | Browser console verification for newly built Company Workspace |
 | **Gate 7 — Full Smoke Tests** | 🔲 Planned | 19-workflow smoke test against current codebase state |
+| **Signal Engine Blueprint** | ✅ Complete | `docs/blueprints/SIGNAL_ENGINE_BLUEPRINT.md` — 21 chapters, 25 signal types, lifecycle, suppression, dedup, invariants, Signal Identity, Signal Graph, Explainability |
+| **Business Memory Blueprint** | ✅ Complete | `docs/blueprints/BUSINESS_MEMORY_BLUEPRINT.md` — 23 chapters, 7 memory types, lifecycle, Trust Boundary, Memory Identity, Memory Graph, Memory Versioning, Memory Provenance |
+| **AI Platform Architecture** | ✅ Complete | `docs/blueprints/AI_PLATFORM_ARCHITECTURE.md` — 15 chapters, 11 platform layers, 9-stage data flow, 5 intelligence types, 20 invariants, Final Report |
+| **Architecture Governance** | ✅ Complete | Architecture Freeze in `docs/GUNIMI_ENGINEERING_CHARTER.md` — 9 frozen documents, Architecture Review gate, permanent |
+
+---
+
+## MILESTONE — AI Platform Foundation
+
+**Status: COMPLETE**
+
+**Closed: 2026-07-11**
+
+The AI Platform Foundation is the architectural layer that governs every AI capability Gunimi will ever build. It is not a feature. It is the space inside which all future features must fit.
+
+**What this milestone includes:**
+
+| Deliverable | Status |
+|-------------|--------|
+| Workspace Engine v1.0 | ✅ Certified, frozen |
+| Signal Engine Blueprint | ✅ Complete — single source of truth for all business signals |
+| Business Memory Blueprint | ✅ Complete — long-term intelligence layer, Trust Boundary defined |
+| AI Platform Architecture | ✅ Complete — 11 layers, 20 invariants, permanent authority |
+| Architecture Governance | ✅ Complete — 9 frozen documents, Architecture Review gate |
+| Quality Gates | ✅ Complete — 7 gates, all mandatory |
+| Release Gates | ✅ Complete — zero regressions policy enforced |
+
+**What this means:**
+
+Every future AI capability in Gunimi has a defined place. New signal types extend the Signal Engine. New memory types extend Business Memory. New Workspace types follow the resolver pattern. AI Core reads the Signal Archive and writes to Business Memory within the Trust Boundary. Autonomous Agents are defined at Layer 9.
+
+No future feature requires an architectural layer to be invented from scratch.
+
+**What does not change from this point:**
+
+The responsibilities, boundaries, and invariants defined in the nine frozen documents. These are permanent. They outlive any specific model, API, or implementation.
+
+**What continues:**
+
+Everything. Open Alpha shipping. Product quality. Signal Archive accumulation. Post-Alpha AI Core integration. The platform is not finished — it is established. Future work implements this foundation. It does not redefine it.
+
+> *"The architecture is not a constraint on what Gunimi can become. It is the reason Gunimi can become anything."*
 
 ---
 
@@ -248,7 +291,7 @@ Evidence: `docs/OPEN_ALPHA_RELEASE_CHECKLIST.md` Section 8 defines 19 workflows.
 
 **Evidence:** `docs/OPEN_ALPHA_EXPERIENCE.md` §4 defines the Interactive Demo as a mandatory pre-registration experience. The user must experience a curated workspace with one clear recommendation and one completed action before registration is offered.
 
-No `/demo` route exists in the codebase. The current user journey is: landing page → register → empty workspace. This contradicts the documented Open Alpha Experience philosophy: "We never gate value behind registration."
+No `/demo` route exists in the codebase. The current user journey is: landing page → register → verify email → confirm account → waitlist → admin approval → first login → workspace setup → dashboard. This contradicts the documented Open Alpha Experience philosophy: "We never gate value behind registration."
 
 **Assessment:** This is the largest gap between documented philosophy and implemented experience. For the first 100 alpha users, the question is whether to ship without the demo (accepting that the first experience does not match the product's philosophy) or to build the demo workspace first.
 

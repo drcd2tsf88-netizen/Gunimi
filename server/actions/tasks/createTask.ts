@@ -18,6 +18,7 @@ from "@/lib/server/audit";
 import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
+import { produceTaskSignals } from "@/lib/signals/producers/taskProducer";
 
 type CreateTaskProps = {
   title: string;
@@ -153,6 +154,8 @@ export async function createTask({
         description:
           `Created task "${cleanTitle}"`,
       });
+
+    await produceTaskSignals({ workspaceId: workspace.id, taskId: data.id });
 
     // AUDIT LOG
 

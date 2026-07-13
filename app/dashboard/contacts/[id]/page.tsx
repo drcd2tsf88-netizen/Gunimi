@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
 import { getContact } from "@/server/actions/crm/getContact";
 import { getContactDeals } from "@/server/actions/crm/getContactDeals";
 import { getContactTasks } from "@/server/actions/crm/getContactTasks";
@@ -12,7 +12,6 @@ type Props = {
 };
 
 export default async function ContactDetailPage({ params }: Props) {
-  const t = await getTranslations("contacts");
   const { id: contactId } = await params;
 
   const [contact, deals, tasks, activities, notes, emails] = await Promise.all([
@@ -24,9 +23,7 @@ export default async function ContactDetailPage({ params }: Props) {
     getContactEmails(contactId),
   ]);
 
-  if (!contact) {
-    return <div className="p-8 text-white">{t("notFound")}</div>;
-  }
+  if (!contact) notFound();
 
   return (
     <ContactDetailView

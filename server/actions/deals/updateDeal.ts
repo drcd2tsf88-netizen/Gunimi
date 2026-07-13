@@ -18,6 +18,7 @@ from "@/lib/server/supabaseAdmin";
 import { revalidatePath }
 from "next/cache";
 import { logger } from "@/lib/logger";
+import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
 
 export type UpdateDealProps = {
   dealId: string;
@@ -237,6 +238,18 @@ export async function updateDeal({
         title: "Opportunity Updated",
         description: `Updated deal "${deal.title}"`,
       });
+
+    await produceDealSignals({
+      workspaceId: workspace.id,
+      dealId: deal.id,
+      stage: deal.stage,
+      value: deal.value ?? null,
+      expectedCloseDate: deal.expected_close_date ?? null,
+      updatedAt: deal.updated_at ?? null,
+      contactId: deal.contact_id ?? null,
+      companyId: deal.company_id ?? null,
+      title: deal.title,
+    });
 
     revalidatePath("/dashboard/deals");
     revalidatePath(`/dashboard/deals/${deal.id}`);

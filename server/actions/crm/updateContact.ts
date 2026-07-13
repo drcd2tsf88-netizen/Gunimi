@@ -7,6 +7,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logger } from "@/lib/logger";
+import { produceContactSignals } from "@/lib/signals/producers/contactProducer";
 
 export type UpdateContactProps = {
   contactId: string;
@@ -65,6 +66,16 @@ export async function updateContact({
       type: "contact_updated",
       title: "Contact Updated",
       description: `Updated contact "${name.trim()}"`,
+    });
+
+    await produceContactSignals({
+      workspaceId: workspace.id,
+      contactId,
+      lastContactedAt: data.last_contacted_at ?? null,
+      createdAt: data.created_at,
+      email: data.email ?? null,
+      phone: data.phone ?? null,
+      companyId: data.company_id ?? null,
     });
 
     revalidatePath("/dashboard/contacts");

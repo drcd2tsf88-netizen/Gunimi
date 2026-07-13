@@ -6,6 +6,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logger } from "@/lib/logger";
+import { resolveSignalIfExists } from "@/lib/signals/producers/_resolveByType";
 
 export type CreateNoteProps = {
   title: string;
@@ -51,6 +52,14 @@ export async function createNote({ title, content, companyId, contactId }: Creat
       title: "Note Created",
       description: `Created note "${title.trim()}"`,
     });
+
+    // Note creation is contact/company interaction — resolve silence signals
+    if (contactId) {
+      await Promise.all([
+        resolveSignalIfExists(workspace.id, contactId, "contact_stale", "note_created"),
+        resolveSignalIfExists(workspace.id, contactId, "contact_new_no_interaction", "note_created"),
+      ]);
+    }
 
     revalidatePath("/dashboard/notes");
 

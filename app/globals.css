@@ -138,6 +138,22 @@
   to   { transform: rotate(360deg); }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   GENESIS IMPULSE — light pulse along outer orbit once per cycle
+   Designed to be felt, not noticed. 13s cycle, ~0.7s visible.
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes gunimi-impulse-travel {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+
+@keyframes gunimi-impulse-flash {
+  0%, 44%    { opacity: 0; }
+  50%        { opacity: 1; }
+  56%, 100%  { opacity: 0; }
+}
+
 @keyframes gunimi-breathe {
   0%, 100% { opacity: 0.35; transform: scale(0.92); }
   50%       { opacity: 0.70; transform: scale(1.08); }

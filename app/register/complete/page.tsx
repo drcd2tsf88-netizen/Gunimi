@@ -7,8 +7,6 @@ import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
 import { supabase } from "@/lib/supabase";
-import { createWorkspace } from "@/server/actions/workspace/createWorkspace";
-import { setActiveWorkspace } from "@/server/actions/workspace/setActiveWorkspace";
 import type { User } from "@supabase/supabase-js";
 import AiCore from "@/components/ui/AiCore";
 
@@ -21,7 +19,7 @@ export default function RegisterCompletePage() {
 
   async function completeRegistration(user: User) {
     try {
-      setStatus(t("loginSyncing"));
+      setStatus(t("completeInitializing"));
 
       const { data: existingProfile } = await supabase
         .from("profiles")
@@ -67,39 +65,8 @@ export default function RegisterCompletePage() {
         return;
       }
 
-      setStatus(t("completeSyncing"));
-
-      const { data: existingMembership, error: membershipCheckError } = await supabase
-        .from("workspace_members")
-        .select("id, role, workspace_id")
-        .eq("user_id", user.id)
-        .limit(1)
-        .maybeSingle();
-
-      if (membershipCheckError) {
-        toast.error(t("completeMembershipFailed"));
-        setLoading(false);
-        return;
-      }
-
-      if (!existingMembership) {
-        setStatus(t("completeInitializingWorkspace"));
-
-        // createWorkspace uses supabaseAdmin server-side — bypasses RLS entirely.
-        // Never use the browser client for workspace bootstrapping.
-        const workspace = await createWorkspace({ name: "My Workspace" });
-
-        if (!workspace) {
-          toast.error(t("completeWorkspaceFailed"));
-          setLoading(false);
-          return;
-        }
-
-        // Set the workspace cookie immediately so the first dashboard render
-        // uses the fast cookie-based lookup instead of a full DB query.
-        await setActiveWorkspace(workspace.id);
-      }
-
+      // Invite token: user is accepting an invite to join an existing workspace.
+      // Workspace creation is not needed — the invite flow handles membership.
       const inviteToken = localStorage.getItem("orbit_invite_token");
       if (inviteToken) {
         localStorage.removeItem("orbit_invite_token");
@@ -108,14 +75,15 @@ export default function RegisterCompletePage() {
       }
 
       setStatus(t("completeReady"));
-      toast.success(t("completeSuccess"));
       setLoading(false);
+      toast.success(t("completeSuccess"));
 
+      // Approved users go to workspace setup. Everyone else waits for approval.
       const role = profile?.platform_role || "user";
       const hasAccess = role === "beta" || role === "team" || role === "admin";
 
       setTimeout(() => {
-        window.location.href = hasAccess ? "/dashboard" : "/waitlist";
+        window.location.href = hasAccess ? "/register/setup" : "/waitlist";
       }, 1200);
     } catch {
       toast.error(t("completeFailed"));
@@ -136,8 +104,7 @@ export default function RegisterCompletePage() {
       window.location.href = "/login";
     }, 15_000);
 
-    // Phase 2: once session fires, allow up to 30 s for workspace bootstrapping.
-    // Without this guard, a hung server action leaves the page spinning forever.
+    // Phase 2: once session fires, allow up to 30 s for profile bootstrapping.
     let registrationTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const {

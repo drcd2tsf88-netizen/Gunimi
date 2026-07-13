@@ -5,6 +5,8 @@ from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { executeAutomations } from "@/lib/automation/engine";
+import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
+import { resolveAllEntitySignals } from "@/lib/signals/producers/_resolveByType";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
@@ -86,7 +88,10 @@ if (stage === "lost") {
     stage,
     workspace_id,
     company_id,
-    contact_id
+    contact_id,
+    value,
+    expected_close_date,
+    updated_at
   `)
   .eq(
     "id",
@@ -204,6 +209,19 @@ if (stage === "lost") {
         dealTitle: existingDeal.title as string,
         contactId: (existingDeal.contact_id as string | null) ?? null,
         companyId: (existingDeal.company_id as string | null) ?? null,
+      });
+      await resolveAllEntitySignals(workspace.id, dealId, `deal_${stage}`);
+    } else {
+      await produceDealSignals({
+        workspaceId: workspace.id,
+        dealId,
+        stage,
+        value: (existingDeal.value as number | null) ?? null,
+        expectedCloseDate: (existingDeal.expected_close_date as string | null) ?? null,
+        updatedAt: new Date().toISOString(),
+        contactId: (existingDeal.contact_id as string | null) ?? null,
+        companyId: (existingDeal.company_id as string | null) ?? null,
+        title: existingDeal.title as string,
       });
     }
 

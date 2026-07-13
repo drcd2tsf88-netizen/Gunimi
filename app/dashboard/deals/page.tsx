@@ -14,6 +14,7 @@ import {
 
 import DealsPageView
 from "@/components/deals/DealsPageView";
+import PageLoadingSkeleton from "@/components/ui/PageLoadingSkeleton";
 
 export default async function DealsPage() {
   const [
@@ -27,7 +28,7 @@ export default async function DealsPage() {
   ]);
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageLoadingSkeleton variant="list" />}>
       <DealsPageView
         deals={deals}
         companies={companies}
