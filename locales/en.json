@@ -1156,7 +1156,9 @@
     "firstSuccessSubtitle": "How quickly workspaces reach key value moments.",
     "wsWithContact": "With contact",
     "wsWithDeal": "With deal",
-    "wsWithSignal": "With signal"
+    "wsWithSignal": "With signal",
+    "cleanupTitle": "Open Alpha Progress",
+    "cleanupSubtitle": "Resolved vs. open issues — track cleanup before launch."
   },
   "activity": {
     "badge": "Workspace Activity",

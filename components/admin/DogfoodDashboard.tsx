@@ -64,8 +64,14 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
   });
 
   const open = feedback.filter((r) => r.status === "open").length;
+  const inProgress = feedback.filter((r) => r.status === "in_progress").length;
   const critical = feedback.filter((r) => r.severity === "critical").length;
   const resolved = feedback.filter((r) => r.status === "resolved").length;
+
+  const total = feedback.length;
+  const resolvedPct = total > 0 ? Math.round((resolved / total) * 100) : 0;
+  const inProgressPct = total > 0 ? Math.round((inProgress / total) * 100) : 0;
+  const openPct = total > 0 ? 100 - resolvedPct - inProgressPct : 0;
 
   function handleStatusChange(id: string, status: FeedbackStatus) {
     startUpdate(async () => {
@@ -94,6 +100,60 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
           </GunimiCard>
         ))}
       </div>
+
+      {/* Progress indicator */}
+      {total > 0 && (
+        <section>
+          <div className="mb-3">
+            <h2 className="text-[15px] font-semibold text-white">{t("cleanupTitle")}</h2>
+            <p className="mt-0.5 text-sm text-white/40">{t("cleanupSubtitle")}</p>
+          </div>
+          <GunimiCard className="p-5">
+            <div className="flex items-center gap-6">
+              {/* Percentage */}
+              <div className="shrink-0 text-center">
+                <p className="text-4xl font-semibold tabular-nums text-white">{resolvedPct}%</p>
+                <p className="mt-0.5 text-[10px] uppercase tracking-[0.14em] text-white/30">
+                  {t("statusResolved")}
+                </p>
+              </div>
+
+              {/* Bar + legend */}
+              <div className="min-w-0 flex-1">
+                <div className="flex h-2.5 overflow-hidden rounded-full bg-white/[0.05]">
+                  <div
+                    className="bg-emerald-500/60 transition-all duration-500"
+                    style={{ width: `${resolvedPct}%` }}
+                  />
+                  <div
+                    className="bg-amber-500/55 transition-all duration-500"
+                    style={{ width: `${inProgressPct}%` }}
+                  />
+                  <div
+                    className="bg-[#6D5BFF]/40 transition-all duration-500"
+                    style={{ width: `${openPct}%` }}
+                  />
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1">
+                  <span className="flex items-center gap-1.5 text-[11px] text-emerald-400/70">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/60" />
+                    {resolved} {t("statusResolved")}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-[11px] text-amber-400/60">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/55" />
+                    {inProgress} {t("statusInProgress")}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-[11px] text-[#8B7DFF]/60">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#6D5BFF]/40" />
+                    {open} {t("statusOpen")}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </GunimiCard>
+        </section>
+      )}
 
       {/* First Success section */}
       {metrics && (

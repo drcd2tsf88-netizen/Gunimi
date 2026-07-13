@@ -1156,7 +1156,9 @@
     "firstSuccessSubtitle": "Jak rychle pracovní prostory dosahují klíčových hodnot.",
     "wsWithContact": "S kontaktem",
     "wsWithDeal": "S obchodem",
-    "wsWithSignal": "Se signálem"
+    "wsWithSignal": "Se signálem",
+    "cleanupTitle": "Připravenost na Open Alpha",
+    "cleanupSubtitle": "Vyřešené vs. otevřené problémy — sledujte čištění před vydáním."
   },
   "activity": {
     "badge": "Aktivita pracovního prostoru",
