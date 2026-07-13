@@ -112,10 +112,10 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
             <div className="flex items-center gap-6">
               {/* Percentage */}
               <div className="shrink-0 text-center">
-                <p className="text-4xl font-semibold tabular-nums text-white">{resolvedPct}%</p>
-                <p className="mt-0.5 text-[10px] uppercase tracking-[0.14em] text-white/30">
-                  {t("statusResolved")}
+                <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#6D5BFF]/60">
+                  {t("cleanupReadiness")}
                 </p>
+                <p className="mt-1 text-4xl font-semibold tabular-nums text-white">{resolvedPct}%</p>
               </div>
 
               {/* Bar + legend */}
@@ -135,19 +135,38 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
                   />
                 </div>
 
-                <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1">
-                  <span className="flex items-center gap-1.5 text-[11px] text-emerald-400/70">
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/60" />
-                    {resolved} {t("statusResolved")}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-[11px] text-amber-400/60">
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/55" />
-                    {inProgress} {t("statusInProgress")}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-[11px] text-[#8B7DFF]/60">
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#6D5BFF]/40" />
-                    {open} {t("statusOpen")}
-                  </span>
+                {/* Summary sentence */}
+                <p className="mt-2 text-[11px] text-white/35">
+                  {open + inProgress > 0
+                    ? t("cleanupRemaining", { remaining: open + inProgress })
+                    : t("cleanupReady")}
+                </p>
+
+                {/* Clickable legend */}
+                <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1">
+                  {(
+                    [
+                      { status: "resolved" as FeedbackStatus, count: resolved, dot: "bg-emerald-500/60", text: "text-emerald-400/70" },
+                      { status: "in_progress" as FeedbackStatus, count: inProgress, dot: "bg-amber-500/55", text: "text-amber-400/60" },
+                      { status: "open" as FeedbackStatus, count: open, dot: "bg-[#6D5BFF]/40", text: "text-[#8B7DFF]/60" },
+                    ] as const
+                  ).map(({ status, count, dot, text }) => (
+                    <button
+                      key={status}
+                      type="button"
+                      onClick={() => setStatusFilter((prev) => prev === status ? "all" : status)}
+                      className={[
+                        "flex items-center gap-1.5 text-[11px] transition-opacity",
+                        text,
+                        statusFilter !== "all" && statusFilter !== status
+                          ? "opacity-30"
+                          : "opacity-100 hover:opacity-75",
+                      ].join(" ")}
+                    >
+                      <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dot}`} />
+                      {count} {t(`status${status.charAt(0).toUpperCase()}${status.slice(1).replace("_p", "P")}` as Parameters<typeof t>[0])}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

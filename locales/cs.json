@@ -1158,7 +1158,10 @@
     "wsWithDeal": "S obchodem",
     "wsWithSignal": "Se signálem",
     "cleanupTitle": "Připravenost na Open Alpha",
-    "cleanupSubtitle": "Vyřešené vs. otevřené problémy — sledujte čištění před vydáním."
+    "cleanupSubtitle": "Vyřešené vs. otevřené problémy — sledujte čištění před vydáním.",
+    "cleanupReadiness": "Připravenost na Open Alpha",
+    "cleanupRemaining": "{remaining} problémů zbývá před spuštěním.",
+    "cleanupReady": "Všechna vylepšení vyřešena. Připraveno ke spuštění."
   },
   "activity": {
     "badge": "Aktivita pracovního prostoru",

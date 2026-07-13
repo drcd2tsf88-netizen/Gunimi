@@ -1158,7 +1158,10 @@
     "wsWithDeal": "With deal",
     "wsWithSignal": "With signal",
     "cleanupTitle": "Open Alpha Progress",
-    "cleanupSubtitle": "Resolved vs. open issues — track cleanup before launch."
+    "cleanupSubtitle": "Resolved vs. open issues — track cleanup before launch.",
+    "cleanupReadiness": "Open Alpha Readiness",
+    "cleanupRemaining": "{remaining} issues remain before launch.",
+    "cleanupReady": "All improvements resolved. Ready for launch."
   },
   "activity": {
     "badge": "Workspace Activity",
