@@ -74,8 +74,14 @@ export default getRequestConfig(async () => {
     return { locale: cookieLang, messages: MESSAGES[cookieLang] };
   }
 
-  // ── 3. Browser Language (Accept-Language header) ─────────
-  const browserLang = parseAcceptLanguage(headerStore.get("accept-language") ?? "");
+  // ── 3. Browser Language ───────────────────────────────────
+  // Primary source: x-gunimi-locale-hint set by middleware.ts from the real
+  // Accept-Language header at the Vercel Edge (guaranteed non-empty, non-cached).
+  // Fallback: parse Accept-Language directly (covers non-middleware contexts
+  // such as API routes or local dev without Edge middleware).
+  const hint = headerStore.get("x-gunimi-locale-hint");
+  const browserLang = (isValidLocale(hint) ? hint : null)
+    ?? parseAcceptLanguage(headerStore.get("accept-language") ?? "");
   if (browserLang) {
     return { locale: browserLang, messages: MESSAGES[browserLang] };
   }

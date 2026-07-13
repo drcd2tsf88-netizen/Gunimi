@@ -22,12 +22,31 @@ const PUBLIC_API_PREFIXES = [
   "/api/sentry-example-api", // Sentry test endpoint
 ];
 
+const SUPPORTED_LOCALES = ["en", "sk", "cs"] as const;
+
+function detectLocale(acceptLanguage: string | null): string | null {
+  if (!acceptLanguage) return null;
+  for (const part of acceptLanguage.split(",")) {
+    const lang = part.trim().split(";")[0].trim().split("-")[0].toLowerCase();
+    if ((SUPPORTED_LOCALES as readonly string[]).includes(lang)) return lang;
+  }
+  return null;
+}
+
 function isPublicApi(pathname: string): boolean {
   return PUBLIC_API_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
 export async function proxy(request: NextRequest) {
-  let response = NextResponse.next({ request });
+  // Detect the browser's preferred locale from Accept-Language at the Edge.
+  // This is the only place where the raw header is always available.
+  // We forward it as x-gunimi-locale-hint so i18n/request.ts can read it
+  // reliably via headers() regardless of the server rendering context.
+  const detectedLocale = detectLocale(request.headers.get("accept-language"));
+  const requestHeaders = new Headers(request.headers);
+  if (detectedLocale) requestHeaders.set("x-gunimi-locale-hint", detectedLocale);
+
+  let response = NextResponse.next({ request: { headers: requestHeaders } });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
