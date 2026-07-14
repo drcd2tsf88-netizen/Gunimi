@@ -125,7 +125,7 @@ export default function EditCompanySheet({
             <GunimiInput
               value={website}
               disabled={isPending}
-              placeholder="https://example.com"
+              placeholder={t("websitePlaceholder")}
               onChange={(e) => setWebsite(e.target.value)}
             />
           </GunimiField>
@@ -154,7 +154,7 @@ export default function EditCompanySheet({
             <GunimiInput
               value={companySize}
               disabled={isPending}
-              placeholder="e.g. 50–200"
+              placeholder={t("employeesPlaceholder")}
               onChange={(e) => setCompanySize(e.target.value)}
             />
           </GunimiField>

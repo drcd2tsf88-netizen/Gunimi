@@ -47,6 +47,26 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ── OrbitDesk z-index hierarchy ──────────────────────────────
+     Background       0  (default)
+     Content         10  z-10
+     Sticky nav      20  z-20
+     Mobile overlay  30  z-30
+     Topbar          40  z-topbar
+     Dropdowns       50  z-dropdown
+     Sheets          60  z-sheet
+     Dialogs         70  z-dialog
+     Toasts          80  z-toast
+     Command/AI      90  z-command
+     System       9999  z-[9999]  (grain, cookie)
+  ──────────────────────────────────────────────────────────── */
+  --z-topbar:   40;
+  --z-dropdown: 50;
+  --z-sheet:    60;
+  --z-dialog:   70;
+  --z-toast:    80;
+  --z-command:  90;
 }
 
 :root {

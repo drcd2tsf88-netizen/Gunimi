@@ -495,7 +495,7 @@ export default function OrbitCommandPalette({
           className="
             fixed
             inset-0
-            z-[999]
+            z-command
 
             flex
             items-start

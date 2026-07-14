@@ -75,7 +75,7 @@ function DialogOverlay({
         fixed
         inset-0
 
-        z-50
+        z-dialog
 
         bg-black/40
 
@@ -122,7 +122,7 @@ function DialogContent({
           left-1/2
           top-1/2
 
-          z-50
+          z-dialog
 
           w-full
           max-w-[calc(100%-2rem)]

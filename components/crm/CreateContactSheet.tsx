@@ -114,7 +114,7 @@ export default function CreateContactSheet({
               type="email"
               value={email}
               disabled={isPending}
-              placeholder="name@company.com"
+              placeholder={t("contactEmailPlaceholder")}
               onChange={(e) => setEmail(e.target.value)}
             />
           </GunimiField>
@@ -123,7 +123,7 @@ export default function CreateContactSheet({
             <GunimiInput
               value={phone}
               disabled={isPending}
-              placeholder="+1 555 000 0000"
+              placeholder={t("contactPhonePlaceholder")}
               onChange={(e) => setPhone(e.target.value)}
             />
           </GunimiField>

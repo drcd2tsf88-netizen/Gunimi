@@ -307,6 +307,8 @@
     "contactEmail": "E-mail",
     "contactPhone": "Telefon",
     "contactPosition": "Pozice",
+    "contactEmailPlaceholder": "jméno@firma.com",
+    "contactPhonePlaceholder": "+420 123 456 789",
     "contactNotes": "Poznámky",
     "creatingContact": "Vytváření kontaktu...",
     "contactCreated": "Kontakt byl vytvořen",
@@ -521,7 +523,9 @@
     "profileCountry": "Země",
     "profileCompanySize": "Velikost společnosti",
     "profileAnnualValue": "Roční hodnota",
-    "profileRelationshipStage": "Fáze vztahu"
+    "profileRelationshipStage": "Fáze vztahu",
+    "websitePlaceholder": "https://priklad.cz",
+    "employeesPlaceholder": "např. 50–200"
   },
   "deals": {
     "commercialPipeline": "Obchodní Pipeline",
@@ -1161,7 +1165,12 @@
     "cleanupSubtitle": "Vyřešené vs. otevřené problémy — sledujte čištění před vydáním.",
     "cleanupReadiness": "Připravenost na Open Alpha",
     "cleanupRemaining": "{remaining} problémů zbývá před spuštěním.",
-    "cleanupReady": "Všechna vylepšení vyřešena. Připraveno ke spuštění."
+    "cleanupReady": "Všechna vylepšení vyřešena. Připraveno ke spuštění.",
+    "totalWorkspaces": "Všechna workspace",
+    "filterStatus": "Stav",
+    "filterAllCategories": "Všechny kategorie",
+    "filterAllSeverities": "Všechny závažnosti",
+    "filterAllStatuses": "Všechny stavy"
   },
   "activity": {
     "badge": "Aktivita pracovního prostoru",
@@ -2767,5 +2776,26 @@
       "description": "Jakmile práce začne, Gunimi může začít rozumět."
     },
     "awakenedMoment": "Váš workspace se probudil."
+  },
+  "invite": {
+    "loadingTitle": "Načítání pozvánky",
+    "loadingSubtitle": "Ověřování pozvánky...",
+    "errorTitle": "Chyba pozvánky",
+    "backToGunimi": "Zpět do Gunimi",
+    "errorInvalid": "Neplatná pozvánka.",
+    "errorNoLongerActive": "Tato pozvánka již není aktivní.",
+    "errorExpired": "Platnost této pozvánky vypršela.",
+    "errorFailedToLoad": "Nepodařilo se načíst pozvánku.",
+    "toastFailedToAccept": "Nepodařilo se přijmout pozvánku.",
+    "toastJoinedSuccessfully": "Workspace byl úspěšně přidán.",
+    "toastAcceptFailed": "Nepodařilo se přijmout pozvánku.",
+    "badgeText": "Pozvánka do Gunimi Workspace",
+    "joinTitle": "Připojit se do",
+    "inviteDescription": "Byli jste pozváni ke spolupráci v Gunimi workspace.",
+    "workspaceRole": "Role ve Workspace:",
+    "acceptingButton": "Přidávání...",
+    "acceptButton": "Přijmout pozvánku",
+    "signIn": "Přihlásit se",
+    "createAccount": "Vytvořit účet"
   }
 }

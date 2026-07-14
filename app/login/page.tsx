@@ -70,8 +70,7 @@ export default function LoginPage() {
       }
 
       toast.loading(t("loginSyncing"), { id: "orbit-login" });
-      router.refresh();
-      setTimeout(() => { router.push("/dashboard"); }, 250);
+      router.push("/dashboard");
     } catch {
       toast.error(t("loginFailed"), { id: "orbit-login" });
     } finally {

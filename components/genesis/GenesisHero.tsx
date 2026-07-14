@@ -120,7 +120,7 @@ export function GenesisHero() {
                     {t("ctaPrimary")}
                   </Link>
                   <Link
-                    href="/sign-in"
+                    href="/login"
                     className={cn(
                       "inline-flex items-center justify-center rounded-[12px] px-6 py-3",
                       "text-[15px] font-medium text-[#9AA3B2]",

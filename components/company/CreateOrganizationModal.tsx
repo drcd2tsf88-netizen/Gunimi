@@ -138,6 +138,7 @@ export default function CreateOrganizationModal({
           className="
             fixed
             inset-0
+            z-dialog
 
             bg-black/60
             backdrop-blur-sm
@@ -147,6 +148,7 @@ export default function CreateOrganizationModal({
         <Dialog.Content
           className="
             fixed
+            z-dialog
 
             left-1/2
             top-1/2

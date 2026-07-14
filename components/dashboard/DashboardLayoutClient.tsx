@@ -59,18 +59,24 @@ export default function DashboardLayoutClient({
 
     async function initialize() {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) { window.location.href = "/login"; return; }
+        // getUser() validates the JWT with the Supabase Auth server and refreshes
+        // expired tokens. Using getSession() here is unsafe: it returns the stale
+        // in-memory session without validating expiry, so subsequent database
+        // queries can fail with 401 when the access token has rotated or expired,
+        // causing membership checks to return null and triggering a redirect loop
+        // between /dashboard and /register/setup.
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) { window.location.href = "/login"; return; }
 
         const { data: profile } = await supabase
           .from("profiles")
           .select("platform_role, status, full_name, avatar_url")
-          .eq("id", session.user.id)
+          .eq("id", user.id)
           .maybeSingle();
 
         if (profile) {
           setSidebarProfile({
-            full_name:  profile.full_name ?? session.user.email ?? "",
+            full_name:  profile.full_name ?? user.email ?? "",
             avatar_url: profile.avatar_url ?? null,
           });
         }
@@ -92,7 +98,7 @@ export default function DashboardLayoutClient({
         const { data: membership } = await supabase
           .from("workspace_members")
           .select("workspace_id")
-          .eq("user_id", session.user.id)
+          .eq("user_id", user.id)
           .limit(1)
           .maybeSingle();
 
@@ -109,7 +115,7 @@ export default function DashboardLayoutClient({
           setContext({
             dogfoodEnabled: !!prefs?.dogfoodEnabled,
             workspaceId: membership.workspace_id,
-            userId: session.user.id,
+            userId: user.id,
           });
         }
 
@@ -192,7 +198,7 @@ export default function DashboardLayoutClient({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeMobile}
-              className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-[30] bg-black/70 backdrop-blur-sm lg:hidden"
             />
             <motion.aside
               initial={{ x: -248 }}

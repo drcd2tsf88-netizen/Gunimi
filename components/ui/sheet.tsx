@@ -21,7 +21,7 @@ function SheetOverlay({
         `
         fixed
         inset-0
-        z-50
+        z-sheet
 
         bg-black/50
 
@@ -62,7 +62,7 @@ function SheetContent({
           fixed
           right-0
           top-0
-          z-50
+          z-sheet
 
           flex
           h-full

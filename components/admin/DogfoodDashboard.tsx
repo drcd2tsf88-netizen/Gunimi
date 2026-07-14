@@ -183,7 +183,7 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
           </div>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {[
-              { label: "Total Workspaces", value: metrics.totalWorkspaces },
+              { label: t("totalWorkspaces"), value: metrics.totalWorkspaces },
               { label: t("wsWithContact"), value: metrics.workspacesWithContact },
               { label: t("wsWithDeal"), value: metrics.workspacesWithDeal },
               { label: t("wsWithSignal"), value: metrics.workspacesWithSignal },
@@ -207,10 +207,10 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
             onValueChange={(v) => setCategoryFilter(v as FeedbackCategory | "all")}
           >
             <SelectTrigger className="h-9 w-[140px] text-sm" aria-label="Filter by category">
-              <SelectValue placeholder="Category" />
+              <SelectValue placeholder={t("category")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All categories</SelectItem>
+              <SelectItem value="all">{t("filterAllCategories")}</SelectItem>
               {(["ux","bug","performance","copy","ai","signal","today","workspace","settings","other"] as FeedbackCategory[]).map((c) => (
                 <SelectItem key={c} value={c}>{t(`category_${c}`)}</SelectItem>
               ))}
@@ -222,10 +222,10 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
             onValueChange={(v) => setSeverityFilter(v as FeedbackSeverity | "all")}
           >
             <SelectTrigger className="h-9 w-[130px] text-sm" aria-label="Filter by severity">
-              <SelectValue placeholder="Severity" />
+              <SelectValue placeholder={t("severity")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All severities</SelectItem>
+              <SelectItem value="all">{t("filterAllSeverities")}</SelectItem>
               {(["low","medium","high","critical"] as FeedbackSeverity[]).map((s) => (
                 <SelectItem key={s} value={s}>{t(`severity_${s}`)}</SelectItem>
               ))}
@@ -237,10 +237,10 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
             onValueChange={(v) => setStatusFilter(v as FeedbackStatus | "all")}
           >
             <SelectTrigger className="h-9 w-[130px] text-sm" aria-label="Filter by status">
-              <SelectValue placeholder="Status" />
+              <SelectValue placeholder={t("filterStatus")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="all">{t("filterAllStatuses")}</SelectItem>
               <SelectItem value="open">{t("statusOpen")}</SelectItem>
               <SelectItem value="in_progress">{t("statusInProgress")}</SelectItem>
               <SelectItem value="resolved">{t("statusResolved")}</SelectItem>

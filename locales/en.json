@@ -307,6 +307,8 @@
     "contactEmail": "Email",
     "contactPhone": "Phone",
     "contactPosition": "Position",
+    "contactEmailPlaceholder": "name@company.com",
+    "contactPhonePlaceholder": "+1 555 000 0000",
     "contactNotes": "Notes",
     "creatingContact": "Creating contact...",
     "contactCreated": "Contact created",
@@ -521,7 +523,9 @@
     "profileCountry": "Country",
     "profileCompanySize": "Company Size",
     "profileAnnualValue": "Annual Value",
-    "profileRelationshipStage": "Relationship Stage"
+    "profileRelationshipStage": "Relationship Stage",
+    "websitePlaceholder": "https://example.com",
+    "employeesPlaceholder": "e.g. 50–200"
   },
   "deals": {
     "commercialPipeline": "Commercial Pipeline",
@@ -1161,7 +1165,12 @@
     "cleanupSubtitle": "Resolved vs. open issues — track cleanup before launch.",
     "cleanupReadiness": "Open Alpha Readiness",
     "cleanupRemaining": "{remaining} issues remain before launch.",
-    "cleanupReady": "All improvements resolved. Ready for launch."
+    "cleanupReady": "All improvements resolved. Ready for launch.",
+    "totalWorkspaces": "Total Workspaces",
+    "filterStatus": "Status",
+    "filterAllCategories": "All categories",
+    "filterAllSeverities": "All severities",
+    "filterAllStatuses": "All statuses"
   },
   "activity": {
     "badge": "Workspace Activity",
@@ -2767,5 +2776,26 @@
       "description": "Once work begins, Gunimi can begin understanding it."
     },
     "awakenedMoment": "Your workspace has awakened."
+  },
+  "invite": {
+    "loadingTitle": "Loading Invitation",
+    "loadingSubtitle": "Verifying invitation...",
+    "errorTitle": "Invitation Error",
+    "backToGunimi": "Back to Gunimi",
+    "errorInvalid": "Invalid invitation.",
+    "errorNoLongerActive": "This invite is no longer active.",
+    "errorExpired": "This invitation has expired.",
+    "errorFailedToLoad": "Failed to load invitation.",
+    "toastFailedToAccept": "Failed to accept invite.",
+    "toastJoinedSuccessfully": "Workspace joined successfully.",
+    "toastAcceptFailed": "Failed to accept invitation.",
+    "badgeText": "Gunimi Workspace Invite",
+    "joinTitle": "Join",
+    "inviteDescription": "You have been invited to collaborate inside the Gunimi workspace.",
+    "workspaceRole": "Workspace Role:",
+    "acceptingButton": "Joining Workspace...",
+    "acceptButton": "Accept Invitation",
+    "signIn": "Sign In",
+    "createAccount": "Create Account"
   }
 }

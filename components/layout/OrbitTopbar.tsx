@@ -27,7 +27,7 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
   return (
     <header
       className="
-        sticky top-0 z-50
+        sticky top-0 z-topbar
         border-b border-white/[0.04]
         bg-[#05060A]/80
         backdrop-blur-[18px]
