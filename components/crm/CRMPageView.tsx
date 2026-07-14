@@ -166,7 +166,7 @@ export default function CRMPageView({ initialContacts }: Props) {
 
       {/* Stats */}
       <GunimiSection>
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-3">
           <GunimiCard className="p-6">
             <p className="text-zinc-400">{t("totalCustomers")}</p>
             <h2 className="mt-5 text-4xl font-semibold">{contacts.length}</h2>
@@ -271,9 +271,9 @@ export default function CRMPageView({ initialContacts }: Props) {
                     </span>
                   )}
 
-                  {/* Actions — visible on hover */}
+                  {/* Actions — always visible on touch, hover-reveal on pointer devices */}
                   <div
-                    className="flex shrink-0 items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100"
+                    className="flex shrink-0 items-center gap-1.5 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <GunimiButton

@@ -410,13 +410,13 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
                   <th className="px-4 py-3.5 text-left text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500">
                     {t("taskStatus")}
                   </th>
-                  <th className="px-4 py-3.5 text-left text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500">
+                  <th className="hidden px-4 py-3.5 text-left text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500 sm:table-cell">
                     {t("taskPriority")}
                   </th>
                   <th className="px-4 py-3.5 text-left text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500">
                     {t("dueDate")}
                   </th>
-                  <th className="px-4 py-3.5 text-left text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500">
+                  <th className="hidden px-4 py-3.5 text-left text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500 md:table-cell">
                     {t("assignee")}
                   </th>
                   <th className="px-4 py-3.5" />
@@ -470,7 +470,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
                       </td>
 
                       {/* PRIORITY */}
-                      <td className="px-4 py-4">
+                      <td className="hidden px-4 py-4 sm:table-cell">
                         <span
                           className={[
                             "inline-flex items-center rounded-full border px-2.5 py-0.5",
@@ -488,13 +488,13 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
                       </td>
 
                       {/* ASSIGNEE */}
-                      <td className="px-4 py-4 text-xs text-zinc-400">
+                      <td className="hidden px-4 py-4 text-xs text-zinc-400 md:table-cell">
                         {getAssigneeName(task.assigned_to, members)}
                       </td>
 
                       {/* ACTIONS */}
                       <td className="px-4 py-4">
-                        <div className="flex items-center justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+                        <div className="flex items-center justify-end gap-2 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">
                           <GunimiButton
                             variant="secondary"
                             className="h-8 w-8 p-0"

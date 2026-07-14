@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NextIntlClientProvider } from "next-intl";
-import messages from "@/locales/en.json";
+import { getLocale, getMessages } from "next-intl/server";
 import { OrbitRuntimeProvider } from "@/core/runtime/OrbitRuntimeProvider";
 import { APP_CONFIG } from "@/lib/config/app";
 import CookieConsent from "@/components/public/CookieConsent";
@@ -59,17 +59,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body
         className={`${inter.className} bg-black text-white`}
       >
-        <NextIntlClientProvider locale="en" messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
         <OrbitRuntimeProvider>
           <Toaster
             position="top-right"

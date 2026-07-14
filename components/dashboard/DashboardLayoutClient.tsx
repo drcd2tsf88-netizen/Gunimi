@@ -195,9 +195,9 @@ export default function DashboardLayoutClient({
               className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
             />
             <motion.aside
-              initial={{ x: -260 }}
+              initial={{ x: -248 }}
               animate={{ x: 0 }}
-              exit={{ x: -260 }}
+              exit={{ x: -248 }}
               transition={{ type: "spring", damping: 26, stiffness: 220 }}
               className={`fixed left-0 top-0 z-50 h-screen w-[248px] lg:hidden ${sidebarClasses}`}
             >
@@ -231,7 +231,7 @@ export default function DashboardLayoutClient({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex-1 px-5 py-6 lg:px-8 lg:py-8"
+            className="relative flex-1 px-5 py-6 sm:px-6 sm:py-7 lg:px-8 lg:py-8"
           >
             {/* Subtle deep-space ambient — very faint top-right nebula */}
             <div

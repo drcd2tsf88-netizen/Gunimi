@@ -54,7 +54,7 @@ export function GenesisNavbar() {
         <Link
           href="/register"
           className={cn(
-            "inline-flex items-center rounded-[10px] px-4 py-[7px]",
+            "inline-flex min-h-[44px] items-center rounded-[10px] px-4 py-2",
             "bg-[var(--g-primary)] text-[13px] font-medium text-white",
             "transition-colors duration-150 hover:bg-[var(--g-primary-2)]",
             "outline-none focus-visible:ring-2 focus-visible:ring-[var(--g-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--g-bg)]",

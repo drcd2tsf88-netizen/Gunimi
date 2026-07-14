@@ -43,7 +43,7 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle navigation"
             className="
-              flex h-9 w-9 shrink-0 items-center justify-center
+              flex h-11 w-11 shrink-0 items-center justify-center
               rounded-lg
               border border-white/[0.06] bg-white/[0.02]
               text-[#9AA3B2]/60

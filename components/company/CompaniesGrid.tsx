@@ -79,7 +79,7 @@ export default function CompaniesGrid({
           grid
           gap-4
 
-          xl:grid-cols-2
+          md:grid-cols-2
         "
       >
         {companies.map(

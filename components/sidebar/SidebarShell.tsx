@@ -160,7 +160,7 @@ export function SidebarHeader({
         <button
           onClick={onClose}
           aria-label="Close navigation"
-          className="ml-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#9AA3B2]/60 transition hover:text-white/80 lg:hidden"
+          className="ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#9AA3B2]/60 transition hover:text-white/80 lg:hidden"
         >
           <X size={13} />
         </button>
@@ -232,7 +232,7 @@ export function SidebarFooter({
             aria-label="Submit internal feedback"
             title="Submit feedback (press ? anywhere)"
             className="
-              flex h-[52px] w-[38px] shrink-0 items-center justify-center
+              flex h-[52px] w-11 shrink-0 items-center justify-center
               rounded-xl border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.05]
               text-[#6D5BFF]/50
               transition-all duration-[220ms]
@@ -251,7 +251,7 @@ export function SidebarFooter({
             aria-label={tNav("logout")}
             title={tNav("logout")}
             className="
-              flex h-[52px] w-[38px] shrink-0 items-center justify-center
+              flex h-[52px] w-11 shrink-0 items-center justify-center
               rounded-xl border border-white/[0.04] bg-[#0A0E17]/60
               text-[#9AA3B2]/40
               transition-all duration-[220ms]
