@@ -6,7 +6,7 @@ import LandingActivity from "@/components/landing/LandingActivity";
 import LandingPricingButtons from "@/components/landing/LandingPircingButtons";
 import LandingCTA from "@/components/landing/LandingCTA";
 import LandingFooter from "@/components/landing/LandingFooter";
-import { MotionProvider, GenesisNavbar, GenesisHero, GenesisActI, GenesisActII, GenesisActIII, GenesisActIV } from "@/components/genesis";
+import { MotionProvider, GenesisNavbar, GenesisHero, GenesisActI, GenesisActII, GenesisActIII, GenesisBeats, GenesisActIV } from "@/components/genesis";
 
 export const metadata: Metadata = {
   title: { absolute: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}` },
@@ -31,6 +31,9 @@ export default function HomePage() {
 
         {/* 4 — Act III: the workspace awakens */}
         <GenesisActIII />
+
+        {/* 4.5 — Beats: the last mental bridge before the demo */}
+        <GenesisBeats />
 
         {/* 5 — Act IV: the reveal */}
         <GenesisActIV />

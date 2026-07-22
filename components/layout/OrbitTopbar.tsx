@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import OrbitTeamPresence    from "@/components/layout/OrbitTeamPresence";
 import OrbitNotifications   from "@/components/layout/OrbitNotifications";
 import OrbitProfileDropdown from "@/components/layout/OrbitProfileDropdown";
-import OrbitAIStatus        from "../ai/OrbitAIStatus";
 
 import { useOrbitCommandStore } from "@/lib/store/orbit-command-store";
 
@@ -98,7 +97,6 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
 
         {/* RIGHT */}
         <div className="flex items-center gap-1.5">
-          <OrbitAIStatus />
           <OrbitTeamPresence />
           <OrbitNotifications />
           <OrbitProfileDropdown />

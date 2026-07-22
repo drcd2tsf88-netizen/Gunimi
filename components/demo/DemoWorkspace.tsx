@@ -4,9 +4,12 @@ import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { SidebarNav, SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
+import {
+  LayoutDashboard, Users, Building2, TrendingUp, CheckSquare,
+  Mail, CalendarDays, BarChart3, Settings,
+} from "lucide-react";
+import { SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
 import TodayView from "@/components/today/TodayView";
-import { NAV_GROUPS } from "@/config/navigation";
 import {
   DEMO_DISPLAY_NAME,
   DEMO_WORKSPACE_NAME,
@@ -14,8 +17,17 @@ import {
   DEMO_TODAY_DATA,
 } from "@/lib/demo/demoWorkspaceData";
 
-const DEMO_PATHNAME = "/dashboard";
-const DEMO_COLLAPSED = new Set<string>();
+const PREVIEW_NAV = [
+  { id: "today",     icon: LayoutDashboard, labelKey: "dashboard"  },
+  { id: "contacts",  icon: Users,           labelKey: "contacts"   },
+  { id: "companies", icon: Building2,       labelKey: "companies"  },
+  { id: "deals",     icon: TrendingUp,      labelKey: "deals"      },
+  { id: "tasks",     icon: CheckSquare,     labelKey: "tasks"      },
+  { id: "email",     icon: Mail,            labelKey: "email"      },
+  { id: "calendar",  icon: CalendarDays,    labelKey: "calendar"   },
+  { id: "analytics", icon: BarChart3,       labelKey: "analytics"  },
+  { id: "settings",  icon: Settings,        labelKey: "settings"   },
+] as const;
 
 export default function DemoWorkspace() {
   const t = useTranslations("landing.actIV");
@@ -72,14 +84,39 @@ export default function DemoWorkspace() {
         className="hidden w-[248px] shrink-0 flex-col border-r border-white/[0.04] bg-[#05060A] lg:flex"
       >
         <SidebarHeader workspaceName={DEMO_WORKSPACE_NAME} />
-        <nav aria-label="Main navigation" className="flex-1 overflow-y-auto px-2.5 py-3">
-          <SidebarNav
-            groups={NAV_GROUPS}
-            pathname={DEMO_PATHNAME}
-            t={tNav as (key: string) => string}
-            collapsedGroups={DEMO_COLLAPSED}
-            onToggleGroup={() => {}}
-          />
+        <nav aria-label="Demo navigation preview" className="flex-1 overflow-y-auto px-2.5 py-3">
+          <div className="space-y-0.5">
+            {PREVIEW_NAV.map((item) => {
+              const Icon = item.icon;
+              const isActive = item.id === "today";
+              return (
+                <Link
+                  key={item.id}
+                  href={`/demo?section=${item.id}`}
+                  className={[
+                    "group flex items-center gap-3 rounded-xl px-3 py-2.5",
+                    "transition-all duration-[220ms]",
+                    isActive
+                      ? "bg-[#0F1520] text-[#F7F8FC] shadow-[inset_2px_0_0_#6D5BFF]"
+                      : "text-[#9AA3B2]/65 hover:bg-white/[0.025] hover:text-[#F7F8FC]/80",
+                  ].join(" ")}
+                >
+                  <div className={[
+                    "flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg",
+                    "transition-colors duration-[220ms]",
+                    isActive
+                      ? "bg-[#6D5BFF]/12 text-[#8B7DFF]"
+                      : "text-[#9AA3B2]/50 group-hover:text-[#9AA3B2]/80",
+                  ].join(" ")}>
+                    <Icon size={14} strokeWidth={1.75} />
+                  </div>
+                  <span className="text-[13px] font-medium tracking-[-0.01em]">
+                    {tNav(item.labelKey)}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
         </nav>
         <SidebarFooter profile={DEMO_PROFILE} />
       </motion.aside>

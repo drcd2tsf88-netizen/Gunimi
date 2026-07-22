@@ -35,3 +35,4 @@ export { GenesisActI } from "./GenesisActI";
 export { GenesisActII } from "./GenesisActII";
 export { GenesisActIII } from "./GenesisActIII";
 export { GenesisActIV } from "./GenesisActIV";
+export { GenesisBeats } from "./GenesisBeats";
