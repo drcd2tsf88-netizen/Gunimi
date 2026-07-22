@@ -32,6 +32,7 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
         bg-[#05060A]/80
         backdrop-blur-[18px]
       "
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
       <div className="flex items-center justify-between gap-3 px-4 py-2.5 lg:px-5">
 
@@ -41,7 +42,7 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle navigation"
+            aria-label={t("toggleNavigation")}
             className="
               flex h-11 w-11 shrink-0 items-center justify-center
               rounded-lg

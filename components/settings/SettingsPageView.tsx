@@ -53,7 +53,7 @@ export default function SettingsPageView({
       <GunimiHeading badge={t("badge")} title={t("title")} />
 
       {/* LAYOUT */}
-      <div className="flex gap-8">
+      <div className="flex flex-col gap-6 md:flex-row md:gap-8">
         <SettingsNav active={section} onChange={setSection} />
 
         {/* CONTENT */}

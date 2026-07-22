@@ -373,7 +373,8 @@
     "allPriorities": "Všechny priority",
     "allAssignees": "Všichni odpovědní",
     "clearFilters": "Zrušit filtry",
-    "noResults": "Žádné úkoly neodpovídají vašim filtrům"
+    "noResults": "Žádné úkoly neodpovídají vašim filtrům",
+    "pageTitle": "Úkoly"
   },
   "companies": {
     "intelligence": "Firemní inteligence",
@@ -525,7 +526,8 @@
     "profileAnnualValue": "Roční hodnota",
     "profileRelationshipStage": "Fáze vztahu",
     "websitePlaceholder": "https://priklad.cz",
-    "employeesPlaceholder": "např. 50–200"
+    "employeesPlaceholder": "např. 50–200",
+    "pageTitle": "Společnosti"
   },
   "deals": {
     "commercialPipeline": "Obchodní Pipeline",
@@ -690,7 +692,8 @@
     "contextLabelContact": "Kontakt",
     "contextLabelOwner": "Vlastník",
     "contextEmptyTitle": "Žádný kontext není k dispozici",
-    "contextEmptyDescription": "Propojte společnost nebo kontakt a začněte budovat kontext pro tuto příležitost."
+    "contextEmptyDescription": "Propojte společnost nebo kontakt a začněte budovat kontext pro tuto příležitost.",
+    "pageTitle": "Obchody"
   },
   "notes": {
     "badge": "Znalostní báze pracovního prostoru",
@@ -715,7 +718,8 @@
     "deleteNote": "Smazat poznámku",
     "confirmDeleteNote": "Tato poznámka bude trvale smazána. Tuto akci nelze vrátit zpět.",
     "noteDeleted": "Poznámka byla smazána",
-    "failedToDeleteNote": "Smazání poznámky selhalo"
+    "failedToDeleteNote": "Smazání poznámky selhalo",
+    "pageTitle": "Poznámky"
   },
   "automations": {
     "badge": "Gunimi Automatizace",
@@ -741,7 +745,7 @@
     "automation4Title": "Připomínka úkolu",
     "automation4Description": "Notifikovat členy týmu o opožděných úkolech a termínech.",
     "previewBannerTitle": "Alpha Preview",
-    "previewBannerDescription": "Automations are not yet active. This module is coming soon.",
+    "previewBannerDescription": "Automatizace zatím nejsou aktivní. Tento modul bude brzy k dispozici.",
     "registryBadge": "Registr automatizací",
     "registryTitle": "Aktivní automatizace",
     "registrySubtitle": "Vestavěná pravidla, která se automaticky spouštějí při obchodních událostech",
@@ -761,7 +765,15 @@
     "viewCompany": "Zobrazit společnost",
     "architectureBadge": "Rozšiřitelné",
     "architectureTitle": "Navrženo pro integraci AI",
-    "architectureDesc": "Automatizační motor je navržen k rozšíření. Budoucí AI agenti se napojí na tento základ a budou provádět inteligentní, kontextově citlivé pracovní postupy ve vašem pracovním prostoru."
+    "architectureDesc": "Automatizační motor je navržen k rozšíření. Budoucí AI agenti se napojí na tento základ a budou provádět inteligentní, kontextově citlivé pracovní postupy ve vašem pracovním prostoru.",
+    "pageTitle": "Automatizace",
+    "triggerDealWon": "Vyhraný obchod",
+    "triggerDealLost": "Prohraný obchod",
+    "triggerDealCreated": "Nový obchod",
+    "triggerContactCreated": "Nový kontakt",
+    "triggerCompanyCreated": "Nová společnost",
+    "triggerTaskCompleted": "Splněný úkol",
+    "actionCount": "{count, plural, one {# akce} few {# akce} other {# akcí}}"
   },
   "contacts": {
     "badge": "Inteligence kontaktů",
@@ -897,7 +909,8 @@
     "headerLastContactedDaysAgo": "před {days} dny",
     "headerLastContactedWeeksAgo": "před {weeks} týdny",
     "headerLastContactedMonthsAgo": "před {months} měsíci",
-    "headerLastContactedNever": "Nikdy nekontaktován"
+    "headerLastContactedNever": "Nikdy nekontaktován",
+    "pageTitle": "Kontakty"
   },
   "common": {
     "create": "Vytvořit",
@@ -945,7 +958,8 @@
     "prompt3": "Shrnutí mého prostoru",
     "prompt4": "Připravit nejbližší schůzku",
     "openChat": "Otevřít AI Chat",
-    "statUpcomingMeetings": "Nadcházející schůzky"
+    "statUpcomingMeetings": "Nadcházející schůzky",
+    "pageTitle": "AI Mission Control"
   },
   "admin": {
     "failedToLoad": "Nepodařilo se načíst admin panel.",
@@ -1112,7 +1126,8 @@
     "dogfoodModeNote": "Viditelné pouze internímu týmu. Zákazníci to nikdy neuvidí.",
     "dogfoodEnable": "Aktivovat",
     "dogfoodDisable": "Deaktivovat",
-    "dogfoodSaved": "Dogfood režim aktualizován"
+    "dogfoodSaved": "Dogfood režim aktualizován",
+    "pageTitle": "Nastavení"
   },
   "dogfood": {
     "feedbackTitle": "Interní zpětná vazba",
@@ -1170,7 +1185,8 @@
     "filterStatus": "Stav",
     "filterAllCategories": "Všechny kategorie",
     "filterAllSeverities": "Všechny závažnosti",
-    "filterAllStatuses": "Všechny stavy"
+    "filterAllStatuses": "Všechny stavy",
+    "submitFeedbackAria": "Odeslat interní zpětnou vazbu"
   },
   "activity": {
     "badge": "Aktivita pracovního prostoru",
@@ -1181,7 +1197,8 @@
     "taskEvents": "Úlohové události",
     "noActivity": "Zatím žádná aktivita",
     "noActivityDescription": "Gunimi AI aktivity a události workflow se zde budou zobrazovat živě.",
-    "workspaceEvent": "Událost pracovního prostoru"
+    "workspaceEvent": "Událost pracovního prostoru",
+    "pageTitle": "Aktivita"
   },
   "analytics": {
     "badge": "Analytika",
@@ -1223,7 +1240,8 @@
     "noClosedDeals": "Zatím žádné uzavřené obchody",
     "noClosedDealsDesc": "Přesuňte obchody na vyhrané nebo prohrané pro zobrazení míry úspěšnosti.",
     "totalDeals": "obchodů",
-    "lastSixMonths": "za posledních 6 měsíců"
+    "lastSixMonths": "za posledních 6 měsíců",
+    "pageTitle": "Analytika"
   },
   "calendar": {
     "badge": "Kalendář",
@@ -1301,7 +1319,8 @@
     "failedToCreateMeetingNote": "Vytvoření poznámky selhalo",
     "createMeetingNote": "Vytvořit poznámku ze schůzky",
     "viewContact": "Zobrazit kontakt",
-    "viewInCalendar": "Otevřít v kalendáři"
+    "viewInCalendar": "Otevřít v kalendáři",
+    "pageTitle": "Kalendář"
   },
   "email": {
     "badge": "E-mail",
@@ -1377,7 +1396,8 @@
     "viewContact": "Zobrazit kontakt",
     "viewCompany": "Zobrazit společnost",
     "followUpPrefix": "Sledování:",
-    "emailNotePrefix": "E-mail:"
+    "emailNotePrefix": "E-mail:",
+    "pageTitle": "E-mail"
   },
   "workspace": {
     "createWorkspace": "Vytvořit pracovní prostor",
@@ -1437,7 +1457,8 @@
     "exportCompanies": "Společnosti",
     "exportContacts": "Kontakty",
     "exportDeals": "Obchody",
-    "exportTasks": "Úkoly"
+    "exportTasks": "Úkoly",
+    "pageTitle": "Import & Export"
   },
   "onboarding": {
     "welcomeTitle": "Vítejte v Gunimi",
@@ -1641,7 +1662,11 @@
     "tierReqPerDay": "Požad. / den",
     "tierTokensPerMonth": "Tokeny / měsíc",
     "tierFoundation": "Základ",
-    "tierComingSoon": "Brzy"
+    "tierComingSoon": "Brzy",
+    "featureChat": "Chat",
+    "featureBrief": "Denní přehled",
+    "featureAssistant": "Asistent Gunimi",
+    "featureSummary": "Shrnutí poznámek"
   },
   "nav": {
     "dashboard": "Dnes",
@@ -1674,12 +1699,15 @@
     "activeMembers": "{count} aktivních členů",
     "membersOnline": "{count} členů online",
     "workspaceDefault": "Pracovní prostor",
-    "profileDefault": "Profil"
+    "profileDefault": "Profil",
+    "toggleNavigation": "Přepnout navigaci",
+    "closeNavigation": "Zavřít navigaci"
   },
   "notifications": {
     "title": "Gunimi Signals",
     "subtitle": "Živé sledování pracovního prostoru",
-    "emptyDescription": "Gunimi AI aktivně sleduje aktivitu pracovního prostoru."
+    "emptyDescription": "Gunimi AI aktivně sleduje aktivitu pracovního prostoru.",
+    "ariaLabel": "Oznámení"
   },
   "aiPanel": {
     "orbitAi": "Gunimi AI",
@@ -1723,7 +1751,8 @@
     "importanceNormal": "Normální",
     "importanceLow": "Nízké",
     "entityBadge": "Paměťové upozornění",
-    "entityTitle": "Klíčové momenty"
+    "entityTitle": "Klíčové momenty",
+    "pageTitle": "Paměť"
   },
   "landing": {
     "nav": {
@@ -2796,6 +2825,9 @@
     "acceptingButton": "Přidávání...",
     "acceptButton": "Přijmout pozvánku",
     "signIn": "Přihlásit se",
-    "createAccount": "Vytvořit účet"
+    "createAccount": "Vytvořit účet",
+    "roleOwner": "Vlastník",
+    "roleAdmin": "Správce",
+    "roleMember": "Člen"
   }
 }

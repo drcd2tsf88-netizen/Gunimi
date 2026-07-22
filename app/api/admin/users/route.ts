@@ -11,7 +11,7 @@ async function getAdminUser() {
     .from("profiles")
     .select("platform_role")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   if (profile?.platform_role !== "admin") return null;
   return user;

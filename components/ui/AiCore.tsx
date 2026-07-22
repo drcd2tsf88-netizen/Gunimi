@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // ─────────────────────────────────────────────────────────────
@@ -39,6 +39,7 @@ export default function AiCore({
   showParticles = true,
   intensity = "medium",
 }: AiCoreProps) {
+  const shouldReduceMotion = useReducedMotion();
   const c = size / 2;
   const g = intensity === "subtle" ? 0.45 : intensity === "strong" ? 1.0 : 0.72;
 
@@ -57,11 +58,11 @@ export default function AiCore({
     >
       {/* ── AMBIENT OUTER GLOW ── */}
       <motion.div
-        animate={{
+        animate={shouldReduceMotion ? { opacity: 0.38 * g, scale: 1 } : {
           opacity: [0.28 * g, 0.55 * g, 0.28 * g],
           scale:   [0.94, 1.06, 0.94],
         }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 9, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" }}
         className="pointer-events-none absolute inset-0 rounded-full"
         style={{
           background: `radial-gradient(circle at center,
@@ -76,7 +77,7 @@ export default function AiCore({
         <svg
           className="pointer-events-none absolute inset-0 h-full w-full"
           viewBox={`0 0 ${size} ${size}`}
-          style={{ animation: "gunimi-orbit-1 88s linear infinite" }}
+          style={{ animation: shouldReduceMotion ? "none" : "gunimi-orbit-1 88s linear infinite" }}
         >
           <ellipse
             cx={c} cy={c}
@@ -107,7 +108,7 @@ export default function AiCore({
         <svg
           className="pointer-events-none absolute inset-0 h-full w-full"
           viewBox={`0 0 ${size} ${size}`}
-          style={{ animation: "gunimi-orbit-2 58s linear infinite reverse" }}
+          style={{ animation: shouldReduceMotion ? "none" : "gunimi-orbit-2 58s linear infinite reverse" }}
         >
           <ellipse
             cx={c} cy={c}
@@ -137,7 +138,7 @@ export default function AiCore({
         <svg
           className="pointer-events-none absolute inset-0 h-full w-full"
           viewBox={`0 0 ${size} ${size}`}
-          style={{ animation: "gunimi-orbit-3 36s linear infinite" }}
+          style={{ animation: shouldReduceMotion ? "none" : "gunimi-orbit-3 36s linear infinite" }}
         >
           <ellipse
             cx={c} cy={c}
@@ -167,11 +168,11 @@ export default function AiCore({
             top:    p.y,
             background: p.cyan ? "#22D3EE" : "#8B7DFF",
           }}
-          animate={{ opacity: [0, 0.55 * g, 0], scale: [0.4, 1.6, 0.4] }}
+          animate={shouldReduceMotion ? { opacity: 0.25 * g, scale: 1 } : { opacity: [0, 0.55 * g, 0], scale: [0.4, 1.6, 0.4] }}
           transition={{
             duration: p.d,
             delay:    p.delay,
-            repeat:   Infinity,
+            repeat:   shouldReduceMotion ? 0 : Infinity,
             ease:     "easeInOut",
           }}
         />
@@ -180,11 +181,11 @@ export default function AiCore({
       {/* ── CORE HALO — breathing ── */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <motion.div
-          animate={{
+          animate={shouldReduceMotion ? { scale: 1, opacity: 0.40 * g } : {
             scale:   [0.86, 1.14, 0.86],
             opacity: [0.28 * g, 0.58 * g, 0.28 * g],
           }}
-          transition={{ duration: 6.0, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 6.0, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" }}
           style={{
             width:        size * 0.24,
             height:       size * 0.24,
@@ -197,8 +198,8 @@ export default function AiCore({
       {/* ── CORE DOT ── */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <motion.div
-          animate={{ scale: [0.86, 1.14, 0.86] }}
-          transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+          animate={shouldReduceMotion ? { scale: 1 } : { scale: [0.86, 1.14, 0.86] }}
+          transition={{ duration: 4.2, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" }}
           style={{
             width:        coreDot,
             height:       coreDot,

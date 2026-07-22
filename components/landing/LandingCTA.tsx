@@ -29,8 +29,8 @@ export default function LandingCTA() {
         />
       </div>
 
-      {/* AI Core — large, centered behind content */}
-      <div className="pointer-events-none absolute left-1/2 top-[-10%] -translate-x-1/2 opacity-25">
+      {/* AI Core — large, centered behind content — hidden on mobile to prevent overflow */}
+      <div className="pointer-events-none absolute left-1/2 top-[-10%] hidden -translate-x-1/2 opacity-25 md:block">
         <AiCore size={680} showRings showParticles intensity="subtle" />
       </div>
 

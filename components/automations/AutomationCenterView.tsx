@@ -30,14 +30,17 @@ type Props = {
   stats: Stats;
 };
 
-const TRIGGER_LABEL: Record<string, string> = {
-  "deal.won": "Deal Won",
-  "deal.lost": "Deal Lost",
-  "deal.created": "Deal Created",
-  "contact.created": "Contact Created",
-  "company.created": "Company Created",
-  "task.completed": "Task Completed",
-};
+function getTriggerLabel(trigger: string, t: (key: string) => string): string {
+  const map: Record<string, string> = {
+    "deal.won": t("triggerDealWon"),
+    "deal.lost": t("triggerDealLost"),
+    "deal.created": t("triggerDealCreated"),
+    "contact.created": t("triggerContactCreated"),
+    "company.created": t("triggerCompanyCreated"),
+    "task.completed": t("triggerTaskCompleted"),
+  };
+  return map[trigger] ?? trigger;
+}
 
 const TRIGGER_COLOR: Record<string, string> = {
   "deal.won": "border-emerald-500/20 bg-emerald-500/10 text-emerald-300",
@@ -160,7 +163,7 @@ export default function AutomationCenterView({ history, stats }: Props) {
                     <span
                       className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${triggerColor}`}
                     >
-                      {TRIGGER_LABEL[rule.trigger] ?? rule.trigger}
+                      {getTriggerLabel(rule.trigger, t)}
                     </span>
                   </div>
                   <p className="mt-1 text-xs leading-relaxed text-white/40">
@@ -227,12 +230,12 @@ export default function AutomationCenterView({ history, stats }: Props) {
                         <span
                           className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${triggerColor}`}
                         >
-                          {TRIGGER_LABEL[trigger] ?? trigger}
+                          {getTriggerLabel(trigger, t)}
                         </span>
 
                         {actionCount > 0 && (
                           <span className="text-[10px] text-white/25">
-                            {actionCount} action{actionCount !== 1 ? "s" : ""}
+                            {t("actionCount", { count: actionCount })}
                           </span>
                         )}
 

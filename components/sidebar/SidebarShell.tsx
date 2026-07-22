@@ -128,6 +128,7 @@ export function SidebarHeader({
   onClose?: () => void;
   workspaceName?: string | null;
 }) {
+  const t = useTranslations("nav");
   return (
     <div className="flex items-center justify-between border-b border-white/[0.04] px-4 py-4">
       <div className="flex min-w-0 items-center gap-3">
@@ -159,7 +160,7 @@ export function SidebarHeader({
       {onClose && (
         <button
           onClick={onClose}
-          aria-label="Close navigation"
+          aria-label={t("closeNavigation")}
           className="ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#9AA3B2]/60 transition hover:text-white/80 lg:hidden"
         >
           <X size={13} />
@@ -183,9 +184,10 @@ export function SidebarFooter({
   onSignOut?: () => void;
 }) {
   const tNav = useTranslations("nav");
+  const tDogfood = useTranslations("dogfood");
   const { dogfoodEnabled, openFeedback } = useDogfoodStore();
   return (
-    <div className="border-t border-white/[0.04] p-3">
+    <div className="border-t border-white/[0.04] p-3" style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom, 0px))" }}>
       <div className="flex items-center gap-2">
         {/* Profile card */}
         <Link href="/dashboard/settings?section=profile" onClick={onLinkClick} className="min-w-0 flex-1">
@@ -229,7 +231,7 @@ export function SidebarFooter({
           <button
             type="button"
             onClick={() => { onLinkClick?.(); openFeedback(); }}
-            aria-label="Submit internal feedback"
+            aria-label={tDogfood("submitFeedbackAria")}
             title="Submit feedback (press ? anywhere)"
             className="
               flex h-[52px] w-11 shrink-0 items-center justify-center

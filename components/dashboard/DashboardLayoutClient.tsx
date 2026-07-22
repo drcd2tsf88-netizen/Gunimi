@@ -172,7 +172,7 @@ export default function DashboardLayoutClient({
   ].join(" ");
 
   return (
-    <div className="flex min-h-screen bg-[#05060A] text-white">
+    <div className="flex min-h-dvh bg-[#05060A] text-white">
 
       {/* DESKTOP SIDEBAR */}
       <aside className={`hidden w-[248px] shrink-0 lg:flex ${sidebarClasses}`}>
@@ -205,7 +205,7 @@ export default function DashboardLayoutClient({
               animate={{ x: 0 }}
               exit={{ x: -248 }}
               transition={{ type: "spring", damping: 26, stiffness: 220 }}
-              className={`fixed left-0 top-0 z-50 h-screen w-[248px] lg:hidden ${sidebarClasses}`}
+              className={`fixed left-0 top-0 z-50 h-dvh w-[248px] lg:hidden ${sidebarClasses}`}
             >
               <SidebarHeader onClose={closeMobile} workspaceName={workspaceName} />
               <nav aria-label="Main navigation" className="flex-1 overflow-y-auto px-2.5 py-3">
@@ -225,7 +225,7 @@ export default function DashboardLayoutClient({
       </AnimatePresence>
 
       {/* MAIN */}
-      <div className="flex min-h-screen flex-1 flex-col">
+      <div className="flex min-h-dvh flex-1 flex-col">
         <OrbitTopbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <OrbitCommand userRole={userRole} />
         {dogfoodEnabled && <FeedbackSheet />}

@@ -29,7 +29,7 @@ const GunimiInput = React.forwardRef<HTMLInputElement, GunimiInputProps>(
             "border border-white/[0.06]",
             "bg-[#0A0E17]",
             "px-4",
-            "text-sm text-[#F7F8FC]",
+            "text-base md:text-sm text-[#F7F8FC]",
             "placeholder:text-[#9AA3B2]/55",
             "shadow-[0_2px_8px_rgba(109,91,255,0.05)]",
             "transition-all duration-[280ms]",

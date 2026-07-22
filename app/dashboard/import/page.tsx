@@ -2,6 +2,11 @@ import { getTranslations } from "next-intl/server";
 import ImportWizard from "@/components/import/ImportWizard";
 import ExportPanel from "@/components/export/ExportPanel";
 
+export async function generateMetadata() {
+  const t = await getTranslations("import");
+  return { title: t("pageTitle") };
+}
+
 export default async function ImportPage() {
   const t = await getTranslations("import");
 

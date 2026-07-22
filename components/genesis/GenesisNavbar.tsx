@@ -20,18 +20,21 @@ export function GenesisNavbar() {
     <header
       role="banner"
       className={cn(
-        "fixed left-0 right-0 top-0 z-[20] h-16",
+        "fixed left-0 right-0 top-0 z-[20]",
         "border-b transition-[background-color,border-color,backdrop-filter] duration-300",
         scrolled
           ? "border-[rgba(255,255,255,0.06)] backdrop-blur-md"
           : "border-transparent",
       )}
       // bg-[#05060A]/80 requires hex literal — CSS variable opacity modifiers are not supported in Tailwind v4
-      style={scrolled ? { backgroundColor: "rgba(5,6,10,0.82)" } : undefined}
+      style={{
+        paddingTop: "env(safe-area-inset-top, 0px)",
+        ...(scrolled ? { backgroundColor: "rgba(5,6,10,0.82)" } : {}),
+      }}
     >
       <nav
         aria-label={t("mainNav")}
-        className="mx-auto flex h-full max-w-[1280px] items-center justify-between px-6 md:px-20"
+        className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6 md:px-20"
       >
         {/* ── Brand ── */}
         <Link

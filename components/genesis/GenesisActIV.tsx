@@ -72,7 +72,7 @@ export function GenesisActIV() {
         </SectionContainer>
 
         {/* ── Living Demo — edge-to-edge, Genesis dissolves into product */}
-        <div className="relative z-10 -mx-6 md:-mx-20">
+        <div className="relative z-10 md:-mx-20">
           <DemoWorkspace />
         </div>
 

@@ -110,15 +110,19 @@ function Section({
   );
 }
 
-const FEATURE_LABELS: Record<string, { label: string; icon: React.ElementType; color: string }> = {
-  chat:      { label: "Chat",           icon: MessageSquare, color: "text-blue-300" },
-  brief:     { label: "Daily Brief",    icon: Brain,         color: "text-violet-300" },
-  assistant: { label: "Orbit Assistant",icon: Bot,           color: "text-emerald-300" },
-  summary:   { label: "Note Summary",   icon: FileText,      color: "text-amber-300" },
-};
+type FeatureLabels = Record<string, { label: string; icon: React.ElementType; color: string }>;
 
-function FeatureBar({ stat, maxRequests }: { stat: FeatureUsageStat; maxRequests: number }) {
-  const meta = FEATURE_LABELS[stat.feature] ?? {
+function buildFeatureLabels(t: (key: string) => string): FeatureLabels {
+  return {
+    chat:      { label: t("featureChat"),      icon: MessageSquare, color: "text-blue-300" },
+    brief:     { label: t("featureBrief"),     icon: Brain,         color: "text-violet-300" },
+    assistant: { label: t("featureAssistant"), icon: Bot,           color: "text-emerald-300" },
+    summary:   { label: t("featureSummary"),   icon: FileText,      color: "text-amber-300" },
+  };
+}
+
+function FeatureBar({ stat, maxRequests, featureLabels }: { stat: FeatureUsageStat; maxRequests: number; featureLabels: FeatureLabels }) {
+  const meta = featureLabels[stat.feature] ?? {
     label: stat.feature,
     icon: Activity,
     color: "text-white/50",
@@ -210,6 +214,7 @@ function TierCard({
 
 export default async function AIOperationsDashboard({ stats }: Props) {
   const t = await getTranslations("adminAI");
+  const featureLabels = buildFeatureLabels(t);
 
   const { overview, workspaces, users, features, projection, tierLimits } = stats;
 
@@ -368,7 +373,7 @@ export default async function AIOperationsDashboard({ stats }: Props) {
               </div>
               {features.map((feat) => (
                 <div key={feat.feature} className="px-5 py-3">
-                  <FeatureBar stat={feat} maxRequests={maxFeatureRequests} />
+                  <FeatureBar stat={feat} maxRequests={maxFeatureRequests} featureLabels={featureLabels} />
                 </div>
               ))}
             </div>

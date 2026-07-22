@@ -346,10 +346,10 @@ export default function OrbitProfileDropdown() {
             className="
               absolute
               right-0
-              top-[68px]
+              top-[calc(100%+8px)]
               z-[999]
 
-              w-[340px]
+              w-[min(340px,calc(100vw-32px))]
 
               overflow-hidden
 

@@ -1,7 +1,13 @@
+import { getTranslations } from "next-intl/server";
 import CalendarCommandCenter from "@/components/calendar/CalendarCommandCenter";
 import { getCalendarConnections } from "@/server/actions/calendar/getCalendarConnections";
 import { getCalendarEvents } from "@/server/actions/calendar/getCalendarEvents";
 import { getCalendarContacts } from "@/server/actions/calendar/getCalendarContacts";
+
+export async function generateMetadata() {
+  const t = await getTranslations("calendar");
+  return { title: t("pageTitle") };
+}
 
 export default async function CalendarPage() {
   const [connections, events, contacts] = await Promise.all([

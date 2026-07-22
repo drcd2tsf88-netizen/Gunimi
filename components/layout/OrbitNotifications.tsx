@@ -105,6 +105,9 @@ setActivity(data || []);
         onClick={() =>
           setOpen(!open)
         }
+        aria-label={t("ariaLabel")}
+        aria-haspopup="true"
+        aria-expanded={open}
         className="
           relative
 
@@ -169,10 +172,10 @@ setActivity(data || []);
             className="
               absolute
               right-0
-              top-[70px]
+              top-[calc(100%+8px)]
               z-[999]
 
-              w-[92vw]
+              w-[calc(100vw-32px)]
               max-w-[420px]
 
               overflow-hidden

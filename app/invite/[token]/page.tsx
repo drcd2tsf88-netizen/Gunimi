@@ -214,7 +214,10 @@ export default function InvitePage() {
                 <div>
                   <h2 className="text-lg font-semibold">{invite.workspaces?.name}</h2>
                   <p className="mt-1 text-sm text-cyan-100/60">
-                    {t("workspaceRole")} {invite.role}
+                    {t("workspaceRole")}{" "}
+                    {(
+                      { owner: t("roleOwner"), admin: t("roleAdmin"), member: t("roleMember") } as Record<string, string>
+                    )[invite.role] ?? invite.role}
                   </p>
                 </div>
               </div>

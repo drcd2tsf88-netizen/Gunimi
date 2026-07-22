@@ -373,7 +373,8 @@
     "allPriorities": "All Priorities",
     "allAssignees": "All Assignees",
     "clearFilters": "Clear Filters",
-    "noResults": "No tasks match your filters"
+    "noResults": "No tasks match your filters",
+    "pageTitle": "Tasks"
   },
   "companies": {
     "intelligence": "Company Intelligence",
@@ -525,7 +526,8 @@
     "profileAnnualValue": "Annual Value",
     "profileRelationshipStage": "Relationship Stage",
     "websitePlaceholder": "https://example.com",
-    "employeesPlaceholder": "e.g. 50–200"
+    "employeesPlaceholder": "e.g. 50–200",
+    "pageTitle": "Companies"
   },
   "deals": {
     "commercialPipeline": "Commercial Pipeline",
@@ -690,7 +692,8 @@
     "contextLabelContact": "Contact",
     "contextLabelOwner": "Owner",
     "contextEmptyTitle": "No context available",
-    "contextEmptyDescription": "Link a company or contact to start building context for this opportunity."
+    "contextEmptyDescription": "Link a company or contact to start building context for this opportunity.",
+    "pageTitle": "Deals"
   },
   "notes": {
     "badge": "Workspace Knowledge",
@@ -715,7 +718,8 @@
     "deleteNote": "Delete Note",
     "confirmDeleteNote": "This note will be permanently deleted. This action cannot be undone.",
     "noteDeleted": "Note deleted",
-    "failedToDeleteNote": "Failed to delete note"
+    "failedToDeleteNote": "Failed to delete note",
+    "pageTitle": "Notes"
   },
   "automations": {
     "badge": "Gunimi Automation Engine",
@@ -761,7 +765,15 @@
     "viewCompany": "View Company",
     "architectureBadge": "Extensible",
     "architectureTitle": "Built for AI Integration",
-    "architectureDesc": "The automation engine is designed to be extended. Future AI agents will connect to this foundation to execute intelligent, context-aware workflows across your workspace."
+    "architectureDesc": "The automation engine is designed to be extended. Future AI agents will connect to this foundation to execute intelligent, context-aware workflows across your workspace.",
+    "pageTitle": "Automations",
+    "triggerDealWon": "Deal Won",
+    "triggerDealLost": "Deal Lost",
+    "triggerDealCreated": "Deal Created",
+    "triggerContactCreated": "Contact Created",
+    "triggerCompanyCreated": "Company Created",
+    "triggerTaskCompleted": "Task Completed",
+    "actionCount": "{count, plural, one {# action} other {# actions}}"
   },
   "contacts": {
     "badge": "Contact Intelligence",
@@ -897,7 +909,8 @@
     "headerLastContactedDaysAgo": "{days} days ago",
     "headerLastContactedWeeksAgo": "{weeks} weeks ago",
     "headerLastContactedMonthsAgo": "{months} months ago",
-    "headerLastContactedNever": "Never contacted"
+    "headerLastContactedNever": "Never contacted",
+    "pageTitle": "Contacts"
   },
   "common": {
     "create": "Create",
@@ -945,7 +958,8 @@
     "prompt3": "Summarize my workspace",
     "prompt4": "Prepare my next meeting",
     "openChat": "Open AI Chat",
-    "statUpcomingMeetings": "Upcoming Meetings"
+    "statUpcomingMeetings": "Upcoming Meetings",
+    "pageTitle": "AI Mission Control"
   },
   "admin": {
     "failedToLoad": "Failed to load admin panel.",
@@ -1112,7 +1126,8 @@
     "dogfoodModeNote": "Only visible to internal team. Never shown to customers.",
     "dogfoodEnable": "Enable",
     "dogfoodDisable": "Disable",
-    "dogfoodSaved": "Dogfood mode updated"
+    "dogfoodSaved": "Dogfood mode updated",
+    "pageTitle": "Settings"
   },
   "dogfood": {
     "feedbackTitle": "Internal Feedback",
@@ -1170,7 +1185,8 @@
     "filterStatus": "Status",
     "filterAllCategories": "All categories",
     "filterAllSeverities": "All severities",
-    "filterAllStatuses": "All statuses"
+    "filterAllStatuses": "All statuses",
+    "submitFeedbackAria": "Submit internal feedback"
   },
   "activity": {
     "badge": "Workspace Activity",
@@ -1181,7 +1197,8 @@
     "taskEvents": "Task Events",
     "noActivity": "No activity yet",
     "noActivityDescription": "Gunimi AI activity and workflow events will appear here live.",
-    "workspaceEvent": "Workspace event"
+    "workspaceEvent": "Workspace event",
+    "pageTitle": "Activity"
   },
   "analytics": {
     "badge": "Analytics",
@@ -1223,7 +1240,8 @@
     "noClosedDeals": "No closed deals yet",
     "noClosedDealsDesc": "Move deals to won or lost to see win rate.",
     "totalDeals": "deals",
-    "lastSixMonths": "in last 6 months"
+    "lastSixMonths": "in last 6 months",
+    "pageTitle": "Analytics"
   },
   "calendar": {
     "badge": "Calendar",
@@ -1301,7 +1319,8 @@
     "failedToCreateMeetingNote": "Failed to create meeting note",
     "createMeetingNote": "Create Meeting Note",
     "viewContact": "View Contact",
-    "viewInCalendar": "Open in Calendar"
+    "viewInCalendar": "Open in Calendar",
+    "pageTitle": "Calendar"
   },
   "email": {
     "badge": "Email",
@@ -1377,7 +1396,8 @@
     "viewContact": "View Contact",
     "viewCompany": "View Company",
     "followUpPrefix": "Follow up:",
-    "emailNotePrefix": "Email:"
+    "emailNotePrefix": "Email:",
+    "pageTitle": "Email"
   },
   "workspace": {
     "createWorkspace": "Create Workspace",
@@ -1437,7 +1457,8 @@
     "exportCompanies": "Companies",
     "exportContacts": "Contacts",
     "exportDeals": "Deals",
-    "exportTasks": "Tasks"
+    "exportTasks": "Tasks",
+    "pageTitle": "Import & Export"
   },
   "onboarding": {
     "welcomeTitle": "Welcome to Gunimi",
@@ -1641,7 +1662,11 @@
     "tierReqPerDay": "Req / day",
     "tierTokensPerMonth": "Tokens / month",
     "tierFoundation": "Foundation",
-    "tierComingSoon": "Coming Soon"
+    "tierComingSoon": "Coming Soon",
+    "featureChat": "Chat",
+    "featureBrief": "Daily Brief",
+    "featureAssistant": "Gunimi Assistant",
+    "featureSummary": "Note Summary"
   },
   "nav": {
     "dashboard": "Today",
@@ -1674,12 +1699,15 @@
     "activeMembers": "{count} active members",
     "membersOnline": "{count} members online",
     "workspaceDefault": "Workspace",
-    "profileDefault": "Profile"
+    "profileDefault": "Profile",
+    "toggleNavigation": "Toggle navigation",
+    "closeNavigation": "Close navigation"
   },
   "notifications": {
     "title": "Gunimi Signals",
     "subtitle": "Live workspace observatory",
-    "emptyDescription": "Gunimi AI is actively monitoring workspace activity."
+    "emptyDescription": "Gunimi AI is actively monitoring workspace activity.",
+    "ariaLabel": "Notifications"
   },
   "aiPanel": {
     "orbitAi": "Gunimi AI",
@@ -1723,7 +1751,8 @@
     "importanceNormal": "Normal",
     "importanceLow": "Low",
     "entityBadge": "Memory Highlights",
-    "entityTitle": "Key Moments"
+    "entityTitle": "Key Moments",
+    "pageTitle": "Memory"
   },
   "landing": {
     "nav": {
@@ -2796,6 +2825,9 @@
     "acceptingButton": "Joining Workspace...",
     "acceptButton": "Accept Invitation",
     "signIn": "Sign In",
-    "createAccount": "Create Account"
+    "createAccount": "Create Account",
+    "roleOwner": "Owner",
+    "roleAdmin": "Admin",
+    "roleMember": "Member"
   }
 }

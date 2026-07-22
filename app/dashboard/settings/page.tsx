@@ -1,6 +1,11 @@
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
+export async function generateMetadata() {
+  const t = await getTranslations("settings");
+  return { title: t("pageTitle") };
+}
+
 import { getWorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
 import { getWorkspaceMembership } from "@/server/actions/workspace/getWorkspaceMembership";

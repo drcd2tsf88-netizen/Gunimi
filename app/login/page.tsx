@@ -70,7 +70,11 @@ export default function LoginPage() {
       }
 
       toast.loading(t("loginSyncing"), { id: "orbit-login" });
-      router.push("/dashboard");
+
+      const next = params.get("next");
+      const destination =
+        next && /^\/dashboard(\/|$)/.test(next) ? next : "/dashboard";
+      router.push(destination);
     } catch {
       toast.error(t("loginFailed"), { id: "orbit-login" });
     } finally {

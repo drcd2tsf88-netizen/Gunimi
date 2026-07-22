@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { APP_CONFIG } from "@/lib/config/app";
 import LandingFeatures from "@/components/landing/LandingFeatures";
 import LandingObservatory from "@/components/landing/LandingObservatory";
 import LandingActivity from "@/components/landing/LandingActivity";
@@ -5,6 +7,11 @@ import LandingPricingButtons from "@/components/landing/LandingPircingButtons";
 import LandingCTA from "@/components/landing/LandingCTA";
 import LandingFooter from "@/components/landing/LandingFooter";
 import { MotionProvider, GenesisNavbar, GenesisHero, GenesisActI, GenesisActII, GenesisActIII, GenesisActIV } from "@/components/genesis";
+
+export const metadata: Metadata = {
+  title: { absolute: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}` },
+  description: APP_CONFIG.description,
+};
 
 export default function HomePage() {
   return (
