@@ -134,7 +134,14 @@ export function GenesisHero() {
               </Reveal>
             </div>
 
-            {/* 6 — Principles */}
+            {/* 6 — Alpha note */}
+            <FadeIn delay={1.0} duration={0.5}>
+              <p className="text-[11px] font-medium tracking-[0.06em] text-[#9AA3B2]/50">
+                {t("alphaNote")}
+              </p>
+            </FadeIn>
+
+            {/* 7 — Principles */}
             <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-6 lg:items-start">
               {principles.map((principle, i) => (
                 <FadeIn key={principle} delay={1.1 + i * 0.08} duration={0.4}>

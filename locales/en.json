@@ -994,7 +994,23 @@
     "actionUnsuspend": "Unsuspend",
     "actionSuspend": "Suspend",
     "footerDescription": "Gunimi AI Operating System governance infrastructure.",
-    "footerLabel": "Internal Platform Layer"
+    "footerLabel": "Internal Platform Layer",
+    "alpha": {
+      "pageTitle": "Alpha Access Queue",
+      "pageSubtitle": "Review and approve Open Alpha registrations.",
+      "colName": "Name",
+      "colEmail": "Email",
+      "colRegistered": "Registered",
+      "approve": "Approve",
+      "approving": "Approving...",
+      "approved": "Approved",
+      "approveSuccess": "Access granted. Welcome email sent.",
+      "approveError": "Failed to approve. Try again.",
+      "emptyTitle": "No pending applications",
+      "emptySubtitle": "Everyone who registered has been approved.",
+      "pendingBadge": "Pending",
+      "approvedBadge": "Active"
+    }
   },
   "settings": {
     "badge": "Workspace Settings",
@@ -1810,9 +1826,10 @@
         "We never train AI on your workspace data.",
         "Your workspace is private by default."
       ],
-      "productSentenceLine1": "Gunimi doesn't replace your work.",
+      "productSentenceLine1": "Gunimi doesn’t replace your work.",
       "productSentenceLine2": "It removes the work that shouldn’t exist.",
-      "descriptor": "The AI Business Operating System."
+      "descriptor": "The AI Business Operating System.",
+      "alphaNote": "OPEN ALPHA · Currently onboarding companies in small groups."
     },
     "actI": {
       "statement1": "Your business already knows things no dashboard has ever shown you.",
@@ -2740,15 +2757,15 @@
       "lastUpdated": "Last updated:"
     },
     "waitlist": {
-      "badgeLabel": "Gunimi Open Alpha",
-      "headlinePart1": "Access",
-      "headlinePart2": "Pending",
-      "subtitle": "Your account has been received. Access is granted by invitation — we review every application personally.",
+      "badgeLabel": "Open Alpha Access",
+      "headlinePart1": "You're",
+      "headlinePart2": "on the list.",
+      "subtitle": "Thank you for joining Open Alpha. We're onboarding companies gradually to ensure every participant receives personal support and the best possible experience. We'll notify you by email as soon as your workspace is ready.",
       "panelTitle": "What happens next",
-      "panelDescription": "Most accounts are reviewed within 48 hours. When approved, you will receive an email with a direct link to activate your workspace.",
+      "panelDescription": "We review each application personally. When your workspace is ready, you'll receive a welcome email with direct access.",
       "checkStatusButton": "Check my access",
       "checkingStatus": "Checking...",
-      "stillPending": "Still reviewing. You'll receive an email when your access is confirmed.",
+      "stillPending": "Still reviewing. You'll receive an email when your workspace is ready.",
       "accessGranted": "Access confirmed. Setting up your workspace...",
       "backToHome": "Back to Home",
       "signOut": "Sign out",

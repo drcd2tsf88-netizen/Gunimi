@@ -994,7 +994,23 @@
     "actionUnsuspend": "Obnovit",
     "actionSuspend": "Pozastavit",
     "footerDescription": "Infrastruktura správy Gunimi AI Operating System.",
-    "footerLabel": "Interní platforma"
+    "footerLabel": "Interní platforma",
+    "alpha": {
+      "pageTitle": "Fronta Open Alpha",
+      "pageSubtitle": "Posuzujte a schvalujte registrace Open Alpha.",
+      "colName": "Jméno",
+      "colEmail": "E-mail",
+      "colRegistered": "Registrován",
+      "approve": "Schválit",
+      "approving": "Schvaluji...",
+      "approved": "Schváleno",
+      "approveSuccess": "Přístup udělen. Uvítací e-mail odeslán.",
+      "approveError": "Schválení selhalo. Zkuste znovu.",
+      "emptyTitle": "Žádné čekající žádosti",
+      "emptySubtitle": "Všichni registrovaní byli schváleni.",
+      "pendingBadge": "Čekající",
+      "approvedBadge": "Aktivní"
+    }
   },
   "settings": {
     "badge": "Nastavení pracovního prostoru",
@@ -1812,7 +1828,8 @@
       ],
       "productSentenceLine1": "Gunimi nenahradi vaši práci.",
       "productSentenceLine2": "Odstraňuje práci, která by neměla existovat.",
-      "descriptor": "AI Business Operating System."
+      "descriptor": "AI Business Operating System.",
+      "alphaNote": "OPEN ALPHA · Momentálně onboardujeme firmy v malých skupinách."
     },
     "actI": {
       "statement1": "Vaše podnikání už ví věci, které žádný dashboard nikdy neukázal.",
@@ -2740,15 +2757,15 @@
       "lastUpdated": "Poslední aktualizace:"
     },
     "waitlist": {
-      "badgeLabel": "Gunimi Open Alpha",
-      "headlinePart1": "Přístup",
-      "headlinePart2": "Čeká",
-      "subtitle": "Váš účet byl přijat. Přístup je udělován pozváním — každou žádost posuzujeme osobně.",
+      "badgeLabel": "Open Alpha Access",
+      "headlinePart1": "Jste",
+      "headlinePart2": "na seznamu.",
+      "subtitle": "Děkujeme, že jste se připojili k Open Alpha. Onboardujeme firmy postupně, aby každý účastník obdržel osobní podporu a co nejlepší zkušenost. Upozorníme vás e-mailem, jakmile bude váš workspace připraven.",
       "panelTitle": "Co se stane dál",
-      "panelDescription": "Většina účtů je posouzena do 48 hodin. Po schválení obdržíte e-mail s přímým odkazem pro aktivaci workspacu.",
+      "panelDescription": "Každou žádost posuzujeme osobně. Jakmile bude váš workspace připraven, obdržíte uvítací e-mail s přímým přístupem.",
       "checkStatusButton": "Zkontrolovat přístup",
       "checkingStatus": "Kontroluji...",
-      "stillPending": "Stále probíhá kontrola. E-mail obdržíte po potvrzení přístupu.",
+      "stillPending": "Stále probíhá kontrola. E-mail obdržíte, jakmile bude workspace připraven.",
       "accessGranted": "Přístup potvrzen. Nastavuji workspace...",
       "backToHome": "Zpět na hlavní stránku",
       "signOut": "Odhlásit se",
