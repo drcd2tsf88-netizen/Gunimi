@@ -56,8 +56,11 @@ export default function LandingPricingButtons() {
           </h2>
         </motion.div>
 
-        {/* PLANS GRID */}
-        <div className="mt-16 grid gap-5 lg:grid-cols-3">
+        {/* PLANS GRID + ALPHA OVERLAY */}
+        <div className="relative mt-16">
+
+          {/* Cards — blurred behind overlay */}
+          <div className="grid gap-5 lg:grid-cols-3">
           {plans.map((plan, index) => {
             const featured = PLAN_FEATURED[index];
             return (
@@ -144,6 +147,48 @@ export default function LandingPricingButtons() {
             </motion.div>
             );
           })}
+          </div>
+
+          {/* Alpha overlay — covers 85% from top, blurs cards behind */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-x-0 bottom-0 top-[15%] flex flex-col items-center justify-center rounded-[24px] px-6 text-center"
+            style={{
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              background: "linear-gradient(to bottom, rgba(5,6,10,0) 0%, rgba(5,6,10,0.72) 12%, rgba(5,6,10,0.92) 30%, rgba(5,6,10,0.97) 100%)",
+            }}
+          >
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#6D5BFF]/25 bg-[#6D5BFF]/10 px-4 py-1.5">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#8B7DFF]" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8B7DFF]">
+                {t("alphaBadge")}
+              </span>
+            </div>
+
+            {/* Headline */}
+            <h3 className="mt-6 max-w-[480px] text-[28px] font-bold leading-[1.1] tracking-[-0.03em] text-[#F7F8FC] md:text-[36px]">
+              {t("alphaHeadline")}
+            </h3>
+
+            {/* Subtitle */}
+            <p className="mt-4 max-w-[440px] text-[14px] leading-[1.7] text-[#9AA3B2]">
+              {t("alphaSubtitle")}
+            </p>
+
+            {/* CTA */}
+            <Link
+              href="/register"
+              className="group mt-8 inline-flex items-center gap-2 rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] px-7 py-3.5 text-[14px] font-semibold text-white shadow-[0_0_24px_rgba(109,91,255,0.40)] transition-all duration-300 hover:bg-[#7B6BFF] hover:shadow-[0_0_36px_rgba(109,91,255,0.55)]"
+            >
+              {t("alphaCta")}
+              <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          </motion.div>
         </div>
 
         {/* FOOTER NOTE */}

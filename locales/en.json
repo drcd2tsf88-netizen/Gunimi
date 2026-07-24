@@ -78,6 +78,7 @@
     "loginNoUser": "Authentication failed. Please try again.",
     "loginSyncing": "Signing you in...",
     "loginInitializing": "Signing in...",
+    "emailAlreadyInUse": "An account with this email already exists.",
     "registerFailed": "Registration failed. Please try again.",
     "verificationSent": "Verification email sent. Check your inbox.",
     "recoveryEmailSent": "Recovery email sent.",
@@ -2075,6 +2076,10 @@
       "headlineLine1": "Simple pricing.",
       "headlineLine2": "No surprises.",
       "footerNote": "All plans include a 14-day free trial. No credit card required.",
+      "alphaBadge": "Open Alpha",
+      "alphaHeadline": "Full access. No limits. No credit card.",
+      "alphaSubtitle": "Gunimi is in Open Alpha. Every participant gets full access to the entire platform — free until official launch.",
+      "alphaCta": "Join Open Alpha",
       "mostPopular": "Most popular",
       "plans": [
         {

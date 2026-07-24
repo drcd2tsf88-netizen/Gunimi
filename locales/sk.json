@@ -78,6 +78,7 @@
     "loginNoUser": "Autentifikácia zlyhala. Skúste znova.",
     "loginSyncing": "Prihlasujeme vás...",
     "loginInitializing": "Prihlasovanie...",
+    "emailAlreadyInUse": "Účet s touto e-mailovou adresou už existuje.",
     "registerFailed": "Registrácia zlyhala. Skúste znova.",
     "verificationSent": "Overovací e-mail odoslaný. Skontrolujte doručenú poštu.",
     "recoveryEmailSent": "E-mail na obnovu odoslaný.",
@@ -2075,6 +2076,10 @@
       "headlineLine1": "Jednoduché ceny.",
       "headlineLine2": "Žiadne prekvapenia.",
       "footerNote": "Všetky plány zahŕňajú 14-dňovú bezplatnú skúšobnú verziu. Nie je potrebná kreditná karta.",
+      "alphaBadge": "Open Alpha",
+      "alphaHeadline": "Plný prístup. Bez obmedzení. Bez kreditnej karty.",
+      "alphaSubtitle": "Gunimi je v Open Alpha. Každý účastník získa plný prístup k celej platforme — zadarmo až do oficiálneho spustenia.",
+      "alphaCta": "Pripojiť sa k Open Alpha",
       "mostPopular": "Najpopulárnejší",
       "plans": [
         {

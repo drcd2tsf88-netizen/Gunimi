@@ -8,7 +8,7 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
-import { supabase } from "@/lib/supabase";
+import { registerUser } from "@/server/actions/auth/register";
 import GunimiInput from "@/components/ui/GunimiInput";
 import AiCore from "@/components/ui/AiCore";
 import AuthCard from "@/components/auth/AuthCard";
@@ -163,17 +163,10 @@ export default function RegisterPage() {
       setLoading(true);
       toast.loading(t("loginInitializing"), { id: "orbit-register" });
 
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/register/complete`,
-          data: { full_name: fullName },
-        },
-      });
+      const result = await registerUser(email, password, fullName);
 
-      if (error) {
-        toast.error(t("registerFailed"), { id: "orbit-register" });
+      if ("error" in result) {
+        toast.error(t(result.error as Parameters<typeof t>[0]), { id: "orbit-register" });
         return;
       }
 
