@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -13,19 +13,125 @@ import GunimiInput from "@/components/ui/GunimiInput";
 import AiCore from "@/components/ui/AiCore";
 import AuthCard from "@/components/auth/AuthCard";
 
+// ─── Disposable email blocklist ───────────────────────────────
+const DISPOSABLE_DOMAINS = new Set([
+  "mailinator.com","guerrillamail.com","tempmail.com","throwaway.email",
+  "yopmail.com","sharklasers.com","guerrillamailblock.com","grr.la",
+  "guerrillamail.info","guerrillamail.biz","guerrillamail.de","guerrillamail.net",
+  "guerrillamail.org","spam4.me","trashmail.com","trashmail.me","trashmail.net",
+  "dispostable.com","mailnull.com","spamgourmet.com","spamgourmet.net",
+  "maildrop.cc","discard.email","fakeinbox.com","tempinbox.com",
+  "10minutemail.com","10minutemail.net","20minutemail.com","mailnesia.com",
+  "mailnull.com","spamgourmet.com","mytemp.email","temp-mail.org",
+  "emailondeck.com","getairmail.com","spamfree24.org","trashmail.at",
+  "trashmail.io","spamherelots.com","throwam.com","tempsky.com",
+  "spambox.us","inboxalias.com","filzmail.com","throwam.com",
+]);
+
+function isDisposableEmail(email: string): boolean {
+  const domain = email.trim().toLowerCase().split("@")[1] ?? "";
+  return DISPOSABLE_DOMAINS.has(domain);
+}
+
 function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
+// ─── Password strength ────────────────────────────────────────
+type StrengthLevel = 0 | 1 | 2 | 3 | 4;
+
+function getPasswordStrength(pwd: string): StrengthLevel {
+  if (pwd.length === 0) return 0;
+  let score = 0;
+  if (pwd.length >= 8)  score++;
+  if (pwd.length >= 12) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[a-z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+  if (score <= 2) return 1;
+  if (score === 3) return 2;
+  if (score <= 5) return 3;
+  return 4;
+}
+
+function isPasswordStrong(pwd: string): boolean {
+  return (
+    pwd.length >= 8 &&
+    /[A-Z]/.test(pwd) &&
+    /[a-z]/.test(pwd) &&
+    /[0-9]/.test(pwd) &&
+    /[^A-Za-z0-9]/.test(pwd)
+  );
+}
+
+const STRENGTH_COLORS: Record<StrengthLevel, string> = {
+  0: "bg-white/[0.05]",
+  1: "bg-[#EF4444]",
+  2: "bg-[#F59E0B]",
+  3: "bg-[#22c55e]",
+  4: "bg-[#6D5BFF]",
+};
+
+// ─── PasswordStrengthBar ──────────────────────────────────────
+function PasswordStrengthBar({
+  password,
+  labelWeak,
+  labelFair,
+  labelStrong,
+  labelVeryStrong,
+}: {
+  password: string;
+  labelWeak: string;
+  labelFair: string;
+  labelStrong: string;
+  labelVeryStrong: string;
+}) {
+  const strength = useMemo(() => getPasswordStrength(password), [password]);
+  if (password.length === 0) return null;
+
+  const labels: Record<StrengthLevel, string> = {
+    0: "",
+    1: labelWeak,
+    2: labelFair,
+    3: labelStrong,
+    4: labelVeryStrong,
+  };
+
+  return (
+    <div className="space-y-1.5 px-0.5">
+      <div className="flex gap-1">
+        {([1, 2, 3, 4] as StrengthLevel[]).map((level) => (
+          <div
+            key={level}
+            className={`h-[3px] flex-1 rounded-full transition-all duration-300 ${
+              strength >= level ? STRENGTH_COLORS[strength] : "bg-white/[0.07]"
+            }`}
+          />
+        ))}
+      </div>
+      <p className={`text-[11px] font-medium transition-colors duration-200 ${
+        strength === 1 ? "text-[#EF4444]" :
+        strength === 2 ? "text-[#F59E0B]" :
+        strength === 3 ? "text-[#22c55e]" :
+        strength === 4 ? "text-[#8B7DFF]" : "text-transparent"
+      }`}>
+        {labels[strength]}
+      </p>
+    </div>
+  );
+}
+
+// ─── RegisterPage ─────────────────────────────────────────────
 export default function RegisterPage() {
   const t = useTranslations("auth");
   const router = useRouter();
 
-  const [fullName, setFullName]             = useState("");
-  const [email, setEmail]                   = useState("");
-  const [password, setPassword]             = useState("");
+  const [fullName, setFullName]               = useState("");
+  const [email, setEmail]                     = useState("");
+  const [password, setPassword]               = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading]               = useState(false);
+  const [loading, setLoading]                 = useState(false);
 
   async function handleRegister() {
     if (!fullName || !email || !password || !confirmPassword) {
@@ -36,14 +142,23 @@ export default function RegisterPage() {
       toast.error(t("invalidEmail"));
       return;
     }
+    if (isDisposableEmail(email)) {
+      toast.error(t("disposableEmail"));
+      return;
+    }
     if (password.length < 8) {
       toast.error(t("passwordTooShort"));
+      return;
+    }
+    if (!isPasswordStrong(password)) {
+      toast.error(t("passwordTooWeak"));
       return;
     }
     if (password !== confirmPassword) {
       toast.error(t("passwordsMustMatch"));
       return;
     }
+
     try {
       setLoading(true);
       toast.loading(t("loginInitializing"), { id: "orbit-register" });
@@ -123,14 +238,23 @@ export default function RegisterPage() {
           autoComplete="email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <GunimiInput
-          type="password"
-          placeholder={t("passwordPlaceholder")}
-          value={password}
-          disabled={loading}
-          autoComplete="new-password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="space-y-2">
+          <GunimiInput
+            type="password"
+            placeholder={t("passwordPlaceholder")}
+            value={password}
+            disabled={loading}
+            autoComplete="new-password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <PasswordStrengthBar
+            password={password}
+            labelWeak={t("passwordStrengthWeak")}
+            labelFair={t("passwordStrengthFair")}
+            labelStrong={t("passwordStrengthStrong")}
+            labelVeryStrong={t("passwordStrengthVeryStrong")}
+          />
+        </div>
         <GunimiInput
           type="password"
           placeholder={t("confirmPasswordPlaceholder")}
