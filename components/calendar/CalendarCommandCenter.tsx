@@ -1,6 +1,7 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import { useTransition, useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -920,6 +921,19 @@ export default function CalendarCommandCenter({ events, connections, contacts }:
     event: CalendarEventRow;
     contact: CalendarContact | null;
   } | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const isInitialConnect = searchParams.get("connected") === "true";
+  const [syncDone, setSyncDone] = useState(false);
+  const autoSyncing = isInitialConnect && !syncDone;
+
+  // Auto-sync on first connect — callback redirects before sync completes
+  useEffect(() => {
+    if (!isInitialConnect || syncDone) return;
+    fetch("/api/calendar/sync", { method: "POST" })
+      .then(() => { setSyncDone(true); router.replace("/dashboard/calendar"); })
+      .catch(() => { setSyncDone(true); router.replace("/dashboard/calendar"); });
+  }, [isInitialConnect, syncDone, router]);
 
   const hasConnection = connections.length > 0;
 
@@ -976,6 +990,12 @@ export default function CalendarCommandCenter({ events, connections, contacts }:
 
   return (
     <>
+      {autoSyncing && (
+        <div className="mb-4 flex items-center gap-3 rounded-[12px] border border-[#6D5BFF]/20 bg-[#6D5BFF]/[0.06] px-4 py-3">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-[#8B7DFF]" />
+          <p className="text-[13px] text-[#9AA3B2]">{t("syncing")}</p>
+        </div>
+      )}
       <div className="space-y-6">
         {/* HEADER */}
         <div className="flex items-start justify-between gap-4">
