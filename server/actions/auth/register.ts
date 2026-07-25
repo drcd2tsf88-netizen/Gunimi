@@ -2,6 +2,7 @@
 
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { sendVerificationEmail } from "@/lib/email/sendVerificationEmail";
+import { sendAdminRegistrationAlert } from "@/lib/email/sendAdminRegistrationAlert";
 
 // Disposable email blocklist — server-side mirror; client copy is UX-only
 const DISPOSABLE_DOMAINS = new Set([
@@ -80,6 +81,9 @@ export async function registerUser(
   } catch {
     return { error: "registerFailed" };
   }
+
+  // Fire-and-forget — admin alert must not block or fail the registration
+  sendAdminRegistrationAlert({ name, email: normalized }).catch(() => undefined);
 
   return { success: true };
 }
