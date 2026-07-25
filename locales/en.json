@@ -1862,15 +1862,15 @@
       ]
     },
     "beats": {
-      "b1diagnosis":   "Relationships fade quietly.",
+      "b1diagnosis": "Relationships fade quietly.",
       "b1explanation": "The most important business risks rarely announce themselves.",
-      "b1answer":      "Gunimi notices them while there's still time to act.",
-      "b2diagnosis":   "Your business already contains patterns.",
+      "b1answer": "Gunimi notices them while there's still time to act.",
+      "b2diagnosis": "Your business already contains patterns.",
       "b2explanation": "They're hidden across conversations, deals, tasks and decisions.",
-      "b2answer":      "Gunimi brings them together into one understanding.",
-      "b3diagnosis":   "Work shouldn't depend on remembering everything.",
+      "b2answer": "Gunimi brings them together into one understanding.",
+      "b3diagnosis": "Work shouldn't depend on remembering everything.",
       "b3explanation": "Your business deserves more than scattered notes and forgotten context.",
-      "b3answer":      "Gunimi remembers, connects and helps before you ask."
+      "b3answer": "Gunimi remembers, connects and helps before you ask."
     },
     "actIV": {
       "beat1": "You've already seen how Gunimi thinks.",
@@ -1953,7 +1953,7 @@
         },
         {
           "title": "Automation",
-          "desc": "Build workflows that run on their own. Trigger actions, send notifications, update records."
+          "desc": "Automated actions triggered by workspace signals. Tasks created, contacts updated, activity logged automatically."
         },
         {
           "title": "Command Center",
@@ -1993,7 +1993,7 @@
       "eyebrow": "Intelligence layer",
       "headlineLine1": "AI that operates",
       "headlineLine2": "while you focus.",
-      "subtitle": "Five AI systems running continuously — memory, automation, agents, observatory, and command. Not features you switch on. An operating layer always running underneath.",
+      "subtitle": "Five intelligence systems running continuously — memory, automation, signals, observatory, and command. Not features you switch on. An operating layer always running underneath.",
       "coreName": "Gunimi Intelligence Core",
       "coreSubtitle": "Always on. Always learning.",
       "exploreCta": "Explore the AI layer",
@@ -2007,8 +2007,8 @@
           "desc": "Triggers, actions, and workflow orchestration"
         },
         {
-          "title": "Agents",
-          "desc": "Autonomous task runners with workspace access"
+          "title": "Signals",
+          "desc": "25 signal types detected — relationships, deals, tasks, and timing."
         },
         {
           "title": "Observatory",
@@ -2028,47 +2028,46 @@
       "subtitle": "Built from day one for organizations that require compliance, privacy, and enterprise-grade reliability.",
       "stats": [
         {
-          "value": "99.9%",
-          "label": "Uptime SLA"
+          "value": "11",
+          "label": "Integrated modules"
         },
         {
-          "value": "< 80ms",
-          "label": "Average response"
+          "value": "AES-256",
+          "label": "Encryption standard"
         },
         {
           "value": "SOC 2",
-          "label": "Type II certified"
+          "label": "Supabase infrastructure"
         },
         {
           "value": "GDPR",
-          "label": "Fully compliant"
+          "label": "Aligned"
         }
       ],
       "trustPoints": [
         {
-          "title": "Enterprise security",
-          "desc": "SOC 2 Type II certified. Data encrypted at rest and in transit. Role-based access control across every workspace."
+          "title": "Encrypted & isolated",
+          "desc": "All data encrypted at rest with AES-256 and in transit via TLS. Every workspace is strictly isolated — no cross-workspace data access is possible by design."
         },
         {
           "title": "Your data stays yours",
           "desc": "We never train AI models on your data. Your workspace memory is isolated and only accessible to your team."
         },
         {
-          "title": "Built for performance",
-          "desc": "Sub-100ms response times. Global CDN. Designed to handle enterprise workloads without degradation."
+          "title": "Built on reliable infrastructure",
+          "desc": "Hosted on Vercel and Supabase — globally distributed, with automatic daily backups and high availability by default."
         },
         {
-          "title": "Globally available",
-          "desc": "Multi-region infrastructure. Automatic failover. 99.9% uptime SLA with full incident transparency."
+          "title": "Transparent by design",
+          "desc": "Powered by Supabase's SOC 2 Type II certified infrastructure. No hidden data sharing. No third-party tracking inside your workspace."
         }
       ],
       "badges": [
-        "SOC 2 Type II",
-        "GDPR",
-        "ISO 27001 ready",
-        "CCPA",
-        "End-to-end encryption",
-        "Zero-knowledge AI"
+        "Encrypted at rest & in transit",
+        "GDPR-aligned",
+        "Supabase SOC 2 Type II",
+        "AI never trained on your data",
+        "Workspace isolation"
       ]
     },
     "pricing": {
@@ -2131,13 +2130,13 @@
     "cta": {
       "headlineLine1": "Your business,",
       "headlineLine2": "at full intelligence.",
-      "subtitle": "Join teams building the future of work with Gunimi. Start free — your workspace is ready in minutes.",
+      "subtitle": "Join the first teams building on Gunimi. Open Alpha — every workspace reviewed and onboarded personally.",
       "ctaPrimary": "Start for free",
       "ctaSecondary": "Sign in",
       "statusItems": [
+        "Open Alpha",
         "No credit card",
-        "14-day free trial",
-        "Cancel anytime"
+        "Free until launch"
       ]
     }
   },

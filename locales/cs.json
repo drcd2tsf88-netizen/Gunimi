@@ -1862,15 +1862,15 @@
       ]
     },
     "beats": {
-      "b1diagnosis":   "Vztahy tiše blednou.",
+      "b1diagnosis": "Vztahy tiše blednou.",
       "b1explanation": "Nejdůležitější obchodní rizika se zřídka sama ohlásí.",
-      "b1answer":      "Gunimi si jich všimne, dokud je ještě čas jednat.",
-      "b2diagnosis":   "Vaše podnikání již obsahuje vzory.",
+      "b1answer": "Gunimi si jich všimne, dokud je ještě čas jednat.",
+      "b2diagnosis": "Vaše podnikání již obsahuje vzory.",
       "b2explanation": "Jsou skrytá napříč konverzacemi, obchody, úkoly a rozhodnutími.",
-      "b2answer":      "Gunimi je propojuje do jednoho porozumění.",
-      "b3diagnosis":   "Práce by neměla záviset na pamatování všeho.",
+      "b2answer": "Gunimi je propojuje do jednoho porozumění.",
+      "b3diagnosis": "Práce by neměla záviset na pamatování všeho.",
       "b3explanation": "Vaše podnikání si zaslouží více než roztroušené poznámky a zapomenutý kontext.",
-      "b3answer":      "Gunimi si pamatuje, propojuje a pomáhá dříve, než se zeptáte."
+      "b3answer": "Gunimi si pamatuje, propojuje a pomáhá dříve, než se zeptáte."
     },
     "actIV": {
       "beat1": "Již jste viděli, jak Gunimi uvažuje.",
@@ -1953,7 +1953,7 @@
         },
         {
           "title": "Automation",
-          "desc": "Vytvářejte pracovní postupy, které běží samostatně. Spouštějte akce, posílejte upozornění, aktualizujte záznamy."
+          "desc": "Automatizované akce spuštěné signály workspace. Úkoly vytvořeny, kontakty aktualizovány, aktivita zaznamenána automaticky."
         },
         {
           "title": "Command Center",
@@ -1993,7 +1993,7 @@
       "eyebrow": "Vrstva inteligence",
       "headlineLine1": "AI, která pracuje,",
       "headlineLine2": "zatímco se vy soustředíte.",
-      "subtitle": "Pět AI systémů běžících nepřetržitě — Memory, Automation, agenti, Observatory a příkazy. Ne funkce, které zapínáte. Operační vrstva, která vždy běží na pozadí.",
+      "subtitle": "Pět inteligentních systémů běžících nepřetržitě — paměť, automatizace, signály, observatoř a příkazové centrum. Nejsou to funkce, které zapínáte. Operační vrstva, která vždy běží pod povrchem.",
       "coreName": "Gunimi Intelligence Core",
       "coreSubtitle": "Vždy zapnuto. Vždy se učí.",
       "exploreCta": "Prozkoumat AI vrstvu",
@@ -2007,8 +2007,8 @@
           "desc": "Spouštěče, akce a orchestrace pracovních toků"
         },
         {
-          "title": "Agenti",
-          "desc": "Autonomní vykonavatelé úkolů s přístupem k workspace"
+          "title": "Signály",
+          "desc": "25 typů signálů — vztahy, obchody, úkoly a načasování."
         },
         {
           "title": "Observatory",
@@ -2028,47 +2028,46 @@
       "subtitle": "Postaveno od prvního dne pro organizace, které vyžadují soulad s předpisy, soukromí a enterprise spolehlivost.",
       "stats": [
         {
-          "value": "99,9 %",
-          "label": "SLA dostupnosti"
+          "value": "11",
+          "label": "Integrovaných modulů"
         },
         {
-          "value": "< 80 ms",
-          "label": "Průměrná odezva"
+          "value": "AES-256",
+          "label": "Standard šifrování"
         },
         {
           "value": "SOC 2",
-          "label": "Type II certifikát"
+          "label": "Infrastruktura Supabase"
         },
         {
           "value": "GDPR",
-          "label": "Plný soulad"
+          "label": "V souladu"
         }
       ],
       "trustPoints": [
         {
-          "title": "Enterprise bezpečnost",
-          "desc": "SOC 2 Type II certifikované. Data šifrována v klidu i při přenosu. Řízení přístupu na základě rolí ve všech workspace."
+          "title": "Šifrované a izolované",
+          "desc": "Všechna data jsou šifrována v klidu (AES-256) a při přenosu (TLS). Každý workspace je striktně izolován — žádný přístup k datům jiného workspace není možný."
         },
         {
           "title": "Vaše data zůstávají vaše",
-          "desc": "Na AI modelech nikdy netrénujeme na vašich datech. Paměť workspace je izolovaná a přístupná pouze vašemu týmu."
+          "desc": "Na vašich datech nikdy netrénujeme modely AI. Paměť vašeho workspace je izolovaná a přístupná pouze vašemu týmu."
         },
         {
-          "title": "Postaveno pro výkon",
-          "desc": "Časy odezvy pod 100 ms. Globální CDN. Navrženo pro enterprise zátěže bez degradace."
+          "title": "Postaveno na spolehlivé infrastruktuře",
+          "desc": "Hostováno na Vercel a Supabase — globálně distribuováno, s automatickými denními zálohami a vysokou dostupností."
         },
         {
-          "title": "Globálně dostupné",
-          "desc": "Infrastruktura s více regiony. Automatické přepnutí. 99,9 % SLA s plnou transparentností incidentů."
+          "title": "Transparentní od základu",
+          "desc": "Poháněno infrastrukturou Supabase certifikovanou SOC 2 Type II. Žádné skryté sdílení dat. Žádné sledování třetích stran uvnitř workspace."
         }
       ],
       "badges": [
-        "SOC 2 Type II",
-        "GDPR",
-        "ISO 27001 ready",
-        "CCPA",
-        "End-to-end šifrování",
-        "Zero-knowledge AI"
+        "Šifrováno v klidu i při přenosu",
+        "V souladu s GDPR",
+        "Supabase SOC 2 Type II",
+        "AI netrénuje na vašich datech",
+        "Izolace workspace"
       ]
     },
     "pricing": {
@@ -2131,13 +2130,13 @@
     "cta": {
       "headlineLine1": "Vaše podnikání,",
       "headlineLine2": "s plnou inteligencí.",
-      "subtitle": "Připojte se k týmům budujícím budoucnost práce s Gunimi. Začněte zdarma — váš workspace je připraven za minuty.",
+      "subtitle": "Připojte se k prvním týmům stavějícím na Gunimi. Open Alpha — každý workspace osobně ověřen a přijat.",
       "ctaPrimary": "Začít zdarma",
       "ctaSecondary": "Přihlásit se",
       "statusItems": [
+        "Open Alpha",
         "Bez kreditní karty",
-        "14denní bezplatná zkouška",
-        "Zrušení kdykoli"
+        "Zdarma do spuštění"
       ]
     }
   },

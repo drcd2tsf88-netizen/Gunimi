@@ -1862,15 +1862,15 @@
       ]
     },
     "beats": {
-      "b1diagnosis":   "Vzťahy ticho blednú.",
+      "b1diagnosis": "Vzťahy ticho blednú.",
       "b1explanation": "Najdôležitejšie obchodné riziká sa zriedka samy odhalia.",
-      "b1answer":      "Gunimi ich zaznamená, kým je ešte čas konať.",
-      "b2diagnosis":   "Vaše podnikanie už obsahuje vzory.",
+      "b1answer": "Gunimi ich zaznamená, kým je ešte čas konať.",
+      "b2diagnosis": "Vaše podnikanie už obsahuje vzory.",
       "b2explanation": "Sú skryté naprieč konverzáciami, dealmi, úlohami a rozhodnutiami.",
-      "b2answer":      "Gunimi ich spája do jedného porozumenia.",
-      "b3diagnosis":   "Práca by nemala závisieť od pamätania všetkého.",
+      "b2answer": "Gunimi ich spája do jedného porozumenia.",
+      "b3diagnosis": "Práca by nemala závisieť od pamätania všetkého.",
       "b3explanation": "Vaše podnikanie si zaslúži viac než roztrúsené poznámky a zabudnutý kontext.",
-      "b3answer":      "Gunimi si pamätá, spája a pomáha skôr, ako sa opýtate."
+      "b3answer": "Gunimi si pamätá, spája a pomáha skôr, ako sa opýtate."
     },
     "actIV": {
       "beat1": "Už ste videli, ako Gunimi uvažuje.",
@@ -1953,7 +1953,7 @@
         },
         {
           "title": "Automation",
-          "desc": "Vytvárajte pracovné postupy, ktoré bežia samostatne. Spúšťajte akcie, posielajte upozornenia, aktualizujte záznamy."
+          "desc": "Automatizované akcie spustené signálmi workspacu. Úlohy vytvorené, kontakty aktualizované, aktivita zaznamenaná automaticky."
         },
         {
           "title": "Command Center",
@@ -1993,7 +1993,7 @@
       "eyebrow": "Vrstva inteligencie",
       "headlineLine1": "AI, ktorá pracuje,",
       "headlineLine2": "kým sa vy sústredíte.",
-      "subtitle": "Päť AI systémov bežiacich nepretržite — Memory, Automation, agenti, Observatory a príkazy. Nie funkcie, ktoré zapínate. Operačná vrstva, ktorá vždy beží v pozadí.",
+      "subtitle": "Päť inteligentných systémov bežiacich nepretržite — pamäť, automatizácia, signály, observatórium a príkazové centrum. Nie funkcie, ktoré zapínate. Operačná vrstva, ktorá vždy beží pod povrchom.",
       "coreName": "Gunimi Intelligence Core",
       "coreSubtitle": "Vždy zapnuté. Vždy sa učiace.",
       "exploreCta": "Preskúmať AI vrstvu",
@@ -2007,8 +2007,8 @@
           "desc": "Spúšťače, akcie a orchestrácia pracovných tokov"
         },
         {
-          "title": "Agenti",
-          "desc": "Autonómni vykonávatelia úloh s prístupom k workspace"
+          "title": "Signály",
+          "desc": "25 typov signálov — vzťahy, obchody, úlohy a načasovanie."
         },
         {
           "title": "Observatory",
@@ -2028,47 +2028,46 @@
       "subtitle": "Postavené od prvého dňa pre organizácie, ktoré vyžadujú súlad s predpismi, súkromie a enterprise spoľahlivosť.",
       "stats": [
         {
-          "value": "99,9 %",
-          "label": "SLA dostupnosti"
+          "value": "11",
+          "label": "Integrovaných modulov"
         },
         {
-          "value": "< 80 ms",
-          "label": "Priemerná odozva"
+          "value": "AES-256",
+          "label": "Štandard šifrovania"
         },
         {
           "value": "SOC 2",
-          "label": "Type II certifikát"
+          "label": "Infraštruktúra Supabase"
         },
         {
           "value": "GDPR",
-          "label": "Plný súlad"
+          "label": "V súlade"
         }
       ],
       "trustPoints": [
         {
-          "title": "Enterprise bezpečnosť",
-          "desc": "SOC 2 Type II certifikované. Dáta šifrované v pokoji aj pri prenose. Kontrola prístupu na základe rolí vo všetkých workspace."
+          "title": "Šifrované a izolované",
+          "desc": "Všetky dáta sú šifrované v pokoji (AES-256) a pri prenose (TLS). Každý workspace je striktne izolovaný — žiadny prístup ku dátam iného workspacu nie je možný."
         },
         {
-          "title": "Vaše dáta zostávajú vaše",
-          "desc": "Na AI modeloch nikdy netrénujeme na vašich dátach. Pamäť workspace je izolovaná a dostupná len vášmu tímu."
+          "title": "Vaše dáta ostávajú vaše",
+          "desc": "Na vašich dátach nikdy netrénujeme modely AI. Pamäť vášho workspacu je izolovaná a prístupná len vášmu tímu."
         },
         {
-          "title": "Postavené pre výkon",
-          "desc": "Časy odozvy pod 100 ms. Globálna CDN. Navrhnuté pre enterprise záťaže bez degradácie."
+          "title": "Postavené na spoľahlivej infraštruktúre",
+          "desc": "Hosté na Vercel a Supabase — globálne distribuované, s automatickými dennými zálohami a vysokou dostupnosťou."
         },
         {
-          "title": "Globálne dostupné",
-          "desc": "Infraštruktúra s viacerými regiónmi. Automatické prepnutie. 99,9 % SLA s plnou transparentnosťou incidentov."
+          "title": "Transparentné od základu",
+          "desc": "Poháňané SOC 2 Type II certifikovanou infraštruktúrou Supabase. Žiadne skryté zdieľanie dát. Žiadne sledovanie tretích strán vo vašom workspace."
         }
       ],
       "badges": [
-        "SOC 2 Type II",
-        "GDPR",
-        "ISO 27001 ready",
-        "CCPA",
-        "End-to-end šifrovanie",
-        "Zero-knowledge AI"
+        "Šifrované v pokoji aj pri prenose",
+        "V súlade s GDPR",
+        "Supabase SOC 2 Type II",
+        "AI netrénuje na vašich dátach",
+        "Izolácia workspacu"
       ]
     },
     "pricing": {
@@ -2131,13 +2130,13 @@
     "cta": {
       "headlineLine1": "Vaše podnikanie,",
       "headlineLine2": "s plnou inteligenciou.",
-      "subtitle": "Pridajte sa k tímom budujúcim budúcnosť práce s Gunimi. Začnite zadarmo — váš workspace je pripravený za minúty.",
+      "subtitle": "Pridajte sa k prvým tímom budujúcim na Gunimi. Open Alpha — každý workspace osobne overený a prijatý.",
       "ctaPrimary": "Začať zadarmo",
       "ctaSecondary": "Prihlásiť sa",
       "statusItems": [
+        "Open Alpha",
         "Bez kreditnej karty",
-        "14-dňová bezplatná skúška",
-        "Zrušenie kedykoľvek"
+        "Zadarmo do spustenia"
       ]
     }
   },
