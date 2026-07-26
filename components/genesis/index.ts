@@ -31,8 +31,11 @@ export { AiCore } from "./AiCore";
 // Surface components
 export { GenesisNavbar } from "./GenesisNavbar";
 export { GenesisHero } from "./GenesisHero";
+export { GenesisHeroDuo } from "./GenesisHeroDuo";
 export { GenesisActI } from "./GenesisActI";
+export { GenesisBridge } from "./GenesisBridge";
 export { GenesisActII } from "./GenesisActII";
 export { GenesisActIII } from "./GenesisActIII";
+export { GenesisEmailMoment } from "./GenesisEmailMoment";
 export { GenesisActIV } from "./GenesisActIV";
 export { GenesisBeats } from "./GenesisBeats";

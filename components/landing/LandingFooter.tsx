@@ -34,9 +34,9 @@ export default function LandingFooter() {
   const tNav = useTranslations("landing.nav");
 
   const PRODUCT_LINKS = [
-    { label: t("links.features"),  href: "#systems" },
-    { label: t("links.ai"),        href: "#ai" },
-    { label: t("links.pricing"),   href: "#pricing" },
+    { label: t("links.features"),  href: "/features" },
+    { label: t("links.ai"),        href: "/ai-transparency" },
+    { label: t("links.pricing"),   href: "/pricing" },
     { label: t("links.changelog"), href: "/changelog" },
     { label: t("links.roadmap"),   href: "/roadmap" },
   ];

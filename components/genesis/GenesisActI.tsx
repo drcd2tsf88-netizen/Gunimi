@@ -97,8 +97,8 @@ export function GenesisActI() {
           </FadeIn>
         </div>
 
-        <SectionContainer maxWidth="text" className="relative z-10 pt-[10vh]">
-          <div className="flex flex-col gap-[32vh]">
+        <SectionContainer maxWidth="text" className="relative z-10 pt-[5vh]">
+          <div className="flex flex-col gap-[16vh]">
 
             {/* Statement 1 — The hook: an immediate, settled certainty */}
             <SceneReveal y={32} duration={1.1}>

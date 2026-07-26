@@ -44,6 +44,9 @@ export const metadata: Metadata = {
   },
   applicationName: APP_CONFIG.name,
   referrer: "origin-when-cross-origin",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+  },
   robots: {
     index: true,
     follow: true,

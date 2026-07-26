@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-const LAST_UPDATED = "June 17, 2026";
+const LAST_UPDATED = "July 26, 2026";
 
 export default async function PrivacyPage() {
   const t = await getTranslations("public.privacy");
@@ -161,7 +161,60 @@ export default async function PrivacyPage() {
                 content: <p className="text-[14px]">Gunimi uses session cookies provided by Supabase Auth to keep you logged in. These are strictly necessary for the service to function and do not track you across third-party websites. See our <a href="/cookies" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">Cookie Policy</a> for full details.</p>,
               },
               {
-                title: "8. Contact",
+                title: "8. Google API Services",
+                content: (
+                  <div className="space-y-4 text-[14px]">
+                    <div className="rounded-[14px] border border-[#6D5BFF]/[0.15] bg-[#6D5BFF]/[0.05] p-4 text-[13px] leading-[1.75]">
+                      <p className="font-medium text-[#C8CDD8]">Limited Use Disclosure</p>
+                      <p className="mt-1 text-[#9AA3B2]">
+                        Gunimi&rsquo;s use and transfer to any other app of information received from Google APIs will adhere to the{" "}
+                        <a
+                          href="https://developers.google.com/terms/api-services-user-data-policy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]"
+                        >
+                          Google API Services User Data Policy
+                        </a>
+                        , including the Limited Use requirements.
+                      </p>
+                    </div>
+                    <p>
+                      When you connect a Google account to Gunimi, we may access the following data depending on the integrations you enable:
+                    </p>
+                    <ul className="space-y-2">
+                      {[
+                        "Gmail: read email headers and message content to surface communication context within your workspace",
+                        "Google Calendar: read and create calendar events to support scheduling and meeting preparation features",
+                        "Google profile: your name and email address for authentication and workspace identity",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2.5">
+                          <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#6D5BFF]/50" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p>
+                      Google user data is used exclusively to provide the features you request within your workspace. We do not:
+                    </p>
+                    <ul className="space-y-2">
+                      {[
+                        "Transfer Google user data to third parties except as necessary to operate and improve our service",
+                        "Use Google user data for advertising purposes",
+                        "Allow humans to read your Google data unless you have given explicit consent, or it is required for security purposes",
+                        "Use Google user data to train AI or machine learning models",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2.5">
+                          <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#6D5BFF]/50" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ),
+              },
+              {
+                title: "9. Contact",
                 content: <p className="text-[14px]">For privacy questions, data requests, or concerns, contact us at <a href="mailto:support@gunimi.com" className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]">support@gunimi.com</a>.</p>,
               },
             ].map(({ title, content }) => (

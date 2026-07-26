@@ -15,18 +15,32 @@ import { ScrollTimeline, useScrollTimeline } from "./ScrollTimeline";
 import { AiCore } from "./AiCore";
 import { Reveal } from "./Reveal";
 
-// ── ObservationCycle ──────────────────────────────────────────
-// Beats 2 & 3: one observation visible at any time.
-// 4s interval, 500ms cross-fade via AnimatePresence mode="wait".
-// Exit completes before enter begins — silence between each.
-// Timer pauses when the component leaves the viewport.
-// Reduced motion: all observations rendered statically.
-
-interface ObservationCycleProps {
-  observations: string[];
+// ── Signal card data shape ─────────────────────────────────────
+interface SignalData {
+  dot: string;
+  title: string;
+  context: string;
+  detail: string;
 }
 
-function ObservationCycle({ observations }: ObservationCycleProps) {
+const DOT_COLORS: Record<string, string> = {
+  amber: "bg-amber-400",
+  red: "bg-red-400",
+  green: "bg-emerald-400",
+  blue: "bg-blue-400",
+};
+
+// ── SignalCardCycle ────────────────────────────────────────────
+// One signal card visible at a time. 3.5s interval, 400ms cross-
+// fade via AnimatePresence mode="wait". Timer pauses when the
+// component leaves the viewport. Reduced motion: all cards shown
+// as a static list.
+
+interface SignalCardCycleProps {
+  cards: SignalData[];
+}
+
+function SignalCardCycle({ cards }: SignalCardCycleProps) {
   const [idx, setIdx] = useState(0);
   const shouldReduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -35,50 +49,78 @@ function ObservationCycle({ observations }: ObservationCycleProps) {
   useEffect(() => {
     if (!isInView || shouldReduceMotion) return;
     const id = setInterval(() => {
-      setIdx((prev) => (prev + 1) % observations.length);
-    }, 4000);
+      setIdx((prev) => (prev + 1) % cards.length);
+    }, 3500);
     return () => clearInterval(id);
-  }, [isInView, shouldReduceMotion, observations.length]);
+  }, [isInView, shouldReduceMotion, cards.length]);
 
   if (shouldReduceMotion) {
     return (
       <div className="flex flex-col gap-3 py-[8vh]">
-        {observations.map((obs) => (
-          <p
-            key={obs}
-            className="text-[17px] font-light leading-[1.5] text-[#9AA3B2] md:text-[20px]"
+        {cards.map((card) => (
+          <div
+            key={card.title}
+            className="rounded-2xl border border-white/[0.08] bg-[#080910] p-5"
           >
-            {obs}
-          </p>
+            <SignalCardContent card={card} />
+          </div>
         ))}
       </div>
     );
   }
 
+  const card = cards[idx];
+  if (!card) return null;
+
   return (
-    <div ref={ref} className="py-[14vh]">
-      <div className="relative h-[2em]">
+    <div ref={ref} className="py-[10vh]">
+      <div className="relative min-h-[90px]">
         <AnimatePresence mode="wait">
-          <motion.p
-            key={observations[idx]}
-            className="absolute inset-x-0 text-[17px] font-light leading-[1.5] text-[#9AA3B2] md:text-[20px]"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 0.75, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-2xl border border-white/[0.08] bg-[#080910] p-5"
           >
-            {observations[idx]}
-          </motion.p>
+            <SignalCardContent card={card} />
+          </motion.div>
         </AnimatePresence>
+      </div>
+      {/* Pip indicators */}
+      <div className="mt-4 flex gap-1.5">
+        {cards.map((_, i) => (
+          <div
+            key={i}
+            className={[
+              "h-1 rounded-full transition-all duration-500",
+              i === idx
+                ? "w-5 bg-white/40"
+                : "w-1.5 bg-white/[0.12]",
+            ].join(" ")}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SignalCardContent({ card }: { card: SignalData }) {
+  const dotClass = DOT_COLORS[card.dot] ?? "bg-zinc-400";
+  return (
+    <div className="flex items-start gap-3">
+      <div className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${dotClass}`} />
+      <div>
+        <p className="text-[14px] font-semibold leading-snug text-white/90">{card.title}</p>
+        <p className="mt-0.5 text-[12px] text-white/40">{card.context}</p>
+        <p className="mt-1 text-[11px] text-white/25">{card.detail}</p>
       </div>
     </div>
   );
 }
 
 // ── AiCoreAmbientIII ──────────────────────────────────────────
-// The workspace awakening. Slightly more present than Act II
-// (peak 0.14 vs 0.10), coinciding with Beat 4 — "The workspace
-// begins to understand." AiCore and statement arrive together.
 
 function AiCoreAmbientIII() {
   const { scrollYProgress } = useScrollTimeline();
@@ -107,21 +149,18 @@ function AiCoreAmbientIII() {
 
 export function GenesisActIII() {
   const t = useTranslations("landing.actIII");
-  const observations = t.raw("observations") as string[];
+  const cards = t.raw("signals") as SignalData[];
 
   return (
     <Section id="act-iii" ambient="none">
       <ScrollTimeline className="relative w-full">
 
-        {/* Workspace awakening — slightly more present than Act II */}
         <AiCoreAmbientIII />
 
         <SectionContainer maxWidth="text" className="relative z-10">
 
-          {/* ── Beat 1 ────────────────────────────────────────────
-              The consequence of a signal. The visitor witnessed
-              the first signal in Act II — now: what changes? */}
-          <div className="pb-[24vh]">
+          {/* Beat 1: what Gunimi does */}
+          <div className="pb-[12vh]">
             <Reveal y={26} duration={1.2}>
               <p className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] text-[var(--g-text)] md:text-[42px]">
                 {t("beat1")}
@@ -129,30 +168,12 @@ export function GenesisActIII() {
             </Reveal>
           </div>
 
-          {/* ── Beats 2 & 3 ───────────────────────────────────────
-              Observations cycle one at a time. 4s per observation,
-              500ms cross-fade. Exit completes before enter begins.
-              No overlap. No notifications. Calm awareness. */}
-          <div className="pb-[26vh]">
-            <ObservationCycle observations={observations} />
+          {/* Signal cards cycle — replaces ObservationCycle */}
+          <div className="pb-[12vh]">
+            <SignalCardCycle cards={cards} />
           </div>
 
-          {/* ── Beat 4 ────────────────────────────────────────────
-              The naming of what is happening. Slightly smaller
-              than Beats 1 and 5 — understanding is a process,
-              not an announcement. AiCore peaks here. */}
-          <div className="pb-[22vh]">
-            <Reveal y={22} duration={1.2}>
-              <p className="text-[26px] font-semibold leading-[1.12] tracking-[-0.025em] text-[var(--g-text)] md:text-[40px]">
-                {t("beat4")}
-              </p>
-            </Reveal>
-          </div>
-
-          {/* ── Beat 5 ────────────────────────────────────────────
-              The emotional turning point. Returns to Beat 1's full
-              weight — this is not a summary, it is a shift in how
-              the visitor understands what software can be. */}
+          {/* Beat 5: the payoff */}
           <Reveal y={14} duration={1.6}>
             <p className="text-[28px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--g-text)] md:text-[42px]">
               {t("beat5")}

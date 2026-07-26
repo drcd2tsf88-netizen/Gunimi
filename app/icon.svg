@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background -->
+  <rect width="64" height="64" rx="16" fill="#05060A"/>
+
+  <!-- Glow behind core -->
+  <circle cx="32" cy="32" r="14" fill="url(#glow)" opacity="0.35"/>
+
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="27" stroke="#6D5BFF" stroke-width="0.9" stroke-dasharray="4 3" opacity="0.28"/>
+
+  <!-- Mid ring -->
+  <circle cx="32" cy="32" r="20" stroke="#8B7DFF" stroke-width="1" opacity="0.45"/>
+
+  <!-- Inner ring -->
+  <circle cx="32" cy="32" r="13" stroke="#A998FF" stroke-width="1.2" opacity="0.65"/>
+
+  <!-- Core -->
+  <circle cx="32" cy="32" r="6" fill="url(#core)"/>
+  <circle cx="32" cy="32" r="3.2" fill="#C4B8FF" opacity="0.9"/>
+
+  <!-- Orbit dot — top -->
+  <circle cx="32" cy="5" r="2.2" fill="#8B7DFF" opacity="0.75"/>
+
+  <!-- Orbit dot — right -->
+  <circle cx="59" cy="32" r="1.8" fill="#6D5BFF" opacity="0.55"/>
+
+  <!-- Orbit dot — bottom-left -->
+  <circle cx="11" cy="51" r="1.5" fill="#6D5BFF" opacity="0.4"/>
+
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8B7DFF"/>
+      <stop offset="100%" stop-color="#6D5BFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="core" cx="40%" cy="36%" r="60%">
+      <stop offset="0%" stop-color="#C4B8FF"/>
+      <stop offset="100%" stop-color="#6D5BFF"/>
+    </radialGradient>
+  </defs>
+</svg>

@@ -1799,7 +1799,9 @@
       "openMenu": "Otevřít navigační menu",
       "closeMenu": "Zavřít menu",
       "joinAlpha": "Připojte se k Open Alpha",
-      "mainNav": "Hlavní navigace"
+      "mainNav": "Hlavní navigace",
+      "product": "Produkt",
+      "company": "Společnost"
     },
     "footer": {
       "tagline": "AI Workspace OS",
@@ -1830,9 +1832,9 @@
       "getStarted": "Začít"
     },
     "hero": {
-      "badge": "Open Alpha — Nyní dostupné",
-      "headlineLine1": "Práce nepotřebuje více softwaru.",
-      "headlineLine2": "Práce potřebuje porozumění.",
+      "badge": "Open Alpha — Zdarma dnes",
+      "headlineLine1": "Jeden workspace pro",
+      "headlineLine2": "celé vaše podnikání.",
       "subtitle": "Gunimi sjednocuje vaše vztahy, obchody, úkoly a znalosti do jednoho workspace — s AI, která skutečně rozumí vašemu podnikání.",
       "ctaPrimary": "Vytvořit workspace",
       "ctaSecondary": "Přihlásit se",
@@ -1841,21 +1843,21 @@
         "Nikdy nepoužíváme AI na vaše workspace data.",
         "Váš workspace je standardně soukromý."
       ],
-      "productSentenceLine1": "Gunimi nenahradi vaši práci.",
-      "productSentenceLine2": "Odstraňuje práci, která by neměla existovat.",
-      "descriptor": "AI Business Operating System.",
-      "alphaNote": "OPEN ALPHA · Momentálně onboardujeme firmy v malých skupinách."
+      "productSentenceLine1": "Kontakty, obchody, úkoly, e-maily — vše na jednom místě.",
+      "productSentenceLine2": "S AI, která rozumí vašemu podnikání.",
+      "descriptor": "Kompletní AI business workspace.",
+      "alphaNote": "OPEN ALPHA · Zdarma do oficiálního spuštění."
     },
     "actI": {
-      "statement1": "Vaše podnikání už ví věci, které žádný dashboard nikdy neukázal.",
-      "statement2": "Žijí v e-mailech, ve vztazích, v načasování rozhodnutí — vzorce, které vznikají dříve, než si je kdokoli všimne.",
-      "statement3": "Gunimi je první systém navržený tak, aby obsáhl vše."
+      "statement1": "Většina firem funguje na roztroušených informacích.",
+      "statement2": "E-maily na jednom místě. Obchody jinde. Úkoly někde daleko. Nikdo nemá celkový obraz.",
+      "statement3": "Gunimi to všechno propojí dohromady."
     },
     "actII": {
-      "beat1": "Každá firma zanechává stopy.",
-      "beat3": "Žádné z nich neexistuje na jednom místě.",
-      "beat5": "Vzor se formuje.",
-      "beat6": "To je první signál.",
+      "beat1": "Vaše firma každý den generuje spoustu dat.",
+      "beat3": "Ale nic z toho spolu nekomunikuje.",
+      "beat5": "Spojení se formuje.",
+      "beat6": "Gunimi to zachytí.",
       "fragments": [
         "E-maily",
         "Schůzky",
@@ -1881,8 +1883,9 @@
       "b3answer": "Gunimi si pamatuje, propojuje a pomáhá dříve, než se zeptáte."
     },
     "actIV": {
-      "beat1": "Již jste viděli, jak Gunimi uvažuje.",
-      "beat2": "Teď uvidíte, jak pracuje.",
+      "eyebrow": "Živé demo",
+      "beat1": "Vyzkoušejte to sami.",
+      "beat2": "Náš interaktivní pracovní prostor. Bez registrace.",
       "commandHint": "Hledejte nebo se zeptejte na cokoliv...",
       "cta": {
         "prompt": "Váš workspace čeká.",
@@ -1890,18 +1893,34 @@
       }
     },
     "actIII": {
-      "beat1": "Signál mění vše.",
-      "beat4": "Workspace začíná rozumět.",
-      "beat5": "Již nečeká, až se ho zeptáte.",
-      "observations": [
-        "Vztah slábne.",
-        "Rozhodnutí se zpožďuje.",
-        "Zákazník čeká.",
-        "Hybnost roste.",
-        "Rozhovor se vrací.",
-        "Slib je ohrožen.",
-        "Schůzka nabývá na důležitosti.",
-        "Vzor se opakuje."
+      "beat1": "Gunimi sleduje, co je důležité — automaticky.",
+      "beat5": "Nic důležitého se nezamešká.",
+      "signals": [
+        { "dot": "amber", "title": "Obchod v ohrožení", "context": "Acme Corp · žádná odpověď 5 dní", "detail": "Pipeline: €45 000 · Q2" },
+        { "dot": "red", "title": "Vztah slábne", "context": "Lukáš Blaho · poslední kontakt před 3 týdny", "detail": "2 otevřené obchody propojeny" },
+        { "dot": "green", "title": "Schůzka nabývá důležitosti", "context": "Nexo Corp · zítra v 10:00", "detail": "Navržena poznámka k přípravě" },
+        { "dot": "blue", "title": "Úkol po termínu", "context": "Follow-up: Nova Systems · 2 dny pozdě", "detail": "3 související úkoly čekají" }
+      ]
+    },
+    "actEmail": {
+      "heading": "Jeden e-mail. Vše, co Gunimi přečte.",
+      "subheading": "Většina firem tyto informace ztrácí v doručené poště. Gunimi je čte automaticky.",
+      "intro": "Toto vidí Gunimi v jednom e-mailu.",
+      "from": "lukas@nexocorp.sk",
+      "subject": "Re: Nabídka Q3",
+      "bodyPart1": "Ahoj, prošel jsem nabídku s naším týmem a máme zájem. Mohli bychom se setkat v",
+      "highlight2": "čtvrtek",
+      "bodyPart2": "a probrat",
+      "highlight3": "variantu za €35 000",
+      "bodyPart3": "? Lukáš",
+      "panelTitle": "Co Gunimi pochopilo",
+      "processedNote": "Zpracováno automaticky v reálném čase",
+      "actions": [
+        "Kontakt propojen: Lukáš Blaho",
+        "Firma nalezena: Nexo Corp",
+        "Obchod aktualizován: €35 000",
+        "Úkol vytvořen: Příprava schůzky",
+        "Signál: Odpovězte brzy"
       ]
     },
     "workspacePreview": {
@@ -2788,6 +2807,52 @@
       "backToHome": "Zpět na hlavní stránku",
       "signOut": "Odhlásit se",
       "footerNote": "Dotazy? Napište nám na hello@gunimi.com"
+    },
+    "features": {
+      "badge": "Moduly platformy",
+      "ctaHeadline": "Jste připraveni přinést toto do svého podnikání?",
+      "ctaButton": "Začněte zdarma",
+      "ctaNote": "Open Alpha — kreditní karta není nutná"
+    },
+    "pricing": {
+      "badge": "Ceník",
+      "headline": "Jednoduchý ceník.",
+      "headlineAccent": "Bez překvapení.",
+      "subtitle": "Gunimi je v Open Alpha. Raný přístup je zcela zdarma, zatímco produkt budujeme společně.",
+      "planBadge": "Open Alpha",
+      "planPrice": "€0",
+      "planPeriod": "/ měsíc",
+      "planDesc": "Kompletní přístup ke všem 11 modulům během Open Alpha. Kreditní karta není nutná.",
+      "planCta": "Připojit se k Open Alpha",
+      "planFeatures": [
+        "Všech 11 modulů workspace",
+        "Gunimi AI plně zahrnuto",
+        "Neomezené kontakty, společnosti, obchody",
+        "Prioritní podpora při onboardingu",
+        "Přímý kanál zpětné vazby s týmem",
+        "Uznání zakládajícího uživatele"
+      ],
+      "afterAlphaTitle": "Po Open Alpha",
+      "afterAlphaDesc": "Placené plány budou spuštěny před koncem roku 2026. Všichni účastníci Alpha obdrží exkluzivní zakladatelské ceny a budou informováni s dostatečným předstihem před jakýmikoli poplatky.",
+      "faqTitle": "Časté dotazy",
+      "faq": [
+        {
+          "q": "Je to opravdu zdarma?",
+          "a": "Ano. Během Open Alpha je Gunimi zcela zdarma. Nejsou žádné skryté poplatky, kreditní karta není nutná, žádná zkušební lhůta — jen plný přístup."
+        },
+        {
+          "q": "Co se stane po skončení Open Alpha?",
+          "a": "Zavedeme placené plány před koncem roku 2026. Účastníci Alpha obdrží exkluzivní zakladatelské ceny a budou informováni s dostatečným předstihem před jakýmikoli poplatky."
+        },
+        {
+          "q": "Mohu kdykoli zrušit?",
+          "a": "Během Alpha není co rušit. Když budou spuštěny placené plány, budete moci kdykoli zrušit bez penalizace."
+        },
+        {
+          "q": "Jsou moje data v bezpečí?",
+          "a": "Ano. Všechna data workspace jsou šifrována v klidu (AES-256) a při přenosu (TLS 1.3). Váš workspace je přísně izolován a vaše data nejsou nikdy používána k trénování AI modelů. Podrobnosti naleznete na naší stránce Zabezpečení."
+        }
+      ]
     }
   },
   "today": {

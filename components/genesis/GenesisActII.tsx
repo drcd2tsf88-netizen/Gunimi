@@ -83,7 +83,7 @@ function ConvergenceCloud({ fragments }: ConvergenceCloudProps) {
   }
 
   return (
-    <ScrollTimeline className="flex flex-wrap justify-center gap-x-8 gap-y-5 py-[12vh]">
+    <ScrollTimeline className="flex flex-wrap justify-center gap-x-8 gap-y-5 py-[6vh]">
       {fragments.map((word, i) => (
         <ConvergingFragment
           key={word}
@@ -142,7 +142,7 @@ export function GenesisActII() {
           {/* ── Beat 1 ────────────────────────────────────────────
               Opening statement. Settled, not aggressive.
               Sets the register for everything that follows. */}
-          <div className="pb-[22vh]">
+          <div className="pb-[11vh]">
             <Reveal y={28} duration={1.2}>
               <p className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] text-[var(--g-text)] md:text-[42px]">
                 {t("beat1")}
@@ -150,11 +150,8 @@ export function GenesisActII() {
             </Reveal>
           </div>
 
-          {/* ── Beat 2 ────────────────────────────────────────────
-              Fragments surface individually as the user scrolls.
-              Light weight, muted — present but not demanding.
-              gap-[8vh] ensures each appears in its own moment. */}
-          <div className="flex flex-col gap-[8vh] pb-[24vh]">
+          {/* ── Beat 2 ── fragments surface */}
+          <div className="flex flex-col gap-[4vh] pb-[12vh]">
             {fragments.map((fragment) => (
               <FadeIn key={fragment} duration={0.7}>
                 <span className="text-[17px] font-light leading-none tracking-[-0.005em] text-[#9AA3B2] md:text-[21px]">
@@ -164,11 +161,8 @@ export function GenesisActII() {
             ))}
           </div>
 
-          {/* ── Beat 3 ────────────────────────────────────────────
-              The realization: they are real, but separate.
-              Slightly smaller than Beat 1 — not a second claim,
-              a quiet observation that lands harder for its calm. */}
-          <div className="pb-[24vh]">
+          {/* ── Beat 3 ── realization */}
+          <div className="pb-[12vh]">
             <Reveal y={24} duration={1.1}>
               <p className="text-[24px] font-semibold leading-[1.12] tracking-[-0.025em] text-[var(--g-text)] md:text-[38px]">
                 {t("beat3")}
@@ -176,21 +170,13 @@ export function GenesisActII() {
             </Reveal>
           </div>
 
-          {/* ── Beat 4 ────────────────────────────────────────────
-              The same fragments, now gathering.
-              No UI, no dashboard — only the motion of words
-              finding their way toward a center that isn't named.
-              The AiCore at 0.10 opacity is that center. */}
-          <div className="pb-[18vh]">
+          {/* ── Beat 4 ── convergence cloud */}
+          <div className="pb-[9vh]">
             <ConvergenceCloud fragments={fragments} />
           </div>
 
-          {/* ── Beat 5 ────────────────────────────────────────────
-              The observation: something emerged.
-              Arrives quietly — smaller than Beat 1 because this is
-              not a claim, it's a witnessed moment.
-              "A pattern forms." */}
-          <div className="pb-[20vh]">
+          {/* ── Beat 5 ── pattern forms */}
+          <div className="pb-[10vh]">
             <Reveal y={20} duration={1.2}>
               <p className="text-[22px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--g-text)] md:text-[34px]">
                 {t("beat5")}

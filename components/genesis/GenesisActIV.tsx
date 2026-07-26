@@ -48,26 +48,26 @@ export function GenesisActIV() {
         {/* AiCore: conceptual dissolves as the product takes over */}
         <AiCoreDissolveIV />
 
-        {/* ── Text beats — constrained reading column ────────── */}
-        <SectionContainer maxWidth="text" className="relative z-10">
+        {/* ── Demo intro heading ───────────────────────────── */}
+        <SectionContainer maxWidth="text" className="relative z-10 pb-14">
 
-          {/* Beat 1: acknowledging the journey */}
-          <div className="pb-[16vh]">
-            <Reveal y={22} duration={1.1}>
-              <p className="text-[22px] font-semibold leading-[1.15] tracking-[-0.025em] text-[var(--g-text)] md:text-[32px]">
-                {t("beat1")}
-              </p>
-            </Reveal>
-          </div>
+          <Reveal y={10} duration={0.7}>
+            <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.14em] text-[#9AA3B2]/40">
+              {t("eyebrow")}
+            </p>
+          </Reveal>
 
-          {/* Beat 2: the invitation */}
-          <div className="pb-[18vh]">
-            <Reveal y={16} duration={1.0} delay={0.1}>
-              <p className="text-[22px] font-semibold leading-[1.15] tracking-[-0.025em] text-[var(--g-text)] md:text-[32px]">
-                {t("beat2")}
-              </p>
-            </Reveal>
-          </div>
+          <Reveal y={24} duration={1.1} delay={0.05}>
+            <h2 className="text-[36px] font-bold leading-[1.05] tracking-[-0.04em] text-[var(--g-text)] md:text-[54px]">
+              {t("beat1")}
+            </h2>
+          </Reveal>
+
+          <Reveal y={14} duration={0.9} delay={0.18}>
+            <p className="mt-4 text-[17px] leading-[1.6] text-[#9AA3B2] md:text-[19px]">
+              {t("beat2")}
+            </p>
+          </Reveal>
 
         </SectionContainer>
 

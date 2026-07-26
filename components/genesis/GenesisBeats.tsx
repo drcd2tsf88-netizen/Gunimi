@@ -49,7 +49,7 @@ interface BeatProps {
 
 function Beat({ diagnosis, explanation, answer }: BeatProps) {
   return (
-    <div className="flex flex-col gap-[18vh] md:gap-[22vh]">
+    <div className="flex flex-col gap-[9vh] md:gap-[11vh]">
 
       {/* Sentence 1 — Diagnosis. Short, settled, certain. */}
       <BeatReveal y={28} duration={1.1}>
@@ -90,7 +90,7 @@ export function GenesisBeats() {
   return (
     <Section id="genesis-beats" ambient="none">
       <SectionContainer maxWidth="text">
-        <div className="flex flex-col gap-[38vh]">
+        <div className="flex flex-col gap-[18vh]">
 
           <Beat
             diagnosis={t("b1diagnosis")}
