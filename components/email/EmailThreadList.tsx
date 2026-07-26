@@ -30,14 +30,14 @@ function formatDate(ts: string | null): string {
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-function getSenderDisplay(thread: EmailThread): string {
+function getSenderDisplay(thread: EmailThread): string | null {
   if (thread.contact?.name) return thread.contact.name;
-  const first = thread.participant_emails[0];
-  return first ?? "Unknown";
+  return thread.participant_emails[0] ?? null;
 }
 
 export default function EmailThreadList({ threads }: Props) {
-  const t = useTranslations("email");
+  const t  = useTranslations("email");
+  const tc = useTranslations("common");
 
   if (threads.length === 0) {
     return (
@@ -79,7 +79,7 @@ export default function EmailThreadList({ threads }: Props) {
                   thread.has_unread ? "font-semibold text-white" : "font-normal text-white/60",
                 ].join(" ")}
               >
-                {getSenderDisplay(thread)}
+                {getSenderDisplay(thread) ?? tc("unknown")}
               </p>
               <span className="shrink-0 text-xs text-white/25">
                 {formatDate(thread.last_message_at)}

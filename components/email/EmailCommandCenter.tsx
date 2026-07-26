@@ -84,9 +84,9 @@ function formatFullDate(ts: string | null): string {
   });
 }
 
-function senderName(thread: EmailThread): string {
+function senderName(thread: EmailThread): string | null {
   if (thread.contact?.name) return thread.contact.name;
-  return thread.participant_emails[0] ?? "Unknown";
+  return thread.participant_emails[0] ?? null;
 }
 
 // ─── Thread Detail Panel ──────────────────────────────────────────────────────
@@ -309,6 +309,8 @@ type ThreadRowProps = {
 };
 
 function ThreadRow({ thread, compact = false, onClick }: ThreadRowProps) {
+  const t  = useTranslations("email");
+  const tc = useTranslations("common");
   return (
     <div
       role={onClick ? "button" : undefined}
@@ -340,7 +342,7 @@ function ThreadRow({ thread, compact = false, onClick }: ThreadRowProps) {
               thread.has_unread ? "font-semibold text-white" : "font-normal text-white/60",
             ].join(" ")}
           >
-            {senderName(thread)}
+            {senderName(thread) ?? tc("unknown")}
           </p>
           <span className="shrink-0 text-[10px] text-white/25">
             {formatDate(thread.last_message_at, PAGE_NOW)}
@@ -353,7 +355,7 @@ function ThreadRow({ thread, compact = false, onClick }: ThreadRowProps) {
             thread.has_unread ? "text-white/70" : "text-white/35",
           ].join(" ")}
         >
-          {thread.subject ?? "(No subject)"}
+          {thread.subject ?? t("noSubject")}
         </p>
 
         {!compact && (thread.contact || thread.company) && (

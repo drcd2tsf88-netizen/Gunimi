@@ -57,36 +57,20 @@ export default function CreateTaskSheet({
   const isEdit = !!task;
 
   const [loading, setLoading] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("medium");
-  const [status, setStatus] = useState("todo");
-  const [dueDate, setDueDate] = useState("");
-  const [assignedTo, setAssignedTo] = useState("none");
-
-  const [prevOpen, setPrevOpen] = useState(open);
-  const [prevTaskId, setPrevTaskId] = useState(task?.id);
-
-  if (open !== prevOpen || task?.id !== prevTaskId) {
-    setPrevOpen(open);
-    setPrevTaskId(task?.id);
-    if (open) {
-      setTitle(task?.title ?? "");
-      setDescription(task?.description ?? "");
-      setPriority(task?.priority ?? "medium");
-      setStatus(task?.status ?? "todo");
-      setDueDate(task?.due_date ?? "");
-      setAssignedTo(task?.assigned_to ?? "none");
-    }
-  }
+  const [title, setTitle] = useState(task?.title ?? "");
+  const [description, setDescription] = useState(task?.description ?? "");
+  const [priority, setPriority] = useState(task?.priority ?? "medium");
+  const [status, setStatus] = useState(task?.status ?? "todo");
+  const [dueDate, setDueDate] = useState(task?.due_date ?? "");
+  const [assignedTo, setAssignedTo] = useState(task?.assigned_to ?? "none");
 
   function resetForm() {
-    setTitle("");
-    setDescription("");
-    setPriority("medium");
-    setStatus("todo");
-    setDueDate("");
-    setAssignedTo("none");
+    setTitle(task?.title ?? "");
+    setDescription(task?.description ?? "");
+    setPriority(task?.priority ?? "medium");
+    setStatus(task?.status ?? "todo");
+    setDueDate(task?.due_date ?? "");
+    setAssignedTo(task?.assigned_to ?? "none");
   }
 
   function handleClose() {

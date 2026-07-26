@@ -523,6 +523,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
 
       {/* CREATE / EDIT SHEET */}
       <CreateTaskSheet
+        key={editTask?.id ?? "create"}
         open={sheetOpen}
         task={editTask}
         members={members}

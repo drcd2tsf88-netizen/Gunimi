@@ -171,7 +171,7 @@ export default function DealDetailView({
     {
       id: "work",
       label: t("tabWork"),
-      badge: pendingTasksCount,
+      badge: pendingTasksCount > 0 ? pendingTasksCount : undefined,
       content: (
         <div className="space-y-6">
           <DealTasks

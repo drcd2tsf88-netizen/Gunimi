@@ -932,7 +932,8 @@
     "confirm": "Potvrdiť",
     "yes": "Áno",
     "no": "Nie",
-    "never": "Nikdy"
+    "never": "Nikdy",
+    "unknown": "Neznámy"
   },
   "ai": {
     "badge": "Gunimi AI",

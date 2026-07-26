@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Mail,
   Settings,
+  StickyNote,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -18,6 +19,7 @@ export type NavItemId =
   | "companies"
   | "deals"
   | "tasks"
+  | "notes"
   | "email"
   | "calendar"
   | "analytics"
@@ -85,6 +87,7 @@ export const NAV_GROUPS: NavGroup[] = [
     labelKey: "groupWork",
     items: [
       { id: "tasks",    labelKey: "tasks",    href: "/dashboard/tasks",    icon: CheckSquare  },
+      { id: "notes",    labelKey: "notes",    href: "/dashboard/notes",    icon: StickyNote   },
       { id: "email",    labelKey: "email",    href: "/dashboard/email",    icon: Mail         },
       { id: "calendar", labelKey: "calendar", href: "/dashboard/calendar", icon: CalendarDays },
     ],

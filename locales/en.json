@@ -932,7 +932,8 @@
     "confirm": "Confirm",
     "yes": "Yes",
     "no": "No",
-    "never": "Never"
+    "never": "Never",
+    "unknown": "Unknown"
   },
   "ai": {
     "badge": "Gunimi AI",
