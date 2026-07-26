@@ -929,7 +929,8 @@
     "close": "Zavrieť",
     "confirm": "Potvrdiť",
     "yes": "Áno",
-    "no": "Nie"
+    "no": "Nie",
+    "never": "Nikdy"
   },
   "ai": {
     "badge": "Gunimi AI",
@@ -1287,6 +1288,8 @@
     "syncing": "Synchronizuje sa...",
     "syncComplete": "Synchronizovaných {count} udalostí",
     "syncFailed": "Synchronizácia zlyhala",
+    "syncFailedReconnect": "Synchronizácia zlyhala — prosím znovu prepojte účet",
+    "syncFailedApiDisabled": "Synchronizácia zlyhala — Google Calendar API nie je povolené",
     "noEvents": "Žiadne nadchádzajúce udalosti",
     "noEventsDescription": "Pripojte kalendár a synchronizujte ho, aby ste tu videli nadchádzajúce stretnutia.",
     "allDay": "Celý deň",
@@ -1366,6 +1369,8 @@
     "syncing": "Synchronizuje sa...",
     "syncComplete": "Synchronizovaných {count} vlákien",
     "syncFailed": "Synchronizácia zlyhala",
+    "syncFailedReconnect": "Synchronizácia zlyhala — prosím znovu prepojte účet",
+    "syncFailedApiDisabled": "Synchronizácia zlyhala — Google API nie je povolené",
     "noThreads": "Zatiaľ žiadne e-mailové vlákna",
     "noThreadsDescription": "Pripojte Gmail a synchronizujte ho, aby ste tu videli vlákna.",
     "noSubject": "(Bez predmetu)",

@@ -69,7 +69,7 @@ export default function OrbitAssistant({
           className="
             fixed
             inset-0
-            z-command
+            z-[90]
 
             flex
             justify-end

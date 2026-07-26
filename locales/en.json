@@ -929,7 +929,8 @@
     "close": "Close",
     "confirm": "Confirm",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "never": "Never"
   },
   "ai": {
     "badge": "Gunimi AI",
@@ -1287,6 +1288,8 @@
     "syncing": "Syncing...",
     "syncComplete": "Synced {count} events",
     "syncFailed": "Sync failed",
+    "syncFailedReconnect": "Sync failed — please reconnect your account",
+    "syncFailedApiDisabled": "Sync failed — Google Calendar API is not enabled",
     "noEvents": "No upcoming events",
     "noEventsDescription": "Connect a calendar and sync to see your upcoming meetings here.",
     "allDay": "All day",
@@ -1366,6 +1369,8 @@
     "syncing": "Syncing...",
     "syncComplete": "Synced {count} threads",
     "syncFailed": "Sync failed",
+    "syncFailedReconnect": "Sync failed — please reconnect your account",
+    "syncFailedApiDisabled": "Sync failed — Google API is not enabled",
     "noThreads": "No email threads yet",
     "noThreadsDescription": "Connect a Gmail account and sync to see email threads here.",
     "noSubject": "(No subject)",

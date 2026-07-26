@@ -1415,7 +1415,7 @@ export default function DemoDashboardPage({ initialSection }: { initialSection?:
 
         {/* Topbar */}
         <header
-          className="sticky top-0 z-topbar flex items-center justify-between border-b border-white/[0.04] bg-[#05060A]/80 px-4 py-2.5 backdrop-blur-[18px] lg:px-6"
+          className="sticky top-0 z-[40] flex items-center justify-between border-b border-white/[0.04] bg-[#05060A]/80 px-4 py-2.5 backdrop-blur-[18px] lg:px-6"
           style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
         >
           <div className="flex items-center gap-3">

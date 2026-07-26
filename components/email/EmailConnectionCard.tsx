@@ -24,10 +24,8 @@ type Props = {
   connections: EmailConnection[];
 };
 
-function formatLastSynced(ts: string | null): string {
-  if (!ts) return "Never";
-  const d = new Date(ts);
-  return d.toLocaleString(undefined, {
+function formatDate(ts: string): string {
+  return new Date(ts).toLocaleString(undefined, {
     month: "short",
     day: "numeric",
     hour: "2-digit",
@@ -47,8 +45,18 @@ export default function EmailConnectionCard({ connections }: Props) {
     try {
       setSyncing(true);
       const res = await fetch("/api/email/sync", { method: "POST" });
-      if (!res.ok) throw new Error("Sync failed");
       const data = await res.json();
+      if (!res.ok) {
+        const code = data?.code ?? "unknown";
+        if (code === "token_revoked" || code === "token_expired") {
+          toast.error(t("syncFailedReconnect"));
+        } else if (code === "api_disabled") {
+          toast.error(t("syncFailedApiDisabled"));
+        } else {
+          toast.error(t("syncFailed"));
+        }
+        return;
+      }
       toast.success(t("syncComplete", { count: data.synced ?? 0 }));
       router.refresh();
     } catch {
@@ -116,7 +124,7 @@ export default function EmailConnectionCard({ connections }: Props) {
                     </p>
                   )}
                   <p className="mt-0.5 text-xs text-white/25">
-                    {t("lastSynced")}: {formatLastSynced(conn.last_synced_at)}
+                    {t("lastSynced")}: {conn.last_synced_at ? formatDate(conn.last_synced_at) : tc("never")}
                   </p>
                 </div>
               </div>

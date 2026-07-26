@@ -929,7 +929,8 @@
     "close": "Zavřít",
     "confirm": "Potvrdit",
     "yes": "Ano",
-    "no": "Ne"
+    "no": "Ne",
+    "never": "Nikdy"
   },
   "ai": {
     "badge": "Gunimi AI",
@@ -1287,6 +1288,8 @@
     "syncing": "Synchronizuje se...",
     "syncComplete": "Synchronizováno {count} událostí",
     "syncFailed": "Synchronizace se nezdařila",
+    "syncFailedReconnect": "Synchronizace selhala — prosím znovu propojte účet",
+    "syncFailedApiDisabled": "Synchronizace selhala — Google Calendar API není povoleno",
     "noEvents": "Žádné nadcházející události",
     "noEventsDescription": "Připojte kalendář a synchronizujte jej, abyste zde viděli nadcházející schůzky.",
     "allDay": "Celý den",
@@ -1366,6 +1369,8 @@
     "syncing": "Synchronizuje se...",
     "syncComplete": "Synchronizováno {count} vláken",
     "syncFailed": "Synchronizace se nezdařila",
+    "syncFailedReconnect": "Synchronizace selhala — prosím znovu propojte účet",
+    "syncFailedApiDisabled": "Synchronizace selhala — Google API není povoleno",
     "noThreads": "Zatím žádná e-mailová vlákna",
     "noThreadsDescription": "Připojte Gmail a synchronizujte jej, abyste zde viděli vlákna.",
     "noSubject": "(Bez předmětu)",

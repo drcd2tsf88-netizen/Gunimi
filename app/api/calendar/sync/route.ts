@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import { getUser } from "@/lib/server/auth";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
@@ -33,6 +34,11 @@ export async function POST() {
     return successResponse(result);
   } catch (error) {
     logger.error("Calendar sync failed", error);
-    return errorResponse("Sync failed", 500);
+    const msg = String(error).toLowerCase();
+    let code: "token_revoked" | "token_expired" | "api_disabled" | "unknown" = "unknown";
+    if (msg.includes("invalid_grant")) code = "token_revoked";
+    else if (msg.includes("401") || msg.includes("unauthorized")) code = "token_expired";
+    else if (msg.includes("403") || msg.includes("permission_denied") || msg.includes("disabled")) code = "api_disabled";
+    return NextResponse.json({ error: "Sync failed", code }, { status: 500 });
   }
 }
