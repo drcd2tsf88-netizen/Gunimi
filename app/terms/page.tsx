@@ -52,9 +52,9 @@ export default async function TermsPage() {
                 (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;). By creating an account, you agree to these Terms.
               </p>
               <div className="mt-4 rounded-[14px] border border-amber-500/[0.16] bg-amber-500/[0.05] p-4 text-[14px] text-amber-400/80">
-                Gunimi is in private alpha. You have been granted early access to test the platform.
-                The Service is provided as-is. Features may change, and data may be reset without
-                notice during this period.
+                Gunimi is in Open Alpha. Access is controlled — each workspace is personally reviewed
+                and approved. The Service is provided as-is. Features may change, and data may be
+                reset without notice during this period.
               </div>
             </div>
 
@@ -98,7 +98,7 @@ export default async function TermsPage() {
                   <div className="space-y-3 text-[14px]">
                     <p>You retain ownership of all content and data you create in Gunimi. We do not claim intellectual property rights over your content.</p>
                     <p>You grant Gunimi a limited license to store, process, and display your content solely as necessary to provide the Service to you.</p>
-                    <p>During the private alpha, workspace data may be reset, migrated, or permanently deleted as part of development. We will make reasonable efforts to notify registered users in advance of any planned data resets.</p>
+                    <p>During Open Alpha, workspace data may be reset, migrated, or permanently deleted as part of development. We will make reasonable efforts to notify registered users in advance of any planned data resets.</p>
                   </div>
                 ),
               },
@@ -116,7 +116,7 @@ export default async function TermsPage() {
                 title: "5. Alpha Program",
                 content: (
                   <div className="text-[14px]">
-                    <p className="mb-3">As a private alpha participant, you acknowledge that:</p>
+                    <p className="mb-3">As an Open Alpha participant, you acknowledge that:</p>
                     <ul className="space-y-2">
                       {[
                         "The Service is unfinished and may contain bugs, incomplete features, and unstable behavior",
