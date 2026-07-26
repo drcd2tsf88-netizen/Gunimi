@@ -21,6 +21,7 @@ type OrbitTopbarProps = {
 
 export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarProps) {
   const t      = useTranslations("command");
+  const tNav   = useTranslations("nav");
   const { setOpen } = useOrbitCommandStore();
 
   return (
@@ -41,7 +42,7 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={t("toggleNavigation")}
+            aria-label={tNav("toggleNavigation")}
             className="
               flex h-11 w-11 shrink-0 items-center justify-center
               rounded-lg

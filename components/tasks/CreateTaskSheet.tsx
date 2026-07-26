@@ -62,7 +62,7 @@ export default function CreateTaskSheet({
   const [priority, setPriority] = useState("medium");
   const [status, setStatus] = useState("todo");
   const [dueDate, setDueDate] = useState("");
-  const [assignedTo, setAssignedTo] = useState("");
+  const [assignedTo, setAssignedTo] = useState("none");
 
   const [prevOpen, setPrevOpen] = useState(open);
   const [prevTaskId, setPrevTaskId] = useState(task?.id);
@@ -76,7 +76,7 @@ export default function CreateTaskSheet({
       setPriority(task?.priority ?? "medium");
       setStatus(task?.status ?? "todo");
       setDueDate(task?.due_date ?? "");
-      setAssignedTo(task?.assigned_to ?? "");
+      setAssignedTo(task?.assigned_to ?? "none");
     }
   }
 
@@ -86,7 +86,7 @@ export default function CreateTaskSheet({
     setPriority("medium");
     setStatus("todo");
     setDueDate("");
-    setAssignedTo("");
+    setAssignedTo("none");
   }
 
   function handleClose() {
@@ -114,7 +114,7 @@ export default function CreateTaskSheet({
           priority,
           status,
           due_date: dueDate || null,
-          assigned_to: assignedTo || null,
+          assigned_to: assignedTo !== "none" ? assignedTo : null,
         });
 
         if (!ok) {
@@ -130,7 +130,7 @@ export default function CreateTaskSheet({
           priority,
           status,
           due_date: dueDate || null,
-          assigned_to: assignedTo || null,
+          assigned_to: assignedTo !== "none" ? assignedTo : null,
         });
 
         if (!result) {
@@ -268,7 +268,7 @@ export default function CreateTaskSheet({
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value="">{t("unassigned")}</SelectItem>
+                  <SelectItem value="none">{t("unassigned")}</SelectItem>
                   {members.map((member) => (
                     <SelectItem key={member.user_id} value={member.user_id}>
                       {getMemberLabel(member)}
