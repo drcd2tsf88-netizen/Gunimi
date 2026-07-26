@@ -70,6 +70,14 @@
 }
 
 :root {
+  /* z-index scale — mirrored from @theme inline so var() references resolve at runtime */
+  --z-topbar:   40;
+  --z-dropdown: 50;
+  --z-sheet:    60;
+  --z-dialog:   70;
+  --z-toast:    80;
+  --z-command:  90;
+
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);

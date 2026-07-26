@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, ChevronRight, LogOut, MessageSquarePlus, X } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, MessageSquarePlus, Settings, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import AiCore from "@/components/ui/AiCore";
 import { isNavItemActive, type NavGroup } from "@/config/navigation";
@@ -131,7 +131,11 @@ export function SidebarHeader({
   const t = useTranslations("nav");
   return (
     <div className="flex items-center justify-between border-b border-white/[0.04] px-4 py-4">
-      <div className="flex min-w-0 items-center gap-3">
+      <Link
+        href="/dashboard/settings"
+        className="group flex min-w-0 flex-1 items-center gap-3 rounded-xl px-1 py-1 transition-colors hover:bg-white/[0.025]"
+        title={t("workspaceSettings")}
+      >
         <div className="relative h-9 w-9 shrink-0">
           <AiCore
             size={36}
@@ -141,7 +145,7 @@ export function SidebarHeader({
           />
         </div>
 
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h1 className="text-[13px] font-semibold tracking-[-0.01em] text-[#F7F8FC]">
             Gunimi
           </h1>
@@ -155,7 +159,12 @@ export function SidebarHeader({
             </p>
           )}
         </div>
-      </div>
+
+        <Settings
+          size={12}
+          className="shrink-0 text-[#9AA3B2]/20 transition-colors group-hover:text-[#9AA3B2]/50"
+        />
+      </Link>
 
       {onClose && (
         <button

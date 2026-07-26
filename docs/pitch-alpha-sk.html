@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gunimi — Pitch Alpha (SK)</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#05060A; --surface:#0A0E17; --border:rgba(255,255,255,0.055);
+    --text:#F7F8FC; --text2:#C8CDD8; --muted:#9AA3B2;
+    --primary:#6D5BFF; --primary2:#8B7DFF; --cyan:#22D3EE; --green:#22c55e;
+  }
+  html,body { width:100%;height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased; }
+  .deck { width:100%;height:100%;position:relative; }
+  .slide { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 80px;opacity:0;transform:translateX(40px);transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);pointer-events:none; }
+  .slide.active { opacity:1;transform:translateX(0);pointer-events:auto; }
+  .slide.exit-left { opacity:0;transform:translateX(-40px); }
+  .ambient { position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none; }
+  .eyebrow { font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--primary2);margin-bottom:20px; }
+  .headline { font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.0;letter-spacing:-.04em;color:var(--text);text-align:center;max-width:900px; }
+  .headline .accent { background:linear-gradient(135deg,#A998FF,#F7F8FC 50%,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+  .headline .green { color:var(--green);-webkit-text-fill-color:var(--green); }
+  .headline .muted { color:var(--muted);-webkit-text-fill-color:var(--muted); }
+  .sub { font-size:clamp(15px,1.8vw,19px);line-height:1.7;color:var(--muted);text-align:center;max-width:640px;margin-top:24px; }
+  .card { background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 32px;position:relative;overflow:hidden; }
+  .card::before { content:'';position:absolute;inset-inline:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent); }
+  .grid { display:grid;gap:16px;width:100%;max-width:960px;margin-top:40px; }
+  .grid-3 { grid-template-columns:repeat(3,1fr); }
+  .grid-2 { grid-template-columns:repeat(2,1fr); }
+  .problem-item { display:flex;align-items:flex-start;gap:14px;padding:20px 24px; }
+  .problem-item .icon { width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;margin-top:2px; }
+  .problem-item .icon.red { background:rgba(239,68,68,.12); }
+  .problem-item .icon.amber { background:rgba(245,158,11,.12); }
+  .problem-item .icon.purple { background:rgba(109,91,255,.12); }
+  .problem-item h4 { font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px; }
+  .problem-item p { font-size:13px;color:var(--muted);line-height:1.5; }
+  .signal-feed { width:100%;max-width:700px;margin-top:36px;display:flex;flex-direction:column;gap:10px; }
+  .signal-row { display:flex;align-items:center;gap:14px;padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px; }
+  .signal-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+  .signal-dot.orange { background:#F59E0B;box-shadow:0 0 8px rgba(245,158,11,.5); }
+  .signal-dot.red    { background:#EF4444;box-shadow:0 0 8px rgba(239,68,68,.5); }
+  .signal-dot.blue   { background:#22D3EE;box-shadow:0 0 8px rgba(34,211,238,.5); }
+  .signal-dot.green  { background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.5); }
+  .signal-text { font-size:14px;color:var(--text2);flex:1; }
+  .signal-time { font-size:11px;color:var(--muted);opacity:.6; }
+  .offer-list { list-style:none;margin-top:32px;display:flex;flex-direction:column;gap:14px;width:100%;max-width:600px; }
+  .offer-list li { display:flex;align-items:center;gap:14px;font-size:16px;color:var(--text2); }
+  .offer-list li .check { width:24px;height:24px;border-radius:50%;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:13px;flex-shrink:0; }
+  .aicore { position:relative;display:flex;align-items:center;justify-content:center; }
+  .aicore .core { width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(109,91,255,.6) 0%,rgba(109,91,255,.2) 50%,transparent 70%);box-shadow:0 0 40px rgba(109,91,255,.4),0 0 80px rgba(109,91,255,.15);animation:pulse 3s ease-in-out infinite; }
+  .aicore .ring { position:absolute;border-radius:50%;border:1px solid rgba(109,91,255,.15);animation:ringpulse 4s ease-in-out infinite; }
+  .aicore .ring:nth-child(2){width:120px;height:120px;animation-delay:.5s;}
+  .aicore .ring:nth-child(3){width:170px;height:170px;animation-delay:1s;}
+  .aicore .ring:nth-child(4){width:230px;height:230px;animation-delay:1.5s;}
+  @keyframes pulse{0%,100%{opacity:.8;transform:scale(.97)}50%{opacity:1;transform:scale(1.03)}}
+  @keyframes ringpulse{0%,100%{opacity:.4}50%{opacity:.7}}
+  .badge { display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:5px 14px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:24px; }
+  .badge.alpha { background:rgba(109,91,255,.1);border:1px solid rgba(109,91,255,.25);color:var(--primary2); }
+  .badge .blink { width:6px;height:6px;border-radius:50%;background:var(--primary2);animation:blink 2s ease-in-out infinite; }
+  @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+  .nav { position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:100; }
+  .nav-btn { width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;user-select:none; }
+  .nav-btn:hover { border-color:rgba(109,91,255,.3);color:var(--text); }
+  .progress-dots { display:flex;gap:6px;align-items:center; }
+  .progress-dots span { width:6px;height:6px;border-radius:50%;background:var(--border);transition:background .3s,transform .3s; }
+  .progress-dots span.active { background:var(--primary2);transform:scale(1.3); }
+  .quote { font-size:clamp(22px,3vw,36px);font-weight:600;line-height:1.25;letter-spacing:-.025em;color:var(--text2);max-width:800px;text-align:center; }
+  .quote strong { color:var(--text); }
+  .big-stat { font-size:clamp(48px,7vw,96px);font-weight:800;letter-spacing:-.06em;line-height:1; }
+  .url { font-size:13px;color:var(--primary2);letter-spacing:.02em;margin-top:28px;opacity:.8; }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 — Cover -->
+  <div class="slide active" id="s0">
+    <div class="ambient" style="width:600px;height:600px;top:-20%;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(109,91,255,.12),transparent 65%);"></div>
+    <div class="aicore" style="margin-bottom:40px;">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="core"></div>
+    </div>
+    <div class="badge alpha"><span class="blink"></span> Open Alpha</div>
+    <h1 class="headline"><span class="accent">Gunimi</span></h1>
+    <p class="sub">AI Workspace Operating System</p>
+    <p class="url">gunimi.com</p>
+  </div>
+
+  <!-- SLIDE 2 — Problém -->
+  <div class="slide" id="s1">
+    <div class="ambient" style="width:400px;height:400px;top:10%;right:5%;background:radial-gradient(circle,rgba(239,68,68,.06),transparent 65%);"></div>
+    <p class="eyebrow">Problém</p>
+    <h2 class="headline">Vaša firma žije<br><span class="muted">v šiestich rôznych aplikáciách.</span></h2>
+    <p class="sub">CRM tu. Úlohy tam. E-maily inde. Žiadna z nich nevie čo viete vy.</p>
+    <div class="grid grid-3" style="margin-top:44px;">
+      <div class="card problem-item">
+        <div class="icon red">📋</div>
+        <div>
+          <h4>Roztrieštenú kontext</h4>
+          <p>Informácie o zákazníkovi sú v e-maile, v poznámke a v hlave. Nikde pohromade.</p>
+        </div>
+      </div>
+      <div class="card problem-item">
+        <div class="icon amber">⏱️</div>
+        <div>
+          <h4>Stratený čas</h4>
+          <p>Priemerne 2 hodiny denne strávite prepínaním medzi aplikáciami a hľadaním informácií.</p>
+        </div>
+      </div>
+      <div class="card problem-item">
+        <div class="icon purple">🔔</div>
+        <div>
+          <h4>Zmeškaná príležitosť</h4>
+          <p>Vzťah sa ochladzuje. Obchod čaká. Vy o tom neviete, pretože vám to nikto nepovedal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — Posun -->
+  <div class="slide" id="s2">
+    <div class="ambient" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(109,91,255,.09),transparent 60%);"></div>
+    <p class="quote">
+      Čo keby váš <strong>workspace vedel</strong> všetko čo viete vy<br>— a upozornil vás, kým nebude neskoro?
+    </p>
+  </div>
+
+  <!-- SLIDE 4 — Riešenie -->
+  <div class="slide" id="s3">
+    <div class="ambient" style="width:500px;height:300px;top:0;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(109,91,255,.10),transparent 65%);"></div>
+    <p class="eyebrow">Riešenie</p>
+    <h2 class="headline">Jeden priestor.<br><span class="accent">Všetko prepojené. AI ktoré rozumie.</span></h2>
+    <p class="sub">Gunimi prepája vaše kontakty, obchody, úlohy, e-maily a znalosti do jedného workspace — s AI, ktoré sa priebežne učí váš biznis.</p>
+    <div style="display:flex;gap:24px;margin-top:40px;flex-wrap:wrap;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--green);">✓</span> CRM + kontakty</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--green);">✓</span> Obchody + pipeline</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--green);">✓</span> Gmail + Kalendár</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--green);">✓</span> Úlohy + poznámky</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--green);">✓</span> AI asistent</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--green);">✓</span> Signály + upozornenia</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — AI Signály -->
+  <div class="slide" id="s4">
+    <div class="ambient" style="width:400px;height:400px;top:5%;right:5%;background:radial-gradient(circle,rgba(34,211,238,.06),transparent 65%);"></div>
+    <p class="eyebrow">Gunimi Intelligence</p>
+    <h2 class="headline" style="font-size:clamp(28px,4vw,52px);">AI ktoré sleduje<br><span class="accent">kým vy pracujete.</span></h2>
+    <div class="signal-feed">
+      <div class="signal-row">
+        <span class="signal-dot orange"></span>
+        <span class="signal-text">Firma <strong>Novák s.r.o.</strong> — žiadny kontakt 47 dní. Vzťah sa ochladzuje.</span>
+        <span class="signal-time">pred 2 h</span>
+      </div>
+      <div class="signal-row">
+        <span class="signal-dot red"></span>
+        <span class="signal-text">Obchod <strong>Web redesign</strong> — vo fáze „Ponuka" už 18 dní bez pohybu.</span>
+        <span class="signal-time">pred 5 h</span>
+      </div>
+      <div class="signal-row">
+        <span class="signal-dot blue"></span>
+        <span class="signal-text">Úloha <strong>Zavolať Petra Horáka</strong> — termín uplynul včera.</span>
+        <span class="signal-time">včera</span>
+      </div>
+      <div class="signal-row">
+        <span class="signal-dot green"></span>
+        <span class="signal-text"><strong>Jana Součková</strong> otvorila vašu ponuku 3× za poslednú hodinu.</span>
+        <span class="signal-time">práve teraz</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — Demo -->
+  <div class="slide" id="s5">
+    <div class="ambient" style="width:600px;height:400px;top:0;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(109,91,255,.08),transparent 60%);"></div>
+    <p class="eyebrow">Demo</p>
+    <h2 class="headline" style="font-size:clamp(28px,3.5vw,48px);">Pozrite sa ako to funguje.</h2>
+    <div class="card" style="margin-top:36px;max-width:720px;width:100%;padding:36px 40px;">
+      <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:24px;">Živé demo</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div style="font-size:14px;color:var(--text2);line-height:1.8;">
+          <div>→ Pridať kontakt a firmu</div>
+          <div>→ Vytvoriť obchod</div>
+          <div>→ Prepojiť Gmail</div>
+        </div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.8;">
+          <div>→ Opýtať sa AI na biznis</div>
+          <div>→ Vidieť signály</div>
+          <div>→ Command Center (⌘K)</div>
+        </div>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:24px;font-size:14px;">Otvorte <span style="color:var(--primary2);">gunimi.com</span> alebo ukážte živý workspace.</p>
+  </div>
+
+  <!-- SLIDE 7 — Open Alpha ponuka -->
+  <div class="slide" id="s6">
+    <div class="ambient" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(34,197,94,.06),transparent 60%);"></div>
+    <div class="badge alpha"><span class="blink"></span> Open Alpha</div>
+    <h2 class="headline" style="font-size:clamp(28px,4vw,52px);">Čo ponúkam<br><span class="green">vám osobne.</span></h2>
+    <ul class="offer-list">
+      <li><span class="check">✓</span> Plný prístup ku všetkým funkciám — zadarmo</li>
+      <li><span class="check">✓</span> Osobný onboarding — nastavíme to na vašu firmu</li>
+      <li><span class="check">✓</span> Priamy vplyv na vývoj — váš feedback formuje produkt</li>
+      <li><span class="check">✓</span> Žiadne záväzky — ste prví, nie zákazníci</li>
+      <li><span class="check">✓</span> Osobný kontakt — nie support ticket, priamo ku mne</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 8 — Prečo teraz -->
+  <div class="slide" id="s7">
+    <div class="ambient" style="width:400px;height:400px;top:5%;left:5%;background:radial-gradient(circle,rgba(109,91,255,.08),transparent 65%);"></div>
+    <p class="eyebrow">Prečo teraz</p>
+    <h2 class="headline" style="font-size:clamp(26px,3.5vw,48px);">Hľadám <span class="accent">5 firiem</span><br>ktoré to zformujú.</h2>
+    <p class="sub">Nechcem stovky používateľov. Chcem 5 firiem ktoré to budú skutočne používať a povedia mi čo nefunguje. Na oplátku dostanete nástroj ktorý rastie spolu s vami.</p>
+    <div class="card" style="margin-top:36px;max-width:600px;width:100%;display:flex;gap:32px;padding:24px 32px;">
+      <div style="text-align:center;">
+        <div class="big-stat" style="color:var(--primary2);">5</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">miest celkom</div>
+      </div>
+      <div style="width:1px;background:var(--border);"></div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.8;display:flex;flex-direction:column;justify-content:center;">
+        <div>Každý workspace osobne onboardujem</div>
+        <div>Každý feedback čítam sám</div>
+        <div>Každá firma dostane priamy kontakt</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 — CTA -->
+  <div class="slide" id="s8">
+    <div class="ambient" style="width:700px;height:500px;top:-10%;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(109,91,255,.12),transparent 60%);"></div>
+    <div class="aicore" style="margin-bottom:36px;">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="core"></div>
+    </div>
+    <h2 class="headline" style="font-size:clamp(32px,5vw,60px);">Ďalší krok<br><span class="accent">je jednoduchý.</span></h2>
+    <div class="card" style="margin-top:40px;max-width:580px;width:100%;padding:32px 40px;text-align:center;">
+      <p style="font-size:15px;color:var(--muted);margin-bottom:20px;">Zaregistrujte sa — prihlášku osobne schválim a onboardujem vás.</p>
+      <p style="font-size:22px;font-weight:700;color:var(--primary2);letter-spacing:-.02em;">gunimi.com/register</p>
+      <div style="height:1px;background:var(--border);margin:20px 0;"></div>
+      <p style="font-size:13px;color:var(--muted);">Alebo napíšte priamo: <span style="color:var(--text2);">michal@gunimi.com</span></p>
+    </div>
+  </div>
+
+</div>
+
+<nav class="nav">
+  <button class="nav-btn" onclick="navigate(-1)">←</button>
+  <div class="progress-dots" id="dots"></div>
+  <button class="nav-btn" onclick="navigate(1)">→</button>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  let current = 0;
+  slides.forEach((_,i)=>{ const d=document.createElement('span'); if(i===0)d.classList.add('active'); dotsEl.appendChild(d); });
+  function navigate(dir) {
+    const next=current+dir;
+    if(next<0||next>=slides.length)return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add(dir>0?'exit-left':'');
+    setTimeout(()=>slides[current].classList.remove('exit-left'),450);
+    current=next;
+    slides[current].classList.add('active');
+    dotsEl.querySelectorAll('span').forEach((d,i)=>d.classList.toggle('active',i===current));
+  }
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')navigate(1);
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp')navigate(-1);
+  });
+  let startX=0;
+  document.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;});
+  document.addEventListener('touchend',e=>{ const diff=startX-e.changedTouches[0].clientX; if(Math.abs(diff)>50)navigate(diff>0?1:-1); });
+</script>
+</body>
+</html>
