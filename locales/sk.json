@@ -380,7 +380,9 @@
     "allPriorities": "Všetky priority",
     "allAssignees": "Všetci zodpovední",
     "clearFilters": "Zrušiť filtre",
+    "cycleStatusTooltip": "Kliknutím zmeníte stav",
     "noResults": "Žiadne úlohy nezodpovedajú vašim filtrám",
+    "noResultsDescription": "Skúste upraviť vyhľadávanie alebo filtre.",
     "pageTitle": "Úlohy"
   },
   "companies": {

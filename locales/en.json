@@ -380,7 +380,9 @@
     "allPriorities": "All Priorities",
     "allAssignees": "All Assignees",
     "clearFilters": "Clear Filters",
+    "cycleStatusTooltip": "Click to cycle status",
     "noResults": "No tasks match your filters",
+    "noResultsDescription": "Try adjusting your search or filters.",
     "pageTitle": "Tasks"
   },
   "companies": {

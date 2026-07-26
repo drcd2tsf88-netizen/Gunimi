@@ -88,7 +88,7 @@ function dueDateInfo(date?: string | null): { label: string; className: string }
   const due = new Date(date);
   due.setHours(0, 0, 0, 0);
 
-  const label = due.toLocaleDateString("en-US", {
+  const label = due.toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -396,7 +396,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
           <GunimiEmptyState
             icon={Search}
             title={t("noResults")}
-            description={t("clearFilters")}
+            description={t("noResultsDescription")}
           />
         ) : (
           <div className="overflow-hidden rounded-2xl border border-white/[0.08]">
@@ -457,7 +457,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
                         <button
                           disabled={toggling === task.id}
                           onClick={() => handleCycleStatus(task)}
-                          title="Click to cycle status"
+                          title={t("cycleStatusTooltip")}
                           className={[
                             "inline-flex items-center rounded-full border px-2.5 py-0.5",
                             "text-[10px] font-medium uppercase tracking-wide",
