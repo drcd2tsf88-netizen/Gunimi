@@ -65,7 +65,7 @@ TIER 1 — KRITICKÉ BUGY & CHÝBAJÚCE ZÁKLADY
 
   [ ] 4.  Email notifikácie (transactional)
           - Notifikácia keď si pozvaný do workspacu (existuje čiastočne)
-          - Digest — denný/týždenný prehľad úloh
+           - Digest — denný/týždenný prehľad úloh
           - Odhadovaný čas: 2 dni
 
   [ ] 5.  Recurring / opakované úlohy
@@ -77,6 +77,7 @@ TIER 1 — KRITICKÉ BUGY & CHÝBAJÚCE ZÁKLADY
           - Pre vymáhanie pohľadávok a komplexné dealy
           - Aktuálne len jedna hodnota (value)
           - Odhadovaný čas: 1–2 dni (+ DB migrácia)
+
 
   [ ] 7.  Dátum premlčania / expiry date na dealoch
           - Pre právne, pohľadávky, zmluvy s expiráciou

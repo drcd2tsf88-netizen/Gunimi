@@ -2384,6 +2384,41 @@
       },
       "releases": [
         {
+          "version": "1.0",
+          "date": "Júl 2026",
+          "title": "Open Alpha",
+          "description": "Gunimi vstupuje do Open Alpha. Workspace je živý, AI sleduje každú interakciu a prví reální používatelia sú vnútri. Tento release prináša interaktívny demo, Signal Engine, Business Memory, mobilné opravy a vlnu UI a spoľahlivostných vylepšení.",
+          "changes": [
+            { "tag": "new", "text": "Interaktívny demo workspace — vyskúšajte Gunimi pred registráciou, bez účtu" },
+            { "tag": "new", "text": "Signal Engine — 25 typov signálov s automatickým odhaľovaním rizík a príležitostí naprieč workspacom" },
+            { "tag": "new", "text": "Business Memory System — workspace sa učí z každej interakcie, pamäť na úrovni entít s decay konfidenciou" },
+            { "tag": "new", "text": "Mena dealu — EUR, CZK a USD voliteľné pre každú príležitosť" },
+            { "tag": "new", "text": "Jazykové preferencie workspacu — lokalizácia per používateľ, podpora EN, SK, CS" },
+            { "tag": "improved", "text": "Prepracovaná homepage — Genesis hero s animovanou AI orbitou, rozbaľovacie menu Produkt a Spoločnosť" },
+            { "tag": "improved", "text": "Mobilné prostredie — oprava polohovania notifikácií, eliminovaný horizontálny scroll" },
+            { "tag": "fixed", "text": "Rozbaľovacie zoznamy vnútri panelov nereagovali — opravený z-index Selectu" },
+            { "tag": "fixed", "text": "Formulár vytvorenia úlohy — pole zodpovednej osoby vždy viditeľné" },
+            { "tag": "fixed", "text": "Aktualizácia rolí členov tímu zlyhávala potichu kvôli krehkej kontrole počtu" },
+            { "tag": "security", "text": "Runtime Zero — prehliadačová konzola úplne čistá, žiadne neošetrené chyby ani debug výstupy" }
+          ]
+        },
+        {
+          "version": "0.95",
+          "date": "Jún 2026",
+          "title": "AI Základy",
+          "description": "Inteligentná vrstva pod Gunimi je produkčne kompletná. Orbit Assistant, Morning Intelligence a infraštruktúra skenovania signálov sú live a nepretržite bežia naprieč workspacmi.",
+          "changes": [
+            { "tag": "new", "text": "Orbit Intelligence — AI asistent s plnou pamäťou workspacu a kontextovým povedomím" },
+            { "tag": "new", "text": "Morning Intelligence — personalizovaný prehľad workspacu generovaný pri každom prihlásení" },
+            { "tag": "new", "text": "Cron skenovanie signálov — automatický scan workspacu každých 6 hodín cez Vercel Cron" },
+            { "tag": "new", "text": "Admin panel — schvaľovanie alpha používateľov, monitoring AI nákladov, dogfood dashboard" },
+            { "tag": "new", "text": "Interný dogfood feedback systém — formulár pre tím prístupný klávesou ?" },
+            { "tag": "improved", "text": "Lifecycle signálov — stavy active, claimed, resolved a expired s plnou pozorovateľnosťou" },
+            { "tag": "improved", "text": "Health monitoring — endpointy /api/health a /api/signals/health pre viditeľnosť infraštruktúry" },
+            { "tag": "fixed", "text": "Supabase PGRST116 chyby vyriešené — maybeSingle() používané konzistentne naprieč všetkými dopytmi" }
+          ]
+        },
+        {
           "version": "0.9",
           "date": "Jún 2026",
           "title": "Workspace Intelligence",

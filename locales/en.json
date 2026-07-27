@@ -2384,6 +2384,41 @@
       },
       "releases": [
         {
+          "version": "1.0",
+          "date": "July 2026",
+          "title": "Open Alpha",
+          "description": "Gunimi enters Open Alpha. The workspace is live, the AI is watching, and the first real users are in. This release ships the interactive demo, the Signal Engine, Business Memory, mobile fixes, and a wave of UI and reliability improvements.",
+          "changes": [
+            { "tag": "new", "text": "Interactive demo workspace — experience Gunimi before signing up, no account needed" },
+            { "tag": "new", "text": "Signal Engine — 25 signal types with automatic risk and opportunity detection across your workspace" },
+            { "tag": "new", "text": "Business Memory System — workspace learns from every interaction, entity-level memory with confidence decay" },
+            { "tag": "new", "text": "Deal currency — EUR, CZK, and USD selectable per opportunity" },
+            { "tag": "new", "text": "Workspace language preferences — per-user locale with EN, SK, CS support" },
+            { "tag": "improved", "text": "Homepage redesigned — Genesis hero with animated AI orbit, Product and Company nav dropdowns" },
+            { "tag": "improved", "text": "Mobile experience — notification dropdown positioning fixed, horizontal scroll eliminated" },
+            { "tag": "fixed", "text": "Dropdowns inside slide-over panels not responding — Select z-index corrected" },
+            { "tag": "fixed", "text": "Task creation form — assignee field always visible regardless of team size" },
+            { "tag": "fixed", "text": "Team role updates failing silently due to fragile Supabase count check" },
+            { "tag": "security", "text": "Runtime Zero — browser console fully clean, no unhandled errors or debug output" }
+          ]
+        },
+        {
+          "version": "0.95",
+          "date": "June 2026",
+          "title": "AI Foundation",
+          "description": "The intelligence layer underneath Gunimi is production-complete. Orbit Assistant, Morning Intelligence, and the Signal scanning infrastructure are all live and running continuously across workspaces.",
+          "changes": [
+            { "tag": "new", "text": "Orbit Intelligence — AI assistant with full workspace memory and context awareness" },
+            { "tag": "new", "text": "Morning Intelligence — personalised workspace brief generated on every login" },
+            { "tag": "new", "text": "Signal scanning cron — automatic workspace scan every 6 hours via Vercel Cron" },
+            { "tag": "new", "text": "Admin panel — alpha user approvals, AI usage monitoring, dogfood feedback dashboard" },
+            { "tag": "new", "text": "Internal dogfood feedback system — team feedback sheet accessible with the ? key" },
+            { "tag": "improved", "text": "Signal lifecycle — active, claimed, resolved, and expired states with full observability" },
+            { "tag": "improved", "text": "Health monitoring — /api/health and /api/signals/health endpoints for infrastructure visibility" },
+            { "tag": "fixed", "text": "Supabase PGRST116 errors resolved — maybeSingle() used consistently across all queries" }
+          ]
+        },
+        {
           "version": "0.9",
           "date": "June 2026",
           "title": "Workspace Intelligence",
