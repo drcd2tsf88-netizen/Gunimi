@@ -225,7 +225,7 @@ export default function DashboardLayoutClient({
       </AnimatePresence>
 
       {/* MAIN */}
-      <div className="flex min-h-dvh flex-1 flex-col">
+      <div className="flex min-h-dvh min-w-0 flex-1 flex-col overflow-x-hidden">
         <OrbitTopbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <OrbitCommand userRole={userRole} />
         {dogfoodEnabled && <FeedbackSheet />}

@@ -71,10 +71,13 @@ export default function OrbitNotifications() {
   function handleToggle() {
     if (!open && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      setDropdownPos({
-        top: rect.bottom + 8,
-        right: window.innerWidth - rect.right,
-      });
+      const vw = window.innerWidth;
+      const dropdownWidth = Math.min(vw - 32, 420);
+      const rawRight = vw - rect.right;
+      // Ensure the left edge of the dropdown stays at least 16px inside the viewport
+      const maxRight = vw - dropdownWidth - 16;
+      const safeRight = Math.max(0, Math.min(rawRight, maxRight));
+      setDropdownPos({ top: rect.bottom + 8, right: safeRight });
     }
     setOpen((prev) => !prev);
   }
