@@ -204,7 +204,7 @@ export default function DealsListView({ deals, onEdit }: Props) {
                 text-white
               "
             >
-              {formatCurrency(Number(deal.value || 0))}
+              {formatCurrency(Number(deal.value || 0), deal.currency)}
             </p>
 
             <p

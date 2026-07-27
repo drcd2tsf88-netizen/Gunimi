@@ -562,6 +562,7 @@
     "expectedClose": "Predpokladané uzavretie",
     "opportunityName": "Názov príležitosti",
     "opportunityValue": "Hodnota príležitosti",
+    "currency": "Mena",
     "probability": "Pravdepodobnosť",
     "description": "Popis",
     "create": "Vytvoriť",

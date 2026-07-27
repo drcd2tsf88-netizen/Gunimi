@@ -36,19 +36,14 @@ export async function updateMemberRole(memberId: string, role: string): Promise<
 
     if (!targetMember || targetMember.role === "owner") return false;
 
-    const { error, count } = await supabaseAdmin
+    const { error } = await supabaseAdmin
       .from("workspace_members")
-      .update({ role }, { count: "exact" })
+      .update({ role })
       .eq("id", memberId)
       .eq("workspace_id", workspace.id);
 
     if (error) {
       logger.error(error);
-      return false;
-    }
-
-    if (!count || count === 0) {
-      logger.error("updateMemberRole: no rows updated for member", memberId);
       return false;
     }
 

@@ -30,6 +30,8 @@ export type CreateDealProps = {
 
   value?: number;
 
+  currency?: string;
+
   probability?: number;
 
   description?: string;
@@ -42,6 +44,7 @@ export async function createDeal({
   companyId,
   contactId,
   value = 0,
+  currency = "EUR",
   probability = 25,
   description,
   expectedCloseDate,
@@ -154,6 +157,8 @@ probability =
           
 
         value,
+
+        currency,
 
         probability,
 

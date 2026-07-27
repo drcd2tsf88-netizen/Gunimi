@@ -562,6 +562,7 @@
     "expectedClose": "Expected Close",
     "opportunityName": "Opportunity Name",
     "opportunityValue": "Opportunity Value",
+    "currency": "Currency",
     "probability": "Probability",
     "description": "Description",
     "create": "Create",

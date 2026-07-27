@@ -31,6 +31,8 @@ export type UpdateDealProps = {
 
   value?: number;
 
+  currency?: string;
+
   probability?: number;
 
   description?: string;
@@ -46,6 +48,7 @@ export async function updateDeal({
   companyId,
   contactId,
   value = 0,
+  currency = "EUR",
   probability = 25,
   description,
   expectedCloseDate,
@@ -185,6 +188,8 @@ export async function updateDeal({
           contactId || null,
 
         value,
+
+        currency,
 
         probability,
 

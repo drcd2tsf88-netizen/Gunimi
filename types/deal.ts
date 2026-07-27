@@ -4,6 +4,7 @@ export type Deal = {
   description?: string;
   stage: string;
   value?: number;
+  currency?: string;
   probability?: number;
   expected_close_date?: string;
   lost_reason?: string;

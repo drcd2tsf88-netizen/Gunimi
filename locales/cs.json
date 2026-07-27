@@ -562,6 +562,7 @@
     "expectedClose": "Předpokládané uzavření",
     "opportunityName": "Název příležitosti",
     "opportunityValue": "Hodnota příležitosti",
+    "currency": "Měna",
     "probability": "Pravděpodobnost",
     "description": "Popis",
     "create": "Vytvořit",

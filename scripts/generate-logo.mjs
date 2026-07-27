@@ -1,5 +1,4 @@
 import sharp from "sharp";
-import { writeFileSync } from "fs";
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" width="120" height="120">
   <rect width="120" height="120" rx="26" fill="#05060A"/>

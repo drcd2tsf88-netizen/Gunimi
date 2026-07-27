@@ -137,7 +137,7 @@ function SelectContent({
           `
           relative
 
-          z-[50]
+          z-[70]
 
           overflow-hidden
 

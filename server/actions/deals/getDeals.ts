@@ -37,6 +37,7 @@ export async function getDeals() {
   title,
   description,
   value,
+  currency,
   probability,
   stage,
   expected_close_date,

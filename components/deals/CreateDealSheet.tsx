@@ -59,6 +59,7 @@ export default function CreateDealSheet({
   const [companyId, setCompanyId] = useState("");
   const [contactId, setContactId] = useState("");
   const [value, setValue] = useState("");
+  const [currency, setCurrency] = useState("EUR");
   const [probability, setProbability] = useState(25);
   const [expectedCloseDate, setExpectedCloseDate] = useState("");
   const [description, setDescription] = useState("");
@@ -76,6 +77,7 @@ export default function CreateDealSheet({
     setCompanyId("");
     setContactId("");
     setValue("");
+    setCurrency("EUR");
     setProbability(25);
     setExpectedCloseDate("");
     setDescription("");
@@ -111,6 +113,7 @@ export default function CreateDealSheet({
         companyId: companyId || undefined,
         contactId: contactId || undefined,
         value: Number(value) || 0,
+        currency,
         probability,
         description,
         expectedCloseDate: expectedCloseDate || undefined,
@@ -252,6 +255,19 @@ export default function CreateDealSheet({
             {/* RIGHT COLUMN */}
 
             <div className="space-y-5">
+              <GunimiField label={t("deals.currency")}>
+                <Select value={currency} onValueChange={setCurrency} disabled={loading}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="EUR">EUR — Euro</SelectItem>
+                    <SelectItem value="CZK">CZK — Česká koruna</SelectItem>
+                    <SelectItem value="USD">USD — US Dollar</SelectItem>
+                  </SelectContent>
+                </Select>
+              </GunimiField>
+
               <GunimiField
                 label={t("deals.opportunityValue")}
               >
@@ -332,7 +348,7 @@ export default function CreateDealSheet({
                     text-white
                   "
                 >
-                  {formatCurrency(Math.round(expectedRevenue))}
+                  {formatCurrency(Math.round(expectedRevenue), currency)}
                 </p>
               </div>
 

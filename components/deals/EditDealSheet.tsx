@@ -77,6 +77,7 @@ export default function EditDealSheet({
   const [companyId, setCompanyId] = useState(deal.company?.id ?? "");
   const [contactId, setContactId] = useState(deal.contact?.id ?? "");
   const [value, setValue] = useState(String(deal.value ?? ""));
+  const [currency, setCurrency] = useState(deal.currency ?? "EUR");
   const [probability, setProbability] = useState(deal.probability ?? 25);
   const [expectedCloseDate, setExpectedCloseDate] = useState(
     deal.expected_close_date
@@ -118,6 +119,7 @@ export default function EditDealSheet({
         companyId: companyId || undefined,
         contactId: contactId || undefined,
         value: Number(value) || 0,
+        currency,
         probability,
         description,
         expectedCloseDate: expectedCloseDate || undefined,
@@ -243,6 +245,19 @@ export default function EditDealSheet({
               {/* RIGHT COLUMN */}
 
               <div className="space-y-5">
+                <GunimiField label={t("deals.currency")}>
+                  <Select value={currency} onValueChange={setCurrency} disabled={loading}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="EUR">EUR — Euro</SelectItem>
+                      <SelectItem value="CZK">CZK — Česká koruna</SelectItem>
+                      <SelectItem value="USD">USD — US Dollar</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </GunimiField>
+
                 <GunimiField label={t("deals.opportunityValue")}>
                   <GunimiInput
                     type="number"
@@ -286,7 +301,7 @@ export default function EditDealSheet({
                   </p>
 
                   <p className="mt-2 text-2xl font-semibold text-white">
-                    {formatCurrency(Math.round(expectedRevenue))}
+                    {formatCurrency(Math.round(expectedRevenue), currency)}
                   </p>
                 </div>
 

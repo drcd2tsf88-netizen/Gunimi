@@ -240,28 +240,26 @@ export default function CreateTaskSheet({
             />
           </GunimiField>
 
-          {members.length > 0 && (
-            <GunimiField label={t("assignee")}>
-              <Select
-                value={assignedTo}
-                onValueChange={setAssignedTo}
-                disabled={loading}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t("unassigned")} />
-                </SelectTrigger>
+          <GunimiField label={t("assignee")}>
+            <Select
+              value={assignedTo}
+              onValueChange={setAssignedTo}
+              disabled={loading}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={t("unassigned")} />
+              </SelectTrigger>
 
-                <SelectContent>
-                  <SelectItem value="none">{t("unassigned")}</SelectItem>
-                  {members.map((member) => (
-                    <SelectItem key={member.user_id} value={member.user_id}>
-                      {getMemberLabel(member)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </GunimiField>
-          )}
+              <SelectContent>
+                <SelectItem value="none">{t("unassigned")}</SelectItem>
+                {members.map((member) => (
+                  <SelectItem key={member.user_id} value={member.user_id}>
+                    {getMemberLabel(member)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </GunimiField>
         </div>
 
         <SheetFooter>
