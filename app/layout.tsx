@@ -9,6 +9,9 @@ import { OrbitRuntimeProvider } from "@/core/runtime/OrbitRuntimeProvider";
 import { APP_CONFIG } from "@/lib/config/app";
 import CookieConsent from "@/components/public/CookieConsent";
 
+import { SpeedInsights }
+from "@vercel/speed-insights/next";
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -126,6 +129,7 @@ export default async function RootLayout({
           <CookieConsent />
         </OrbitRuntimeProvider>
         </NextIntlClientProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
