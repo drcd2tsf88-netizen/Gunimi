@@ -34,6 +34,8 @@ AI & INTELIGENCIA
 
 INTEGRÁCIE
   [x] Google Calendar — OAuth 2.0, sync, event list
+  [x] Gunimi Kalendár — dual-tab (Gunimi workspace items + Google Calendar)
+  [ ] Gunimi Kalendár — týždenná mriežka, drag-and-drop, AI today sidebar   ← Q3 2026
   [x] Gmail — OAuth 2.0, thread sync, linkage na kontakty/firmy
   [x] Google OAuth App — verifikovaná Googlom (júl 2026)
 
@@ -126,7 +128,7 @@ TIER 2 — RAST (Blokuje škálovanie na viac tímov)
           - Každý manager chce iné metriky
           - Drag-and-drop widget builder
           - Odhadovaný čas: 1–2 týždne
-
+,
   [ ] 9.  Teams / Oddelenia v rámci workspacu     ← POZOR: architektúra
           - NERIEŠIŤ cez team_id FK (porušuje Domain Laws)
           - Správne: workspace_teams entita + role-based isolation
@@ -331,6 +333,7 @@ TECHNICKÝ DLUH (backend / infraštruktúra)
   [ ] Dual design system — OrbitUI vs GunimiUI — zjednotiť na GunimiUI
   [ ] AI usage cost monitoring — upozornenie pri prekročení thresholdu
   [ ] Stripe webhook secret — pridať do Vercel env vars         ← UROBIŤ TERAZ
+  [ ] Multi-theme systém — CSS variables, dark/midnight/slate/light, switcher v Settings (len vizuálny pocit, žiadny blocker)
 
 --------------------------------------------------------------------------------
 POZNÁMKY

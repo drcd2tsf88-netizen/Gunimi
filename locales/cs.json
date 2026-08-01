@@ -1501,7 +1501,14 @@
     "gunimiCalendarTitle": "Gunimi Kalendář",
     "gunimiCalendarSubtitle": "Úkoly a obchody načtené z kontextu workspace",
     "gunimiCalendarEmpty": "Žádné nadcházející úkoly ani obchody s termínem",
-    "overdue": "Po termínu"
+    "overdue": "Po termínu",
+    "weekViewTitle": "Týden",
+    "listViewTitle": "Seznam",
+    "prevWeek": "Předchozí týden",
+    "nextWeek": "Následující týden",
+    "noItemsThisDay": "Nic naplánováno",
+    "weekOf": "Týden od {date}",
+    "currentWeek": "Dnes"
   },
   "email": {
     "badge": "E-mail",

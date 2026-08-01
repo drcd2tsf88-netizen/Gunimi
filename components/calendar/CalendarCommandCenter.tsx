@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useState, useEffect } from "react";
+import { useTransition, useState, useEffect, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import Link from "next/link";
@@ -12,9 +12,12 @@ import {
   Building2,
   CalendarDays,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   ExternalLink,
   FileText,
+  LayoutList,
   MapPin,
   Sparkles,
   TrendingUp,
@@ -869,7 +872,7 @@ function LinkedCompaniesWidget({
   );
 }
 
-// ─── Gunimi Calendar Widget ───────────────────────────────────────────────────
+// ─── Gunimi Calendar — Weekly Grid + List ────────────────────────────────────
 
 const PRIORITY_COLOR: Record<string, string> = {
   high: "text-red-400",
@@ -877,155 +880,195 @@ const PRIORITY_COLOR: Record<string, string> = {
   low: "text-zinc-500",
 };
 
-function formatDateLabel(iso: string, todayLabel: string, tomorrowLabel: string): string {
-  const d = new Date(iso);
-  if (isSameDay(d, PAGE_NOW)) return todayLabel;
-  const tom = new Date(PAGE_NOW);
-  tom.setDate(tom.getDate() + 1);
-  if (isSameDay(d, tom)) return tomorrowLabel;
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+const PRIORITY_DOT: Record<string, string> = {
+  high: "bg-red-500",
+  medium: "bg-amber-400",
+  low: "bg-zinc-600",
+};
+
+function getWeekStart(offset: number): Date {
+  const d = new Date(PAGE_NOW);
+  const day = d.getDay(); // 0=Sun
+  const diff = day === 0 ? -6 : 1 - day; // go back to Monday
+  d.setDate(d.getDate() + diff + offset * 7);
+  d.setHours(0, 0, 0, 0);
+  return d;
 }
 
-function GunimCalendarWidget({
+function addDays(base: Date, n: number): Date {
+  const d = new Date(base);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+
+function dateKey(d: Date): string {
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+// ── Week Grid ──────────────────────────────────────────────────────────────────
+
+function WeekGrid({
   items,
+  weekOffset,
   t,
 }: {
   items: WorkspaceCalendarItem[];
+  weekOffset: number;
   t: ReturnType<typeof useTranslations<"calendar">>;
 }) {
-  const today = t("today");
-  const tomorrow = t("tomorrow");
+  const weekStart = useMemo(() => getWeekStart(weekOffset), [weekOffset]);
+  const days = useMemo(() => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)), [weekStart]);
 
-  const grouped = new Map<string, WorkspaceCalendarItem[]>();
-  for (const item of items) {
-    const d = new Date(item.date);
-    let key: string;
-    if (isSameDay(d, PAGE_NOW)) key = "__today__";
-    else {
-      const tom = new Date(PAGE_NOW);
-      tom.setDate(tom.getDate() + 1);
-      if (isSameDay(d, tom)) key = "__tomorrow__";
-      else key = d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+  const byDay = useMemo(() => {
+    const map = new Map<string, WorkspaceCalendarItem[]>();
+    for (const item of items) {
+      if (item.isOverdue) continue;
+      const k = dateKey(new Date(item.date));
+      const arr = map.get(k) ?? [];
+      arr.push(item);
+      map.set(k, arr);
     }
-    const arr = grouped.get(key) ?? [];
-    arr.push(item);
-    grouped.set(key, arr);
-  }
+    return map;
+  }, [items]);
 
-  const overdueItems = items.filter((i) => i.isOverdue);
-  const upcomingItems = items.filter((i) => !i.isOverdue);
+  const overdueItems = weekOffset === 0 ? items.filter((i) => i.isOverdue) : [];
 
   return (
-    <Widget
-      icon={Sparkles}
-      iconColor="text-violet-300"
-      iconBg="border-violet-500/20 bg-violet-500/10"
-      title={t("gunimiCalendarTitle")}
-      subtitle={t("gunimiCalendarSubtitle")}
-      count={items.length}
-    >
-      {items.length === 0 ? (
-        <WidgetEmptyState icon={CheckCircle2} message={t("gunimiCalendarEmpty")} />
-      ) : (
-        <div>
-          {overdueItems.length > 0 && (
-            <div>
-              <div className="border-b border-white/[0.04] bg-red-500/[0.04] px-5 py-2">
-                <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-red-400/80">
-                  {t("overdue")} · {overdueItems.length}
-                </p>
-              </div>
-              <div className="divide-y divide-white/[0.03]">
-                {overdueItems.map((item) => (
-                  <GunimCalendarRow key={item.id} item={item} today={today} tomorrow={tomorrow} />
-                ))}
-              </div>
-            </div>
-          )}
-          {[...grouped.entries()]
-            .filter(([k]) => k !== "__today__" && !upcomingItems.some(() => false))
-            .map(() => null)}
-          {upcomingItems.length > 0 && (
-            <div>
-              {[...new Map(
-                upcomingItems.map((i) => {
-                  const d = new Date(i.date);
-                  let key: string;
-                  if (isSameDay(d, PAGE_NOW)) key = "__today__";
-                  else {
-                    const tom = new Date(PAGE_NOW);
-                    tom.setDate(tom.getDate() + 1);
-                    key = isSameDay(d, tom)
-                      ? "__tomorrow__"
-                      : d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
-                  }
-                  return [key, key] as [string, string];
-                })
-              ).keys()].map((groupKey) => {
-                const groupItems = upcomingItems.filter((i) => {
-                  const d = new Date(i.date);
-                  if (groupKey === "__today__") return isSameDay(d, PAGE_NOW);
-                  if (groupKey === "__tomorrow__") {
-                    const tom = new Date(PAGE_NOW);
-                    tom.setDate(tom.getDate() + 1);
-                    return isSameDay(d, tom);
-                  }
-                  return d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" }) === groupKey;
-                });
-                const display = groupKey === "__today__" ? today : groupKey === "__tomorrow__" ? tomorrow : groupKey;
-                const isToday = groupKey === "__today__";
-                return (
-                  <div key={groupKey}>
-                    <div className="border-b border-white/[0.04] bg-white/[0.01] px-5 py-2">
-                      <p className={`text-[11px] font-medium uppercase tracking-[0.12em] ${isToday ? "text-emerald-400/80" : "text-white/30"}`}>
-                        {display}
-                      </p>
-                    </div>
-                    <div className="divide-y divide-white/[0.03]">
-                      {groupItems.map((item) => (
-                        <GunimCalendarRow key={item.id} item={item} today={today} tomorrow={tomorrow} />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+    <div className="space-y-4">
+      {/* Overdue strip */}
+      {overdueItems.length > 0 && (
+        <div className="overflow-hidden rounded-xl border border-red-500/20 bg-red-500/[0.04]">
+          <div className="border-b border-red-500/10 px-4 py-2.5">
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-red-400/80">
+              {t("overdue")} · {overdueItems.length}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 p-3">
+            {overdueItems.map((item) => (
+              <WeekCard key={item.id} item={item} compact />
+            ))}
+          </div>
         </div>
       )}
-    </Widget>
+
+      {/* 7-column grid */}
+      <div className="grid grid-cols-7 gap-2 overflow-x-auto">
+        {days.map((day) => {
+          const isToday = isSameDay(day, PAGE_NOW);
+          const isPast = day < PAGE_NOW && !isToday;
+          const key = dateKey(day);
+          const dayItems = byDay.get(key) ?? [];
+          const dayName = day.toLocaleDateString(undefined, { weekday: "short" });
+          const dayNum = day.getDate();
+          const monthShort = day.toLocaleDateString(undefined, { month: "short" });
+
+          return (
+            <div
+              key={key}
+              className={`flex min-h-[140px] flex-col rounded-xl border transition-colors ${
+                isToday
+                  ? "border-violet-500/30 bg-violet-500/[0.05]"
+                  : isPast
+                  ? "border-white/[0.04] bg-white/[0.01] opacity-60"
+                  : "border-white/[0.06] bg-white/[0.02]"
+              }`}
+            >
+              {/* Day header */}
+              <div
+                className={`flex flex-col items-center border-b py-2 ${
+                  isToday ? "border-violet-500/20" : "border-white/[0.05]"
+                }`}
+              >
+                <span
+                  className={`text-[9px] font-medium uppercase tracking-[0.12em] ${
+                    isToday ? "text-violet-300" : "text-white/30"
+                  }`}
+                >
+                  {dayName}
+                </span>
+                <span
+                  className={`mt-0.5 flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
+                    isToday
+                      ? "bg-violet-600 text-white"
+                      : "text-white/60"
+                  }`}
+                >
+                  {dayNum}
+                </span>
+                {day.getDate() === 1 && (
+                  <span className="text-[8px] text-white/20">{monthShort}</span>
+                )}
+              </div>
+
+              {/* Items */}
+              <div className="flex flex-1 flex-col gap-1 p-1.5">
+                {dayItems.length === 0 ? (
+                  <span className="mt-2 text-center text-[9px] text-white/15">
+                    {t("noItemsThisDay")}
+                  </span>
+                ) : (
+                  dayItems.slice(0, 5).map((item) => (
+                    <WeekCard key={item.id} item={item} />
+                  ))
+                )}
+                {dayItems.length > 5 && (
+                  <span className="px-1 text-[9px] text-white/25">
+                    +{dayItems.length - 5}
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
-function GunimCalendarRow({
+function WeekCard({
   item,
-  today,
-  tomorrow,
+  compact = false,
 }: {
   item: WorkspaceCalendarItem;
-  today: string;
-  tomorrow: string;
+  compact?: boolean;
 }) {
-  const typeColor = item.type === "task" ? "bg-violet-500/60" : "bg-emerald-400";
-  const TypeIcon = item.type === "task" ? CheckCircle2 : TrendingUp;
+  const isTask = item.type === "task";
+  const bg = isTask ? "bg-violet-500/10 border-violet-500/20 hover:bg-violet-500/15" : "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/15";
+  const textColor = isTask ? "text-violet-200" : "text-emerald-200";
+  const TypeIcon = isTask ? CheckCircle2 : TrendingUp;
 
+  return (
+    <Link
+      href={item.href}
+      className={`group flex items-start gap-1.5 rounded-lg border px-2 py-1.5 transition-colors ${bg} ${compact ? "max-w-[200px]" : "w-full"}`}
+    >
+      <TypeIcon size={9} className={`mt-0.5 shrink-0 ${textColor} opacity-70`} />
+      <div className="min-w-0 flex-1">
+        <p className={`truncate text-[10px] font-medium leading-snug ${textColor}`}>
+          {item.title}
+        </p>
+        {item.priority && (
+          <span className={`mt-0.5 inline-block h-1 w-1 rounded-full ${PRIORITY_DOT[item.priority] ?? "bg-zinc-600"}`} />
+        )}
+      </div>
+    </Link>
+  );
+}
+
+// ── List View (legacy) ─────────────────────────────────────────────────────────
+
+function ListRow({ item }: { item: WorkspaceCalendarItem }) {
+  const TypeIcon = item.type === "task" ? CheckCircle2 : TrendingUp;
   return (
     <Link
       href={item.href}
       className="flex items-start gap-3 px-5 py-3 transition-colors hover:bg-white/[0.03]"
     >
-      <div className="w-14 shrink-0 text-right">
-        <p className={`text-[10px] font-medium ${item.isOverdue ? "text-red-400" : item.isDueToday ? "text-emerald-400" : "text-white/35"}`}>
-          {item.isOverdue ? "—" : formatDateLabel(item.date, today, tomorrow)}
-        </p>
-      </div>
-      <div className="mt-1.5 shrink-0">
-        <div className={`h-1.5 w-1.5 rounded-full ${typeColor}`} />
+      <div className="mt-1 shrink-0">
+        <div className={`h-1.5 w-1.5 rounded-full ${item.type === "task" ? "bg-violet-500/60" : "bg-emerald-400"}`} />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <p className="truncate text-sm text-white/80">{item.title}</p>
-        </div>
+        <p className="truncate text-sm text-white/80">{item.title}</p>
         <div className="mt-1 flex items-center gap-2">
           <span className="inline-flex items-center gap-1 text-[10px] text-white/30">
             <TypeIcon size={9} />
@@ -1041,7 +1084,118 @@ function GunimCalendarRow({
           )}
         </div>
       </div>
+      <div className="shrink-0 text-right">
+        <p className={`text-[10px] font-medium ${item.isOverdue ? "text-red-400" : item.isDueToday ? "text-emerald-400" : "text-white/30"}`}>
+          {new Date(item.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+        </p>
+      </div>
     </Link>
+  );
+}
+
+// ── Main Gunimi Calendar Widget ────────────────────────────────────────────────
+
+function GunimCalendarWidget({
+  items,
+  t,
+}: {
+  items: WorkspaceCalendarItem[];
+  t: ReturnType<typeof useTranslations<"calendar">>;
+}) {
+  const [viewMode, setViewMode] = useState<"week" | "list">("week");
+  const [weekOffset, setWeekOffset] = useState(0);
+
+  const weekStart = getWeekStart(weekOffset);
+  const weekEnd = addDays(weekStart, 6);
+  const weekLabel = `${weekStart.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${weekEnd.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
+
+  return (
+    <div className="space-y-4">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1 rounded-xl border border-white/[0.07] bg-white/[0.03] p-1">
+            <button
+              onClick={() => setViewMode("week")}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                viewMode === "week" ? "bg-violet-600 text-white" : "text-white/40 hover:text-white/70"
+              }`}
+            >
+              <CalendarDays size={12} />
+              {t("weekViewTitle")}
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                viewMode === "list" ? "bg-white/[0.08] text-white/90" : "text-white/40 hover:text-white/70"
+              }`}
+            >
+              <LayoutList size={12} />
+              {t("listViewTitle")}
+            </button>
+          </div>
+        </div>
+
+        {viewMode === "week" && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setWeekOffset((o) => o - 1)}
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.07] text-white/40 transition-colors hover:border-white/15 hover:text-white/70"
+            >
+              <ChevronLeft size={13} />
+            </button>
+            <button
+              onClick={() => setWeekOffset(0)}
+              className={`rounded-lg px-3 py-1 text-xs transition-colors ${
+                weekOffset === 0
+                  ? "bg-violet-600/20 text-violet-300"
+                  : "text-white/35 hover:text-white/60"
+              }`}
+            >
+              {weekOffset === 0 ? t("currentWeek") : weekLabel}
+            </button>
+            <button
+              onClick={() => setWeekOffset((o) => o + 1)}
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.07] text-white/40 transition-colors hover:border-white/15 hover:text-white/70"
+            >
+              <ChevronRight size={13} />
+            </button>
+          </div>
+        )}
+
+        <span className="rounded-full border border-white/[0.07] bg-white/[0.03] px-2 py-0.5 text-[11px] text-white/30">
+          {items.length}
+        </span>
+      </div>
+
+      {/* Content */}
+      {items.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 py-16 text-center">
+          <CheckCircle2 size={20} className="text-zinc-600" />
+          <p className="text-sm text-white/25">{t("gunimiCalendarEmpty")}</p>
+        </div>
+      ) : viewMode === "week" ? (
+        <WeekGrid items={items} weekOffset={weekOffset} t={t} />
+      ) : (
+        <div className="overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.02]">
+          {items.filter((i) => i.isOverdue).length > 0 && (
+            <div>
+              <div className="border-b border-red-500/10 bg-red-500/[0.04] px-5 py-2">
+                <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-red-400/80">
+                  {t("overdue")} · {items.filter((i) => i.isOverdue).length}
+                </p>
+              </div>
+              <div className="divide-y divide-white/[0.03]">
+                {items.filter((i) => i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
+              </div>
+            </div>
+          )}
+          <div className="divide-y divide-white/[0.03]">
+            {items.filter((i) => !i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

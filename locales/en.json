@@ -1455,7 +1455,7 @@
     "todaysMeetings": "Today's Meetings",
     "todaysSubtitle": "Meetings scheduled for today",
     "noMeetingsToday": "No meetings today",
-    "thisWeek": "This Week",
+    "thisWeek": "This week",
     "thisWeekSubtitle": "Next 7 days",
     "noMeetingsThisWeek": "No meetings this week",
     "meetingIntelligence": "Meeting Intelligence",
@@ -1501,7 +1501,14 @@
     "gunimiCalendarTitle": "Gunimi Calendar",
     "gunimiCalendarSubtitle": "Tasks and deals pulled from your workspace context",
     "gunimiCalendarEmpty": "No upcoming tasks or deals with due dates",
-    "overdue": "Overdue"
+    "overdue": "Overdue",
+    "weekViewTitle": "Week",
+    "listViewTitle": "List",
+    "prevWeek": "Previous week",
+    "nextWeek": "Next week",
+    "noItemsThisDay": "Nothing scheduled",
+    "weekOf": "Week of {date}",
+    "currentWeek": "Today"
   },
   "email": {
     "badge": "Email",

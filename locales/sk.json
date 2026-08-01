@@ -1501,7 +1501,14 @@
     "gunimiCalendarTitle": "Gunimi Kalendár",
     "gunimiCalendarSubtitle": "Úlohy a zákazky vytvorené z kontextu workspace",
     "gunimiCalendarEmpty": "Žiadne nadchádzajúce úlohy ani zákazky s termínom",
-    "overdue": "Po termíne"
+    "overdue": "Po termíne",
+    "weekViewTitle": "Týždeň",
+    "listViewTitle": "Zoznam",
+    "prevWeek": "Predchádzajúci týždeň",
+    "nextWeek": "Nasledujúci týždeň",
+    "noItemsThisDay": "Nič naplánované",
+    "weekOf": "Týždeň od {date}",
+    "currentWeek": "Dnes"
   },
   "email": {
     "badge": "E-mail",
