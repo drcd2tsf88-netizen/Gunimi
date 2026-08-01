@@ -3,7 +3,12 @@ import type { AutomationContext, AutomationTrigger } from "./types";
 import { logger } from "@/lib/logger";
 import { createClient } from "@/lib/supabase/server";
 
-async function loadDisabled(workspaceId: string): Promise<Set<string>> {
+type WorkspacePrefs = {
+  disabledAutomations?: string[];
+  language?: string;
+};
+
+async function loadWorkspacePrefs(workspaceId: string): Promise<WorkspacePrefs> {
   try {
     const supabase = await createClient();
     const { data } = await supabase
@@ -11,10 +16,9 @@ async function loadDisabled(workspaceId: string): Promise<Set<string>> {
       .select("preferences")
       .eq("id", workspaceId)
       .maybeSingle();
-    const prefs = data?.preferences as { disabledAutomations?: string[] } | null;
-    return new Set(prefs?.disabledAutomations ?? []);
+    return (data?.preferences as WorkspacePrefs | null) ?? {};
   } catch {
-    return new Set();
+    return {};
   }
 }
 
@@ -22,14 +26,22 @@ export async function executeAutomations(
   trigger: AutomationTrigger,
   context: AutomationContext
 ): Promise<void> {
-  const disabled = await loadDisabled(context.workspaceId);
+  const prefs = await loadWorkspacePrefs(context.workspaceId);
+  const disabled = new Set(prefs.disabledAutomations ?? []);
+
+  // Inject workspace locale so rules produce localized task titles
+  const contextWithLocale: AutomationContext = {
+    ...context,
+    locale: context.locale ?? prefs.language ?? "en",
+  };
+
   const matchingRules = AUTOMATION_RULES.filter(
     (r) => r.trigger === trigger && !disabled.has(r.id)
   );
 
   for (const rule of matchingRules) {
     try {
-      await rule.execute(context);
+      await rule.execute(contextWithLocale);
     } catch (error) {
       logger.error(`[automation] rule "${rule.id}" failed for trigger "${trigger}":`, error);
     }

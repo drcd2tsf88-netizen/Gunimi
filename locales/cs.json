@@ -3321,7 +3321,17 @@
     "tagDeleted": "Štítek smazán",
     "tagCreateFailed": "Nepodařilo se vytvořit štítek",
     "tagUpdateFailed": "Nepodařilo se aktualizovat štítek",
-    "tagDeleteFailed": "Nepodařilo se smazat štítek"
+    "tagDeleteFailed": "Nepodařilo se smazat štítek",
+    "tagDetailSubtitle": "Všechny entity workspace s tímto štítkem.",
+    "taggedContacts": "Kontakty",
+    "taggedCompanies": "Společnosti",
+    "taggedDeals": "Obchody",
+    "taggedTasks": "Úkoly",
+    "taggedNotes": "Poznámky",
+    "noTaggedEntities": "Žádné entity s tímto štítkem",
+    "noTaggedEntitiesDescription": "Přiřaď tento štítek ke kontaktům, společnostem, obchodům, úkolům nebo poznámkám.",
+    "tagDetailPageTitle": "Štítek",
+    "backToSettings": "Zpět"
   },
   "timeline": {
     "today": "Dnes",

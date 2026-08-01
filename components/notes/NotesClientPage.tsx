@@ -319,7 +319,7 @@ export default function NotesClientPage() {
                   {note.tags.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-1">
                       {note.tags.slice(0, 4).map((tag) => (
-                        <TagBadge key={tag.id} tag={tag} size="xs" />
+                        <TagBadge key={tag.id} tag={tag} size="xs" href={`/dashboard/tags/${tag.id}`} />
                       ))}
                       {note.tags.length > 4 && (
                         <span className="rounded-full border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/30">

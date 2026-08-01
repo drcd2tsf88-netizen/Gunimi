@@ -240,7 +240,7 @@ export default function TagsSection({ initialTags }: Props) {
                 /* NORMAL ROW */
                 <>
                   <div className="flex-1">
-                    <TagBadge tag={tag} />
+                    <TagBadge tag={tag} href={`/dashboard/tags/${tag.id}`} />
                   </div>
                   <div className="flex shrink-0 gap-1.5 opacity-0 transition-opacity group-hover:opacity-100 [.group:hover_&]:opacity-100">
                     <button

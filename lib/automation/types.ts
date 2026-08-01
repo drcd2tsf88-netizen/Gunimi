@@ -9,6 +9,8 @@ export type AutomationTrigger =
 export type AutomationContext = {
   workspaceId: string;
   userId: string;
+  /** BCP-47 locale derived from workspace language preference, e.g. "en", "sk", "cs". */
+  locale?: string;
   dealId?: string;
   dealTitle?: string;
   dealValue?: number | null;

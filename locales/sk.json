@@ -3321,7 +3321,17 @@
     "tagDeleted": "Tag vymazaný",
     "tagCreateFailed": "Nepodarilo sa vytvoriť tag",
     "tagUpdateFailed": "Nepodarilo sa aktualizovať tag",
-    "tagDeleteFailed": "Nepodarilo sa vymazať tag"
+    "tagDeleteFailed": "Nepodarilo sa vymazať tag",
+    "tagDetailSubtitle": "Všetky entity workspace s týmto tagom.",
+    "taggedContacts": "Kontakty",
+    "taggedCompanies": "Spoločnosti",
+    "taggedDeals": "Dealy",
+    "taggedTasks": "Úlohy",
+    "taggedNotes": "Poznámky",
+    "noTaggedEntities": "Žiadne entity s týmto tagom",
+    "noTaggedEntitiesDescription": "Priraď tento tag ku kontaktom, spoločnostiam, dealám, úlohám alebo poznámkam.",
+    "tagDetailPageTitle": "Tag",
+    "backToSettings": "Späť"
   },
   "timeline": {
     "today": "Dnes",

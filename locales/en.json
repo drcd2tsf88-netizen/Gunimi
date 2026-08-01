@@ -3321,7 +3321,17 @@
     "tagDeleted": "Tag deleted",
     "tagCreateFailed": "Failed to create tag",
     "tagUpdateFailed": "Failed to update tag",
-    "tagDeleteFailed": "Failed to delete tag"
+    "tagDeleteFailed": "Failed to delete tag",
+    "tagDetailSubtitle": "All workspace entities tagged with this label.",
+    "taggedContacts": "Contacts",
+    "taggedCompanies": "Companies",
+    "taggedDeals": "Deals",
+    "taggedTasks": "Tasks",
+    "taggedNotes": "Notes",
+    "noTaggedEntities": "No entities tagged yet",
+    "noTaggedEntitiesDescription": "Apply this tag to contacts, companies, deals, tasks or notes to see them here.",
+    "tagDetailPageTitle": "Tag",
+    "backToSettings": "Back"
   },
   "timeline": {
     "today": "Today",
