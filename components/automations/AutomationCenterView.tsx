@@ -280,13 +280,17 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
                   const triggerColor =
                     TRIGGER_COLOR[trigger] ??
                     "border-white/[0.06] bg-white/[0.03] text-white/50";
+                  const automationId = meta?.automation_id as string | undefined;
+                  const displayTitle = automationId
+                    ? t(`rule_${automationId}_name` as Parameters<typeof t>[0])
+                    : item.title;
 
                   return (
                     <div key={item.id} className="px-5 py-3.5">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-medium text-white/85">
-                            {item.title}
+                            {displayTitle}
                           </p>
                           {item.description && (
                             <p className="mt-0.5 truncate text-xs text-white/35">
