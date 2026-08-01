@@ -4,6 +4,7 @@ import {
   getAutomationStats,
 } from "@/server/actions/automation/getAutomationHistory";
 import { getWorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
+import { getCustomRules } from "@/server/actions/automation/getCustomRules";
 import AutomationCenterView from "@/components/automations/AutomationCenterView";
 
 export async function generateMetadata() {
@@ -12,10 +13,11 @@ export async function generateMetadata() {
 }
 
 export default async function AutomationsPage() {
-  const [history, stats, settings] = await Promise.all([
+  const [history, stats, settings, customRules] = await Promise.all([
     getAutomationHistory(30),
     getAutomationStats(),
     getWorkspaceSettings(),
+    getCustomRules(),
   ]);
 
   const disabledAutomations = settings?.preferences?.disabledAutomations ?? [];
@@ -25,6 +27,7 @@ export default async function AutomationsPage() {
       history={history}
       stats={stats}
       disabledAutomations={disabledAutomations}
+      customRules={customRules}
     />
   );
 }

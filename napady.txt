@@ -1,7 +1,4 @@
 ----
-ulohy posunut este vyssie , to je by naprikld spolupraaacovali naapriec systemom aako hlvn notifikacia aatd
-ulohy subtasky zobrazaovat pod hlaaavnym taskom nie ko daaalsi novy
-
 [DONE] dalsia vec naapriec systemom vytvorit moznosti pisaaania nemusia sa texty menit ale aaby aaa to dalo zvyraaznit podciarknut atd daj navrh
 => Tiptap rich text editor (bold, italic, underline, heading, bullet list, code) nasadeny v poznamkach (vytvaranie + editacia)
 
@@ -30,12 +27,44 @@ ulohy subtasky zobrazaovat pod hlaaavnym taskom nie ko daaalsi novy
 [DONE] AutomationCenter - nazvy a popisy pravidiel cez locale
 => 6 pravidiel, kluce rule_*_name / rule_*_description v EN/SK/CS
 
-[DONE] dlsi vec vytvoreny novy kontakt preco s spravila ulohaa na introducting meeting preco meeting ? aa zaaaroven v anglitcine opravit aaa vysvetlit
+[DONE] dlsi vec vytvoreny novy kontakt preco s spravila ulohaa na introducting meeting preco meeting? aa zaaaroven v anglitcine opravit
 => automation rules.ts ma lokalizovane nadpisy uloh (en/sk/cs)
 => engine.ts cita workspace.preferences.language, injektuje do AutomationContext.locale
 => vsetky 6 pravidiel pouzivaju prekladane nadpisy
+=> historia automacii zobrazuje lokalizovany nazov pravidla (nie ulozeny anglicky string)
 
-dlej kaalendar gunimi dostat este vyssie terz to vyzeraa len kao surhn uloh musi to byt na pro verzii prosim daj napaad
+[DONE] kalendar gunimi dostat na pro verziu — tyzdenna mriezka
+=> WeekGrid — 7 stlpcov Po-Ne, CSS grid, groupovanie podla datumu
+=> prev/next/today navigacia, pocitac poloziek, view toggle Week/List
+=> Calendar Command Center premenovan na "Kalendár" / badge "Plán"
 
-mat moznost multi vzhladu primrny je tento gunimi vyzera to tak ze budeme musiet spravit naprikald grey white purple prote svetlejsie vzhlady z vynborom v preferencii dj napd co saa musi zmenit
+multi-vzhad / multi-theme
+=> pridane do GUNIMI_ROADMAP.txt (Technicky dlh) — ziadna implementacia, len pocit
+=> CSS variables, dark/midnight/slate/light, switcher v Settings
 
+----
+NAPAD: ulohy na enterprise mod — feedbacky od zeny
+
+1. SUBTASKY POD HLAVNYM TASKOM
+   - subtasky zobrazovat priamo pod rodicovskou ulohou v zozname
+   - nie ako samostatne riadky na rovnakej urovni
+   - rodicovska uloha ma expander (chevron) → rozbalenie subtaskov
+
+2. ULOHY AKO HLAVNA NOTIFIKACIA / NAPRIEC SYSTEMOM
+   a) Topbar badge + Focus strip (najrychlejsie, najviac viditelne)
+      - cislo pri ikone uloh v topbare (overdue cervena, dnes oranzova)
+      - diskretny strip pod topbarom: "3 ulohy dnes · 1 po termine"
+      - Gunimi AI hlas: "Mas narocny piatok — 4 veci cakaju."
+
+   b) Inline task presence napriec entitami (stredny zasah, vysoka hodnota)
+      - kazdy kontakt, spolocnost, deal ma v detail paneli sekciu "Otvorene ulohy"
+      - nie odkaz ale realny zoznam + vytvorenie priamo z kontextu
+      - uloha zije pri entite, nie len na /tasks
+
+   c) My Day / Focus view (najvacsi zasah, enterprise core)
+      - nova tab alebo stránka: AI zoradi ulohy na dnes podla priority + deadline + entity vahy
+      - skupiny: Kriticke · Dnes · Tento tyzden
+      - Gunimi navrh co urobit ako prve
+      - ekvivalent Things 3 / Linear My Issues v OrbitDesk kontexte
+
+   PLAN: a + b teraz, c je Q4 feature

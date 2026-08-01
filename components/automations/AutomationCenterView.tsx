@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
@@ -12,15 +12,21 @@ import {
   CircleAlert,
   CircleSlash,
   Cpu,
+  Plus,
+  Trash2,
   TrendingUp,
   User,
   Zap,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import GunimiCard from "@/components/ui/GunimiCard";
+import NewRuleSheet from "@/components/automations/NewRuleSheet";
 import { AUTOMATION_REGISTRY } from "@/lib/automation/registry";
 import { toggleAutomation } from "@/server/actions/automation/toggleAutomation";
+import { toggleCustomRule } from "@/server/actions/automation/toggleCustomRule";
+import { deleteCustomRule } from "@/server/actions/automation/deleteCustomRule";
 import type { AutomationHistoryItem } from "@/server/actions/automation/getAutomationHistory";
+import type { CustomAutomationRule } from "@/lib/automation/types";
 
 type Stats = {
   total: number;
@@ -32,6 +38,7 @@ type Props = {
   history: AutomationHistoryItem[];
   stats: Stats;
   disabledAutomations: string[];
+  customRules: CustomAutomationRule[];
 };
 
 function getTriggerLabel(trigger: string, t: (key: string) => string): string {
@@ -90,15 +97,50 @@ function StatusBadge({ status }: { status: "success" | "partial" | "failed" }) {
   );
 }
 
-export default function AutomationCenterView({ history, stats, disabledAutomations }: Props) {
+export default function AutomationCenterView({ history, stats, disabledAutomations, customRules }: Props) {
   const t = useTranslations("automations");
 
   const [disabledSet, setDisabledSet] = useState<Set<string>>(
     () => new Set(disabledAutomations)
   );
   const [pending, setPending] = useState<string | null>(null);
+  const [customList, setCustomList] = useState<CustomAutomationRule[]>(customRules);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [, startDelete] = useTransition();
 
-  const enabledCount = AUTOMATION_REGISTRY.filter((r) => !disabledSet.has(r.id)).length;
+  const enabledCount = AUTOMATION_REGISTRY.filter((r) => !disabledSet.has(r.id)).length + customList.filter((r) => r.enabled).length;
+
+  function handleSheetClose() {
+    setSheetOpen(false);
+  }
+
+  function handleDeleteCustom(ruleId: string) {
+    setDeletingId(ruleId);
+    startDelete(async () => {
+      const result = await deleteCustomRule(ruleId);
+      if (result.success) {
+        setCustomList((prev) => prev.filter((r) => r.id !== ruleId));
+        toast.success(t("ruleDeleted"));
+      } else {
+        toast.error(t("ruleDeleteFailed"));
+      }
+      setDeletingId(null);
+    });
+  }
+
+  async function handleToggleCustom(ruleId: string, currentEnabled: boolean) {
+    setCustomList((prev) =>
+      prev.map((r) => (r.id === ruleId ? { ...r, enabled: !currentEnabled } : r))
+    );
+    const result = await toggleCustomRule(ruleId, !currentEnabled);
+    if (!result.success) {
+      setCustomList((prev) =>
+        prev.map((r) => (r.id === ruleId ? { ...r, enabled: currentEnabled } : r))
+      );
+      toast.error(t("toggleError"));
+    }
+  }
 
   const successRate =
     stats.total > 0
@@ -358,6 +400,91 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
         </GunimiCard>
       </div>
 
+      {/* Custom Rules */}
+      <GunimiCard className="flex flex-col">
+        <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10">
+              <Plus size={12} className="text-emerald-300" />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">
+                {t("customRulesBadge")}
+              </p>
+              <p className="mt-0.5 text-sm font-semibold">{t("customRulesTitle")}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setSheetOpen(true)}
+            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-300 transition-colors hover:bg-emerald-500/15"
+          >
+            <Plus size={11} />
+            {t("newRule")}
+          </button>
+        </div>
+
+        {customList.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <Zap size={28} className="text-white/10" />
+            <p className="mt-4 text-sm font-medium text-white/40">{t("noCustomRules")}</p>
+            <p className="mt-1 text-xs text-white/25">{t("noCustomRulesDesc")}</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-white/[0.04]">
+            {customList.map((rule) => {
+              const triggerColor =
+                TRIGGER_COLOR[rule.trigger] ??
+                "border-white/[0.06] bg-white/[0.03] text-white/50";
+              const isDeleting = deletingId === rule.id;
+
+              return (
+                <div key={rule.id} className="px-5 py-3.5">
+                  <div className="flex items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className={`text-sm font-medium transition-colors ${rule.enabled ? "text-white/85" : "text-white/35"}`}>
+                          {rule.name}
+                        </p>
+                        <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${triggerColor} ${rule.enabled ? "" : "opacity-40"}`}>
+                          {getTriggerLabel(rule.trigger, t)}
+                        </span>
+                        {rule.conditions.length > 0 && (
+                          <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2 py-0.5 text-[10px] text-white/30">
+                            {rule.conditions.length}×
+                          </span>
+                        )}
+                      </div>
+                      <p className={`mt-1 text-xs transition-colors ${rule.enabled ? "text-white/40" : "text-white/20"}`}>
+                        → {rule.action_params.title_template}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleToggleCustom(rule.id, rule.enabled)}
+                        aria-label={rule.enabled ? t("disableRule") : t("enableRule")}
+                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors ${rule.enabled ? "bg-emerald-600" : "bg-white/10"}`}
+                      >
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${rule.enabled ? "translate-x-[14px]" : "translate-x-0"}`} />
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteCustom(rule.id)}
+                        disabled={isDeleting}
+                        aria-label={t("deleteRule")}
+                        className="text-white/20 transition-colors hover:text-red-400 disabled:opacity-40"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </GunimiCard>
+
       {/* Architecture Note */}
       <GunimiCard className="p-5">
         <div className="flex items-start gap-3">
@@ -378,6 +505,8 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
           <ArrowRight size={14} className="mt-0.5 shrink-0 text-white/15" />
         </div>
       </GunimiCard>
+
+      <NewRuleSheet open={sheetOpen} onClose={handleSheetClose} />
     </div>
   );
 }
