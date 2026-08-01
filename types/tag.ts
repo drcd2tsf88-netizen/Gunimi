@@ -6,7 +6,7 @@ export type WorkspaceTag = {
   created_at: string;
 };
 
-export type EntityType = "contact" | "company" | "deal" | "task";
+export type EntityType = "contact" | "company" | "deal" | "task" | "note";
 
 export const TAG_COLORS = [
   "violet",

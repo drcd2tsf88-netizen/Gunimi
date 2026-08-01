@@ -339,3 +339,35 @@
     padding-right: max(0px, env(safe-area-inset-right));
   }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   TIPTAP RICH TEXT EDITOR
+   ───────────────────────────────────────────────────────────── */
+
+.tiptap-editor .ProseMirror {
+  outline: none;
+  min-height: 120px;
+  color: rgba(255,255,255,0.80);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.tiptap-editor .ProseMirror p { margin: 0 0 0.5em; }
+.tiptap-editor .ProseMirror p:last-child { margin-bottom: 0; }
+.tiptap-editor .ProseMirror h2 { font-size: 1.1em; font-weight: 600; margin: 0.75em 0 0.4em; color: rgba(255,255,255,0.9); }
+.tiptap-editor .ProseMirror ul { list-style: disc; padding-left: 1.4em; margin: 0.4em 0; }
+.tiptap-editor .ProseMirror ol { list-style: decimal; padding-left: 1.4em; margin: 0.4em 0; }
+.tiptap-editor .ProseMirror li { margin: 0.15em 0; }
+.tiptap-editor .ProseMirror strong { font-weight: 600; color: rgba(255,255,255,0.9); }
+.tiptap-editor .ProseMirror em { font-style: italic; }
+.tiptap-editor .ProseMirror u { text-decoration: underline; }
+.tiptap-editor .ProseMirror code { font-family: monospace; font-size: 0.85em; background: rgba(255,255,255,0.07); padding: 0.1em 0.35em; border-radius: 4px; }
+.tiptap-editor .ProseMirror blockquote { border-left: 2px solid rgba(109,91,255,0.4); padding-left: 1em; margin: 0.5em 0; color: rgba(255,255,255,0.45); }
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: rgba(255,255,255,0.2);
+  pointer-events: none;
+  float: left;
+  height: 0;
+}

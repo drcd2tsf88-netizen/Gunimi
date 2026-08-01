@@ -770,7 +770,21 @@
     "confirmDeleteNote": "Táto poznámka bude trvalo odstránená. Túto akciu nemožno vrátiť späť.",
     "noteDeleted": "Poznámka bola odstránená",
     "failedToDeleteNote": "Odstránenie poznámky zlyhalo",
-    "pageTitle": "Poznámky"
+    "pageTitle": "Poznámky",
+    "searchPlaceholder": "Hľadať poznámky...",
+    "filterAll": "Všetky",
+    "filterContacts": "S kontaktmi",
+    "filterCompanies": "So spoločnosťami",
+    "extractTasks": "Extrahovať úlohy",
+    "extracting": "Extrahujem...",
+    "tasksExtracted": "{count} úloha(-y) vytvorená(-é)",
+    "noTasksFound": "V tejto poznámke sa nenašli žiadne akčné úlohy",
+    "linkedContact": "Kontakt",
+    "linkedCompany": "Spoločnosť",
+    "noteTags": "Tagy",
+    "noteContentLabel": "Obsah",
+    "richEditor": "Formátovaný obsah poznámky",
+    "failedToExtract": "Nepodarilo sa extrahovať úlohy"
   },
   "automations": {
     "badge": "Gunimi Automácie",
@@ -1486,8 +1500,7 @@
     "gunimiCalendarTitle": "Gunimi Kalendár",
     "gunimiCalendarSubtitle": "Úlohy a zákazky vytvorené z kontextu workspace",
     "gunimiCalendarEmpty": "Žiadne nadchádzajúce úlohy ani zákazky s termínom",
-    "overdue": "Po termíne",
-    "tomorrow": "Zajtra"
+    "overdue": "Po termíne"
   },
   "email": {
     "badge": "E-mail",
@@ -2038,10 +2051,30 @@
       "beat1": "Gunimi sleduje to, na čom záleží — automaticky.",
       "beat5": "Nič dôležité sa nepremešká.",
       "signals": [
-        { "dot": "amber", "title": "Obchod v ohrození", "context": "Acme Corp · žiadna odpoveď 5 dní", "detail": "Pipeline: €45 000 · Q2" },
-        { "dot": "red", "title": "Vzťah slabne", "context": "Lukáš Blaho · posledný kontakt pred 3 týždňami", "detail": "2 otvorené obchody prepojené" },
-        { "dot": "green", "title": "Stretnutie naberá dôležitosť", "context": "Nexo Corp · zajtra o 10:00", "detail": "Navrhnutá poznámka na prípravu" },
-        { "dot": "blue", "title": "Úloha po termíne", "context": "Follow-up: Nova Systems · 2 dni neskoro", "detail": "3 súvisiace úlohy čakajú" }
+        {
+          "dot": "amber",
+          "title": "Obchod v ohrození",
+          "context": "Acme Corp · žiadna odpoveď 5 dní",
+          "detail": "Pipeline: €45 000 · Q2"
+        },
+        {
+          "dot": "red",
+          "title": "Vzťah slabne",
+          "context": "Lukáš Blaho · posledný kontakt pred 3 týždňami",
+          "detail": "2 otvorené obchody prepojené"
+        },
+        {
+          "dot": "green",
+          "title": "Stretnutie naberá dôležitosť",
+          "context": "Nexo Corp · zajtra o 10:00",
+          "detail": "Navrhnutá poznámka na prípravu"
+        },
+        {
+          "dot": "blue",
+          "title": "Úloha po termíne",
+          "context": "Follow-up: Nova Systems · 2 dni neskoro",
+          "detail": "3 súvisiace úlohy čakajú"
+        }
       ]
     },
     "actEmail": {
@@ -2530,17 +2563,50 @@
           "title": "Open Alpha",
           "description": "Gunimi vstupuje do Open Alpha. Workspace je živý, AI sleduje každú interakciu a prví reální používatelia sú vnútri. Tento release prináša interaktívny demo, Signal Engine, Business Memory, mobilné opravy a vlnu UI a spoľahlivostných vylepšení.",
           "changes": [
-            { "tag": "new", "text": "Interaktívny demo workspace — vyskúšajte Gunimi pred registráciou, bez účtu" },
-            { "tag": "new", "text": "Signal Engine — 25 typov signálov s automatickým odhaľovaním rizík a príležitostí naprieč workspacom" },
-            { "tag": "new", "text": "Business Memory System — workspace sa učí z každej interakcie, pamäť na úrovni entít s decay konfidenciou" },
-            { "tag": "new", "text": "Mena dealu — EUR, CZK a USD voliteľné pre každú príležitosť" },
-            { "tag": "new", "text": "Jazykové preferencie workspacu — lokalizácia per používateľ, podpora EN, SK, CS" },
-            { "tag": "improved", "text": "Prepracovaná homepage — Genesis hero s animovanou AI orbitou, rozbaľovacie menu Produkt a Spoločnosť" },
-            { "tag": "improved", "text": "Mobilné prostredie — oprava polohovania notifikácií, eliminovaný horizontálny scroll" },
-            { "tag": "fixed", "text": "Rozbaľovacie zoznamy vnútri panelov nereagovali — opravený z-index Selectu" },
-            { "tag": "fixed", "text": "Formulár vytvorenia úlohy — pole zodpovednej osoby vždy viditeľné" },
-            { "tag": "fixed", "text": "Aktualizácia rolí členov tímu zlyhávala potichu kvôli krehkej kontrole počtu" },
-            { "tag": "security", "text": "Runtime Zero — prehliadačová konzola úplne čistá, žiadne neošetrené chyby ani debug výstupy" }
+            {
+              "tag": "new",
+              "text": "Interaktívny demo workspace — vyskúšajte Gunimi pred registráciou, bez účtu"
+            },
+            {
+              "tag": "new",
+              "text": "Signal Engine — 25 typov signálov s automatickým odhaľovaním rizík a príležitostí naprieč workspacom"
+            },
+            {
+              "tag": "new",
+              "text": "Business Memory System — workspace sa učí z každej interakcie, pamäť na úrovni entít s decay konfidenciou"
+            },
+            {
+              "tag": "new",
+              "text": "Mena dealu — EUR, CZK a USD voliteľné pre každú príležitosť"
+            },
+            {
+              "tag": "new",
+              "text": "Jazykové preferencie workspacu — lokalizácia per používateľ, podpora EN, SK, CS"
+            },
+            {
+              "tag": "improved",
+              "text": "Prepracovaná homepage — Genesis hero s animovanou AI orbitou, rozbaľovacie menu Produkt a Spoločnosť"
+            },
+            {
+              "tag": "improved",
+              "text": "Mobilné prostredie — oprava polohovania notifikácií, eliminovaný horizontálny scroll"
+            },
+            {
+              "tag": "fixed",
+              "text": "Rozbaľovacie zoznamy vnútri panelov nereagovali — opravený z-index Selectu"
+            },
+            {
+              "tag": "fixed",
+              "text": "Formulár vytvorenia úlohy — pole zodpovednej osoby vždy viditeľné"
+            },
+            {
+              "tag": "fixed",
+              "text": "Aktualizácia rolí členov tímu zlyhávala potichu kvôli krehkej kontrole počtu"
+            },
+            {
+              "tag": "security",
+              "text": "Runtime Zero — prehliadačová konzola úplne čistá, žiadne neošetrené chyby ani debug výstupy"
+            }
           ]
         },
         {
@@ -2549,14 +2615,38 @@
           "title": "AI Základy",
           "description": "Inteligentná vrstva pod Gunimi je produkčne kompletná. Orbit Assistant, Morning Intelligence a infraštruktúra skenovania signálov sú live a nepretržite bežia naprieč workspacmi.",
           "changes": [
-            { "tag": "new", "text": "Orbit Intelligence — AI asistent s plnou pamäťou workspacu a kontextovým povedomím" },
-            { "tag": "new", "text": "Morning Intelligence — personalizovaný prehľad workspacu generovaný pri každom prihlásení" },
-            { "tag": "new", "text": "Cron skenovanie signálov — automatický scan workspacu každých 6 hodín cez Vercel Cron" },
-            { "tag": "new", "text": "Admin panel — schvaľovanie alpha používateľov, monitoring AI nákladov, dogfood dashboard" },
-            { "tag": "new", "text": "Interný dogfood feedback systém — formulár pre tím prístupný klávesou ?" },
-            { "tag": "improved", "text": "Lifecycle signálov — stavy active, claimed, resolved a expired s plnou pozorovateľnosťou" },
-            { "tag": "improved", "text": "Health monitoring — endpointy /api/health a /api/signals/health pre viditeľnosť infraštruktúry" },
-            { "tag": "fixed", "text": "Supabase PGRST116 chyby vyriešené — maybeSingle() používané konzistentne naprieč všetkými dopytmi" }
+            {
+              "tag": "new",
+              "text": "Orbit Intelligence — AI asistent s plnou pamäťou workspacu a kontextovým povedomím"
+            },
+            {
+              "tag": "new",
+              "text": "Morning Intelligence — personalizovaný prehľad workspacu generovaný pri každom prihlásení"
+            },
+            {
+              "tag": "new",
+              "text": "Cron skenovanie signálov — automatický scan workspacu každých 6 hodín cez Vercel Cron"
+            },
+            {
+              "tag": "new",
+              "text": "Admin panel — schvaľovanie alpha používateľov, monitoring AI nákladov, dogfood dashboard"
+            },
+            {
+              "tag": "new",
+              "text": "Interný dogfood feedback systém — formulár pre tím prístupný klávesou ?"
+            },
+            {
+              "tag": "improved",
+              "text": "Lifecycle signálov — stavy active, claimed, resolved a expired s plnou pozorovateľnosťou"
+            },
+            {
+              "tag": "improved",
+              "text": "Health monitoring — endpointy /api/health a /api/signals/health pre viditeľnosť infraštruktúry"
+            },
+            {
+              "tag": "fixed",
+              "text": "Supabase PGRST116 chyby vyriešené — maybeSingle() používané konzistentne naprieč všetkými dopytmi"
+            }
           ]
         },
         {

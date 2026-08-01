@@ -1,0 +1,32 @@
+----
+ulohy posunut este vyssie , to je by naprikld spolupraaacovali naapriec systemom aako hlvn notifikacia aatd
+ulohy subtasky zobrazaovat pod hlaaavnym taskom nie ko daaalsi novy
+
+[DONE] dalsia vec naapriec systemom vytvorit moznosti pisaaania nemusia sa texty menit ale aaby aaa to dalo zvyraaznit podciarknut atd daj navrh
+=> Tiptap rich text editor (bold, italic, underline, heading, bullet list, code) nasadeny v poznamkach (vytvaranie + editacia)
+
+[DONE] dlej tagy musime viaaaac prepraaacovat momentaalne sa nachadzaju az v kontakt detail treb to uz mat pri vytvratani kontaktov vsade kde sa da daj narvh ked tak
+- taagy napriec sydstemom vsaaade aaby bolo mozne s ozncovat ko zijuca entita nie len ko text ...
+=> TagPicker pridany do editacie poznamok, EntityType rozsireny o "note", tagy zobrazene na kartach poznamok
+
+[DONE] dalej entity chipy na karty poznamok
+=> kontakt + spolocnost zobrazene ako farebne chipy na kazdom note karte
+
+[DONE] vyhladavanie a filter poznamok
+=> search input + filter taby (Vsetky / S kontaktmi / So spolocnostami)
+
+[DONE] AI extrakcia uloh z poznamky
+=> tlacidlo "Extrahovať úlohy" na kazdom karte, vola OpenAI gpt-4o-mini, vytvara tasks do workspace_tasks
+
+[DONE] kalendar gunimi + google dual-tab
+=> GunimiCalendar tab (tasky + dealy z workspace) + Google Calendar tab na rovnakej stranke
+
+[DONE] inline editacia zodpovednej osoby a terminu v detail ulohy
+=> klik na assignee/due date v TaskDetailPanel, dropdown s clenmi, date picker
+
+[DONE] AutomationCenter - nazvy a popisy pravidiel cez locale
+=> 6 pravidiel, kluce rule_*_name / rule_*_description v EN/SK/CS
+
+dlsi vec vytvoreny novy kontakt preco s spravila ulohaa na introducting meeting preco meeting ? aa zaaaroven v anglitcine opravit aaa vysvetlit
+=> automation contact_created_intro stale v anglictine - TODO: opravit hardcoded nazov ulohy v automacii
+

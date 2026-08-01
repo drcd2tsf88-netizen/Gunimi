@@ -20,16 +20,15 @@ import {
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiField from "@/components/ui/GunimiField";
 import GunimiInput from "@/components/ui/GunimiInput";
-import GunimiTextarea from "@/components/ui/GunimiTextarea";
+import NoteEditor from "@/components/notes/NoteEditor";
+import TagPicker from "@/components/ui/TagPicker";
 
-type Note = {
-  id: string;
-  title: string;
-  content?: string;
-};
+import type { WorkspaceTag } from "@/types/tag";
+import type { WorkspaceNote } from "@/server/actions/notes/getWorkspaceNotes";
 
 type Props = {
-  note: Note;
+  note: WorkspaceNote;
+  allTags: WorkspaceTag[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSaved: () => void;
@@ -37,6 +36,7 @@ type Props = {
 
 export default function EditNoteSheet({
   note,
+  allTags,
   open,
   onOpenChange,
   onSaved,
@@ -96,13 +96,13 @@ export default function EditNoteSheet({
         else onOpenChange(next);
       }}
     >
-      <SheetContent className="max-w-md">
+      <SheetContent className="flex max-w-lg flex-col">
         <SheetHeader>
           <SheetTitle>{t("editNote")}</SheetTitle>
           <SheetDescription>{t("editNoteSubtitle")}</SheetDescription>
         </SheetHeader>
 
-        <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
+        <div className="flex-1 space-y-5 overflow-y-auto px-6 py-6">
           <GunimiField label={t("noteTitlePlaceholder")}>
             <GunimiInput
               value={title}
@@ -112,13 +112,22 @@ export default function EditNoteSheet({
             />
           </GunimiField>
 
-          <GunimiField label={t("writePlaceholder")}>
-            <GunimiTextarea
-              value={content}
-              disabled={isPending}
+          <GunimiField label={t("noteContentLabel")}>
+            <NoteEditor
+              content={content}
+              onChange={setContent}
               placeholder={t("writePlaceholder")}
-              className="min-h-[200px]"
-              onChange={(e) => setContent(e.target.value)}
+              disabled={isPending}
+              minHeight="200px"
+            />
+          </GunimiField>
+
+          <GunimiField label={t("noteTags")}>
+            <TagPicker
+              entityType="note"
+              entityId={note.id}
+              allTags={allTags}
+              initialTags={note.tags}
             />
           </GunimiField>
         </div>
