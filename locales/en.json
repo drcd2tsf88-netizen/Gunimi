@@ -823,7 +823,19 @@
     "triggerTaskCompleted": "Task Completed",
     "actionCount": "{count, plural, one {# action} other {# actions}}",
     "enableRule": "Enable automation",
-    "disableRule": "Disable automation"
+    "disableRule": "Disable automation",
+    "rule_deal_won_onboarding_name": "Deal Won — Customer Onboarding",
+    "rule_deal_won_onboarding_description": "Creates an onboarding task and a welcome note when a deal is marked as won.",
+    "rule_deal_lost_recovery_name": "Deal Lost — Post-Mortem",
+    "rule_deal_lost_recovery_description": "Creates a post-mortem review task when a deal is marked as lost.",
+    "rule_deal_created_qualify_name": "Deal Created — Qualify",
+    "rule_deal_created_qualify_description": "Creates a qualification task when a new deal enters the pipeline.",
+    "rule_deal_high_value_review_name": "High Value Deal — Senior Review",
+    "rule_deal_high_value_review_description": "Creates a senior review task when a new deal value exceeds $10,000.",
+    "rule_contact_created_intro_name": "New Contact — Schedule Introduction",
+    "rule_contact_created_intro_description": "Creates an introduction task when a new contact is added to the workspace.",
+    "rule_company_created_setup_name": "Company Created — Initial Setup",
+    "rule_company_created_setup_description": "Creates a setup task when a new company is added to the workspace."
   },
   "contacts": {
     "badge": "Contact Intelligence",

@@ -823,7 +823,19 @@
     "triggerTaskCompleted": "Úloha dokončená",
     "actionCount": "{count, plural, one {# akcia} few {# akcie} other {# akcií}}",
     "enableRule": "Zapnúť automáciu",
-    "disableRule": "Vypnúť automáciu"
+    "disableRule": "Vypnúť automáciu",
+    "rule_deal_won_onboarding_name": "Vyhraná zákazka — Onboarding zákazníka",
+    "rule_deal_won_onboarding_description": "Vytvorí onboardingovú úlohu a uvítaciu poznámku keď je zákazka označená ako vyhratá.",
+    "rule_deal_lost_recovery_name": "Prehratá zákazka — Post-mortem",
+    "rule_deal_lost_recovery_description": "Vytvorí úlohu na post-mortem analýzu keď je zákazka označená ako prehratá.",
+    "rule_deal_created_qualify_name": "Nová zákazka — Kvalifikácia",
+    "rule_deal_created_qualify_description": "Vytvorí kvalifikačnú úlohu keď nová zákazka vstúpi do pipeline.",
+    "rule_deal_high_value_review_name": "Vysokohodnotná zákazka — Kontrola senior manažérom",
+    "rule_deal_high_value_review_description": "Vytvorí úlohu na kontrolu senior manažéra keď hodnota novej zákazky presahuje $10 000.",
+    "rule_contact_created_intro_name": "Nový kontakt — Naplánovanie úvodného stretnutia",
+    "rule_contact_created_intro_description": "Vytvorí úvodnú úlohu keď je do workspace pridaný nový kontakt.",
+    "rule_company_created_setup_name": "Nová spoločnosť — Počiatočné nastavenie",
+    "rule_company_created_setup_description": "Vytvorí nastavovaciu úlohu keď je do workspace pridaná nová spoločnosť."
   },
   "contacts": {
     "badge": "Inteligencia kontaktov",

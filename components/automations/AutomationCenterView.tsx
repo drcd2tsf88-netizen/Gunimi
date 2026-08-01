@@ -211,7 +211,7 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <p className={`text-sm font-medium transition-colors ${isEnabled ? "text-white/85" : "text-white/35"}`}>
-                          {rule.name}
+                          {t(`rule_${rule.id}_name` as Parameters<typeof t>[0])}
                         </p>
                         <span
                           className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium transition-opacity ${triggerColor} ${isEnabled ? "" : "opacity-40"}`}
@@ -220,7 +220,7 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
                         </span>
                       </div>
                       <p className={`mt-1 text-xs leading-relaxed transition-colors ${isEnabled ? "text-white/40" : "text-white/20"}`}>
-                        {rule.description}
+                        {t(`rule_${rule.id}_description` as Parameters<typeof t>[0])}
                       </p>
                     </div>
 

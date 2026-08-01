@@ -823,7 +823,19 @@
     "triggerTaskCompleted": "Splněný úkol",
     "actionCount": "{count, plural, one {# akce} few {# akce} other {# akcí}}",
     "enableRule": "Zapnout automatizaci",
-    "disableRule": "Vypnout automatizaci"
+    "disableRule": "Vypnout automatizaci",
+    "rule_deal_won_onboarding_name": "Vyhraný obchod — Onboarding zákazníka",
+    "rule_deal_won_onboarding_description": "Vytvoří onboardingový úkol a uvítací poznámku když je obchod označen jako vyhraný.",
+    "rule_deal_lost_recovery_name": "Prohraný obchod — Post-mortem",
+    "rule_deal_lost_recovery_description": "Vytvoří úkol na post-mortem analýzu když je obchod označen jako prohraný.",
+    "rule_deal_created_qualify_name": "Nový obchod — Kvalifikace",
+    "rule_deal_created_qualify_description": "Vytvoří kvalifikační úkol když nový obchod vstoupí do pipeline.",
+    "rule_deal_high_value_review_name": "Vysokohodnotný obchod — Kontrola senior manažerem",
+    "rule_deal_high_value_review_description": "Vytvoří úkol na kontrolu senior manažerem když hodnota nového obchodu překračuje $10 000.",
+    "rule_contact_created_intro_name": "Nový kontakt — Naplánování úvodní schůzky",
+    "rule_contact_created_intro_description": "Vytvoří úvodní úkol když je do workspace přidán nový kontakt.",
+    "rule_company_created_setup_name": "Nová společnost — Počáteční nastavení",
+    "rule_company_created_setup_description": "Vytvoří nastavovací úkol když je do workspace přidána nová společnost."
   },
   "contacts": {
     "badge": "Inteligence kontaktů",
