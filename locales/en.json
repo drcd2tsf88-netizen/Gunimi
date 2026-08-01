@@ -1480,7 +1480,14 @@
     "createMeetingNote": "Create Meeting Note",
     "viewContact": "View Contact",
     "viewInCalendar": "Open in Calendar",
-    "pageTitle": "Calendar"
+    "pageTitle": "Calendar",
+    "tabGunimi": "Gunimi Calendar",
+    "tabGoogle": "Google Calendar",
+    "gunimiCalendarTitle": "Gunimi Calendar",
+    "gunimiCalendarSubtitle": "Tasks and deals pulled from your workspace context",
+    "gunimiCalendarEmpty": "No upcoming tasks or deals with due dates",
+    "overdue": "Overdue",
+    "tomorrow": "Tomorrow"
   },
   "email": {
     "badge": "Email",

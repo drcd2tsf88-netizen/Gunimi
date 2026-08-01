@@ -1480,7 +1480,14 @@
     "createMeetingNote": "Vytvoriť poznámku zo stretnutia",
     "viewContact": "Zobraziť kontakt",
     "viewInCalendar": "Otvoriť v kalendári",
-    "pageTitle": "Kalendár"
+    "pageTitle": "Kalendár",
+    "tabGunimi": "Gunimi Kalendár",
+    "tabGoogle": "Google Kalendár",
+    "gunimiCalendarTitle": "Gunimi Kalendár",
+    "gunimiCalendarSubtitle": "Úlohy a zákazky vytvorené z kontextu workspace",
+    "gunimiCalendarEmpty": "Žiadne nadchádzajúce úlohy ani zákazky s termínom",
+    "overdue": "Po termíne",
+    "tomorrow": "Zajtra"
   },
   "email": {
     "badge": "E-mail",

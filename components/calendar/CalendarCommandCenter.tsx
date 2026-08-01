@@ -32,6 +32,7 @@ import GunimiButton from "@/components/ui/GunimiButton";
 import CalendarConnectionCard from "@/components/calendar/CalendarConnectionCard";
 import type { CalendarConnection, CalendarEventRow } from "@/types/calendar";
 import type { CalendarContact } from "@/server/actions/calendar/getCalendarContacts";
+import type { WorkspaceCalendarItem } from "@/server/actions/calendar/getWorkspaceCalendarItems";
 
 import { createNote } from "@/server/actions/notes/createNote";
 
@@ -43,6 +44,7 @@ type Props = {
   events: CalendarEventRow[];
   connections: CalendarConnection[];
   contacts: CalendarContact[];
+  workspaceItems: WorkspaceCalendarItem[];
 };
 
 type LinkedContact = {
@@ -867,6 +869,182 @@ function LinkedCompaniesWidget({
   );
 }
 
+// ─── Gunimi Calendar Widget ───────────────────────────────────────────────────
+
+const PRIORITY_COLOR: Record<string, string> = {
+  high: "text-red-400",
+  medium: "text-amber-400",
+  low: "text-zinc-500",
+};
+
+function formatDateLabel(iso: string, todayLabel: string, tomorrowLabel: string): string {
+  const d = new Date(iso);
+  if (isSameDay(d, PAGE_NOW)) return todayLabel;
+  const tom = new Date(PAGE_NOW);
+  tom.setDate(tom.getDate() + 1);
+  if (isSameDay(d, tom)) return tomorrowLabel;
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+function GunimCalendarWidget({
+  items,
+  t,
+}: {
+  items: WorkspaceCalendarItem[];
+  t: ReturnType<typeof useTranslations<"calendar">>;
+}) {
+  const today = t("today");
+  const tomorrow = t("tomorrow");
+
+  const grouped = new Map<string, WorkspaceCalendarItem[]>();
+  for (const item of items) {
+    const d = new Date(item.date);
+    let key: string;
+    if (isSameDay(d, PAGE_NOW)) key = "__today__";
+    else {
+      const tom = new Date(PAGE_NOW);
+      tom.setDate(tom.getDate() + 1);
+      if (isSameDay(d, tom)) key = "__tomorrow__";
+      else key = d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+    }
+    const arr = grouped.get(key) ?? [];
+    arr.push(item);
+    grouped.set(key, arr);
+  }
+
+  const overdueItems = items.filter((i) => i.isOverdue);
+  const upcomingItems = items.filter((i) => !i.isOverdue);
+
+  return (
+    <Widget
+      icon={Sparkles}
+      iconColor="text-violet-300"
+      iconBg="border-violet-500/20 bg-violet-500/10"
+      title={t("gunimiCalendarTitle")}
+      subtitle={t("gunimiCalendarSubtitle")}
+      count={items.length}
+    >
+      {items.length === 0 ? (
+        <WidgetEmptyState icon={CheckCircle2} message={t("gunimiCalendarEmpty")} />
+      ) : (
+        <div>
+          {overdueItems.length > 0 && (
+            <div>
+              <div className="border-b border-white/[0.04] bg-red-500/[0.04] px-5 py-2">
+                <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-red-400/80">
+                  {t("overdue")} · {overdueItems.length}
+                </p>
+              </div>
+              <div className="divide-y divide-white/[0.03]">
+                {overdueItems.map((item) => (
+                  <GunimCalendarRow key={item.id} item={item} today={today} tomorrow={tomorrow} />
+                ))}
+              </div>
+            </div>
+          )}
+          {[...grouped.entries()]
+            .filter(([k]) => k !== "__today__" && !upcomingItems.some(() => false))
+            .map(() => null)}
+          {upcomingItems.length > 0 && (
+            <div>
+              {[...new Map(
+                upcomingItems.map((i) => {
+                  const d = new Date(i.date);
+                  let key: string;
+                  if (isSameDay(d, PAGE_NOW)) key = "__today__";
+                  else {
+                    const tom = new Date(PAGE_NOW);
+                    tom.setDate(tom.getDate() + 1);
+                    key = isSameDay(d, tom)
+                      ? "__tomorrow__"
+                      : d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+                  }
+                  return [key, key] as [string, string];
+                })
+              ).keys()].map((groupKey) => {
+                const groupItems = upcomingItems.filter((i) => {
+                  const d = new Date(i.date);
+                  if (groupKey === "__today__") return isSameDay(d, PAGE_NOW);
+                  if (groupKey === "__tomorrow__") {
+                    const tom = new Date(PAGE_NOW);
+                    tom.setDate(tom.getDate() + 1);
+                    return isSameDay(d, tom);
+                  }
+                  return d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" }) === groupKey;
+                });
+                const display = groupKey === "__today__" ? today : groupKey === "__tomorrow__" ? tomorrow : groupKey;
+                const isToday = groupKey === "__today__";
+                return (
+                  <div key={groupKey}>
+                    <div className="border-b border-white/[0.04] bg-white/[0.01] px-5 py-2">
+                      <p className={`text-[11px] font-medium uppercase tracking-[0.12em] ${isToday ? "text-emerald-400/80" : "text-white/30"}`}>
+                        {display}
+                      </p>
+                    </div>
+                    <div className="divide-y divide-white/[0.03]">
+                      {groupItems.map((item) => (
+                        <GunimCalendarRow key={item.id} item={item} today={today} tomorrow={tomorrow} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+    </Widget>
+  );
+}
+
+function GunimCalendarRow({
+  item,
+  today,
+  tomorrow,
+}: {
+  item: WorkspaceCalendarItem;
+  today: string;
+  tomorrow: string;
+}) {
+  const typeColor = item.type === "task" ? "bg-violet-500/60" : "bg-emerald-400";
+  const TypeIcon = item.type === "task" ? CheckCircle2 : TrendingUp;
+
+  return (
+    <Link
+      href={item.href}
+      className="flex items-start gap-3 px-5 py-3 transition-colors hover:bg-white/[0.03]"
+    >
+      <div className="w-14 shrink-0 text-right">
+        <p className={`text-[10px] font-medium ${item.isOverdue ? "text-red-400" : item.isDueToday ? "text-emerald-400" : "text-white/35"}`}>
+          {item.isOverdue ? "—" : formatDateLabel(item.date, today, tomorrow)}
+        </p>
+      </div>
+      <div className="mt-1.5 shrink-0">
+        <div className={`h-1.5 w-1.5 rounded-full ${typeColor}`} />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <p className="truncate text-sm text-white/80">{item.title}</p>
+        </div>
+        <div className="mt-1 flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 text-[10px] text-white/30">
+            <TypeIcon size={9} />
+            {item.type}
+          </span>
+          {item.priority && (
+            <span className={`text-[10px] font-medium ${PRIORITY_COLOR[item.priority] ?? "text-white/30"}`}>
+              {item.priority}
+            </span>
+          )}
+          {item.entityName && (
+            <span className="truncate text-[10px] text-white/25">{item.entityName}</span>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 // ─── No Connection State ──────────────────────────────────────────────────────
 
 function NoConnectionState({
@@ -915,8 +1093,9 @@ function NoConnectionState({
 
 // ─── Main Export ──────────────────────────────────────────────────────────────
 
-export default function CalendarCommandCenter({ events, connections, contacts }: Props) {
+export default function CalendarCommandCenter({ events, connections, contacts, workspaceItems }: Props) {
   const t = useTranslations("calendar");
+  const [activeTab, setActiveTab] = useState<"gunimi" | "google">("gunimi");
   const [selectedEvent, setSelectedEvent] = useState<{
     event: CalendarEventRow;
     contact: CalendarContact | null;
@@ -1020,6 +1199,50 @@ export default function CalendarCommandCenter({ events, connections, contacts }:
           <GunimiStatCard title={t("statsRevenueMeetings")} value={crmEventsCount} icon={TrendingUp} animated />
         </div>
 
+        {/* TAB SWITCHER */}
+        <div className="flex items-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] p-1">
+          <button
+            onClick={() => setActiveTab("gunimi")}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === "gunimi"
+                ? "bg-violet-600 text-white shadow-sm"
+                : "text-white/40 hover:text-white/70"
+            }`}
+          >
+            <Sparkles size={14} />
+            {t("tabGunimi")}
+            {workspaceItems.length > 0 && (
+              <span className={`rounded-full px-1.5 py-0.5 text-[10px] ${activeTab === "gunimi" ? "bg-white/20" : "bg-white/[0.06] text-white/40"}`}>
+                {workspaceItems.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab("google")}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === "google"
+                ? "bg-white/[0.08] text-white/90"
+                : "text-white/40 hover:text-white/70"
+            }`}
+          >
+            <CalendarDays size={14} />
+            {t("tabGoogle")}
+            {events.length > 0 && (
+              <span className={`rounded-full px-1.5 py-0.5 text-[10px] ${activeTab === "google" ? "bg-white/10" : "bg-white/[0.06] text-white/40"}`}>
+                {events.length}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* GUNIMI CALENDAR TAB */}
+        {activeTab === "gunimi" && (
+          <GunimCalendarWidget items={workspaceItems} t={t} />
+        )}
+
+        {/* GOOGLE CALENDAR TAB */}
+        {activeTab === "google" && (
+          <>
         {/* ROW 1: Today (2/3) + Intelligence (1/3) */}
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
@@ -1049,6 +1272,8 @@ export default function CalendarCommandCenter({ events, connections, contacts }:
           </p>
           <CalendarConnectionCard connections={connections} />
         </div>
+          </>
+        )}
       </div>
 
       {/* EVENT DETAIL PANEL */}
