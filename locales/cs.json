@@ -418,7 +418,10 @@
     "groupByAssignee": "Odpovědné osoby",
     "groupByNone": "Bez seskupení",
     "openDetail": "Otevřít detail úkolu",
-    "closeDetail": "Zavřít"
+    "closeDetail": "Zavřít",
+    "clearDueDate": "Odstranit termín",
+    "assigneeChanged": "Odpovědná osoba změněna",
+    "dueDateChanged": "Termín změněn"
   },
   "companies": {
     "intelligence": "Firemní inteligence",

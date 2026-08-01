@@ -418,7 +418,10 @@
     "groupByAssignee": "Zodpovedného",
     "groupByNone": "Bez zoskupenia",
     "openDetail": "Otvoriť detail úlohy",
-    "closeDetail": "Zavrieť"
+    "closeDetail": "Zavrieť",
+    "clearDueDate": "Odstrániť termín",
+    "assigneeChanged": "Zodpovedná osoba zmenená",
+    "dueDateChanged": "Termín zmenený"
   },
   "companies": {
     "intelligence": "Firemná inteligencia",

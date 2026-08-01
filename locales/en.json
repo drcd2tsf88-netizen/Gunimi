@@ -418,7 +418,10 @@
     "groupByAssignee": "Assignee",
     "groupByNone": "None",
     "openDetail": "Open task details",
-    "closeDetail": "Close"
+    "closeDetail": "Close",
+    "clearDueDate": "Clear due date",
+    "assigneeChanged": "Assignee updated",
+    "dueDateChanged": "Due date updated"
   },
   "companies": {
     "intelligence": "Company Intelligence",

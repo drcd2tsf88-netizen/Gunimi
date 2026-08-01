@@ -71,7 +71,7 @@ function Avatar({ name, size = 28 }: { name: string | null; size?: number }) {
   );
 }
 
-export default function TaskDetailPanel({ taskId, currentUserId, members: _members, onClose, onTaskUpdated }: Props) {
+export default function TaskDetailPanel({ taskId, currentUserId, members, onClose, onTaskUpdated }: Props) {
   const t = useTranslations("tasks");
 
   const [task, setTask] = useState<TaskDetail | null>(null);
@@ -81,10 +81,14 @@ export default function TaskDetailPanel({ taskId, currentUserId, members: _membe
   const [submittingComment, setSubmittingComment] = useState(false);
   const [addingSubtask, setAddingSubtask] = useState(false);
   const [showSubtaskInput, setShowSubtaskInput] = useState(false);
+  const [showAssigneePicker, setShowAssigneePicker] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [, startTransition] = useTransition();
   const commentRef = useRef<HTMLTextAreaElement>(null);
   const subtaskRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const assigneeRef = useRef<HTMLDivElement>(null);
+  const dateRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!taskId) return;
@@ -100,6 +104,20 @@ export default function TaskDetailPanel({ taskId, currentUserId, members: _membe
     if (showSubtaskInput) subtaskRef.current?.focus();
   }, [showSubtaskInput]);
 
+  useEffect(() => {
+    if (!showAssigneePicker && !showDatePicker) return;
+    function handleClick(e: MouseEvent) {
+      if (assigneeRef.current && !assigneeRef.current.contains(e.target as Node)) {
+        setShowAssigneePicker(false);
+      }
+      if (dateRef.current && !dateRef.current.contains(e.target as Node)) {
+        setShowDatePicker(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [showAssigneePicker, showDatePicker]);
+
   async function handleToggleStatus() {
     if (!task) return;
     const next = task.status === "done" ? "todo" : task.status === "todo" ? "in_progress" : "done";
@@ -107,6 +125,31 @@ export default function TaskDetailPanel({ taskId, currentUserId, members: _membe
     startTransition(async () => {
       await updateTask({ id: task.id, status: next });
       onTaskUpdated?.(task.id, { status: next });
+    });
+  }
+
+  async function handleAssigneeChange(userId: string | null) {
+    if (!task) return;
+    const member = members.find((m) => m.user_id === userId);
+    const name = member?.profiles?.full_name ?? null;
+    setTask((prev) => prev ? { ...prev, assigned_to: userId, assignee_name: name } : prev);
+    setShowAssigneePicker(false);
+    toast.success(t("assigneeChanged"));
+    startTransition(async () => {
+      await updateTask({ id: task.id, assigned_to: userId });
+      onTaskUpdated?.(task.id, { assigned_to: userId });
+    });
+  }
+
+  async function handleDueDateChange(date: string) {
+    if (!task) return;
+    const iso = date ? new Date(date).toISOString() : null;
+    setTask((prev) => prev ? { ...prev, due_date: iso } : prev);
+    setShowDatePicker(false);
+    toast.success(t("dueDateChanged"));
+    startTransition(async () => {
+      await updateTask({ id: task.id, due_date: iso ?? undefined });
+      onTaskUpdated?.(task.id, { due_date: iso });
     });
   }
 
@@ -272,29 +315,87 @@ export default function TaskDetailPanel({ taskId, currentUserId, members: _membe
               {/* Meta */}
               <div className="border-t border-white/[0.05] px-5 py-4">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <User size={13} className="shrink-0 text-zinc-600" />
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("assignee")}</p>
-                      <p className="mt-0.5 text-xs text-white/70">{task.assignee_name ?? t("unassigned")}</p>
-                    </div>
+
+                  {/* Assignee — clickable */}
+                  <div ref={assigneeRef} className="relative">
+                    <button
+                      onClick={() => { setShowAssigneePicker((v) => !v); setShowDatePicker(false); }}
+                      className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-white/[0.05]"
+                    >
+                      <User size={13} className="shrink-0 text-zinc-600" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("assignee")}</p>
+                        <p className="mt-0.5 truncate text-xs text-white/70">{task.assignee_name ?? t("unassigned")}</p>
+                      </div>
+                    </button>
+                    {showAssigneePicker && (
+                      <div className="absolute left-0 top-full z-20 mt-1 w-52 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0D1117] shadow-2xl">
+                        <button
+                          onClick={() => handleAssigneeChange(null)}
+                          className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs text-zinc-500 transition-colors hover:bg-white/[0.05] hover:text-white/70"
+                        >
+                          {t("unassigned")}
+                        </button>
+                        <div className="h-px bg-white/[0.06]" />
+                        {members.map((m) => (
+                          <button
+                            key={m.user_id}
+                            onClick={() => handleAssigneeChange(m.user_id)}
+                            className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs transition-colors hover:bg-white/[0.05] ${task.assigned_to === m.user_id ? "text-violet-300" : "text-white/70"}`}
+                          >
+                            <Avatar name={m.profiles?.full_name ?? null} size={20} />
+                            <span className="truncate">{m.profiles?.full_name ?? m.profiles?.email ?? "—"}</span>
+                            {task.assigned_to === m.user_id && <Check size={11} className="ml-auto shrink-0 text-violet-400" />}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2.5">
-                    <Calendar size={13} className="shrink-0 text-zinc-600" />
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("dueDate")}</p>
-                      <p className={`mt-0.5 text-xs ${task.due_date && new Date(task.due_date) < new Date() && task.status !== "done" ? "text-red-400" : "text-white/70"}`}>
-                        {formatDate(task.due_date)}
-                      </p>
-                    </div>
+
+                  {/* Due date — clickable */}
+                  <div ref={dateRef} className="relative">
+                    <button
+                      onClick={() => { setShowDatePicker((v) => !v); setShowAssigneePicker(false); }}
+                      className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-white/[0.05]"
+                    >
+                      <Calendar size={13} className="shrink-0 text-zinc-600" />
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("dueDate")}</p>
+                        <p className={`mt-0.5 text-xs ${task.due_date && new Date(task.due_date) < new Date() && task.status !== "done" ? "text-red-400" : "text-white/70"}`}>
+                          {formatDate(task.due_date)}
+                        </p>
+                      </div>
+                    </button>
+                    {showDatePicker && (
+                      <div className="absolute left-0 top-full z-20 mt-1 rounded-xl border border-white/[0.08] bg-[#0D1117] p-3 shadow-2xl">
+                        <input
+                          type="date"
+                          defaultValue={task.due_date ? task.due_date.slice(0, 10) : ""}
+                          onChange={(e) => { if (e.target.value) handleDueDateChange(e.target.value); }}
+                          className="block rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs text-white/80 outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                          autoFocus
+                        />
+                        {task.due_date && (
+                          <button
+                            onClick={() => handleDueDateChange("")}
+                            className="mt-2 w-full rounded-lg px-3 py-1.5 text-xs text-zinc-600 transition-colors hover:bg-white/[0.04] hover:text-red-400"
+                          >
+                            {t("clearDueDate")}
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2.5">
+
+                  {/* Created — read only */}
+                  <div className="flex items-center gap-2.5 px-2 py-1.5">
                     <Clock size={13} className="shrink-0 text-zinc-600" />
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("creating")}</p>
                       <p className="mt-0.5 text-xs text-white/70">{formatDateTime(task.created_at)}</p>
                     </div>
                   </div>
+
                 </div>
               </div>
 
