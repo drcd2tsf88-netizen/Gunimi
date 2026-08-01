@@ -421,7 +421,8 @@
     "closeDetail": "Close",
     "clearDueDate": "Clear due date",
     "assigneeChanged": "Assignee updated",
-    "dueDateChanged": "Due date updated"
+    "dueDateChanged": "Due date updated",
+    "taskTags": "Tags"
   },
   "companies": {
     "intelligence": "Company Intelligence",

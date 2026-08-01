@@ -421,7 +421,8 @@
     "closeDetail": "Zavřít",
     "clearDueDate": "Odstranit termín",
     "assigneeChanged": "Odpovědná osoba změněna",
-    "dueDateChanged": "Termín změněn"
+    "dueDateChanged": "Termín změněn",
+    "taskTags": "Štítky"
   },
   "companies": {
     "intelligence": "Firemní inteligence",

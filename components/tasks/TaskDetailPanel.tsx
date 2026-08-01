@@ -20,13 +20,17 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import GunimiCard from "@/components/ui/GunimiCard";
+import TagPicker from "@/components/ui/TagPicker";
 import { getTaskDetail } from "@/server/actions/tasks/getTaskDetail";
 import { createTaskComment } from "@/server/actions/tasks/createTaskComment";
 import { deleteTaskComment } from "@/server/actions/tasks/deleteTaskComment";
 import { createSubtask } from "@/server/actions/tasks/createSubtask";
 import { updateTask } from "@/server/actions/tasks/updateTask";
+import { getTags } from "@/server/actions/tags/getTags";
+import { getEntityTags } from "@/server/actions/tags/getEntityTags";
 import type { TaskDetail, TaskComment, SubTask } from "@/server/actions/tasks/getTaskDetail";
 import type { WorkspaceMember } from "@/types/task";
+import type { WorkspaceTag } from "@/types/tag";
 
 type Props = {
   taskId: string | null;
@@ -75,6 +79,8 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const t = useTranslations("tasks");
 
   const [task, setTask] = useState<TaskDetail | null>(null);
+  const [allTags, setAllTags] = useState<WorkspaceTag[]>([]);
+  const [taskTags, setTaskTags] = useState<WorkspaceTag[]>([]);
   const [loading, startFetch] = useTransition();
   const [commentText, setCommentText] = useState("");
   const [subtaskText, setSubtaskText] = useState("");
@@ -94,8 +100,16 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
     if (!taskId) return;
     let cancelled = false;
     startFetch(async () => {
-      const data = await getTaskDetail(taskId);
-      if (!cancelled) setTask(data);
+      const [data, tags, entityTags] = await Promise.all([
+        getTaskDetail(taskId),
+        getTags(),
+        getEntityTags("task", taskId),
+      ]);
+      if (!cancelled) {
+        setTask(data);
+        setAllTags(tags);
+        setTaskTags(entityTags);
+      }
     });
     return () => { cancelled = true; };
   }, [taskId]);
@@ -396,6 +410,17 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                     </div>
                   </div>
 
+                </div>
+
+                {/* Tags */}
+                <div className="mt-3 px-2">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("taskTags")}</p>
+                  <TagPicker
+                    entityType="task"
+                    entityId={task.id}
+                    allTags={allTags}
+                    initialTags={taskTags}
+                  />
                 </div>
               </div>
 
