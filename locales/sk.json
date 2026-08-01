@@ -853,7 +853,9 @@
     "rule_contact_created_intro_name": "Nový kontakt — Naplánovanie úvodného stretnutia",
     "rule_contact_created_intro_description": "Vytvorí úvodnú úlohu keď je do workspace pridaný nový kontakt.",
     "rule_company_created_setup_name": "Nová spoločnosť — Počiatočné nastavenie",
-    "rule_company_created_setup_description": "Vytvorí nastavovaciu úlohu keď je do workspace pridaná nová spoločnosť."
+    "rule_company_created_setup_description": "Vytvorí nastavovaciu úlohu keď je do workspace pridaná nová spoločnosť.",
+    "toggleUnauthorized": "Automatizácie môžu meniť len administrátori.",
+    "toggleError": "Nepodarilo sa aktualizovať automatizáciu."
   },
   "contacts": {
     "badge": "Inteligencia kontaktov",

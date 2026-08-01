@@ -131,7 +131,7 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
         }
         return next;
       });
-      toast.error(result.error === "unauthorized" ? "Only admins can change automations." : "Failed to update automation.");
+      toast.error(result.error === "unauthorized" ? t("toggleUnauthorized") : t("toggleError"));
     }
 
     setPending(null);

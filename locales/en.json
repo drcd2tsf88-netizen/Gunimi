@@ -853,7 +853,9 @@
     "rule_contact_created_intro_name": "New Contact — Schedule Introduction",
     "rule_contact_created_intro_description": "Creates an introduction task when a new contact is added to the workspace.",
     "rule_company_created_setup_name": "Company Created — Initial Setup",
-    "rule_company_created_setup_description": "Creates a setup task when a new company is added to the workspace."
+    "rule_company_created_setup_description": "Creates a setup task when a new company is added to the workspace.",
+    "toggleUnauthorized": "Only admins can change automations.",
+    "toggleError": "Failed to update automation."
   },
   "contacts": {
     "badge": "Contact Intelligence",
@@ -1501,14 +1503,7 @@
     "gunimiCalendarTitle": "Gunimi Calendar",
     "gunimiCalendarSubtitle": "Tasks and deals pulled from your workspace context",
     "gunimiCalendarEmpty": "No upcoming tasks or deals with due dates",
-    "overdue": "Overdue",
-    "weekViewTitle": "Week",
-    "listViewTitle": "List",
-    "prevWeek": "Previous week",
-    "nextWeek": "Next week",
-    "noItemsThisDay": "Nothing scheduled",
-    "weekOf": "Week of {date}",
-    "currentWeek": "Today"
+    "overdue": "Overdue"
   },
   "email": {
     "badge": "Email",
