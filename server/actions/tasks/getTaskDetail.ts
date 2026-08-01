@@ -83,20 +83,21 @@ export async function getTaskDetail(taskId: string): Promise<TaskDetail | null> 
 
       supabase
         .from("workspace_members")
-        .select("user_id, profiles(full_name, avatar_url)")
+        .select("user_id")
         .eq("workspace_id", workspace.id),
     ]);
 
-    type ProfileJoin = { full_name: string | null; avatar_url: string | null };
-    type MemberRow = { user_id: string; profiles: ProfileJoin | ProfileJoin[] | null };
+    const memberUserIds = (membersResult.data ?? []).map((m) => m.user_id);
+    const { data: profilesData } = memberUserIds.length > 0
+      ? await supabase
+          .from("profiles")
+          .select("id, full_name, avatar_url")
+          .in("id", memberUserIds)
+      : { data: [] };
 
     const memberMap = new Map<string, { name: string | null; avatar: string | null }>();
-    for (const m of (membersResult.data ?? []) as MemberRow[]) {
-      const profile = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles;
-      memberMap.set(m.user_id, {
-        name: profile?.full_name ?? null,
-        avatar: profile?.avatar_url ?? null,
-      });
+    for (const p of (profilesData ?? [])) {
+      memberMap.set(p.id, { name: p.full_name ?? null, avatar: p.avatar_url ?? null });
     }
 
     const comments: TaskComment[] = (commentsResult.data ?? []).map((c) => ({
