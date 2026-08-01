@@ -40,6 +40,9 @@ import type { Deal } from "@/types/deal";
 import type { WorkspaceActivity } from "@/types/activity";
 import type { CompanyNote } from "@/server/actions/company/getCompanyNotes";
 import type { EmailThread } from "@/types/email";
+import type { WorkspaceTag } from "@/types/tag";
+import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
+import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 
 const PREP_ICONS: Record<CompanyPrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -62,6 +65,9 @@ type Props = {
   activities: WorkspaceActivity[];
   notes: CompanyNote[];
   emails: EmailThread[];
+  allTags: WorkspaceTag[];
+  entityTags: WorkspaceTag[];
+  attachments: WorkspaceAttachment[];
 };
 
 export default function CompanyDetailView({
@@ -71,6 +77,9 @@ export default function CompanyDetailView({
   activities,
   notes,
   emails,
+  allTags,
+  entityTags,
+  attachments,
 }: Props) {
   const router = useRouter();
   const t = useTranslations("companies");
@@ -195,6 +204,11 @@ export default function CompanyDetailView({
         <div className="space-y-6">
           <CompanyNotes notes={notes} />
           <CompanyEmails threads={emails} />
+          <AttachmentsPanel
+            entityType="company"
+            entityId={company.id}
+            initialAttachments={attachments}
+          />
         </div>
       ),
     },
@@ -230,6 +244,8 @@ export default function CompanyDetailView({
         contactsCount={contacts.length}
         openDealsCount={openDeals.length}
         onEdit={() => setEditOpen(true)}
+        allTags={allTags}
+        entityTags={entityTags}
       />
 
       <CompanyWorkspaceMetrics company={company} contacts={contacts} deals={deals} />

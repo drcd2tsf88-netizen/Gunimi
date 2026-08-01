@@ -36,12 +36,14 @@ import {
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import type { WorkspaceDealStage } from "@/types/dealStage";
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   companies: Company[];
   contacts: Contact[];
+  stages: WorkspaceDealStage[];
   onCreated: () => void;
 };
 
@@ -50,18 +52,23 @@ export default function CreateDealSheet({
   onOpenChange,
   companies,
   contacts,
+  stages,
   onCreated,
 }: Props) {
   const t = useTranslations();
 
+  const firstStage = stages[0]?.slug ?? "lead";
+
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
+  const [stageSlug, setStageSlug] = useState(firstStage);
   const [companyId, setCompanyId] = useState("");
   const [contactId, setContactId] = useState("");
   const [value, setValue] = useState("");
   const [currency, setCurrency] = useState("EUR");
   const [probability, setProbability] = useState(25);
   const [expectedCloseDate, setExpectedCloseDate] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
   const [description, setDescription] = useState("");
 
   const filteredContacts = useMemo(() => {
@@ -74,12 +81,14 @@ export default function CreateDealSheet({
 
   function resetForm() {
     setTitle("");
+    setStageSlug(firstStage);
     setCompanyId("");
     setContactId("");
     setValue("");
     setCurrency("EUR");
     setProbability(25);
     setExpectedCloseDate("");
+    setExpiryDate("");
     setDescription("");
   }
 
@@ -110,6 +119,7 @@ export default function CreateDealSheet({
 
       const deal = await createDeal({
         title,
+        stage: stageSlug,
         companyId: companyId || undefined,
         contactId: contactId || undefined,
         value: Number(value) || 0,
@@ -117,6 +127,7 @@ export default function CreateDealSheet({
         probability,
         description,
         expectedCloseDate: expectedCloseDate || undefined,
+        expiryDate: expiryDate || undefined,
       });
 
       if (!deal) {
@@ -178,6 +189,19 @@ export default function CreateDealSheet({
                   disabled={loading}
                   onChange={(e) => setTitle(e.target.value)}
                 />
+              </GunimiField>
+
+              <GunimiField label={t("deals.stage")}>
+                <Select value={stageSlug} onValueChange={setStageSlug} disabled={loading}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {stages.map((s) => (
+                      <SelectItem key={s.id} value={s.slug}>{s.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </GunimiField>
 
               <GunimiField label={t("deals.company")}>
@@ -362,6 +386,15 @@ export default function CreateDealSheet({
                   onChange={(e) =>
                     setExpectedCloseDate(e.target.value)
                   }
+                />
+              </GunimiField>
+
+              <GunimiField label={t("deals.expiryDate")}>
+                <GunimiInput
+                  type="date"
+                  value={expiryDate}
+                  disabled={loading}
+                  onChange={(e) => setExpiryDate(e.target.value)}
                 />
               </GunimiField>
             </div>

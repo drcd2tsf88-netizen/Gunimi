@@ -24,15 +24,14 @@ import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import DealsMetricStrip from "./DealsMetricStrip";
 import DealsPipeline from "./DealsPipeline";
-import DealsListCommand, { type DealStage } from "./DealsListCommand";
+import DealsListCommand from "./DealsListCommand";
 import CreateDealSheet from "./CreateDealSheet";
 import EditDealSheet from "./EditDealSheet";
 
 import { Deal } from "@/types/deal";
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
-
-const VALID_STAGES: DealStage[] = ["lead", "qualified", "proposal", "negotiation", "won", "lost"];
+import type { WorkspaceDealStage } from "@/types/dealStage";
 
 type View = "list" | "pipeline";
 
@@ -40,12 +39,14 @@ type Props = {
   deals: Deal[];
   companies: Company[];
   contacts: Contact[];
+  stages: WorkspaceDealStage[];
 };
 
 export default function DealsPageView({
   deals,
   companies,
   contacts,
+  stages,
 }: Props) {
   const t = useTranslations("deals");
 
@@ -53,8 +54,8 @@ export default function DealsPageView({
   const searchParams = useSearchParams();
 
   const stageParam = searchParams.get("stage");
-  const initialStage: DealStage | undefined = VALID_STAGES.includes(stageParam as DealStage)
-    ? (stageParam as DealStage)
+  const initialStage: string | undefined = stages.some((s) => s.slug === stageParam)
+    ? stageParam!
     : undefined;
 
   const [view, setView] = useState<View>("list");
@@ -239,12 +240,14 @@ export default function DealsPageView({
         ) : view === "list" ? (
           <DealsListCommand
             deals={filteredDeals}
+            stages={stages}
             onEdit={setEditingDeal}
             initialStage={initialStage}
           />
         ) : (
           <DealsPipeline
             deals={filteredDeals}
+            stages={stages}
             onRefresh={() => router.refresh()}
             onEdit={setEditingDeal}
           />
@@ -256,6 +259,7 @@ export default function DealsPageView({
         onOpenChange={setOpen}
         companies={companies}
         contacts={contacts}
+        stages={stages}
         onCreated={() => router.refresh()}
       />
 
@@ -269,6 +273,7 @@ export default function DealsPageView({
           }}
           companies={companies}
           contacts={contacts}
+          stages={stages}
           onUpdated={() => {
             setEditingDeal(null);
             router.refresh();

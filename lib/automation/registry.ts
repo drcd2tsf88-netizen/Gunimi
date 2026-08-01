@@ -28,6 +28,13 @@ export const AUTOMATION_REGISTRY: AutomationRegistryEntry[] = [
       "Creates a qualification task when a new deal enters the pipeline.",
   },
   {
+    id: "deal_high_value_review",
+    name: "High Value Deal — Senior Review",
+    trigger: "deal.created",
+    description:
+      "Creates a senior review task when a new deal value exceeds $10,000.",
+  },
+  {
     id: "contact_created_intro",
     name: "New Contact — Schedule Introduction",
     trigger: "contact.created",

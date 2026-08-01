@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { getDeals } from "@/server/actions/deals/getDeals";
 import { getCompanies } from "@/server/actions/company/getCompanies";
 import { getContacts } from "@/server/actions/crm/getContacts";
+import { getDealStages } from "@/server/actions/deals/getDealStages";
 import DealsPageView from "@/components/deals/DealsPageView";
 import PageLoadingSkeleton from "@/components/ui/PageLoadingSkeleton";
 
@@ -12,14 +13,11 @@ export async function generateMetadata() {
 }
 
 export default async function DealsPage() {
-  const [
-    deals,
-    companies,
-    contacts,
-  ] = await Promise.all([
+  const [deals, companies, contacts, stages] = await Promise.all([
     getDeals(),
     getCompanies(),
     getContacts(),
+    getDealStages(),
   ]);
 
   return (
@@ -28,6 +26,7 @@ export default async function DealsPage() {
         deals={deals}
         companies={companies}
         contacts={contacts}
+        stages={stages}
       />
     </Suspense>
   );

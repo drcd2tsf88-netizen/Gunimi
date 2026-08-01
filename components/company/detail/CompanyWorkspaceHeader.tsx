@@ -9,13 +9,17 @@ import type { WorkspaceHealth } from "@/components/ui/GunimiWorkspaceHeader";
 import GunimiButton from "@/components/ui/GunimiButton";
 
 import type { Company } from "@/types/company";
+import type { WorkspaceTag } from "@/types/tag";
 import { MS_PER_DAY, STALE_COMPANY_DAYS, WARNING_COMPANY_DAYS } from "@/lib/companies/constants";
+import TagPicker from "@/components/ui/TagPicker";
 
 type Props = {
   company: Company;
   contactsCount: number;
   openDealsCount: number;
   onEdit: () => void;
+  allTags: WorkspaceTag[];
+  entityTags: WorkspaceTag[];
 };
 
 export default function CompanyWorkspaceHeader({
@@ -23,6 +27,8 @@ export default function CompanyWorkspaceHeader({
   contactsCount,
   openDealsCount,
   onEdit,
+  allTags,
+  entityTags,
 }: Props) {
   const t = useTranslations("companies");
   const tCommon = useTranslations("common");
@@ -46,10 +52,19 @@ export default function CompanyWorkspaceHeader({
   }
 
   const contextParts = [company.industry, company.country].filter(Boolean);
-  const context =
-    contextParts.length > 0 ? (
-      <p className="text-xs text-white/40">{contextParts.join(" · ")}</p>
-    ) : undefined;
+  const context = (
+    <div className="space-y-2">
+      {contextParts.length > 0 && (
+        <p className="text-xs text-white/40">{contextParts.join(" · ")}</p>
+      )}
+      <TagPicker
+        entityType="company"
+        entityId={company.id}
+        allTags={allTags}
+        initialTags={entityTags}
+      />
+    </div>
+  );
 
   const actions = (
     <GunimiButton

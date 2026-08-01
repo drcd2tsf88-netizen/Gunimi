@@ -10,6 +10,7 @@ export type Contact = {
   company_name?: string;
   last_contacted_at?: string;
   created_at?: string;
+  is_priority?: boolean;
   owner?: {
     full_name: string;
   };

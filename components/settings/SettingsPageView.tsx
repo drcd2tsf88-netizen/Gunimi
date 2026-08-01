@@ -17,7 +17,15 @@ import MembersSection from "./members/MembersSection";
 import PreferencesSection from "./preferences/PreferencesSection";
 import ProfileSection from "./profile/ProfileSection";
 import DangerSection from "./danger/DangerSection";
+import PipelineSection from "./pipeline/PipelineSection";
+import AuditLogSection from "./audit/AuditLogSection";
+import TagsSection from "./tags/TagsSection";
+import BillingSection from "./billing/BillingSection";
 import { type UserProfile } from "@/server/actions/profile/getUserProfile";
+import type { WorkspaceDealStage } from "@/types/dealStage";
+import type { AuditLogEntry } from "@/server/actions/workspace/getAuditLogs";
+import type { WorkspaceTag } from "@/types/tag";
+import type { SubscriptionStatus } from "@/server/actions/billing/getSubscription";
 
 type Props = {
   workspace: WorkspaceSettings;
@@ -30,6 +38,11 @@ type Props = {
   userProfile: UserProfile | null;
   localeSource: "workspace" | "cookie" | "browser";
   isDogfoodEligible: boolean;
+  dealStages: WorkspaceDealStage[];
+  auditLogs: AuditLogEntry[];
+  workspaceTags: WorkspaceTag[];
+  subscription: SubscriptionStatus;
+  billingSuccess?: boolean;
 };
 
 export default function SettingsPageView({
@@ -43,6 +56,11 @@ export default function SettingsPageView({
   userProfile,
   localeSource,
   isDogfoodEligible,
+  dealStages,
+  auditLogs,
+  workspaceTags,
+  subscription,
+  billingSuccess,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -87,6 +105,22 @@ export default function SettingsPageView({
 
           {section === "profile" && userProfile && (
             <ProfileSection profile={userProfile} />
+          )}
+
+          {section === "pipeline" && (
+            <PipelineSection initialStages={dealStages} />
+          )}
+
+          {section === "tags" && (
+            <TagsSection initialTags={workspaceTags} />
+          )}
+
+          {section === "audit_log" && (
+            <AuditLogSection logs={auditLogs} />
+          )}
+
+          {section === "billing" && (
+            <BillingSection subscription={subscription} showSuccess={billingSuccess} />
           )}
 
           {section === "danger" && (

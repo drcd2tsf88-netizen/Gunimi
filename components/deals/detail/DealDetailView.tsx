@@ -32,6 +32,10 @@ import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
 import type { DealRelatedNote } from "@/server/actions/deals/getDealRelatedNotes";
 import type { DealRelatedTask } from "@/server/actions/deals/getDealRelatedTasks";
+import type { WorkspaceDealStage } from "@/types/dealStage";
+import type { WorkspaceTag } from "@/types/tag";
+import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
+import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 
 const PREP_ICONS: Record<PrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -55,6 +59,10 @@ type Props = {
   contacts: Contact[];
   notes: DealRelatedNote[];
   tasks: DealRelatedTask[];
+  stages: WorkspaceDealStage[];
+  allTags: WorkspaceTag[];
+  entityTags: WorkspaceTag[];
+  attachments: WorkspaceAttachment[];
 };
 
 export default function DealDetailView({
@@ -64,6 +72,10 @@ export default function DealDetailView({
   contacts,
   notes,
   tasks,
+  stages,
+  allTags,
+  entityTags,
+  attachments,
 }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
@@ -183,6 +195,11 @@ export default function DealDetailView({
             contactId={deal.contact?.id}
             companyId={deal.company?.id}
           />
+          <AttachmentsPanel
+            entityType="deal"
+            entityId={deal.id}
+            initialAttachments={attachments}
+          />
         </div>
       ),
     },
@@ -213,7 +230,7 @@ export default function DealDetailView({
 
   return (
     <div className="flex flex-col gap-6">
-      <DealHeader deal={deal} onEdit={() => setEditOpen(true)} />
+      <DealHeader deal={deal} onEdit={() => setEditOpen(true)} allTags={allTags} entityTags={entityTags} />
 
       <DealMetrics deal={deal} />
 
@@ -230,6 +247,7 @@ export default function DealDetailView({
         onOpenChange={setEditOpen}
         companies={companies}
         contacts={contacts}
+        stages={stages}
         onUpdated={() => router.refresh()}
         onDeleted={() => router.push("/dashboard/deals")}
       />

@@ -6,28 +6,20 @@ import DealsStagePicker from "./DealsStagePicker";
 import DealsListView from "./DealsListView";
 
 import { Deal } from "@/types/deal";
-
-export type DealStage =
-  | "lead"
-  | "qualified"
-  | "proposal"
-  | "negotiation"
-  | "won"
-  | "lost";
+import type { WorkspaceDealStage } from "@/types/dealStage";
 
 type Props = {
   deals: Deal[];
+  stages: WorkspaceDealStage[];
   onEdit: (deal: Deal) => void;
-  initialStage?: DealStage;
+  initialStage?: string;
 };
 
-export default function DealsListCommand({ deals, onEdit, initialStage }: Props) {
-  const [activeStage, setActiveStage] =
-    useState<DealStage>(initialStage ?? "lead");
+export default function DealsListCommand({ deals, stages, onEdit, initialStage }: Props) {
+  const firstStage = stages[0]?.slug ?? "lead";
+  const [activeStage, setActiveStage] = useState<string>(initialStage ?? firstStage);
 
-  const stageDeals = deals.filter(
-    (d) => d.stage === activeStage
-  );
+  const stageDeals = deals.filter((d) => d.stage === activeStage);
 
   return (
     <div
@@ -61,6 +53,7 @@ export default function DealsListCommand({ deals, onEdit, initialStage }: Props)
       >
         <DealsStagePicker
           deals={deals}
+          stages={stages}
           selected={activeStage}
           onSelect={setActiveStage}
         />

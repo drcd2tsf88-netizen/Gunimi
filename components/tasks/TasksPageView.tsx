@@ -12,6 +12,8 @@ import {
   CheckCircle2,
   Search,
   X,
+  LayoutList,
+  Columns,
 } from "lucide-react";
 
 import { useTranslations } from "next-intl";
@@ -42,6 +44,8 @@ import {
 } from "@/components/ui/select";
 
 import CreateTaskSheet from "@/components/tasks/CreateTaskSheet";
+import KanbanView from "@/components/tasks/KanbanView";
+import TaskDetailPanel from "@/components/tasks/TaskDetailPanel";
 
 import { getWorkspaceTasks } from "@/server/actions/tasks/getWorkspaceTasks";
 import { updateTask } from "@/server/actions/tasks/updateTask";
@@ -55,6 +59,7 @@ type Props = {
   initialTasks: Task[];
   members: WorkspaceMember[];
   workspaceId: string;
+  currentUserId: string;
 };
 
 const NEXT_STATUS: Record<string, string> = {
@@ -118,7 +123,7 @@ function getAssigneeName(userId: string | null | undefined, members: WorkspaceMe
   return member.profiles.full_name || member.profiles.email || "–";
 }
 
-export default function TasksPageView({ initialTasks, members, workspaceId }: Props) {
+export default function TasksPageView({ initialTasks, members, workspaceId, currentUserId }: Props) {
   const t = useTranslations("tasks");
   const tc = useTranslations("common");
 
@@ -128,6 +133,9 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [toggling, setToggling] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"list" | "kanban">("list");
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [myTasksOnly, setMyTasksOnly] = useState(false);
 
   // Search + filters
   const [search, setSearch] = useState("");
@@ -184,6 +192,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
     const q = search.toLowerCase();
 
     return tasks.filter((task) => {
+      if (myTasksOnly && task.assigned_to !== currentUserId) return false;
       if (q) {
         const inTitle = task.title.toLowerCase().includes(q);
         const inDesc = task.description?.toLowerCase().includes(q) ?? false;
@@ -194,7 +203,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
       if (filterAssignee !== "all" && task.assigned_to !== filterAssignee) return false;
       return true;
     });
-  }, [tasks, search, filterStatus, filterPriority, filterAssignee]);
+  }, [tasks, search, filterStatus, filterPriority, filterAssignee, myTasksOnly, currentUserId]);
 
   const hasActiveFilters =
     search !== "" ||
@@ -376,6 +385,48 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
             {t("clearFilters")}
           </GunimiButton>
         )}
+
+        {/* My Tasks toggle */}
+        <button
+          onClick={() => setMyTasksOnly((v) => !v)}
+          className={[
+            "flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-colors",
+            myTasksOnly
+              ? "border-violet-500/40 bg-violet-500/10 text-violet-300"
+              : "border-white/[0.07] text-zinc-500 hover:text-white/70",
+          ].join(" ")}
+        >
+          {myTasksOnly ? <CheckCircle2 size={12} /> : <Clock size={12} />}
+          {t("myTasks")}
+        </button>
+
+        {/* View toggle */}
+        <div className="ml-auto flex shrink-0 items-center rounded-lg border border-white/[0.07] p-0.5">
+          <button
+            onClick={() => setViewMode("list")}
+            title={t("listView")}
+            className={[
+              "flex h-7 w-7 items-center justify-center rounded-md transition-all",
+              viewMode === "list"
+                ? "bg-white/[0.08] text-white"
+                : "text-zinc-500 hover:text-white/70",
+            ].join(" ")}
+          >
+            <LayoutList size={13} />
+          </button>
+          <button
+            onClick={() => setViewMode("kanban")}
+            title={t("kanbanView")}
+            className={[
+              "flex h-7 w-7 items-center justify-center rounded-md transition-all",
+              viewMode === "kanban"
+                ? "bg-white/[0.08] text-white"
+                : "text-zinc-500 hover:text-white/70",
+            ].join(" ")}
+          >
+            <Columns size={13} />
+          </button>
+        </div>
       </div>
 
       {/* CONTENT */}
@@ -397,6 +448,21 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
             icon={Search}
             title={t("noResults")}
             description={t("noResultsDescription")}
+          />
+        ) : viewMode === "kanban" ? (
+          <KanbanView
+            tasks={filteredTasks}
+            members={members}
+            onEdit={handleEdit}
+            onDelete={(task) => setDeleteTarget(task)}
+            onTasksChange={(updatedFiltered) =>
+              setTasks((prev) =>
+                prev.map((t) => {
+                  const found = updatedFiltered.find((u) => u.id === t.id);
+                  return found !== undefined ? found : t;
+                })
+              )
+            }
           />
         ) : (
           <div className="overflow-hidden rounded-2xl border border-white/[0.08]">
@@ -433,23 +499,28 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
                       key={task.id}
                       className="group transition-colors hover:bg-white/[0.02]"
                     >
-                      {/* TITLE */}
+                      {/* TITLE — click to open detail panel */}
                       <td className="px-5 py-4">
-                        <p
-                          className={
-                            task.status === "done"
-                              ? "font-medium text-zinc-500 line-through"
-                              : "font-medium text-white/90"
-                          }
+                        <button
+                          onClick={() => setSelectedTaskId(task.id)}
+                          className="text-left"
+                          title={t("openDetail")}
                         >
-                          {task.title}
-                        </p>
-
-                        {task.description && (
-                          <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500">
-                            {task.description}
+                          <p
+                            className={
+                              task.status === "done"
+                                ? "font-medium text-zinc-500 line-through"
+                                : "font-medium text-white/90 hover:text-violet-300 transition-colors"
+                            }
+                          >
+                            {task.title}
                           </p>
-                        )}
+                          {task.description && (
+                            <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500">
+                              {task.description}
+                            </p>
+                          )}
+                        </button>
                       </td>
 
                       {/* STATUS — clickable cycle */}
@@ -570,6 +641,19 @@ export default function TasksPageView({ initialTasks, members, workspaceId }: Pr
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* TASK DETAIL PANEL */}
+      <TaskDetailPanel
+        taskId={selectedTaskId}
+        currentUserId={currentUserId}
+        members={members}
+        onClose={() => setSelectedTaskId(null)}
+        onTaskUpdated={(taskId, changes) => {
+          setTasks((prev) =>
+            prev.map((t) => (t.id === taskId ? { ...t, ...changes } : t))
+          );
+        }}
+      />
     </>
   );
 }

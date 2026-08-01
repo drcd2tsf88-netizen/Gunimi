@@ -1,0 +1,481 @@
+"use client";
+
+import { useState, useRef, useEffect, useTransition } from "react";
+import { useTranslations } from "next-intl";
+import {
+  X,
+  Calendar,
+  User,
+  Flag,
+  CheckSquare,
+  Square,
+  Plus,
+  Trash2,
+  Download,
+  MessageSquare,
+  ChevronRight,
+  Clock,
+  Check,
+  Loader2,
+} from "lucide-react";
+import toast from "react-hot-toast";
+import GunimiCard from "@/components/ui/GunimiCard";
+import { getTaskDetail } from "@/server/actions/tasks/getTaskDetail";
+import { createTaskComment } from "@/server/actions/tasks/createTaskComment";
+import { deleteTaskComment } from "@/server/actions/tasks/deleteTaskComment";
+import { createSubtask } from "@/server/actions/tasks/createSubtask";
+import { updateTask } from "@/server/actions/tasks/updateTask";
+import type { TaskDetail, TaskComment, SubTask } from "@/server/actions/tasks/getTaskDetail";
+import type { WorkspaceMember } from "@/types/task";
+
+type Props = {
+  taskId: string | null;
+  currentUserId: string;
+  members: WorkspaceMember[];
+  onClose: () => void;
+  onTaskUpdated?: (taskId: string, changes: Record<string, unknown>) => void;
+};
+
+const STATUS_CONFIG = {
+  todo: { label: "To Do", color: "text-zinc-400", dot: "bg-zinc-500" },
+  in_progress: { label: "In Progress", color: "text-amber-400", dot: "bg-amber-400" },
+  done: { label: "Done", color: "text-emerald-400", dot: "bg-emerald-400" },
+} as const;
+
+const PRIORITY_CONFIG = {
+  high: { label: "High", color: "text-red-400", dot: "bg-red-500" },
+  medium: { label: "Medium", color: "text-amber-400", dot: "bg-amber-400" },
+  low: { label: "Low", color: "text-zinc-500", dot: "bg-zinc-600" },
+} as const;
+
+function formatDate(iso: string | null): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+function formatDateTime(iso: string): string {
+  return new Date(iso).toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+function Avatar({ name, size = 28 }: { name: string | null; size?: number }) {
+  const initials = name
+    ? name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    : "?";
+  return (
+    <div
+      className="flex shrink-0 items-center justify-center rounded-full bg-violet-500/20 font-medium text-violet-300"
+      style={{ width: size, height: size, fontSize: size * 0.38 }}
+    >
+      {initials}
+    </div>
+  );
+}
+
+export default function TaskDetailPanel({ taskId, currentUserId, members: _members, onClose, onTaskUpdated }: Props) {
+  const t = useTranslations("tasks");
+
+  const [task, setTask] = useState<TaskDetail | null>(null);
+  const [loading, startFetch] = useTransition();
+  const [commentText, setCommentText] = useState("");
+  const [subtaskText, setSubtaskText] = useState("");
+  const [submittingComment, setSubmittingComment] = useState(false);
+  const [addingSubtask, setAddingSubtask] = useState(false);
+  const [showSubtaskInput, setShowSubtaskInput] = useState(false);
+  const [, startTransition] = useTransition();
+  const commentRef = useRef<HTMLTextAreaElement>(null);
+  const subtaskRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!taskId) return;
+    let cancelled = false;
+    startFetch(async () => {
+      const data = await getTaskDetail(taskId);
+      if (!cancelled) setTask(data);
+    });
+    return () => { cancelled = true; };
+  }, [taskId]);
+
+  useEffect(() => {
+    if (showSubtaskInput) subtaskRef.current?.focus();
+  }, [showSubtaskInput]);
+
+  async function handleToggleStatus() {
+    if (!task) return;
+    const next = task.status === "done" ? "todo" : task.status === "todo" ? "in_progress" : "done";
+    setTask((prev) => prev ? { ...prev, status: next } : prev);
+    startTransition(async () => {
+      await updateTask({ id: task.id, status: next });
+      onTaskUpdated?.(task.id, { status: next });
+    });
+  }
+
+  async function handlePostComment() {
+    if (!task || !commentText.trim()) return;
+    setSubmittingComment(true);
+    const result = await createTaskComment(task.id, commentText.trim());
+    if (result.success) {
+      const newComment: TaskComment = {
+        id: result.id!,
+        user_id: currentUserId,
+        content: commentText.trim(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        author_name: null,
+        author_avatar: null,
+      };
+      setTask((prev) => prev ? { ...prev, comments: [...prev.comments, newComment] } : prev);
+      setCommentText("");
+      toast.success(t("commentAdded"));
+    } else {
+      toast.error(t("failedToComment"));
+    }
+    setSubmittingComment(false);
+  }
+
+  async function handleDeleteComment(commentId: string) {
+    if (!task) return;
+    const ok = await deleteTaskComment(commentId);
+    if (ok) {
+      setTask((prev) => prev ? { ...prev, comments: prev.comments.filter((c) => c.id !== commentId) } : prev);
+      toast.success(t("commentDeleted"));
+    }
+  }
+
+  async function handleAddSubtask() {
+    if (!task || !subtaskText.trim()) return;
+    setAddingSubtask(true);
+    const result = await createSubtask(task.id, subtaskText.trim());
+    if (result.success) {
+      const newSub: SubTask = {
+        id: result.id!,
+        title: subtaskText.trim(),
+        status: "todo",
+        priority: "medium",
+        assigned_to: null,
+        due_date: null,
+        created_at: new Date().toISOString(),
+      };
+      setTask((prev) => prev ? { ...prev, subtasks: [...prev.subtasks, newSub] } : prev);
+      setSubtaskText("");
+      setShowSubtaskInput(false);
+      toast.success(t("subtaskAdded"));
+    } else {
+      toast.error(t("failedToAddSubtask"));
+    }
+    setAddingSubtask(false);
+  }
+
+  async function handleToggleSubtask(subId: string, current: string) {
+    const next = current === "done" ? "todo" : "done";
+    setTask((prev) =>
+      prev
+        ? { ...prev, subtasks: prev.subtasks.map((s) => s.id === subId ? { ...s, status: next } : s) }
+        : prev
+    );
+    await updateTask({ id: subId, status: next });
+  }
+
+  function handleDownload() {
+    if (!task) return;
+    window.open(`/api/tasks/${task.id}/export?print=1`, "_blank");
+  }
+
+  if (!taskId) return null;
+
+  const statusCfg = STATUS_CONFIG[task?.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.todo;
+  const priorityCfg = PRIORITY_CONFIG[task?.priority as keyof typeof PRIORITY_CONFIG] ?? PRIORITY_CONFIG.medium;
+  const doneCount = task?.subtasks.filter((s) => s.status === "done").length ?? 0;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px]"
+        onClick={onClose}
+      />
+
+      {/* Panel */}
+      <div
+        ref={panelRef}
+        className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[520px] flex-col border-l border-white/[0.07] bg-[#080C14] shadow-2xl"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+          <div className="flex items-center gap-2.5">
+            <CheckSquare size={15} className="text-violet-400" />
+            <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+              {t("detailPanelTitle")}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            {task && (
+              <button
+                onClick={handleDownload}
+                title={t("downloadReport")}
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+              >
+                <Download size={13} />
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          {loading ? (
+            <div className="flex h-64 items-center justify-center">
+              <Loader2 size={20} className="animate-spin text-violet-400" />
+            </div>
+          ) : !task ? (
+            <div className="flex h-64 items-center justify-center text-sm text-zinc-600">
+              Task not found
+            </div>
+          ) : (
+            <div className="space-y-0">
+              {/* Title + Status toggle */}
+              <div className="px-5 py-5">
+                <div className="flex items-start gap-3">
+                  <button
+                    onClick={handleToggleStatus}
+                    className="mt-0.5 shrink-0 text-zinc-600 transition-colors hover:text-emerald-400"
+                    title={t("cycleStatusTooltip")}
+                  >
+                    {task.status === "done"
+                      ? <CheckSquare size={18} className="text-emerald-400" />
+                      : <Square size={18} />}
+                  </button>
+                  <h2 className={`text-base font-semibold leading-snug text-white/90 ${task.status === "done" ? "line-through text-white/40" : ""}`}>
+                    {task.title}
+                  </h2>
+                </div>
+
+                {/* Badges */}
+                <div className="mt-3 flex flex-wrap items-center gap-2 pl-7">
+                  <span className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium ${statusCfg.color}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${statusCfg.dot}`} />
+                    {statusCfg.label}
+                  </span>
+                  <span className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium ${priorityCfg.color}`}>
+                    <Flag size={9} />
+                    {priorityCfg.label}
+                  </span>
+                </div>
+              </div>
+
+              {/* Meta */}
+              <div className="border-t border-white/[0.05] px-5 py-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <User size={13} className="shrink-0 text-zinc-600" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("assignee")}</p>
+                      <p className="mt-0.5 text-xs text-white/70">{task.assignee_name ?? t("unassigned")}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Calendar size={13} className="shrink-0 text-zinc-600" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("dueDate")}</p>
+                      <p className={`mt-0.5 text-xs ${task.due_date && new Date(task.due_date) < new Date() && task.status !== "done" ? "text-red-400" : "text-white/70"}`}>
+                        {formatDate(task.due_date)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Clock size={13} className="shrink-0 text-zinc-600" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("creating")}</p>
+                      <p className="mt-0.5 text-xs text-white/70">{formatDateTime(task.created_at)}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description */}
+              {task.description && (
+                <div className="border-t border-white/[0.05] px-5 py-4">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-zinc-600">
+                    {t("description")}
+                  </p>
+                  <p className="text-sm leading-relaxed text-white/55 whitespace-pre-wrap">
+                    {task.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Subtasks */}
+              <div className="border-t border-white/[0.05] px-5 py-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-600">
+                      {t("subtasks")}
+                    </p>
+                    {task.subtasks.length > 0 && (
+                      <span className="text-[10px] text-zinc-600">
+                        {doneCount}/{task.subtasks.length}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setShowSubtaskInput((v) => !v)}
+                    className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-zinc-500 transition-colors hover:bg-white/[0.05] hover:text-violet-300"
+                  >
+                    <Plus size={11} />
+                    {t("addSubtask")}
+                  </button>
+                </div>
+
+                {task.subtasks.length > 0 && (
+                  <div className="mb-2 space-y-1">
+                    {task.subtasks.map((sub) => (
+                      <div key={sub.id} className="flex items-center gap-2.5 rounded-lg px-2 py-2 transition-colors hover:bg-white/[0.03]">
+                        <button
+                          onClick={() => handleToggleSubtask(sub.id, sub.status)}
+                          className={`shrink-0 transition-colors ${sub.status === "done" ? "text-emerald-400" : "text-zinc-600 hover:text-emerald-400"}`}
+                        >
+                          {sub.status === "done"
+                            ? <Check size={14} />
+                            : <Square size={14} />}
+                        </button>
+                        <span className={`flex-1 text-sm ${sub.status === "done" ? "text-zinc-600 line-through" : "text-white/75"}`}>
+                          {sub.title}
+                        </span>
+                        <ChevronRight size={11} className="text-zinc-700" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {task.subtasks.length === 0 && !showSubtaskInput && (
+                  <p className="text-xs text-zinc-700">{t("noSubtasks")}</p>
+                )}
+
+                {showSubtaskInput && (
+                  <div className="flex items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2">
+                    <input
+                      ref={subtaskRef}
+                      value={subtaskText}
+                      onChange={(e) => setSubtaskText(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") handleAddSubtask(); if (e.key === "Escape") setShowSubtaskInput(false); }}
+                      placeholder={t("subtaskPlaceholder")}
+                      className="flex-1 bg-transparent text-sm text-white/80 placeholder-zinc-600 outline-none"
+                    />
+                    <button
+                      onClick={handleAddSubtask}
+                      disabled={addingSubtask || !subtaskText.trim()}
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-violet-600 text-white transition-opacity disabled:opacity-40 hover:bg-violet-500"
+                    >
+                      {addingSubtask ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Comments */}
+              <div className="border-t border-white/[0.05] px-5 py-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <MessageSquare size={12} className="text-zinc-600" />
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-600">
+                    {t("comments")}
+                    {task.comments.length > 0 && (
+                      <span className="ml-1.5 text-zinc-700">({task.comments.length})</span>
+                    )}
+                  </p>
+                </div>
+
+                {task.comments.length === 0 && (
+                  <p className="mb-3 text-xs text-zinc-700">{t("noComments")}</p>
+                )}
+
+                {task.comments.length > 0 && (
+                  <div className="mb-4 space-y-3">
+                    {task.comments.map((comment) => (
+                      <div key={comment.id} className="group">
+                        <div className="flex items-start gap-2.5">
+                          <Avatar name={comment.author_name} size={26} />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-medium text-white/70">
+                                {comment.author_name ?? "Unknown"}
+                              </span>
+                              <span className="text-[10px] text-zinc-700">
+                                {formatDateTime(comment.created_at)}
+                              </span>
+                              {comment.user_id === currentUserId && (
+                                <button
+                                  onClick={() => handleDeleteComment(comment.id)}
+                                  className="ml-auto hidden text-zinc-700 transition-colors hover:text-red-400 group-hover:flex"
+                                >
+                                  <Trash2 size={11} />
+                                </button>
+                              )}
+                            </div>
+                            <GunimiCard className="mt-1.5 px-3 py-2.5">
+                              <p className="text-xs leading-relaxed text-white/60 whitespace-pre-wrap">
+                                {comment.content}
+                              </p>
+                            </GunimiCard>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Comment input */}
+                <div className="flex items-start gap-2.5">
+                  <Avatar name={null} size={26} />
+                  <div className="flex-1">
+                    <textarea
+                      ref={commentRef}
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handlePostComment();
+                      }}
+                      placeholder={t("commentPlaceholder")}
+                      rows={2}
+                      className="w-full resize-none rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-sm text-white/80 placeholder-zinc-600 outline-none transition-colors focus:border-violet-500/40"
+                    />
+                    <div className="mt-1.5 flex items-center justify-between">
+                      <span className="text-[10px] text-zinc-700">⌘↵ to post</span>
+                      <button
+                        onClick={handlePostComment}
+                        disabled={submittingComment || !commentText.trim()}
+                        className="flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-white transition-opacity disabled:opacity-40 hover:bg-violet-500"
+                      >
+                        {submittingComment && <Loader2 size={11} className="animate-spin" />}
+                        {t("commentSubmit")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Export footer */}
+              <div className="border-t border-white/[0.05] px-5 py-4">
+                <button
+                  onClick={handleDownload}
+                  className="flex w-full items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-left transition-colors hover:bg-white/[0.05]"
+                >
+                  <div>
+                    <p className="text-xs font-medium text-white/70">{t("downloadReport")}</p>
+                    <p className="mt-0.5 text-[11px] text-zinc-600">{t("exportDescription")}</p>
+                  </div>
+                  <Download size={14} className="text-zinc-600" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}

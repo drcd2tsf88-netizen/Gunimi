@@ -10,17 +10,9 @@ import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 
-type DealStage =
-  | "lead"
-  | "qualified"
-  | "proposal"
-  | "negotiation"
-  | "won"
-  | "lost";
-
 type Props = {
   deals: Deal[];
-  stage: DealStage;
+  stage: string;
   onEdit: (deal: Deal) => void;
 };
 
@@ -197,15 +189,16 @@ export default function DealsListView({ deals, onEdit }: Props) {
               <p className="truncate text-sm text-white/45">—</p>
             )}
 
-            <p
-              className="
-                text-sm
-                font-medium
-                text-white
-              "
-            >
-              {formatCurrency(Number(deal.value || 0), deal.currency)}
-            </p>
+            <div>
+              <p className="text-sm font-medium text-white">
+                {formatCurrency(Number(deal.value || 0), deal.currency)}
+              </p>
+              {(deal.paid_amount ?? 0) > 0 && (
+                <p className="text-[11px] text-emerald-400/70">
+                  {t("paid")}: {formatCurrency(Number(deal.paid_amount), deal.currency)}
+                </p>
+              )}
+            </div>
 
             <p
               className="

@@ -6,286 +6,109 @@ import toast from "react-hot-toast";
 
 import { useTranslations } from "next-intl";
 
-import {
-  Briefcase,
-} from "lucide-react";
+import { Briefcase } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-import GunimiCard
-from "@/components/ui/GunimiCard";
+import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
-import GunimiEmptyState
-from "@/components/ui/GunimiEmptyState";
+import DealPipelineCard from "./dealPipelineCard";
 
-import DealPipelineCard
-from "./dealPipelineCard";
-
-import {
-  updateDealStage,
-} from "@/server/actions/deals/updateDealStage";
-
+import { updateDealStage } from "@/server/actions/deals/updateDealStage";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
-
-const STAGES = [
-  "lead",
-  "qualified",
-  "proposal",
-  "negotiation",
-  "won",
-  "lost",
-] as const;
-
-const STAGE_TITLE_COLOR: Record<string, string> = {
-  lead: "text-white",
-  qualified: "text-white",
-  proposal: "text-white",
-  negotiation: "text-white",
-  won: "text-emerald-400",
-  lost: "text-zinc-500",
-};
-
+import type { WorkspaceDealStage } from "@/types/dealStage";
 import { Deal } from "@/types/deal";
 
 type Props = {
-  stage:
-    (typeof STAGES)[number];
-
+  stage: WorkspaceDealStage;
   deals: Deal[];
-
+  canMoveBack: boolean;
+  canMoveForward: boolean;
+  prevSlug?: string;
+  nextSlug?: string;
   onRefresh: () => void;
-
   onEdit: (deal: Deal) => void;
 };
 
 export default function DealPipelineColumn({
   stage,
   deals,
+  canMoveBack,
+  canMoveForward,
+  prevSlug,
+  nextSlug,
   onRefresh,
   onEdit,
 }: Props) {
-  const t =
-    useTranslations(
-      "deals"
-    );
+  const t = useTranslations("deals");
+  const [isPending, startTransition] = useTransition();
 
-  const [
-    isPending,
-    startTransition,
-  ] = useTransition();
+  const stageValue = deals.reduce((total, deal) => total + Number(deal.value || 0), 0);
 
-  const stageIndex =
-    STAGES.indexOf(
-      stage
-    );
+  const titleColor = stage.is_won
+    ? "text-emerald-400"
+    : stage.is_lost
+      ? "text-zinc-500"
+      : "text-white";
 
-  const stageValue =
-    deals.reduce(
-      (
-        total,
-        deal
-      ) =>
-        total +
-        Number(
-          deal.value || 0
-        ),
-      0
-    );
+  async function moveDeal(dealId: string, targetSlug: string) {
+    startTransition(async () => {
+      const success = await updateDealStage(dealId, targetSlug);
 
-  async function moveDeal(
-    dealId: string,
-    nextStage:
-      (typeof STAGES)[number]
-  ) {
-    startTransition(
-      async () => {
-        const success =
-          await updateDealStage(
-            dealId,
-            nextStage
-          );
-
-        if (!success) {
-          toast.error(
-            t(
-              "failedToUpdateStage"
-            )
-          );
-
-          return;
-        }
-
-        toast.success(
-          t(
-            "stageUpdated"
-          )
-        );
-
-        onRefresh();
+      if (!success) {
+        toast.error(t("failedToUpdateStage"));
+        return;
       }
-    );
+
+      toast.success(t("stageUpdated"));
+      onRefresh();
+    });
   }
 
   return (
-    <GunimiCard
-      className="
-        h-full
-
-        min-h-[600px]
-
-        p-4
-      "
-    >
+    <GunimiCard className="h-full min-h-[600px] p-4">
       {/* HEADER */}
-
-      <div
-        className="
-          mb-5
-
-          border-b
-          border-white/[0.08]
-
-          pb-4
-        "
-      >
-        <div
-          className="
-            flex
-            items-start
-            justify-between
-            gap-3
-          "
-        >
+      <div className="mb-5 border-b border-white/[0.08] pb-4">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <h3
-              className={cn(
-                "text-sm font-semibold",
-                STAGE_TITLE_COLOR[stage]
-              )}
-            >
-              {t(stage)}
-            </h3>
-
-            <p
-              className="
-                mt-1
-
-                text-xs
-                text-white/40
-              "
-            >
-              {deals.length}
-              {" "}
-              {t(
-                "opportunities"
-              )}
+            <h3 className={cn("text-sm font-semibold", titleColor)}>{stage.name}</h3>
+            <p className="mt-1 text-xs text-white/40">
+              {deals.length} {t("opportunities")}
             </p>
           </div>
 
-          <div
-            className="
-              text-right
-            "
-          >
-            <p
-              className="
-                text-xs
-                text-white/40
-              "
-            >
-              {t(
-                "pipelineValue"
-              )}
-            </p>
-
-            <p
-              className="
-                mt-1
-
-                text-sm
-                font-medium
-              "
-            >
-              {formatCurrency(stageValue)}
-            </p>
+          <div className="text-right">
+            <p className="text-xs text-white/40">{t("pipelineValue")}</p>
+            <p className="mt-1 text-sm font-medium">{formatCurrency(stageValue)}</p>
           </div>
         </div>
       </div>
 
       {/* CONTENT */}
-
-      <div
-        className="
-          space-y-3
-        "
-      >
-        {deals.length ===
-          0 && (
+      <div className="space-y-3">
+        {deals.length === 0 && (
           <GunimiEmptyState
-            title={t(
-              "noDeals"
-            )}
-            description={t(
-              "noDealsDescription"
-            )}
-            icon={
-              Briefcase
-            }
+            title={t("noDeals")}
+            description={t("noDealsDescription")}
+            icon={Briefcase}
           />
         )}
 
-        {deals.map(
-          (deal) => (
-            <DealPipelineCard
-              key={deal.id}
-              deal={deal}
-              canMoveBack={
-                stageIndex >
-                0
-              }
-              canMoveForward={
-                stageIndex <
-                STAGES.length -
-                  1
-              }
-              onMoveBack={() =>
-                moveDeal(
-                  deal.id,
-                  STAGES[
-                    stageIndex -
-                      1
-                  ]
-                )
-              }
-              onMoveForward={() =>
-                moveDeal(
-                  deal.id,
-                  STAGES[
-                    stageIndex +
-                      1
-                  ]
-                )
-              }
-              onEdit={() => onEdit(deal)}
-            />
-          )
-        )}
+        {deals.map((deal) => (
+          <DealPipelineCard
+            key={deal.id}
+            deal={deal}
+            canMoveBack={canMoveBack}
+            canMoveForward={canMoveForward}
+            onMoveBack={() => prevSlug && moveDeal(deal.id, prevSlug)}
+            onMoveForward={() => nextSlug && moveDeal(deal.id, nextSlug)}
+            onEdit={() => onEdit(deal)}
+          />
+        ))}
 
         {isPending && (
-          <div
-            className="
-              py-3
-
-              text-center
-
-              text-xs
-              text-white/40
-            "
-          >
-            {t(
-              "loading"
-            )}
-          </div>
+          <div className="py-3 text-center text-xs text-white/40">{t("loading")}</div>
         )}
       </div>
     </GunimiCard>

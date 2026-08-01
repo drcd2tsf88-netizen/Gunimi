@@ -17,16 +17,20 @@ import { getUserProfile } from "@/server/actions/profile/getUserProfile";
 import SettingsPageView from "@/components/settings/SettingsPageView";
 import { type SettingsSection } from "@/components/settings/SettingsNav";
 import type { MemberRowData } from "@/components/settings/members/MemberRow";
+import { getDealStages } from "@/server/actions/deals/getDealStages";
+import { getAuditLogs } from "@/server/actions/workspace/getAuditLogs";
+import { getTags } from "@/server/actions/tags/getTags";
+import { getSubscription } from "@/server/actions/billing/getSubscription";
 
-const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "profile", "danger"];
+const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "profile", "pipeline", "tags", "audit_log", "billing", "danger"];
 
 export default async function SettingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ section?: string }>;
+  searchParams: Promise<{ section?: string; success?: string }>;
 }) {
   const cookieStore = await cookies();
-  const [t, params, settings, membership, members, invites, user, workspaceSummaries, userProfile] = await Promise.all([
+  const [t, params, settings, membership, members, invites, user, workspaceSummaries, userProfile, dealStages, auditLogs, workspaceTags, subscription] = await Promise.all([
     getTranslations("settings"),
     searchParams,
     getWorkspaceSettings(),
@@ -36,6 +40,10 @@ export default async function SettingsPage({
     getUser(),
     getUserWorkspaceSummaries(),
     getUserProfile(),
+    getDealStages(),
+    getAuditLogs(),
+    getTags(),
+    getSubscription(),
   ]);
 
   if (!settings || !membership || !user) {
@@ -57,6 +65,8 @@ export default async function SettingsPage({
   const initialSection = VALID_SECTIONS.includes(params.section as SettingsSection)
     ? (params.section as SettingsSection)
     : undefined;
+
+  const billingSuccess = params.success === "1";
 
   const hasWorkspacePref = !!settings.preferences?.language;
   const hasCookie = !!cookieStore.get("GUNIMI_LOCALE")?.value;
@@ -82,6 +92,11 @@ export default async function SettingsPage({
       userProfile={userProfile}
       localeSource={localeSource}
       isDogfoodEligible={isDogfoodEligible}
+      dealStages={dealStages}
+      auditLogs={auditLogs}
+      workspaceTags={workspaceTags}
+      subscription={subscription}
+      billingSuccess={billingSuccess}
     />
   );
 }

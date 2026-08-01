@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
@@ -15,8 +16,10 @@ import {
   User,
   Zap,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import GunimiCard from "@/components/ui/GunimiCard";
 import { AUTOMATION_REGISTRY } from "@/lib/automation/registry";
+import { toggleAutomation } from "@/server/actions/automation/toggleAutomation";
 import type { AutomationHistoryItem } from "@/server/actions/automation/getAutomationHistory";
 
 type Stats = {
@@ -28,6 +31,7 @@ type Stats = {
 type Props = {
   history: AutomationHistoryItem[];
   stats: Stats;
+  disabledAutomations: string[];
 };
 
 function getTriggerLabel(trigger: string, t: (key: string) => string): string {
@@ -86,13 +90,52 @@ function StatusBadge({ status }: { status: "success" | "partial" | "failed" }) {
   );
 }
 
-export default function AutomationCenterView({ history, stats }: Props) {
+export default function AutomationCenterView({ history, stats, disabledAutomations }: Props) {
   const t = useTranslations("automations");
+
+  const [disabledSet, setDisabledSet] = useState<Set<string>>(
+    () => new Set(disabledAutomations)
+  );
+  const [pending, setPending] = useState<string | null>(null);
+
+  const enabledCount = AUTOMATION_REGISTRY.filter((r) => !disabledSet.has(r.id)).length;
 
   const successRate =
     stats.total > 0
       ? Math.round((stats.successful / stats.total) * 100)
       : 100;
+
+  async function handleToggle(ruleId: string) {
+    const isCurrentlyEnabled = !disabledSet.has(ruleId);
+    setPending(ruleId);
+
+    setDisabledSet((prev) => {
+      const next = new Set(prev);
+      if (isCurrentlyEnabled) {
+        next.add(ruleId);
+      } else {
+        next.delete(ruleId);
+      }
+      return next;
+    });
+
+    const result = await toggleAutomation(ruleId, !isCurrentlyEnabled);
+
+    if (!result.success) {
+      setDisabledSet((prev) => {
+        const next = new Set(prev);
+        if (isCurrentlyEnabled) {
+          next.delete(ruleId);
+        } else {
+          next.add(ruleId);
+        }
+        return next;
+      });
+      toast.error(result.error === "unauthorized" ? "Only admins can change automations." : "Failed to update automation.");
+    }
+
+    setPending(null);
+  }
 
   return (
     <div className="space-y-8">
@@ -112,7 +155,10 @@ export default function AutomationCenterView({ history, stats }: Props) {
             {t("activeCount")}
           </p>
           <p className="mt-2 text-3xl font-bold text-white/90">
-            {AUTOMATION_REGISTRY.length}
+            {enabledCount}
+            <span className="ml-1 text-sm font-normal text-white/25">
+              / {AUTOMATION_REGISTRY.length}
+            </span>
           </p>
         </GunimiCard>
         <GunimiCard className="p-4">
@@ -156,19 +202,44 @@ export default function AutomationCenterView({ history, stats }: Props) {
               const triggerColor =
                 TRIGGER_COLOR[rule.trigger] ??
                 "border-white/[0.06] bg-white/[0.03] text-white/50";
+              const isEnabled = !disabledSet.has(rule.id);
+              const isPending = pending === rule.id;
+
               return (
                 <div key={rule.id} className="px-5 py-3.5">
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="text-sm font-medium text-white/85">{rule.name}</p>
-                    <span
-                      className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${triggerColor}`}
+                  <div className="flex items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className={`text-sm font-medium transition-colors ${isEnabled ? "text-white/85" : "text-white/35"}`}>
+                          {rule.name}
+                        </p>
+                        <span
+                          className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium transition-opacity ${triggerColor} ${isEnabled ? "" : "opacity-40"}`}
+                        >
+                          {getTriggerLabel(rule.trigger, t)}
+                        </span>
+                      </div>
+                      <p className={`mt-1 text-xs leading-relaxed transition-colors ${isEnabled ? "text-white/40" : "text-white/20"}`}>
+                        {rule.description}
+                      </p>
+                    </div>
+
+                    {/* Toggle switch */}
+                    <button
+                      onClick={() => handleToggle(rule.id)}
+                      disabled={isPending}
+                      aria-label={isEnabled ? t("disableRule") : t("enableRule")}
+                      className={`relative mt-0.5 inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors disabled:opacity-50 ${
+                        isEnabled ? "bg-violet-600" : "bg-white/10"
+                      }`}
                     >
-                      {getTriggerLabel(rule.trigger, t)}
-                    </span>
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                          isEnabled ? "translate-x-[14px]" : "translate-x-0"
+                        }`}
+                      />
+                    </button>
                   </div>
-                  <p className="mt-1 text-xs leading-relaxed text-white/40">
-                    {rule.description}
-                  </p>
                 </div>
               );
             })}

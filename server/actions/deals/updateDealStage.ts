@@ -15,17 +15,9 @@ import { checkWriteRateLimit }
 from "@/lib/server/rateLimit";
 import { logger } from "@/lib/logger";
 
-type DealStage =
-  | "lead"
-  | "qualified"
-  | "proposal"
-  | "negotiation"
-  | "won"
-  | "lost";
-
 export async function updateDealStage(
   dealId: string,
-  stage: DealStage
+  stage: string
 ) {
   try {
     const user = await getUser();
@@ -34,47 +26,31 @@ export async function updateDealStage(
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return false;
-    const allowedStages: DealStage[] = [
-  "lead",
-  "qualified",
-  "proposal",
-  "negotiation",
-  "won",
-  "lost",
-];
 
-if (
-  !allowedStages.includes(
-    stage
-  )
-) {
-  return false;
-}
-type DealUpdatePayload = {
-  stage: DealStage;
-  updated_at: string;
-  probability?: number;
-};
+    const supabase = await createClient();
 
-const updateData: DealUpdatePayload = {
-  stage,
+    const { data: stageRecord } = await supabase
+      .from("workspace_deal_stages")
+      .select("slug, is_won, is_lost")
+      .eq("workspace_id", workspace.id)
+      .eq("slug", stage)
+      .maybeSingle();
 
-  updated_at:
-    new Date().toISOString(),
-};
+    if (!stageRecord) return false;
 
-if (stage === "won") {
-  updateData.probability =
-    100;
-}
+    type DealUpdatePayload = {
+      stage: string;
+      updated_at: string;
+      probability?: number;
+    };
 
-if (stage === "lost") {
-  updateData.probability =
-    0;
-}
+    const updateData: DealUpdatePayload = {
+      stage,
+      updated_at: new Date().toISOString(),
+    };
 
-    const supabase =
-      await createClient();
+    if (stageRecord.is_won) updateData.probability = 100;
+    if (stageRecord.is_lost) updateData.probability = 0;
 
     const {
   data: existingDeal,
@@ -140,30 +116,16 @@ if (stage === "lost") {
     let description =
       `Moved from ${previousStage} to ${stage}`;
 
-    if (
-      stage === "won"
-    ) {
-      type =
-        "deal_won";
-
-      title =
-        "Opportunity Won";
-
-      description =
-        `${existingDeal.title} closed successfully`;
+    if (stageRecord.is_won) {
+      type = "deal_won";
+      title = "Opportunity Won";
+      description = `${existingDeal.title} closed successfully`;
     }
 
-    if (
-      stage === "lost"
-    ) {
-      type =
-        "deal_lost";
-
-      title =
-        "Opportunity Lost";
-
-      description =
-        `${existingDeal.title} marked as lost`;
+    if (stageRecord.is_lost) {
+      type = "deal_lost";
+      title = "Opportunity Lost";
+      description = `${existingDeal.title} marked as lost`;
     }
 
    await supabaseAdmin
@@ -201,8 +163,8 @@ if (stage === "lost") {
     },
   });
 
-    if (stage === "won" || stage === "lost") {
-      await executeAutomations(stage === "won" ? "deal.won" : "deal.lost", {
+    if (stageRecord.is_won || stageRecord.is_lost) {
+      await executeAutomations(stageRecord.is_won ? "deal.won" : "deal.lost", {
         workspaceId: existingDeal.workspace_id as string,
         userId: user.id,
         dealId,
@@ -210,7 +172,7 @@ if (stage === "lost") {
         contactId: (existingDeal.contact_id as string | null) ?? null,
         companyId: (existingDeal.company_id as string | null) ?? null,
       });
-      await resolveAllEntitySignals(workspace.id, dealId, `deal_${stage}`);
+      await resolveAllEntitySignals(workspace.id, dealId, stageRecord.is_won ? "deal_won" : "deal_lost");
     } else {
       await produceDealSignals({
         workspaceId: workspace.id,

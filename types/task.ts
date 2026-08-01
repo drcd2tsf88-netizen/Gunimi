@@ -18,4 +18,7 @@ export type Task = {
   due_date?: string | null;
   assigned_to?: string | null;
   assigned_to_name?: string;
+  is_recurring?: boolean;
+  recurrence_frequency?: string | null;
+  recurrence_interval?: number | null;
 };

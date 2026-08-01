@@ -20,7 +20,9 @@ import {
 } from "@/components/ui/dialog";
 import { deleteContact } from "@/server/actions/crm/deleteContact";
 import type { Contact } from "@/types/contact";
+import type { WorkspaceTag } from "@/types/tag";
 import { MS_PER_DAY } from "@/lib/workspace/constants";
+import TagPicker from "@/components/ui/TagPicker";
 
 const ACTIVE_THRESHOLD_DAYS = 7;
 const ENGAGED_THRESHOLD_DAYS = 30;
@@ -63,9 +65,11 @@ function formatLastContacted(
 
 type Props = {
   contact: Contact;
+  allTags: WorkspaceTag[];
+  entityTags: WorkspaceTag[];
 };
 
-export default function ContactHeader({ contact }: Props) {
+export default function ContactHeader({ contact, allTags, entityTags }: Props) {
   const t = useTranslations("contacts");
   const tc = useTranslations("common");
   const tCrm = useTranslations("crm");
@@ -107,9 +111,15 @@ export default function ContactHeader({ contact }: Props) {
         type={t("workspaceType")}
         title={contact.name}
         context={
-          contextLine ? (
-            <p className="text-sm text-white/40">{contextLine}</p>
-          ) : undefined
+          <div className="space-y-2">
+            {contextLine && <p className="text-sm text-white/40">{contextLine}</p>}
+            <TagPicker
+              entityType="contact"
+              entityId={contact.id}
+              allTags={allTags}
+              initialTags={entityTags}
+            />
+          </div>
         }
         owner={contact.owner?.full_name}
         health={health}

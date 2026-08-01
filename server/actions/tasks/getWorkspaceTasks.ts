@@ -34,7 +34,10 @@ const supabase =
   assigned_to,
   due_date,
   created_at,
-  updated_at
+  updated_at,
+  is_recurring,
+  recurrence_frequency,
+  recurrence_interval
 `)
         .eq(
           "workspace_id",

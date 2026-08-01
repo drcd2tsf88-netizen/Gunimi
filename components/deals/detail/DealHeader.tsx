@@ -15,6 +15,8 @@ import type { WorkspaceHealth } from "@/components/ui/GunimiWorkspaceHeader";
 
 import { updateDealStage } from "@/server/actions/deals/updateDealStage";
 import { Deal } from "@/types/deal";
+import type { WorkspaceTag } from "@/types/tag";
+import TagPicker from "@/components/ui/TagPicker";
 
 const STAGES = [
   "lead",
@@ -92,9 +94,11 @@ function computeDealHealth(
 type Props = {
   deal: Deal;
   onEdit: () => void;
+  allTags: WorkspaceTag[];
+  entityTags: WorkspaceTag[];
 };
 
-export default function DealHeader({ deal, onEdit }: Props) {
+export default function DealHeader({ deal, onEdit, allTags, entityTags }: Props) {
   const t = useTranslations("deals");
   const tCommon = useTranslations("common");
   const router = useRouter();
@@ -140,14 +144,24 @@ export default function DealHeader({ deal, onEdit }: Props) {
           : t("healthStatusAtRisk"),
   };
 
-  const context = deal.company ? (
-    <Link
-      href={`/dashboard/companies/${deal.company.id}`}
-      className="inline-block text-xs text-white/40 transition-colors hover:text-violet-300"
-    >
-      {deal.company.name}
-    </Link>
-  ) : undefined;
+  const context = (
+    <div className="space-y-2">
+      {deal.company && (
+        <Link
+          href={`/dashboard/companies/${deal.company.id}`}
+          className="inline-block text-xs text-white/40 transition-colors hover:text-violet-300"
+        >
+          {deal.company.name}
+        </Link>
+      )}
+      <TagPicker
+        entityType="deal"
+        entityId={deal.id}
+        allTags={allTags}
+        initialTags={entityTags}
+      />
+    </div>
+  );
 
   const actions = (
     <>

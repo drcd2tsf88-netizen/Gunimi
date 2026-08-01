@@ -24,8 +24,6 @@ import type { WorkspaceTab } from "@/components/ui/GunimiWorkspaceTabs";
 import GunimiDecisionCard from "@/components/ui/GunimiDecisionCard";
 import GunimiPreparationCard from "@/components/ui/GunimiPreparationCard";
 import type { PreparationItem } from "@/components/ui/GunimiPreparationCard";
-import GunimiStory from "@/components/ui/GunimiStory";
-import type { RenderedStoryEvent } from "@/components/ui/GunimiStory";
 import GunimiContextCard from "@/components/ui/GunimiContextCard";
 import type { ContextEntry } from "@/components/ui/GunimiContextCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
@@ -34,7 +32,6 @@ import GunimiCard from "@/components/ui/GunimiCard";
 import { resolveContactDecision } from "@/lib/contacts/decision";
 import { resolveContactPreparation } from "@/lib/contacts/preparation";
 import type { ContactPrepItem } from "@/lib/contacts/preparation";
-import { resolveContactStory } from "@/lib/contacts/story";
 import { resolveContactContext } from "@/lib/contacts/context";
 
 import type { Contact } from "@/types/contact";
@@ -43,6 +40,10 @@ import type { ContactTask } from "@/server/actions/crm/getContactTasks";
 import type { ContactNote } from "@/server/actions/crm/getContactNotes";
 import type { WorkspaceActivity } from "@/types/activity";
 import type { EmailThread } from "@/types/email";
+import type { WorkspaceTag } from "@/types/tag";
+import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
+import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
+import ContactTimeline from "@/components/timeline/ContactTimeline";
 
 const CONTACT_PREP_ICONS: Record<ContactPrepItem["iconKey"], LucideIcon> = {
   company: Building2,
@@ -70,6 +71,9 @@ type Props = {
   activities: WorkspaceActivity[];
   notes: ContactNote[];
   emails: EmailThread[];
+  allTags: WorkspaceTag[];
+  entityTags: WorkspaceTag[];
+  attachments: WorkspaceAttachment[];
 };
 
 export default function ContactDetailView({
@@ -79,6 +83,9 @@ export default function ContactDetailView({
   activities,
   notes,
   emails,
+  allTags,
+  entityTags,
+  attachments,
 }: Props) {
   const t = useTranslations("contacts");
 
@@ -90,11 +97,6 @@ export default function ContactDetailView({
   const rawPrep = useMemo(
     () => resolveContactPreparation(contact, decision, tasks, notes, deals),
     [contact, decision, tasks, notes, deals],
-  );
-
-  const rawStory = useMemo(
-    () => resolveContactStory(contact, activities, deals),
-    [contact, activities, deals],
   );
 
   const rawContext = useMemo(
@@ -116,22 +118,6 @@ export default function ContactDetailView({
             : undefined),
       })),
     [rawPrep, t],
-  );
-
-  const storyEvents: RenderedStoryEvent[] = useMemo(
-    () =>
-      rawStory.map((event) => ({
-        id: event.id,
-        iconKey: event.iconKey,
-        badge: t(event.badgeKey),
-        title:
-          event.titleRaw ??
-          (event.titleKey ? t(event.titleKey, event.titleParams) : "—"),
-        detail: event.detail,
-        who: event.who,
-        date: event.date,
-      })),
-    [rawStory, t],
   );
 
   const contextSections = useMemo(
@@ -237,18 +223,16 @@ export default function ContactDetailView({
       ),
     },
     {
-      id: "story",
-      label: t("tabStory"),
+      id: "history",
+      label: t("tabHistory"),
       content: (
-        <GunimiStory
-          label={t("storyLabel")}
-          events={storyEvents}
-          earlyNoteTitle={
-            storyEvents.length <= 1 ? t("storyEarlyTitle") : undefined
-          }
-          earlyNoteDescription={
-            storyEvents.length <= 1 ? t("storyEarlyDescription") : undefined
-          }
+        <ContactTimeline
+          activities={activities}
+          notes={notes}
+          tasks={tasks}
+          emails={emails}
+          deals={deals}
+          attachments={attachments}
         />
       ),
     },
@@ -261,6 +245,11 @@ export default function ContactDetailView({
           <ContactTasks tasks={tasks} />
           <ContactNotes contact={contact} notes={notes} />
           <ContactEmails threads={emails} />
+          <AttachmentsPanel
+            entityType="contact"
+            entityId={contact.id}
+            initialAttachments={attachments}
+          />
         </div>
       ),
     },
@@ -291,7 +280,7 @@ export default function ContactDetailView({
 
   return (
     <div className="space-y-6">
-      <ContactHeader contact={contact} />
+      <ContactHeader contact={contact} allTags={allTags} entityTags={entityTags} />
       <GunimiWorkspaceTabs
         tabs={tabs}
         defaultTab="overview"

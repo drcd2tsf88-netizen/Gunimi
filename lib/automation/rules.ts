@@ -142,12 +142,40 @@ const companyCreatedRule: AutomationRule = {
   },
 };
 
+// ─── High Value Deal ──────────────────────────────────────────────────────────
+
+const HIGH_VALUE_THRESHOLD = 10_000;
+
+const dealHighValueRule: AutomationRule = {
+  id: "deal_high_value_review",
+  name: "High Value Deal — Senior Review",
+  trigger: "deal.created",
+  description: `Creates a senior review task when a new deal exceeds ${HIGH_VALUE_THRESHOLD.toLocaleString()}.`,
+  execute: async (context: AutomationContext): Promise<AutomationActionResult[]> => {
+    if (!context.dealValue || context.dealValue < HIGH_VALUE_THRESHOLD) return [];
+
+    const results: AutomationActionResult[] = [];
+    const taskTitle = `Senior review required: ${context.dealTitle ?? "High Value Deal"}`;
+    results.push(await automationCreateTask(context, taskTitle, "high"));
+
+    await automationLogExecution(
+      context,
+      dealHighValueRule.id,
+      dealHighValueRule.name,
+      "deal.created",
+      results
+    );
+    return results;
+  },
+};
+
 // ─── Registry ─────────────────────────────────────────────────────────────────
 
 export const AUTOMATION_RULES: AutomationRule[] = [
   dealWonRule,
   dealLostRule,
   dealCreatedRule,
+  dealHighValueRule,
   contactCreatedRule,
   companyCreatedRule,
 ];

@@ -9,6 +9,7 @@ import {
   FileUp,
   Pencil,
   Search,
+  Star,
   Trash2,
   UserPlus,
   Users,
@@ -19,6 +20,7 @@ import toast from "react-hot-toast";
 
 import { getCRMContacts } from "@/server/actions/crm/getCRMContacts";
 import { deleteContact } from "@/server/actions/crm/deleteContact";
+import { toggleContactPriority } from "@/server/actions/crm/toggleContactPriority";
 
 import GunimiHeading from "@/components/ui/GunimiHeading";
 import GunimiInput from "@/components/ui/GunimiInput";
@@ -49,6 +51,7 @@ type Contact = {
   status?: string | null;
   company_id?: string | null;
   companies?: { name: string } | null;
+  is_priority?: boolean;
 };
 
 type Props = {
@@ -66,6 +69,7 @@ export default function CRMPageView({ initialContacts }: Props) {
   const [editContact, setEditContact] = useState<Contact | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Contact | null>(null);
   const [isDeleting, startDelete] = useTransition();
+  const [priorityOnly, setPriorityOnly] = useState(false);
 
   const [prevInitialContacts, setPrevInitialContacts] = useState(initialContacts);
 
@@ -74,17 +78,17 @@ export default function CRMPageView({ initialContacts }: Props) {
     setContacts(initialContacts);
   }
 
-  const filtered = useMemo(
-    () =>
-      search
-        ? contacts.filter(
-            (c) =>
-              c.name?.toLowerCase().includes(search.toLowerCase()) ||
-              c.email?.toLowerCase().includes(search.toLowerCase())
-          )
-        : contacts,
-    [contacts, search]
-  );
+  const filtered = useMemo(() => {
+    let list = search
+      ? contacts.filter(
+          (c) =>
+            c.name?.toLowerCase().includes(search.toLowerCase()) ||
+            c.email?.toLowerCase().includes(search.toLowerCase())
+        )
+      : contacts;
+    if (priorityOnly) list = list.filter((c) => c.is_priority);
+    return [...list].sort((a, b) => (b.is_priority ? 1 : 0) - (a.is_priority ? 1 : 0));
+  }, [contacts, search, priorityOnly]);
 
   const leadCount = useMemo(
     () => contacts.filter((c) => c.status === "lead").length,
@@ -98,6 +102,13 @@ export default function CRMPageView({ initialContacts }: Props) {
 
   function handleCreated(contact: Contact) {
     setContacts((prev) => [contact, ...prev]);
+  }
+
+  async function handleTogglePriority(contact: Contact, e: React.MouseEvent) {
+    e.stopPropagation();
+    const next = !contact.is_priority;
+    setContacts((prev) => prev.map((c) => c.id === contact.id ? { ...c, is_priority: next } : c));
+    await toggleContactPriority(contact.id, next);
   }
 
   async function handleEditSaved() {
@@ -153,13 +164,24 @@ export default function CRMPageView({ initialContacts }: Props) {
               <p className="mt-2 text-zinc-400">{t("searchAndManage")}</p>
             </div>
 
-            <GunimiInput
-              type="text"
-              placeholder={t("searchCustomers")}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="xl:w-96"
-            />
+            <div className="flex items-center gap-3">
+              <GunimiButton
+                variant="secondary"
+                className={`h-10 gap-2 px-4 text-sm ${priorityOnly ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : ""}`}
+                onClick={() => setPriorityOnly((v) => !v)}
+              >
+                <Star size={13} className={priorityOnly ? "fill-amber-400 text-amber-400" : ""} />
+                {t("priorityOnly")}
+              </GunimiButton>
+
+              <GunimiInput
+                type="text"
+                placeholder={t("searchCustomers")}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="xl:w-80"
+              />
+            </div>
           </div>
         </GunimiCard>
       </GunimiSection>
@@ -270,6 +292,18 @@ export default function CRMPageView({ initialContacts }: Props) {
                       {contact.status}
                     </span>
                   )}
+
+                  {/* Priority star — always visible */}
+                  <button
+                    onClick={(e) => handleTogglePriority(contact, e)}
+                    className="shrink-0 p-1 transition-colors"
+                    title={t("priorityOnly")}
+                  >
+                    <Star
+                      size={15}
+                      className={contact.is_priority ? "fill-amber-400 text-amber-400" : "text-white/20 hover:text-amber-300"}
+                    />
+                  </button>
 
                   {/* Actions — always visible on touch, hover-reveal on pointer devices */}
                   <div

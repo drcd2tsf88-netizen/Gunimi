@@ -3,50 +3,66 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bell } from "lucide-react";
+import { Bell, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
 import { useIsHydrated } from "@/lib/hooks/useIsHydrated";
 
-type Activity = {
+function formatTime(iso: string, justNowLabel: string): string {
+  const created = new Date(iso).getTime();
+  const now = new Date().getTime();
+  const minutes = Math.floor((now - created) / 60000);
+  if (minutes < 1) return justNowLabel;
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  return `${Math.floor(hours / 24)}d`;
+}
+
+type Notification = {
   id: string;
+  type: string;
   title: string;
-  description?: string;
-  type?: string;
+  body?: string | null;
+  href?: string | null;
+  read_at?: string | null;
+  created_at: string;
 };
 
 export default function OrbitNotifications() {
   const t = useTranslations("notifications");
   const [open, setOpen] = useState(false);
-  const [activity, setActivity] = useState<Activity[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const mounted = useIsHydrated();
   const [dropdownPos, setDropdownPos] = useState({ top: 0, right: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
 
+  const unreadCount = notifications.filter((n) => !n.read_at).length;
+
   useEffect(() => {
-    async function loadActivity() {
-      const { data, error } = await supabase
-        .from("workspace_activity")
-        .select("*")
+    async function load() {
+      const { data } = await supabase
+        .from("workspace_notifications")
+        .select("id, type, title, body, href, read_at, created_at")
         .order("created_at", { ascending: false })
-        .limit(10);
-      if (error) return;
-      setActivity(data || []);
+        .limit(20);
+      setNotifications(data ?? []);
     }
 
-    loadActivity();
+    load();
 
     const channel = supabase
-      .channel("workspace-activity")
-      .on("postgres_changes", { event: "*", schema: "public", table: "workspace_activity" }, () => {
-        loadActivity();
-      })
+      .channel("orbit-notifications")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "workspace_notifications" },
+        () => { load(); }
+      )
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
   }, []);
 
-  // Close on Escape
   useEffect(() => {
     if (!open) return;
     function onKey(e: KeyboardEvent) { if (e.key === "Escape") setOpen(false); }
@@ -54,7 +70,6 @@ export default function OrbitNotifications() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  // Click-outside via document listener
   useEffect(() => {
     if (!open) return;
     function handleOutside(e: MouseEvent) {
@@ -74,12 +89,32 @@ export default function OrbitNotifications() {
       const vw = window.innerWidth;
       const dropdownWidth = Math.min(vw - 32, 420);
       const rawRight = vw - rect.right;
-      // Ensure the left edge of the dropdown stays at least 16px inside the viewport
       const maxRight = vw - dropdownWidth - 16;
       const safeRight = Math.max(0, Math.min(rawRight, maxRight));
       setDropdownPos({ top: rect.bottom + 8, right: safeRight });
     }
     setOpen((prev) => !prev);
+  }
+
+  async function markRead(id: string) {
+    setNotifications((prev) =>
+      prev.map((n) =>
+        n.id === id ? { ...n, read_at: new Date().toISOString() } : n
+      )
+    );
+    await supabase
+      .from("workspace_notifications")
+      .update({ read_at: new Date().toISOString() })
+      .eq("id", id);
+  }
+
+  async function markAllRead() {
+    const now = new Date().toISOString();
+    setNotifications((prev) => prev.map((n) => ({ ...n, read_at: n.read_at ?? now })));
+    await supabase
+      .from("workspace_notifications")
+      .update({ read_at: now })
+      .is("read_at", null);
   }
 
   const dropdown = (
@@ -95,26 +130,76 @@ export default function OrbitNotifications() {
           className="z-[50] w-[calc(100vw-32px)] max-w-[420px] overflow-hidden rounded-[28px] border border-white/10 bg-[#0A0F1F]/95 backdrop-blur-2xl"
         >
           {/* HEADER */}
-          <div className="border-b border-white/5 p-5">
-            <h3 className="text-lg font-semibold">{t("title")}</h3>
-            <p className="mt-2 text-sm text-white/40">{t("subtitle")}</p>
+          <div className="flex items-center justify-between border-b border-white/5 p-5">
+            <div>
+              <h3 className="text-lg font-semibold">{t("title")}</h3>
+              {unreadCount > 0 && (
+                <p className="mt-1 text-sm text-white/40">
+                  {unreadCount} {t("unread")}
+                </p>
+              )}
+            </div>
+
+            {unreadCount > 0 && (
+              <button
+                onClick={markAllRead}
+                className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-white/40 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+              >
+                <Check size={11} />
+                {t("markAllRead")}
+              </button>
+            )}
           </div>
 
-          {/* CONTENT */}
-          <div className="max-h-[420px] overflow-y-auto space-y-3 p-4">
-            {activity.length === 0 ? (
+          {/* LIST */}
+          <div className="max-h-[420px] overflow-y-auto space-y-2 p-3">
+            {notifications.length === 0 ? (
               <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-5">
                 <p className="text-sm text-white/50">{t("emptyDescription")}</p>
               </div>
             ) : (
-              activity.map((item) => (
-                <div key={item.id} className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
-                  <p className="text-sm font-medium">{item.title}</p>
-                  {item.description && (
-                    <p className="mt-2 text-sm leading-relaxed text-white/50">{item.description}</p>
-                  )}
-                </div>
-              ))
+              notifications.map((item) => {
+                const isUnread = !item.read_at;
+                const bodyKey = `body_${item.type}`;
+                const localizedBody = t.has(bodyKey as Parameters<typeof t>[0])
+                  ? t(bodyKey as Parameters<typeof t>[0])
+                  : null;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => markRead(item.id)}
+                    className={`
+                      w-full rounded-2xl border p-4 text-left transition-all
+                      ${isUnread
+                        ? "border-violet-500/20 bg-violet-500/[0.06] hover:bg-violet-500/[0.1]"
+                        : "border-white/5 bg-white/[0.02] hover:bg-white/[0.04]"
+                      }
+                    `}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm font-medium truncate ${isUnread ? "text-white" : "text-white/70"}`}>
+                          {item.title}
+                        </p>
+                        {localizedBody && (
+                          <p className="mt-1 text-xs leading-relaxed text-white/40">
+                            {localizedBody}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span className="text-[10px] text-white/30">
+                          {formatTime(item.created_at, t("justNow"))}
+                        </span>
+                        {isUnread && (
+                          <div className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })
             )}
           </div>
         </motion.div>
@@ -134,7 +219,7 @@ export default function OrbitNotifications() {
         className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-white/70 transition-all hover:border-white/20"
       >
         <Bell size={18} />
-        {activity.length > 0 && (
+        {unreadCount > 0 && (
           <div className="absolute right-3 top-3 h-2 w-2 rounded-full bg-violet-400" />
         )}
       </motion.button>

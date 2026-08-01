@@ -47,6 +47,7 @@ import { Deal } from "@/types/deal";
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import type { WorkspaceDealStage } from "@/types/dealStage";
 
 type Props = {
   deal: Deal;
@@ -54,6 +55,7 @@ type Props = {
   onOpenChange: (open: boolean) => void;
   companies: Company[];
   contacts: Contact[];
+  stages: WorkspaceDealStage[];
   onUpdated: () => void;
   onDeleted: () => void;
 };
@@ -64,6 +66,7 @@ export default function EditDealSheet({
   onOpenChange,
   companies,
   contacts,
+  stages,
   onUpdated,
   onDeleted,
 }: Props) {
@@ -74,14 +77,21 @@ export default function EditDealSheet({
   const [deleting, setDeleting] = useState(false);
 
   const [title, setTitle] = useState(deal.title);
+  const [stageSlug, setStageSlug] = useState(deal.stage ?? stages[0]?.slug ?? "lead");
   const [companyId, setCompanyId] = useState(deal.company?.id ?? "");
   const [contactId, setContactId] = useState(deal.contact?.id ?? "");
   const [value, setValue] = useState(String(deal.value ?? ""));
+  const [paidAmount, setPaidAmount] = useState(String(deal.paid_amount ?? ""));
   const [currency, setCurrency] = useState(deal.currency ?? "EUR");
   const [probability, setProbability] = useState(deal.probability ?? 25);
   const [expectedCloseDate, setExpectedCloseDate] = useState(
     deal.expected_close_date
       ? new Date(deal.expected_close_date).toISOString().split("T")[0]
+      : ""
+  );
+  const [expiryDate, setExpiryDate] = useState(
+    deal.expiry_date
+      ? new Date(deal.expiry_date).toISOString().split("T")[0]
       : ""
   );
   const [description, setDescription] = useState(deal.description ?? "");
@@ -116,13 +126,16 @@ export default function EditDealSheet({
       const result = await updateDeal({
         dealId: deal.id,
         title,
+        stage: stageSlug,
         companyId: companyId || undefined,
         contactId: contactId || undefined,
         value: Number(value) || 0,
+        paidAmount: Number(paidAmount) || 0,
         currency,
         probability,
         description,
         expectedCloseDate: expectedCloseDate || undefined,
+        expiryDate: expiryDate || undefined,
       });
 
       if (!result) {
@@ -185,6 +198,19 @@ export default function EditDealSheet({
                     disabled={loading}
                     onChange={(e) => setTitle(e.target.value)}
                   />
+                </GunimiField>
+
+                <GunimiField label={t("deals.stage")}>
+                  <Select value={stageSlug} onValueChange={setStageSlug} disabled={loading}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {stages.map((s) => (
+                        <SelectItem key={s.id} value={s.slug}>{s.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </GunimiField>
 
                 <GunimiField label={t("deals.company")}>
@@ -269,6 +295,17 @@ export default function EditDealSheet({
                   />
                 </GunimiField>
 
+                <GunimiField label={t("deals.paidAmount")}>
+                  <GunimiInput
+                    type="number"
+                    min="0"
+                    value={paidAmount}
+                    disabled={loading}
+                    placeholder="0"
+                    onChange={(e) => setPaidAmount(e.target.value)}
+                  />
+                </GunimiField>
+
                 <GunimiField
                   label={`${t("deals.probability")} — ${probability}%`}
                 >
@@ -311,6 +348,15 @@ export default function EditDealSheet({
                     value={expectedCloseDate}
                     disabled={loading}
                     onChange={(e) => setExpectedCloseDate(e.target.value)}
+                  />
+                </GunimiField>
+
+                <GunimiField label={t("deals.expiryDate")}>
+                  <GunimiInput
+                    type="date"
+                    value={expiryDate}
+                    disabled={loading}
+                    onChange={(e) => setExpiryDate(e.target.value)}
                   />
                 </GunimiField>
               </div>

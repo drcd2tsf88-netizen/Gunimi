@@ -3,6 +3,7 @@ import {
   getAutomationHistory,
   getAutomationStats,
 } from "@/server/actions/automation/getAutomationHistory";
+import { getWorkspaceSettings } from "@/server/actions/workspace/getWorkspaceSettings";
 import AutomationCenterView from "@/components/automations/AutomationCenterView";
 
 export async function generateMetadata() {
@@ -11,10 +12,19 @@ export async function generateMetadata() {
 }
 
 export default async function AutomationsPage() {
-  const [history, stats] = await Promise.all([
+  const [history, stats, settings] = await Promise.all([
     getAutomationHistory(30),
     getAutomationStats(),
+    getWorkspaceSettings(),
   ]);
 
-  return <AutomationCenterView history={history} stats={stats} />;
+  const disabledAutomations = settings?.preferences?.disabledAutomations ?? [];
+
+  return (
+    <AutomationCenterView
+      history={history}
+      stats={stats}
+      disabledAutomations={disabledAutomations}
+    />
+  );
 }

@@ -12,13 +12,20 @@
 
 const isDev = process.env.NODE_ENV === "development";
 
+function serialize(value: unknown): unknown {
+  if (value && typeof value === "object") {
+    return JSON.stringify(value, Object.getOwnPropertyNames(value));
+  }
+  return value;
+}
+
 export const logger = {
   /** Unexpected server-side failures. Always logged in production server logs. */
   error(message: unknown, ...args: unknown[]): void {
     if (typeof message === "string") {
-      console.error(`[orbit] ${message}`, ...args);
+      console.error(`[orbit] ${message}`, ...args.map(serialize));
     } else {
-      console.error("[orbit]", message, ...args);
+      console.error("[orbit]", serialize(message), ...args.map(serialize));
     }
   },
 

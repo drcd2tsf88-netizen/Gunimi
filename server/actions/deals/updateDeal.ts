@@ -25,11 +25,15 @@ export type UpdateDealProps = {
 
   title: string;
 
+  stage?: string;
+
   companyId?: string;
 
   contactId?: string;
 
   value?: number;
+
+  paidAmount?: number;
 
   currency?: string;
 
@@ -39,19 +43,24 @@ export type UpdateDealProps = {
 
   expectedCloseDate?: string;
 
+  expiryDate?: string;
+
   lostReason?: string;
 };
 
 export async function updateDeal({
   dealId,
   title,
+  stage,
   companyId,
   contactId,
   value = 0,
+  paidAmount,
   currency = "EUR",
   probability = 25,
   description,
   expectedCloseDate,
+  expiryDate,
   lostReason,
 }: UpdateDealProps) {
   try {
@@ -181,6 +190,8 @@ export async function updateDeal({
         title:
           title.trim(),
 
+        ...(stage !== undefined && { stage }),
+
         company_id:
           companyId || null,
 
@@ -188,6 +199,8 @@ export async function updateDeal({
           contactId || null,
 
         value,
+
+        paid_amount: paidAmount ?? 0,
 
         currency,
 
@@ -202,6 +215,11 @@ export async function updateDeal({
             ? new Date(
                 expectedCloseDate
               ).toISOString()
+            : null,
+
+        expiry_date:
+          expiryDate
+            ? new Date(expiryDate).toISOString()
             : null,
 
         lost_reason:

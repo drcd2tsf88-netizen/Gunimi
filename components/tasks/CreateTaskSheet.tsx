@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { RefreshCw } from "lucide-react";
 import { Task, WorkspaceMember } from "@/types/task";
 
 type Props = {
@@ -63,6 +64,10 @@ export default function CreateTaskSheet({
   const [status, setStatus] = useState(task?.status ?? "todo");
   const [dueDate, setDueDate] = useState(task?.due_date ?? "");
   const [assignedTo, setAssignedTo] = useState(task?.assigned_to ?? "none");
+  const [isRecurring, setIsRecurring] = useState(task?.is_recurring ?? false);
+  const [recurrenceFrequency, setRecurrenceFrequency] = useState(
+    task?.recurrence_frequency ?? "weekly"
+  );
 
   function resetForm() {
     setTitle(task?.title ?? "");
@@ -71,6 +76,8 @@ export default function CreateTaskSheet({
     setStatus(task?.status ?? "todo");
     setDueDate(task?.due_date ?? "");
     setAssignedTo(task?.assigned_to ?? "none");
+    setIsRecurring(task?.is_recurring ?? false);
+    setRecurrenceFrequency(task?.recurrence_frequency ?? "weekly");
   }
 
   function handleClose() {
@@ -99,6 +106,9 @@ export default function CreateTaskSheet({
           status,
           due_date: dueDate || null,
           assigned_to: assignedTo !== "none" ? assignedTo : null,
+          is_recurring: isRecurring,
+          recurrence_frequency: isRecurring ? recurrenceFrequency : null,
+          recurrence_interval: 1,
         });
 
         if (!ok) {
@@ -115,6 +125,9 @@ export default function CreateTaskSheet({
           status,
           due_date: dueDate || null,
           assigned_to: assignedTo !== "none" ? assignedTo : null,
+          is_recurring: isRecurring,
+          recurrence_frequency: isRecurring ? recurrenceFrequency : null,
+          recurrence_interval: 1,
         });
 
         if (!result) {
@@ -260,6 +273,60 @@ export default function CreateTaskSheet({
               </SelectContent>
             </Select>
           </GunimiField>
+
+          {/* RECURRING */}
+
+          <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => setIsRecurring((v) => !v)}
+              className="flex w-full items-center justify-between"
+            >
+              <div className="flex items-center gap-2.5">
+                <RefreshCw
+                  size={14}
+                  className={isRecurring ? "text-violet-400" : "text-zinc-600"}
+                />
+                <span className="text-sm text-white/70">{t("recurring")}</span>
+              </div>
+
+              <div
+                className={`
+                  h-5 w-9 rounded-full transition-colors
+                  ${isRecurring ? "bg-violet-500" : "bg-white/10"}
+                `}
+              >
+                <div
+                  className={`
+                    mt-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform
+                    ${isRecurring ? "translate-x-4.5" : "translate-x-0.5"}
+                  `}
+                />
+              </div>
+            </button>
+
+            {isRecurring && (
+              <div className="mt-4">
+                <Select
+                  value={recurrenceFrequency}
+                  onValueChange={setRecurrenceFrequency}
+                  disabled={loading}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="daily">{t("freqDaily")}</SelectItem>
+                    <SelectItem value="weekly">{t("freqWeekly")}</SelectItem>
+                    <SelectItem value="monthly">{t("freqMonthly")}</SelectItem>
+                    <SelectItem value="yearly">{t("freqYearly")}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
         </div>
 
         <SheetFooter>

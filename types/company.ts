@@ -13,6 +13,7 @@ export type Company = {
   deals_count?: number;
   last_activity_at?: string;
   created_at?: string;
+  is_priority?: boolean;
   owner?: {
     full_name: string;
   };

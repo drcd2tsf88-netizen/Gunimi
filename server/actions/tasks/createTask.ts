@@ -19,6 +19,7 @@ import { supabaseAdmin }
 from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
 import { produceTaskSignals } from "@/lib/signals/producers/taskProducer";
+import { createNotification } from "@/lib/server/createNotification";
 
 type CreateTaskProps = {
   title: string;
@@ -28,6 +29,9 @@ type CreateTaskProps = {
   due_date?: string | null;
   assigned_to?: string | null;
   contactId?: string | null;
+  is_recurring?: boolean;
+  recurrence_frequency?: string | null;
+  recurrence_interval?: number | null;
 };
 
 export async function createTask({
@@ -38,6 +42,9 @@ export async function createTask({
   due_date = null,
   assigned_to = null,
   contactId = null,
+  is_recurring = false,
+  recurrence_frequency = null,
+  recurrence_interval = null,
 }: CreateTaskProps) {
   try {
     const supabase =
@@ -117,6 +124,12 @@ export async function createTask({
           workspace_id:
             workspace.id,
 
+          is_recurring,
+
+          recurrence_frequency,
+
+          recurrence_interval,
+
           updated_at:
             new Date().toISOString(),
         },
@@ -156,6 +169,17 @@ export async function createTask({
       });
 
     await produceTaskSignals({ workspaceId: workspace.id, taskId: data.id });
+
+    if (assigned_to && assigned_to !== user.id) {
+      await createNotification({
+        workspaceId: workspace.id,
+        userId: assigned_to,
+        type: "task_assigned",
+        title: cleanTitle,
+        href: "/dashboard/tasks",
+        workspaceName: workspace.name,
+      });
+    }
 
     // AUDIT LOG
 

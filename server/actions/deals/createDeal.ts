@@ -24,6 +24,8 @@ import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
 export type CreateDealProps = {
   title: string;
 
+  stage?: string;
+
   companyId?: string;
 
   contactId?: string;
@@ -37,10 +39,13 @@ export type CreateDealProps = {
   description?: string;
 
   expectedCloseDate?: string;
+
+  expiryDate?: string;
 };
 
 export async function createDeal({
   title,
+  stage = "lead",
   companyId,
   contactId,
   value = 0,
@@ -48,6 +53,7 @@ export async function createDeal({
   probability = 25,
   description,
   expectedCloseDate,
+  expiryDate,
 }: CreateDealProps) {
   try {
     if (!title.trim()) {
@@ -172,8 +178,13 @@ probability =
         expectedCloseDate
       ).toISOString()
     : null,
-        stage:
-          "lead",
+
+        expiry_date:
+          expiryDate
+            ? new Date(expiryDate).toISOString()
+            : null,
+
+        stage,
       })
       .select()
       .single();

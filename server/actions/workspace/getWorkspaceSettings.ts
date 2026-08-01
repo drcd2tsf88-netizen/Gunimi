@@ -22,6 +22,8 @@ export type WorkspacePreferences = {
   dogfoodEnabled?: boolean;
   /** Internal: scan schedule state per scan type. Not user-facing. */
   scanSchedule?: Record<string, ScanTypeState>;
+  /** IDs of automation rules that have been disabled by the workspace admin. */
+  disabledAutomations?: string[];
 };
 
 export type WorkspaceSettings = {

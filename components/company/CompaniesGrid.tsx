@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import { useRouter }
 from "next/navigation";
@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Building2,
   PlusCircle,
+  Star,
 } from "lucide-react";
 
 import GunimiSection
@@ -34,6 +35,7 @@ from "@/lib/utils/getRelativeTime";
 
 import { Company } from "@/types/company";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { toggleCompanyPriority } from "@/server/actions/company/toggleCompanyPriority";
 
 type Props = {
   companies: Company[];
@@ -49,6 +51,14 @@ export default function CompaniesGrid({
     useTranslations();
 
   const [createOpen, setCreateOpen] = useState(false);
+  const [localCompanies, setLocalCompanies] = useState(companies);
+
+  const handleTogglePriority = useCallback(async (company: Company, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const next = !company.is_priority;
+    setLocalCompanies((prev) => prev.map((c) => c.id === company.id ? { ...c, is_priority: next } : c));
+    await toggleCompanyPriority(company.id, next);
+  }, []);
 
   if (companies.length === 0) {
     return (
@@ -82,7 +92,7 @@ export default function CompaniesGrid({
           md:grid-cols-2
         "
       >
-        {companies.map(
+        {localCompanies.map(
           (company) => (
             <GunimiCard
               key={
@@ -145,12 +155,18 @@ export default function CompaniesGrid({
                   </p>
                 </div>
 
-                <Building2
-                  size={18}
-                  className="
-                    text-violet-300
-                  "
-                />
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={(e) => handleTogglePriority(company, e)}
+                    className="p-1 transition-colors"
+                  >
+                    <Star
+                      size={15}
+                      className={company.is_priority ? "fill-amber-400 text-amber-400" : "text-white/20 hover:text-amber-300"}
+                    />
+                  </button>
+                  <Building2 size={18} className="text-violet-300" />
+                </div>
               </div>
 
               <div

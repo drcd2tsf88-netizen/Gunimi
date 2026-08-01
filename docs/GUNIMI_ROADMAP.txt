@@ -1,6 +1,6 @@
 ================================================================================
 GUNIMI — PRODUCT ROADMAP & GAP ANALYSIS
-Verzia: 1.0 | Dátum: 2026-07-27
+Verzia: 2.0 | Dátum: 2026-07-30
 ================================================================================
 
 --------------------------------------------------------------------------------
@@ -11,11 +11,18 @@ CRM JADRO
   [x] Kontakty — plný lifecycle, detail view, activity feed
   [x] Firmy — plný lifecycle, detail view, kontakty/dealy/emaily
   [x] Dealy — pipeline, probability, currency (EUR/CZK/USD)
-  [x] Úlohy — priority, status, due date, assignee
+  [x] Úlohy — priority, status, due date, assignee, recurring
   [x] Poznámky — create/edit/delete, entity linking
+  [x] Tags / Labels — na kontaktoch, firmách, dealoch
+  [x] Custom deal stages — owner nastavuje vlastné fázy pipeline
+  [x] Custom fields — text/date/number/select na entitách
+  [x] Priority / urgency flag — VIP klienti, urgentné prípady
+  [x] Deal financie — pôvodná suma + zaplatené + zostatok
+  [x] Expiry date na dealoch — dátum premlčania / expirácie zmluvy
   [x] Bulk import CSV — firmy, kontakty, dealy
   [x] Bulk export CSV — firmy, kontakty, dealy, úlohy
   [x] Full-text search naprieč CRM entitami
+  [x] Audit Log UI — kto zmenil čo a kedy (Settings → Audit Log)
 
 AI & INTELIGENCIA
   [x] Orbit Assistant — chat s pamäťou, kontext workspacu
@@ -28,11 +35,14 @@ AI & INTELIGENCIA
 INTEGRÁCIE
   [x] Google Calendar — OAuth 2.0, sync, event list
   [x] Gmail — OAuth 2.0, thread sync, linkage na kontakty/firmy
+  [x] Google OAuth App — verifikovaná Googlom (júl 2026)
 
 WORKSPACE & INFRAŠTRUKTÚRA
   [x] Multi-workspace — jeden user, viac workspacov
   [x] Role systém — owner / admin / member
   [x] Invite systém — email tokeny, accept flow
+  [x] In-app notifikácie — bell icon, notification feed
+  [x] Email notifikácie — task assigned, workspace invite, digest
   [x] Row-Level Security (RLS) — každý user vidí len svoj workspace
   [x] Lokalizácia — SK / CS / EN (3 jazyky)
   [x] Sentry error tracking
@@ -40,74 +50,76 @@ WORKSPACE & INFRAŠTRUKTÚRA
   [x] Health endpoints — /api/health, /api/signals/health
   [x] Dogfood feedback systém — interný beta feedback
   [x] Admin panel — alpha approvals, AI operations, dogfood
+  [x] Billing / Stripe — predplatné €19/mesiac, webhook, Settings sekcia
+  [x] /demo — interaktívny demo workspace pre nových návštevníkov
+
+ARCHITEKTÚRA & DOKUMENTÁCIA
+  [x] Domain Model — 11 entít definovaných (docs/foundation/DOMAIN_MODEL.md)
+  [x] Domain Laws — 12 zákonov ktoré sa nesmú porušiť (docs/foundation/DOMAIN_LAWS.md)
+  [x] Knowledge Layers — Reality→History→Memory→Wisdom (docs/foundation/KNOWLEDGE_LAYERS.md)
+  [x] Platform Principles — Reality Principle + 12 princípov (docs/foundation/PLATFORM_PRINCIPLES.md)
+  [x] ADR-001 až ADR-004 — 4 architektonické rozhodnutia zdokumentované
+
+--------------------------------------------------------------------------------
+AKTUÁLNY SPRINT — ČO ROBIŤ TERAZ
+--------------------------------------------------------------------------------
+
+Poradie podľa dopadu / jednoduchosti:
+
+  [x]     17. Kanban view pre úlohy                         ✅ hotovo (júl 2026)
+  [x]     13. File attachments — prílohy                    ✅ hotovo (júl 2026)
+  [x]     18. Kontaktná história — timeline view             ✅ hotovo (júl 2026)
+  NEXT →  10. Workflow Automation — UI                       (1 týždeň)
 
 --------------------------------------------------------------------------------
 TIER 1 — KRITICKÉ BUGY & CHÝBAJÚCE ZÁKLADY
-(Blokuje denné používanie — riešiť ako prvé)
+(DOKONČENÉ ✅)
 --------------------------------------------------------------------------------
 
-  [ ] 1.  Custom deal stages
-          - Aktuálne sú pipeline stages hard-coded
-          - Každý tím má iný workflow (Sales vs. Nákup vs. Legal)
-          - Potreba: owner vie nastaviť vlastné názvy fáz
-          - Odhadovaný čas: 2 dni
-
-  [ ] 2.  Custom fields na entitách
-          - HR chce "Dátum nástupu", Legal chce "Číslo zmluvy"
-          - Potreba: owner vie pridať text/date/number/select polia
-          - Odhadovaný čas: 3–4 dni
-
-  [ ] 3.  In-app notifikácie
-          - Keď ti niekto priradí úlohu — žiadna notifikácia
-          - Keď deal zmení stage — žiadna notifikácia
-          - Potreba: bell icon v topbare, notification feed
-          - Odhadovaný čas: 2 dni
-
-  [ ] 4.  Email notifikácie (transactional)
-          - Notifikácia keď si pozvaný do workspacu (existuje čiastočne)
-           - Digest — denný/týždenný prehľad úloh
-          - Odhadovaný čas: 2 dni
-
-  [ ] 5.  Recurring / opakované úlohy
-          - Každotýždenný report, mesačný review
-          - Potreba: repeat interval (daily/weekly/monthly/custom)
-          - Odhadovaný čas: 1 deň
-
-  [ ] 6.  Deal — pôvodná suma + zaplatené + zostatok
-          - Pre vymáhanie pohľadávok a komplexné dealy
-          - Aktuálne len jedna hodnota (value)
-          - Odhadovaný čas: 1–2 dni (+ DB migrácia)
-
-
-  [ ] 7.  Dátum premlčania / expiry date na dealoch
-          - Pre právne, pohľadávky, zmluvy s expiráciou
-          - Odlišné od expected_close_date
-          - Odhadovaný čas: 1 deň
-
-  [ ] 8.  Priority / urgency flag na kontaktoch a firmách
-          - Označiť VIP klienta, urgentný prípad
-          - Odhadovaný čas: 1 deň
+  [x] 1.  Custom deal stages
+  [x] 2.  Custom fields na entitách
+  [x] 3.  In-app notifikácie
+  [x] 4.  Email notifikácie (transactional)
+  [x] 5.  Recurring / opakované úlohy
+  [x] 6.  Deal — pôvodná suma + zaplatené + zostatok
+  [x] 7.  Dátum premlčania / expiry date na dealoch
+  [x] 8.  Priority / urgency flag na kontaktoch a firmách
 
 --------------------------------------------------------------------------------
 TIER 2 — RAST (Blokuje škálovanie na viac tímov)
 --------------------------------------------------------------------------------
 
-  [ ] 9.  Teams / Oddelenia v rámci workspacu
-          - Jeden workspace, viac tímov (Sales, HR, Legal, Nákup)
-          - Izolácia dát — Sales nevidí HR záznamy
-          - VEĽKÁ architektúrna zmena — pridanie team_id FK naprieč tabuľkami
-          - Odhadovaný čas: 2 týždne
+  [x] 11. Audit Log — UI                          ✅ hotovo (júl 2026)
+  [x] 16. Tags / Labels na všetkých entitách      ✅ hotovo (júl 2026)
 
-  [ ] 10. Workflow Automation — UI
-          - Engine a história existuje, UI chýba
+  [x] 17. Kanban view pre úlohy                   ✅ hotovo (júl 2026)
+          - 3 stĺpce: Todo / In Progress / Done
+          - HTML5 drag-and-drop, optimistický update
+          - List/Kanban toggle v toolbar
+
+  [x] 13. File attachments — prílohy              ✅ hotovo (júl 2026)
+          - Supabase Storage bucket + RLS policies
+          - Upload (drag-and-drop), download (signed URL), delete
+          - AttachmentsPanel na Deal, Contact, Company (Work tab)
+
+  [ ] 10. Workflow Automation — UI                ← TRETIE
+          - Engine existuje, UI chýba
           - "Keď deal > 50 000 EUR → notifikuj manažéra"
           - "Keď kontakt 30 dní bez aktivity → vytvor úlohu"
           - Odhadovaný čas: 1 týždeň
 
-  [ ] 11. Audit Log — UI
-          - Tabuľka audit_logs existuje v DB
-          - Kto zmenil čo, kedy — chýba rozhranie
-          - Dôležité pre compliance a enterprise
+  [x] 18. Kontaktná história — timeline view    ✅ hotovo (júl 2026)
+          - Unified timeline: aktivity + emaily + úlohy + poznámky + dealy + prílohy
+          - Groupovanie podľa dátumu (Dnes / Včera / mesiac)
+          - Farebné ikony podľa typu udalosti
+          - History tab na Contact detail (nahrádza Story)
+
+  [ ] 15. Bulk operations v UI
+          - Vybrať 50 kontaktov → priradiť tag, zmeniť status, exportovať
+          - Odhadovaný čas: 3 dni
+
+  [ ] 14. Contact / Company merge
+          - Duplicitné záznamy — zlúčiť do jedného (Domain Law I)
           - Odhadovaný čas: 2 dni
 
   [ ] 12. Custom reporting / dashboardy
@@ -115,37 +127,18 @@ TIER 2 — RAST (Blokuje škálovanie na viac tímov)
           - Drag-and-drop widget builder
           - Odhadovaný čas: 1–2 týždne
 
-  [ ] 13. File attachments — prílohy
-          - Priložiť zmluvu k dealu, faktúru ku kontaktu
-          - Supabase Storage + upload UI
-          - Odhadovaný čas: 3 dni
-
-  [ ] 14. Contact / Company merge
-          - Duplicitné záznamy — zlúčiť dva kontakty do jedného
-          - Odhadovaný čas: 2 dni
-
-  [ ] 15. Bulk operations v UI
-          - Vybrať 50 kontaktov → priradiť tag, zmeniť status, exportovať
-          - Odhadovaný čas: 3 dni
-
-  [ ] 16. Tags / Labels na všetkých entitách
-          - Flexibilné kategorizovanie bez custom fields
-          - Odhadovaný čas: 2 dni
-
-  [ ] 17. Kanban view pre úlohy
-          - Aktuálne len list view
-          - Drag-and-drop medzi statusmi
-          - Odhadovaný čas: 3 dni
-
-  [ ] 18. Kontaktná história — timeline view
-          - Všetky interakcie s kontaktom na jednom mieste chronologicky
-          - Emaily + úlohy + poznámky + signály
-          - Čiastočne existuje, treba vylepšiť
-          - Odhadovaný čas: 2 dni
+  [ ] 9.  Teams / Oddelenia v rámci workspacu     ← POZOR: architektúra
+          - NERIEŠIŤ cez team_id FK (porušuje Domain Laws)
+          - Správne: workspace_teams entita + role-based isolation
+          - Závisí od: workspace_people migrácie (pred 1. platiacim zákazníkom)
+          - Odhadovaný čas: 3–4 týždne
 
 --------------------------------------------------------------------------------
 TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 --------------------------------------------------------------------------------
+
+  [x] 28. Billing & Subscription management       ✅ hotovo (júl 2026)
+          - Stripe €19/mesiac, webhook, Settings sekcia
 
   [ ] 19. Public REST API
           - Integrácia s SAP, ERP, interné systémy zákazníka
@@ -167,17 +160,14 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 
   [ ] 23. SLA & Uptime guarantee
           - 99.9% uptime SLA — enterprise zmluvy to vyžadujú
-          - Monitoring, incident response proces
           - Odhadovaný čas: proces + infraštruktúra
 
   [ ] 24. SOC 2 Type II certifikácia
           - Bez toho žiadna banka ani veľká firma nepodpíše
-          - 6–12 mesiacov procesu, externý audítor
-          - Odhadovaný čas: dlhodobé
+          - Odhadovaný čas: 6–12 mesiacov, externý audítor
 
   [ ] 25. Data residency — EU-only hosting
           - GDPR-sensitive odvetvia (banky, zdravotníctvo, legal)
-          - Supabase EU region + Vercel EU deployment
           - Odhadovaný čas: 1 týždeň (config)
 
   [ ] 26. Dedicated instances (on-premise / VPC)
@@ -189,10 +179,6 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
           - Data export per contact (Article 20)
           - Odhadovaný čas: 1 týždeň
 
-  [ ] 28. Billing & Subscription management
-          - Stripe integrácia, plány, invoicing
-          - Odhadovaný čas: 2 týždne
-
   [ ] 29. Multi-language rozšírenie
           - DE, PL, HU — expanzia do DACH a okolie
           - Odhadovaný čas: 1 deň per jazyk (ak máš prekladateľa)
@@ -201,127 +187,150 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 TIER 4 — DIFERENCIÁCIA AI (Čo odlíši Gunimi od Salesforce)
 --------------------------------------------------------------------------------
 
-  [ ] 30. AI deal forecasting
-          - "Tento deal sa zavrie s 73% pravd. do 14 dní"
-          - Na základe historických dát workspacu
-          - Odhadovaný čas: 1 týždeň
+  Poradie podľa Knowledge Layers (Reality→History→Memory→Wisdom):
 
-  [ ] 31. Relationship health score
-          - Automatický score pre každý kontakt / firmu (0–100)
-          - Na základe: frekvencia kontaktu, sentiment, aktivita
-          - Odhadovaný čas: 1 týždeň
-
-  [ ] 32. Automated outreach sequences
-          - Email sekvencie riadené AI
-          - "Pošli follow-up ak 7 dní bez odpovede"
-          - Odhadovaný čas: 2 týždne
-
-  [ ] 33. Competitor intelligence
-          - Signály z webu, správy, zmeny o konkurentoch
-          - Odhadovaný čas: 2 týždne
-
-  [ ] 34. Mobile app (iOS / Android)
-          - Field sales — obchodník na cestách
-          - React Native alebo PWA
-          - Odhadovaný čas: 2–3 mesiace
-
+  HISTORY LAYER — zachytávanie reality (robiť skoro):
   [ ] 35. Voice notes → AI summary
           - Nahrať hovor, Gunimi spraví záznam a extrahuje akčné body
           - Odhadovaný čas: 1 týždeň
-
-  [ ] 36. AI-generated proposals / offerty
-          - "Vygeneruj offertu pre tento deal na základe histórie"
-          - Odhadovaný čas: 1 týždeň
-
   [ ] 37. Meeting Intelligence
           - Transkripcia + sumár stretnutia → automaticky do CRM
           - Integrácia s Google Meet / Zoom
           - Odhadovaný čas: 2 týždne
 
+  MEMORY LAYER — interpretácia (robiť druhé):
+  [ ] 31. Relationship health score
+          - Automatický score pre každý kontakt / firmu (0–100)
+          - Na základe: frekvencia kontaktu, sentiment, aktivita
+          - Odhadovaný čas: 1 týždeň
+  [ ] 32. Automated outreach sequences
+          - Email sekvencie riadené AI
+          - "Pošli follow-up ak 7 dní bez odpovede"
+          - Odhadovaný čas: 2 týždne
+  [ ] 36. AI-generated proposals / offerty
+          - "Vygeneruj offertu pre tento deal na základe histórie"
+          - Odhadovaný čas: 1 týždeň
+
+  WISDOM LAYER — vzory a predikcie (robiť posledné — vyžadujú dáta):
+  [ ] 30. AI deal forecasting
+          - "Tento deal sa zavrie s 73% pravd. do 14 dní"
+          - Vyžaduje historické dáta workspacu (min. 6 mesiacov)
+          - Odhadovaný čas: 1 týždeň
   [ ] 38. Predictive churn detection
           - "Tento klient má 85% riziko odchodu"
-          - Na základe aktivity, sentimentu, signálov
+          - Vyžaduje historické dáta workspacu
           - Odhadovaný čas: 2 týždne
+  [ ] 33. Competitor intelligence
+          - Signály z webu, správy, zmeny o konkurentoch
+          - Odhadovaný čas: 2 týždne
+
+  PLATFORMA:
+  [ ] 34. Mobile app (iOS / Android)
+          - Field sales — obchodník na cestách
+          - React Native alebo PWA
+          - Odhadovaný čas: 2–3 mesiace
+
+--------------------------------------------------------------------------------
+DOMAIN FOUNDATION — pred prvým platiacim zákazníkom
+--------------------------------------------------------------------------------
+
+  Tieto veci neblokujú Open Alpha, ale BLOKUJÚ prvého platiaceho zákazníka.
+  Dátový model musí byť správny pred tým, než ho zákazník začne plniť dátami.
+
+  [ ] workspace_people migrácia
+      - Identity Layer — každá osoba existuje nezávisle od loginu
+      - workspace_contacts sa stane view namiesto tabuľky
+      - Referencia: ADR-002, Domain Law VI
+      - Odhadovaný čas: 3–4 dni
+
+  [ ] workspace_relationships tabuľka v1.0
+      - Vzťah je entita (type, status, valid_from, valid_to, confidence)
+      - Nie FK — contact.company_id je dočasné riešenie
+      - Referencia: ADR-003, Domain Law III
+      - Odhadovaný čas: 4–5 dní
+
+  [ ] Memory provenance column
+      - Každá Memory musí mať source_events (Domain Law II)
+      - Odhadovaný čas: 1 deň
 
 --------------------------------------------------------------------------------
 ODVETVOVÉ USE-CASES (Vertikály)
 --------------------------------------------------------------------------------
 
 VYMÁHANIE POHĽADÁVOK (debt collection)
-  [ ] Pôvodná suma pohľadávky + zaplatené + zostatok         (viď Tier 1 #6)
-  [ ] Dátum premlčania                                        (viď Tier 1 #7)
-  [ ] Custom stages: Nový → Oslovený → Splátkový plán → Súd → Vyriešený / Odpísaný
+  [x] Pôvodná suma pohľadávky + zaplatené + zostatok         (Tier 1 #6 ✅)
+  [x] Dátum premlčania                                        (Tier 1 #7 ✅)
+  [x] Custom stages: Nový → Oslovený → Splátkový plán → Súd → Vyriešený / Odpísaný (custom stages ✅)
   [ ] Záznam z každého kontaktu s dlžníkom (automatický log)
-  [ ] Upomienka keď sa blíži premlčanie (Signal Engine)
+  [ ] Upomienka keď sa blíži premlčanie (Signal Engine — pridať typ signálu)
   [ ] Filtrovanie pohľadávok podľa zostatku, dátumu, stavu
 
 REALITY / MAKLÉRSTVO
-  [ ] Custom fields: adresa nehnuteľnosti, výmera, typ, cena/m²
-  [ ] Stages: Dopyt → Obhliadka → Ponuka → Zmluva → Kataster → Zavreté
+  [x] Custom fields: adresa nehnuteľnosti, výmera, typ, cena/m²  (custom fields ✅)
+  [x] Stages: Dopyt → Obhliadka → Ponuka → Zmluva → Kataster → Zavreté (custom stages ✅)
+  [ ] File attachments — zmluvy, fotodokumentácia               (Tier 2 #13)
 
 ADVOKÁTSKA KANCELÁRIA
-  [ ] Custom fields: číslo spisu, súd, termín pojednávania
-  [ ] File attachments — zmluvy, podania, dôkazy
-  [ ] Konfidencialita — striktná izolácia prípadov
+  [x] Custom fields: číslo spisu, súd, termín pojednávania      (custom fields ✅)
+  [ ] File attachments — zmluvy, podania, dôkazy                (Tier 2 #13)
+  [ ] Konfidencialita — striktná izolácia prípadov              (Teams/Oddelenia #9)
 
 RECRUITMENT
-  [ ] Custom fields: pozícia, platové rozpätie, zdroj kandidáta
-  [ ] Stages: CV → Telefonát → Pohovor → Offer → Nástup / Zamietnutý
+  [x] Custom fields: pozícia, platové rozpätie, zdroj kandidáta (custom fields ✅)
+  [x] Stages: CV → Telefonát → Pohovor → Offer → Nástup / Zamietnutý (custom stages ✅)
 
 --------------------------------------------------------------------------------
-PRIORITIZÁCIA — AKO POSTUPOVAŤ
+FÁZY — AKO POSTUPOVAŤ
 --------------------------------------------------------------------------------
 
-FÁZA 1 — Open Alpha stabilizácia (teraz)
-  Cieľ: žiadne blokujúce bugy, základné funkcie fungujú 100%
-  - Doriešiť všetky Tier 1 bugy zo zoznamu
-  - Custom deal stages (najžiadanejší feature)
-  - In-app notifikácie
+FÁZA 1 — Open Alpha stabilizácia              ✅ DOKONČENÁ (júl 2026)
+  - Všetky Tier 1 features hotové
+  - Billing, Tags, Audit Log, /demo live
+  - Foundation dokumenty napísané
+  - Google OAuth verifikovaný
+  - Stripe billing live
 
-FÁZA 2 — SMB ready (Q3 2026)
+FÁZA 2 — SMB ready                            ⏳ PREBIEHA (Q3 2026)
   Cieľ: 50 platiacich tímov, 2–20 ľudí
-  - Custom fields
-  - File attachments
-  - Workflow Automation UI
-  - Tags & bulk operations
+  - [x] Kanban pre úlohy (#17)                   ✅
+  - [x] File attachments (#13)                   ✅
+  - [ ] Workflow Automation UI (#10)
+  - [ ] Kontaktná timeline (#18)
+  - [ ] Domain Foundation (workspace_people + relationships)
 
-FÁZA 3 — Mid-market (Q4 2026)
+FÁZA 3 — Mid-market                           📅 PLÁNOVANÁ (Q4 2026)
   Cieľ: firmy 50–200 ľudí
-  - Teams / Oddelenia
-  - Audit Log UI
-  - Custom dashboards
-  - Billing & Subscriptions
+  - [ ] Teams / Oddelenia (#9) — po workspace_people migrácii
+  - [ ] Custom dashboards (#12)
+  - [ ] Bulk operations (#15)
+  - [ ] Contact/Company merge (#14)
+  - [ ] Voice notes + Meeting Intelligence (History Layer AI)
 
-FÁZA 4 — Enterprise (2027)
+FÁZA 4 — Enterprise                           📅 PLÁNOVANÁ (2027)
   Cieľ: Alza-scale, 500+ ľudí
-  - Public REST API + Webhooks
-  - SSO / SAML
-  - SOC 2 certifikácia
-  - Dedicated instances
+  - [ ] Public REST API + Webhooks
+  - [ ] SSO / SAML
+  - [ ] SOC 2 certifikácia
+  - [ ] Advanced permissions
+  - [ ] Dedicated instances
 
-FÁZA 5 — AI Differentiation (priebežne)
-  Cieľ: "Salesforce + AI Native"
-  - Deal forecasting
-  - Relationship health scores
-  - Mobile app
-  - Meeting Intelligence
+FÁZA 5 — AI Diferenciácia                     📅 PRIEBEŽNE
+  Cieľ: "Gunimi vie viac ako ktokoľvek iný v tíme"
+  - [ ] Relationship health scores (Memory Layer)
+  - [ ] Deal forecasting (Wisdom Layer)
+  - [ ] Churn detection (Wisdom Layer)
+  - [ ] Mobile app
 
 --------------------------------------------------------------------------------
 TECHNICKÝ DLUH (backend / infraštruktúra)
 --------------------------------------------------------------------------------
 
-  [ ] SQL migrácia: workspace_deals ADD COLUMN currency VARCHAR(3) DEFAULT 'EUR'
-      (currency je v UI, ale stĺpec v DB ešte neexistuje — TREBA SPUSTIŤ MANUÁLNE)
-
-  [ ] Lint stabilizácia sprint — 38 errors / 25 warnings (stav 2026-06-24)
-      Pozri: docs/lint_stabilization_sprint.md
-
-  [ ] Legacy tabuľka "tasks" (bez workspace_id) — potrebná migrácia alebo cleanup
-
-  [ ] Dual design system — OrbitUI vs GunimiUI
-      Treba zjednotiť na jeden design system (GunimiUI je nový štandard)
-
-  [ ] AI usage cost monitoring — upozornenie keď workspace prekročí threshold
+  [x] SQL migrácia: workspace_deals currency column             ✅ vyriešené
+  [ ] Lint stabilizácia sprint — znížiť počet warnings
+  [ ] Legacy tabuľka "tasks" (bez workspace_id) — migrácia alebo cleanup
+  [ ] Dual design system — OrbitUI vs GunimiUI — zjednotiť na GunimiUI
+  [ ] AI usage cost monitoring — upozornenie pri prekročení thresholdu
+  [ ] Stripe webhook secret — pridať do Vercel env vars         ← UROBIŤ TERAZ
 
 --------------------------------------------------------------------------------
 POZNÁMKY
@@ -331,8 +340,11 @@ POZNÁMKY
 * Business Memory Blueprint v1.1 dokumentovaný v docs/blueprints/
 * AI Platform Architecture v1.0 dokumentovaný v docs/blueprints/
 * OPERATION: RUNTIME ZERO dokončená — konzola v browseri čistá
-* Všetky bugy (tasks assignee, team roles, currency) opravené 2026-07-22
 * GENESIS EXPERIENCE v2.0 — /demo je live a funkčný
+* Google OAuth App verifikovaná (2026-07-30)
+* Stripe billing live — €19/mesiac, webhook endpoint /api/stripe/webhook
+* Foundation dokumenty napísané (2026-07-28) — docs/foundation/
+* ADR-001 až ADR-004 zdokumentované v docs/architecture/adr/
 
 ================================================================================
 EOF
