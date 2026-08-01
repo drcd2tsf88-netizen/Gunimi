@@ -327,7 +327,19 @@
     "deleteContact": "Delete Contact",
     "confirmDeleteContact": "This contact will be permanently deleted. This action cannot be undone.",
     "contactDeleted": "Contact deleted",
-    "failedToDeleteContact": "Failed to delete contact"
+    "failedToDeleteContact": "Failed to delete contact",
+    "bulkSelected": "{count} selected",
+    "bulkSelectAll": "Select all",
+    "bulkDeselectAll": "Deselect all",
+    "bulkExport": "Export",
+    "bulkAssignTag": "Assign tag",
+    "bulkDelete": "Delete selected",
+    "bulkDeleteConfirm": "Delete {count} contacts? This cannot be undone.",
+    "bulkDeleted": "Deleted {count} contacts.",
+    "bulkDeleteFailed": "Failed to delete contacts.",
+    "bulkTagAssigned": "Tag assigned to {count} contacts.",
+    "bulkTagFailed": "Failed to assign tag.",
+    "bulkPickTag": "Pick a tag"
   },
   "tasks": {
     "workManagement": "Work Management",

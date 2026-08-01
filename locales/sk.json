@@ -327,7 +327,19 @@
     "deleteContact": "Odstrániť kontakt",
     "confirmDeleteContact": "Tento kontakt bude trvalo odstránený. Túto akciu nemožno vrátiť späť.",
     "contactDeleted": "Kontakt bol odstránený",
-    "failedToDeleteContact": "Odstránenie kontaktu zlyhalo"
+    "failedToDeleteContact": "Odstránenie kontaktu zlyhalo",
+    "bulkSelected": "{count} vybraných",
+    "bulkSelectAll": "Vybrať všetky",
+    "bulkDeselectAll": "Zrušiť výber",
+    "bulkExport": "Exportovať",
+    "bulkAssignTag": "Priradiť tag",
+    "bulkDelete": "Vymazať vybrané",
+    "bulkDeleteConfirm": "Vymazať {count} kontaktov? Túto akciu nemožno vrátiť späť.",
+    "bulkDeleted": "Vymazaných {count} kontaktov.",
+    "bulkDeleteFailed": "Nepodarilo sa vymazať kontakty.",
+    "bulkTagAssigned": "Tag priradený {count} kontaktom.",
+    "bulkTagFailed": "Nepodarilo sa priradiť tag.",
+    "bulkPickTag": "Vybrať tag"
   },
   "tasks": {
     "workManagement": "Riadenie práce",

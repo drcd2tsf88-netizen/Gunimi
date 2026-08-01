@@ -327,7 +327,19 @@
     "deleteContact": "Smazat kontakt",
     "confirmDeleteContact": "Tento kontakt bude trvale smazán. Tuto akci nelze vrátit zpět.",
     "contactDeleted": "Kontakt byl smazán",
-    "failedToDeleteContact": "Smazání kontaktu selhalo"
+    "failedToDeleteContact": "Smazání kontaktu selhalo",
+    "bulkSelected": "{count} vybráno",
+    "bulkSelectAll": "Vybrat vše",
+    "bulkDeselectAll": "Zrušit výběr",
+    "bulkExport": "Exportovat",
+    "bulkAssignTag": "Přiřadit tag",
+    "bulkDelete": "Smazat vybrané",
+    "bulkDeleteConfirm": "Smazat {count} kontaktů? Tuto akci nelze vrátit zpět.",
+    "bulkDeleted": "Smazáno {count} kontaktů.",
+    "bulkDeleteFailed": "Nepodařilo se smazat kontakty.",
+    "bulkTagAssigned": "Tag přiřazen {count} kontaktům.",
+    "bulkTagFailed": "Nepodařilo se přiřadit tag.",
+    "bulkPickTag": "Vybrat tag"
   },
   "tasks": {
     "workManagement": "Řízení práce",

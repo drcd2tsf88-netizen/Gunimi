@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import {
+  CheckSquare,
   FileUp,
   Pencil,
   Search,
+  Square,
   Star,
   Trash2,
   UserPlus,
@@ -21,6 +23,7 @@ import toast from "react-hot-toast";
 import { getCRMContacts } from "@/server/actions/crm/getCRMContacts";
 import { deleteContact } from "@/server/actions/crm/deleteContact";
 import { toggleContactPriority } from "@/server/actions/crm/toggleContactPriority";
+import { getTags } from "@/server/actions/tags/getTags";
 
 import GunimiHeading from "@/components/ui/GunimiHeading";
 import GunimiInput from "@/components/ui/GunimiInput";
@@ -31,6 +34,9 @@ import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import CreateContactSheet from "@/components/crm/CreateContactSheet";
 import EditContactSheet from "@/components/crm/EditContactSheet";
+import BulkActionBar from "@/components/crm/BulkActionBar";
+
+import type { WorkspaceTag } from "@/types/tag";
 
 import {
   Dialog,
@@ -70,6 +76,9 @@ export default function CRMPageView({ initialContacts }: Props) {
   const [deleteTarget, setDeleteTarget] = useState<Contact | null>(null);
   const [isDeleting, startDelete] = useTransition();
   const [priorityOnly, setPriorityOnly] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [tags, setTags] = useState<WorkspaceTag[]>([]);
+  const [tagsLoaded, setTagsLoaded] = useState(false);
 
   const [prevInitialContacts, setPrevInitialContacts] = useState(initialContacts);
 
@@ -99,6 +108,31 @@ export default function CRMPageView({ initialContacts }: Props) {
     () => contacts.filter((c) => c.status === "won").length,
     [contacts]
   );
+
+  function toggleSelect(id: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) { next.delete(id); } else { next.add(id); }
+      return next;
+    });
+    if (!tagsLoaded) {
+      setTagsLoaded(true);
+      getTags().then(setTags).catch(() => {});
+    }
+  }
+
+  function toggleSelectAll() {
+    if (selectedIds.size === filtered.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filtered.map((c) => c.id)));
+      if (!tagsLoaded) {
+        setTagsLoaded(true);
+        getTags().then(setTags).catch(() => {});
+      }
+    }
+  }
 
   function handleCreated(contact: Contact) {
     setContacts((prev) => [contact, ...prev]);
@@ -210,9 +244,20 @@ export default function CRMPageView({ initialContacts }: Props) {
       <GunimiSection>
         <GunimiCard className="p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold">{t("customers")}</h2>
-              <p className="mt-2 text-zinc-400">{t("workspaceCrmContacts")}</p>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleSelectAll}
+                className="text-white/25 transition-colors hover:text-violet-300"
+                title={selectedIds.size === filtered.length && filtered.length > 0 ? t("bulkDeselectAll") : t("bulkSelectAll")}
+              >
+                {selectedIds.size === filtered.length && filtered.length > 0
+                  ? <CheckSquare size={16} className="text-violet-400" />
+                  : <Square size={16} />}
+              </button>
+              <div>
+                <h2 className="text-xl font-semibold">{t("customers")}</h2>
+                <p className="mt-2 text-zinc-400">{t("workspaceCrmContacts")}</p>
+              </div>
             </div>
 
             <div className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-zinc-300">
@@ -248,12 +293,18 @@ export default function CRMPageView({ initialContacts }: Props) {
                 title={t("noSearchResults")}
               />
             ) : (
-              filtered.map((contact) => (
+              filtered.map((contact) => {
+                const isSelected = selectedIds.has(contact.id);
+                return (
                 <div
                   key={contact.id}
                   role="button"
                   tabIndex={0}
-                  className="group relative flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all hover:border-violet-500/20 hover:bg-violet-500/[0.03] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50"
+                  className={`group relative flex items-center gap-4 rounded-2xl border p-4 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 ${
+                    isSelected
+                      ? "border-violet-500/30 bg-violet-500/[0.06]"
+                      : "border-white/[0.06] bg-white/[0.02] hover:border-violet-500/20 hover:bg-violet-500/[0.03]"
+                  }`}
                   onClick={() => router.push(`/dashboard/contacts/${contact.id}`)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -262,6 +313,16 @@ export default function CRMPageView({ initialContacts }: Props) {
                     }
                   }}
                 >
+                  {/* Checkbox */}
+                  <button
+                    onClick={(e) => toggleSelect(contact.id, e)}
+                    className="shrink-0 text-white/20 transition-colors hover:text-violet-300"
+                  >
+                    {isSelected
+                      ? <CheckSquare size={15} className="text-violet-400" />
+                      : <Square size={15} />}
+                  </button>
+
                   {/* Avatar */}
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-sm font-semibold text-violet-300">
                     {contact.name?.[0]?.toUpperCase() ?? "?"}
@@ -329,11 +390,21 @@ export default function CRMPageView({ initialContacts }: Props) {
                     </GunimiButton>
                   </div>
                 </div>
-              ))
+              );
+              })
             )}
           </div>
         </GunimiCard>
       </GunimiSection>
+
+      {/* Bulk Action Bar */}
+      <BulkActionBar
+        selectedIds={[...selectedIds]}
+        selectedContacts={contacts.filter((c) => selectedIds.has(c.id))}
+        tags={tags}
+        onClear={() => setSelectedIds(new Set())}
+        onDeleted={(ids) => setContacts((prev) => prev.filter((c) => !ids.includes(c.id)))}
+      />
 
       {/* Create sheet */}
       <CreateContactSheet
