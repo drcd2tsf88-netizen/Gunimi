@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Download, Tag, Trash2, X, ChevronDown } from "lucide-react";
+import { Download, GitMerge, Tag, Trash2, X, ChevronDown } from "lucide-react";
 import toast from "react-hot-toast";
 import { bulkDeleteContacts } from "@/server/actions/crm/bulkDeleteContacts";
 import { bulkAssignTag } from "@/server/actions/tags/bulkAssignTag";
@@ -10,10 +10,11 @@ import type { WorkspaceTag } from "@/types/tag";
 
 type Props = {
   selectedIds: string[];
-  selectedContacts: { id: string; name: string; email?: string | null; position?: string | null; companies?: { name: string } | null }[];
+  selectedContacts: { id: string; name: string; email?: string | null; position?: string | null; companies?: { name: string } | null; company_id?: string | null; phone?: string | null }[];
   tags: WorkspaceTag[];
   onClear: () => void;
   onDeleted: (ids: string[]) => void;
+  onMerge?: () => void;
 };
 
 function exportContactsCSV(
@@ -39,7 +40,7 @@ function exportContactsCSV(
   URL.revokeObjectURL(url);
 }
 
-export default function BulkActionBar({ selectedIds, selectedContacts, tags, onClear, onDeleted }: Props) {
+export default function BulkActionBar({ selectedIds, selectedContacts, tags, onClear, onDeleted, onMerge }: Props) {
   const t = useTranslations("crm");
   const [tagPickerOpen, setTagPickerOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -98,6 +99,17 @@ export default function BulkActionBar({ selectedIds, selectedContacts, tags, onC
           <Download size={12} />
           {t("bulkExport")}
         </button>
+
+        {/* Merge — only when exactly 2 selected */}
+        {selectedIds.length === 2 && onMerge && (
+          <button
+            onClick={onMerge}
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-violet-400 transition-colors hover:bg-violet-500/10 hover:text-violet-300"
+          >
+            <GitMerge size={12} />
+            {t("bulkMerge")}
+          </button>
+        )}
 
         {/* Assign tag */}
         <div className="relative">

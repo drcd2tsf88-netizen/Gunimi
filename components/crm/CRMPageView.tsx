@@ -35,6 +35,7 @@ import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import CreateContactSheet from "@/components/crm/CreateContactSheet";
 import EditContactSheet from "@/components/crm/EditContactSheet";
 import BulkActionBar from "@/components/crm/BulkActionBar";
+import MergeContactSheet from "@/components/crm/MergeContactSheet";
 
 import type { WorkspaceTag } from "@/types/tag";
 
@@ -79,6 +80,7 @@ export default function CRMPageView({ initialContacts }: Props) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [tags, setTags] = useState<WorkspaceTag[]>([]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
+  const [mergeOpen, setMergeOpen] = useState(false);
 
   const [prevInitialContacts, setPrevInitialContacts] = useState(initialContacts);
 
@@ -404,7 +406,25 @@ export default function CRMPageView({ initialContacts }: Props) {
         tags={tags}
         onClear={() => setSelectedIds(new Set())}
         onDeleted={(ids) => setContacts((prev) => prev.filter((c) => !ids.includes(c.id)))}
+        onMerge={() => setMergeOpen(true)}
       />
+
+      {/* Merge sheet — only when exactly 2 selected */}
+      {mergeOpen && selectedIds.size === 2 && (() => {
+        const pair = contacts.filter((c) => selectedIds.has(c.id)) as [typeof contacts[0], typeof contacts[0]];
+        return (
+          <MergeContactSheet
+            contacts={pair}
+            open={mergeOpen}
+            onClose={() => setMergeOpen(false)}
+            onMerged={(primaryId, deletedId) => {
+              setContacts((prev) => prev.filter((c) => c.id !== deletedId));
+              setSelectedIds(new Set());
+              setMergeOpen(false);
+            }}
+          />
+        );
+      })()}
 
       {/* Create sheet */}
       <CreateContactSheet
