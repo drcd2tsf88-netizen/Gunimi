@@ -773,7 +773,7 @@
     "pageTitle": "Poznámky"
   },
   "automations": {
-    "badge": "Gunimi Automatizácia",
+    "badge": "Gunimi Automácie",
     "title": "Obchodné automácie poháňané AI.",
     "subtitle": "Automatizujte opakujúce sa workflow, CRM akcie a obchodné operácie s Gunimi AI.",
     "activeAutomations": "Aktívne automácie",
@@ -1007,7 +1007,7 @@
     "intelligenceSubtitle": "Všetky AI systémy sú aktívne a prepojené s dátami vášho pracovného priestoru.",
     "activeBadge": "Aktívne",
     "openModule": "Otvoriť",
-    "moduleAutomationsTitle": "Engine automatizácie",
+    "moduleAutomationsTitle": "Engine automácií",
     "moduleAutomationsDesc": "Obchodné pravidlá, ktoré sa spúšťajú automaticky pri udalostiach v priestore.",
     "moduleMemoryTitle": "Pamäť pracovného priestoru",
     "moduleMemoryDesc": "Každá obchodná udalosť zapamätaná, klasifikovaná a pripravená na zobrazenie.",
@@ -2093,7 +2093,7 @@
       ],
       "activity": [
         "AI analyzovala obchod Acme Corp",
-        "Spustená automatizácia: Sledovanie",
+        "Spustená automácia: Sledovanie",
         "Úloha uzavretá na základe AI návrhu",
         "Nový kontakt prepojený s obchodom"
       ]
@@ -2253,7 +2253,7 @@
             "Až 3 používatelia",
             "500 AI akcií / mesiac",
             "Kontakty, obchody a úlohy",
-            "Základná automatizácia",
+            "Základné automácie",
             "AI command center"
           ]
         },
@@ -2266,7 +2266,7 @@
           "features": [
             "Neobmedzení používatelia",
             "Neobmedzené AI akcie",
-            "Plný engine automatizácie",
+            "Plný engine automácií",
             "Memory a kontextové spomienky",
             "AI agenti",
             "Prioritná podpora"
@@ -2703,7 +2703,7 @@
           "description": "Automatický brief pred každým plánovaným stretnutím. Zobrazí relevantné dealy, poznámky a históriu."
         },
         {
-          "title": "Automatizácia úloh",
+          "title": "Automácie úloh",
           "description": "Spúšťajte úlohy zo zmien fáz dealu, aktivity kontaktu alebo udalostí kalendára."
         }
       ],
