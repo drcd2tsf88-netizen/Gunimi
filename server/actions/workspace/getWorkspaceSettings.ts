@@ -24,6 +24,8 @@ export type WorkspacePreferences = {
   scanSchedule?: Record<string, ScanTypeState>;
   /** IDs of automation rules that have been disabled by the workspace admin. */
   disabledAutomations?: string[];
+  /** Ordered list of enabled widget IDs for the Custom Dashboard. */
+  dashboardWidgets?: string[];
 };
 
 export type WorkspaceSettings = {

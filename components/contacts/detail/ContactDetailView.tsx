@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   Building2,
@@ -44,6 +44,7 @@ import type { WorkspaceTag } from "@/types/tag";
 import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
 import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 import ContactTimeline from "@/components/timeline/ContactTimeline";
+import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 
 const CONTACT_PREP_ICONS: Record<ContactPrepItem["iconKey"], LucideIcon> = {
   company: Building2,
@@ -141,6 +142,7 @@ export default function ContactDetailView({
   );
 
   const pendingTaskCount = tasks.filter((task) => task.status !== "done").length;
+  const [localTasks, setLocalTasks] = useState(tasks);
 
   const hasSummary = !!(
     contact.position ||
@@ -179,6 +181,16 @@ export default function ContactDetailView({
               items={prepItems}
             />
           )}
+          <OpenTasksStrip
+            tasks={localTasks}
+            contactId={contact.id}
+            onTaskCreated={(task) =>
+              setLocalTasks((prev) => [
+                { ...task, description: null, created_at: new Date().toISOString() },
+                ...prev,
+              ])
+            }
+          />
           {hasSummary && (
             <GunimiCard className="divide-y divide-white/[0.04] p-5">
               {contact.position && (

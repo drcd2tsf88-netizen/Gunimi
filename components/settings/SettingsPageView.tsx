@@ -21,11 +21,13 @@ import PipelineSection from "./pipeline/PipelineSection";
 import AuditLogSection from "./audit/AuditLogSection";
 import TagsSection from "./tags/TagsSection";
 import BillingSection from "./billing/BillingSection";
+import WebhooksSection from "./webhooks/WebhooksSection";
 import { type UserProfile } from "@/server/actions/profile/getUserProfile";
 import type { WorkspaceDealStage } from "@/types/dealStage";
 import type { AuditLogEntry } from "@/server/actions/workspace/getAuditLogs";
 import type { WorkspaceTag } from "@/types/tag";
 import type { SubscriptionStatus } from "@/server/actions/billing/getSubscription";
+import type { WorkspaceWebhook } from "@/server/actions/webhooks/getWebhooks";
 
 type Props = {
   workspace: WorkspaceSettings;
@@ -43,6 +45,7 @@ type Props = {
   workspaceTags: WorkspaceTag[];
   subscription: SubscriptionStatus;
   billingSuccess?: boolean;
+  webhooks: WorkspaceWebhook[];
 };
 
 export default function SettingsPageView({
@@ -61,6 +64,7 @@ export default function SettingsPageView({
   workspaceTags,
   subscription,
   billingSuccess,
+  webhooks,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -121,6 +125,10 @@ export default function SettingsPageView({
 
           {section === "billing" && (
             <BillingSection subscription={subscription} showSuccess={billingSuccess} />
+          )}
+
+          {section === "webhooks" && (
+            <WebhooksSection initialWebhooks={webhooks} />
           )}
 
           {section === "danger" && (

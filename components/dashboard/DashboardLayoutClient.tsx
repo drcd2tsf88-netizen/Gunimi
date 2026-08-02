@@ -10,12 +10,15 @@ import { NAV_GROUPS } from "@/config/navigation";
 
 import OrbitCommand from "@/components/command/OrbitCommand";
 import OrbitTopbar from "@/components/layout/OrbitTopbar";
+import TaskFocusStrip from "@/components/layout/TaskFocusStrip";
 import GunimiLoader from "@/components/system/GunimiLoader";
 import FeedbackSheet from "@/components/dogfood/FeedbackSheet";
 
 import { supabase } from "@/lib/supabase";
 import { SidebarNav, SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
 import { useDogfoodStore } from "@/lib/store/dogfood-store";
+import { useTaskFocusStore } from "@/lib/store/task-focus-store";
+import { getTaskCounts } from "@/server/actions/tasks/getTaskCounts";
 
 // ─────────────────────────────────────────────────────────────
 // DashboardLayoutClient
@@ -36,6 +39,7 @@ export default function DashboardLayoutClient({
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
   const { openFeedback, dogfoodEnabled, setContext } = useDogfoodStore();
+  const { setTaskCounts } = useTaskFocusStore();
 
   function toggleGroup(id: string) {
     setCollapsedGroups((prev) => {
@@ -121,6 +125,9 @@ export default function DashboardLayoutClient({
 
         clearTimeout(failsafe);
         setLoading(false);
+
+        // Fetch task counts for topbar badge + focus strip (non-blocking)
+        getTaskCounts().then(setTaskCounts).catch(() => {});
       } catch {
         clearTimeout(failsafe);
         setLoading(false);
@@ -140,7 +147,7 @@ export default function DashboardLayoutClient({
       clearTimeout(failsafe);
       subscription.unsubscribe();
     };
-  }, [router, setContext]);
+  }, [router, setContext, setTaskCounts]);
 
   // Keyboard shortcut: ? opens the feedback sheet when dogfood mode is active
   useEffect(() => {
@@ -227,6 +234,7 @@ export default function DashboardLayoutClient({
       {/* MAIN */}
       <div className="flex min-h-dvh min-w-0 flex-1 flex-col overflow-x-hidden">
         <OrbitTopbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+        <TaskFocusStrip />
         <OrbitCommand userRole={userRole} />
         {dogfoodEnabled && <FeedbackSheet />}
 

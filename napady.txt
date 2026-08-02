@@ -65,6 +65,6 @@ NAPAD: ulohy na enterprise mod — feedbacky od zeny
       - nova tab alebo stránka: AI zoradi ulohy na dnes podla priority + deadline + entity vahy
       - skupiny: Kriticke · Dnes · Tento tyzden
       - Gunimi navrh co urobit ako prve
-      - ekvivalent Things 3 / Linear My Issues v OrbitDesk kontexte
+      - ekvivalent Things 3 / Linear My Issues v Gunimi kontexte
 
    PLAN: a + b teraz, c je Q4 feature

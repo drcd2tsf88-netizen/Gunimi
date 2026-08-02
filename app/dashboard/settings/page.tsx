@@ -21,8 +21,9 @@ import { getDealStages } from "@/server/actions/deals/getDealStages";
 import { getAuditLogs } from "@/server/actions/workspace/getAuditLogs";
 import { getTags } from "@/server/actions/tags/getTags";
 import { getSubscription } from "@/server/actions/billing/getSubscription";
+import { getWebhooks } from "@/server/actions/webhooks/getWebhooks";
 
-const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "profile", "pipeline", "tags", "audit_log", "billing", "danger"];
+const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "preferences", "profile", "pipeline", "tags", "audit_log", "billing", "webhooks", "danger"];
 
 export default async function SettingsPage({
   searchParams,
@@ -30,7 +31,7 @@ export default async function SettingsPage({
   searchParams: Promise<{ section?: string; success?: string }>;
 }) {
   const cookieStore = await cookies();
-  const [t, params, settings, membership, members, invites, user, workspaceSummaries, userProfile, dealStages, auditLogs, workspaceTags, subscription] = await Promise.all([
+  const [t, params, settings, membership, members, invites, user, workspaceSummaries, userProfile, dealStages, auditLogs, workspaceTags, subscription, webhooks] = await Promise.all([
     getTranslations("settings"),
     searchParams,
     getWorkspaceSettings(),
@@ -44,6 +45,7 @@ export default async function SettingsPage({
     getAuditLogs(),
     getTags(),
     getSubscription(),
+    getWebhooks(),
   ]);
 
   if (!settings || !membership || !user) {
@@ -97,6 +99,7 @@ export default async function SettingsPage({
       workspaceTags={workspaceTags}
       subscription={subscription}
       billingSuccess={billingSuccess}
+      webhooks={webhooks}
     />
   );
 }

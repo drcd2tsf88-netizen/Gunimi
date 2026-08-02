@@ -6,6 +6,7 @@ import {
   CalendarDays,
   CheckSquare,
   LayoutDashboard,
+  LayoutGrid,
   Mail,
   Settings,
   StickyNote,
@@ -16,6 +17,7 @@ import {
 
 export type NavItemId =
   | "dashboard"
+  | "custom_dashboard"
   | "crm"
   | "companies"
   | "deals"
@@ -65,6 +67,13 @@ export const NAV_GROUPS: NavGroup[] = [
         labelKey: "dashboard",
         href: "/dashboard",
         icon: LayoutDashboard,
+        exactMatch: true,
+      },
+      {
+        id: "custom_dashboard",
+        labelKey: "customDashboard",
+        href: "/dashboard/custom",
+        icon: LayoutGrid,
         exactMatch: true,
       },
     ],

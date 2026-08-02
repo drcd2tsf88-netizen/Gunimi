@@ -1,12 +1,12 @@
-# OrbitDesk
+# Gunimi
 
-OrbitDesk is an AI-first Workspace Operating System.
+Gunimi is an AI-first Workspace Operating System.
 
-OrbitDesk is NOT a CRM.
+Gunimi is NOT a CRM.
 
-OrbitDesk is NOT a Notion clone.
+Gunimi is NOT a Notion clone.
 
-OrbitDesk combines:
+Gunimi combines:
 
 - Companies
 - Contacts
@@ -21,7 +21,7 @@ OrbitDesk combines:
 
 # Product Vision
 
-OrbitDesk helps businesses manage:
+Gunimi helps businesses manage:
 
 - relationships
 - knowledge
@@ -129,7 +129,7 @@ Preserve existing Server Actions architecture.
 
 # UI Standards
 
-OrbitDesk is:
+Gunimi is:
 
 - premium
 - enterprise

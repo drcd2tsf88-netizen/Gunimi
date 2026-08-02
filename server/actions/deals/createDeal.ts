@@ -20,6 +20,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
 import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
+import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
 
 export type CreateDealProps = {
   title: string;
@@ -256,6 +257,13 @@ probability =
       contactId: deal.contact_id ?? null,
       companyId: deal.company_id ?? null,
       title: deal.title,
+    });
+
+    void dispatchWebhookEvent(workspace.id, "deal.created", {
+      id: deal.id,
+      title: deal.title,
+      stage: deal.stage,
+      value: deal.value,
     });
 
     revalidatePath("/dashboard/deals");

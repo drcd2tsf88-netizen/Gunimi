@@ -11,6 +11,7 @@ import { sanitize } from "@/lib/server/sanitize";
 import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
 import { produceContactSignals } from "@/lib/signals/producers/contactProducer";
+import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
 
 type CreateContactProps = {
   name: string;
@@ -91,6 +92,12 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
       email: data.email ?? null,
       phone: data.phone ?? null,
       companyId: data.company_id ?? null,
+    });
+
+    void dispatchWebhookEvent(workspace.id, "contact.created", {
+      id: data.id,
+      name: cleanName,
+      email: cleanEmail,
     });
 
     revalidatePath("/dashboard/contacts");

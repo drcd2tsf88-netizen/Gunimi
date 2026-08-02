@@ -20,6 +20,7 @@ from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
 import { produceTaskSignals } from "@/lib/signals/producers/taskProducer";
 import { createNotification } from "@/lib/server/createNotification";
+import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
 
 type CreateTaskProps = {
   title: string;
@@ -169,6 +170,14 @@ export async function createTask({
       });
 
     await produceTaskSignals({ workspaceId: workspace.id, taskId: data.id });
+
+    void dispatchWebhookEvent(workspace.id, "task.created", {
+      id: data.id,
+      title: cleanTitle,
+      priority,
+      status,
+      due_date,
+    });
 
     if (assigned_to && assigned_to !== user.id) {
       await createNotification({

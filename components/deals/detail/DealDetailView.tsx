@@ -25,6 +25,7 @@ import { resolveDealStory } from "@/lib/deals/story";
 import { resolveDealContext } from "@/lib/deals/context";
 
 import { User, Clock, CheckSquare, FileText, LucideIcon, Users, CalendarDays, TrendingUp } from "lucide-react";
+import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 
 import { Deal } from "@/types/deal";
 import { WorkspaceActivity } from "@/types/activity";
@@ -80,8 +81,9 @@ export default function DealDetailView({
   const router = useRouter();
   const t = useTranslations("deals");
   const [editOpen, setEditOpen] = useState(false);
+  const [localTasks, setLocalTasks] = useState(tasks);
 
-  const pendingTasksCount = tasks.filter((task) => task.status !== "done").length;
+  const pendingTasksCount = localTasks.filter((task) => task.status !== "done").length;
 
   const decision = useMemo(() => resolveDealDecision(deal, tasks), [deal, tasks]);
   const rawPrep = useMemo(
@@ -164,6 +166,16 @@ export default function DealDetailView({
               items={preparationItems}
             />
           )}
+          <OpenTasksStrip
+            tasks={localTasks}
+            contactId={deal.contact?.id ?? null}
+            onTaskCreated={(task) =>
+              setLocalTasks((prev) => [
+                { ...task, description: null, created_at: new Date().toISOString() },
+                ...prev,
+              ])
+            }
+          />
           <DealOverview deal={deal} />
         </div>
       ),
@@ -187,7 +199,7 @@ export default function DealDetailView({
       content: (
         <div className="space-y-6">
           <DealTasks
-            tasks={tasks}
+            tasks={localTasks}
             contactId={deal.contact?.id}
           />
           <DealNotes

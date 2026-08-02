@@ -38,7 +38,7 @@
 - ❌ Use pure `#000000` or `#ffffff` anywhere
 - ❌ Use `box-shadow: 0 4px 8px rgba(0,0,0,0.5)`
 - ❌ Use cyan (`--g-ai`) for hover states on non-AI elements
-- ❌ Use old primary `#7c3aed` (the former OrbitDesk violet)
+- ❌ Use old primary `#7c3aed` (the former Gunimi violet)
 - ❌ Use more than 3 chart colors in a single chart
 
 ### Motion

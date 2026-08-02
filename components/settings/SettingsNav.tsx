@@ -1,12 +1,12 @@
 "use client";
 
-import { Building2, CreditCard, Kanban, ScrollText, Shield, Sliders, Tag, User, Users } from "lucide-react";
+import { Building2, CreditCard, Kanban, ScrollText, Shield, Sliders, Tag, User, Users, Webhook } from "lucide-react";
 
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
-export type SettingsSection = "workspace" | "members" | "preferences" | "profile" | "pipeline" | "tags" | "audit_log" | "billing" | "danger";
+export type SettingsSection = "workspace" | "members" | "preferences" | "profile" | "pipeline" | "tags" | "audit_log" | "billing" | "webhooks" | "danger";
 
 const NAV_ITEMS: { id: SettingsSection; icon: typeof Building2 }[] = [
   { id: "workspace", icon: Building2 },
@@ -17,6 +17,7 @@ const NAV_ITEMS: { id: SettingsSection; icon: typeof Building2 }[] = [
   { id: "tags", icon: Tag },
   { id: "audit_log", icon: ScrollText },
   { id: "billing", icon: CreditCard },
+  { id: "webhooks", icon: Webhook },
   { id: "danger", icon: Shield },
 ];
 

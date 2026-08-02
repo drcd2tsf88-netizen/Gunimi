@@ -19,6 +19,7 @@ import { revalidatePath }
 from "next/cache";
 import { logger } from "@/lib/logger";
 import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
+import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
 
 export type UpdateDealProps = {
   dealId: string;
@@ -273,6 +274,20 @@ export async function updateDeal({
       companyId: deal.company_id ?? null,
       title: deal.title,
     });
+
+    if (stage === "won") {
+      void dispatchWebhookEvent(workspace.id, "deal.won", {
+        id: deal.id,
+        title: deal.title,
+        value: deal.value,
+      });
+    } else if (stage === "lost") {
+      void dispatchWebhookEvent(workspace.id, "deal.lost", {
+        id: deal.id,
+        title: deal.title,
+        lost_reason: lostReason ?? null,
+      });
+    }
 
     revalidatePath("/dashboard/deals");
     revalidatePath(`/dashboard/deals/${deal.id}`);

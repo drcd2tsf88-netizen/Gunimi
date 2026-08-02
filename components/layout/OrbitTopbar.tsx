@@ -1,6 +1,7 @@
 "use client";
 
-import { Menu, Search } from "lucide-react";
+import Link from "next/link";
+import { CheckSquare, Menu, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import OrbitTeamPresence    from "@/components/layout/OrbitTeamPresence";
@@ -8,6 +9,7 @@ import OrbitNotifications   from "@/components/layout/OrbitNotifications";
 import OrbitProfileDropdown from "@/components/layout/OrbitProfileDropdown";
 
 import { useOrbitCommandStore } from "@/lib/store/orbit-command-store";
+import { useTaskFocusStore } from "@/lib/store/task-focus-store";
 
 type OrbitTopbarProps = {
   mobileOpen:    boolean;
@@ -22,7 +24,12 @@ type OrbitTopbarProps = {
 export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarProps) {
   const t      = useTranslations("command");
   const tNav   = useTranslations("nav");
+  const tFocus = useTranslations("taskFocus");
   const { setOpen } = useOrbitCommandStore();
+  const { today, overdue, loaded } = useTaskFocusStore();
+
+  const totalUrgent = overdue + today;
+  const showBadge = loaded && totalUrgent > 0;
 
   return (
     <header
@@ -99,6 +106,25 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
         {/* RIGHT */}
         <div className="flex items-center gap-1.5">
           <OrbitTeamPresence />
+
+          {/* Task focus badge */}
+          <Link
+            href="/dashboard/tasks"
+            aria-label={tFocus("topbarLabel")}
+            className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#9AA3B2]/60 transition-all hover:border-white/[0.10] hover:text-white/80"
+          >
+            <CheckSquare size={14} strokeWidth={1.75} />
+            {showBadge && (
+              <span
+                className={`absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold leading-none text-white ${
+                  overdue > 0 ? "bg-rose-500" : "bg-amber-500"
+                }`}
+              >
+                {totalUrgent > 9 ? "9+" : totalUrgent}
+              </span>
+            )}
+          </Link>
+
           <OrbitNotifications />
           <OrbitProfileDropdown />
         </div>

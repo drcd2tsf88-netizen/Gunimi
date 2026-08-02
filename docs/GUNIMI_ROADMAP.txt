@@ -1,6 +1,6 @@
 ================================================================================
 GUNIMI — PRODUCT ROADMAP & GAP ANALYSIS
-Verzia: 2.0 | Dátum: 2026-07-30
+Verzia: 2.1 | Dátum: 2026-08-02
 ================================================================================
 
 --------------------------------------------------------------------------------
@@ -71,6 +71,8 @@ Poradie podľa dopadu / jednoduchosti:
   [x]     17. Kanban view pre úlohy                         ✅ hotovo (júl 2026)
   [x]     13. File attachments — prílohy                    ✅ hotovo (júl 2026)
   [x]     18. Kontaktná história — timeline view             ✅ hotovo (júl 2026)
+  [x]     12. Custom Dashboard — My Dashboard               ✅ hotovo (aug 2026)
+  [x]     20. Webhooks                                      ✅ hotovo (aug 2026)
   NEXT →  10. Workflow Automation — UI                       (1 týždeň)
 
 --------------------------------------------------------------------------------
@@ -124,11 +126,12 @@ TIER 2 — RAST (Blokuje škálovanie na viac tímov)
           - Duplicitné záznamy — zlúčiť do jedného (Domain Law I)
           - Odhadovaný čas: 2 dni
 
-  [ ] 12. Custom reporting / dashboardy
-          - Každý manager chce iné metriky
-          - Drag-and-drop widget builder
-          - Odhadovaný čas: 1–2 týždne
-,
+  [x] 12. Custom Dashboard — My Dashboard           ✅ hotovo (aug 2026)
+          - 12 widgetov: metriky, kontakty, dealy, úlohy, poznámky, aktivita
+          - Drag-and-drop reorder, catalog, perzistencia v workspace preferences
+          - Koexistuje s Today Brief (/dashboard/custom — separate page)
+
+
   [ ] 9.  Teams / Oddelenia v rámci workspacu     ← POZOR: architektúra
           - NERIEŠIŤ cez team_id FK (porušuje Domain Laws)
           - Správne: workspace_teams entita + role-based isolation
@@ -138,7 +141,7 @@ TIER 2 — RAST (Blokuje škálovanie na viac tímov)
 --------------------------------------------------------------------------------
 TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 --------------------------------------------------------------------------------
-
+ 
   [x] 28. Billing & Subscription management       ✅ hotovo (júl 2026)
           - Stripe €19/mesiac, webhook, Settings sekcia
 
@@ -147,9 +150,13 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
           - API keys per workspace, rate limiting
           - Odhadovaný čas: 2–3 týždne
 
-  [ ] 20. Webhooks
-          - "Keď sa vytvorí deal → POST na váš endpoint"
-          - Odhadovaný čas: 1 týždeň
+  [x] 20. Webhooks                                  ✅ hotovo (aug 2026)
+          - workspace_webhooks tabuľka + RLS policies
+          - HMAC-SHA256 podpisovanie (X-Gunimi-Signature header)
+          - 5 event typov: contact.created, deal.created, deal.won, deal.lost, task.created
+          - Fire-and-forget dispatch (neblokuje server actions)
+          - Settings UI: create / toggle / test / delete + secret reveal + copy
+          - Plán: Public REST API (#19) → potom SSO (#21)
 
   [ ] 21. SSO / SAML (Azure AD, Okta, Google Workspace)
           - Každá firma 200+ ľudí to vyžaduje
@@ -296,8 +303,10 @@ FÁZA 2 — SMB ready                            ⏳ PREBIEHA (Q3 2026)
   Cieľ: 50 platiacich tímov, 2–20 ľudí
   - [x] Kanban pre úlohy (#17)                   ✅
   - [x] File attachments (#13)                   ✅
-  - [ ] Workflow Automation UI (#10)
-  - [ ] Kontaktná timeline (#18)
+  - [x] Kontaktná timeline (#18)                 ✅
+  - [x] Custom Dashboard (#12)                   ✅
+  - [x] Webhooks (#20)                           ✅
+  - [ ] Workflow Automation UI (#10)             ← NEXT
   - [ ] Domain Foundation (workspace_people + relationships)
 
 FÁZA 3 — Mid-market                           📅 PLÁNOVANÁ (Q4 2026)
@@ -310,7 +319,8 @@ FÁZA 3 — Mid-market                           📅 PLÁNOVANÁ (Q4 2026)
 
 FÁZA 4 — Enterprise                           📅 PLÁNOVANÁ (2027)
   Cieľ: Alza-scale, 500+ ľudí
-  - [ ] Public REST API + Webhooks
+  - [x] Webhooks (#20)                             ✅ hotovo (aug 2026)
+  - [ ] Public REST API (#19)
   - [ ] SSO / SAML
   - [ ] SOC 2 certifikácia
   - [ ] Advanced permissions
@@ -328,11 +338,11 @@ TECHNICKÝ DLUH (backend / infraštruktúra)
 --------------------------------------------------------------------------------
 
   [x] SQL migrácia: workspace_deals currency column             ✅ vyriešené
-  [ ] Lint stabilizácia sprint — znížiť počet warnings
+  [x] Lint stabilizácia — 0 errors, 0 warnings                 ✅ čisté (aug 2026)
   [ ] Legacy tabuľka "tasks" (bez workspace_id) — migrácia alebo cleanup
-  [ ] Dual design system — OrbitUI vs GunimiUI — zjednotiť na GunimiUI
+  [ ] Orbit* mŕtvy kód — OrbitButton/OrbitCard/... existujú ako súbory, ale nič ich neimportuje → zmazať
   [ ] AI usage cost monitoring — upozornenie pri prekročení thresholdu
-  [ ] Stripe webhook secret — pridať do Vercel env vars         ← UROBIŤ TERAZ
+  [x] Stripe webhook secret — pridaný do Vercel env vars        ✅
   [ ] Multi-theme systém — CSS variables, dark/midnight/slate/light, switcher v Settings (len vizuálny pocit, žiadny blocker)
 
 --------------------------------------------------------------------------------
@@ -348,6 +358,9 @@ POZNÁMKY
 * Stripe billing live — €19/mesiac, webhook endpoint /api/stripe/webhook
 * Foundation dokumenty napísané (2026-07-28) — docs/foundation/
 * ADR-001 až ADR-004 zdokumentované v docs/architecture/adr/
+* Custom Dashboard (#12) live — /dashboard/custom, 12 widgetov, drag-and-drop (2026-08-02)
+* Webhooks (#20) live — HMAC-SHA256, 5 event typov, Settings UI (2026-08-02)
+* Enterprise Task Mode — topbar badge, focus strip, inline task strips na Contact/Deal (2026-08-02)
 
 ================================================================================
 EOF
