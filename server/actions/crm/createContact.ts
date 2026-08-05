@@ -17,9 +17,11 @@ type CreateContactProps = {
   name: string;
   email?: string;
   phone?: string;
+  companyId?: string;
+  companyName?: string;
 };
 
-export async function createContact({ name, email, phone }: CreateContactProps) {
+export async function createContact({ name, email, phone, companyId, companyName }: CreateContactProps) {
   try {
     const supabase = await createClient();
 
@@ -46,6 +48,8 @@ export async function createContact({ name, email, phone }: CreateContactProps) 
         email: cleanEmail,
         phone: cleanPhone,
         status: "lead",
+        company_id: companyId ?? null,
+        company_name: companyName ? sanitize(companyName) : null,
         updated_at: new Date().toISOString(),
       })
       .select()

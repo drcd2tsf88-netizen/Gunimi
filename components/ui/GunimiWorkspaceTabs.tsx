@@ -25,6 +25,10 @@ type Props = {
   tabs: WorkspaceTab[];
   /** Default active tab id. Falls back to first tab. */
   defaultTab?: string;
+  /** Controlled active tab id. When provided, use with onTabChange. */
+  activeTab?: string;
+  /** Called when user changes tab (controlled mode). */
+  onTabChange?: (tabId: string) => void;
   /**
    * aria-label for the tab list — describes which workspace this
    * belongs to (e.g. "Deal navigation"). Optional; accessibility
@@ -37,13 +41,20 @@ type Props = {
 export default function GunimiWorkspaceTabs({
   tabs,
   defaultTab,
+  activeTab,
+  onTabChange,
   listLabel,
   className,
 }: Props) {
   const initialTab = defaultTab ?? tabs[0]?.id ?? "";
 
   return (
-    <Tabs.Root defaultValue={initialTab} className={cn("w-full", className)}>
+    <Tabs.Root
+      {...(activeTab !== undefined
+        ? { value: activeTab, onValueChange: onTabChange }
+        : { defaultValue: initialTab })}
+      className={cn("w-full", className)}
+    >
       {/* ── TAB BAR ──────────────────────────────────────────── */}
       <div className="relative mb-6">
         {/* Top sheen — titanium edge catch, matches GunimiCard */}

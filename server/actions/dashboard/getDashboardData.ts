@@ -82,6 +82,20 @@ const EMPTY: DashboardData = {
   recentActivity: [],
 };
 
+function localDate(date: Date, timezone?: string | null): string {
+  if (!timezone) return date.toISOString().slice(0, 10);
+  try {
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: timezone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+  } catch {
+    return date.toISOString().slice(0, 10);
+  }
+}
+
 export async function getDashboardData(): Promise<DashboardData> {
   try {
     const workspace = await getCurrentWorkspace();
@@ -90,11 +104,6 @@ export async function getDashboardData(): Promise<DashboardData> {
     const supabase = await createClient();
     const wid = workspace.id;
 
-    const now = new Date();
-    const todayStr = now.toISOString().slice(0, 10);
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
-    const weekEnd = new Date(now.getTime() + 7 * 86400_000).toISOString().slice(0, 10);
-
     const [
       contactsRes,
       companiesRes,
@@ -102,6 +111,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       tasksRes,
       notesRes,
       activityRes,
+      prefsRes,
     ] = await Promise.all([
       supabase
         .from("workspace_contacts")
@@ -144,7 +154,19 @@ export async function getDashboardData(): Promise<DashboardData> {
         .eq("workspace_id", wid)
         .order("created_at", { ascending: false })
         .limit(6),
+
+      supabase
+        .from("workspaces")
+        .select("preferences")
+        .eq("id", wid)
+        .maybeSingle(),
     ]);
+
+    const timezone = (prefsRes.data?.preferences as { timezone?: string } | null)?.timezone ?? null;
+    const now = new Date();
+    const todayStr = localDate(now, timezone);
+    const monthStart = localDate(new Date(now.getFullYear(), now.getMonth(), 1), timezone);
+    const weekEnd = localDate(new Date(now.getTime() + 7 * 86400_000), timezone);
 
     if (contactsRes.error) logger.error("getDashboardData contacts:", contactsRes.error);
     if (dealsRes.error) logger.error("getDashboardData deals:", dealsRes.error);

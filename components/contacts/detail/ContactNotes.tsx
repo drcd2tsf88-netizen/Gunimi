@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
 import GunimiSection from "@/components/layout/GunimiSection";
@@ -8,6 +9,7 @@ import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Contact } from "@/types/contact";
 import { ContactNote } from "@/server/actions/crm/getContactNotes";
+import { stripHtml } from "@/lib/utils/stripHtml";
 
 type Props = {
   contact: Contact;
@@ -48,21 +50,23 @@ export default function ContactNotes({ contact, notes }: Props) {
           )}
 
           {notes.map((note) => (
-            <GunimiCard key={note.id} className="p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-sm font-medium">{note.title}</h3>
-                  {note.content && (
-                    <p className="mt-2 text-sm leading-relaxed text-white/60">
-                      {note.content}
-                    </p>
-                  )}
+            <Link key={note.id} href={`/dashboard/notes/${note.id}`}>
+              <GunimiCard className="p-5 transition-colors hover:border-violet-500/30 hover:bg-violet-500/[0.04]">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-sm font-medium">{note.title}</h3>
+                    {note.content && (
+                      <p className="mt-2 text-sm leading-relaxed text-white/60 line-clamp-3">
+                        {stripHtml(note.content)}
+                      </p>
+                    )}
+                  </div>
+                  <p className="shrink-0 whitespace-nowrap text-xs text-white/30">
+                    {new Date(note.created_at).toLocaleDateString()}
+                  </p>
                 </div>
-                <p className="shrink-0 whitespace-nowrap text-xs text-white/30">
-                  {new Date(note.created_at).toLocaleDateString()}
-                </p>
-              </div>
-            </GunimiCard>
+              </GunimiCard>
+            </Link>
           ))}
         </div>
       )}

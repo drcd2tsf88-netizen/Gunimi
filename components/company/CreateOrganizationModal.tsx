@@ -98,16 +98,11 @@ export default function CreateOrganizationModal({
         });
 
       if (!company) {
-        toast.error(
-          "Failed to create organization"
-        );
-
+        toast.error(t("companies.createFailed"));
         return;
       }
 
-      toast.success(
-        "Organization created"
-      );
+      toast.success(t("companies.createSuccess"));
 
       setName("");
       setWebsite("");
@@ -118,9 +113,7 @@ export default function CreateOrganizationModal({
 
       onClose();
     } catch {
-      toast.error(
-        "Failed to create organization"
-      );
+      toast.error(t("companies.createFailed"));
     } finally {
       setCreating(false);
     }
@@ -289,7 +282,7 @@ export default function CreateOrganizationModal({
                     py-2
                   "
                 >
-                  Cancel
+                  {t("common.cancel")}
                 </button>
 
                 <button

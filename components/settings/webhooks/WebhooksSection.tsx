@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, Trash2, FlaskConical, Copy, Check, Webhook, X, ToggleLeft, ToggleRight } from "lucide-react";
+import { Plus, Trash2, FlaskConical, Copy, Check, Webhook, X, ToggleLeft, ToggleRight, ShieldAlert } from "lucide-react";
 import toast from "react-hot-toast";
 
 import GunimiButton from "@/components/ui/GunimiButton";
@@ -32,7 +32,10 @@ export default function WebhooksSection({ initialWebhooks }: Props) {
   const [hooks, setHooks] = useState<WorkspaceWebhook[]>(initialWebhooks);
   const [showCreate, setShowCreate] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // One-time secret shown immediately after creation
+  const [newSecret, setNewSecret] = useState<string | null>(null);
+  const [secretCopied, setSecretCopied] = useState(false);
 
   const [url, setUrl] = useState("");
   const [selectedEvents, setSelectedEvents] = useState<WebhookEvent[]>([]);
@@ -46,7 +49,7 @@ export default function WebhooksSection({ initialWebhooks }: Props) {
   function handleCreate() {
     const trimmedUrl = url.trim();
     if (!trimmedUrl) return;
-    if (!trimmedUrl.startsWith("http://") && !trimmedUrl.startsWith("https://")) {
+    if (!trimmedUrl.startsWith("https://")) {
       toast.error(t("invalidUrl"));
       return;
     }
@@ -61,11 +64,19 @@ export default function WebhooksSection({ initialWebhooks }: Props) {
         setUrl("");
         setSelectedEvents([]);
         setShowCreate(false);
-        toast.success(t("webhookCreated"));
+        setNewSecret(result.plainSecret);
+        setSecretCopied(false);
       } else {
         toast.error(t("createFailed"));
       }
     });
+  }
+
+  function handleCopySecret() {
+    if (!newSecret) return;
+    void navigator.clipboard.writeText(newSecret);
+    setSecretCopied(true);
+    toast.success(t("secretCopied"));
   }
 
   function handleDelete(id: string) {
@@ -76,7 +87,6 @@ export default function WebhooksSection({ initialWebhooks }: Props) {
         setDeleteId(null);
         toast.success(t("webhookDeleted"));
       } else {
-        // keep confirm dialog open so user can retry
         toast.error(t("deleteFailed"));
       }
     });
@@ -105,13 +115,6 @@ export default function WebhooksSection({ initialWebhooks }: Props) {
         toast.error(t("testFailed"));
       }
     });
-  }
-
-  function handleCopySecret(hook: WorkspaceWebhook) {
-    void navigator.clipboard.writeText(hook.secret);
-    setCopiedId(hook.id);
-    toast.success(t("secretCopied"));
-    setTimeout(() => setCopiedId((prev) => (prev === hook.id ? null : prev)), 2000);
   }
 
   return (
@@ -205,6 +208,42 @@ export default function WebhooksSection({ initialWebhooks }: Props) {
         </div>
       )}
 
+      {/* ONE-TIME SECRET BANNER */}
+      {newSecret && (
+        <div className="rounded-2xl border border-amber-500/25 bg-amber-500/[0.06] p-5">
+          <div className="flex items-start gap-3">
+            <ShieldAlert size={16} className="mt-0.5 shrink-0 text-amber-400" />
+            <div className="min-w-0 flex-1 space-y-3">
+              <div>
+                <p className="text-sm font-semibold text-amber-300">{t("secretOneTimeTitle")}</p>
+                <p className="mt-0.5 text-xs text-amber-300/70">{t("secretOneTimeNotice")}</p>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl border border-amber-500/20 bg-black/30 px-3 py-2">
+                <p className="min-w-0 flex-1 truncate font-mono text-xs text-amber-200/80">
+                  {newSecret}
+                </p>
+                <button
+                  onClick={handleCopySecret}
+                  aria-label={t("secretLabel")}
+                  className="shrink-0 rounded-lg p-1 text-amber-300/50 transition-colors hover:bg-amber-500/10 hover:text-amber-300"
+                >
+                  {secretCopied
+                    ? <Check size={12} className="text-emerald-400" />
+                    : <Copy size={12} aria-hidden="true" />}
+                </button>
+              </div>
+              <GunimiButton
+                variant="secondary"
+                className="px-3 py-1.5 text-xs"
+                onClick={() => setNewSecret(null)}
+              >
+                {t("secretSaved")}
+              </GunimiButton>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* WEBHOOK LIST */}
       {hooks.length === 0 ? (
         <GunimiEmptyState
@@ -273,22 +312,6 @@ export default function WebhooksSection({ initialWebhooks }: Props) {
                         {ev}
                       </span>
                     ))}
-                  </div>
-
-                  {/* SECRET */}
-                  <div className="flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2">
-                    <p className="min-w-0 flex-1 truncate font-mono text-xs text-white/30">
-                      {hook.secret}
-                    </p>
-                    <button
-                      onClick={() => handleCopySecret(hook)}
-                      aria-label={t("secretLabel")}
-                      className="shrink-0 rounded-lg p-1 text-white/30 transition-colors hover:bg-white/[0.06] hover:text-white/70"
-                    >
-                      {copiedId === hook.id
-                        ? <Check size={12} className="text-emerald-400" />
-                        : <Copy size={12} aria-hidden="true" />}
-                    </button>
                   </div>
 
                   {/* ACTIONS */}

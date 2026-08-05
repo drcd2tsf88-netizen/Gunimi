@@ -18,6 +18,17 @@ export async function saveDashboardLayout(
 
     const supabase = await createClient();
 
+    const { data: membership } = await supabase
+      .from("workspace_members")
+      .select("role")
+      .eq("workspace_id", workspace.id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (!membership || !["owner", "admin"].includes(membership.role)) {
+      return { success: false };
+    }
+
     const { data: existing } = await supabase
       .from("workspaces")
       .select("preferences")

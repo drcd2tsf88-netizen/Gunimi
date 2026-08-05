@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
   Building2,
@@ -174,6 +175,19 @@ export default function ContactDetailView({
                 : t("decisionEmptyReason")
             }
             isEmpty={!decision}
+            href={(() => {
+              switch (decision?.action) {
+                case "overdue_tasks":
+                case "follow_up":
+                  return "/dashboard/tasks";
+                case "deal_attention":
+                  return "/dashboard/deals";
+                case "link_company":
+                  return "/dashboard/companies";
+                default:
+                  return undefined;
+              }
+            })()}
           />
           {prepItems.length > 0 && (
             <GunimiPreparationCard
@@ -191,6 +205,32 @@ export default function ContactDetailView({
               ])
             }
           />
+          {notes.length > 0 && (
+            <GunimiCard className="p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <FileText size={12} className="text-white/30" aria-hidden />
+                <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500 font-medium">
+                  {t("recentNotes")}
+                </span>
+              </div>
+              <div className="space-y-1.5">
+                {notes.slice(0, 3).map((note) => (
+                  <Link
+                    key={note.id}
+                    href={`/dashboard/notes/${note.id}`}
+                    className="block rounded-xl border border-white/[0.04] bg-white/[0.02] px-3 py-2.5 transition-colors hover:border-violet-500/20 hover:bg-violet-500/[0.04]"
+                  >
+                    <p className="truncate text-xs font-medium text-white/80">{note.title}</p>
+                    {note.content && (
+                      <p className="mt-0.5 truncate text-[10px] text-white/40">
+                        {note.content.replace(/<[^>]+>/g, "").slice(0, 80)}
+                      </p>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </GunimiCard>
+          )}
           {hasSummary && (
             <GunimiCard className="divide-y divide-white/[0.04] p-5">
               {contact.position && (

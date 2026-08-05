@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useIsHydrated } from "@/lib/hooks/useIsHydrated";
 
@@ -31,19 +32,21 @@ type Notification = {
 
 export default function OrbitNotifications() {
   const t = useTranslations("notifications");
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const mounted = useIsHydrated();
   const [dropdownPos, setDropdownPos] = useState({ top: 0, right: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const unreadCount = notifications.filter((n) => !n.read_at).length;
+  const unreadCount = notifications.length;
 
   useEffect(() => {
     async function load() {
       const { data } = await supabase
         .from("workspace_notifications")
         .select("id, type, title, body, href, read_at, created_at")
+        .is("read_at", null)
         .order("created_at", { ascending: false })
         .limit(20);
       setNotifications(data ?? []);
@@ -97,11 +100,7 @@ export default function OrbitNotifications() {
   }
 
   async function markRead(id: string) {
-    setNotifications((prev) =>
-      prev.map((n) =>
-        n.id === id ? { ...n, read_at: new Date().toISOString() } : n
-      )
-    );
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
     await supabase
       .from("workspace_notifications")
       .update({ read_at: new Date().toISOString() })
@@ -109,11 +108,10 @@ export default function OrbitNotifications() {
   }
 
   async function markAllRead() {
-    const now = new Date().toISOString();
-    setNotifications((prev) => prev.map((n) => ({ ...n, read_at: n.read_at ?? now })));
+    setNotifications([]);
     await supabase
       .from("workspace_notifications")
-      .update({ read_at: now })
+      .update({ read_at: new Date().toISOString() })
       .is("read_at", null);
   }
 
@@ -159,7 +157,6 @@ export default function OrbitNotifications() {
               </div>
             ) : (
               notifications.map((item) => {
-                const isUnread = !item.read_at;
                 const bodyKey = `body_${item.type}`;
                 const localizedBody = t.has(bodyKey as Parameters<typeof t>[0])
                   ? t(bodyKey as Parameters<typeof t>[0])
@@ -167,18 +164,18 @@ export default function OrbitNotifications() {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => markRead(item.id)}
-                    className={`
-                      w-full rounded-2xl border p-4 text-left transition-all
-                      ${isUnread
-                        ? "border-violet-500/20 bg-violet-500/[0.06] hover:bg-violet-500/[0.1]"
-                        : "border-white/5 bg-white/[0.02] hover:bg-white/[0.04]"
+                    onClick={async () => {
+                      await markRead(item.id);
+                      if (item.href) {
+                        setOpen(false);
+                        router.push(item.href);
                       }
-                    `}
+                    }}
+                    className="w-full rounded-2xl border border-violet-500/20 bg-violet-500/[0.06] p-4 text-left transition-all hover:bg-violet-500/[0.1]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0 flex-1">
-                        <p className={`text-sm font-medium truncate ${isUnread ? "text-white" : "text-white/70"}`}>
+                        <p className="truncate text-sm font-medium text-white">
                           {item.title}
                         </p>
                         {localizedBody && (
@@ -192,9 +189,7 @@ export default function OrbitNotifications() {
                         <span className="text-[10px] text-white/30">
                           {formatTime(item.created_at, t("justNow"))}
                         </span>
-                        {isUnread && (
-                          <div className="h-1.5 w-1.5 rounded-full bg-violet-400" />
-                        )}
+                        <div className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                       </div>
                     </div>
                   </button>

@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Building2,
   PlusCircle,
+  Search,
   Star,
 } from "lucide-react";
 
@@ -52,6 +53,7 @@ export default function CompaniesGrid({
 
   const [createOpen, setCreateOpen] = useState(false);
   const [localCompanies, setLocalCompanies] = useState(companies);
+  const [query, setQuery] = useState("");
 
   const handleTogglePriority = useCallback(async (company: Company, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -82,8 +84,32 @@ export default function CompaniesGrid({
     );
   }
 
+  const filtered = query.trim()
+    ? localCompanies.filter((c) =>
+        [c.name, c.industry, c.country]
+          .filter(Boolean)
+          .some((field) => field!.toLowerCase().includes(query.toLowerCase()))
+      )
+    : localCompanies;
+
   return (
     <GunimiSection>
+      {/* Search */}
+      <div className="mb-4 flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
+        <Search size={14} className="shrink-0 text-zinc-600" />
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={t("companies.searchOrganizations")}
+          className="flex-1 bg-transparent text-sm text-white/80 placeholder-white/25 outline-none"
+        />
+        {query && (
+          <button onClick={() => setQuery("")} className="text-xs text-white/25 hover:text-white/60">
+            ×
+          </button>
+        )}
+      </div>
+
       <div
         className="
           grid
@@ -92,7 +118,12 @@ export default function CompaniesGrid({
           md:grid-cols-2
         "
       >
-        {localCompanies.map(
+        {filtered.length === 0 && (
+          <div className="col-span-2 py-12 text-center text-sm text-white/25">
+            {t("companies.noSearchResults" as Parameters<typeof t>[0])}
+          </div>
+        )}
+        {filtered.map(
           (company) => (
             <GunimiCard
               key={

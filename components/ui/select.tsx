@@ -239,16 +239,18 @@ function SelectItem({
         pr-8
 
         text-sm
-        text-white
+        text-white/75
 
         outline-none
 
         transition-all
-        duration-200
+        duration-150
 
-        data-[highlighted]:bg-white/[0.08]
+        data-[highlighted]:bg-violet-500/[0.10]
+        data-[highlighted]:text-white
 
-        data-[state=checked]:bg-white/[0.12]
+        data-[state=checked]:bg-violet-500/[0.15]
+        data-[state=checked]:text-violet-100
 
         data-disabled:pointer-events-none
         data-disabled:opacity-50

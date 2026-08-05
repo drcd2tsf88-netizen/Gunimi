@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { AlertCircle, CheckSquare2, Clock, User } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -8,7 +9,9 @@ import GunimiSection from "@/components/layout/GunimiSection";
 import GunimiHeading from "@/components/ui/GunimiHeading";
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
+import TaskDetailPanel from "@/components/tasks/TaskDetailPanel";
 
+import { createClient } from "@/lib/supabase/client";
 import type { DealRelatedTask } from "@/server/actions/deals/getDealRelatedTasks";
 
 type Props = {
@@ -34,6 +37,14 @@ function getStatusStyles(status: string) {
 export default function DealTasks({ tasks, contactId }: Props) {
   const t = useTranslations("deals");
   const tTasks = useTranslations("tasks");
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState("");
+
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data }) => {
+      if (data.user) setCurrentUserId(data.user.id);
+    });
+  }, []);
 
   return (
     <GunimiSection>
@@ -69,7 +80,11 @@ export default function DealTasks({ tasks, contactId }: Props) {
               new Date(task.due_date) < NOW;
 
             return (
-              <GunimiCard key={task.id} className="p-4">
+              <GunimiCard
+                key={task.id}
+                className="cursor-pointer p-4 transition-colors hover:border-violet-500/25 hover:bg-violet-500/[0.03]"
+                onClick={() => setSelectedTaskId(task.id)}
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex min-w-0 flex-1 items-start gap-2.5">
                     {task.priority === "high" && (
@@ -114,6 +129,13 @@ export default function DealTasks({ tasks, contactId }: Props) {
           })}
         </div>
       )}
+
+      <TaskDetailPanel
+        taskId={selectedTaskId}
+        currentUserId={currentUserId}
+        members={[]}
+        onClose={() => setSelectedTaskId(null)}
+      />
     </GunimiSection>
   );
 }

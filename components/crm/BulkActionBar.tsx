@@ -18,12 +18,14 @@ type Props = {
 };
 
 function exportContactsCSV(
-  contacts: Props["selectedContacts"]
+  contacts: Props["selectedContacts"],
+  headers: { name: string; email: string; phone: string; position: string; company: string }
 ) {
-  const header = ["Name", "Email", "Position", "Company"];
+  const header = [headers.name, headers.email, headers.phone, headers.position, headers.company];
   const rows = contacts.map((c) => [
     c.name ?? "",
     c.email ?? "",
+    c.phone ?? "",
     c.position ?? "",
     c.companies?.name ?? "",
   ]);
@@ -31,7 +33,8 @@ function exportContactsCSV(
     .map((row) => row.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))
     .join("\n");
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  // BOM ensures Excel opens UTF-8 CSV with correct encoding (Slovak chars etc.)
+  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -50,7 +53,13 @@ export default function BulkActionBar({ selectedIds, selectedContacts, tags, onC
   if (!selectedIds.length) return null;
 
   function handleExport() {
-    exportContactsCSV(selectedContacts);
+    exportContactsCSV(selectedContacts, {
+      name: t("contactName"),
+      email: t("contactEmail"),
+      phone: t("contactPhone"),
+      position: t("contactPosition"),
+      company: t("company"),
+    });
   }
 
   function handleAssignTag(tagId: string) {

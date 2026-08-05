@@ -146,30 +146,34 @@ export async function createTask({
       return null;
     }
 
-    // ACTIVITY FEED
+    // ACTIVITY FEED — non-critical, isolated
+    try {
+      await supabaseAdmin
+        .from(
+          "workspace_activity"
+        )
+        .insert({
+          workspace_id:
+            workspace.id,
 
-    await supabaseAdmin
-      .from(
-        "workspace_activity"
-      )
-      .insert({
-        workspace_id:
-          workspace.id,
+          user_id:
+            user.id,
 
-        user_id:
-          user.id,
+          type:
+            "task_created",
 
-        type:
-          "task_created",
+          title:
+            "Task Created",
 
-        title:
-          "Task Created",
+          description:
+            `Created task "${cleanTitle}"`,
+        });
+    } catch { }
 
-        description:
-          `Created task "${cleanTitle}"`,
-      });
-
-    await produceTaskSignals({ workspaceId: workspace.id, taskId: data.id });
+    // SIGNALS — non-critical, isolated
+    try {
+      await produceTaskSignals({ workspaceId: workspace.id, taskId: data.id });
+    } catch { }
 
     void dispatchWebhookEvent(workspace.id, "task.created", {
       id: data.id,
@@ -180,43 +184,46 @@ export async function createTask({
     });
 
     if (assigned_to && assigned_to !== user.id) {
-      await createNotification({
-        workspaceId: workspace.id,
-        userId: assigned_to,
-        type: "task_assigned",
-        title: cleanTitle,
-        href: "/dashboard/tasks",
-        workspaceName: workspace.name,
-      });
+      try {
+        await createNotification({
+          workspaceId: workspace.id,
+          userId: assigned_to,
+          type: "task_assigned",
+          title: cleanTitle,
+          href: "/dashboard/tasks",
+          workspaceName: workspace.name,
+        });
+      } catch { }
     }
 
-    // AUDIT LOG
+    // AUDIT LOG — non-critical, isolated
+    try {
+      await createAuditLog({
+        workspace_id:
+          workspace.id,
 
-    await createAuditLog({
-      workspace_id:
-        workspace.id,
+        user_id:
+          user.id,
 
-      user_id:
-        user.id,
+        action:
+          "task_created",
 
-      action:
-        "task_created",
+        entity:
+          "workspace_task",
 
-      entity:
-        "workspace_task",
+        metadata: {
+          taskId:
+            data.id,
 
-      metadata: {
-        taskId:
-          data.id,
+          title:
+            cleanTitle,
 
-        title:
-          cleanTitle,
+          priority,
 
-        priority,
-
-        status,
-      },
-    });
+          status,
+        },
+      });
+    } catch { }
 
     return data;
   } catch (error) {

@@ -356,9 +356,11 @@
 .tiptap-editor .ProseMirror p { margin: 0 0 0.5em; }
 .tiptap-editor .ProseMirror p:last-child { margin-bottom: 0; }
 .tiptap-editor .ProseMirror h2 { font-size: 1.1em; font-weight: 600; margin: 0.75em 0 0.4em; color: rgba(255,255,255,0.9); }
-.tiptap-editor .ProseMirror ul { list-style: disc; padding-left: 1.4em; margin: 0.4em 0; }
-.tiptap-editor .ProseMirror ol { list-style: decimal; padding-left: 1.4em; margin: 0.4em 0; }
-.tiptap-editor .ProseMirror li { margin: 0.15em 0; }
+.tiptap-editor .ProseMirror ul { list-style: disc !important; padding-left: 1.5em !important; margin: 0.4em 0; }
+.tiptap-editor .ProseMirror ol { list-style: decimal !important; padding-left: 1.5em !important; margin: 0.4em 0; }
+.tiptap-editor .ProseMirror li { margin: 0.15em 0; display: list-item !important; }
+.tiptap-editor .ProseMirror ul ::marker,
+.tiptap-editor .ProseMirror ol ::marker { color: rgba(255,255,255,0.45); }
 .tiptap-editor .ProseMirror strong { font-weight: 600; color: rgba(255,255,255,0.9); }
 .tiptap-editor .ProseMirror em { font-style: italic; }
 .tiptap-editor .ProseMirror u { text-decoration: underline; }
@@ -371,3 +373,22 @@
   float: left;
   height: 0;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   TIPTAP NOTE VIEWER — rendered HTML outside the editor
+   ───────────────────────────────────────────────────────────── */
+
+.note-content { color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.75; }
+.note-content p { margin: 0 0 0.6em; }
+.note-content p:last-child { margin-bottom: 0; }
+.note-content h2 { font-size: 1.05em; font-weight: 600; margin: 0.85em 0 0.4em; color: rgba(255,255,255,0.9); }
+.note-content ul { list-style: disc !important; padding-left: 1.5em !important; margin: 0.5em 0; }
+.note-content ol { list-style: decimal !important; padding-left: 1.5em !important; margin: 0.5em 0; }
+.note-content li { margin: 0.2em 0; display: list-item !important; }
+.note-content ul ::marker,
+.note-content ol ::marker { color: rgba(255,255,255,0.40); }
+.note-content strong { font-weight: 600; color: rgba(255,255,255,0.9); }
+.note-content em { font-style: italic; }
+.note-content u { text-decoration: underline; }
+.note-content code { font-family: monospace; font-size: 0.85em; background: rgba(255,255,255,0.07); padding: 0.1em 0.35em; border-radius: 4px; color: rgba(167,139,250,0.9); }
+.note-content blockquote { border-left: 2px solid rgba(109,91,255,0.4); padding-left: 1em; margin: 0.6em 0; color: rgba(255,255,255,0.45); }

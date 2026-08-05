@@ -45,10 +45,12 @@ multi-vzhad / multi-theme
 ----
 NAPAD: ulohy na enterprise mod — feedbacky od zeny
 
-1. SUBTASKY POD HLAVNYM TASKOM
+1. [DONE] SUBTASKY POD HLAVNYM TASKOM
    - subtasky zobrazovat priamo pod rodicovskou ulohou v zozname
    - nie ako samostatne riadky na rovnakej urovni
    - rodicovska uloha ma expander (chevron) → rozbalenie subtaskov
+   => Infrastruktura (subtaskMap, expandedTaskIds, chevron, subtask rows) bola uz implementovana
+   => Opraveny React.Fragment key bug — kazdy riadok ma spravny kluc
 
 2. ULOHY AKO HLAVNA NOTIFIKACIA / NAPRIEC SYSTEMOM
    a) Topbar badge + Focus strip (najrychlejsie, najviac viditelne)
@@ -68,3 +70,126 @@ NAPAD: ulohy na enterprise mod — feedbacky od zeny
       - ekvivalent Things 3 / Linear My Issues v Gunimi kontexte
 
    PLAN: a + b teraz, c je Q4 feature
+
+[DONE] - neukauje Sa uzivatel ked prida komentar do ulohy + tagy sice sa pridaju ale ked na neho kliknes neotvori ti kartu zivatela pod danym tagom
+   => Komentar: optimisticka aktualizacia teraz pouziva meno aktualneho usera z members (author_name: currentUserName)
+   => Avatar pri vstupnom poli komentara tiez zobrazuje meno aktualneho usera
+   => Tagy: tag detail stranka ma klikatelne entity-linky; ulohy teraz smeruju na /dashboard/tasks?task=ID
+   => TasksPageView cita initialTaskId prop (zo searchParams na server) a automaticky otvori panel pre danu ulohu
+[DONE] - upozornenie sice sa sice ukazuje ale po kliknuti na neho mi nič nezobrazi + stranku musim manuálne refrešnut aby upozornenie zmizlo ked ulohu vykonám alebo zmením datum do
+   => Notifikacia z task-reminders cron: href opraveny z ?reminder= na ?task= (otvara detail panela)
+   => OrbitNotifications: realtime kanal prepnuty na event:"*" (INSERT+UPDATE+DELETE) — bell badge sa aktualizuje hned
+[DONE] - pod hlavnou ulohou nevidím podúlohu ale vidím to až v detaily úlohy
+   => expandedTaskIds inicializovany so vsetkymi parent ID uz pri prvom nacitani — subtasky su rozbalene automaticky
+- vramci automatizacie realny postup pri obchodak uz bol s firmou alebo kontaktom skor nz je pridany do gunimi, teda vo finale treba nedava zmysel automatizacia na kontaktovnie = uloha kontaktovanie, ale je fajn tam pridat skor, kontrola zazmluvnenia, kontrola kontaktov pre buduce komumnikacie u danej spoločnosti, zodpovedne osoby, na aku osobu dany kontakt sluzi, e-mailová komunikácie primárne na koho, prípadne možnost aj do hlavnej komunikácie pridat viac e-mailov
+[DONE] - viaac prepracovat stage ulohy pri ručnom ukončení, čisto stvorček vedla nazvu ulohy v detaile je neprehladny uzivatel nevie ze to tam je a co to robi
+   => Pridany velky kruh-ikona (Circle/CheckCircle2) priamo vedla nazvu ulohy v detail paneli
+   => Kliknutie cykluje stavy; vizualne zeleney ked hotovo
+   => Status-pill pod nazvom zostava pre cyklovanie cez vsetky 3 stavy (todo/in_progress/done)
+   => Obe zobrazenia pouzivaju prekladane nazvy statusov (statusTodo/statusInProgress/statusDone)
+[DONE] -klikanie na ulohy je vyslovene len na text, chcelo by to vytvorit na cely riadok opravit naprieč systemom
+   => stopPropagation presunuty z <td> na jednotlive buttony (Status + Edit + Delete) v hlavnych aj subtask riadkoch
+- chyba moznost zvyraznenie textu, moznost stylu pisma, moznost dat do odstavcov, smajliky
+[DONE] - pridat klucovy kontakt moznost prekliknutia sa na pridanie kontaktu
+   => Kontext tab v detail organizacie: kazdy kontakt ma href=/dashboard/crm/{id} cez GunimiContextCard
+   => Tlacidlo "Pridat kontakt" je vzdy viditelne v hornej casti zalozky Kontext
+[DONE] - v detaile organizacie su zalozky praca kontext pribeh prehlad, no v zalozke praca nejdu pridat poznamky + opravit naprieč systemom nech je to všade klikatelne a smerovane tam kam to patri
+   => CompanyNotes: poznamky su teraz klikatelne cez Link href=/dashboard/notes/{id}
+   => ContactNotes: poznamky su teraz klikatelne cez Link + hover efekt
+   => DealNotes: poznamky su teraz klikatelne cez Link + hover efekt
+[DONE] - v detaile organizacie zalozka praca je všetko moc velke treba to zmensit
+   => CompanyNotes: kompaktnejsi input (h-8, text-xs), mensi padding poznamok (py-1.5, text-xs)
+   => CompanyEmails: compact prop na EmailThreadCompactList (px-4 py-2 namiesto px-5 py-3.5)
+[DONE] - vyhladavanie v organizaciach chyba, čo ak tam bude viac než 100 organizacii
+   => CompaniesGrid: search bar s query state + filter podla name/industry/country
+   => Rovnake ako kontakty — instant client-side filter s X pre clear
+[DONE] - v organiziacii nejde do zalozky vztahy pridat vztah ani v dalsich zložkách
+   => Tlacidlo "Pridat kontakt" je teraz vzdy viditelne v hornej casti zalozky Kontext (nie len v prazdnom stave)
+   => AddContactToCompanySheet funguje spravne (rezimy: novy kontakt / prepojet existujuci)
+
+[DONE] - v detaili to iste nefunguju záložky  hodnota pipeline, aktivne obchody, kontakty a poledná aktivita
+   => Stat karty (Pipeline, Aktivne obchody, Kontakty) su teraz klikatelne
+   => Kliknutie prepne na zalozku Kontext kde su tieto entity zobrazene
+   => GunimiWorkspaceTabs rozsireny o kontrolovany rezim (activeTab + onTabChange props)
+[DONE] - krajsi prepracovanejsi export kontaktov do excel
+   => UTF-8 BOM → Excel spravne cita slovencinu (á, č, š, ž...)
+   => Pridany stlpec Phone
+   => Hlavicky stlpcov su prekladane (EN/SK/CS)
+[DONE] - pri prehlade zakaznika je potrebne aby bol vidno poznamka ktora je priradena k zakaznikovi, uvaha zobrazovad poznamku pri kontakte napr ak by šlo o neplatiča hned za nazvom kontaktu alebo pod nim sa z poznamky neplatic ukze aj tam
+   => Sekcia "Posledné poznámky" pridana do Overview zastavky kontaktu — zobrazuje max 3 posledne poznamky s linkom na detail
+[DONE] - vo vytvorených priležitostiach doplnit možnot ukázania kalendaru k datumom
+   => DealSidebar: datum ocakavaneho uzatvorenia je teraz klikatelny — otvori sa inline <input type="date">, po blur/Enter ulozi cez updateDeal
+[VYSETRENE] - detail s deal pri vytvoreni ulohy, vyhodilo eror
+   => Kod je spravny — createTask volane spravne. Moze byt RLS/rate-limit problem. Treba runtime debug.
+
+[DONE] - lokálny jazyk je SK automatizacie vytvaraju ulohy v anglictine
+   => Bug: loadWorkspacePrefs pouzival user-scoped klienta → RLS mohol blokovat citanie jazyka
+   => Fix: prepisane na supabaseAdmin (rovnako ako loadCustomRules)
+[DONE] - prepracovat tip top ktory je v poznamkach pridat viacero moznosti funkcii ohldom textu + zarovnanie na stred, do prava do lava, text ktory chcem zvyraznit taak taha oci + pridat ku kazdej moznosti pisania, komento napriec systemom
+   => Tiptap: ordered list, text-align (center/right/left/justify) pridane do NoteEditor
+   => Viewer prepnuty na dangerouslySetInnerHTML + .note-content CSS class
+   => Rovnake CSS aj v poznamkach ku kontaktom a dealoch (stripHtml pre preview)
+[DONE] - pri vytvoreni poznamky neni mozne pridat ulohu, ani kontakt
+   => Native <select> nahradene Radix Select (dark-mode kompatibilne) pre linkContact a linkCompany
+[VYSETRENE] - v detaile emailoch zalozka neprecitana priloha ked kliknem na e-mail tak mi nejde vytvorit uloha
+   => Kod je spravny — createTask volane spravne. Moze byt RLS/rate-limit problem. Treba runtime debug.
+[DONE] - v poznamkch nejde zobrazit celkovu spravu detail poznamok
+   => Detail poznamky /dashboard/notes/[id] implementovany (NoteDetailClient s Tiptap viewer)
+- gunimi kalendar je staticky neda a do neho nic zapisat
+- rozhranie s google kalendaom zakomponovat do gunimi kalendara + obidva kalendare musia byt editovtelne
+[DONE] - v automatizacii - nove pravidlo text v dropdown je cely biely ked prejdes myskov je vidno co je tam, treba to upravit + dropdowny niesu v gunimi style
+   => SelectItem: text-white/75 v pokoji, data-[highlighted]:bg-violet-500/10 + text-white pri hoveri
+   => data-[state=checked]:bg-violet-500/15 + text-violet-100 pre vybranú polozku
+[DONE] - v navrhu pre AI integraciu je sipka ale ked na to kliknem nic sa nedeje
+   => GunimiDecisionCard: sipka ArrowRight sa zobrazuje len ked je karta interaktivna (href alebo onClick) — false affordance odstranena
+[DONE] - custom dashboard prisposobenie widgetov hlasi ze vsetky su pridane ked tomu tak neni
+   => initialOrder opraveny: prazdne pole [] uz fallbackuje na DEFAULT_WIDGET_ORDER
+   => Katalog ma tlacidlo "Obnoviť predvolené" — resetne widgetOrder na 6 predvolenych widgetov
+
+----
+BEZPECNOSTNY AUDIT (2026-08-02)
+
+[DONE] KRITICKE — Webhook secret unikal vsetkym clenom workspace
+   Pricina: RLS povolovala SELECT celeho riadku (vratane secret) vsetkym clenom;
+            getWebhooks.ts ho vracel klientovi; WebhooksSection.tsx ho zobrazoval.
+   Oprava:
+   - getWebhooks.ts: odstraneny `secret` zo SELECT aj z WorkspaceWebhook typu
+   - createWebhook.ts: vracia `plainSecret` iba raz pri vytvoreni (nie v getWebhooks)
+   - WebhooksSection.tsx: jednorazovy amber banner so secretom ihned po vytvoreni;
+     po kliknuti "Ulozil som si ho" zmizne navzdy
+   - Migration 20260802000002_webhooks_rls_fix.sql: SELECT policy obmedzena
+     na owner/admin (defense-in-depth)
+
+[DONE] VYSOKE — SSRF cez webhook URL
+   Pricina: http:// bolo povolene; ziadna kontrola IP rozsahov; redirecty povolene.
+   Oprava:
+   - lib/webhooks/validateUrl.ts: nova utilita — HTTPS only, blokuje
+     localhost / RFC-1918 / link-local / CGNAT / IPv6 private / metadata endpoints
+   - createWebhook.ts: validateWebhookUrl() pred ulozenim
+   - testWebhook.ts: validateWebhookUrl() pred fetchom + `redirect: "error"`
+   - dispatch.ts: filter hookmi pred deliverym + `redirect: "error"`;
+     prepisane na supabaseAdmin (netreba user-scoped klienta v pozadi)
+
+[DONE] VYSOKE — testWebhook neoveroval rolu
+   Pricina: lubovolny clen mohol vyvolat externy POST na kazdy webhook.
+   Oprava: testWebhook.ts — pridana owner/admin role check (rovnaka logika ako createWebhook)
+
+[DONE] STREDNE — saveDashboardLayout bez role check
+   Pricina: lubovolny clen mohol cez supabaseAdmin prepisat layout pre cely workspace.
+   Oprava: saveDashboardLayout.ts — pridana owner/admin role check pred zapisom
+
+[DONE] NIZKE — Webhook events bez serverovej validacie
+   Oprava: createWebhook.ts — ALLOWED_EVENTS allowlist; lubovolne stringy odmietne
+
+[OK] LOKALIZACIA — calendar.* kluce
+   Vsetky 3 locale subory (EN/SK/CS) maju rovnake kluce — audit videl stary stav pred fixom.
+
+[DONE] STREDNE — Dashboard pocita dnes/tyzden/mesiac v UTC nie workspace timezone
+   => getDashboardData.ts: pridany parallel SELECT preferences z workspaces
+   => localDate() helper: Intl.DateTimeFormat(en-CA, { timeZone }) vracia YYYY-MM-DD
+   => todayStr/monthStart/weekEnd pocitane v workspace timezone (fallback UTC)
+
+[PENDING] ZAVISLOSTI — 13 zranitelnosti (7 high, 4 moderate, 2 low)
+   next@16.2.6 → aktualizovat na 16.2.12
+   dompurify@3.2.3 → aktualizovat
+   Odlozene — vyzaduje testovanie po upgrade.

@@ -78,18 +78,13 @@ const WIDGET_DEFS: WidgetDef[] = [
   { id: "recent_notes",     size: "md", category: "work",          labelKey: "widgetRecentNotes",     descKey: "widgetRecentNotesDesc",     icon: StickyNote  },
 ];
 
+// Default starter set — intentionally not all 12, so catalog shows addable widgets
 const DEFAULT_WIDGET_ORDER: WidgetId[] = [
   "contacts_total",
-  "companies_total",
   "pipeline_value",
-  "won_mtd",
   "tasks_today",
   "tasks_overdue",
   "active_deals",
-  "deals_by_stage",
-  "tasks_week",
-  "recent_contacts",
-  "recent_notes",
   "recent_activity",
 ];
 
@@ -368,11 +363,13 @@ function WidgetCatalog({
   activeIds,
   onAdd,
   onClose,
+  onReset,
   t,
 }: {
   activeIds: WidgetId[];
   onAdd: (id: WidgetId) => void;
   onClose: () => void;
+  onReset: () => void;
   t: ReturnType<typeof useTranslations>;
 }) {
   return (
@@ -384,12 +381,20 @@ function WidgetCatalog({
             <p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">{t("catalog")}</p>
             <p className="mt-0.5 text-sm font-semibold text-white/90">{t("addWidget")}</p>
           </div>
-          <button
-            onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-lg text-white/25 transition-colors hover:bg-white/[0.06] hover:text-white/70"
-          >
-            <X size={14} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => { onReset(); onClose(); }}
+              className="rounded-lg px-2.5 py-1 text-[11px] text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-white/60"
+            >
+              {t("resetToDefaults")}
+            </button>
+            <button
+              onClick={onClose}
+              className="flex h-7 w-7 items-center justify-center rounded-lg text-white/25 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+            >
+              <X size={14} />
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
@@ -452,9 +457,8 @@ type Props = {
 export default function CustomDashboardView({ data, savedWidgets }: Props) {
   const t = useTranslations("customDashboard");
 
-  const initialOrder: WidgetId[] =
-    savedWidgets?.filter((id): id is WidgetId => WIDGET_DEFS.some((w) => w.id === id)) ??
-    DEFAULT_WIDGET_ORDER;
+  const filtered = savedWidgets?.filter((id): id is WidgetId => WIDGET_DEFS.some((w) => w.id === id));
+  const initialOrder: WidgetId[] = filtered && filtered.length > 0 ? filtered : DEFAULT_WIDGET_ORDER;
 
   const [widgetOrder, setWidgetOrder] = useState<WidgetId[]>(initialOrder);
   const [editMode, setEditMode] = useState(false);
@@ -500,6 +504,10 @@ export default function CustomDashboardView({ data, savedWidgets }: Props) {
 
   function removeWidget(id: WidgetId) {
     setWidgetOrder((prev) => prev.filter((w) => w !== id));
+  }
+
+  function resetWidgets() {
+    setWidgetOrder(DEFAULT_WIDGET_ORDER);
   }
 
   // ── Save layout ─────────────────────────────────────────────────────────
@@ -630,6 +638,7 @@ export default function CustomDashboardView({ data, savedWidgets }: Props) {
           activeIds={widgetOrder}
           onAdd={addWidget}
           onClose={() => setCatalogOpen(false)}
+          onReset={resetWidgets}
           t={t}
         />
       )}

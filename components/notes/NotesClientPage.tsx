@@ -8,8 +8,10 @@ import {
 } from "react";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 import {
+  ExternalLink,
   FileText,
   Pencil,
   Plus,
@@ -31,6 +33,8 @@ import { createNote } from "@/server/actions/notes/createNote";
 import { deleteNote } from "@/server/actions/notes/deleteNote";
 import { extractTasksFromNote } from "@/server/actions/notes/extractTasksFromNote";
 import { getTags } from "@/server/actions/tags/getTags";
+import { getContacts } from "@/server/actions/crm/getContacts";
+import { getCompanies } from "@/server/actions/company/getCompanies";
 
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiHeading from "@/components/ui/GunimiHeading";
@@ -42,6 +46,13 @@ import GunimiSection from "@/components/layout/GunimiSection";
 import TagBadge from "@/components/ui/TagBadge";
 import NoteEditor from "@/components/notes/NoteEditor";
 import EditNoteSheet from "@/components/notes/EditNoteSheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import {
   Dialog,
@@ -71,6 +82,11 @@ export default function NotesClientPage() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [noteContactId, setNoteContactId] = useState("");
+  const [noteCompanyId, setNoteCompanyId] = useState("");
+
+  const [contactOptions, setContactOptions] = useState<{ id: string; name: string }[]>([]);
+  const [companyOptions, setCompanyOptions] = useState<{ id: string; name: string }[]>([]);
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
@@ -84,9 +100,16 @@ export default function NotesClientPage() {
 
   async function loadNotes() {
     try {
-      const [data, tags] = await Promise.all([getWorkspaceNotes(), getTags()]);
+      const [data, tags, contacts, companies] = await Promise.all([
+        getWorkspaceNotes(),
+        getTags(),
+        getContacts(),
+        getCompanies(),
+      ]);
       setNotes(data);
       setAllTags(tags);
+      setContactOptions(contacts.map((c) => ({ id: c.id, name: c.name })));
+      setCompanyOptions(companies.map((c) => ({ id: c.id, name: c.name })));
     } catch {
       toast.error(t("failedToLoad"));
     } finally {
@@ -102,7 +125,12 @@ export default function NotesClientPage() {
 
     try {
       setCreating(true);
-      const result = await createNote({ title: title.trim(), content: content.trim() });
+      const result = await createNote({
+        title: title.trim(),
+        content: content.trim(),
+        contactId: noteContactId || undefined,
+        companyId: noteCompanyId || undefined,
+      });
 
       if (!result) {
         toast.error(t("failedToCreate"));
@@ -112,6 +140,8 @@ export default function NotesClientPage() {
       toast.success(t("noteCreated"));
       setTitle("");
       setContent("");
+      setNoteContactId("");
+      setNoteCompanyId("");
       await loadNotes();
     } catch {
       toast.error(t("failedToCreate"));
@@ -217,6 +247,51 @@ export default function NotesClientPage() {
               placeholder={t("writePlaceholder")}
               disabled={creating}
             />
+
+            {/* Optional contact + company link */}
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1">
+                <label className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-500">
+                  {t("linkContact")}
+                </label>
+                <Select
+                  value={noteContactId || "__none__"}
+                  onValueChange={(v) => setNoteContactId(v === "__none__" ? "" : v)}
+                  disabled={creating}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={t("linkContactNone")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">{t("linkContactNone")}</SelectItem>
+                    {contactOptions.map((c) => (
+                      <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-500">
+                  {t("linkCompany")}
+                </label>
+                <Select
+                  value={noteCompanyId || "__none__"}
+                  onValueChange={(v) => setNoteCompanyId(v === "__none__" ? "" : v)}
+                  disabled={creating}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={t("linkCompanyNone")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">{t("linkCompanyNone")}</SelectItem>
+                    {companyOptions.map((c) => (
+                      <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
             <GunimiButton onClick={handleCreate} loading={creating}>
               <Plus size={14} />
@@ -339,6 +414,16 @@ export default function NotesClientPage() {
                     </p>
 
                     <div className="mt-3 flex flex-wrap gap-2">
+                      <Link href={`/dashboard/notes/${note.id}`}>
+                        <GunimiButton
+                          variant="secondary"
+                          className="h-8 gap-1.5 px-3 text-xs"
+                        >
+                          <ExternalLink size={12} />
+                          {t("openNote")}
+                        </GunimiButton>
+                      </Link>
+
                       <GunimiButton
                         variant="secondary"
                         className="h-8 gap-1.5 px-3 text-xs"

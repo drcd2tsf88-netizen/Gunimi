@@ -19,7 +19,10 @@ import {
   FileText,
   LayoutList,
   MapPin,
+  Pencil,
+  Plus,
   Sparkles,
+  Trash2,
   TrendingUp,
   User,
   X,
@@ -38,6 +41,7 @@ import type { CalendarContact } from "@/server/actions/calendar/getCalendarConta
 import type { WorkspaceCalendarItem } from "@/server/actions/calendar/getWorkspaceCalendarItems";
 
 import { createNote } from "@/server/actions/notes/createNote";
+import { createTask } from "@/server/actions/tasks/createTask";
 
 // Module-level time reference — avoids calling Date.now() during render
 const PAGE_NOW = new Date();
@@ -115,11 +119,23 @@ type EventDetailPanelProps = {
   event: CalendarEventRow;
   crmContact: CalendarContact | null;
   onClose: () => void;
+  onEventUpdated?: (id: string, changes: Partial<CalendarEventRow>) => void;
+  onEventDeleted?: (id: string) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
 };
 
-function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelProps) {
+function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventDeleted, t }: EventDetailPanelProps) {
   const [creatingNote, startCreateNote] = useTransition();
+  const [editing, setEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(event.title);
+  const [editStartAt, setEditStartAt] = useState(
+    event.all_day ? "" : event.start_at.slice(0, 16)
+  );
+  const [editEndAt, setEditEndAt] = useState(
+    event.all_day ? "" : event.end_at.slice(0, 16)
+  );
+  const [saving, startSave] = useTransition();
+  const [deleting, startDelete] = useTransition();
 
   function handleCreateMeetingNote() {
     startCreateNote(async () => {
@@ -141,6 +157,54 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
     });
   }
 
+  function handleSaveEvent() {
+    startSave(async () => {
+      const res = await fetch("/api/calendar/events/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventId: event.id,
+          title: editTitle.trim() || event.title,
+          startAt: editStartAt ? new Date(editStartAt).toISOString() : undefined,
+          endAt: editEndAt ? new Date(editEndAt).toISOString() : undefined,
+        }),
+      });
+
+      if (res.status === 403) {
+        toast.error(t("reconnectForEditing"));
+        return;
+      }
+      if (!res.ok) {
+        toast.error(t("failedToSaveEvent"));
+        return;
+      }
+
+      const data = await res.json() as { title: string; start_at: string; end_at: string };
+      onEventUpdated?.(event.id, { title: data.title, start_at: data.start_at, end_at: data.end_at });
+      setEditing(false);
+      toast.success(t("eventSaved"));
+    });
+  }
+
+  function handleDeleteEvent() {
+    startDelete(async () => {
+      const res = await fetch(`/api/calendar/events/delete?eventId=${event.id}`, { method: "DELETE" });
+
+      if (res.status === 403) {
+        toast.error(t("reconnectForEditing"));
+        return;
+      }
+      if (!res.ok && res.status !== 204) {
+        toast.error(t("failedToSaveEvent"));
+        return;
+      }
+
+      onEventDeleted?.(event.id);
+      onClose();
+      toast.success(t("eventDeleted"));
+    });
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-sm"
@@ -156,16 +220,52 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
             <p className="text-[10px] uppercase tracking-[0.15em] text-zinc-500">
               {t("eventDetailTitle")}
             </p>
-            <h2 className="mt-1 truncate text-base font-semibold text-white/90">
-              {event.title}
-            </h2>
+            {editing ? (
+              <input
+                autoFocus
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-violet-500/30 bg-white/[0.04] px-2 py-1 text-base font-semibold text-white outline-none focus:border-violet-500/60"
+              />
+            ) : (
+              <h2 className="mt-1 truncate text-base font-semibold text-white/90">
+                {event.title}
+              </h2>
+            )}
           </div>
-          <button
-            onClick={onClose}
-            className="mt-0.5 shrink-0 rounded-xl border border-white/[0.08] p-1.5 text-white/40 transition-colors hover:text-white/70"
-          >
-            <X size={14} />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {editing ? (
+              <>
+                <button
+                  onClick={handleSaveEvent}
+                  disabled={saving}
+                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-violet-300 transition-colors hover:bg-violet-500/10 disabled:opacity-50"
+                >
+                  {t("saveEvent")}
+                </button>
+                <button
+                  onClick={() => { setEditing(false); setEditTitle(event.title); }}
+                  className="rounded-lg px-2 py-1.5 text-xs text-zinc-500 transition-colors hover:bg-white/[0.05]"
+                >
+                  {t("cancelEdit")}
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setEditing(true)}
+                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+              >
+                <Pencil size={11} />
+                {t("editEvent")}
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="rounded-xl border border-white/[0.08] p-1.5 text-white/40 transition-colors hover:text-white/70"
+            >
+              <X size={14} />
+            </button>
+          </div>
         </div>
 
         {/* SCROLL AREA */}
@@ -177,11 +277,26 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
               <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-500/15">
                 <Clock size={9} className="text-violet-300" />
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">
                   {t("timeLabel")}
                 </p>
-                {event.all_day ? (
+                {editing && !event.all_day ? (
+                  <div className="mt-1.5 flex flex-col gap-1.5">
+                    <input
+                      type="datetime-local"
+                      value={editStartAt}
+                      onChange={(e) => setEditStartAt(e.target.value)}
+                      className="w-full rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-1 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                    />
+                    <input
+                      type="datetime-local"
+                      value={editEndAt}
+                      onChange={(e) => setEditEndAt(e.target.value)}
+                      className="w-full rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-1 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                    />
+                  </div>
+                ) : event.all_day ? (
                   <p className="mt-0.5 text-sm text-white/80">{t("allDay")}</p>
                 ) : (
                   <p className="mt-0.5 text-sm text-white/80">
@@ -304,6 +419,15 @@ function EventDetailPanel({ event, crmContact, onClose, t }: EventDetailPanelPro
                 </GunimiButton>
               </a>
             )}
+
+            <button
+              onClick={handleDeleteEvent}
+              disabled={deleting}
+              className="flex items-center gap-1.5 rounded-xl border border-red-500/15 bg-red-500/[0.05] px-3 py-1.5 text-xs text-red-400/70 transition-colors hover:border-red-500/30 hover:text-red-300 disabled:opacity-50"
+            >
+              <Trash2 size={11} />
+              {t("deleteEvent")}
+            </button>
           </div>
         </div>
       </div>
@@ -910,10 +1034,12 @@ function dateKey(d: Date): string {
 function WeekGrid({
   items,
   weekOffset,
+  onTaskCreated,
   t,
 }: {
   items: WorkspaceCalendarItem[];
   weekOffset: number;
+  onTaskCreated?: (item: WorkspaceCalendarItem) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
 }) {
   const weekStart = useMemo(() => getWeekStart(weekOffset), [weekOffset]);
@@ -932,6 +1058,36 @@ function WeekGrid({
   }, [items]);
 
   const overdueItems = weekOffset === 0 ? items.filter((i) => i.isOverdue) : [];
+  const [addingToDay, setAddingToDay] = useState<string | null>(null);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [creatingTask, startCreateTask] = useTransition();
+
+  function handleAddTask(dayKey: string, dateIso: string) {
+    const title = newTaskTitle.trim();
+    if (!title) { setAddingToDay(null); return; }
+    startCreateTask(async () => {
+      const result = await createTask({ title, due_date: dateIso });
+      if (result) {
+        onTaskCreated?.({
+          id: result.id as string,
+          type: "task",
+          title: result.title as string,
+          date: dateIso,
+          status: result.status as string,
+          priority: result.priority as string | null,
+          href: "/dashboard/tasks",
+          entityName: null,
+          isOverdue: false,
+          isDueToday: dateKey(new Date(dateIso)) === dateKey(PAGE_NOW),
+        });
+        toast.success(t("taskCreated"));
+      } else {
+        toast.error(t("failedToCreateTask"));
+      }
+      setAddingToDay(null);
+      setNewTaskTitle("");
+    });
+  }
 
   return (
     <div className="space-y-4">
@@ -965,7 +1121,7 @@ function WeekGrid({
           return (
             <div
               key={key}
-              className={`flex min-h-[140px] flex-col rounded-xl border transition-colors ${
+              className={`group flex min-h-[140px] flex-col rounded-xl border transition-colors ${
                 isToday
                   ? "border-violet-500/30 bg-violet-500/[0.05]"
                   : isPast
@@ -1002,7 +1158,7 @@ function WeekGrid({
 
               {/* Items */}
               <div className="flex flex-1 flex-col gap-1 p-1.5">
-                {dayItems.length === 0 ? (
+                {dayItems.length === 0 && addingToDay !== key ? (
                   <span className="mt-2 text-center text-[9px] text-white/15">
                     {t("noItemsThisDay")}
                   </span>
@@ -1016,6 +1172,46 @@ function WeekGrid({
                     +{dayItems.length - 5}
                   </span>
                 )}
+
+                {/* Quick add */}
+                {addingToDay === key ? (
+                  <div className="mt-1 flex flex-col gap-1">
+                    <input
+                      autoFocus
+                      value={newTaskTitle}
+                      onChange={(e) => setNewTaskTitle(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleAddTask(key, day.toISOString().slice(0, 10));
+                        if (e.key === "Escape") { setAddingToDay(null); setNewTaskTitle(""); }
+                      }}
+                      placeholder={t("newTaskPlaceholder")}
+                      className="w-full rounded-md border border-violet-500/30 bg-white/[0.05] px-1.5 py-1 text-[10px] text-white outline-none placeholder:text-white/20 focus:border-violet-500/60"
+                    />
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => handleAddTask(key, day.toISOString().slice(0, 10))}
+                        disabled={creatingTask || !newTaskTitle.trim()}
+                        className="flex-1 rounded-md bg-violet-600/70 px-1.5 py-0.5 text-[9px] font-medium text-white transition-colors hover:bg-violet-600 disabled:opacity-40"
+                      >
+                        {t("add")}
+                      </button>
+                      <button
+                        onClick={() => { setAddingToDay(null); setNewTaskTitle(""); }}
+                        className="rounded-md px-1.5 py-0.5 text-[9px] text-zinc-500 hover:text-white/50"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ) : !isPast ? (
+                  <button
+                    onClick={() => { setAddingToDay(key); setNewTaskTitle(""); }}
+                    className="mt-auto flex items-center justify-center gap-0.5 rounded-md py-1 text-[9px] text-white/15 opacity-0 transition-all group-hover:opacity-100 hover:bg-white/[0.04] hover:text-white/40"
+                  >
+                    <Plus size={8} />
+                    {t("addTask")}
+                  </button>
+                ) : null}
               </div>
             </div>
           );
@@ -1096,7 +1292,7 @@ function ListRow({ item }: { item: WorkspaceCalendarItem }) {
 // ── Main Gunimi Calendar Widget ────────────────────────────────────────────────
 
 function GunimCalendarWidget({
-  items,
+  items: initialItems,
   t,
 }: {
   items: WorkspaceCalendarItem[];
@@ -1104,7 +1300,13 @@ function GunimCalendarWidget({
 }) {
   const [viewMode, setViewMode] = useState<"week" | "list">("week");
   const [weekOffset, setWeekOffset] = useState(0);
+  const [localItems, setLocalItems] = useState(initialItems);
 
+  function handleTaskCreated(item: WorkspaceCalendarItem) {
+    setLocalItems((prev) => [...prev, item].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
+  }
+
+  const items = localItems;
   const weekStart = getWeekStart(weekOffset);
   const weekEnd = addDays(weekStart, 6);
   const weekLabel = `${weekStart.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${weekEnd.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
@@ -1175,7 +1377,7 @@ function GunimCalendarWidget({
           <p className="text-sm text-white/25">{t("gunimiCalendarEmpty")}</p>
         </div>
       ) : viewMode === "week" ? (
-        <WeekGrid items={items} weekOffset={weekOffset} t={t} />
+        <WeekGrid items={items} weekOffset={weekOffset} onTaskCreated={handleTaskCreated} t={t} />
       ) : (
         <div className="overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.02]">
           {items.filter((i) => i.isOverdue).length > 0 && (
@@ -1247,13 +1449,72 @@ function NoConnectionState({
 
 // ─── Main Export ──────────────────────────────────────────────────────────────
 
-export default function CalendarCommandCenter({ events, connections, contacts, workspaceItems }: Props) {
+export default function CalendarCommandCenter({ events: initialEvents, connections, contacts, workspaceItems }: Props) {
   const t = useTranslations("calendar");
   const [activeTab, setActiveTab] = useState<"gunimi" | "google">("gunimi");
+  const [localEvents, setLocalEvents] = useState(initialEvents);
   const [selectedEvent, setSelectedEvent] = useState<{
     event: CalendarEventRow;
     contact: CalendarContact | null;
   } | null>(null);
+
+  // New Google event modal state
+  const [showNewEvent, setShowNewEvent] = useState(false);
+  const [newEventTitle, setNewEventTitle] = useState("");
+  const [newEventDate, setNewEventDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [newEventStart, setNewEventStart] = useState("09:00");
+  const [newEventEnd, setNewEventEnd] = useState("10:00");
+  const [creatingEvent, startCreateEvent] = useTransition();
+
+  function handleEventUpdated(id: string, changes: Partial<CalendarEventRow>) {
+    setLocalEvents((prev) => prev.map((e) => e.id === id ? { ...e, ...changes } : e));
+    setSelectedEvent((prev) => prev && prev.event.id === id ? { ...prev, event: { ...prev.event, ...changes } } : prev);
+  }
+
+  function handleEventDeleted(id: string) {
+    setLocalEvents((prev) => prev.filter((e) => e.id !== id));
+  }
+
+  function handleCreateNewEvent() {
+    const title = newEventTitle.trim();
+    if (!title) return;
+    startCreateEvent(async () => {
+      const startAt = new Date(`${newEventDate}T${newEventStart}:00`).toISOString();
+      const endAt = new Date(`${newEventDate}T${newEventEnd}:00`).toISOString();
+      const res = await fetch("/api/calendar/events/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, startAt, endAt }),
+      });
+      if (res.status === 403) {
+        toast.error(t("reconnectForEditing"));
+        return;
+      }
+      if (!res.ok) {
+        toast.error(t("failedToSaveEvent"));
+        return;
+      }
+      const data = await res.json() as { id: string; title: string; start_at: string; end_at: string };
+      const newRow: CalendarEventRow = {
+        id: data.id,
+        provider_event_id: data.id,
+        title: data.title,
+        description: null,
+        start_at: data.start_at,
+        end_at: data.end_at,
+        organizer_email: null,
+        organizer_name: null,
+        location: null,
+        html_link: null,
+        status: "confirmed",
+        all_day: false,
+      };
+      setLocalEvents((prev) => [...prev, newRow].sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime()));
+      setShowNewEvent(false);
+      setNewEventTitle("");
+      toast.success(t("eventCreated"));
+    });
+  }
   const searchParams = useSearchParams();
   const router = useRouter();
   const isInitialConnect = searchParams.get("connected") === "true";
@@ -1269,6 +1530,7 @@ export default function CalendarCommandCenter({ events, connections, contacts, w
   }, [isInitialConnect, syncDone, router]);
 
   const hasConnection = connections.length > 0;
+  const events = localEvents;
 
   const contactByEmail = new Map<string, CalendarContact>();
   contacts.forEach((c) => {
@@ -1397,6 +1659,66 @@ export default function CalendarCommandCenter({ events, connections, contacts, w
         {/* GOOGLE CALENDAR TAB */}
         {activeTab === "google" && (
           <>
+        {/* New Event button + modal */}
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-600">{t("googleEventsLabel")}</p>
+          <button
+            onClick={() => setShowNewEvent((v) => !v)}
+            className="flex items-center gap-1.5 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-xs text-white/50 transition-colors hover:border-violet-500/20 hover:text-violet-300"
+          >
+            <Plus size={12} />
+            {t("newEvent")}
+          </button>
+        </div>
+
+        {showNewEvent && (
+          <div className="overflow-hidden rounded-xl border border-violet-500/20 bg-violet-500/[0.04] p-4">
+            <p className="mb-3 text-[10px] uppercase tracking-[0.15em] text-violet-300/70">{t("newEvent")}</p>
+            <div className="space-y-2.5">
+              <input
+                autoFocus
+                value={newEventTitle}
+                onChange={(e) => setNewEventTitle(e.target.value)}
+                placeholder={t("eventTitlePlaceholder")}
+                onKeyDown={(e) => { if (e.key === "Enter") handleCreateNewEvent(); if (e.key === "Escape") setShowNewEvent(false); }}
+                className="w-full rounded-lg border border-white/[0.1] bg-white/[0.04] px-3 py-2 text-sm text-white outline-none placeholder:text-white/20 focus:border-violet-500/40"
+              />
+              <div className="grid grid-cols-3 gap-2">
+                <input
+                  type="date"
+                  value={newEventDate}
+                  onChange={(e) => setNewEventDate(e.target.value)}
+                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                />
+                <input
+                  type="time"
+                  value={newEventStart}
+                  onChange={(e) => setNewEventStart(e.target.value)}
+                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                />
+                <input
+                  type="time"
+                  value={newEventEnd}
+                  onChange={(e) => setNewEventEnd(e.target.value)}
+                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setShowNewEvent(false)} className="px-3 py-1.5 text-xs text-zinc-500 hover:text-white/50">
+                  {t("cancelEdit")}
+                </button>
+                <button
+                  onClick={handleCreateNewEvent}
+                  disabled={creatingEvent || !newEventTitle.trim()}
+                  className="rounded-lg bg-violet-600 px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-violet-500 disabled:opacity-40"
+                >
+                  {t("createEventBtn")}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ROW 1: Today (2/3) + Intelligence (1/3) */}
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
@@ -1436,6 +1758,8 @@ export default function CalendarCommandCenter({ events, connections, contacts, w
           event={selectedEvent.event}
           crmContact={selectedEvent.contact}
           onClose={() => setSelectedEvent(null)}
+          onEventUpdated={handleEventUpdated}
+          onEventDeleted={handleEventDeleted}
           t={t}
         />
       )}

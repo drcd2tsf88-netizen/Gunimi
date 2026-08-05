@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
         .select("id")
         .eq("user_id", task.assigned_to)
         .eq("type", "task_due_reminder")
-        .eq("href", `/dashboard/tasks?reminder=${task.id}`)
+        .eq("href", `/dashboard/tasks?task=${task.id}`)
         .gte("created_at", startOfDay)
         .maybeSingle();
 
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
         user_id: task.assigned_to,
         type: "task_due_reminder",
         title: task.title,
-        href: `/dashboard/tasks?reminder=${task.id}`,
+        href: `/dashboard/tasks?task=${task.id}`,
       });
 
       // Get user email

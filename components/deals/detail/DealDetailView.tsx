@@ -101,6 +101,29 @@ export default function DealDetailView({
     ? t(decision.reasonKey, decision.reasonParams ?? {})
     : t("decisionEmptyReason");
 
+  const decisionHref: string | undefined = (() => {
+    switch (decision?.action) {
+      case "follow_up":
+      case "overdue_tasks":
+      case "prepare_close":
+      case "update_close_date":
+      case "set_close_date":
+        return "/dashboard/tasks";
+      default:
+        return undefined;
+    }
+  })();
+
+  const decisiononClick: (() => void) | undefined = (() => {
+    switch (decision?.action) {
+      case "link_company":
+      case "link_contact":
+        return () => setEditOpen(true);
+      default:
+        return undefined;
+    }
+  })();
+
   const preparationItems: PreparationItem[] = useMemo(
     () =>
       rawPrep.map((item) => ({
@@ -159,6 +182,8 @@ export default function DealDetailView({
             action={decisionAction}
             reason={decisionReason}
             isEmpty={!decision}
+            href={decisionHref}
+            onClick={decisiononClick}
           />
           {preparationItems.length > 0 && (
             <GunimiPreparationCard

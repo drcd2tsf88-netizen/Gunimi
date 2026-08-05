@@ -5,6 +5,7 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { logger } from "@/lib/logger";
 import { createHmac } from "crypto";
+import { validateWebhookUrl } from "@/lib/webhooks/validateUrl";
 
 export async function testWebhook(
   id: string
@@ -18,6 +19,17 @@ export async function testWebhook(
 
     const supabase = await createClient();
 
+    const { data: membership } = await supabase
+      .from("workspace_members")
+      .select("role")
+      .eq("workspace_id", workspace.id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (!membership || !["owner", "admin"].includes(membership.role)) {
+      return { success: false, error: "unauthorized" };
+    }
+
     const { data: webhook } = await supabase
       .from("workspace_webhooks")
       .select("url, secret")
@@ -27,6 +39,11 @@ export async function testWebhook(
 
     if (!webhook) return { success: false, error: "not_found" };
 
+    const urlCheck = validateWebhookUrl(webhook.url as string);
+    if (!urlCheck.valid) {
+      return { success: false, error: "invalid_url" };
+    }
+
     const payload = JSON.stringify({
       event: "webhook.test",
       workspace_id: workspace.id,
@@ -34,11 +51,11 @@ export async function testWebhook(
       data: { message: "This is a test delivery from Gunimi." },
     });
 
-    const signature = createHmac("sha256", webhook.secret)
+    const signature = createHmac("sha256", webhook.secret as string)
       .update(payload)
       .digest("hex");
 
-    const res = await fetch(webhook.url, {
+    const res = await fetch(webhook.url as string, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,6 +63,7 @@ export async function testWebhook(
         "X-Gunimi-Event": "webhook.test",
       },
       body: payload,
+      redirect: "error",
       signal: AbortSignal.timeout(10_000),
     });
 

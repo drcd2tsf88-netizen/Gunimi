@@ -14,6 +14,9 @@ import {
   List,
   PlusCircle,
   TrendingUp,
+  Trophy,
+  XCircle,
+  Briefcase,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -21,8 +24,9 @@ import { cn } from "@/lib/utils";
 import GunimiInput from "@/components/ui/GunimiInput";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
+import GunimiStatCard from "@/components/ui/GunimiStatCard";
 
-import DealsMetricStrip from "./DealsMetricStrip";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 import DealsPipeline from "./DealsPipeline";
 import DealsListCommand from "./DealsListCommand";
 import CreateDealSheet from "./CreateDealSheet";
@@ -59,23 +63,30 @@ export default function DealsPageView({
     : undefined;
 
   const [view, setView] = useState<View>("list");
-
   const [search, setSearch] = useState("");
-
   const [open, setOpen] = useState(false);
-
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
+  const [filterStage, setFilterStage] = useState<"all" | "open" | "won" | "lost">("all");
+
+  const openDeals = useMemo(() => deals.filter((d) => d.stage !== "won" && d.stage !== "lost"), [deals]);
+  const wonDeals = useMemo(() => deals.filter((d) => d.stage === "won"), [deals]);
+  const lostDeals = useMemo(() => deals.filter((d) => d.stage === "lost"), [deals]);
+  const pipelineValue = useMemo(() => openDeals.reduce((sum, d) => sum + Number(d.value || 0), 0), [openDeals]);
 
   const filteredDeals = useMemo(() => {
     const query = search.toLowerCase();
+    let list = deals;
+    if (filterStage === "open") list = openDeals;
+    else if (filterStage === "won") list = wonDeals;
+    else if (filterStage === "lost") list = lostDeals;
 
-    return deals.filter(
+    return list.filter(
       (deal) =>
         deal.title?.toLowerCase().includes(query) ||
         deal.company?.name?.toLowerCase().includes(query) ||
         deal.contact?.name?.toLowerCase().includes(query)
     );
-  }, [deals, search]);
+  }, [deals, search, filterStage, openDeals, wonDeals, lostDeals]);
 
   return (
     <>
@@ -202,9 +213,40 @@ export default function DealsPageView({
           </div>
         </div>
 
-        {/* METRIC STRIP */}
-
-        <DealsMetricStrip deals={deals} />
+        {/* METRICS */}
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <GunimiStatCard
+            title={t("openOpportunities")}
+            value={openDeals.length}
+            icon={Briefcase}
+            animated
+            active={filterStage === "open"}
+            onClick={() => setFilterStage(filterStage === "open" ? "all" : "open")}
+          />
+          <GunimiStatCard
+            title={t("pipelineValue")}
+            value={formatCurrency(pipelineValue)}
+            icon={TrendingUp}
+            active={filterStage === "all"}
+            onClick={() => setFilterStage("all")}
+          />
+          <GunimiStatCard
+            title={t("won")}
+            value={wonDeals.length}
+            icon={Trophy}
+            animated
+            active={filterStage === "won"}
+            onClick={() => setFilterStage(filterStage === "won" ? "all" : "won")}
+          />
+          <GunimiStatCard
+            title={t("lost")}
+            value={lostDeals.length}
+            icon={XCircle}
+            animated
+            active={filterStage === "lost"}
+            onClick={() => setFilterStage(filterStage === "lost" ? "all" : "lost")}
+          />
+        </div>
 
         {/* SEARCH */}
 

@@ -9,6 +9,8 @@ import {
   Flag,
   CheckSquare,
   Square,
+  Circle,
+  CheckCircle2,
   Plus,
   Trash2,
   Download,
@@ -17,10 +19,13 @@ import {
   Clock,
   Check,
   Loader2,
+  Pencil,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import GunimiCard from "@/components/ui/GunimiCard";
 import TagPicker from "@/components/ui/TagPicker";
+import NoteEditor from "@/components/notes/NoteEditor";
+import { sanitizeHtml } from "@/lib/utils/sanitizeHtml";
 import { getTaskDetail } from "@/server/actions/tasks/getTaskDetail";
 import { createTaskComment } from "@/server/actions/tasks/createTaskComment";
 import { deleteTaskComment } from "@/server/actions/tasks/deleteTaskComment";
@@ -40,16 +45,10 @@ type Props = {
   onTaskUpdated?: (taskId: string, changes: Record<string, unknown>) => void;
 };
 
-const STATUS_CONFIG = {
-  todo: { label: "To Do", color: "text-zinc-400", dot: "bg-zinc-500" },
-  in_progress: { label: "In Progress", color: "text-amber-400", dot: "bg-amber-400" },
-  done: { label: "Done", color: "text-emerald-400", dot: "bg-emerald-400" },
-} as const;
-
 const PRIORITY_CONFIG = {
-  high: { label: "High", color: "text-red-400", dot: "bg-red-500" },
-  medium: { label: "Medium", color: "text-amber-400", dot: "bg-amber-400" },
-  low: { label: "Low", color: "text-zinc-500", dot: "bg-zinc-600" },
+  high: { color: "text-red-400", dot: "bg-red-500" },
+  medium: { color: "text-amber-400", dot: "bg-amber-400" },
+  low: { color: "text-zinc-500", dot: "bg-zinc-600" },
 } as const;
 
 function formatDate(iso: string | null): string {
@@ -77,6 +76,7 @@ function Avatar({ name, size = 28 }: { name: string | null; size?: number }) {
 
 export default function TaskDetailPanel({ taskId, currentUserId, members, onClose, onTaskUpdated }: Props) {
   const t = useTranslations("tasks");
+  const currentUserName = members.find(m => m.user_id === currentUserId)?.profiles?.full_name ?? null;
 
   const [task, setTask] = useState<TaskDetail | null>(null);
   const [allTags, setAllTags] = useState<WorkspaceTag[]>([]);
@@ -89,6 +89,8 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const [showSubtaskInput, setShowSubtaskInput] = useState(false);
   const [showAssigneePicker, setShowAssigneePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [editingDescription, setEditingDescription] = useState(false);
+  const [descriptionHtml, setDescriptionHtml] = useState("");
   const [, startTransition] = useTransition();
   const commentRef = useRef<HTMLTextAreaElement>(null);
   const subtaskRef = useRef<HTMLInputElement>(null);
@@ -109,6 +111,8 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
         setTask(data);
         setAllTags(tags);
         setTaskTags(entityTags);
+        setDescriptionHtml(data?.description ?? "");
+        setEditingDescription(false);
       }
     });
     return () => { cancelled = true; };
@@ -178,7 +182,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
         content: commentText.trim(),
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        author_name: null,
+        author_name: currentUserName,
         author_avatar: null,
       };
       setTask((prev) => prev ? { ...prev, comments: [...prev.comments, newComment] } : prev);
@@ -233,6 +237,15 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
     await updateTask({ id: subId, status: next });
   }
 
+  function handleDescriptionSave() {
+    if (!task) return;
+    setEditingDescription(false);
+    startTransition(async () => {
+      await updateTask({ id: task.id, description: descriptionHtml || null });
+      setTask((prev) => prev ? { ...prev, description: descriptionHtml || null } : prev);
+    });
+  }
+
   function handleDownload() {
     if (!task) return;
     window.open(`/api/tasks/${task.id}/export?print=1`, "_blank");
@@ -240,7 +253,6 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
 
   if (!taskId) return null;
 
-  const statusCfg = STATUS_CONFIG[task?.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.todo;
   const priorityCfg = PRIORITY_CONFIG[task?.priority as keyof typeof PRIORITY_CONFIG] ?? PRIORITY_CONFIG.medium;
   const doneCount = task?.subtasks.filter((s) => s.status === "done").length ?? 0;
 
@@ -292,38 +304,56 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
             </div>
           ) : !task ? (
             <div className="flex h-64 items-center justify-center text-sm text-zinc-600">
-              Task not found
+              {t("taskNotFound")}
             </div>
           ) : (
             <div className="space-y-0">
-              {/* Title + Status toggle */}
-              <div className="px-5 py-5">
-                <div className="flex items-start gap-3">
-                  <button
-                    onClick={handleToggleStatus}
-                    className="mt-0.5 shrink-0 text-zinc-600 transition-colors hover:text-emerald-400"
-                    title={t("cycleStatusTooltip")}
-                  >
-                    {task.status === "done"
-                      ? <CheckSquare size={18} className="text-emerald-400" />
-                      : <Square size={18} />}
-                  </button>
-                  <h2 className={`text-base font-semibold leading-snug text-white/90 ${task.status === "done" ? "line-through text-white/40" : ""}`}>
-                    {task.title}
-                  </h2>
-                </div>
+              {/* Title + prominent completion toggle */}
+              <div className="flex items-start gap-3 px-5 pb-3 pt-5">
+                <button
+                  onClick={handleToggleStatus}
+                  title={t("cycleStatusTooltip")}
+                  className={`mt-0.5 shrink-0 transition-colors ${
+                    task.status === "done"
+                      ? "text-emerald-400"
+                      : "text-zinc-600 hover:text-emerald-400"
+                  }`}
+                >
+                  {task.status === "done"
+                    ? <CheckCircle2 size={20} />
+                    : <Circle size={20} />}
+                </button>
+                <h2 className={`flex-1 text-base font-semibold leading-snug ${task.status === "done" ? "text-white/40 line-through" : "text-white/90"}`}>
+                  {task.title}
+                </h2>
+              </div>
 
-                {/* Badges */}
-                <div className="mt-3 flex flex-wrap items-center gap-2 pl-7">
-                  <span className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium ${statusCfg.color}`}>
-                    <span className={`h-1.5 w-1.5 rounded-full ${statusCfg.dot}`} />
-                    {statusCfg.label}
-                  </span>
-                  <span className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium ${priorityCfg.color}`}>
-                    <Flag size={9} />
-                    {priorityCfg.label}
-                  </span>
-                </div>
+              {/* Status + Priority row */}
+              <div className="flex flex-wrap items-center gap-2 px-5 pb-4 pl-14">
+                {/* Clickable status cycle */}
+                <button
+                  onClick={handleToggleStatus}
+                  title={t("cycleStatusTooltip")}
+                  className={[
+                    "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all hover:opacity-75",
+                    task.status === "done"
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                      : task.status === "in_progress"
+                      ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+                      : "border-white/[0.10] bg-white/[0.05] text-zinc-400",
+                  ].join(" ")}
+                >
+                  {task.status === "done"
+                    ? <Check size={10} />
+                    : task.status === "in_progress"
+                    ? <Clock size={10} />
+                    : <Square size={10} />}
+                  {task.status === "done" ? t("statusDone") : task.status === "in_progress" ? t("statusInProgress") : t("statusTodo")}
+                </button>
+                <span className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium ${priorityCfg.color}`}>
+                  <Flag size={9} />
+                  {task.priority === "high" ? t("priorityHigh") : task.priority === "medium" ? t("priorityMedium") : t("priorityLow")}
+                </span>
               </div>
 
               {/* Meta */}
@@ -425,16 +455,54 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
               </div>
 
               {/* Description */}
-              {task.description && (
-                <div className="border-t border-white/[0.05] px-5 py-4">
-                  <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-zinc-600">
+              <div className="border-t border-white/[0.05] px-5 py-4">
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-600">
                     {t("description")}
                   </p>
-                  <p className="text-sm leading-relaxed text-white/55 whitespace-pre-wrap">
-                    {task.description}
-                  </p>
+                  <div className="flex items-center gap-1.5">
+                    {editingDescription ? (
+                      <>
+                        <button
+                          onClick={handleDescriptionSave}
+                          className="rounded-md px-2 py-0.5 text-[10px] font-medium text-violet-300 transition-colors hover:bg-violet-500/10"
+                        >
+                          {t("save")}
+                        </button>
+                        <button
+                          onClick={() => { setEditingDescription(false); setDescriptionHtml(task.description ?? ""); }}
+                          className="rounded-md px-2 py-0.5 text-[10px] text-zinc-500 transition-colors hover:bg-white/[0.05]"
+                        >
+                          {t("cancel")}
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => setEditingDescription(true)}
+                        className="flex items-center gap-1 text-[10px] text-zinc-600 transition-colors hover:text-violet-400"
+                      >
+                        <Pencil size={10} />
+                        {t("edit")}
+                      </button>
+                    )}
+                  </div>
                 </div>
-              )}
+                {editingDescription ? (
+                  <NoteEditor
+                    content={descriptionHtml}
+                    onChange={setDescriptionHtml}
+                    placeholder={t("descriptionPlaceholder")}
+                    minHeight="120px"
+                  />
+                ) : descriptionHtml ? (
+                  <div
+                    className="note-content text-sm leading-relaxed text-white/55"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(descriptionHtml) }}
+                  />
+                ) : (
+                  <p className="text-xs text-white/20 italic">{t("noDescription")}</p>
+                )}
+              </div>
 
               {/* Subtasks */}
               <div className="border-t border-white/[0.05] px-5 py-4">
@@ -557,7 +625,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
 
                 {/* Comment input */}
                 <div className="flex items-start gap-2.5">
-                  <Avatar name={null} size={26} />
+                  <Avatar name={currentUserName} size={26} />
                   <div className="flex-1">
                     <textarea
                       ref={commentRef}

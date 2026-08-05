@@ -3,8 +3,6 @@
 import { Mail } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import GunimiSection from "@/components/layout/GunimiSection";
-import GunimiHeading from "@/components/ui/GunimiHeading";
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import EmailThreadCompactList from "@/components/email/EmailThreadCompactList";
@@ -19,12 +17,10 @@ export default function CompanyEmails({ threads }: Props) {
   const t = useTranslations("companies");
 
   return (
-    <GunimiSection>
-      <GunimiHeading
-        badge={t("emailsBadge")}
-        title={t("emailsTitle")}
-        subtitle={t("emailsSubtitle")}
-      />
+    <div>
+      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+        {t("emailsTitle")}
+      </p>
 
       {threads.length === 0 ? (
         <GunimiEmptyState
@@ -33,12 +29,10 @@ export default function CompanyEmails({ threads }: Props) {
           icon={Mail}
         />
       ) : (
-        <div className="mt-6">
-          <GunimiCard className="overflow-hidden p-0">
-            <EmailThreadCompactList threads={threads} showContact />
-          </GunimiCard>
-        </div>
+        <GunimiCard className="overflow-hidden p-0">
+          <EmailThreadCompactList threads={threads} showContact compact />
+        </GunimiCard>
       )}
-    </GunimiSection>
+    </div>
   );
 }

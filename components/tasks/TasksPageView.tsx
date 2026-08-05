@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 
 import {
   CheckSquare,
+  ChevronRight,
   Plus,
   Pencil,
   Trash2,
@@ -50,8 +51,10 @@ import TaskDetailPanel from "@/components/tasks/TaskDetailPanel";
 import { getWorkspaceTasks } from "@/server/actions/tasks/getWorkspaceTasks";
 import { updateTask } from "@/server/actions/tasks/updateTask";
 import { deleteTask } from "@/server/actions/tasks/deleteTask";
+import { getTaskCounts } from "@/server/actions/tasks/getTaskCounts";
 
 import { Task, WorkspaceMember } from "@/types/task";
+import { useTaskFocusStore } from "@/lib/store/task-focus-store";
 
 import { createClient } from "@/lib/supabase/client";
 
@@ -60,6 +63,7 @@ type Props = {
   members: WorkspaceMember[];
   workspaceId: string;
   currentUserId: string;
+  initialTaskId?: string | null;
 };
 
 const NEXT_STATUS: Record<string, string> = {
@@ -123,18 +127,24 @@ function getAssigneeName(userId: string | null | undefined, members: WorkspaceMe
   return member.profiles.full_name || member.profiles.email || "–";
 }
 
-export default function TasksPageView({ initialTasks, members, workspaceId, currentUserId }: Props) {
+export default function TasksPageView({ initialTasks, members, workspaceId, currentUserId, initialTaskId }: Props) {
   const t = useTranslations("tasks");
   const tc = useTranslations("common");
+  const { setTaskCounts } = useTaskFocusStore();
 
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editTask, setEditTask] = useState<Task | null>(null);
+  const [expandedTaskIds, setExpandedTaskIds] = useState<Set<string>>(() => {
+    const parentIds = new Set<string>();
+    initialTasks.forEach((t) => { if (t.parent_task_id) parentIds.add(t.parent_task_id); });
+    return parentIds;
+  });
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [toggling, setToggling] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "kanban">("list");
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(initialTaskId ?? null);
   const [myTasksOnly, setMyTasksOnly] = useState(false);
 
   // Search + filters
@@ -205,6 +215,25 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
     });
   }, [tasks, search, filterStatus, filterPriority, filterAssignee, myTasksOnly, currentUserId]);
 
+  // Build subtask map: parentId → subtasks
+  const subtaskMap = useMemo(() => {
+    const map = new Map<string, Task[]>();
+    for (const task of tasks) {
+      if (task.parent_task_id) {
+        const siblings = map.get(task.parent_task_id) ?? [];
+        siblings.push(task);
+        map.set(task.parent_task_id, siblings);
+      }
+    }
+    return map;
+  }, [tasks]);
+
+  // Root tasks only (no parent), after filters
+  const rootFilteredTasks = useMemo(
+    () => filteredTasks.filter((t) => !t.parent_task_id),
+    [filteredTasks],
+  );
+
   const hasActiveFilters =
     search !== "" ||
     filterStatus !== "all" ||
@@ -216,6 +245,15 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
     setFilterStatus("all");
     setFilterPriority("all");
     setFilterAssignee("all");
+  }
+
+  function toggleExpand(taskId: string) {
+    setExpandedTaskIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(taskId)) next.delete(taskId);
+      else next.add(taskId);
+      return next;
+    });
   }
 
   function handleCreate() {
@@ -249,6 +287,9 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
         )
       );
       toast.error(t("failedToUpdate"));
+    } else {
+      // Refresh topbar badge counts non-blockingly
+      getTaskCounts().then(setTaskCounts).catch(() => {});
     }
   }
 
@@ -294,24 +335,32 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
           value={metrics.total}
           icon={ListTodo}
           animated
+          active={filterStatus === "all"}
+          onClick={() => setFilterStatus("all")}
         />
         <GunimiStatCard
           title={t("statusTodo")}
           value={metrics.todo}
           icon={CheckSquare}
           animated
+          active={filterStatus === "todo"}
+          onClick={() => setFilterStatus(filterStatus === "todo" ? "all" : "todo")}
         />
         <GunimiStatCard
           title={t("statusInProgress")}
           value={metrics.inProgress}
           icon={Clock}
           animated
+          active={filterStatus === "in_progress"}
+          onClick={() => setFilterStatus(filterStatus === "in_progress" ? "all" : "in_progress")}
         />
         <GunimiStatCard
           title={t("statusDone")}
           value={metrics.done}
           icon={CheckCircle2}
           animated
+          active={filterStatus === "done"}
+          onClick={() => setFilterStatus(filterStatus === "done" ? "all" : "done")}
         />
       </div>
 
@@ -443,7 +492,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
               </GunimiButton>
             }
           />
-        ) : filteredTasks.length === 0 ? (
+        ) : rootFilteredTasks.length === 0 && filteredTasks.length === 0 ? (
           <GunimiEmptyState
             icon={Search}
             title={t("noResults")}
@@ -491,99 +540,195 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
 
               {/* BODY */}
               <tbody className="divide-y divide-white/[0.04]">
-                {filteredTasks.map((task) => {
+                {rootFilteredTasks.map((task) => {
                   const due = dueDateInfo(task.due_date);
+                  const children = subtaskMap.get(task.id) ?? [];
+                  const hasChildren = children.length > 0;
+                  const isExpanded = expandedTaskIds.has(task.id);
 
                   return (
-                    <tr
-                      key={task.id}
-                      className="group transition-colors hover:bg-white/[0.02]"
-                    >
-                      {/* TITLE — click to open detail panel */}
-                      <td className="px-5 py-4">
-                        <button
-                          onClick={() => setSelectedTaskId(task.id)}
-                          className="text-left"
-                          title={t("openDetail")}
-                        >
-                          <p
-                            className={
-                              task.status === "done"
-                                ? "font-medium text-zinc-500 line-through"
-                                : "font-medium text-white/90 hover:text-violet-300 transition-colors"
-                            }
+                    <React.Fragment key={task.id}>
+                      <tr
+                        onClick={() => setSelectedTaskId(task.id)}
+                        className="group cursor-pointer transition-colors hover:bg-white/[0.02]"
+                      >
+                        {/* TITLE */}
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-2">
+                            {hasChildren && (
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); toggleExpand(task.id); }}
+                                className="shrink-0 text-zinc-500 transition-colors hover:text-white/70"
+                                aria-label={isExpanded ? t("collapseSubtasks") : t("expandSubtasks")}
+                              >
+                                <ChevronRight
+                                  size={14}
+                                  className={`transition-transform duration-150 ${isExpanded ? "rotate-90" : ""}`}
+                                />
+                              </button>
+                            )}
+                            <div>
+                              <p
+                                className={
+                                  task.status === "done"
+                                    ? "font-medium text-zinc-500 line-through"
+                                    : "font-medium text-white/90 group-hover:text-violet-300 transition-colors"
+                                }
+                              >
+                                {task.title}
+                              </p>
+                              {task.description && (
+                                <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500">
+                                  {task.description}
+                                </p>
+                              )}
+                              {hasChildren && (
+                                <p className="mt-0.5 text-[10px] text-zinc-600">
+                                  {children.filter((c) => c.status === "done").length}/{children.length} {t("subtasksCompleted")}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* STATUS — clickable cycle */}
+                        <td className="px-4 py-4">
+                          <button
+                            disabled={toggling === task.id}
+                            onClick={(e) => { e.stopPropagation(); handleCycleStatus(task); }}
+                            title={t("cycleStatusTooltip")}
+                            className={[
+                              "inline-flex items-center rounded-full border px-2.5 py-0.5",
+                              "text-[10px] font-medium uppercase tracking-wide",
+                              "transition-opacity hover:opacity-70 disabled:cursor-wait",
+                              statusBadge(task.status),
+                            ].join(" ")}
                           >
-                            {task.title}
-                          </p>
-                          {task.description && (
-                            <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500">
-                              {task.description}
-                            </p>
-                          )}
-                        </button>
-                      </td>
+                            {statusLabel(task.status, t)}
+                          </button>
+                        </td>
 
-                      {/* STATUS — clickable cycle */}
-                      <td className="px-4 py-4">
-                        <button
-                          disabled={toggling === task.id}
-                          onClick={() => handleCycleStatus(task)}
-                          title={t("cycleStatusTooltip")}
-                          className={[
-                            "inline-flex items-center rounded-full border px-2.5 py-0.5",
-                            "text-[10px] font-medium uppercase tracking-wide",
-                            "transition-opacity hover:opacity-70 disabled:cursor-wait",
-                            statusBadge(task.status),
-                          ].join(" ")}
-                        >
-                          {statusLabel(task.status, t)}
-                        </button>
-                      </td>
-
-                      {/* PRIORITY */}
-                      <td className="hidden px-4 py-4 sm:table-cell">
-                        <span
-                          className={[
-                            "inline-flex items-center rounded-full border px-2.5 py-0.5",
-                            "text-[10px] font-medium uppercase tracking-wide",
-                            priorityBadge(task.priority),
-                          ].join(" ")}
-                        >
-                          {priorityLabel(task.priority, t)}
-                        </span>
-                      </td>
-
-                      {/* DUE DATE — with intelligence coloring */}
-                      <td className={`px-4 py-4 text-xs ${due.className}`}>
-                        {due.label}
-                      </td>
-
-                      {/* ASSIGNEE */}
-                      <td className="hidden px-4 py-4 text-xs text-zinc-400 md:table-cell">
-                        {getAssigneeName(task.assigned_to, members)}
-                      </td>
-
-                      {/* ACTIONS */}
-                      <td className="px-4 py-4">
-                        <div className="flex items-center justify-end gap-2 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">
-                          <GunimiButton
-                            variant="secondary"
-                            className="h-8 w-8 p-0"
-                            onClick={() => handleEdit(task)}
+                        {/* PRIORITY */}
+                        <td className="hidden px-4 py-4 sm:table-cell">
+                          <span
+                            className={[
+                              "inline-flex items-center rounded-full border px-2.5 py-0.5",
+                              "text-[10px] font-medium uppercase tracking-wide",
+                              priorityBadge(task.priority),
+                            ].join(" ")}
                           >
-                            <Pencil size={12} />
-                          </GunimiButton>
+                            {priorityLabel(task.priority, t)}
+                          </span>
+                        </td>
 
-                          <GunimiButton
-                            variant="danger"
-                            className="h-8 w-8 p-0"
-                            onClick={() => setDeleteTarget(task)}
+                        {/* DUE DATE */}
+                        <td className={`px-4 py-4 text-xs ${due.className}`}>
+                          {due.label}
+                        </td>
+
+                        {/* ASSIGNEE */}
+                        <td className="hidden px-4 py-4 text-xs text-zinc-400 md:table-cell">
+                          {getAssigneeName(task.assigned_to, members)}
+                        </td>
+
+                        {/* ACTIONS */}
+                        <td className="px-4 py-4">
+                          <div className="flex items-center justify-end gap-2 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">
+                            <GunimiButton
+                              variant="secondary"
+                              className="h-8 w-8 p-0"
+                              onClick={(e) => { e.stopPropagation(); handleEdit(task); }}
+                            >
+                              <Pencil size={12} />
+                            </GunimiButton>
+
+                            <GunimiButton
+                              variant="danger"
+                              className="h-8 w-8 p-0"
+                              onClick={(e) => { e.stopPropagation(); setDeleteTarget(task); }}
+                            >
+                              <Trash2 size={12} />
+                            </GunimiButton>
+                          </div>
+                        </td>
+                      </tr>
+
+                      {/* SUBTASK ROWS */}
+                      {isExpanded && children.map((sub) => {
+                        const subDue = dueDateInfo(sub.due_date);
+                        return (
+                          <tr
+                            key={sub.id}
+                            onClick={() => setSelectedTaskId(sub.id)}
+                            className="group cursor-pointer bg-white/[0.012] transition-colors hover:bg-white/[0.025]"
                           >
-                            <Trash2 size={12} />
-                          </GunimiButton>
-                        </div>
-                      </td>
-                    </tr>
+                            <td className="py-3 pl-14 pr-5">
+                              <p
+                                className={[
+                                  "text-sm",
+                                  sub.status === "done"
+                                    ? "text-zinc-600 line-through"
+                                    : "text-white/70 group-hover:text-violet-300 transition-colors",
+                                ].join(" ")}
+                              >
+                                {sub.title}
+                              </p>
+                            </td>
+                            <td className="px-4 py-3">
+                              <button
+                                disabled={toggling === sub.id}
+                                onClick={(e) => { e.stopPropagation(); handleCycleStatus(sub); }}
+                                title={t("cycleStatusTooltip")}
+                                className={[
+                                  "inline-flex items-center rounded-full border px-2.5 py-0.5",
+                                  "text-[10px] font-medium uppercase tracking-wide",
+                                  "transition-opacity hover:opacity-70 disabled:cursor-wait",
+                                  statusBadge(sub.status),
+                                ].join(" ")}
+                              >
+                                {statusLabel(sub.status, t)}
+                              </button>
+                            </td>
+                            <td className="hidden px-4 py-3 sm:table-cell">
+                              <span
+                                className={[
+                                  "inline-flex items-center rounded-full border px-2.5 py-0.5",
+                                  "text-[10px] font-medium uppercase tracking-wide",
+                                  priorityBadge(sub.priority),
+                                ].join(" ")}
+                              >
+                                {priorityLabel(sub.priority, t)}
+                              </span>
+                            </td>
+                            <td className={`px-4 py-3 text-xs ${subDue.className}`}>
+                              {subDue.label}
+                            </td>
+                            <td className="hidden px-4 py-3 text-xs text-zinc-500 md:table-cell">
+                              {getAssigneeName(sub.assigned_to, members)}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center justify-end gap-2 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">
+                                <GunimiButton
+                                  variant="secondary"
+                                  className="h-8 w-8 p-0"
+                                  onClick={(e) => { e.stopPropagation(); handleEdit(sub); }}
+                                >
+                                  <Pencil size={12} />
+                                </GunimiButton>
+                                <GunimiButton
+                                  variant="danger"
+                                  className="h-8 w-8 p-0"
+                                  onClick={(e) => { e.stopPropagation(); setDeleteTarget(sub); }}
+                                >
+                                  <Trash2 size={12} />
+                                </GunimiButton>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </React.Fragment>
                   );
                 })}
               </tbody>

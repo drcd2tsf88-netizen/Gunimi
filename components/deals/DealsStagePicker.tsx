@@ -7,6 +7,8 @@ import { STAGE_DOT_CLASS } from "@/lib/deals/defaultStages";
 import type { WorkspaceDealStage } from "@/types/dealStage";
 import { useTranslations } from "next-intl";
 
+const KNOWN_SLUGS = new Set(["lead", "qualified", "proposal", "negotiation", "won", "lost"]);
+
 type Props = {
   deals: Deal[];
   stages: WorkspaceDealStage[];
@@ -51,7 +53,9 @@ export default function DealsStagePicker({ deals, stages, selected, onSelect }: 
       >
         <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", dotClass)} />
 
-        <span className="flex-1 truncate text-sm font-medium">{stage.name}</span>
+        <span className="flex-1 truncate text-sm font-medium">
+            {KNOWN_SLUGS.has(stage.slug) ? t(stage.slug as "lead" | "qualified" | "proposal" | "negotiation" | "won" | "lost") : stage.name}
+          </span>
 
         <span className={cn("text-xs tabular-nums", isSelected ? "text-white/50" : "text-white/25")}>
           {count}

@@ -11,8 +11,13 @@ export async function generateMetadata() {
   return { title: t("pageTitle") };
 }
 
-export default async function TasksPage() {
-  const [tasks, members, workspace, user] = await Promise.all([
+type Props = {
+  searchParams: Promise<{ task?: string }>;
+};
+
+export default async function TasksPage({ searchParams }: Props) {
+  const [{ task: initialTaskId }, tasks, members, workspace, user] = await Promise.all([
+    searchParams,
     getWorkspaceTasks(),
     getWorkspaceMembers(),
     getCurrentWorkspace(),
@@ -25,6 +30,7 @@ export default async function TasksPage() {
       members={members as unknown as WorkspaceMember[]}
       workspaceId={workspace?.id ?? ""}
       currentUserId={user?.id ?? ""}
+      initialTaskId={initialTaskId}
     />
   );
 }

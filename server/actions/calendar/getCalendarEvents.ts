@@ -13,7 +13,7 @@ export async function getCalendarEvents(limit = 20): Promise<CalendarEventRow[]>
     const { data, error } = await supabaseAdmin
       .from("calendar_events")
       .select(
-        "id, title, description, start_at, end_at, organizer_email, organizer_name, location, html_link, status, all_day"
+        "id, provider_event_id, title, description, start_at, end_at, organizer_email, organizer_name, location, html_link, status, all_day"
       )
       .eq("workspace_id", workspace.id)
       .neq("status", "cancelled")

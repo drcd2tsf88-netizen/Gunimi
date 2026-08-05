@@ -259,17 +259,18 @@ type RowProps = {
   onClick: () => void;
   showContact?: boolean;
   showCompany?: boolean;
+  compact?: boolean;
   t: ReturnType<typeof useTranslations<"email">>;
 };
 
-function ThreadRow({ thread, onClick, showContact, showCompany, t }: RowProps) {
+function ThreadRow({ thread, onClick, showContact, showCompany, compact, t }: RowProps) {
   return (
     <div
       role="button"
       tabIndex={0}
       onClick={onClick}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClick(); }}
-      className="flex cursor-pointer items-start gap-3 px-5 py-3.5 transition-colors hover:bg-white/[0.03]"
+      className={`flex cursor-pointer items-start gap-3 transition-colors hover:bg-white/[0.03] ${compact ? "px-4 py-2" : "px-5 py-3.5"}`}
     >
       {/* Unread dot */}
       <div className="mt-1.5 shrink-0">
@@ -322,9 +323,10 @@ type Props = {
   threads: EmailThread[];
   showContact?: boolean;
   showCompany?: boolean;
+  compact?: boolean;
 };
 
-export default function EmailThreadCompactList({ threads, showContact, showCompany }: Props) {
+export default function EmailThreadCompactList({ threads, showContact, showCompany, compact }: Props) {
   const t = useTranslations("email");
   const [selectedThread, setSelectedThread] = useState<EmailThread | null>(null);
 
@@ -338,6 +340,7 @@ export default function EmailThreadCompactList({ threads, showContact, showCompa
             onClick={() => setSelectedThread(thread)}
             showContact={showContact}
             showCompany={showCompany}
+            compact={compact}
             t={t}
           />
         ))}

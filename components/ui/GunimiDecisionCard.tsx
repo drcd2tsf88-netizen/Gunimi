@@ -1,22 +1,24 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import GunimiCard from "@/components/ui/GunimiCard";
 
 type Props = {
-  /** Badge label above the action — already translated. */
   label: string;
-  /** The recommended action text — already translated. */
   action: string;
-  /** Optional supporting reason — already translated. */
   reason?: string;
-  /** When true, renders the calm no-action state using `action` as the message. */
   isEmpty?: boolean;
+  /** Optional navigation target — makes the whole card a link. */
+  href?: string;
+  /** Optional click handler — takes precedence over href. */
+  onClick?: () => void;
 };
 
-export default function GunimiDecisionCard({ label, action, reason, isEmpty = false }: Props) {
-  return (
-    <GunimiCard className="p-5">
+export default function GunimiDecisionCard({ label, action, reason, isEmpty = false, href, onClick }: Props) {
+  const isInteractive = !isEmpty && (href || onClick);
+  const inner = (
+    <GunimiCard className={`p-5 ${isInteractive ? "cursor-pointer transition-colors hover:border-violet-500/30 hover:bg-violet-500/[0.04]" : ""}`}>
       <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">{label}</p>
 
       <div className="mt-4 flex items-start gap-3">
@@ -26,13 +28,13 @@ export default function GunimiDecisionCard({ label, action, reason, isEmpty = fa
             className="mt-0.5 shrink-0 text-emerald-400"
             aria-hidden
           />
-        ) : (
+        ) : isInteractive ? (
           <ArrowRight
             size={14}
-            className="mt-0.5 shrink-0 text-[#6D5BFF]"
+            className="mt-0.5 shrink-0 text-violet-400"
             aria-hidden
           />
-        )}
+        ) : null}
 
         <div className="min-w-0">
           <p
@@ -52,4 +54,14 @@ export default function GunimiDecisionCard({ label, action, reason, isEmpty = fa
       </div>
     </GunimiCard>
   );
+
+  if (!isEmpty && onClick) {
+    return <button className="w-full text-left" onClick={onClick}>{inner}</button>;
+  }
+
+  if (!isEmpty && href) {
+    return <Link href={href}>{inner}</Link>;
+  }
+
+  return inner;
 }

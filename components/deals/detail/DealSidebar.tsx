@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import Link from "next/link";
 
 import {
@@ -17,6 +18,7 @@ import { useTranslations } from "next-intl";
 
 import GunimiCard from "@/components/ui/GunimiCard";
 
+import { updateDeal } from "@/server/actions/deals/updateDeal";
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 
@@ -73,6 +75,33 @@ const CREATED_AT_NOW = new Date();
 export default function DealSidebar({ deal }: Props) {
   const t = useTranslations("deals");
 
+  const [editingDate, setEditingDate] = useState(false);
+  const [closeDateValue, setCloseDateValue] = useState(
+    deal.expected_close_date ? deal.expected_close_date.split("T")[0] : ""
+  );
+  const [, startDateSave] = useTransition();
+
+  function handleDateSave() {
+    setEditingDate(false);
+    startDateSave(async () => {
+      await updateDeal({
+        dealId: deal.id,
+        title: deal.title,
+        stage: deal.stage,
+        companyId: deal.company?.id,
+        contactId: deal.contact?.id,
+        value: deal.value ?? 0,
+        paidAmount: deal.paid_amount ?? 0,
+        currency: deal.currency ?? "EUR",
+        probability: deal.probability ?? 25,
+        description: deal.description,
+        expectedCloseDate: closeDateValue || undefined,
+        expiryDate: deal.expiry_date ?? undefined,
+        lostReason: deal.lost_reason ?? undefined,
+      });
+    });
+  }
+
   const expectedRevenue =
     Number(deal.value || 0) *
     (Number(deal.probability || 0) / 100);
@@ -118,11 +147,6 @@ export default function DealSidebar({ deal }: Props) {
       icon: Activity,
       label: t("expectedRevenue"),
       value: formatCurrency(Math.round(expectedRevenue)),
-    },
-    {
-      icon: Calendar,
-      label: t("expectedClose"),
-      value: closeLabel,
     },
     {
       icon: Briefcase,
@@ -228,6 +252,35 @@ export default function DealSidebar({ deal }: Props) {
               </span>
             </div>
           ))}
+
+          {/* Expected close date — editable */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-white/40">
+              <Calendar size={12} />
+              <span className="text-xs">{t("expectedClose")}</span>
+            </div>
+            {editingDate ? (
+              <input
+                type="date"
+                autoFocus
+                value={closeDateValue}
+                onChange={(e) => setCloseDateValue(e.target.value)}
+                onBlur={handleDateSave}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleDateSave();
+                  if (e.key === "Escape") setEditingDate(false);
+                }}
+                className="rounded-lg border border-violet-500/30 bg-white/[0.04] px-2 py-0.5 text-xs font-medium text-white outline-none focus:border-violet-500/50 [color-scheme:dark]"
+              />
+            ) : (
+              <button
+                onClick={() => setEditingDate(true)}
+                className="text-sm font-medium text-white transition-colors hover:text-violet-300"
+              >
+                {closeLabel}
+              </button>
+            )}
+          </div>
         </div>
 
         {deal.stage === "lost" && deal.lost_reason && (

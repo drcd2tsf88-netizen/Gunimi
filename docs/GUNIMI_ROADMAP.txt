@@ -73,7 +73,7 @@ Poradie podľa dopadu / jednoduchosti:
   [x]     18. Kontaktná história — timeline view             ✅ hotovo (júl 2026)
   [x]     12. Custom Dashboard — My Dashboard               ✅ hotovo (aug 2026)
   [x]     20. Webhooks                                      ✅ hotovo (aug 2026)
-  NEXT →  10. Workflow Automation — UI                       (1 týždeň)
+  [x]     10. Workflow Automation — UI                       ✅ hotovo (aug 2026)
 
 --------------------------------------------------------------------------------
 TIER 1 — KRITICKÉ BUGY & CHÝBAJÚCE ZÁKLADY
@@ -106,11 +106,10 @@ TIER 2 — RAST (Blokuje škálovanie na viac tímov)
           - Upload (drag-and-drop), download (signed URL), delete
           - AttachmentsPanel na Deal, Contact, Company (Work tab)
 
-  [ ] 10. Workflow Automation — UI                ← TRETIE
-          - Engine existuje, UI chýba
-          - "Keď deal > 50 000 EUR → notifikuj manažéra"
-          - "Keď kontakt 30 dní bez aktivity → vytvor úlohu"
-          - Odhadovaný čas: 1 týždeň
+  [x] 10. Workflow Automation — UI                ✅ hotovo (aug 2026)
+          - AutomationCenterView: zoznam pravidiel, toggle, delete, detail
+          - NewRuleSheet: trigger + podmienky + akcie, Radix Select
+          - Engine: lib/automation/ (existoval, UI dokončené)
 
   [x] 18. Kontaktná história — timeline view    ✅ hotovo (júl 2026)
           - Unified timeline: aktivity + emaily + úlohy + poznámky + dealy + prílohy
@@ -118,13 +117,13 @@ TIER 2 — RAST (Blokuje škálovanie na viac tímov)
           - Farebné ikony podľa typu udalosti
           - History tab na Contact detail (nahrádza Story)
 
-  [ ] 15. Bulk operations v UI
-          - Vybrať 50 kontaktov → priradiť tag, zmeniť status, exportovať
-          - Odhadovaný čas: 3 dni
+  [x] 15. Bulk operations v UI                    ✅ hotovo (aug 2026)
+          - BulkActionBar: tag assign, export, delete, merge (2 kontakty)
+          - bulkDeleteContacts + bulkAssignTag server actions
 
-  [ ] 14. Contact / Company merge
-          - Duplicitné záznamy — zlúčiť do jedného (Domain Law I)
-          - Odhadovaný čas: 2 dni
+  [x] 14. Contact / Company merge                 ✅ hotovo (aug 2026)
+          - MergeContactSheet: field-level výber (primary/secondary)
+          - mergeContacts server action (Domain Law I compliant)
 
   [x] 12. Custom Dashboard — My Dashboard           ✅ hotovo (aug 2026)
           - 12 widgetov: metriky, kontakty, dealy, úlohy, poznámky, aktivita
@@ -135,7 +134,7 @@ TIER 2 — RAST (Blokuje škálovanie na viac tímov)
   [ ] 9.  Teams / Oddelenia v rámci workspacu     ← POZOR: architektúra
           - NERIEŠIŤ cez team_id FK (porušuje Domain Laws)
           - Správne: workspace_teams entita + role-based isolation
-          - Závisí od: workspace_people migrácie (pred 1. platiacim zákazníkom)
+          - Závisí o  d: workspace_people migrácie (pred 1. platiacim zákazníkom)
           - Odhadovaný čas: 3–4 týždne
 
 --------------------------------------------------------------------------------
@@ -306,7 +305,9 @@ FÁZA 2 — SMB ready                            ⏳ PREBIEHA (Q3 2026)
   - [x] Kontaktná timeline (#18)                 ✅
   - [x] Custom Dashboard (#12)                   ✅
   - [x] Webhooks (#20)                           ✅
-  - [ ] Workflow Automation UI (#10)             ← NEXT
+  - [x] Workflow Automation UI (#10)             ✅
+  - [x] Bulk operations (#15)                     ✅
+  - [x] Contact/Company merge (#14)               ✅
   - [ ] Domain Foundation (workspace_people + relationships)
 
 FÁZA 3 — Mid-market                           📅 PLÁNOVANÁ (Q4 2026)

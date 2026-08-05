@@ -9,6 +9,7 @@ import { getCompanyEmails } from "@/server/actions/company/getCompanyEmails";
 import { getTags } from "@/server/actions/tags/getTags";
 import { getEntityTags } from "@/server/actions/tags/getEntityTags";
 import { getAttachments } from "@/server/actions/attachments/getAttachments";
+import { getCompanyTasks } from "@/server/actions/company/getCompanyTasks";
 
 import CompanyDetailView from "@/components/company/detail/CompanyDetailView";
 
@@ -19,13 +20,14 @@ type Props = {
 export default async function CompanyPage({ params }: Props) {
   const { id: companyId } = await params;
 
-  const [company, contacts, deals, activity, notes, emails, allTags, entityTags, attachments] = await Promise.all([
+  const [company, contacts, deals, activity, notes, emails, tasks, allTags, entityTags, attachments] = await Promise.all([
     getCompany(companyId),
     getCompanyContacts(companyId),
     getCompanyDeals(companyId),
     getCompanyActivity(companyId),
     getCompanyNotes(companyId),
     getCompanyEmails(companyId),
+    getCompanyTasks(companyId),
     getTags(),
     getEntityTags("company", companyId),
     getAttachments("company", companyId),
@@ -41,6 +43,7 @@ export default async function CompanyPage({ params }: Props) {
       activities={activity}
       notes={notes}
       emails={emails}
+      tasks={tasks}
       allTags={allTags}
       entityTags={entityTags}
       attachments={attachments}

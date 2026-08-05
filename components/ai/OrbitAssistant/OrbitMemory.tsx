@@ -16,11 +16,11 @@ type OrbitMemoryProps = {
 
 type Importance = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 
-const IMPORTANCE_STYLES: Record<Importance, { label: string; color: string; ring: string }> = {
-  CRITICAL: { label: "Critical", color: "text-red-300", ring: "border-red-500/20 bg-red-500/[0.07]" },
-  HIGH: { label: "High", color: "text-amber-300", ring: "border-amber-500/20 bg-amber-500/[0.07]" },
-  MEDIUM: { label: "Medium", color: "text-violet-300", ring: "border-violet-500/20 bg-violet-500/[0.07]" },
-  LOW: { label: "Low", color: "text-zinc-400", ring: "border-white/[0.06] bg-white/[0.02]" },
+const IMPORTANCE_STYLES: Record<Importance, { labelKey: "importanceCritical" | "importanceHigh" | "importanceMedium" | "importanceLow"; color: string; ring: string }> = {
+  CRITICAL: { labelKey: "importanceCritical", color: "text-red-300", ring: "border-red-500/20 bg-red-500/[0.07]" },
+  HIGH: { labelKey: "importanceHigh", color: "text-amber-300", ring: "border-amber-500/20 bg-amber-500/[0.07]" },
+  MEDIUM: { labelKey: "importanceMedium", color: "text-violet-300", ring: "border-violet-500/20 bg-violet-500/[0.07]" },
+  LOW: { labelKey: "importanceLow", color: "text-zinc-400", ring: "border-white/[0.06] bg-white/[0.02]" },
 };
 
 function parseMemoryItem(content: string): { importance: Importance; text: string } {
@@ -92,7 +92,7 @@ export default function OrbitMemory({ aiMemory }: OrbitMemoryProps) {
               className={`flex items-start gap-2 rounded-xl border px-2.5 py-2 ${style.ring}`}
             >
               <span className={`mt-0.5 shrink-0 text-[9px] font-semibold uppercase tracking-wider ${style.color}`}>
-                {style.label}
+                {t(style.labelKey)}
               </span>
               <p className={`text-[11px] leading-relaxed ${style.color} opacity-75`}>
                 {text}

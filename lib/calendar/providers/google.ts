@@ -1,8 +1,10 @@
 import type {
   CalendarProvider,
+  CreateEventInput,
   EventListOptions,
   ProviderEvent,
   TokenSet,
+  UpdateEventInput,
 } from "./types";
 
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
@@ -12,7 +14,7 @@ const GOOGLE_CALENDAR_URL =
   "https://www.googleapis.com/calendar/v3/calendars/primary/events";
 
 const SCOPES = [
-  "https://www.googleapis.com/auth/calendar.readonly",
+  "https://www.googleapis.com/auth/calendar",
   "https://www.googleapis.com/auth/userinfo.email",
 ];
 
@@ -135,30 +137,102 @@ export class GoogleCalendarProvider implements CalendarProvider {
     const data = await res.json();
     const items: Record<string, unknown>[] = data.items ?? [];
 
-    return items.map((item) => {
-      const start = item.start as Record<string, string> | undefined;
-      const end = item.end as Record<string, string> | undefined;
-      const organizer = item.organizer as Record<string, string> | undefined;
-      const allDay = Boolean(start?.date && !start?.dateTime);
-      const status = item.status as "confirmed" | "tentative" | "cancelled";
+    return items.map((item) => this.parseEvent(item));
+  }
 
-      return {
-        providerEventId: String(item.id),
-        title: String(item.summary ?? "Untitled Event"),
-        description: item.description ? String(item.description) : undefined,
-        startAt: start?.dateTime
-          ? new Date(start.dateTime)
-          : new Date(start?.date ?? ""),
-        endAt: end?.dateTime
-          ? new Date(end.dateTime)
-          : new Date(end?.date ?? ""),
-        organizerEmail: organizer?.email,
-        organizerName: organizer?.displayName,
-        location: item.location ? String(item.location) : undefined,
-        htmlLink: item.htmlLink ? String(item.htmlLink) : undefined,
-        status: status ?? "confirmed",
-        allDay,
-      };
+  async createEvent(accessToken: string, input: CreateEventInput): Promise<ProviderEvent> {
+    const body = {
+      summary: input.title,
+      description: input.description,
+      location: input.location,
+      start: { dateTime: input.startAt.toISOString() },
+      end: { dateTime: input.endAt.toISOString() },
+    };
+
+    const res = await fetch(GOOGLE_CALENDAR_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
     });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Google Calendar createEvent failed (${res.status}): ${err}`);
+    }
+
+    const data = await res.json();
+    return this.parseEvent(data as Record<string, unknown>);
+  }
+
+  async updateEvent(accessToken: string, input: UpdateEventInput): Promise<ProviderEvent> {
+    const body: Record<string, unknown> = {};
+    if (input.title !== undefined) body.summary = input.title;
+    if (input.description !== undefined) body.description = input.description;
+    if (input.startAt !== undefined) body.start = { dateTime: input.startAt.toISOString() };
+    if (input.endAt !== undefined) body.end = { dateTime: input.endAt.toISOString() };
+
+    const res = await fetch(
+      `${GOOGLE_CALENDAR_URL.replace("/events", "/events")}/${encodeURIComponent(input.providerEventId)}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Google Calendar updateEvent failed (${res.status}): ${err}`);
+    }
+
+    const data = await res.json();
+    return this.parseEvent(data as Record<string, unknown>);
+  }
+
+  async deleteEvent(accessToken: string, providerEventId: string): Promise<void> {
+    const res = await fetch(
+      `${GOOGLE_CALENDAR_URL}/${encodeURIComponent(providerEventId)}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+
+    if (!res.ok && res.status !== 404) {
+      const err = await res.text();
+      throw new Error(`Google Calendar deleteEvent failed (${res.status}): ${err}`);
+    }
+  }
+
+  private parseEvent(item: Record<string, unknown>): ProviderEvent {
+    const start = item.start as Record<string, string> | undefined;
+    const end = item.end as Record<string, string> | undefined;
+    const organizer = item.organizer as Record<string, string> | undefined;
+    const allDay = Boolean(start?.date && !start?.dateTime);
+    const status = item.status as "confirmed" | "tentative" | "cancelled";
+
+    return {
+      providerEventId: String(item.id),
+      title: String(item.summary ?? "Untitled Event"),
+      description: item.description ? String(item.description) : undefined,
+      startAt: start?.dateTime
+        ? new Date(start.dateTime)
+        : new Date(start?.date ?? ""),
+      endAt: end?.dateTime
+        ? new Date(end.dateTime)
+        : new Date(end?.date ?? ""),
+      organizerEmail: organizer?.email,
+      organizerName: organizer?.displayName,
+      location: item.location ? String(item.location) : undefined,
+      htmlLink: item.htmlLink ? String(item.htmlLink) : undefined,
+      status: status ?? "confirmed",
+      allDay,
+    };
   }
 }

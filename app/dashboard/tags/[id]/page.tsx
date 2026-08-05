@@ -162,7 +162,7 @@ export default async function TagDetailPage({ params }: Props) {
                 {tasks.map((task: TagTask) => (
                   <EntityRow
                     key={task.id}
-                    href="/dashboard/tasks"
+                    href={`/dashboard/tasks?task=${task.id}`}
                     primary={task.title}
                     secondary={task.status.replace("_", " ")}
                     dot={STATUS_DOT[task.status] ?? "bg-zinc-500"}
@@ -185,7 +185,7 @@ export default async function TagDetailPage({ params }: Props) {
                 {notes.map((n: TagNote) => (
                   <EntityRow
                     key={n.id}
-                    href="/dashboard/notes"
+                    href={`/dashboard/notes/${n.id}`}
                     primary={n.title}
                     secondary={new Date(n.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
                     dot="bg-amber-500"

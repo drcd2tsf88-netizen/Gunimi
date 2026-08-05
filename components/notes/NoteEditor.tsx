@@ -4,8 +4,21 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Bold, Italic, Underline as UnderlineIcon, List, Heading2, Code } from "lucide-react";
+import TextAlign from "@tiptap/extension-text-align";
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  Code,
+  Heading2,
+  Italic,
+  List,
+  ListOrdered,
+  Underline as UnderlineIcon,
+} from "lucide-react";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 type Props = {
   content: string;
@@ -43,11 +56,13 @@ function ToolbarButton({
 }
 
 export default function NoteEditor({ content, onChange, placeholder = "", disabled = false, minHeight = "120px" }: Props) {
+  const t = useTranslations("notes");
   const editor = useEditor({
     extensions: [
       StarterKit,
       Underline,
       Placeholder.configure({ placeholder }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     content,
     editable: !disabled,
@@ -79,21 +94,21 @@ export default function NoteEditor({ content, onChange, placeholder = "", disabl
         <ToolbarButton
           active={editor.isActive("bold")}
           onClick={() => editor.chain().focus().toggleBold().run()}
-          title="Bold (⌘B)"
+          title={t("toolbarBold")}
         >
           <Bold size={12} />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive("italic")}
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          title="Italic (⌘I)"
+          title={t("toolbarItalic")}
         >
           <Italic size={12} />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive("underline")}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          title="Underline (⌘U)"
+          title={t("toolbarUnderline")}
         >
           <UnderlineIcon size={12} />
         </ToolbarButton>
@@ -101,23 +116,52 @@ export default function NoteEditor({ content, onChange, placeholder = "", disabl
         <ToolbarButton
           active={editor.isActive("heading", { level: 2 })}
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          title="Heading"
+          title={t("toolbarHeading")}
         >
           <Heading2 size={12} />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive("bulletList")}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          title="Bullet list"
+          title={t("toolbarBulletList")}
         >
           <List size={12} />
         </ToolbarButton>
         <ToolbarButton
+          active={editor.isActive("orderedList")}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          title={t("toolbarOrderedList")}
+        >
+          <ListOrdered size={12} />
+        </ToolbarButton>
+        <ToolbarButton
           active={editor.isActive("code")}
           onClick={() => editor.chain().focus().toggleCode().run()}
-          title="Inline code"
+          title={t("toolbarCode")}
         >
           <Code size={12} />
+        </ToolbarButton>
+        <div className="mx-1.5 h-4 w-px bg-white/[0.08]" />
+        <ToolbarButton
+          active={editor.isActive({ textAlign: "left" })}
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          title={t("toolbarAlignLeft")}
+        >
+          <AlignLeft size={12} />
+        </ToolbarButton>
+        <ToolbarButton
+          active={editor.isActive({ textAlign: "center" })}
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          title={t("toolbarAlignCenter")}
+        >
+          <AlignCenter size={12} />
+        </ToolbarButton>
+        <ToolbarButton
+          active={editor.isActive({ textAlign: "right" })}
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          title={t("toolbarAlignRight")}
+        >
+          <AlignRight size={12} />
         </ToolbarButton>
       </div>
 

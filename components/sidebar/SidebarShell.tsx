@@ -241,7 +241,7 @@ export function SidebarFooter({
             type="button"
             onClick={() => { onLinkClick?.(); openFeedback(); }}
             aria-label={tDogfood("submitFeedbackAria")}
-            title="Submit feedback (press ? anywhere)"
+            title={tDogfood("feedbackTooltip")}
             className="
               flex h-[52px] w-11 shrink-0 items-center justify-center
               rounded-xl border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.05]

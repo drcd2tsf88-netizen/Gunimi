@@ -15,14 +15,20 @@ type Props = {
   company: Company;
   contacts: Contact[];
   deals: Deal[];
+  onNavigate?: (tab: string) => void;
 };
 
-export default function CompanyWorkspaceMetrics({ company, contacts, deals }: Props) {
+export default function CompanyWorkspaceMetrics({ company, contacts, deals, onNavigate }: Props) {
   const t = useTranslations("companies");
 
-  const openDealsCount = deals.filter(
+  const openDeals = deals.filter(
     (d) => d.stage !== "won" && d.stage !== "lost",
-  ).length;
+  );
+
+  const pipelineValue = openDeals.reduce(
+    (sum, d) => sum + Number(d.value || 0),
+    0,
+  );
 
   const lastActivityValue = company.last_activity_at
     ? new Date(company.last_activity_at).toLocaleDateString(undefined, {
@@ -36,18 +42,21 @@ export default function CompanyWorkspaceMetrics({ company, contacts, deals }: Pr
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <GunimiStatCard
           title={t("metricPipelineValue")}
-          value={formatCurrency(Number(company.pipeline_value || 0))}
+          value={formatCurrency(pipelineValue)}
           icon={TrendingUp}
+          onClick={onNavigate ? () => onNavigate("context") : undefined}
         />
         <GunimiStatCard
           title={t("metricActiveDeals")}
-          value={String(openDealsCount)}
+          value={String(openDeals.length)}
           icon={Briefcase}
+          onClick={onNavigate ? () => onNavigate("context") : undefined}
         />
         <GunimiStatCard
           title={t("metricContacts")}
           value={String(contacts.length)}
           icon={Users}
+          onClick={onNavigate ? () => onNavigate("context") : undefined}
         />
         <GunimiStatCard
           title={t("metricLastActivity")}

@@ -10,6 +10,7 @@ import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 
 import type { DealRelatedNote } from "@/server/actions/deals/getDealRelatedNotes";
+import { stripHtml } from "@/lib/utils/stripHtml";
 
 type Props = {
   notes: DealRelatedNote[];
@@ -59,39 +60,41 @@ export default function DealNotes({ notes, contactId, companyId }: Props) {
       ) : (
         <div className="mt-6 space-y-3">
           {notes.map((note) => (
-            <GunimiCard key={note.id} className="p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    {note.source === "contact" ? (
-                      <User size={11} className="shrink-0 text-cyan-400/60" />
-                    ) : (
-                      <Building2 size={11} className="shrink-0 text-violet-400/60" />
+            <Link key={note.id} href={`/dashboard/notes/${note.id}`}>
+              <GunimiCard className="p-5 transition-colors hover:border-violet-500/30 hover:bg-violet-500/[0.04]">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      {note.source === "contact" ? (
+                        <User size={11} className="shrink-0 text-cyan-400/60" />
+                      ) : (
+                        <Building2 size={11} className="shrink-0 text-violet-400/60" />
+                      )}
+                      <h3 className="truncate text-sm font-medium text-white/85">{note.title}</h3>
+                    </div>
+                    {note.content && (
+                      <p className="mt-2 text-sm leading-relaxed text-white/50 line-clamp-3">
+                        {stripHtml(note.content)}
+                      </p>
                     )}
-                    <h3 className="truncate text-sm font-medium text-white/85">{note.title}</h3>
                   </div>
-                  {note.content && (
-                    <p className="mt-2 text-sm leading-relaxed text-white/50 line-clamp-3">
-                      {note.content}
+                  <div className="flex shrink-0 flex-col items-end gap-1">
+                    <p className="whitespace-nowrap text-xs text-white/30">
+                      {new Date(note.created_at).toLocaleDateString()}
                     </p>
-                  )}
+                    <span
+                      className={`rounded-full border px-1.5 py-0.5 text-[9px] uppercase tracking-wide ${
+                        note.source === "contact"
+                          ? "border-cyan-500/20 bg-cyan-500/10 text-cyan-400"
+                          : "border-violet-500/20 bg-violet-500/10 text-violet-400"
+                      }`}
+                    >
+                      {note.source}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex shrink-0 flex-col items-end gap-1">
-                  <p className="whitespace-nowrap text-xs text-white/30">
-                    {new Date(note.created_at).toLocaleDateString()}
-                  </p>
-                  <span
-                    className={`rounded-full border px-1.5 py-0.5 text-[9px] uppercase tracking-wide ${
-                      note.source === "contact"
-                        ? "border-cyan-500/20 bg-cyan-500/10 text-cyan-400"
-                        : "border-violet-500/20 bg-violet-500/10 text-violet-400"
-                    }`}
-                  >
-                    {note.source}
-                  </span>
-                </div>
-              </div>
-            </GunimiCard>
+              </GunimiCard>
+            </Link>
           ))}
         </div>
       )}

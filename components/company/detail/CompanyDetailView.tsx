@@ -21,7 +21,9 @@ import CompanyProfile from "./CompanyProfile";
 import CompanyNotes from "@/components/company/CompanyNotes";
 import CompanyEmails from "@/components/company/CompanyEmails";
 import EditCompanySheet from "@/components/company/EditCompanySheet";
+import AddContactToCompanySheet from "@/components/company/AddContactToCompanySheet";
 
+import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiWorkspaceTabs, { type WorkspaceTab } from "@/components/ui/GunimiWorkspaceTabs";
 import GunimiDecisionCard from "@/components/ui/GunimiDecisionCard";
 import GunimiPreparationCard, { type PreparationItem } from "@/components/ui/GunimiPreparationCard";
@@ -42,7 +44,9 @@ import type { CompanyNote } from "@/server/actions/company/getCompanyNotes";
 import type { EmailThread } from "@/types/email";
 import type { WorkspaceTag } from "@/types/tag";
 import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
+import type { CompanyTask } from "@/server/actions/company/getCompanyTasks";
 import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
+import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 
 const PREP_ICONS: Record<CompanyPrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -65,6 +69,7 @@ type Props = {
   activities: WorkspaceActivity[];
   notes: CompanyNote[];
   emails: EmailThread[];
+  tasks: CompanyTask[];
   allTags: WorkspaceTag[];
   entityTags: WorkspaceTag[];
   attachments: WorkspaceAttachment[];
@@ -77,6 +82,7 @@ export default function CompanyDetailView({
   activities,
   notes,
   emails,
+  tasks,
   allTags,
   entityTags,
   attachments,
@@ -84,6 +90,9 @@ export default function CompanyDetailView({
   const router = useRouter();
   const t = useTranslations("companies");
   const [editOpen, setEditOpen] = useState(false);
+  const [addContactOpen, setAddContactOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [localTasks, setLocalTasks] = useState(tasks);
 
   const openDeals = useMemo(
     () => deals.filter((d) => d.stage !== "won" && d.stage !== "lost"),
@@ -174,10 +183,29 @@ export default function CompanyDetailView({
             action={decisionAction}
             reason={decisionReason}
             isEmpty={!decision}
+            onClick={decision?.action === "no_contacts" ? () => setAddContactOpen(true) : undefined}
+            href={(() => {
+              switch (decision?.action) {
+                case "closing_deal": return "/dashboard/deals";
+                case "stale_relationship": return "/dashboard/tasks";
+                case "no_contacts": return undefined;
+                case "no_active_deals": return "/dashboard/deals";
+                default: return undefined;
+              }
+            })()}
           />
           {preparationItems.length > 0 && (
             <GunimiPreparationCard label={t("preparationLabel")} items={preparationItems} />
           )}
+          <OpenTasksStrip
+            tasks={localTasks}
+            onTaskCreated={(task) =>
+              setLocalTasks((prev) => [
+                { ...task, description: null, created_at: new Date().toISOString() },
+                ...prev,
+              ])
+            }
+          />
           <CompanyProfile company={company} />
         </div>
       ),
@@ -202,7 +230,7 @@ export default function CompanyDetailView({
       badge: workBadge,
       content: (
         <div className="space-y-6">
-          <CompanyNotes notes={notes} />
+          <CompanyNotes companyId={company.id} notes={notes} />
           <CompanyEmails threads={emails} />
           <AttachmentsPanel
             entityType="company"
@@ -215,25 +243,35 @@ export default function CompanyDetailView({
     {
       id: "context",
       label: t("tabContext"),
-      content:
-        contextSections.length > 0 ? (
-          <div className="space-y-4">
-            {contextSections.map((section) => (
+      content: (
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <GunimiButton
+              variant="secondary"
+              onClick={() => setAddContactOpen(true)}
+              className="gap-1.5 px-3 py-2 text-xs"
+            >
+              {t("addContactAction")}
+            </GunimiButton>
+          </div>
+          {contextSections.length > 0 ? (
+            contextSections.map((section) => (
               <GunimiContextCard
                 key={section.id}
                 title={section.title}
                 icon={section.icon}
                 entries={section.entries}
               />
-            ))}
-          </div>
-        ) : (
-          <GunimiEmptyState
-            icon={Users}
-            title={t("contextEmptyTitle")}
-            description={t("contextEmptyDescription")}
-          />
-        ),
+            ))
+          ) : (
+            <GunimiEmptyState
+              icon={Users}
+              title={t("contextEmptyTitle")}
+              description={t("contextEmptyDescription")}
+            />
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -248,11 +286,17 @@ export default function CompanyDetailView({
         entityTags={entityTags}
       />
 
-      <CompanyWorkspaceMetrics company={company} contacts={contacts} deals={deals} />
+      <CompanyWorkspaceMetrics
+        company={company}
+        contacts={contacts}
+        deals={deals}
+        onNavigate={setActiveTab}
+      />
 
       <GunimiWorkspaceTabs
         tabs={tabs}
-        defaultTab="overview"
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
         listLabel={t("workspaceTabsLabel")}
       />
 
@@ -262,6 +306,14 @@ export default function CompanyDetailView({
         open={editOpen}
         onOpenChange={setEditOpen}
         onSaved={() => router.refresh()}
+      />
+
+      <AddContactToCompanySheet
+        companyId={company.id}
+        companyName={company.name ?? ""}
+        open={addContactOpen}
+        onOpenChange={setAddContactOpen}
+        onAdded={() => router.refresh()}
       />
     </div>
   );

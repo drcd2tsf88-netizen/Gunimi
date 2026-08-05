@@ -4,6 +4,15 @@ import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Plus, Trash2, X } from "lucide-react";
 import toast from "react-hot-toast";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiInput from "@/components/ui/GunimiInput";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { createCustomRule } from "@/server/actions/automation/createCustomRule";
 import type {
   AutomationTrigger,
@@ -132,11 +141,10 @@ export default function NewRuleSheet({ open, onClose }: Props) {
             <label className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
               {t("newRuleNameLabel")}
             </label>
-            <input
+            <GunimiInput
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t("newRuleNamePlaceholder")}
-              className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-sm text-white/85 placeholder-white/20 outline-none transition-colors focus:border-violet-500/40 focus:bg-white/[0.05]"
             />
           </div>
 
@@ -145,21 +153,25 @@ export default function NewRuleSheet({ open, onClose }: Props) {
             <label className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
               {t("newRuleTriggerLabel")}
             </label>
-            <select
+            <Select
               value={trigger}
-              onChange={(e) => {
-                const val = e.target.value as AutomationTrigger;
-                setTrigger(val);
-                if (!DEAL_TRIGGERS.has(val)) setConditions([]);
+              onValueChange={(val) => {
+                const tr = val as AutomationTrigger;
+                setTrigger(tr);
+                if (!DEAL_TRIGGERS.has(tr)) setConditions([]);
               }}
-              className="w-full rounded-lg border border-white/[0.08] bg-zinc-900 px-3 py-2 text-sm text-white/85 outline-none transition-colors focus:border-violet-500/40"
             >
-              {TRIGGERS.map((tr) => (
-                <option key={tr} value={tr}>
-                  {t(`trigger${tr.split(".").map((s) => s[0].toUpperCase() + s.slice(1)).join("")}` as Parameters<typeof t>[0])}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {TRIGGERS.map((tr) => (
+                  <SelectItem key={tr} value={tr}>
+                    {t(`trigger${tr.split(".").map((s) => s[0].toUpperCase() + s.slice(1)).join("")}` as Parameters<typeof t>[0])}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Conditions */}
@@ -190,35 +202,39 @@ export default function NewRuleSheet({ open, onClose }: Props) {
                 {conditions.map((cond, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2"
+                    className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] p-2"
                   >
-                    <select
+                    <Select
                       value={cond.field}
-                      onChange={(e) =>
-                        updateCondition(idx, "field", e.target.value as RuleConditionField)
-                      }
-                      className="flex-1 bg-transparent text-xs text-white/70 outline-none"
+                      onValueChange={(v) => updateCondition(idx, "field", v as RuleConditionField)}
                     >
-                      {CONDITION_FIELDS.map((f) => (
-                        <option key={f} value={f}>
-                          {t(`conditionField${f.split("_").map((s) => s[0].toUpperCase() + s.slice(1)).join("")}` as Parameters<typeof t>[0])}
-                        </option>
-                      ))}
-                    </select>
+                      <SelectTrigger className="h-7 flex-1 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CONDITION_FIELDS.map((f) => (
+                          <SelectItem key={f} value={f} className="text-xs">
+                            {t(`conditionField${f.split("_").map((s) => s[0].toUpperCase() + s.slice(1)).join("")}` as Parameters<typeof t>[0])}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
 
-                    <select
+                    <Select
                       value={cond.operator}
-                      onChange={(e) =>
-                        updateCondition(idx, "operator", e.target.value as RuleConditionOperator)
-                      }
-                      className="flex-1 bg-transparent text-xs text-white/70 outline-none"
+                      onValueChange={(v) => updateCondition(idx, "operator", v as RuleConditionOperator)}
                     >
-                      {CONDITION_OPS.map((op) => (
-                        <option key={op} value={op}>
-                          {t(`conditionOp${op.charAt(0).toUpperCase() + op.slice(1)}` as Parameters<typeof t>[0])}
-                        </option>
-                      ))}
-                    </select>
+                      <SelectTrigger className="h-7 flex-1 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CONDITION_OPS.map((op) => (
+                          <SelectItem key={op} value={op} className="text-xs">
+                            {t(`conditionOp${op.charAt(0).toUpperCase() + op.slice(1)}` as Parameters<typeof t>[0])}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
 
                     <input
                       type="number"
@@ -226,12 +242,12 @@ export default function NewRuleSheet({ open, onClose }: Props) {
                       onChange={(e) =>
                         updateCondition(idx, "value", parseFloat(e.target.value) || 0)
                       }
-                      className="w-20 bg-transparent text-right text-xs text-white/85 outline-none"
+                      className="w-20 rounded-md border border-white/[0.08] bg-transparent px-2 py-1 text-right text-xs text-white/85 outline-none focus:border-violet-500/40"
                     />
 
                     <button
                       onClick={() => removeCondition(idx)}
-                      className="text-white/20 transition-colors hover:text-red-400"
+                      className="shrink-0 text-white/20 transition-colors hover:text-red-400"
                     >
                       <Trash2 size={11} />
                     </button>
@@ -249,11 +265,10 @@ export default function NewRuleSheet({ open, onClose }: Props) {
 
             <div className="space-y-1.5">
               <label className="text-[11px] text-zinc-600">{t("newRuleTaskTitleLabel")}</label>
-              <input
+              <GunimiInput
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
                 placeholder={t("newRuleTaskTitlePlaceholder")}
-                className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-sm text-white/85 placeholder-white/20 outline-none transition-colors focus:border-violet-500/40 focus:bg-white/[0.05]"
               />
               <p className="text-[10px] text-zinc-600">{t("newRuleTaskTitleHint")}</p>
             </div>
@@ -281,19 +296,17 @@ export default function NewRuleSheet({ open, onClose }: Props) {
 
         {/* Footer */}
         <div className="flex shrink-0 items-center justify-end gap-2 border-t border-white/[0.06] px-6 py-4">
-          <button
-            onClick={handleClose}
-            className="rounded-lg border border-white/[0.06] px-4 py-2 text-xs text-white/40 transition-colors hover:border-white/10 hover:text-white/70"
-          >
+          <GunimiButton variant="secondary" onClick={handleClose} className="px-4 py-2 text-xs">
             {t("cancelRule")}
-          </button>
-          <button
+          </GunimiButton>
+          <GunimiButton
             onClick={handleSave}
             disabled={isPending || !name.trim() || !taskTitle.trim()}
-            className="rounded-lg bg-violet-600 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-40"
+            loading={isPending}
+            className="px-4 py-2 text-xs"
           >
-            {isPending ? t("saving") : t("saveRule")}
-          </button>
+            {t("saveRule")}
+          </GunimiButton>
         </div>
       </div>
     </div>

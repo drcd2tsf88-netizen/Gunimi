@@ -15,6 +15,7 @@ import {
   Trash2,
   UserPlus,
   Users,
+  TrendingUp,
 } from "lucide-react";
 
 import { useTranslations } from "next-intl";
@@ -31,6 +32,7 @@ import GunimiSection from "@/components/layout/GunimiSection";
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
+import GunimiStatCard from "@/components/ui/GunimiStatCard";
 
 import CreateContactSheet from "@/components/crm/CreateContactSheet";
 import EditContactSheet from "@/components/crm/EditContactSheet";
@@ -81,6 +83,7 @@ export default function CRMPageView({ initialContacts }: Props) {
   const [tags, setTags] = useState<WorkspaceTag[]>([]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const [mergeOpen, setMergeOpen] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<"all" | "lead" | "won">("all");
 
   const [prevInitialContacts, setPrevInitialContacts] = useState(initialContacts);
 
@@ -98,8 +101,9 @@ export default function CRMPageView({ initialContacts }: Props) {
         )
       : contacts;
     if (priorityOnly) list = list.filter((c) => c.is_priority);
+    if (filterStatus !== "all") list = list.filter((c) => c.status === filterStatus);
     return [...list].sort((a, b) => (b.is_priority ? 1 : 0) - (a.is_priority ? 1 : 0));
-  }, [contacts, search, priorityOnly]);
+  }, [contacts, search, priorityOnly, filterStatus]);
 
   const leadCount = useMemo(
     () => contacts.filter((c) => c.status === "lead").length,
@@ -224,21 +228,31 @@ export default function CRMPageView({ initialContacts }: Props) {
 
       {/* Stats */}
       <GunimiSection>
-        <div className="grid gap-6 sm:grid-cols-3">
-          <GunimiCard className="p-6">
-            <p className="text-zinc-400">{t("totalCustomers")}</p>
-            <h2 className="mt-5 text-4xl font-semibold">{contacts.length}</h2>
-          </GunimiCard>
-
-          <GunimiCard className="p-6">
-            <p className="text-zinc-400">{t("activeLeads")}</p>
-            <h2 className="mt-5 text-4xl font-semibold">{leadCount}</h2>
-          </GunimiCard>
-
-          <GunimiCard className="p-6">
-            <p className="text-zinc-400">{t("wonDeals")}</p>
-            <h2 className="mt-5 text-4xl font-semibold">{wonCount}</h2>
-          </GunimiCard>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <GunimiStatCard
+            title={t("totalCustomers")}
+            value={contacts.length}
+            icon={Users}
+            animated
+            active={filterStatus === "all"}
+            onClick={() => setFilterStatus("all")}
+          />
+          <GunimiStatCard
+            title={t("activeLeads")}
+            value={leadCount}
+            icon={TrendingUp}
+            animated
+            active={filterStatus === "lead"}
+            onClick={() => setFilterStatus(filterStatus === "lead" ? "all" : "lead")}
+          />
+          <GunimiStatCard
+            title={t("wonDeals")}
+            value={wonCount}
+            icon={CheckSquare}
+            animated
+            active={filterStatus === "won"}
+            onClick={() => setFilterStatus(filterStatus === "won" ? "all" : "won")}
+          />
         </div>
       </GunimiSection>
 
@@ -332,7 +346,7 @@ export default function CRMPageView({ initialContacts }: Props) {
 
                   {/* Info */}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-white group-hover:text-violet-200 transition-colors">
+                    <p className="truncate text-sm font-semibold text-white transition-colors group-hover:text-violet-200">
                       {contact.name}
                     </p>
 
@@ -347,6 +361,12 @@ export default function CRMPageView({ initialContacts }: Props) {
                         <span className="truncate">{contact.companies.name}</span>
                       )}
                     </div>
+
+                    {contact.notes && (
+                      <p className="mt-0.5 truncate text-xs text-white/30">
+                        {contact.notes}
+                      </p>
+                    )}
                   </div>
 
                   {/* Status badge */}

@@ -7,8 +7,8 @@ import type {
 } from "./types";
 import { automationCreateTask, automationLogExecution } from "./actions";
 import { logger } from "@/lib/logger";
-import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { cookies } from "next/headers";
 
 type WorkspacePrefs = {
   disabledAutomations?: string[];
@@ -17,13 +17,23 @@ type WorkspacePrefs = {
 
 async function loadWorkspacePrefs(workspaceId: string): Promise<WorkspacePrefs> {
   try {
-    const supabase = await createClient();
-    const { data } = await supabase
+    const { data } = await supabaseAdmin
       .from("workspaces")
       .select("preferences")
       .eq("id", workspaceId)
       .maybeSingle();
-    return (data?.preferences as WorkspacePrefs | null) ?? {};
+    const prefs = (data?.preferences as WorkspacePrefs | null) ?? {};
+
+    // Fallback: if no workspace language preference set, use the UI locale cookie
+    if (!prefs.language) {
+      const cookieStore = await cookies();
+      const localeCookie = cookieStore.get("GUNIMI_LOCALE");
+      if (localeCookie?.value) {
+        prefs.language = localeCookie.value;
+      }
+    }
+
+    return prefs;
   } catch {
     return {};
   }

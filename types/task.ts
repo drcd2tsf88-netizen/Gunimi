@@ -21,4 +21,5 @@ export type Task = {
   is_recurring?: boolean;
   recurrence_frequency?: string | null;
   recurrence_interval?: number | null;
+  parent_task_id?: string | null;
 };

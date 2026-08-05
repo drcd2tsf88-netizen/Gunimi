@@ -12,6 +12,7 @@ import {
   StickyNote,
   TrendingUp,
   Users,
+  UsersRound,
   Zap,
 } from "lucide-react";
 
@@ -27,6 +28,7 @@ export type NavItemId =
   | "calendar"
   | "automations"
   | "analytics"
+  | "organization"
   | "settings";
 
 export type NavGroupId =
@@ -34,6 +36,7 @@ export type NavGroupId =
   | "relationships"
   | "sales"
   | "work"
+  | "people"
   | "system";
 
 export type NavItem = {
@@ -102,6 +105,14 @@ export const NAV_GROUPS: NavGroup[] = [
       { id: "email",       labelKey: "email",       href: "/dashboard/email",       icon: Mail         },
       { id: "calendar",    labelKey: "calendar",    href: "/dashboard/calendar",    icon: CalendarDays },
       { id: "automations", labelKey: "automations", href: "/dashboard/automations", icon: Zap          },
+    ],
+  },
+  {
+    id: "people",
+    labelKey: "groupPeople",
+    separator: true,
+    items: [
+      { id: "organization", labelKey: "organization", href: "/dashboard/organization", icon: UsersRound },
     ],
   },
   {

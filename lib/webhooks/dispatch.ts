@@ -1,6 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { createHmac } from "crypto";
 import { logger } from "@/lib/logger";
+import { validateWebhookUrl } from "./validateUrl";
 
 export type WebhookEvent =
   | "contact.created"
@@ -15,9 +16,7 @@ export async function dispatchWebhookEvent(
   data: Record<string, unknown>
 ): Promise<void> {
   try {
-    const supabase = await createClient();
-
-    const { data: hooks } = await supabase
+    const { data: hooks } = await supabaseAdmin
       .from("workspace_webhooks")
       .select("url, secret, events")
       .eq("workspace_id", workspaceId)
@@ -34,6 +33,7 @@ export async function dispatchWebhookEvent(
 
     const deliveries = hooks
       .filter((h) => (h.events as string[]).includes(event))
+      .filter((h) => validateWebhookUrl(h.url as string).valid)
       .map((hook) => {
         const signature = createHmac("sha256", hook.secret as string)
           .update(payload)
@@ -47,6 +47,7 @@ export async function dispatchWebhookEvent(
             "X-Gunimi-Event": event,
           },
           body: payload,
+          redirect: "error",
           signal: AbortSignal.timeout(10_000),
         }).catch((err) => {
           logger.error(`Webhook delivery failed for ${hook.url as string}:`, err);

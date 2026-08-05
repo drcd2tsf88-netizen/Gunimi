@@ -76,7 +76,7 @@ export default function DogfoodDashboard({ feedback, metrics }: Props) {
   function handleStatusChange(id: string, status: FeedbackStatus) {
     startUpdate(async () => {
       const ok = await updateFeedbackStatus(id, status);
-      if (!ok) toast.error("Failed to update status");
+      if (!ok) toast.error(t("failedToUpdateStatus"));
     });
   }
 

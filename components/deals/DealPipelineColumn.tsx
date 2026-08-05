@@ -20,6 +20,8 @@ import { formatCurrency } from "@/lib/utils/formatCurrency";
 import type { WorkspaceDealStage } from "@/types/dealStage";
 import { Deal } from "@/types/deal";
 
+const KNOWN_SLUGS = new Set(["lead", "qualified", "proposal", "negotiation", "won", "lost"]);
+
 type Props = {
   stage: WorkspaceDealStage;
   deals: Deal[];
@@ -72,7 +74,9 @@ export default function DealPipelineColumn({
       <div className="mb-5 border-b border-white/[0.08] pb-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className={cn("text-sm font-semibold", titleColor)}>{stage.name}</h3>
+            <h3 className={cn("text-sm font-semibold", titleColor)}>
+              {KNOWN_SLUGS.has(stage.slug) ? t(stage.slug as "lead" | "qualified" | "proposal" | "negotiation" | "won" | "lost") : stage.name}
+            </h3>
             <p className="mt-1 text-xs text-white/40">
               {deals.length} {t("opportunities")}
             </p>

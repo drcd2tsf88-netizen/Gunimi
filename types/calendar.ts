@@ -8,6 +8,7 @@ export type CalendarConnection = {
 
 export type CalendarEventRow = {
   id: string;
+  provider_event_id: string;
   title: string;
   description: string | null;
   start_at: string;

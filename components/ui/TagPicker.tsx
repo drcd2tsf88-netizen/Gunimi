@@ -170,7 +170,7 @@ export default function TagPicker({ entityType, entityId, allTags, initialTags }
   return (
     <div className="flex flex-wrap items-center gap-1.5">
       {tags.map((tag) => (
-        <TagBadge key={tag.id} tag={tag} onRemove={() => handleRemove(tag.id)} size="xs" />
+        <TagBadge key={tag.id} tag={tag} onRemove={() => handleRemove(tag.id)} size="xs" href={`/dashboard/tags/${tag.id}`} />
       ))}
 
       <button

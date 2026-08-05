@@ -37,7 +37,8 @@ const supabase =
   updated_at,
   is_recurring,
   recurrence_frequency,
-  recurrence_interval
+  recurrence_interval,
+  parent_task_id
 `)
         .eq(
           "workspace_id",

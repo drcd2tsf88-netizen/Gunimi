@@ -1,3 +1,19 @@
+export type CreateEventInput = {
+  title: string;
+  startAt: Date;
+  endAt: Date;
+  description?: string;
+  location?: string;
+};
+
+export type UpdateEventInput = {
+  providerEventId: string;
+  title?: string;
+  startAt?: Date;
+  endAt?: Date;
+  description?: string;
+};
+
 export interface CalendarProvider {
   readonly name: string;
   readonly displayName: string;
@@ -6,6 +22,9 @@ export interface CalendarProvider {
   refreshAccessToken(refreshToken: string): Promise<TokenSet>;
   getConnectedEmail(accessToken: string): Promise<string>;
   listEvents(accessToken: string, options: EventListOptions): Promise<ProviderEvent[]>;
+  createEvent(accessToken: string, input: CreateEventInput): Promise<ProviderEvent>;
+  updateEvent(accessToken: string, input: UpdateEventInput): Promise<ProviderEvent>;
+  deleteEvent(accessToken: string, providerEventId: string): Promise<void>;
 }
 
 export type TokenSet = {

@@ -19,7 +19,7 @@ export default function TagBadge({ tag, onRemove, size = "sm", href }: Props) {
     colors.bg,
     colors.text,
     colors.border,
-    href && !onRemove ? "hover:brightness-110 cursor-pointer" : "",
+    href ? "hover:brightness-110 cursor-pointer" : "",
   ].join(" ");
 
   const inner = (
@@ -28,6 +28,7 @@ export default function TagBadge({ tag, onRemove, size = "sm", href }: Props) {
       {onRemove && (
         <button
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
             onRemove();
           }}
@@ -40,7 +41,7 @@ export default function TagBadge({ tag, onRemove, size = "sm", href }: Props) {
     </>
   );
 
-  if (href && !onRemove) {
+  if (href) {
     return (
       <Link href={href} className={className}>
         {inner}

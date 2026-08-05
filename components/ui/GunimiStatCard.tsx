@@ -12,6 +12,8 @@ type GunimiStatCardProps = {
   icon: LucideIcon;
   animated?: boolean;
   className?: string;
+  onClick?: () => void;
+  active?: boolean;
 };
 
 export default function GunimiStatCard({
@@ -21,6 +23,8 @@ export default function GunimiStatCard({
   icon: Icon,
   animated = false,
   className,
+  onClick,
+  active = false,
 }: GunimiStatCardProps) {
   const isNumeric = typeof value === "number";
 
@@ -28,14 +32,17 @@ export default function GunimiStatCard({
     <motion.div
       whileHover={{ y: -2 }}
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      onClick={onClick}
       className={cn(
         "group relative overflow-hidden rounded-[18px]",
-        "border border-white/[0.055] bg-[#0A0E17]",
+        "border bg-[#0A0E17]",
         "p-5",
         "shadow-[0_4px_20px_rgba(109,91,255,0.06),0_0_0_1px_rgba(255,255,255,0.03)]",
         "transition-all duration-300",
-        "hover:border-white/[0.09]",
-        "hover:shadow-[0_8px_36px_rgba(109,91,255,0.12),0_0_0_1px_rgba(255,255,255,0.05)]",
+        onClick && "cursor-pointer",
+        active
+          ? "border-violet-500/40 bg-violet-500/[0.06] shadow-[0_8px_36px_rgba(109,91,255,0.18)]"
+          : "border-white/[0.055] hover:border-white/[0.09] hover:shadow-[0_8px_36px_rgba(109,91,255,0.12),0_0_0_1px_rgba(255,255,255,0.05)]",
         className
       )}
     >
