@@ -46,6 +46,8 @@ import type { WorkspaceTag } from "@/types/tag";
 import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
 import type { CompanyTask } from "@/server/actions/company/getCompanyTasks";
 import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
+import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
+import type { WorkspaceTeam } from "@/types/organization";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 
 const PREP_ICONS: Record<CompanyPrepItem["iconKey"], LucideIcon> = {
@@ -73,6 +75,7 @@ type Props = {
   allTags: WorkspaceTag[];
   entityTags: WorkspaceTag[];
   attachments: WorkspaceAttachment[];
+  teams: WorkspaceTeam[];
 };
 
 export default function CompanyDetailView({
@@ -86,6 +89,7 @@ export default function CompanyDetailView({
   allTags,
   entityTags,
   attachments,
+  teams,
 }: Props) {
   const router = useRouter();
   const t = useTranslations("companies");
@@ -230,6 +234,7 @@ export default function CompanyDetailView({
       badge: workBadge,
       content: (
         <div className="space-y-6">
+          <ResponsibilitiesPanel entityType="company" entityId={company.id} teams={teams} />
           <CompanyNotes companyId={company.id} notes={notes} />
           <CompanyEmails threads={emails} />
           <AttachmentsPanel

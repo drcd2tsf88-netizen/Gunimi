@@ -10,6 +10,7 @@ import { getTags } from "@/server/actions/tags/getTags";
 import { getEntityTags } from "@/server/actions/tags/getEntityTags";
 import { getAttachments } from "@/server/actions/attachments/getAttachments";
 import { getCompanyTasks } from "@/server/actions/company/getCompanyTasks";
+import { getTeams } from "@/server/actions/organization/getTeams";
 
 import CompanyDetailView from "@/components/company/detail/CompanyDetailView";
 
@@ -20,7 +21,7 @@ type Props = {
 export default async function CompanyPage({ params }: Props) {
   const { id: companyId } = await params;
 
-  const [company, contacts, deals, activity, notes, emails, tasks, allTags, entityTags, attachments] = await Promise.all([
+  const [company, contacts, deals, activity, notes, emails, tasks, allTags, entityTags, attachments, teams] = await Promise.all([
     getCompany(companyId),
     getCompanyContacts(companyId),
     getCompanyDeals(companyId),
@@ -31,6 +32,7 @@ export default async function CompanyPage({ params }: Props) {
     getTags(),
     getEntityTags("company", companyId),
     getAttachments("company", companyId),
+    getTeams(),
   ]);
 
   if (!company) notFound();
@@ -47,6 +49,7 @@ export default async function CompanyPage({ params }: Props) {
       allTags={allTags}
       entityTags={entityTags}
       attachments={attachments}
+      teams={teams}
     />
   );
 }

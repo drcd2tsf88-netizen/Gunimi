@@ -23,5 +23,17 @@ export default async function OrganizationTeamPage({
   const team = teams.find((t) => t.id === id);
   if (!team) notFound();
 
-  return <OrganizationTeamDetail team={team} allMembers={members} />;
+  const normalizedMembers = (members as Array<{
+    id: string;
+    user_id: string;
+    role: string;
+    profiles: Array<{ full_name: string | null; avatar_url: string | null; email: string | null }> | null;
+  }>).map((m) => ({
+    id: m.id,
+    user_id: m.user_id,
+    role: m.role,
+    profile: Array.isArray(m.profiles) ? (m.profiles[0] ?? null) : (m.profiles ?? null),
+  }));
+
+  return <OrganizationTeamDetail team={team} allMembers={normalizedMembers} />;
 }

@@ -44,6 +44,8 @@ import type { EmailThread } from "@/types/email";
 import type { WorkspaceTag } from "@/types/tag";
 import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
 import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
+import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
+import type { WorkspaceTeam } from "@/types/organization";
 import ContactTimeline from "@/components/timeline/ContactTimeline";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 
@@ -76,6 +78,7 @@ type Props = {
   allTags: WorkspaceTag[];
   entityTags: WorkspaceTag[];
   attachments: WorkspaceAttachment[];
+  teams: WorkspaceTeam[];
 };
 
 export default function ContactDetailView({
@@ -88,6 +91,7 @@ export default function ContactDetailView({
   allTags,
   entityTags,
   attachments,
+  teams,
 }: Props) {
   const t = useTranslations("contacts");
 
@@ -294,6 +298,7 @@ export default function ContactDetailView({
       badge: pendingTaskCount > 0 ? pendingTaskCount : undefined,
       content: (
         <div className="space-y-8">
+          <ResponsibilitiesPanel entityType="contact" entityId={contact.id} teams={teams} />
           <ContactTasks tasks={tasks} />
           <ContactNotes contact={contact} notes={notes} />
           <ContactEmails threads={emails} />

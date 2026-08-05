@@ -10,6 +10,7 @@ import { getDealStages } from "@/server/actions/deals/getDealStages";
 import { getTags } from "@/server/actions/tags/getTags";
 import { getEntityTags } from "@/server/actions/tags/getEntityTags";
 import { getAttachments } from "@/server/actions/attachments/getAttachments";
+import { getTeams } from "@/server/actions/organization/getTeams";
 
 import DealDetailView from "@/components/deals/detail/DealDetailView";
 import GunimiBreadcrumbs from "@/components/ui/GunimiBreadcrumbs";
@@ -28,7 +29,7 @@ export default async function DealPage({ params }: Props) {
   const companyId = dealData.deal.company?.id ?? null;
   const contactId = dealData.deal.contact?.id ?? null;
 
-  const [companies, contacts, notes, tasks, stages, allTags, entityTags, attachments] = await Promise.all([
+  const [companies, contacts, notes, tasks, stages, allTags, entityTags, attachments, teams] = await Promise.all([
     getCompanies(),
     getContacts(),
     getDealRelatedNotes(companyId, contactId),
@@ -37,6 +38,7 @@ export default async function DealPage({ params }: Props) {
     getTags(),
     getEntityTags("deal", id),
     getAttachments("deal", id),
+    getTeams(),
   ]);
 
   return (
@@ -58,6 +60,7 @@ export default async function DealPage({ params }: Props) {
         allTags={allTags}
         entityTags={entityTags}
         attachments={attachments}
+        teams={teams}
       />
     </div>
   );

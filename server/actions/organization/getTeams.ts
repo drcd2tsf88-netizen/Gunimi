@@ -33,13 +33,42 @@ export async function getTeams(): Promise<WorkspaceTeamWithMembers[]> {
     }
 
     return (data ?? []).map((team) => {
-      const activeMemberships = (team.memberships ?? []).filter((m) => !m.left_at);
+      const activeMemberships = (team.memberships ?? [])
+        .filter((m) => !m.left_at)
+        .map((m) => {
+          const rawMember = Array.isArray(m.member) ? m.member[0] : m.member;
+          const rawProfile = rawMember
+            ? Array.isArray(rawMember.profile) ? rawMember.profile[0] : rawMember.profile
+            : null;
+          return {
+            id: m.id,
+            team_id: m.team_id,
+            actor_id: m.actor_id,
+            role: m.role as "lead" | "member",
+            joined_at: m.joined_at,
+            left_at: m.left_at,
+            member: rawMember
+              ? {
+                  id: rawMember.id,
+                  user_id: rawMember.user_id,
+                  role: rawMember.role,
+                  profile: rawProfile
+                    ? {
+                        full_name: rawProfile.full_name ?? null,
+                        avatar_url: rawProfile.avatar_url ?? null,
+                        email: rawProfile.email ?? null,
+                      }
+                    : null,
+                }
+              : { id: "", user_id: "", role: "", profile: null },
+          };
+        });
       const lead = activeMemberships.find((m) => m.role === "lead") ?? null;
       return {
         ...team,
-        memberships: activeMemberships as WorkspaceTeamWithMembers["memberships"],
+        memberships: activeMemberships,
         member_count: activeMemberships.length,
-        lead: lead as WorkspaceTeamWithMembers["lead"],
+        lead,
       };
     });
   } catch {

@@ -8,6 +8,7 @@ import { getContactEmails } from "@/server/actions/crm/getContactEmails";
 import { getTags } from "@/server/actions/tags/getTags";
 import { getEntityTags } from "@/server/actions/tags/getEntityTags";
 import { getAttachments } from "@/server/actions/attachments/getAttachments";
+import { getTeams } from "@/server/actions/organization/getTeams";
 import ContactDetailView from "@/components/contacts/detail/ContactDetailView";
 
 type Props = {
@@ -17,7 +18,7 @@ type Props = {
 export default async function ContactDetailPage({ params }: Props) {
   const { id: contactId } = await params;
 
-  const [contact, deals, tasks, activities, notes, emails, allTags, entityTags, attachments] = await Promise.all([
+  const [contact, deals, tasks, activities, notes, emails, allTags, entityTags, attachments, teams] = await Promise.all([
     getContact(contactId),
     getContactDeals(contactId),
     getContactTasks(contactId),
@@ -27,6 +28,7 @@ export default async function ContactDetailPage({ params }: Props) {
     getTags(),
     getEntityTags("contact", contactId),
     getAttachments("contact", contactId),
+    getTeams(),
   ]);
 
   if (!contact) notFound();
@@ -42,6 +44,7 @@ export default async function ContactDetailPage({ params }: Props) {
       allTags={allTags}
       entityTags={entityTags}
       attachments={attachments}
+      teams={teams}
     />
   );
 }

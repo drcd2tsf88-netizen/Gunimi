@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
@@ -37,44 +37,44 @@ export default function TeamSheet({ open, onOpenChange, editTeam, onSuccess }: P
   const tc = useTranslations("common");
   const [isPending, startTransition] = useTransition();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [color, setColor] = useState(TEAM_COLORS[0]);
+  const [form, setForm] = useState({ name: "", description: "", color: TEAM_COLORS[0] });
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevTeamId, setPrevTeamId] = useState(editTeam?.id ?? null);
 
-  useEffect(() => {
-    if (editTeam) {
-      setName(editTeam.name);
-      setDescription(editTeam.description ?? "");
-      setColor(editTeam.color);
-    } else {
-      setName("");
-      setDescription("");
-      setColor(TEAM_COLORS[0]);
+  if (open !== prevOpen || editTeam?.id !== prevTeamId) {
+    setPrevOpen(open);
+    setPrevTeamId(editTeam?.id ?? null);
+    if (open) {
+      setForm(
+        editTeam
+          ? { name: editTeam.name, description: editTeam.description ?? "", color: editTeam.color }
+          : { name: "", description: "", color: TEAM_COLORS[0] }
+      );
     }
-  }, [editTeam, open]);
+  }
 
   function handleClose() {
     onOpenChange(false);
   }
 
   function handleSubmit() {
-    if (!name.trim()) {
+    if (!form.name.trim()) {
       toast.error(t("teamNameRequired"), { id: "team-sheet" });
       return;
     }
 
     startTransition(async () => {
       if (editTeam) {
-        const ok = await updateTeam({ teamId: editTeam.id, name, description: description || null, color });
+        const ok = await updateTeam({ teamId: editTeam.id, name: form.name, description: form.description || null, color: form.color });
         if (ok) {
           toast.success(t("teamUpdated"), { id: "team-sheet" });
-          onSuccess({ ...editTeam, name: name.trim(), description: description || null, color });
+          onSuccess({ ...editTeam, name: form.name.trim(), description: form.description || null, color: form.color });
           handleClose();
         } else {
           toast.error(t("teamUpdateFailed"), { id: "team-sheet" });
         }
       } else {
-        const team = await createTeam({ name, description: description || undefined, color });
+        const team = await createTeam({ name: form.name, description: form.description || undefined, color: form.color });
         if (team) {
           toast.success(t("teamCreated"), { id: "team-sheet" });
           onSuccess(team);
@@ -101,10 +101,10 @@ export default function TeamSheet({ open, onOpenChange, editTeam, onSuccess }: P
         </SheetHeader>
 
         <div className="flex-1 space-y-5 overflow-y-auto px-6 py-6">
-          <GunimiField label={t("teamName")} required>
+          <GunimiField label={t("teamName")}>
             <GunimiInput
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={form.name}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               placeholder={t("teamNamePlaceholder")}
               autoFocus
             />
@@ -112,8 +112,8 @@ export default function TeamSheet({ open, onOpenChange, editTeam, onSuccess }: P
 
           <GunimiField label={t("teamDescription")}>
             <GunimiInput
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={form.description}
+              onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
               placeholder={t("teamDescriptionPlaceholder")}
             />
           </GunimiField>
@@ -124,12 +124,12 @@ export default function TeamSheet({ open, onOpenChange, editTeam, onSuccess }: P
                 <button
                   key={c}
                   type="button"
-                  onClick={() => setColor(c)}
+                  onClick={() => setForm((f) => ({ ...f, color: c }))}
                   className="h-7 w-7 rounded-lg border-2 transition-all duration-150"
                   style={{
                     backgroundColor: c,
-                    borderColor: color === c ? "#fff" : "transparent",
-                    opacity: color === c ? 1 : 0.6,
+                    borderColor: form.color === c ? "#fff" : "transparent",
+                    opacity: form.color === c ? 1 : 0.6,
                   }}
                 />
               ))}
@@ -145,7 +145,7 @@ export default function TeamSheet({ open, onOpenChange, editTeam, onSuccess }: P
             <GunimiButton
               onClick={handleSubmit}
               loading={isPending}
-              disabled={!name.trim() || isPending}
+              disabled={!form.name.trim() || isPending}
               className="flex-1"
             >
               {isEdit ? tc("save") : t("createTeam")}

@@ -14,5 +14,17 @@ export default async function OrganizationPage() {
     getWorkspaceMembers(),
   ]);
 
-  return <OrganizationPageView teams={teams} members={members} />;
+  const normalizedMembers = (members as Array<{
+    id: string;
+    user_id: string;
+    role: string;
+    profiles: Array<{ full_name: string | null; avatar_url: string | null; email: string | null }> | null;
+  }>).map((m) => ({
+    id: m.id,
+    user_id: m.user_id,
+    role: m.role,
+    profile: Array.isArray(m.profiles) ? (m.profiles[0] ?? null) : (m.profiles ?? null),
+  }));
+
+  return <OrganizationPageView teams={teams} members={normalizedMembers} />;
 }
