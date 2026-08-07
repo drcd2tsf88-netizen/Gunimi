@@ -299,7 +299,11 @@ export default function ContactDetailView({
       content: (
         <div className="space-y-8">
           <ResponsibilitiesPanel entityType="contact" entityId={contact.id} teams={teams} />
-          <ContactTasks tasks={tasks} />
+          <ContactTasks
+            tasks={tasks}
+            contactId={contact.id}
+            onTaskCreated={(task) => setLocalTasks((prev) => [task, ...prev])}
+          />
           <ContactNotes contact={contact} notes={notes} />
           <ContactEmails threads={emails} />
           <AttachmentsPanel

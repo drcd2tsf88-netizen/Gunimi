@@ -231,6 +231,7 @@ export default function DealDetailView({
           <DealTasks
             tasks={localTasks}
             contactId={deal.contact?.id}
+            onTaskCreated={(task) => setLocalTasks((prev) => [task, ...prev])}
           />
           <DealNotes
             notes={notes}
