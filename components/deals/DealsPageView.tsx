@@ -32,9 +32,9 @@ import DealsListCommand from "./DealsListCommand";
 import CreateDealSheet from "./CreateDealSheet";
 import EditDealSheet from "./EditDealSheet";
 
-import { Deal } from "@/types/deal";
-import { Company } from "@/types/company";
-import { Contact } from "@/types/contact";
+import type { Deal } from "@/types/deal";
+import type { Company } from "@/types/company";
+import type { Contact } from "@/types/contact";
 import type { WorkspaceDealStage } from "@/types/dealStage";
 
 type View = "list" | "pipeline";
@@ -62,20 +62,27 @@ export default function DealsPageView({
     ? stageParam!
     : undefined;
 
+  const [localDeals, setLocalDeals] = useState<Deal[]>(deals);
+  const [prevDeals, setPrevDeals] = useState(deals);
+  if (prevDeals !== deals) {
+    setPrevDeals(deals);
+    setLocalDeals(deals);
+  }
+
   const [view, setView] = useState<View>("list");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
   const [filterStage, setFilterStage] = useState<"all" | "open" | "won" | "lost">("all");
 
-  const openDeals = useMemo(() => deals.filter((d) => d.stage !== "won" && d.stage !== "lost"), [deals]);
-  const wonDeals = useMemo(() => deals.filter((d) => d.stage === "won"), [deals]);
-  const lostDeals = useMemo(() => deals.filter((d) => d.stage === "lost"), [deals]);
+  const openDeals = useMemo(() => localDeals.filter((d) => d.stage !== "won" && d.stage !== "lost"), [localDeals]);
+  const wonDeals = useMemo(() => localDeals.filter((d) => d.stage === "won"), [localDeals]);
+  const lostDeals = useMemo(() => localDeals.filter((d) => d.stage === "lost"), [localDeals]);
   const pipelineValue = useMemo(() => openDeals.reduce((sum, d) => sum + Number(d.value || 0), 0), [openDeals]);
 
   const filteredDeals = useMemo(() => {
     const query = search.toLowerCase();
-    let list = deals;
+    let list = localDeals;
     if (filterStage === "open") list = openDeals;
     else if (filterStage === "won") list = wonDeals;
     else if (filterStage === "lost") list = lostDeals;
@@ -86,7 +93,7 @@ export default function DealsPageView({
         deal.company?.name?.toLowerCase().includes(query) ||
         deal.contact?.name?.toLowerCase().includes(query)
     );
-  }, [deals, search, filterStage, openDeals, wonDeals, lostDeals]);
+  }, [localDeals, search, filterStage, openDeals, wonDeals, lostDeals]);
 
   return (
     <>
@@ -267,7 +274,7 @@ export default function DealsPageView({
       {/* VIEW CONTENT */}
 
       <div className="mt-6">
-        {deals.length === 0 ? (
+        {localDeals.length === 0 ? (
           <GunimiEmptyState
             icon={TrendingUp}
             title={t("onboardingEmptyTitle")}
@@ -302,7 +309,9 @@ export default function DealsPageView({
         companies={companies}
         contacts={contacts}
         stages={stages}
-        onCreated={() => router.refresh()}
+        onCreated={(deal) => {
+          setLocalDeals((prev) => [deal, ...prev]);
+        }}
       />
 
       {editingDeal && (
@@ -316,13 +325,15 @@ export default function DealsPageView({
           companies={companies}
           contacts={contacts}
           stages={stages}
-          onUpdated={() => {
+          onUpdated={(updated) => {
             setEditingDeal(null);
-            router.refresh();
+            setLocalDeals((prev) =>
+              prev.map((d) => (d.id === updated.id ? updated : d))
+            );
           }}
-          onDeleted={() => {
+          onDeleted={(dealId) => {
             setEditingDeal(null);
-            router.refresh();
+            setLocalDeals((prev) => prev.filter((d) => d.id !== dealId));
           }}
         />
       )}

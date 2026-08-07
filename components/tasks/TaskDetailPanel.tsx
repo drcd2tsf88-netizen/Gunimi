@@ -43,6 +43,8 @@ type Props = {
   members: WorkspaceMember[];
   onClose: () => void;
   onTaskUpdated?: (taskId: string, changes: Record<string, unknown>) => void;
+  onSubtaskCreated?: (parentId: string, subtask: SubTask) => void;
+  onNavigateToTask?: (taskId: string) => void;
 };
 
 const PRIORITY_CONFIG = {
@@ -74,7 +76,7 @@ function Avatar({ name, size = 28 }: { name: string | null; size?: number }) {
   );
 }
 
-export default function TaskDetailPanel({ taskId, currentUserId, members, onClose, onTaskUpdated }: Props) {
+export default function TaskDetailPanel({ taskId, currentUserId, members, onClose, onTaskUpdated, onSubtaskCreated, onNavigateToTask }: Props) {
   const t = useTranslations("tasks");
   const currentUserName = members.find(m => m.user_id === currentUserId)?.profiles?.full_name ?? null;
 
@@ -218,6 +220,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
         created_at: new Date().toISOString(),
       };
       setTask((prev) => prev ? { ...prev, subtasks: [...prev.subtasks, newSub] } : prev);
+      onSubtaskCreated?.(task.id, newSub);
       setSubtaskText("");
       setShowSubtaskInput(false);
       toast.success(t("subtaskAdded"));
@@ -235,6 +238,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
         : prev
     );
     await updateTask({ id: subId, status: next });
+    onTaskUpdated?.(subId, { status: next });
   }
 
   function handleDescriptionSave() {
@@ -529,19 +533,23 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                 {task.subtasks.length > 0 && (
                   <div className="mb-2 space-y-1">
                     {task.subtasks.map((sub) => (
-                      <div key={sub.id} className="flex items-center gap-2.5 rounded-lg px-2 py-2 transition-colors hover:bg-white/[0.03]">
+                      <div
+                        key={sub.id}
+                        onClick={() => onNavigateToTask?.(sub.id)}
+                        className={`group flex items-center gap-2.5 rounded-lg px-2 py-2 transition-colors hover:bg-white/[0.05] ${onNavigateToTask ? "cursor-pointer" : ""}`}
+                      >
                         <button
-                          onClick={() => handleToggleSubtask(sub.id, sub.status)}
+                          onClick={(e) => { e.stopPropagation(); handleToggleSubtask(sub.id, sub.status); }}
                           className={`shrink-0 transition-colors ${sub.status === "done" ? "text-emerald-400" : "text-zinc-600 hover:text-emerald-400"}`}
                         >
                           {sub.status === "done"
                             ? <Check size={14} />
                             : <Square size={14} />}
                         </button>
-                        <span className={`flex-1 text-sm ${sub.status === "done" ? "text-zinc-600 line-through" : "text-white/75"}`}>
+                        <span className={`flex-1 text-sm ${sub.status === "done" ? "text-zinc-600 line-through" : "text-white/75 group-hover:text-violet-300 transition-colors"}`}>
                           {sub.title}
                         </span>
-                        <ChevronRight size={11} className="text-zinc-700" />
+                        <ChevronRight size={11} className="text-zinc-600 transition-colors group-hover:text-violet-400" />
                       </div>
                     ))}
                   </div>

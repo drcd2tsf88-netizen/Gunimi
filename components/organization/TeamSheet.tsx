@@ -41,7 +41,7 @@ export default function TeamSheet({ open, onOpenChange, editTeam, onSuccess }: P
   const [prevOpen, setPrevOpen] = useState(open);
   const [prevTeamId, setPrevTeamId] = useState(editTeam?.id ?? null);
 
-  if (open !== prevOpen || editTeam?.id !== prevTeamId) {
+  if (open !== prevOpen || (editTeam?.id ?? null) !== prevTeamId) {
     setPrevOpen(open);
     setPrevTeamId(editTeam?.id ?? null);
     if (open) {

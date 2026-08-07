@@ -56,8 +56,8 @@ type Props = {
   companies: Company[];
   contacts: Contact[];
   stages: WorkspaceDealStage[];
-  onUpdated: () => void;
-  onDeleted: () => void;
+  onUpdated: (deal: Deal) => void;
+  onDeleted: (dealId: string) => void;
 };
 
 export default function EditDealSheet({
@@ -144,8 +144,27 @@ export default function EditDealSheet({
       }
 
       toast.success(t("deals.opportunityUpdated"), { id: "orbit-deal-save" });
+      const selectedCompany = companies.find((c) => c.id === companyId);
+      const selectedContact = contacts.find((c) => c.id === contactId);
       onOpenChange(false);
-      onUpdated();
+      onUpdated({
+        ...deal,
+        title: title.trim(),
+        stage: stageSlug,
+        value: Number(value) || 0,
+        paid_amount: Number(paidAmount) || 0,
+        currency,
+        probability,
+        description,
+        expected_close_date: expectedCloseDate || undefined,
+        expiry_date: expiryDate || undefined,
+        company: selectedCompany
+          ? { id: selectedCompany.id, name: selectedCompany.name }
+          : undefined,
+        contact: selectedContact
+          ? { id: selectedContact.id, name: selectedContact.name, email: selectedContact.email ?? undefined }
+          : undefined,
+      });
     } catch {
       toast.error(t("deals.failedToUpdate"), { id: "orbit-deal-save" });
     } finally {
@@ -168,7 +187,7 @@ export default function EditDealSheet({
       toast.success(t("deals.opportunityDeleted"), { id: "orbit-deal-delete" });
       setDeleteOpen(false);
       onOpenChange(false);
-      onDeleted();
+      onDeleted(deal.id);
     } catch {
       toast.error(t("deals.failedToDelete"), { id: "orbit-deal-delete" });
     } finally {

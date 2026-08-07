@@ -38,7 +38,7 @@ type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   task?: Task | null;
-  onSaved: () => void;
+  onSaved: (saved: Task, isEdit: boolean) => void;
   members: WorkspaceMember[];
 };
 
@@ -117,6 +117,21 @@ export default function CreateTaskSheet({
         }
 
         toast.success(t("taskUpdated"), { id: toastId });
+        resetForm();
+        onSaved(
+          {
+            ...task,
+            title: title.trim(),
+            description: description || null,
+            priority,
+            status,
+            due_date: dueDate || null,
+            assigned_to: assignedTo !== "none" ? assignedTo : null,
+            is_recurring: isRecurring,
+            recurrence_frequency: isRecurring ? recurrenceFrequency : null,
+          },
+          true,
+        );
       } else {
         const result = await createTask({
           title: title.trim(),
@@ -136,10 +151,9 @@ export default function CreateTaskSheet({
         }
 
         toast.success(t("taskCreated"), { id: toastId });
+        resetForm();
+        onSaved(result as Task, false);
       }
-
-      resetForm();
-      onSaved();
     } catch {
       toast.error(isEdit ? t("failedToUpdate") : t("failedToCreate"), { id: toastId });
     } finally {

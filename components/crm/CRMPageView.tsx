@@ -21,7 +21,6 @@ import {
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
-import { getCRMContacts } from "@/server/actions/crm/getCRMContacts";
 import { deleteContact } from "@/server/actions/crm/deleteContact";
 import { toggleContactPriority } from "@/server/actions/crm/toggleContactPriority";
 import { getTags } from "@/server/actions/tags/getTags";
@@ -151,10 +150,11 @@ export default function CRMPageView({ initialContacts }: Props) {
     await toggleContactPriority(contact.id, next);
   }
 
-  async function handleEditSaved() {
+  function handleEditSaved(updated: Contact) {
+    setContacts((prev) =>
+      prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c))
+    );
     setEditContact(null);
-    const fresh = await getCRMContacts();
-    setContacts(fresh as Contact[]);
   }
 
   function handleDeleteConfirm() {

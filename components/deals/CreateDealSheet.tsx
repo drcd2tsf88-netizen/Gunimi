@@ -35,6 +35,7 @@ import {
 
 import { Company } from "@/types/company";
 import { Contact } from "@/types/contact";
+import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import type { WorkspaceDealStage } from "@/types/dealStage";
 
@@ -44,7 +45,7 @@ type Props = {
   companies: Company[];
   contacts: Contact[];
   stages: WorkspaceDealStage[];
-  onCreated: () => void;
+  onCreated: (deal: Deal) => void;
 };
 
 export default function CreateDealSheet({
@@ -136,8 +137,18 @@ export default function CreateDealSheet({
       }
 
       toast.success(t("deals.opportunityCreated"), { id: "orbit-deal-create" });
+      const selectedCompany = companies.find((c) => c.id === companyId);
+      const selectedContact = contacts.find((c) => c.id === contactId);
       resetForm();
-      onCreated();
+      onCreated({
+        ...deal,
+        company: selectedCompany
+          ? { id: selectedCompany.id, name: selectedCompany.name }
+          : undefined,
+        contact: selectedContact
+          ? { id: selectedContact.id, name: selectedContact.name, email: selectedContact.email ?? undefined }
+          : undefined,
+      } as Deal);
       onOpenChange(false);
     } catch {
       toast.error(t("deals.failedToCreateOpportunity"), { id: "orbit-deal-create" });

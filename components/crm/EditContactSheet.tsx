@@ -35,7 +35,7 @@ type Props = {
   contact: Contact;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSaved: () => void;
+  onSaved: (updated: Contact) => void;
 };
 
 export default function EditContactSheet({
@@ -92,7 +92,14 @@ export default function EditContactSheet({
 
       if (result) {
         toast.success(t("contactUpdated"));
-        onSaved();
+        onSaved({
+          id: contact.id,
+          name: name.trim(),
+          email: email || null,
+          phone: phone || null,
+          position: position || null,
+          notes: notes || null,
+        });
         onOpenChange(false);
       } else {
         toast.error(t("failedToUpdateContact"));

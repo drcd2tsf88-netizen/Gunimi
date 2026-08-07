@@ -296,14 +296,19 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
   async function confirmDelete() {
     if (!deleteTarget) return;
 
+    const target = deleteTarget;
     setDeleteLoading(true);
-    const ok = await deleteTask(deleteTarget.id);
+    const ok = await deleteTask(target.id);
     setDeleteLoading(false);
 
     if (ok) {
       toast.success(t("taskDeleted"));
       setDeleteTarget(null);
-      await reload();
+      if (selectedTaskId === target.id) setSelectedTaskId(null);
+      setTasks((prev) =>
+        prev.filter((t) => t.id !== target.id && t.parent_task_id !== target.id)
+      );
+      getTaskCounts().then(setTaskCounts).catch(() => {});
     } else {
       toast.error(t("failedToDelete"));
     }
@@ -747,10 +752,23 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
           setSheetOpen(open);
           if (!open) setEditTask(null);
         }}
-        onSaved={() => {
+        onSaved={(saved, isEdit) => {
           setSheetOpen(false);
           setEditTask(null);
-          reload();
+          if (isEdit) {
+            setTasks((prev) =>
+              prev.map((t) => (t.id === saved.id ? { ...t, ...saved } : t))
+            );
+          } else {
+            setTasks((prev) => [saved, ...prev]);
+            setExpandedTaskIds((prev) => {
+              if (!saved.parent_task_id) return prev;
+              const next = new Set(prev);
+              next.add(saved.parent_task_id);
+              return next;
+            });
+          }
+          getTaskCounts().then(setTaskCounts).catch(() => {});
         }}
       />
 
@@ -793,6 +811,27 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
         currentUserId={currentUserId}
         members={members}
         onClose={() => setSelectedTaskId(null)}
+        onNavigateToTask={(id) => setSelectedTaskId(id)}
+        onSubtaskCreated={(parentId, sub) => {
+          setTasks((prev) => [
+            ...prev,
+            {
+              id: sub.id,
+              title: sub.title,
+              status: sub.status,
+              priority: sub.priority,
+              parent_task_id: parentId,
+              created_at: sub.created_at,
+              due_date: sub.due_date,
+              assigned_to: sub.assigned_to,
+            } as Task,
+          ]);
+          setExpandedTaskIds((prev) => {
+            const next = new Set(prev);
+            next.add(parentId);
+            return next;
+          });
+        }}
         onTaskUpdated={(taskId, changes) => {
           setTasks((prev) =>
             prev.map((t) => (t.id === taskId ? { ...t, ...changes } : t))
