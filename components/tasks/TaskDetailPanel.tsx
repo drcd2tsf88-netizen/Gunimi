@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import GunimiCard from "@/components/ui/GunimiCard";
 import TagPicker from "@/components/ui/TagPicker";
 import NoteEditor from "@/components/notes/NoteEditor";
+import CommentEditor from "@/components/tasks/CommentEditor";
 import { sanitizeHtml } from "@/lib/utils/sanitizeHtml";
 import { getTaskDetail } from "@/server/actions/tasks/getTaskDetail";
 import { createTaskComment } from "@/server/actions/tasks/createTaskComment";
@@ -84,7 +85,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const [allTags, setAllTags] = useState<WorkspaceTag[]>([]);
   const [taskTags, setTaskTags] = useState<WorkspaceTag[]>([]);
   const [loading, startFetch] = useTransition();
-  const [commentText, setCommentText] = useState("");
+  const [commentResetKey, setCommentResetKey] = useState(0);
   const [subtaskText, setSubtaskText] = useState("");
   const [submittingComment, setSubmittingComment] = useState(false);
   const [addingSubtask, setAddingSubtask] = useState(false);
@@ -94,7 +95,6 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const [editingDescription, setEditingDescription] = useState(false);
   const [descriptionHtml, setDescriptionHtml] = useState("");
   const [, startTransition] = useTransition();
-  const commentRef = useRef<HTMLTextAreaElement>(null);
   const subtaskRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const assigneeRef = useRef<HTMLDivElement>(null);
@@ -173,22 +173,22 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
     });
   }
 
-  async function handlePostComment() {
-    if (!task || !commentText.trim()) return;
+  async function handlePostComment(html: string) {
+    if (!task || !html || html.replace(/<[^>]*>/g, "").trim() === "") return;
     setSubmittingComment(true);
-    const result = await createTaskComment(task.id, commentText.trim());
+    const result = await createTaskComment(task.id, html);
     if (result.success) {
       const newComment: TaskComment = {
         id: result.id!,
         user_id: currentUserId,
-        content: commentText.trim(),
+        content: html,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         author_name: currentUserName,
         author_avatar: null,
       };
       setTask((prev) => prev ? { ...prev, comments: [...prev.comments, newComment] } : prev);
-      setCommentText("");
+      setCommentResetKey((k) => k + 1);
       toast.success(t("commentAdded"));
     } else {
       toast.error(t("failedToComment"));
@@ -620,9 +620,16 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                               )}
                             </div>
                             <GunimiCard className="mt-1.5 px-3 py-2.5">
-                              <p className="text-xs leading-relaxed text-white/60 whitespace-pre-wrap">
-                                {comment.content}
-                              </p>
+                              {comment.content.trimStart().startsWith("<") ? (
+                                <div
+                                  className="comment-content"
+                                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(comment.content) }}
+                                />
+                              ) : (
+                                <p className="text-xs leading-relaxed text-white/60 whitespace-pre-wrap">
+                                  {comment.content}
+                                </p>
+                              )}
                             </GunimiCard>
                           </div>
                         </div>
@@ -635,28 +642,11 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                 <div className="flex items-start gap-2.5">
                   <Avatar name={currentUserName} size={26} />
                   <div className="flex-1">
-                    <textarea
-                      ref={commentRef}
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handlePostComment();
-                      }}
-                      placeholder={t("commentPlaceholder")}
-                      rows={2}
-                      className="w-full resize-none rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-sm text-white/80 placeholder-zinc-600 outline-none transition-colors focus:border-violet-500/40"
+                    <CommentEditor
+                      onSubmit={handlePostComment}
+                      submitting={submittingComment}
+                      resetKey={commentResetKey}
                     />
-                    <div className="mt-1.5 flex items-center justify-between">
-                      <span className="text-[10px] text-zinc-700">⌘↵ to post</span>
-                      <button
-                        onClick={handlePostComment}
-                        disabled={submittingComment || !commentText.trim()}
-                        className="flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-white transition-opacity disabled:opacity-40 hover:bg-violet-500"
-                      >
-                        {submittingComment && <Loader2 size={11} className="animate-spin" />}
-                        {t("commentSubmit")}
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>

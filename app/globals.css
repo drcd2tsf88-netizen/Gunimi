@@ -392,3 +392,16 @@
 .note-content u { text-decoration: underline; }
 .note-content code { font-family: monospace; font-size: 0.85em; background: rgba(255,255,255,0.07); padding: 0.1em 0.35em; border-radius: 4px; color: rgba(167,139,250,0.9); }
 .note-content blockquote { border-left: 2px solid rgba(109,91,255,0.4); padding-left: 1em; margin: 0.6em 0; color: rgba(255,255,255,0.45); }
+
+/* comment-content — rendered HTML in task comments (lighter than note-content) */
+.comment-content { color: rgba(255,255,255,0.70); font-size: 12px; line-height: 1.65; }
+.comment-content p { margin: 0 0 0.4em; }
+.comment-content p:last-child { margin-bottom: 0; }
+.comment-content ul { list-style: disc !important; padding-left: 1.4em !important; margin: 0.3em 0; }
+.comment-content ol { list-style: decimal !important; padding-left: 1.4em !important; margin: 0.3em 0; }
+.comment-content li { margin: 0.15em 0; display: list-item !important; }
+.comment-content ul ::marker,
+.comment-content ol ::marker { color: rgba(255,255,255,0.35); }
+.comment-content strong { font-weight: 600; color: rgba(255,255,255,0.85); }
+.comment-content em { font-style: italic; }
+.comment-content u { text-decoration: underline; }
