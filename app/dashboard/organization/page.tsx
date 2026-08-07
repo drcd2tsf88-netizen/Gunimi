@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getTeams } from "@/server/actions/organization/getTeams";
 import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
+import { getWorkspaceInvites } from "@/server/actions/workspace/getWorkspaceInvites";
 import OrganizationPageView from "@/components/organization/OrganizationPageView";
 
 export async function generateMetadata() {
@@ -9,9 +10,10 @@ export async function generateMetadata() {
 }
 
 export default async function OrganizationPage() {
-  const [teams, members] = await Promise.all([
+  const [teams, members, invites] = await Promise.all([
     getTeams(),
     getWorkspaceMembers(),
+    getWorkspaceInvites(),
   ]);
 
   const normalizedMembers = (members as Array<{
@@ -26,5 +28,5 @@ export default async function OrganizationPage() {
     profile: Array.isArray(m.profiles) ? (m.profiles[0] ?? null) : (m.profiles ?? null),
   }));
 
-  return <OrganizationPageView teams={teams} members={normalizedMembers} />;
+  return <OrganizationPageView teams={teams} members={normalizedMembers} invites={invites} />;
 }
