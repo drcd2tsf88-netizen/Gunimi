@@ -49,6 +49,7 @@ import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
 import type { WorkspaceTeam } from "@/types/organization";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
+import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 
 const PREP_ICONS: Record<CompanyPrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -225,6 +226,20 @@ export default function CompanyDetailView({
           earlyNoteDescription={
             activities.length === 0 ? t("storyEarlyDescription") : undefined
           }
+        />
+      ),
+    },
+    {
+      id: "history",
+      label: t("tabHistory"),
+      content: (
+        <WorkspaceTimeline
+          activities={activities}
+          notes={notes}
+          tasks={localTasks}
+          emails={emails}
+          deals={deals}
+          attachments={attachments}
         />
       ),
     },

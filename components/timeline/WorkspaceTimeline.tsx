@@ -15,12 +15,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-import type { WorkspaceActivity } from "@/types/activity";
-import type { ContactNote } from "@/server/actions/crm/getContactNotes";
-import type { ContactTask } from "@/server/actions/crm/getContactTasks";
-import type { EmailThread } from "@/types/email";
-import type { Deal } from "@/types/deal";
-import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttachments";
+type TimelineNote       = { id: string; title: string; content?: string | null; created_at: string };
+type TimelineTask       = { id: string; title: string; description?: string | null; status: string; priority?: string | null; created_at: string };
+type TimelineActivity   = { id: string; type?: string | null; title?: string | null; description?: string | null; message?: string | null; created_at: string };
+type TimelineEmail      = { id: string; subject?: string | null; snippet?: string | null; last_message_at?: string | null; message_count: number };
+type TimelineDeal       = { id: string; title: string; stage?: string | null; created_at: string };
+type TimelineAttachment = { id: string; file_name: string; created_at: string };
 
 type TimelineEvent = {
   id: string;
@@ -35,21 +35,21 @@ type TimelineEvent = {
 };
 
 type Props = {
-  activities: WorkspaceActivity[];
-  notes: ContactNote[];
-  tasks: ContactTask[];
-  emails: EmailThread[];
-  deals: Deal[];
-  attachments: WorkspaceAttachment[];
+  activities?: TimelineActivity[];
+  notes?: TimelineNote[];
+  tasks?: TimelineTask[];
+  emails?: TimelineEmail[];
+  deals?: TimelineDeal[];
+  attachments?: TimelineAttachment[];
 };
 
 function buildEvents(
-  activities: WorkspaceActivity[],
-  notes: ContactNote[],
-  tasks: ContactTask[],
-  emails: EmailThread[],
-  deals: Deal[],
-  attachments: WorkspaceAttachment[],
+  activities: TimelineActivity[],
+  notes: TimelineNote[],
+  tasks: TimelineTask[],
+  emails: TimelineEmail[],
+  deals: TimelineDeal[],
+  attachments: TimelineAttachment[],
 ): TimelineEvent[] {
   const events: TimelineEvent[] = [];
 
@@ -57,7 +57,7 @@ function buildEvents(
     events.push({
       id: `a-${a.id}`,
       kind: "activity",
-      subtype: a.type,
+      subtype: a.type ?? undefined,
       title: a.title ?? a.type ?? "Activity",
       description: a.description ?? a.message ?? undefined,
       date: a.created_at,
@@ -69,9 +69,9 @@ function buildEvents(
       id: `n-${n.id}`,
       kind: "note",
       title: n.title,
-      description: n.content ?? undefined,
+      description: n.content?.replace(/<[^>]+>/g, "").slice(0, 120) ?? undefined,
       date: n.created_at,
-      href: `/dashboard/notes`,
+      href: `/dashboard/notes/${n.id}`,
     });
   }
 
@@ -88,13 +88,14 @@ function buildEvents(
   }
 
   for (const email of emails) {
-    if (!email.last_message_at) continue;
+    const date = email.last_message_at;
+    if (!date) continue;
     events.push({
       id: `e-${email.id}`,
       kind: "email",
       title: email.subject ?? "Email",
       description: email.snippet ?? undefined,
-      date: email.last_message_at,
+      date,
       badge: email.message_count > 1 ? `${email.message_count}` : undefined,
     });
   }
@@ -119,9 +120,7 @@ function buildEvents(
     });
   }
 
-  return events.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  return events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 function groupByDate(events: TimelineEvent[]): { label: string; events: TimelineEvent[] }[] {
@@ -131,8 +130,6 @@ function groupByDate(events: TimelineEvent[]): { label: string; events: Timeline
   today.setHours(0, 0, 0, 0);
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
-  const weekAgo = new Date(today);
-  weekAgo.setDate(weekAgo.getDate() - 7);
 
   for (const event of events) {
     const d = new Date(event.date);
@@ -144,7 +141,7 @@ function groupByDate(events: TimelineEvent[]): { label: string; events: Timeline
     } else if (d.getTime() === yesterday.getTime()) {
       label = "__yesterday__";
     } else {
-      label = d.toISOString().slice(0, 7); // "YYYY-MM"
+      label = d.toISOString().slice(0, 7);
     }
 
     if (!groups.has(label)) groups.set(label, []);
@@ -157,20 +154,24 @@ function groupByDate(events: TimelineEvent[]): { label: string; events: Timeline
 function eventIcon(event: TimelineEvent) {
   const cls = "h-3.5 w-3.5";
   switch (event.kind) {
-    case "email": return { icon: <Mail className={cls} />, dot: "bg-sky-500", ring: "ring-sky-500/20" };
-    case "note": return { icon: <FileText className={cls} />, dot: "bg-zinc-500", ring: "ring-zinc-500/20" };
+    case "email":
+      return { icon: <Mail className={cls} />, dot: "bg-sky-500", ring: "ring-sky-500/20" };
+    case "note":
+      return { icon: <FileText className={cls} />, dot: "bg-zinc-500", ring: "ring-zinc-500/20" };
     case "task":
       return event.done
         ? { icon: <CheckCircle2 className={cls} />, dot: "bg-emerald-500", ring: "ring-emerald-500/20" }
         : { icon: <CircleDot className={cls} />, dot: "bg-violet-500", ring: "ring-violet-500/20" };
-    case "deal": return { icon: <TrendingUp className={cls} />, dot: "bg-amber-500", ring: "ring-amber-500/20" };
-    case "file": return { icon: <Paperclip className={cls} />, dot: "bg-zinc-600", ring: "ring-zinc-600/20" };
+    case "deal":
+      return { icon: <TrendingUp className={cls} />, dot: "bg-amber-500", ring: "ring-amber-500/20" };
+    case "file":
+      return { icon: <Paperclip className={cls} />, dot: "bg-zinc-600", ring: "ring-zinc-600/20" };
     default: {
       const sub = event.subtype ?? "";
       if (sub.includes("email")) return { icon: <Mail className={cls} />, dot: "bg-sky-500", ring: "ring-sky-500/20" };
-      if (sub.includes("note")) return { icon: <FileText className={cls} />, dot: "bg-zinc-500", ring: "ring-zinc-500/20" };
-      if (sub.includes("task")) return { icon: <Clock className={cls} />, dot: "bg-violet-500", ring: "ring-violet-500/20" };
-      if (sub.includes("deal")) return { icon: <TrendingUp className={cls} />, dot: "bg-amber-500", ring: "ring-amber-500/20" };
+      if (sub.includes("note"))  return { icon: <FileText className={cls} />, dot: "bg-zinc-500", ring: "ring-zinc-500/20" };
+      if (sub.includes("task"))  return { icon: <Clock className={cls} />, dot: "bg-violet-500", ring: "ring-violet-500/20" };
+      if (sub.includes("deal"))  return { icon: <TrendingUp className={cls} />, dot: "bg-amber-500", ring: "ring-amber-500/20" };
       if (sub.includes("signal")) return { icon: <Zap className={cls} />, dot: "bg-rose-500", ring: "ring-rose-500/20" };
       return { icon: <MessageSquare className={cls} />, dot: "bg-white/20", ring: "ring-white/10" };
     }
@@ -178,18 +179,18 @@ function eventIcon(event: TimelineEvent) {
 }
 
 function priorityColor(priority?: string) {
-  if (priority === "high") return "text-red-400 bg-red-500/10 border-red-500/20";
+  if (priority === "high")   return "text-red-400 bg-red-500/10 border-red-500/20";
   if (priority === "medium") return "text-amber-400 bg-amber-500/10 border-amber-500/20";
   return "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
 }
 
-export default function ContactTimeline({
-  activities,
-  notes,
-  tasks,
-  emails,
-  deals,
-  attachments,
+export default function WorkspaceTimeline({
+  activities = [],
+  notes = [],
+  tasks = [],
+  emails = [],
+  deals = [],
+  attachments = [],
 }: Props) {
   const t = useTranslations("timeline");
 
@@ -201,7 +202,7 @@ export default function ContactTimeline({
   const groups = useMemo(() => groupByDate(events), [events]);
 
   function groupLabel(raw: string): string {
-    if (raw === "__today__") return t("today");
+    if (raw === "__today__")     return t("today");
     if (raw === "__yesterday__") return t("yesterday");
     const [year, month] = raw.split("-");
     const d = new Date(Number(year), Number(month) - 1, 1);
@@ -222,7 +223,6 @@ export default function ContactTimeline({
     <div className="space-y-6">
       {groups.map((group) => (
         <div key={group.label}>
-          {/* Date group label */}
           <div className="mb-3 flex items-center gap-3">
             <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
               {groupLabel(group.label)}
@@ -230,9 +230,7 @@ export default function ContactTimeline({
             <div className="h-px flex-1 bg-white/[0.05]" />
           </div>
 
-          {/* Events */}
           <div className="relative ml-1.5">
-            {/* Vertical line */}
             <div className="absolute left-3 top-0 h-full w-px bg-white/[0.06]" />
 
             <div className="space-y-1">
@@ -247,7 +245,6 @@ export default function ContactTimeline({
                       event.href ? "cursor-pointer" : "",
                     ].join(" ")}
                   >
-                    {/* Dot */}
                     <div className="relative z-10 mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center">
                       <div
                         className={[
@@ -261,7 +258,6 @@ export default function ContactTimeline({
                       </div>
                     </div>
 
-                    {/* Content */}
                     <div className="min-w-0 flex-1 pt-0.5">
                       <div className="flex items-start justify-between gap-2">
                         <p

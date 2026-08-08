@@ -46,7 +46,7 @@ import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttach
 import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
 import type { WorkspaceTeam } from "@/types/organization";
-import ContactTimeline from "@/components/timeline/ContactTimeline";
+import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 
 const CONTACT_PREP_ICONS: Record<ContactPrepItem["iconKey"], LucideIcon> = {
@@ -282,7 +282,7 @@ export default function ContactDetailView({
       id: "history",
       label: t("tabHistory"),
       content: (
-        <ContactTimeline
+        <WorkspaceTimeline
           activities={activities}
           notes={notes}
           tasks={tasks}

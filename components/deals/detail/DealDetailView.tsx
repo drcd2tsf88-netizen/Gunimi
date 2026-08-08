@@ -26,6 +26,7 @@ import { resolveDealContext } from "@/lib/deals/context";
 
 import { User, Clock, CheckSquare, FileText, LucideIcon, Users, CalendarDays, TrendingUp } from "lucide-react";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
+import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 
 import { Deal } from "@/types/deal";
 import { WorkspaceActivity } from "@/types/activity";
@@ -218,6 +219,18 @@ export default function DealDetailView({
           events={storyEvents}
           earlyNoteTitle={activities.length === 0 ? t("storyEarlyTitle") : undefined}
           earlyNoteDescription={activities.length === 0 ? t("storyEarlyDescription") : undefined}
+        />
+      ),
+    },
+    {
+      id: "history",
+      label: t("tabHistory"),
+      content: (
+        <WorkspaceTimeline
+          activities={activities}
+          notes={notes}
+          tasks={localTasks}
+          attachments={attachments}
         />
       ),
     },
