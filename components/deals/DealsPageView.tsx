@@ -5,7 +5,7 @@ import {
   useState,
 } from "react";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { useTranslations } from "next-intl";
 
@@ -54,7 +54,6 @@ export default function DealsPageView({
 }: Props) {
   const t = useTranslations("deals");
 
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const stageParam = searchParams.get("stage");
@@ -297,7 +296,11 @@ export default function DealsPageView({
           <DealsPipeline
             deals={filteredDeals}
             stages={stages}
-            onRefresh={() => router.refresh()}
+            onStageMoved={(dealId, newStage) =>
+              setLocalDeals((prev) =>
+                prev.map((d) => (d.id === dealId ? { ...d, stage: newStage } : d))
+              )
+            }
             onEdit={setEditingDeal}
           />
         )}
