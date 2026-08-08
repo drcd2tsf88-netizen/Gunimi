@@ -54,17 +54,6 @@ type Props = {
   workspaceItems: WorkspaceCalendarItem[];
 };
 
-type LinkedContact = {
-  contact: CalendarContact;
-  count: number;
-};
-
-type LinkedCompany = {
-  id: string;
-  name: string;
-  count: number;
-};
-
 // ─── Date helpers ─────────────────────────────────────────────────────────────
 
 function isSameDay(a: Date, b: Date): boolean {
@@ -80,23 +69,6 @@ function formatTime(iso: string): string {
     hour: "2-digit",
     minute: "2-digit",
   });
-}
-
-function formatDayLabel(iso: string, todayLabel: string, tomorrowLabel: string): string {
-  const d = new Date(iso);
-  if (isSameDay(d, PAGE_NOW)) return todayLabel;
-  const tomorrow = new Date(PAGE_NOW);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  if (isSameDay(d, tomorrow)) return tomorrowLabel;
-  return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-}
-
-function formatGroupKey(iso: string): string {
-  const d = new Date(iso);
-  if (isSameDay(d, PAGE_NOW)) {
-    return `__today__${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
-  }
-  return d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
 }
 
 function localDayName(dayIndex: number): string {
@@ -469,232 +441,6 @@ function Widget({ icon: Icon, iconColor, iconBg, title, subtitle, count, childre
   );
 }
 
-function WidgetEmptyState({ icon: Icon, message }: { icon: React.ElementType; message: string }) {
-  return (
-    <div className="flex flex-col items-center gap-3 px-5 py-10 text-center">
-      <Icon size={20} className="text-zinc-600" />
-      <p className="text-sm text-white/25">{message}</p>
-    </div>
-  );
-}
-
-// ─── Event Row ────────────────────────────────────────────────────────────────
-
-type EventRowProps = {
-  event: CalendarEventRow;
-  isToday?: boolean;
-  crmContact?: CalendarContact | null;
-  onClick?: () => void;
-};
-
-function EventRow({ event, isToday = false, crmContact, onClick }: EventRowProps) {
-  const t = useTranslations("calendar");
-
-  return (
-    <div
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onKeyDown={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") onClick(); } : undefined}
-      onClick={onClick}
-      className={[
-        "flex items-start gap-3 px-5 py-3.5 transition-colors",
-        onClick ? "cursor-pointer hover:bg-white/[0.03]" : "hover:bg-white/[0.02]",
-      ].join(" ")}
-    >
-      {/* Time */}
-      <div className="w-14 shrink-0 text-right">
-        {event.all_day ? (
-          <span className="text-[10px] font-medium text-violet-300">{t("allDay")}</span>
-        ) : (
-          <>
-            <p className="text-xs font-semibold text-white/70">{formatTime(event.start_at)}</p>
-            <p className="mt-0.5 text-[10px] text-white/25">{formatTime(event.end_at)}</p>
-          </>
-        )}
-      </div>
-
-      {/* Dot */}
-      <div className="mt-1.5 shrink-0">
-        <div
-          className={`h-1.5 w-1.5 rounded-full ${isToday ? "bg-emerald-400" : "bg-violet-500/60"}`}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <p className="truncate text-sm font-medium text-white/85">{event.title}</p>
-          {event.html_link && !onClick && (
-            <a
-              href={event.html_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 text-white/25 transition-colors hover:text-violet-300"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ExternalLink size={11} />
-            </a>
-          )}
-        </div>
-
-        {event.location && (
-          <div className="mt-1 flex items-center gap-1 text-[11px] text-white/30">
-            <MapPin size={9} />
-            <span className="truncate">{event.location}</span>
-          </div>
-        )}
-
-        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-          {event.status === "tentative" && (
-            <span className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-1.5 py-0.5 text-[10px] text-yellow-300">
-              {t("tentative")}
-            </span>
-          )}
-          {crmContact && (
-            <span
-              onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1 rounded-md border border-cyan-500/20 bg-cyan-500/10 px-1.5 py-0.5 text-[10px] text-cyan-300"
-            >
-              <User size={8} />
-              {crmContact.name}
-            </span>
-          )}
-          {crmContact?.company_id && crmContact.company_name && (
-            <span
-              onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1 rounded-md border border-violet-500/20 bg-violet-500/10 px-1.5 py-0.5 text-[10px] text-violet-300"
-            >
-              <Building2 size={8} />
-              {crmContact.company_name}
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Today's Meetings Widget ──────────────────────────────────────────────────
-
-function TodayWidget({
-  events,
-  contactByEmail,
-  onSelectEvent,
-  t,
-}: {
-  events: CalendarEventRow[];
-  contactByEmail: Map<string, CalendarContact>;
-  onSelectEvent: (event: CalendarEventRow, contact: CalendarContact | null) => void;
-  t: ReturnType<typeof useTranslations<"calendar">>;
-}) {
-  return (
-    <Widget
-      icon={CalendarDays}
-      iconColor="text-emerald-300"
-      iconBg="border-emerald-500/20 bg-emerald-500/10"
-      title={t("todaysMeetings")}
-      subtitle={t("todaysSubtitle")}
-      count={events.length}
-    >
-      {events.length === 0 ? (
-        <WidgetEmptyState icon={CheckCircle2} message={t("noMeetingsToday")} />
-      ) : (
-        <div className="divide-y divide-white/[0.04]">
-          {events.map((e) => {
-            const contact = e.organizer_email
-              ? (contactByEmail.get(e.organizer_email.toLowerCase()) ?? null)
-              : null;
-            return (
-              <EventRow
-                key={e.id}
-                event={e}
-                isToday
-                crmContact={contact}
-                onClick={() => onSelectEvent(e, contact)}
-              />
-            );
-          })}
-        </div>
-      )}
-    </Widget>
-  );
-}
-
-// ─── This Week Widget ─────────────────────────────────────────────────────────
-
-function ThisWeekWidget({
-  events,
-  contactByEmail,
-  onSelectEvent,
-  t,
-}: {
-  events: CalendarEventRow[];
-  contactByEmail: Map<string, CalendarContact>;
-  onSelectEvent: (event: CalendarEventRow, contact: CalendarContact | null) => void;
-  t: ReturnType<typeof useTranslations<"calendar">>;
-}) {
-  const grouped = new Map<string, CalendarEventRow[]>();
-  events.forEach((e) => {
-    const key = formatGroupKey(e.start_at);
-    const arr = grouped.get(key) ?? [];
-    arr.push(e);
-    grouped.set(key, arr);
-  });
-
-  return (
-    <Widget
-      icon={Clock}
-      iconColor="text-violet-300"
-      iconBg="border-violet-500/20 bg-violet-500/10"
-      title={t("thisWeek")}
-      subtitle={t("thisWeekSubtitle")}
-      count={events.length}
-    >
-      {events.length === 0 ? (
-        <WidgetEmptyState icon={CalendarDays} message={t("noMeetingsThisWeek")} />
-      ) : (
-        <div>
-          {[...grouped.entries()].map(([groupKey, groupEvents]) => {
-            const isToday = groupKey.startsWith("__today__");
-            const datePart = groupKey.replace("__today__", "");
-            const displayKey = isToday ? `${t("today")} — ${datePart}` : groupKey;
-
-            return (
-              <div key={groupKey}>
-                <div className="border-b border-white/[0.04] bg-white/[0.01] px-5 py-2">
-                  <p
-                    className={`text-[11px] font-medium uppercase tracking-[0.12em] ${
-                      isToday ? "text-emerald-400/80" : "text-white/30"
-                    }`}
-                  >
-                    {displayKey}
-                  </p>
-                </div>
-                <div className="divide-y divide-white/[0.03]">
-                  {groupEvents.map((e) => {
-                    const contact = e.organizer_email
-                      ? (contactByEmail.get(e.organizer_email.toLowerCase()) ?? null)
-                      : null;
-                    return (
-                      <EventRow
-                        key={e.id}
-                        event={e}
-                        isToday={isToday}
-                        crmContact={contact}
-                        onClick={() => onSelectEvent(e, contact)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </Widget>
-  );
-}
-
 // ─── Meeting Intelligence Widget ──────────────────────────────────────────────
 
 type IntelSignal = {
@@ -815,187 +561,6 @@ function MeetingIntelligenceWidget({
   );
 }
 
-// ─── Revenue Meetings Widget ──────────────────────────────────────────────────
-
-function RevenueMeetingsWidget({
-  events,
-  contactByEmail,
-  onSelectEvent,
-  t,
-}: {
-  events: CalendarEventRow[];
-  contactByEmail: Map<string, CalendarContact>;
-  onSelectEvent: (event: CalendarEventRow, contact: CalendarContact | null) => void;
-  t: ReturnType<typeof useTranslations<"calendar">>;
-}) {
-  const crmEvents = events.filter(
-    (e) => e.organizer_email && contactByEmail.has(e.organizer_email.toLowerCase())
-  );
-
-  const todayLabel = t("today");
-  const tomorrowLabel = t("tomorrow");
-
-  return (
-    <Widget
-      icon={TrendingUp}
-      iconColor="text-emerald-300"
-      iconBg="border-emerald-500/20 bg-emerald-500/10"
-      title={t("revenueMeetings")}
-      subtitle={t("revenueMeetingsSubtitle")}
-      count={crmEvents.length}
-    >
-      {crmEvents.length === 0 ? (
-        <WidgetEmptyState icon={TrendingUp} message={t("noRevenueMeetings")} />
-      ) : (
-        <div className="divide-y divide-white/[0.04]">
-          {crmEvents.slice(0, 6).map((e) => {
-            const contact = e.organizer_email
-              ? (contactByEmail.get(e.organizer_email.toLowerCase()) ?? null)
-              : null;
-            return (
-              <div
-                key={e.id}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(ev) => { if (ev.key === "Enter" || ev.key === " ") onSelectEvent(e, contact); }}
-                onClick={() => onSelectEvent(e, contact)}
-                className="flex cursor-pointer items-start gap-3 px-5 py-3.5 transition-colors hover:bg-white/[0.03]"
-              >
-                <div className="w-14 shrink-0 text-right">
-                  {e.all_day ? (
-                    <span className="text-[10px] font-medium text-violet-300">{t("allDay")}</span>
-                  ) : (
-                    <p className="text-xs font-semibold text-white/70">{formatTime(e.start_at)}</p>
-                  )}
-                  <p className="mt-0.5 text-[10px] text-white/25">
-                    {formatDayLabel(e.start_at, todayLabel, tomorrowLabel)}
-                  </p>
-                </div>
-                <div className="mt-1 shrink-0">
-                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-white/85">{e.title}</p>
-                  {contact && (
-                    <span className="mt-1 inline-flex items-center gap-1 text-[11px] text-cyan-300/70">
-                      <User size={9} />
-                      {contact.name}
-                      {contact.company_name && (
-                        <span className="text-white/25"> · {contact.company_name}</span>
-                      )}
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </Widget>
-  );
-}
-
-// ─── Linked Contacts Widget ───────────────────────────────────────────────────
-
-function LinkedContactsWidget({
-  linkedContacts,
-  t,
-}: {
-  linkedContacts: LinkedContact[];
-  t: ReturnType<typeof useTranslations<"calendar">>;
-}) {
-  return (
-    <Widget
-      icon={User}
-      iconColor="text-cyan-300"
-      iconBg="border-cyan-500/20 bg-cyan-500/10"
-      title={t("linkedContacts")}
-      subtitle={t("linkedContactsSubtitle")}
-      count={linkedContacts.length}
-    >
-      {linkedContacts.length === 0 ? (
-        <WidgetEmptyState icon={User} message={t("noLinkedContacts")} />
-      ) : (
-        <div className="divide-y divide-white/[0.04]">
-          {linkedContacts.slice(0, 8).map(({ contact, count }) => {
-            const initial = contact.name[0]?.toUpperCase() ?? "?";
-            return (
-              <Link
-                key={contact.id}
-                href={`/dashboard/contacts/${contact.id}`}
-                className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-white/[0.02]"
-              >
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cyan-500/15 text-[11px] font-semibold text-cyan-300">
-                  {initial}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm text-white/80">{contact.name}</p>
-                  {contact.company_name && (
-                    <p className="truncate text-[11px] text-white/30">{contact.company_name}</p>
-                  )}
-                </div>
-                <div className="flex shrink-0 items-center gap-1.5">
-                  <span className="text-xs text-white/25">{count}</span>
-                  <ArrowRight size={11} className="text-white/20" />
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
-    </Widget>
-  );
-}
-
-// ─── Linked Companies Widget ──────────────────────────────────────────────────
-
-function LinkedCompaniesWidget({
-  linkedCompanies,
-  t,
-}: {
-  linkedCompanies: LinkedCompany[];
-  t: ReturnType<typeof useTranslations<"calendar">>;
-}) {
-  return (
-    <Widget
-      icon={Building2}
-      iconColor="text-violet-300"
-      iconBg="border-violet-500/20 bg-violet-500/10"
-      title={t("linkedCompanies")}
-      subtitle={t("linkedCompaniesSubtitle")}
-      count={linkedCompanies.length}
-    >
-      {linkedCompanies.length === 0 ? (
-        <WidgetEmptyState icon={Building2} message={t("noLinkedCompanies")} />
-      ) : (
-        <div className="divide-y divide-white/[0.04]">
-          {linkedCompanies.slice(0, 8).map((company) => {
-            const initial = company.name[0]?.toUpperCase() ?? "?";
-            return (
-              <Link
-                key={company.id}
-                href={`/dashboard/companies/${company.id}`}
-                className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-white/[0.02]"
-              >
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-violet-500/15 text-[11px] font-semibold text-violet-300">
-                  {initial}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm text-white/80">{company.name}</p>
-                  <p className="mt-0.5 text-[11px] text-white/30">
-                    {company.count} {company.count === 1 ? t("meeting") : t("meetings")}
-                  </p>
-                </div>
-                <ArrowRight size={11} className="text-white/20" />
-              </Link>
-            );
-          })}
-        </div>
-      )}
-    </Widget>
-  );
-}
-
 // ─── Gunimi Calendar — Weekly Grid + List ────────────────────────────────────
 
 const PRIORITY_COLOR: Record<string, string> = {
@@ -1029,17 +594,27 @@ function dateKey(d: Date): string {
   return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 }
 
+function getMonthStart(offset: number): Date {
+  return new Date(PAGE_NOW.getFullYear(), PAGE_NOW.getMonth() + offset, 1);
+}
+
 // ── Week Grid ──────────────────────────────────────────────────────────────────
 
 function WeekGrid({
   items,
   weekOffset,
   onTaskCreated,
+  eventsByDay,
+  onSelectEvent,
+  contactByEmail,
   t,
 }: {
   items: WorkspaceCalendarItem[];
   weekOffset: number;
   onTaskCreated?: (item: WorkspaceCalendarItem) => void;
+  eventsByDay?: Map<string, CalendarEventRow[]>;
+  onSelectEvent?: (event: CalendarEventRow, contact: CalendarContact | null) => void;
+  contactByEmail?: Map<string, CalendarContact>;
   t: ReturnType<typeof useTranslations<"calendar">>;
 }) {
   const weekStart = useMemo(() => getWeekStart(weekOffset), [weekOffset]);
@@ -1158,19 +733,38 @@ function WeekGrid({
 
               {/* Items */}
               <div className="flex flex-1 flex-col gap-1 p-1.5">
-                {dayItems.length === 0 && addingToDay !== key ? (
+                {dayItems.length === 0 && (eventsByDay?.get(key) ?? []).length === 0 && addingToDay !== key ? (
                   <span className="mt-2 text-center text-[9px] text-white/15">
                     {t("noItemsThisDay")}
                   </span>
                 ) : (
-                  dayItems.slice(0, 5).map((item) => (
-                    <WeekCard key={item.id} item={item} />
-                  ))
-                )}
-                {dayItems.length > 5 && (
-                  <span className="px-1 text-[9px] text-white/25">
-                    +{dayItems.length - 5}
-                  </span>
+                  <>
+                    {dayItems.slice(0, 3).map((item) => (
+                      <WeekCard key={item.id} item={item} />
+                    ))}
+                    {dayItems.length > 3 && (
+                      <span className="px-1 text-[9px] text-white/25">+{dayItems.length - 3}</span>
+                    )}
+                    {(eventsByDay?.get(key) ?? []).slice(0, 2).map((ev) => {
+                      const contact = ev.organizer_email
+                        ? (contactByEmail?.get(ev.organizer_email.toLowerCase()) ?? null)
+                        : null;
+                      return (
+                        <button
+                          key={ev.id}
+                          onClick={() => onSelectEvent?.(ev, contact)}
+                          className="flex w-full items-start rounded-lg border border-blue-500/20 bg-blue-500/10 px-2 py-1 text-left transition-colors hover:bg-blue-500/15"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-[10px] font-medium leading-snug text-blue-200">{ev.title}</p>
+                            {!ev.all_day && (
+                              <p className="text-[9px] text-blue-300/50">{formatTime(ev.start_at)}</p>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </>
                 )}
 
                 {/* Quick add */}
@@ -1251,6 +845,230 @@ function WeekCard({
   );
 }
 
+// ── Month Grid ─────────────────────────────────────────────────────────────────
+
+function MonthGrid({
+  items,
+  monthOffset,
+  eventsByDay,
+  onSelectEvent,
+  contactByEmail,
+  onTaskCreated,
+  t,
+}: {
+  items: WorkspaceCalendarItem[];
+  monthOffset: number;
+  eventsByDay: Map<string, CalendarEventRow[]>;
+  onSelectEvent?: (event: CalendarEventRow, contact: CalendarContact | null) => void;
+  contactByEmail: Map<string, CalendarContact>;
+  onTaskCreated?: (item: WorkspaceCalendarItem) => void;
+  t: ReturnType<typeof useTranslations<"calendar">>;
+}) {
+  const monthStart = useMemo(() => getMonthStart(monthOffset), [monthOffset]);
+
+  const gridStart = useMemo(() => {
+    const d = new Date(monthStart);
+    const dow = d.getDay();
+    d.setDate(d.getDate() + (dow === 0 ? -6 : 1 - dow));
+    return d;
+  }, [monthStart]);
+
+  const gridDays = useMemo(
+    () => Array.from({ length: 42 }, (_, i) => addDays(gridStart, i)),
+    [gridStart],
+  );
+
+  const byDay = useMemo(() => {
+    const map = new Map<string, WorkspaceCalendarItem[]>();
+    for (const item of items) {
+      const k = dateKey(new Date(item.date));
+      const arr = map.get(k) ?? [];
+      arr.push(item);
+      map.set(k, arr);
+    }
+    return map;
+  }, [items]);
+
+  const weekDayHeaders = useMemo(
+    () => Array.from({ length: 7 }, (_, i) =>
+      addDays(gridStart, i).toLocaleDateString(undefined, { weekday: "short" }),
+    ),
+    [gridStart],
+  );
+
+  const [addingToDay, setAddingToDay] = useState<string | null>(null);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [creatingTask, startCreateTask] = useTransition();
+  const currentMonth = monthStart.getMonth();
+
+  function handleAddTask(dateIso: string) {
+    const title = newTaskTitle.trim();
+    if (!title) { setAddingToDay(null); return; }
+    startCreateTask(async () => {
+      const result = await createTask({ title, due_date: dateIso });
+      if (result) {
+        onTaskCreated?.({
+          id: result.id as string,
+          type: "task",
+          title: result.title as string,
+          date: dateIso,
+          status: result.status as string,
+          priority: result.priority as string | null,
+          href: "/dashboard/tasks",
+          entityName: null,
+          isOverdue: false,
+          isDueToday: dateKey(new Date(dateIso)) === dateKey(PAGE_NOW),
+        });
+        toast.success(t("taskCreated"));
+      } else {
+        toast.error(t("failedToCreateTask"));
+      }
+      setAddingToDay(null);
+      setNewTaskTitle("");
+    });
+  }
+
+  return (
+    <div>
+      {/* Weekday headers */}
+      <div className="mb-1 grid grid-cols-7 gap-1">
+        {weekDayHeaders.map((label, i) => (
+          <div
+            key={i}
+            className="py-1.5 text-center text-[10px] font-medium uppercase tracking-[0.1em] text-white/25"
+          >
+            {label}
+          </div>
+        ))}
+      </div>
+
+      {/* Day cells */}
+      <div className="grid grid-cols-7 gap-1">
+        {gridDays.map((day) => {
+          const isCurrentMonth = day.getMonth() === currentMonth;
+          const isToday = isSameDay(day, PAGE_NOW);
+          const isPast = day < PAGE_NOW && !isToday;
+          const key = dateKey(day);
+          const workItems = byDay.get(key) ?? [];
+          const dayEvents = eventsByDay.get(key) ?? [];
+
+          const shownWork = workItems.slice(0, 2);
+          const shownEvents = dayEvents.slice(0, Math.max(0, 3 - shownWork.length));
+          const overflow = workItems.length + dayEvents.length - shownWork.length - shownEvents.length;
+
+          return (
+            <div
+              key={key}
+              className={`group relative flex min-h-[88px] flex-col overflow-hidden rounded-xl border p-1.5 transition-colors ${
+                isToday
+                  ? "border-violet-500/30 bg-violet-500/[0.05]"
+                  : isCurrentMonth && !isPast
+                  ? "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]"
+                  : isCurrentMonth
+                  ? "border-white/[0.04] bg-white/[0.01]"
+                  : "border-white/[0.02] opacity-30"
+              }`}
+            >
+              {/* Day number */}
+              <div className="mb-1 flex items-center justify-between">
+                <span
+                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold ${
+                    isToday
+                      ? "bg-violet-600 text-white"
+                      : isCurrentMonth
+                      ? "text-white/50"
+                      : "text-white/20"
+                  }`}
+                >
+                  {day.getDate()}
+                </span>
+                {isCurrentMonth && !isPast && addingToDay !== key && (
+                  <button
+                    onClick={() => { setAddingToDay(key); setNewTaskTitle(""); }}
+                    className="flex h-4 w-4 items-center justify-center rounded text-white/20 opacity-0 transition-all group-hover:opacity-100 hover:bg-white/[0.06] hover:text-white/50"
+                  >
+                    <Plus size={9} />
+                  </button>
+                )}
+              </div>
+
+              {/* Quick-add */}
+              {addingToDay === key ? (
+                <div className="flex flex-col gap-1">
+                  <input
+                    autoFocus
+                    value={newTaskTitle}
+                    onChange={(e) => setNewTaskTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleAddTask(day.toISOString().slice(0, 10));
+                      if (e.key === "Escape") { setAddingToDay(null); setNewTaskTitle(""); }
+                    }}
+                    placeholder={t("newTaskPlaceholder")}
+                    className="w-full rounded border border-violet-500/30 bg-white/[0.05] px-1.5 py-0.5 text-[9px] text-white outline-none placeholder:text-white/20 focus:border-violet-500/60"
+                  />
+                  <div className="flex gap-0.5">
+                    <button
+                      onClick={() => handleAddTask(day.toISOString().slice(0, 10))}
+                      disabled={creatingTask || !newTaskTitle.trim()}
+                      className="flex-1 rounded bg-violet-600/70 py-0.5 text-[9px] font-medium text-white transition-colors hover:bg-violet-600 disabled:opacity-40"
+                    >
+                      {t("add")}
+                    </button>
+                    <button
+                      onClick={() => { setAddingToDay(null); setNewTaskTitle(""); }}
+                      className="rounded px-1 text-[9px] text-zinc-500 hover:text-white/40"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-0.5">
+                  {shownWork.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      className={`truncate rounded px-1.5 py-0.5 text-[9px] font-medium leading-snug transition-colors ${
+                        item.isOverdue
+                          ? "bg-red-500/15 text-red-300 hover:bg-red-500/25"
+                          : item.type === "task"
+                          ? "bg-violet-500/15 text-violet-300 hover:bg-violet-500/25"
+                          : "bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25"
+                      }`}
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                  {shownEvents.map((ev) => {
+                    const contact = ev.organizer_email
+                      ? (contactByEmail.get(ev.organizer_email.toLowerCase()) ?? null)
+                      : null;
+                    return (
+                      <button
+                        key={ev.id}
+                        onClick={() => onSelectEvent?.(ev, contact)}
+                        className="truncate rounded px-1.5 py-0.5 text-left text-[9px] font-medium leading-snug text-blue-300 bg-blue-500/15 hover:bg-blue-500/25 transition-colors"
+                      >
+                        {!ev.all_day && (
+                          <span className="mr-0.5 text-blue-400/50">{formatTime(ev.start_at)}</span>
+                        )}
+                        {ev.title}
+                      </button>
+                    );
+                  })}
+                  {overflow > 0 && (
+                    <span className="px-1 text-[9px] text-white/25">+{overflow}</span>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ── List View (legacy) ─────────────────────────────────────────────────────────
 
 function ListRow({ item }: { item: WorkspaceCalendarItem }) {
@@ -1289,54 +1107,110 @@ function ListRow({ item }: { item: WorkspaceCalendarItem }) {
   );
 }
 
-// ── Main Gunimi Calendar Widget ────────────────────────────────────────────────
+// ── Main Calendar Widget (unified: tasks + deals + calendar events) ─────────────
 
 function GunimCalendarWidget({
   items: initialItems,
+  events,
+  contactByEmail,
+  onSelectEvent,
   t,
 }: {
   items: WorkspaceCalendarItem[];
+  events: CalendarEventRow[];
+  contactByEmail: Map<string, CalendarContact>;
+  onSelectEvent: (event: CalendarEventRow, contact: CalendarContact | null) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
 }) {
-  const [viewMode, setViewMode] = useState<"week" | "list">("week");
+  const [viewMode, setViewMode] = useState<"month" | "week" | "list">("month");
   const [weekOffset, setWeekOffset] = useState(0);
+  const [monthOffset, setMonthOffset] = useState(0);
   const [localItems, setLocalItems] = useState(initialItems);
 
   function handleTaskCreated(item: WorkspaceCalendarItem) {
-    setLocalItems((prev) => [...prev, item].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
+    setLocalItems((prev) =>
+      [...prev, item].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+    );
   }
 
-  const items = localItems;
+  const eventsByDay = useMemo(() => {
+    const map = new Map<string, CalendarEventRow[]>();
+    for (const ev of events) {
+      const k = dateKey(new Date(ev.start_at));
+      const arr = map.get(k) ?? [];
+      arr.push(ev);
+      map.set(k, arr);
+    }
+    return map;
+  }, [events]);
+
   const weekStart = getWeekStart(weekOffset);
   const weekEnd = addDays(weekStart, 6);
   const weekLabel = `${weekStart.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${weekEnd.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
 
+  const monthStart = getMonthStart(monthOffset);
+  const monthLabel = monthStart.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Toolbar */}
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5">
-          <div className="flex items-center gap-1 rounded-xl border border-white/[0.07] bg-white/[0.03] p-1">
+      <div className="flex flex-wrap items-center gap-3">
+        {/* View switcher */}
+        <div className="flex items-center gap-1 rounded-xl border border-white/[0.07] bg-white/[0.03] p-1">
+          <button
+            onClick={() => setViewMode("month")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+              viewMode === "month" ? "bg-violet-600 text-white" : "text-white/40 hover:text-white/70"
+            }`}
+          >
+            <CalendarDays size={12} />
+            {t("monthViewTitle")}
+          </button>
+          <button
+            onClick={() => setViewMode("week")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+              viewMode === "week" ? "bg-violet-600 text-white" : "text-white/40 hover:text-white/70"
+            }`}
+          >
+            <Clock size={12} />
+            {t("weekViewTitle")}
+          </button>
+          <button
+            onClick={() => setViewMode("list")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+              viewMode === "list" ? "bg-white/[0.08] text-white/90" : "text-white/40 hover:text-white/70"
+            }`}
+          >
+            <LayoutList size={12} />
+            {t("listViewTitle")}
+          </button>
+        </div>
+
+        {/* Navigation */}
+        {viewMode === "month" && (
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => setViewMode("week")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
-                viewMode === "week" ? "bg-violet-600 text-white" : "text-white/40 hover:text-white/70"
-              }`}
+              onClick={() => setMonthOffset((o) => o - 1)}
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.07] text-white/40 transition-colors hover:border-white/15 hover:text-white/70"
             >
-              <CalendarDays size={12} />
-              {t("weekViewTitle")}
+              <ChevronLeft size={13} />
             </button>
             <button
-              onClick={() => setViewMode("list")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
-                viewMode === "list" ? "bg-white/[0.08] text-white/90" : "text-white/40 hover:text-white/70"
+              onClick={() => setMonthOffset(0)}
+              className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors ${
+                monthOffset === 0 ? "bg-violet-600/20 text-violet-300" : "text-white/50 hover:text-white/80"
               }`}
             >
-              <LayoutList size={12} />
-              {t("listViewTitle")}
+              {monthLabel}
+            </button>
+            <button
+              onClick={() => setMonthOffset((o) => o + 1)}
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.07] text-white/40 transition-colors hover:border-white/15 hover:text-white/70"
+            >
+              <ChevronRight size={13} />
             </button>
           </div>
-        </div>
+        )}
 
         {viewMode === "week" && (
           <div className="flex items-center gap-2">
@@ -1349,9 +1223,7 @@ function GunimCalendarWidget({
             <button
               onClick={() => setWeekOffset(0)}
               className={`rounded-lg px-3 py-1 text-xs transition-colors ${
-                weekOffset === 0
-                  ? "bg-violet-600/20 text-violet-300"
-                  : "text-white/35 hover:text-white/60"
+                weekOffset === 0 ? "bg-violet-600/20 text-violet-300" : "text-white/35 hover:text-white/60"
               }`}
             >
               {weekOffset === 0 ? t("currentWeek") : weekLabel}
@@ -1365,35 +1237,62 @@ function GunimCalendarWidget({
           </div>
         )}
 
-        <span className="rounded-full border border-white/[0.07] bg-white/[0.03] px-2 py-0.5 text-[11px] text-white/30">
-          {items.length}
-        </span>
+        {/* Legend */}
+        <div className="ml-auto flex items-center gap-3 text-[10px] text-white/25">
+          <span className="flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-500/80" />
+            {t("legendTasks")}
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/80" />
+            {t("legendDeals")}
+          </span>
+          {events.length > 0 && (
+            <span className="flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500/80" />
+              {t("legendEvents")}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Content */}
-      {items.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-16 text-center">
-          <CheckCircle2 size={20} className="text-zinc-600" />
-          <p className="text-sm text-white/25">{t("gunimiCalendarEmpty")}</p>
-        </div>
+      {viewMode === "month" ? (
+        <MonthGrid
+          items={localItems}
+          monthOffset={monthOffset}
+          eventsByDay={eventsByDay}
+          onSelectEvent={onSelectEvent}
+          contactByEmail={contactByEmail}
+          onTaskCreated={handleTaskCreated}
+          t={t}
+        />
       ) : viewMode === "week" ? (
-        <WeekGrid items={items} weekOffset={weekOffset} onTaskCreated={handleTaskCreated} t={t} />
+        <WeekGrid
+          items={localItems}
+          weekOffset={weekOffset}
+          onTaskCreated={handleTaskCreated}
+          eventsByDay={eventsByDay}
+          onSelectEvent={onSelectEvent}
+          contactByEmail={contactByEmail}
+          t={t}
+        />
       ) : (
         <div className="overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.02]">
-          {items.filter((i) => i.isOverdue).length > 0 && (
+          {localItems.filter((i) => i.isOverdue).length > 0 && (
             <div>
               <div className="border-b border-red-500/10 bg-red-500/[0.04] px-5 py-2">
                 <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-red-400/80">
-                  {t("overdue")} · {items.filter((i) => i.isOverdue).length}
+                  {t("overdue")} · {localItems.filter((i) => i.isOverdue).length}
                 </p>
               </div>
               <div className="divide-y divide-white/[0.03]">
-                {items.filter((i) => i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
+                {localItems.filter((i) => i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
               </div>
             </div>
           )}
           <div className="divide-y divide-white/[0.03]">
-            {items.filter((i) => !i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
+            {localItems.filter((i) => !i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
           </div>
         </div>
       )}
@@ -1451,14 +1350,11 @@ function NoConnectionState({
 
 export default function CalendarCommandCenter({ events: initialEvents, connections, contacts, workspaceItems }: Props) {
   const t = useTranslations("calendar");
-  const [activeTab, setActiveTab] = useState<"gunimi" | "google">("gunimi");
   const [localEvents, setLocalEvents] = useState(initialEvents);
   const [selectedEvent, setSelectedEvent] = useState<{
     event: CalendarEventRow;
     contact: CalendarContact | null;
   } | null>(null);
-
-  // New Google event modal state
   const [showNewEvent, setShowNewEvent] = useState(false);
   const [newEventTitle, setNewEventTitle] = useState("");
   const [newEventDate, setNewEventDate] = useState(() => new Date().toISOString().slice(0, 10));
@@ -1466,13 +1362,38 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
   const [newEventEnd, setNewEventEnd] = useState("10:00");
   const [creatingEvent, startCreateEvent] = useTransition();
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const isInitialConnect = searchParams.get("connected") === "true";
+  const [syncDone, setSyncDone] = useState(false);
+  const autoSyncing = isInitialConnect && !syncDone;
+
+  useEffect(() => {
+    if (!isInitialConnect || syncDone) return;
+    fetch("/api/calendar/sync", { method: "POST" })
+      .then(() => { setSyncDone(true); router.replace("/dashboard/calendar"); })
+      .catch(() => { setSyncDone(true); router.replace("/dashboard/calendar"); });
+  }, [isInitialConnect, syncDone, router]);
+
+  const contactByEmail = useMemo(() => {
+    const map = new Map<string, CalendarContact>();
+    contacts.forEach((c) => { if (c.email) map.set(c.email.toLowerCase(), c); });
+    return map;
+  }, [contacts]);
+
   function handleEventUpdated(id: string, changes: Partial<CalendarEventRow>) {
     setLocalEvents((prev) => prev.map((e) => e.id === id ? { ...e, ...changes } : e));
-    setSelectedEvent((prev) => prev && prev.event.id === id ? { ...prev, event: { ...prev.event, ...changes } } : prev);
+    setSelectedEvent((prev) =>
+      prev && prev.event.id === id ? { ...prev, event: { ...prev.event, ...changes } } : prev,
+    );
   }
 
   function handleEventDeleted(id: string) {
     setLocalEvents((prev) => prev.filter((e) => e.id !== id));
+  }
+
+  function handleSelectEvent(event: CalendarEventRow, contact: CalendarContact | null) {
+    setSelectedEvent({ event, contact });
   }
 
   function handleCreateNewEvent() {
@@ -1486,14 +1407,8 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, startAt, endAt }),
       });
-      if (res.status === 403) {
-        toast.error(t("reconnectForEditing"));
-        return;
-      }
-      if (!res.ok) {
-        toast.error(t("failedToSaveEvent"));
-        return;
-      }
+      if (res.status === 403) { toast.error(t("reconnectForEditing")); return; }
+      if (!res.ok) { toast.error(t("failedToSaveEvent")); return; }
       const data = await res.json() as { id: string; title: string; start_at: string; end_at: string };
       const newRow: CalendarEventRow = {
         id: data.id,
@@ -1509,75 +1424,27 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
         status: "confirmed",
         all_day: false,
       };
-      setLocalEvents((prev) => [...prev, newRow].sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime()));
+      setLocalEvents((prev) =>
+        [...prev, newRow].sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime()),
+      );
       setShowNewEvent(false);
       setNewEventTitle("");
       toast.success(t("eventCreated"));
     });
   }
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const isInitialConnect = searchParams.get("connected") === "true";
-  const [syncDone, setSyncDone] = useState(false);
-  const autoSyncing = isInitialConnect && !syncDone;
-
-  // Auto-sync on first connect — callback redirects before sync completes
-  useEffect(() => {
-    if (!isInitialConnect || syncDone) return;
-    fetch("/api/calendar/sync", { method: "POST" })
-      .then(() => { setSyncDone(true); router.replace("/dashboard/calendar"); })
-      .catch(() => { setSyncDone(true); router.replace("/dashboard/calendar"); });
-  }, [isInitialConnect, syncDone, router]);
 
   const hasConnection = connections.length > 0;
   const events = localEvents;
-
-  const contactByEmail = new Map<string, CalendarContact>();
-  contacts.forEach((c) => {
-    if (c.email) contactByEmail.set(c.email.toLowerCase(), c);
-  });
-
-  const todayEvents = events.filter((e) => isSameDay(new Date(e.start_at), PAGE_NOW));
   const weekCutoff = new Date(PAGE_NOW.getTime() + SEVEN_DAYS_MS);
-  const thisWeekEvents = events.filter((e) => new Date(e.start_at) <= weekCutoff);
-
-  const crmEventsCount = events.filter(
-    (e) => e.organizer_email && contactByEmail.has(e.organizer_email.toLowerCase())
-  ).length;
-
-  const contactMeetingMap = new Map<string, LinkedContact>();
-  events.forEach((e) => {
-    if (!e.organizer_email) return;
-    const contact = contactByEmail.get(e.organizer_email.toLowerCase());
-    if (!contact) return;
-    const existing = contactMeetingMap.get(contact.id);
-    if (existing) {
-      existing.count++;
-    } else {
-      contactMeetingMap.set(contact.id, { contact, count: 1 });
-    }
-  });
-  const linkedContacts = [...contactMeetingMap.values()].sort((a, b) => b.count - a.count);
-
-  const companyMeetingMap = new Map<string, LinkedCompany>();
-  linkedContacts.forEach(({ contact, count }) => {
-    if (!contact.company_id || !contact.company_name) return;
-    const existing = companyMeetingMap.get(contact.company_id);
-    if (existing) {
-      existing.count += count;
-    } else {
-      companyMeetingMap.set(contact.company_id, {
-        id: contact.company_id,
-        name: contact.company_name,
-        count,
-      });
-    }
-  });
-  const linkedCompanies = [...companyMeetingMap.values()].sort((a, b) => b.count - a.count);
-
-  function handleSelectEvent(event: CalendarEventRow, contact: CalendarContact | null) {
-    setSelectedEvent({ event, contact });
-  }
+  const thisWeekEvents = useMemo(
+    () => events.filter((e) => new Date(e.start_at) <= weekCutoff),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [events],
+  );
+  const crmEventsCount = useMemo(
+    () => events.filter((e) => e.organizer_email && contactByEmail.has(e.organizer_email.toLowerCase())).length,
+    [events, contactByEmail],
+  );
 
   if (!hasConnection) {
     return <NoConnectionState connections={connections} t={t} />;
@@ -1599,12 +1466,21 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
             title={t("commandCenterTitle")}
             subtitle={t("commandCenterSubtitle")}
           />
-          <a href="/api/calendar/connect/google" className="mt-1 shrink-0">
-            <GunimiButton variant="secondary" className="gap-2 text-sm">
-              <CalendarDays size={14} />
-              {t("addCalendar")}
-            </GunimiButton>
-          </a>
+          <div className="mt-1 flex shrink-0 items-center gap-2">
+            <button
+              onClick={() => setShowNewEvent((v) => !v)}
+              className="flex items-center gap-1.5 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-xs text-white/50 transition-colors hover:border-violet-500/20 hover:text-violet-300"
+            >
+              <Plus size={12} />
+              {t("newEvent")}
+            </button>
+            <a href="/api/calendar/connect/google">
+              <GunimiButton variant="secondary" className="gap-2 text-sm">
+                <CalendarDays size={14} />
+                {t("addCalendar")}
+              </GunimiButton>
+            </a>
+          </div>
         </div>
 
         {/* STATS STRIP */}
@@ -1615,62 +1491,7 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
           <GunimiStatCard title={t("statsRevenueMeetings")} value={crmEventsCount} icon={TrendingUp} animated />
         </div>
 
-        {/* TAB SWITCHER */}
-        <div className="flex items-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] p-1">
-          <button
-            onClick={() => setActiveTab("gunimi")}
-            className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-              activeTab === "gunimi"
-                ? "bg-violet-600 text-white shadow-sm"
-                : "text-white/40 hover:text-white/70"
-            }`}
-          >
-            <Sparkles size={14} />
-            {t("tabGunimi")}
-            {workspaceItems.length > 0 && (
-              <span className={`rounded-full px-1.5 py-0.5 text-[10px] ${activeTab === "gunimi" ? "bg-white/20" : "bg-white/[0.06] text-white/40"}`}>
-                {workspaceItems.length}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab("google")}
-            className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-              activeTab === "google"
-                ? "bg-white/[0.08] text-white/90"
-                : "text-white/40 hover:text-white/70"
-            }`}
-          >
-            <CalendarDays size={14} />
-            {t("tabGoogle")}
-            {events.length > 0 && (
-              <span className={`rounded-full px-1.5 py-0.5 text-[10px] ${activeTab === "google" ? "bg-white/10" : "bg-white/[0.06] text-white/40"}`}>
-                {events.length}
-              </span>
-            )}
-          </button>
-        </div>
-
-        {/* GUNIMI CALENDAR TAB */}
-        {activeTab === "gunimi" && (
-          <GunimCalendarWidget items={workspaceItems} t={t} />
-        )}
-
-        {/* GOOGLE CALENDAR TAB */}
-        {activeTab === "google" && (
-          <>
-        {/* New Event button + modal */}
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-600">{t("googleEventsLabel")}</p>
-          <button
-            onClick={() => setShowNewEvent((v) => !v)}
-            className="flex items-center gap-1.5 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-xs text-white/50 transition-colors hover:border-violet-500/20 hover:text-violet-300"
-          >
-            <Plus size={12} />
-            {t("newEvent")}
-          </button>
-        </div>
-
+        {/* NEW EVENT FORM */}
         {showNewEvent && (
           <div className="overflow-hidden rounded-xl border border-violet-500/20 bg-violet-500/[0.04] p-4">
             <p className="mb-3 text-[10px] uppercase tracking-[0.15em] text-violet-300/70">{t("newEvent")}</p>
@@ -1680,28 +1501,19 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
                 value={newEventTitle}
                 onChange={(e) => setNewEventTitle(e.target.value)}
                 placeholder={t("eventTitlePlaceholder")}
-                onKeyDown={(e) => { if (e.key === "Enter") handleCreateNewEvent(); if (e.key === "Escape") setShowNewEvent(false); }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleCreateNewEvent();
+                  if (e.key === "Escape") setShowNewEvent(false);
+                }}
                 className="w-full rounded-lg border border-white/[0.1] bg-white/[0.04] px-3 py-2 text-sm text-white outline-none placeholder:text-white/20 focus:border-violet-500/40"
               />
               <div className="grid grid-cols-3 gap-2">
-                <input
-                  type="date"
-                  value={newEventDate}
-                  onChange={(e) => setNewEventDate(e.target.value)}
-                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
-                />
-                <input
-                  type="time"
-                  value={newEventStart}
-                  onChange={(e) => setNewEventStart(e.target.value)}
-                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
-                />
-                <input
-                  type="time"
-                  value={newEventEnd}
-                  onChange={(e) => setNewEventEnd(e.target.value)}
-                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]"
-                />
+                <input type="date" value={newEventDate} onChange={(e) => setNewEventDate(e.target.value)}
+                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]" />
+                <input type="time" value={newEventStart} onChange={(e) => setNewEventStart(e.target.value)}
+                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]" />
+                <input type="time" value={newEventEnd} onChange={(e) => setNewEventEnd(e.target.value)}
+                  className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-2 py-2 text-xs text-white outline-none focus:border-violet-500/40 [color-scheme:dark]" />
               </div>
               <div className="flex justify-end gap-2">
                 <button onClick={() => setShowNewEvent(false)} className="px-3 py-1.5 text-xs text-zinc-500 hover:text-white/50">
@@ -1719,27 +1531,17 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
           </div>
         )}
 
-        {/* ROW 1: Today (2/3) + Intelligence (1/3) */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <TodayWidget events={todayEvents} contactByEmail={contactByEmail} onSelectEvent={handleSelectEvent} t={t} />
-          </div>
-          <MeetingIntelligenceWidget events={events} thisWeekEvents={thisWeekEvents} t={t} />
-        </div>
+        {/* UNIFIED CALENDAR */}
+        <GunimCalendarWidget
+          items={workspaceItems}
+          events={events}
+          contactByEmail={contactByEmail}
+          onSelectEvent={handleSelectEvent}
+          t={t}
+        />
 
-        {/* ROW 2: Revenue Meetings (1/2) + Linked Contacts (1/2) */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          <RevenueMeetingsWidget events={events} contactByEmail={contactByEmail} onSelectEvent={handleSelectEvent} t={t} />
-          <LinkedContactsWidget linkedContacts={linkedContacts} t={t} />
-        </div>
-
-        {/* ROW 3: This Week (2/3) + Linked Companies (1/3) */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <ThisWeekWidget events={thisWeekEvents} contactByEmail={contactByEmail} onSelectEvent={handleSelectEvent} t={t} />
-          </div>
-          <LinkedCompaniesWidget linkedCompanies={linkedCompanies} t={t} />
-        </div>
+        {/* MEETING INTELLIGENCE */}
+        <MeetingIntelligenceWidget events={events} thisWeekEvents={thisWeekEvents} t={t} />
 
         {/* CONNECTION MANAGEMENT */}
         <div>
@@ -1748,8 +1550,6 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
           </p>
           <CalendarConnectionCard connections={connections} />
         </div>
-          </>
-        )}
       </div>
 
       {/* EVENT DETAIL PANEL */}
