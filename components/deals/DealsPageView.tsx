@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 import {
   LayoutGrid,
   List,
+  BarChart2,
   PlusCircle,
   TrendingUp,
   Trophy,
@@ -29,6 +30,7 @@ import GunimiStatCard from "@/components/ui/GunimiStatCard";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import DealsPipeline from "./DealsPipeline";
 import DealsListCommand from "./DealsListCommand";
+import DealsPipelineAnalytics from "./DealsPipelineAnalytics";
 import CreateDealSheet from "./CreateDealSheet";
 import EditDealSheet from "./EditDealSheet";
 
@@ -37,7 +39,7 @@ import type { Company } from "@/types/company";
 import type { Contact } from "@/types/contact";
 import type { WorkspaceDealStage } from "@/types/dealStage";
 
-type View = "list" | "pipeline";
+type View = "list" | "pipeline" | "analytics";
 
 type Props = {
   deals: Deal[];
@@ -211,6 +213,33 @@ export default function DealsPageView({
                 <LayoutGrid size={12} />
                 {t("pipelineView")}
               </button>
+
+              <button
+                onClick={() => setView("analytics")}
+                className={cn(
+                  `
+                  flex
+                  h-7
+                  items-center
+                  gap-1.5
+
+                  rounded-lg
+
+                  px-2.5
+
+                  text-xs
+                  font-medium
+
+                  transition-all
+                  `,
+                  view === "analytics"
+                    ? "bg-white/[0.08] text-white"
+                    : "text-white/40 hover:text-white/65"
+                )}
+              >
+                <BarChart2 size={12} />
+                {t("analyticsView")}
+              </button>
             </div>
 
             <GunimiButton onClick={() => setOpen(true)}>
@@ -254,20 +283,22 @@ export default function DealsPageView({
           />
         </div>
 
-        {/* SEARCH */}
+        {/* SEARCH — hidden in analytics view */}
 
-        <div
-          className="
-            w-full
-            max-w-sm
-          "
-        >
-          <GunimiInput
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("searchOpportunities")}
-          />
-        </div>
+        {view !== "analytics" && (
+          <div
+            className="
+              w-full
+              max-w-sm
+            "
+          >
+            <GunimiInput
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t("searchOpportunities")}
+            />
+          </div>
+        )}
       </div>
 
       {/* VIEW CONTENT */}
@@ -285,6 +316,8 @@ export default function DealsPageView({
               </GunimiButton>
             }
           />
+        ) : view === "analytics" ? (
+          <DealsPipelineAnalytics deals={localDeals} stages={stages} />
         ) : view === "list" ? (
           <DealsListCommand
             deals={filteredDeals}
