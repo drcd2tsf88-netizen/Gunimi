@@ -21,7 +21,7 @@ export const ratelimit =
 
     limiter:
       Ratelimit.slidingWindow(
-        10,
+        30,
         "1 m"
       ),
 
