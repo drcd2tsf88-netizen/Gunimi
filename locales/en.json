@@ -1129,7 +1129,17 @@
     "no": "No",
     "never": "Never",
     "unknown": "Unknown",
-    "remove": "Remove"
+    "remove": "Remove",
+    "sortBy": "Sort",
+    "sortPriority": "Priority first",
+    "sortNameAz": "Name A–Z",
+    "sortNameZa": "Name Z–A",
+    "sortNewest": "Newest",
+    "sortOldest": "Oldest",
+    "sortValueDesc": "Highest value",
+    "sortMostContacts": "Most contacts",
+    "sortMostDeals": "Most deals",
+    "sortRecentActivity": "Recent activity"
   },
   "ai": {
     "badge": "Gunimi AI",

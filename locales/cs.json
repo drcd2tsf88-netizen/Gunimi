@@ -1129,7 +1129,17 @@
     "no": "Ne",
     "never": "Nikdy",
     "unknown": "Neznámý",
-    "remove": "Odebrat"
+    "remove": "Odebrat",
+    "sortBy": "Seřadit",
+    "sortPriority": "Prioritní první",
+    "sortNameAz": "Název A–Z",
+    "sortNameZa": "Název Z–A",
+    "sortNewest": "Nejnovější",
+    "sortOldest": "Nejstarší",
+    "sortValueDesc": "Nejvyšší hodnota",
+    "sortMostContacts": "Nejvíce kontaktů",
+    "sortMostDeals": "Nejvíce obchodů",
+    "sortRecentActivity": "Nedávná aktivita"
   },
   "ai": {
     "badge": "Gunimi AI",

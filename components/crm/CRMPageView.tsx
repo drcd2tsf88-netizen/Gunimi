@@ -49,6 +49,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
+type SortOrder = "priority" | "name_asc" | "name_desc" | "newest" | "oldest";
+
 type Contact = {
   id: string;
   name: string;
@@ -60,6 +62,7 @@ type Contact = {
   company_id?: string | null;
   companies?: { name: string } | null;
   is_priority?: boolean;
+  created_at?: string | null;
 };
 
 type Props = {
@@ -83,6 +86,7 @@ export default function CRMPageView({ initialContacts }: Props) {
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const [mergeOpen, setMergeOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<"all" | "lead" | "won">("all");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("priority");
 
   const [prevInitialContacts, setPrevInitialContacts] = useState(initialContacts);
 
@@ -101,8 +105,20 @@ export default function CRMPageView({ initialContacts }: Props) {
       : contacts;
     if (priorityOnly) list = list.filter((c) => c.is_priority);
     if (filterStatus !== "all") list = list.filter((c) => c.status === filterStatus);
-    return [...list].sort((a, b) => (b.is_priority ? 1 : 0) - (a.is_priority ? 1 : 0));
-  }, [contacts, search, priorityOnly, filterStatus]);
+    const sorted = [...list];
+    if (sortOrder === "priority") {
+      sorted.sort((a, b) => (b.is_priority ? 1 : 0) - (a.is_priority ? 1 : 0));
+    } else if (sortOrder === "name_asc") {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOrder === "name_desc") {
+      sorted.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortOrder === "newest") {
+      sorted.sort((a, b) => new Date(b.created_at ?? "").getTime() - new Date(a.created_at ?? "").getTime());
+    } else if (sortOrder === "oldest") {
+      sorted.sort((a, b) => new Date(a.created_at ?? "").getTime() - new Date(b.created_at ?? "").getTime());
+    }
+    return sorted;
+  }, [contacts, search, priorityOnly, filterStatus, sortOrder]);
 
   const leadCount = useMemo(
     () => contacts.filter((c) => c.status === "lead").length,
@@ -213,6 +229,18 @@ export default function CRMPageView({ initialContacts }: Props) {
                 <Star size={13} className={priorityOnly ? "fill-amber-400 text-amber-400" : ""} />
                 {t("priorityOnly")}
               </GunimiButton>
+
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+                className="h-10 rounded-xl border border-white/[0.08] bg-zinc-900 px-3 text-sm text-zinc-300 outline-none focus:border-violet-500/40 cursor-pointer"
+              >
+                <option value="priority">{tc("sortPriority")}</option>
+                <option value="name_asc">{tc("sortNameAz")}</option>
+                <option value="name_desc">{tc("sortNameZa")}</option>
+                <option value="newest">{tc("sortNewest")}</option>
+                <option value="oldest">{tc("sortOldest")}</option>
+              </select>
 
               <GunimiInput
                 type="text"

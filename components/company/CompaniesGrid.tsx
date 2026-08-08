@@ -54,6 +54,7 @@ export default function CompaniesGrid({
   const [createOpen, setCreateOpen] = useState(false);
   const [localCompanies, setLocalCompanies] = useState(companies);
   const [query, setQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState<"name_asc" | "name_desc" | "contacts_desc" | "deals_desc" | "value_desc" | "recent">("name_asc");
 
   const handleTogglePriority = useCallback(async (company: Company, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -84,30 +85,54 @@ export default function CompaniesGrid({
     );
   }
 
-  const filtered = query.trim()
-    ? localCompanies.filter((c) =>
-        [c.name, c.industry, c.country]
-          .filter(Boolean)
-          .some((field) => field!.toLowerCase().includes(query.toLowerCase()))
-      )
-    : localCompanies;
+  const filtered = (() => {
+    const list = query.trim()
+      ? localCompanies.filter((c) =>
+          [c.name, c.industry, c.country]
+            .filter(Boolean)
+            .some((field) => field!.toLowerCase().includes(query.toLowerCase()))
+        )
+      : localCompanies;
+    const sorted = [...list];
+    if (sortOrder === "name_asc") sorted.sort((a, b) => a.name.localeCompare(b.name));
+    else if (sortOrder === "name_desc") sorted.sort((a, b) => b.name.localeCompare(a.name));
+    else if (sortOrder === "contacts_desc") sorted.sort((a, b) => (b.contacts_count ?? 0) - (a.contacts_count ?? 0));
+    else if (sortOrder === "deals_desc") sorted.sort((a, b) => (b.deals_count ?? 0) - (a.deals_count ?? 0));
+    else if (sortOrder === "value_desc") sorted.sort((a, b) => (b.annual_value ?? 0) - (a.annual_value ?? 0));
+    else if (sortOrder === "recent") sorted.sort((a, b) => new Date(b.last_activity_at ?? b.created_at ?? "").getTime() - new Date(a.last_activity_at ?? a.created_at ?? "").getTime());
+    return sorted;
+  })();
 
   return (
     <GunimiSection>
-      {/* Search */}
-      <div className="mb-4 flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-        <Search size={14} className="shrink-0 text-zinc-600" />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t("companies.searchOrganizations")}
-          className="flex-1 bg-transparent text-sm text-white/80 placeholder-white/25 outline-none"
-        />
-        {query && (
-          <button onClick={() => setQuery("")} className="text-xs text-white/25 hover:text-white/60">
-            ×
-          </button>
-        )}
+      {/* Search + Sort */}
+      <div className="mb-4 flex items-center gap-3">
+        <div className="flex flex-1 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
+          <Search size={14} className="shrink-0 text-zinc-600" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t("companies.searchOrganizations")}
+            className="flex-1 bg-transparent text-sm text-white/80 placeholder-white/25 outline-none"
+          />
+          {query && (
+            <button onClick={() => setQuery("")} className="text-xs text-white/25 hover:text-white/60">
+              ×
+            </button>
+          )}
+        </div>
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
+          className="h-10 rounded-xl border border-white/[0.08] bg-zinc-900 px-3 text-sm text-zinc-300 outline-none focus:border-violet-500/40 cursor-pointer"
+        >
+          <option value="name_asc">{t("common.sortNameAz")}</option>
+          <option value="name_desc">{t("common.sortNameZa")}</option>
+          <option value="contacts_desc">{t("common.sortMostContacts")}</option>
+          <option value="deals_desc">{t("common.sortMostDeals")}</option>
+          <option value="value_desc">{t("common.sortValueDesc")}</option>
+          <option value="recent">{t("common.sortRecentActivity")}</option>
+        </select>
       </div>
 
       <div

@@ -3,7 +3,8 @@
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { ArrowRight, Briefcase, Pencil } from "lucide-react";
+import { ArrowRight, Briefcase, ChevronUp, ChevronDown, Pencil } from "lucide-react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
@@ -16,9 +17,42 @@ type Props = {
   onEdit: (deal: Deal) => void;
 };
 
+type SortField = "title" | "value" | "close_date";
+type SortDir = "asc" | "desc";
+
+function SortIcon({ field, sortField, sortDir }: { field: SortField; sortField: SortField; sortDir: SortDir }) {
+  if (sortField !== field) return <ChevronUp size={10} className="opacity-20" />;
+  return sortDir === "asc"
+    ? <ChevronUp size={10} className="text-violet-400" />
+    : <ChevronDown size={10} className="text-violet-400" />;
+}
+
 export default function DealsListView({ deals, onEdit }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
+  const [sortField, setSortField] = useState<SortField>("title");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
+
+  function handleSort(field: SortField) {
+    if (sortField === field) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortDir("asc");
+    }
+  }
+
+  const sortedDeals = [...deals].sort((a, b) => {
+    let cmp = 0;
+    if (sortField === "title") {
+      cmp = (a.title ?? "").localeCompare(b.title ?? "");
+    } else if (sortField === "value") {
+      cmp = Number(a.value ?? 0) - Number(b.value ?? 0);
+    } else if (sortField === "close_date") {
+      cmp = new Date(a.expected_close_date ?? "").getTime() - new Date(b.expected_close_date ?? "").getTime();
+    }
+    return sortDir === "asc" ? cmp : -cmp;
+  });
 
   if (deals.length === 0) {
     return (
@@ -60,60 +94,40 @@ export default function DealsListView({ deals, onEdit }: Props) {
           py-2.5
         "
       >
-        <span
-          className="
-            text-[10px]
-            uppercase
-            tracking-[0.14em]
-
-            text-zinc-600
-          "
+        <button
+          onClick={() => handleSort("title")}
+          className="flex items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-zinc-600 hover:text-zinc-400 transition-colors"
         >
           {t("opportunityName")}
-        </span>
+          <SortIcon field="title" sortField={sortField} sortDir={sortDir} />
+        </button>
 
-        <span
-          className="
-            text-[10px]
-            uppercase
-            tracking-[0.14em]
-
-            text-zinc-600
-          "
-        >
+        <span className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
           {t("company")}
         </span>
 
-        <span
-          className="
-            text-[10px]
-            uppercase
-            tracking-[0.14em]
-
-            text-zinc-600
-          "
+        <button
+          onClick={() => handleSort("value")}
+          className="flex items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-zinc-600 hover:text-zinc-400 transition-colors"
         >
           {t("value")}
-        </span>
+          <SortIcon field="value" sortField={sortField} sortDir={sortDir} />
+        </button>
 
-        <span
-          className="
-            text-[10px]
-            uppercase
-            tracking-[0.14em]
-
-            text-zinc-600
-          "
+        <button
+          onClick={() => handleSort("close_date")}
+          className="flex items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-zinc-600 hover:text-zinc-400 transition-colors"
         >
           {t("closeDate")}
-        </span>
+          <SortIcon field="close_date" sortField={sortField} sortDir={sortDir} />
+        </button>
 
         <span />
       </div>
 
       {/* ROWS */}
 
-      {deals.map((deal) => {
+      {sortedDeals.map((deal) => {
         const closeLabel = deal.expected_close_date
           ? new Date(
               deal.expected_close_date
