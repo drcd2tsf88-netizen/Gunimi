@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { APP_CONFIG } from "@/lib/config/app";
 import LandingFooter from "@/components/landing/LandingFooter";
 import {
@@ -7,8 +8,9 @@ import {
   GenesisHeroDuo,
   GenesisBridge,
   GenesisEmailMoment,
-  GenesisActIV,
 } from "@/components/genesis";
+
+const GenesisActIV = dynamic(() => import("@/components/genesis/GenesisActIV").then((m) => ({ default: m.GenesisActIV })));
 
 export const metadata: Metadata = {
   title: { absolute: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}` },

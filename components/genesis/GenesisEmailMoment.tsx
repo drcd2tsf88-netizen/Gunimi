@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { Section } from "./Section";
 import { SectionContainer } from "./SectionContainer";
@@ -25,62 +24,30 @@ const HIGHLIGHT_STYLES: Record<
   emerald: { bg: "rgba(52,211,153,0.15)", text: "#6ee7b7", glow: "rgba(52,211,153,0.22)" },
 };
 
-function HighlightSpan({ children, color, delay }: HighlightSpanProps) {
-  const shouldReduceMotion = useReducedMotion();
+function HighlightSpan({ children, color }: Omit<HighlightSpanProps, "delay">) {
   const s = HIGHLIGHT_STYLES[color];
-
-  const style: React.CSSProperties = {
-    backgroundColor: s.bg,
-    color: s.text,
-    boxShadow: `0 0 14px ${s.glow}`,
-    borderRadius: "5px",
-    padding: "1px 6px",
-    fontWeight: 500,
-  };
-
-  if (shouldReduceMotion) {
-    return <span style={style}>{children}</span>;
-  }
-
   return (
-    <motion.span
-      style={{ ...style, opacity: 0 }}
-      animate={{ opacity: 1 }}
-      whileInView={{ opacity: 1 }}
-      initial={{ opacity: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
-    >
+    <span style={{
+      backgroundColor: s.bg,
+      color: s.text,
+      boxShadow: `0 0 14px ${s.glow}`,
+      borderRadius: "5px",
+      padding: "1px 6px",
+      fontWeight: 500,
+    }}>
       {children}
-    </motion.span>
+    </span>
   );
 }
 
 // ── ActionRow ─────────────────────────────────────────────────
 
 function ActionRow({ label, delay }: { label: string; delay: number }) {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return (
-      <div className="flex items-start gap-2.5">
-        <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-emerald-400/70" />
-        <span className="text-[13px] leading-snug text-white/60">{label}</span>
-      </div>
-    );
-  }
-
   return (
-    <motion.div
-      className="flex items-start gap-2.5"
-      initial={{ opacity: 0, x: 12 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
-    >
+    <Reveal x={12} y={0} delay={delay} duration={0.45} className="flex items-start gap-2.5">
       <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-emerald-400/70" />
       <span className="text-[13px] leading-snug text-white/60">{label}</span>
-    </motion.div>
+    </Reveal>
   );
 }
 
@@ -158,7 +125,7 @@ export function GenesisEmailMoment() {
               >
                 <div className="mb-1.5 flex items-center gap-2">
                   <span className="text-[11px] text-white/25">From:</span>
-                  <HighlightSpan color="violet" delay={0.35}>
+                  <HighlightSpan color="violet">
                     {t("from")}
                   </HighlightSpan>
                 </div>
@@ -171,11 +138,11 @@ export function GenesisEmailMoment() {
               {/* Body */}
               <div className="px-6 py-6 text-[15px] leading-[2] text-white/40">
                 <span>{t("bodyPart1")} </span>
-                <HighlightSpan color="amber" delay={0.65}>
+                <HighlightSpan color="amber">
                   {t("highlight2")}
                 </HighlightSpan>
                 <span> {t("bodyPart2")} </span>
-                <HighlightSpan color="emerald" delay={0.95}>
+                <HighlightSpan color="emerald">
                   {t("highlight3")}
                 </HighlightSpan>
                 <span>{t("bodyPart3")}</span>
@@ -209,12 +176,7 @@ export function GenesisEmailMoment() {
           </Reveal>
 
           {/* Gunimi understood panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <Reveal y={18} duration={0.85} delay={0.25}>
             <div
               className="rounded-2xl p-6"
               style={{
@@ -253,7 +215,7 @@ export function GenesisEmailMoment() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </SectionContainer>
     </Section>

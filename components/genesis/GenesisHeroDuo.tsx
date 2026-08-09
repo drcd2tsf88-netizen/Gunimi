@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { AiCore } from "./AiCore";
 import { FadeIn } from "./FadeIn";
 import { Reveal } from "./Reveal";
+
+const AiCore = dynamic(() => import("./AiCore").then((m) => ({ default: m.AiCore })), { ssr: false });
 
 // ── GenesisHeroDuo ────────────────────────────────────────────
 // Full-viewport two-panel hero.
