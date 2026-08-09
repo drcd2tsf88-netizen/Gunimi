@@ -84,13 +84,24 @@ export default function TagPicker({ entityType, entityId, allTags, initialTags }
   function handleCreate() {
     const name = newName.trim();
     if (!name) return;
+
+    // Reuse existing tag if same name already exists in workspace (case-insensitive)
+    const existingMatch = allTags.find(
+      (t) => t.name.toLowerCase() === name.toLowerCase()
+    );
+    if (existingMatch) {
+      if (!taggedIds.has(existingMatch.id)) handleAdd(existingMatch);
+      setNewName("");
+      return;
+    }
+
     startTransition(async () => {
       const created = await createTag(name, newColor);
       if (created) {
-        allTags.push(created);
-        const ok = await addEntityTag(entityType, entityId, created.id);
-        if (ok) {
-          setTags((prev) => [...prev, created]);
+        if (!allTags.find((t) => t.id === created.id)) allTags.push(created);
+        if (!taggedIds.has(created.id)) {
+          const ok = await addEntityTag(entityType, entityId, created.id);
+          if (ok) setTags((prev) => [...prev, created]);
         }
       }
       setNewName("");
@@ -138,6 +149,9 @@ export default function TagPicker({ entityType, entityId, allTags, initialTags }
           placeholder={t("tagNamePlaceholder")}
           className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-white/20 outline-none focus:border-violet-500/40"
         />
+        {newName.trim() && allTags.some((t) => t.name.toLowerCase() === newName.trim().toLowerCase()) && (
+          <p className="px-1 text-[10px] text-amber-400/80">{t("tagAlreadyExists")}</p>
+        )}
         <div className="flex flex-wrap gap-1.5">
           {TAG_COLORS.map((c) => {
             const colors = TAG_COLOR_CLASSES[c];

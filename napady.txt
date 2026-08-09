@@ -204,17 +204,20 @@ BEZPECNOSTNY AUDIT (2026-08-02)
    => GunimiField rozšírený o error prop (červený text pod inputom)
    => Validácia na blur + pri submit vo všetkých 4 miestach: CreateContactSheet, EditContactSheet, AddContactToCompanySheet, CreateContactPanel
    - kontakt detail zaaloskaa emaail ? kam to smeruje ani mne sa aned prihlasit hm.. idelne by bolo kebyze je spojene z emaail integraaciou priamo z gunimi. napaaad n rieseniaaa ?
-   -pri vytvaraani kontaktu aautomatizacuia automaticky vytvori ulohu ulohaa je v anglitcinev SK jzaakyu aaplikcie .
-   -v kontakt detaile nejde priradit ulohu
+[DONE] -pri vytvaraani kontaktu aautomatizacuia automaticky vytvori ulohu ulohaa je v anglitcinev SK jzaakyu aaplikcie .
+   => automation/engine.ts: locale fallback chain — DB prefs → GUNIMI_LOCALE cookie → Accept-Language browser header → "en"
+[DONE] -v kontakt detaile nejde priradit ulohu
+   => getWorkspaceMembers() fetchnutý na contact + deal detail page, members preposlaný cez ContactDetailView → ContactTasks → TaskDetailPanel a DealDetailView → DealTasks → TaskDetailPanel
 [DONE] - v pravom kraji kde je možné stránku scrolovat dole prípadne hore je príliž maličká treba ju o trošku vačšiu
    => scrollbar width 4px → 6px v globals.css
 [DONE] - pri pridaní komentára do podulohy nie je možné pridat komentár
    => ContactTasks.tsx: onNavigateToTask wired — klik na podúlohu otvára jej detail vrátane comment editora
 [DONE] - v detaile úlohy možnost upravit samostatnu ulohu
    => TaskDetailPanel: klik na titul → inline input, Enter/blur uloží cez updateTask, Escape zruší
-   - pri zlučení kontaktov nedochádza k importu kontaktov ale vymaže povodný kontakt
-   - limitovaní tagu na osobu na společnost
-   - pri zlučení nemenit bez suhlasu kontakty, nkolko vymenilo len tel. č. avšaak ked nastaavím primárny kontakt malo by ostat všetko z oznčeného kontaktu v prímárnom u zlučenom len pridat k primárnemu kontaktu jeho kontkty
+[DONE] - pri zlučení kontaktov nedochádza k importu kontaktov ale vymaže povodný kontakt
+[DONE] - pri zlučení nemenit bez suhlasu kontakty, nkolko vymenilo len tel. č. avšaak ked nastaavím primárny kontakt malo by ostat všetko z oznčeného kontaktu v prímárnom u zlučenom len pridat k primárnemu kontaktu jeho kontkty
+   => mergeContacts.ts: primárny vždy vyhráva, prázdne polia sa len doplnia zo sekundárneho (primary.phone || secondary.phone), žiadne fieldChoices
+   => MergeContactSheet.tsx: odstránený conflict picker, pridaný info banner + migrácia sekcia s vizuálnou šípkou secondary→primary
 [DONE] - kontakt detaail záložka práca podzáložka úlohy v kontakte zobrzuje kody (/p)
    => ContactTasks.tsx: description stripuje HTML tagy pred zobrazením v zozname
 [DONE] - v kontkt detaaile zalozke z organizcii pridt team - je taam pokzene dropdowny prepidat do stylu gunimi
@@ -223,5 +226,7 @@ BEZPECNOSTNY AUDIT (2026-08-02)
 [DONE] - emoji v text baroch prosim vsaade kde clovek muoze neico napisat nech su k dispozicii emoji
    => NoteEditor: Smile button s emoji grid (50 emoji) v toolbare, rovnaký ako CommentEditor
    => CommentEditor: už hotové v predošlej session
-   - tagy napriec wotrkpace limitovt na 1 tag na meno, firmu, kontakt nech s nestane v bordel v tagoch pri paar ludoch oukej aaale pri 100 ludoch kaazdy i spraavy vlstny taaag a uz ms chaos milion tagov na jeden kontakt ..
+[DONE] - tagy napriec wotrkpace limitovt na 1 tag na meno, firmu, kontakt nech s nestane v bordel v tagoch pri paar ludoch oukej aaale pri 100 ludoch kaazdy i spraavy vlstny taaag a uz ms chaos milion tagov na jeden kontakt ..
+   => createTag.ts: pred insertom ilike check — ak existuje tag s rovnakým menom, vráti existujúci
+   => TagPicker.tsx: klient-side match na allTags pred createTag volaním, amber hint "tag už existuje — bude priradený existujúci"
    -

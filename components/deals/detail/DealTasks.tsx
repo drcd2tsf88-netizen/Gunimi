@@ -17,10 +17,12 @@ import TaskDetailPanel from "@/components/tasks/TaskDetailPanel";
 import { createTask } from "@/server/actions/tasks/createTask";
 import { createClient } from "@/lib/supabase/client";
 import type { DealRelatedTask } from "@/server/actions/deals/getDealRelatedTasks";
+import type { WorkspaceMember } from "@/types/task";
 
 type Props = {
   tasks: DealRelatedTask[];
   contactId?: string | null;
+  members: WorkspaceMember[];
   onTaskCreated?: (task: DealRelatedTask) => void;
 };
 
@@ -35,7 +37,7 @@ function getStatusStyles(status: string) {
   }
 }
 
-export default function DealTasks({ tasks: initialTasks, contactId, onTaskCreated }: Props) {
+export default function DealTasks({ tasks: initialTasks, contactId, members, onTaskCreated }: Props) {
   const t = useTranslations("deals");
   const tTasks = useTranslations("tasks");
   const tFocus = useTranslations("taskFocus");
@@ -198,7 +200,7 @@ export default function DealTasks({ tasks: initialTasks, contactId, onTaskCreate
       <TaskDetailPanel
         taskId={selectedTaskId}
         currentUserId={currentUserId}
-        members={[]}
+        members={members}
         onClose={() => setSelectedTaskId(null)}
       />
     </GunimiSection>

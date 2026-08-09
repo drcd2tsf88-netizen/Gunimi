@@ -2,10 +2,9 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCircle2, Crown, Trash2, X } from "lucide-react";
+import { ArrowRight, Crown, Info, Trash2, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { mergeContacts } from "@/server/actions/crm/mergeContacts";
-import type { MergeContactFieldChoices } from "@/server/actions/crm/mergeContacts";
 
 type Contact = {
   id: string;
@@ -17,8 +16,6 @@ type Contact = {
   company_id?: string | null;
 };
 
-type ConflictField = keyof MergeContactFieldChoices;
-
 type Props = {
   contacts: [Contact, Contact];
   open: boolean;
@@ -26,55 +23,19 @@ type Props = {
   onMerged: (primaryId: string, deletedId: string) => void;
 };
 
-function getConflicts(a: Contact, b: Contact): ConflictField[] {
-  const fields: ConflictField[] = ["email", "phone", "position", "company_id"];
-  return fields.filter((f) => {
-    const aVal = f === "company_id" ? a.companies?.name : a[f as keyof Contact];
-    const bVal = f === "company_id" ? b.companies?.name : b[f as keyof Contact];
-    return aVal && bVal && aVal !== bVal;
-  });
-}
-
-function fieldLabel(field: ConflictField, t: (k: string) => string): string {
-  const map: Record<ConflictField, string> = {
-    email: t("mergeFieldEmail"),
-    phone: t("mergeFieldPhone"),
-    position: t("mergeFieldPosition"),
-    company_id: t("mergeFieldCompany"),
-  };
-  return map[field];
-}
-
-function fieldValue(contact: Contact, field: ConflictField): string {
-  if (field === "company_id") return contact.companies?.name ?? "";
-  return (contact[field as keyof Contact] as string | null | undefined) ?? "";
-}
-
 export default function MergeContactSheet({ contacts, open, onClose, onMerged }: Props) {
   const t = useTranslations("crm");
   const [primaryIdx, setPrimaryIdx] = useState<0 | 1>(0);
-  const [fieldChoices, setFieldChoices] = useState<MergeContactFieldChoices>({});
   const [isMerging, startMerge] = useTransition();
 
   if (!open) return null;
 
-  const [a, b] = contacts;
   const primary = contacts[primaryIdx];
   const secondary = contacts[primaryIdx === 0 ? 1 : 0];
-  const conflicts = getConflicts(a, b);
-
-  function handleSwap() {
-    setPrimaryIdx((prev) => (prev === 0 ? 1 : 0));
-    setFieldChoices({});
-  }
-
-  function setChoice(field: ConflictField, winner: "primary" | "secondary") {
-    setFieldChoices((prev) => ({ ...prev, [field]: winner }));
-  }
 
   function handleMerge() {
     startMerge(async () => {
-      const result = await mergeContacts(primary.id, secondary.id, fieldChoices);
+      const result = await mergeContacts(primary.id, secondary.id);
       if (result.success) {
         toast.success(t("mergeSuccess"));
         onMerged(primary.id, secondary.id);
@@ -108,7 +69,15 @@ export default function MergeContactSheet({ contacts, open, onClose, onMerged }:
         </div>
 
         {/* Body */}
-        <div className="flex-1 space-y-6 overflow-y-auto px-6 py-5">
+        <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5">
+          {/* Info banner */}
+          <div className="flex items-start gap-2.5 rounded-xl border border-violet-500/20 bg-violet-500/[0.07] px-4 py-3">
+            <Info size={13} className="mt-0.5 shrink-0 text-violet-400" />
+            <p className="text-xs leading-relaxed text-white/50">
+              {t("mergeInfo")}
+            </p>
+          </div>
+
           {/* Side-by-side cards */}
           <div className="grid grid-cols-2 gap-3">
             {contacts.map((contact, idx) => {
@@ -165,7 +134,7 @@ export default function MergeContactSheet({ contacts, open, onClose, onMerged }:
                   {/* Swap button */}
                   {!isPrimary && (
                     <button
-                      onClick={handleSwap}
+                      onClick={() => setPrimaryIdx(idx as 0 | 1)}
                       className="mt-3 w-full rounded-lg border border-violet-500/20 py-1.5 text-[11px] text-violet-400 transition-colors hover:bg-violet-500/10"
                     >
                       {t("mergePickPrimary")}
@@ -176,49 +145,20 @@ export default function MergeContactSheet({ contacts, open, onClose, onMerged }:
             })}
           </div>
 
-          {/* Conflict resolution */}
-          {conflicts.length > 0 && (
-            <div className="space-y-3">
-              <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
-                {t("mergeConflicts")}
-              </p>
-              {conflicts.map((field) => {
-                const primaryVal = fieldValue(primary, field);
-                const secondaryVal = fieldValue(secondary, field);
-                const choice = fieldChoices[field] ?? "primary";
-
-                return (
-                  <div key={field} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3">
-                    <p className="mb-2 text-[11px] text-zinc-500">{fieldLabel(field, t)}</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={() => setChoice(field, "primary")}
-                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                          choice === "primary"
-                            ? "border-violet-500/40 bg-violet-500/10 text-violet-200"
-                            : "border-white/[0.06] text-white/40 hover:border-white/10"
-                        }`}
-                      >
-                        {choice === "primary" && <CheckCircle2 size={10} className="shrink-0 text-violet-400" />}
-                        <span className="truncate">{primaryVal}</span>
-                      </button>
-                      <button
-                        onClick={() => setChoice(field, "secondary")}
-                        className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                          choice === "secondary"
-                            ? "border-violet-500/40 bg-violet-500/10 text-violet-200"
-                            : "border-white/[0.06] text-white/40 hover:border-white/10"
-                        }`}
-                      >
-                        {choice === "secondary" && <CheckCircle2 size={10} className="shrink-0 text-violet-400" />}
-                        <span className="truncate">{secondaryVal}</span>
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+          {/* What gets migrated */}
+          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
+              {t("mergeMigrationTitle")}
+            </p>
+            <div className="flex items-center gap-2">
+              <span className="truncate text-sm font-medium text-white/60">{secondary.name}</span>
+              <ArrowRight size={12} className="shrink-0 text-violet-400" />
+              <span className="truncate text-sm font-medium text-violet-300">{primary.name}</span>
             </div>
-          )}
+            <p className="mt-2 text-[11px] leading-relaxed text-white/35">
+              {t("mergeMigrationDesc")}
+            </p>
+          </div>
         </div>
 
         {/* Footer */}

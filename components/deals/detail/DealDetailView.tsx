@@ -40,6 +40,7 @@ import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttach
 import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
 import type { WorkspaceTeam } from "@/types/organization";
+import type { WorkspaceMember } from "@/types/task";
 
 const PREP_ICONS: Record<PrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -68,6 +69,7 @@ type Props = {
   entityTags: WorkspaceTag[];
   attachments: WorkspaceAttachment[];
   teams: WorkspaceTeam[];
+  members: WorkspaceMember[];
 };
 
 export default function DealDetailView({
@@ -82,6 +84,7 @@ export default function DealDetailView({
   entityTags,
   attachments,
   teams,
+  members,
 }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
@@ -244,6 +247,7 @@ export default function DealDetailView({
           <DealTasks
             tasks={localTasks}
             contactId={deal.contact?.id}
+            members={members}
             onTaskCreated={(task) => setLocalTasks((prev) => [task, ...prev])}
           />
           <DealNotes

@@ -7,21 +7,13 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { logger } from "@/lib/logger";
 
-export type MergeContactFieldChoices = {
-  email?: "primary" | "secondary";
-  phone?: "primary" | "secondary";
-  position?: "primary" | "secondary";
-  company_id?: "primary" | "secondary";
-};
-
 export type MergeContactResult =
   | { success: true; primaryId: string }
   | { success: false; error: string };
 
 export async function mergeContacts(
   primaryId: string,
-  secondaryId: string,
-  fieldChoices: MergeContactFieldChoices = {}
+  secondaryId: string
 ): Promise<MergeContactResult> {
   try {
     const user = await getUser();
@@ -32,7 +24,6 @@ export async function mergeContacts(
 
     const supabase = await createClient();
 
-    // Load both contacts
     const [{ data: primary }, { data: secondary }] = await Promise.all([
       supabase
         .from("workspace_contacts")
@@ -52,17 +43,12 @@ export async function mergeContacts(
       return { success: false, error: "not_found" };
     }
 
-    // Resolve field values — primary wins unless user chose secondary or primary is empty
-    function resolve<T>(field: keyof MergeContactFieldChoices, primaryVal: T, secondaryVal: T): T {
-      if (fieldChoices[field] === "secondary") return secondaryVal;
-      return primaryVal ?? secondaryVal;
-    }
-
+    // Primary always wins. Only fill truly empty primary fields from secondary.
     const mergedFields = {
-      email: resolve("email", primary.email, secondary.email),
-      phone: resolve("phone", primary.phone, secondary.phone),
-      position: resolve("position", primary.position, secondary.position),
-      company_id: resolve("company_id", primary.company_id, secondary.company_id),
+      email: primary.email || secondary.email,
+      phone: primary.phone || secondary.phone,
+      position: primary.position || secondary.position,
+      company_id: primary.company_id || secondary.company_id,
     };
 
     // Re-link all FK references: secondary → primary
@@ -89,7 +75,7 @@ export async function mergeContacts(
         .eq("workspace_id", workspace.id),
     ]);
 
-    // Merge tags: copy secondary tags to primary (upsert, ignore duplicates)
+    // Merge tags: copy secondary tags to primary (ignore duplicates)
     const { data: secondaryTags } = await supabaseAdmin
       .from("workspace_entity_tags")
       .select("tag_id")
@@ -109,7 +95,7 @@ export async function mergeContacts(
         .upsert(tagRows, { onConflict: "workspace_id,tag_id,entity_type,entity_id", ignoreDuplicates: true });
     }
 
-    // Update primary contact with merged field values
+    // Update primary contact — only fill empty fields, never overwrite existing data
     await supabaseAdmin
       .from("workspace_contacts")
       .update({ ...mergedFields, updated_at: new Date().toISOString() })
@@ -123,7 +109,6 @@ export async function mergeContacts(
       .eq("id", secondaryId)
       .eq("workspace_id", workspace.id);
 
-    // Log merge activity
     await supabaseAdmin.from("workspace_activity").insert({
       workspace_id: workspace.id,
       user_id: user.id,

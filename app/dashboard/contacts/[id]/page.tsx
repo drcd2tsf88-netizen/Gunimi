@@ -9,7 +9,9 @@ import { getTags } from "@/server/actions/tags/getTags";
 import { getEntityTags } from "@/server/actions/tags/getEntityTags";
 import { getAttachments } from "@/server/actions/attachments/getAttachments";
 import { getTeams } from "@/server/actions/organization/getTeams";
+import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
 import ContactDetailView from "@/components/contacts/detail/ContactDetailView";
+import type { WorkspaceMember } from "@/types/task";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -18,7 +20,7 @@ type Props = {
 export default async function ContactDetailPage({ params }: Props) {
   const { id: contactId } = await params;
 
-  const [contact, deals, tasks, activities, notes, emails, allTags, entityTags, attachments, teams] = await Promise.all([
+  const [contact, deals, tasks, activities, notes, emails, allTags, entityTags, attachments, teams, members] = await Promise.all([
     getContact(contactId),
     getContactDeals(contactId),
     getContactTasks(contactId),
@@ -29,6 +31,7 @@ export default async function ContactDetailPage({ params }: Props) {
     getEntityTags("contact", contactId),
     getAttachments("contact", contactId),
     getTeams(),
+    getWorkspaceMembers(),
   ]);
 
   if (!contact) notFound();
@@ -45,6 +48,7 @@ export default async function ContactDetailPage({ params }: Props) {
       entityTags={entityTags}
       attachments={attachments}
       teams={teams}
+      members={members as unknown as WorkspaceMember[]}
     />
   );
 }

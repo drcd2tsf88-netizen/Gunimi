@@ -8,12 +8,23 @@ import type {
 import { automationCreateTask, automationLogExecution } from "./actions";
 import { logger } from "@/lib/logger";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 type WorkspacePrefs = {
   disabledAutomations?: string[];
   language?: string;
 };
+
+const SUPPORTED_LOCALES = ["en", "sk", "cs"] as const;
+
+function parseBrowserLocale(hint: string | null, acceptLang: string): string | null {
+  if (hint && (SUPPORTED_LOCALES as readonly string[]).includes(hint)) return hint;
+  for (const part of acceptLang.split(",")) {
+    const lang = part.trim().split(";")[0].trim().split("-")[0].toLowerCase();
+    if ((SUPPORTED_LOCALES as readonly string[]).includes(lang)) return lang;
+  }
+  return null;
+}
 
 async function loadWorkspacePrefs(workspaceId: string): Promise<WorkspacePrefs> {
   try {
@@ -24,13 +35,21 @@ async function loadWorkspacePrefs(workspaceId: string): Promise<WorkspacePrefs> 
       .maybeSingle();
     const prefs = (data?.preferences as WorkspacePrefs | null) ?? {};
 
-    // Fallback: if no workspace language preference set, use the UI locale cookie
     if (!prefs.language) {
       const cookieStore = await cookies();
       const localeCookie = cookieStore.get("GUNIMI_LOCALE");
       if (localeCookie?.value) {
         prefs.language = localeCookie.value;
       }
+    }
+
+    if (!prefs.language) {
+      const headerStore = await headers();
+      const browserLocale = parseBrowserLocale(
+        headerStore.get("x-gunimi-locale-hint"),
+        headerStore.get("accept-language") ?? ""
+      );
+      if (browserLocale) prefs.language = browserLocale;
     }
 
     return prefs;

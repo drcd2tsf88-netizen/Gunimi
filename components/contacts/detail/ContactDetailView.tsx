@@ -46,6 +46,7 @@ import type { WorkspaceAttachment } from "@/server/actions/attachments/getAttach
 import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
 import type { WorkspaceTeam } from "@/types/organization";
+import type { WorkspaceMember } from "@/types/task";
 import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 
@@ -79,6 +80,7 @@ type Props = {
   entityTags: WorkspaceTag[];
   attachments: WorkspaceAttachment[];
   teams: WorkspaceTeam[];
+  members: WorkspaceMember[];
 };
 
 export default function ContactDetailView({
@@ -92,6 +94,7 @@ export default function ContactDetailView({
   entityTags,
   attachments,
   teams,
+  members,
 }: Props) {
   const t = useTranslations("contacts");
 
@@ -302,6 +305,7 @@ export default function ContactDetailView({
           <ContactTasks
             tasks={tasks}
             contactId={contact.id}
+            members={members}
             onTaskCreated={(task) => setLocalTasks((prev) => [task, ...prev])}
           />
           <ContactNotes contact={contact} notes={notes} />

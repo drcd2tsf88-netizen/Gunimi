@@ -16,10 +16,12 @@ import TaskDetailPanel from "@/components/tasks/TaskDetailPanel";
 import { createTask } from "@/server/actions/tasks/createTask";
 import { createClient } from "@/lib/supabase/client";
 import type { ContactTask } from "@/server/actions/crm/getContactTasks";
+import type { WorkspaceMember } from "@/types/task";
 
 type Props = {
   tasks: ContactTask[];
   contactId: string;
+  members: WorkspaceMember[];
   onTaskCreated?: (task: ContactTask) => void;
 };
 
@@ -32,7 +34,7 @@ function getStatusStyles(status: string) {
   }
 }
 
-export default function ContactTasks({ tasks: initialTasks, contactId, onTaskCreated }: Props) {
+export default function ContactTasks({ tasks: initialTasks, contactId, members, onTaskCreated }: Props) {
   const t = useTranslations("contacts");
   const tTasks = useTranslations("tasks");
   const tFocus = useTranslations("taskFocus");
@@ -186,7 +188,7 @@ export default function ContactTasks({ tasks: initialTasks, contactId, onTaskCre
       <TaskDetailPanel
         taskId={selectedTaskId}
         currentUserId={currentUserId}
-        members={[]}
+        members={members}
         onClose={() => setSelectedTaskId(null)}
         onNavigateToTask={(subId) => setSelectedTaskId(subId)}
       />

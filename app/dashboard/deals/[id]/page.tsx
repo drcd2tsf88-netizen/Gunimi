@@ -11,8 +11,10 @@ import { getTags } from "@/server/actions/tags/getTags";
 import { getEntityTags } from "@/server/actions/tags/getEntityTags";
 import { getAttachments } from "@/server/actions/attachments/getAttachments";
 import { getTeams } from "@/server/actions/organization/getTeams";
+import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
 
 import DealDetailView from "@/components/deals/detail/DealDetailView";
+import type { WorkspaceMember } from "@/types/task";
 import GunimiBreadcrumbs from "@/components/ui/GunimiBreadcrumbs";
 
 type Props = {
@@ -29,7 +31,7 @@ export default async function DealPage({ params }: Props) {
   const companyId = dealData.deal.company?.id ?? null;
   const contactId = dealData.deal.contact?.id ?? null;
 
-  const [companies, contacts, notes, tasks, stages, allTags, entityTags, attachments, teams] = await Promise.all([
+  const [companies, contacts, notes, tasks, stages, allTags, entityTags, attachments, teams, members] = await Promise.all([
     getCompanies(),
     getContacts(),
     getDealRelatedNotes(companyId, contactId),
@@ -39,6 +41,7 @@ export default async function DealPage({ params }: Props) {
     getEntityTags("deal", id),
     getAttachments("deal", id),
     getTeams(),
+    getWorkspaceMembers(),
   ]);
 
   return (
@@ -61,6 +64,7 @@ export default async function DealPage({ params }: Props) {
         entityTags={entityTags}
         attachments={attachments}
         teams={teams}
+        members={members as unknown as WorkspaceMember[]}
       />
     </div>
   );

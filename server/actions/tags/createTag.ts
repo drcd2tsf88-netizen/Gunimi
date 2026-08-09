@@ -21,6 +21,16 @@ export async function createTag(name: string, color: string): Promise<WorkspaceT
 
     const supabase = await createClient();
 
+    // Enforce unique tag names per workspace (case-insensitive)
+    const { data: existing } = await supabase
+      .from("workspace_tags")
+      .select("id, workspace_id, name, color, created_at")
+      .eq("workspace_id", workspace.id)
+      .ilike("name", cleanName)
+      .maybeSingle();
+
+    if (existing) return existing as WorkspaceTag;
+
     const { data, error } = await supabase
       .from("workspace_tags")
       .insert({ workspace_id: workspace.id, name: cleanName, color })
