@@ -17,6 +17,7 @@ import {
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiField from "@/components/ui/GunimiField";
 import GunimiInput from "@/components/ui/GunimiInput";
+import { validatePhone } from "@/lib/utils/validatePhone";
 
 import { createContact } from "@/server/actions/crm/createContact";
 import { linkContactToCompany } from "@/server/actions/company/linkContactToCompany";
@@ -54,6 +55,7 @@ export default function AddContactToCompanySheet({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState(false);
   const [search, setSearch] = useState("");
   const [contacts, setContacts] = useState<WorkspaceContact[]>([]);
   const [contactsLoaded, setContactsLoaded] = useState(false);
@@ -63,6 +65,7 @@ export default function AddContactToCompanySheet({
     setName("");
     setEmail("");
     setPhone("");
+    setPhoneError(false);
     setSearch("");
     setMode("new");
     setContacts([]);
@@ -92,6 +95,10 @@ export default function AddContactToCompanySheet({
   function handleCreate() {
     if (!name.trim()) {
       toast.error(tcrm("contactNameRequired"), { id: "add-contact-company" });
+      return;
+    }
+    if (!validatePhone(phone)) {
+      setPhoneError(true);
       return;
     }
     toast.loading(tcrm("creatingContact"), { id: "add-contact-company" });
@@ -192,12 +199,13 @@ export default function AddContactToCompanySheet({
                 />
               </GunimiField>
 
-              <GunimiField label={tcrm("contactPhone")}>
+              <GunimiField label={tcrm("contactPhone")} error={phoneError ? tcrm("phoneInvalid") : undefined}>
                 <GunimiInput
                   value={phone}
                   disabled={isPending}
                   placeholder={tcrm("contactPhonePlaceholder")}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => { setPhone(e.target.value); if (phoneError) setPhoneError(!validatePhone(e.target.value)); }}
+                  onBlur={(e) => { if (e.target.value) setPhoneError(!validatePhone(e.target.value)); }}
                 />
               </GunimiField>
             </div>

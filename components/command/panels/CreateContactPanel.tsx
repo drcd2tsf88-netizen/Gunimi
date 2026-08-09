@@ -7,6 +7,7 @@ import { PanelSubmitItem } from "./PanelSubmitItem";
 import { PanelEmptyState } from "./PanelEmptyState";
 import { PanelError } from "./PanelError";
 import { panelInputClass } from "./panelStyles";
+import { validatePhone } from "@/lib/utils/validatePhone";
 
 export interface ContactExtra {
   email: string;
@@ -31,8 +32,10 @@ export default function CreateContactPanel({
   onDraftChange,
 }: CreateContactPanelProps) {
   const t = useTranslations("command");
+  const tcrm = useTranslations("crm");
   const [email, setEmail] = useState(defaultValues?.email ?? "");
   const [phone, setPhone] = useState(defaultValues?.phone ?? "");
+  const [phoneError, setPhoneError] = useState(false);
   const name = query.trim();
 
   function handleSubmit() {
@@ -87,12 +90,16 @@ export default function CreateContactPanel({
             <input
               type="tel"
               value={phone}
-              onChange={(e) => handlePhoneChange(e.target.value)}
+              onChange={(e) => { handlePhoneChange(e.target.value); if (phoneError) setPhoneError(!validatePhone(e.target.value)); }}
+              onBlur={(e) => { if (e.target.value) setPhoneError(!validatePhone(e.target.value)); }}
               onKeyDown={handleKeyDown}
               placeholder={t("createContactPhonePlaceholder")}
               disabled={isSubmitting}
-              className={panelInputClass}
+              className={`${panelInputClass} ${phoneError ? "border-red-500/40" : ""}`}
             />
+            {phoneError && (
+              <p className="px-1 text-[11px] text-red-400">{tcrm("phoneInvalid")}</p>
+            )}
           </div>
         </>
       ) : (

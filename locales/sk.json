@@ -317,6 +317,7 @@
     "contactPosition": "Pozícia",
     "contactEmailPlaceholder": "meno@firma.com",
     "contactPhonePlaceholder": "+421 123 456 789",
+    "phoneInvalid": "Neplatné telefónne číslo. Použite formát: +421 775 191 889",
     "contactNotes": "Poznámky",
     "creatingContact": "Vytváram kontakt...",
     "contactCreated": "Kontakt bol vytvorený",

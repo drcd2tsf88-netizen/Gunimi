@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -15,10 +16,20 @@ import {
   Italic,
   List,
   ListOrdered,
+  Smile,
   Underline as UnderlineIcon,
 } from "lucide-react";
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+
+const EMOJI_LIST = [
+  "😀","😂","😍","😎","🤔","😅","🙏","👍","👎","❤️",
+  "🔥","✅","⚡","💯","🎉","🙌","👋","🤝","💪","🚀",
+  "⭐","💡","📌","🎯","✍️","📝","🗓️","💬","📊","🔔",
+  "⚠️","🚧","💥","🛑","✔️","❌","➕","➖","🔄","🔍",
+  "😤","😬","🤯","😴","🥳","🫡","🤦","🤷","👀","🫶",
+];
 
 type Props = {
   content: string;
@@ -57,6 +68,8 @@ function ToolbarButton({
 
 export default function NoteEditor({ content, onChange, placeholder = "", disabled = false, minHeight = "120px" }: Props) {
   const t = useTranslations("notes");
+  const [emojiOpen, setEmojiOpen] = useState(false);
+  const emojiRef = useRef<HTMLDivElement>(null);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -86,6 +99,11 @@ export default function NoteEditor({ content, onChange, placeholder = "", disabl
   }, [disabled, editor]);
 
   if (!editor) return null;
+
+  function insertEmoji(emoji: string) {
+    editor?.chain().focus().insertContent(emoji).run();
+    setEmojiOpen(false);
+  }
 
   return (
     <div className={`tiptap-editor overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] transition-colors focus-within:border-violet-500/40 ${disabled ? "opacity-50" : ""}`}>
@@ -163,6 +181,37 @@ export default function NoteEditor({ content, onChange, placeholder = "", disabl
         >
           <AlignRight size={12} />
         </ToolbarButton>
+        <div className="mx-1.5 h-4 w-px bg-white/[0.08]" />
+        <div className="relative" ref={emojiRef}>
+          <ToolbarButton
+            active={emojiOpen}
+            onClick={() => setEmojiOpen((v) => !v)}
+            title="Emoji"
+          >
+            <Smile size={12} />
+          </ToolbarButton>
+          {emojiOpen && (
+            <div
+              className="absolute left-0 top-full z-50 mt-1 rounded-xl border border-white/[0.08] bg-[#0E0F1A] p-2 shadow-2xl"
+              style={{ width: 220 }}
+              onMouseDown={(e) => e.preventDefault()}
+            >
+              <div className="grid grid-cols-10 gap-0.5">
+                {EMOJI_LIST.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => insertEmoji(emoji)}
+                    className={cn("flex h-[22px] w-[22px] items-center justify-center rounded text-[14px] transition-colors hover:bg-white/[0.07]")}
+                    title={emoji}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Editor area */}

@@ -21,6 +21,7 @@ import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiField from "@/components/ui/GunimiField";
 import GunimiInput from "@/components/ui/GunimiInput";
 import GunimiTextarea from "@/components/ui/GunimiTextarea";
+import { validatePhone } from "@/lib/utils/validatePhone";
 
 type Contact = {
   id: string;
@@ -54,6 +55,7 @@ export default function EditContactSheet({
   const [phone, setPhone] = useState(contact.phone ?? "");
   const [position, setPosition] = useState(contact.position ?? "");
   const [notes, setNotes] = useState(contact.notes ?? "");
+  const [phoneError, setPhoneError] = useState(false);
 
   const [prevOpen, setPrevOpen] = useState(open);
   const [prevContactId, setPrevContactId] = useState(contact.id);
@@ -77,6 +79,10 @@ export default function EditContactSheet({
   function handleSave() {
     if (!name.trim()) {
       toast.error(t("contactNameRequired"));
+      return;
+    }
+    if (!validatePhone(phone)) {
+      setPhoneError(true);
       return;
     }
 
@@ -141,12 +147,13 @@ export default function EditContactSheet({
             />
           </GunimiField>
 
-          <GunimiField label={t("contactPhone")}>
+          <GunimiField label={t("contactPhone")} error={phoneError ? t("phoneInvalid") : undefined}>
             <GunimiInput
               value={phone}
               disabled={isPending}
               placeholder={t("contactPhonePlaceholder")}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => { setPhone(e.target.value); if (phoneError) setPhoneError(!validatePhone(e.target.value)); }}
+              onBlur={(e) => { if (e.target.value) setPhoneError(!validatePhone(e.target.value)); }}
             />
           </GunimiField>
 

@@ -317,6 +317,7 @@
     "contactPosition": "Position",
     "contactEmailPlaceholder": "name@company.com",
     "contactPhonePlaceholder": "+1 555 000 0000",
+    "phoneInvalid": "Invalid phone number. Use format: +420 775 191 889",
     "contactNotes": "Notes",
     "creatingContact": "Creating contact...",
     "contactCreated": "Contact created",

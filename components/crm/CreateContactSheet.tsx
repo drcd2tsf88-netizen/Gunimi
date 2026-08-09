@@ -19,6 +19,7 @@ import {
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiField from "@/components/ui/GunimiField";
 import GunimiInput from "@/components/ui/GunimiInput";
+import { validatePhone } from "@/lib/utils/validatePhone";
 
 type CreatedContact = {
   id: string;
@@ -51,11 +52,13 @@ export default function CreateContactSheet({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState(false);
 
   function reset() {
     setName("");
     setEmail("");
     setPhone("");
+    setPhoneError(false);
   }
 
   function handleClose() {
@@ -66,6 +69,10 @@ export default function CreateContactSheet({
   function handleCreate() {
     if (!name.trim()) {
       toast.error(t("contactNameRequired"), { id: "orbit-contact-create" });
+      return;
+    }
+    if (!validatePhone(phone)) {
+      setPhoneError(true);
       return;
     }
 
@@ -119,12 +126,13 @@ export default function CreateContactSheet({
             />
           </GunimiField>
 
-          <GunimiField label={t("contactPhone")}>
+          <GunimiField label={t("contactPhone")} error={phoneError ? t("phoneInvalid") : undefined}>
             <GunimiInput
               value={phone}
               disabled={isPending}
               placeholder={t("contactPhonePlaceholder")}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => { setPhone(e.target.value); if (phoneError) setPhoneError(!validatePhone(e.target.value)); }}
+              onBlur={(e) => { if (e.target.value) setPhoneError(!validatePhone(e.target.value)); }}
             />
           </GunimiField>
         </div>
