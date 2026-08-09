@@ -3616,7 +3616,14 @@
     "yesterday": "Včera",
     "empty": "Zatím žádná historie",
     "emptyHint": "Interakce se zobrazí zde, jakmile začnete pracovat s tímto kontaktem.",
-    "tabLabel": "Historie"
+    "tabLabel": "Historie",
+    "filterAll": "Vše",
+    "filterNotes": "Poznámky",
+    "filterTasks": "Úkoly",
+    "filterEmails": "E-mail",
+    "filterDeals": "Obchody",
+    "filterActivity": "Aktivita",
+    "filterFiles": "Soubory"
   },
   "attachments": {
     "badge": "Soubory",

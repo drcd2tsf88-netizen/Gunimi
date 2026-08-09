@@ -69,6 +69,7 @@ NAPAD: ulohy na enterprise mod — feedbacky od zeny
       - Gunimi navrh co urobit ako prve
       - ekvivalent Things 3 / Linear My Issues v Gunimi kontexte
 
+
    PLAN: a + b teraz, c je Q4 feature
 
 [DONE] - neukauje Sa uzivatel ked prida komentar do ulohy + tagy sice sa pridaju ale ked na neho kliknes neotvori ti kartu zivatela pod danym tagom
@@ -89,7 +90,9 @@ NAPAD: ulohy na enterprise mod — feedbacky od zeny
    => Obe zobrazenia pouzivaju prekladane nazvy statusov (statusTodo/statusInProgress/statusDone)
 [DONE] -klikanie na ulohy je vyslovene len na text, chcelo by to vytvorit na cely riadok opravit naprieč systemom
    => stopPropagation presunuty z <td> na jednotlive buttony (Status + Edit + Delete) v hlavnych aj subtask riadkoch
-- chyba moznost zvyraznenie textu, moznost stylu pisma, moznost dat do odstavcov, smajliky
+[DONE] - chyba moznost zvyraznenie textu, moznost stylu pisma, moznost dat do odstavcov, smajliky
+   => CommentEditor: bold, italic, underline, highlight (žltý mark), bullet/ordered list, emoji picker (50 emoji bez externej knižnice)
+   => mark tag pridany do sanitizeHtml allowlist + .comment-content mark CSS (amber glow)
 [DONE] - pridat klucovy kontakt moznost prekliknutia sa na pridanie kontaktu
    => Kontext tab v detail organizacie: kazdy kontakt ma href=/dashboard/crm/{id} cez GunimiContextCard
    => Tlacidlo "Pridat kontakt" je vzdy viditelne v hornej casti zalozky Kontext
@@ -184,12 +187,36 @@ BEZPECNOSTNY AUDIT (2026-08-02)
 [OK] LOKALIZACIA — calendar.* kluce
    Vsetky 3 locale subory (EN/SK/CS) maju rovnake kluce — audit videl stary stav pred fixom.
 
-[DONE] STREDNE — Dashboard pocita dnes/tyzden/mesiac v UTC nie workspace timezone
-   => getDashboardData.ts: pridany parallel SELECT preferences z workspaces
-   => localDate() helper: Intl.DateTimeFormat(en-CA, { timeZone }) vracia YYYY-MM-DD
-   => todayStr/monthStart/weekEnd pocitane v workspace timezone (fallback UTC)
+[PENDING] STREDNE — Dashboard pocita dnes/tyzden/mesiac v UTC nie workspace timezone
+   Suvisí s getDashboardData.ts (line 93). Vyzaduje refaktor vypoctov podla
+   workspace.preferences.timezone. Odlozene — nezasahuje do bezpecnosti.
 
 [PENDING] ZAVISLOSTI — 13 zranitelnosti (7 high, 4 moderate, 2 low)
    next@16.2.6 → aktualizovat na 16.2.12
    dompurify@3.2.3 → aktualizovat
    Odlozene — vyzaduje testovanie po upgrade.
+
+
+
+   ----9.8.2026-----
+   - pri zadaní tel. čísla kontrola správnosti tzn. č. +420 775 191 889  je správne ale ked dám +420 775 191 88965 už nie
+   - kontakt detail zaaloskaa emaail ? kam to smeruje ani mne sa aned prihlasit hm.. idelne by bolo kebyze je spojene z emaail integraaciou priamo z gunimi. napaaad n rieseniaaa ?
+   -pri vytvaraani kontaktu aautomatizacuia automaticky vytvori ulohu ulohaa je v anglitcinev SK jzaakyu aaplikcie .
+   -v kontakt detaile nejde priradit ulohu
+[DONE] - v pravom kraji kde je možné stránku scrolovat dole prípadne hore je príliž maličká treba ju o trošku vačšiu
+   => scrollbar width 4px → 6px v globals.css
+[DONE] - pri pridaní komentára do podulohy nie je možné pridat komentár
+   => ContactTasks.tsx: onNavigateToTask wired — klik na podúlohu otvára jej detail vrátane comment editora
+[DONE] - v detaile úlohy možnost upravit samostatnu ulohu
+   => TaskDetailPanel: klik na titul → inline input, Enter/blur uloží cez updateTask, Escape zruší
+   - pri zlučení kontaktov nedochádza k importu kontaktov ale vymaže povodný kontakt
+   - limitovaní tagu na osobu na společnost
+   - pri zlučení nemenit bez suhlasu kontakty, nkolko vymenilo len tel. č. avšaak ked nastaavím primárny kontakt malo by ostat všetko z oznčeného kontaktu v prímárnom u zlučenom len pridat k primárnemu kontaktu jeho kontkty
+[DONE] - kontakt detaail záložka práca podzáložka úlohy v kontakte zobrzuje kody (/p)
+   => ContactTasks.tsx: description stripuje HTML tagy pred zobrazením v zozname
+[DONE] - v kontkt detaaile zalozke z organizcii pridt team - je taam pokzene dropdowny prepidat do stylu gunimi
+   => ResponsibilitiesPanel.tsx: native <select> → Radix Select (dark glass, violet hover, checkmark)
+   - to iste ko 211 riadok ale - po zvoleni teamu uz nejde upravit pridaat dalsi alebo nieco iba vymazat chce to viac prepracovat (dlasia vec ked tam pridaame riaditela, a teadam leadra- oni si taam pridaaju vlastnych ludi vidi tento kontakt len ty dani ludia ci cele oddelenie naporuic firmou ? chcelo by to praavdepodobne oskeat iba naa tych ludi komu to je popridelovane )
+   - emoji v text baroch prosim vsaade kde clovek muoze neico napisat nech su k dispozicii emoji
+   - tagy napriec wotrkpace limitovt na 1 tag na meno, firmu, kontakt nech s nestane v bordel v tagoch pri paar ludoch oukej aaale pri 100 ludoch kaazdy i spraavy vlstny taaag a uz ms chaos milion tagov na jeden kontakt ..
+   -

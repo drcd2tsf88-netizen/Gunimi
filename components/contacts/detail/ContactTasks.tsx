@@ -149,7 +149,9 @@ export default function ContactTasks({ tasks: initialTasks, contactId, onTaskCre
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium">{task.title}</p>
                       {task.description && (
-                        <p className="mt-1 truncate text-xs text-white/50">{task.description}</p>
+                        <p className="mt-1 truncate text-xs text-white/50">
+                          {task.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -186,6 +188,7 @@ export default function ContactTasks({ tasks: initialTasks, contactId, onTaskCre
         currentUserId={currentUserId}
         members={[]}
         onClose={() => setSelectedTaskId(null)}
+        onNavigateToTask={(subId) => setSelectedTaskId(subId)}
       />
     </GunimiSection>
   );

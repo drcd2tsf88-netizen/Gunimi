@@ -94,8 +94,11 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [editingDescription, setEditingDescription] = useState(false);
   const [descriptionHtml, setDescriptionHtml] = useState("");
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleValue, setTitleValue] = useState("");
   const [, startTransition] = useTransition();
   const subtaskRef = useRef<HTMLInputElement>(null);
+  const titleInputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const assigneeRef = useRef<HTMLDivElement>(null);
   const dateRef = useRef<HTMLDivElement>(null);
@@ -114,7 +117,9 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
         setAllTags(tags);
         setTaskTags(entityTags);
         setDescriptionHtml(data?.description ?? "");
+        setTitleValue(data?.title ?? "");
         setEditingDescription(false);
+        setEditingTitle(false);
       }
     });
     return () => { cancelled = true; };
@@ -250,6 +255,21 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
     });
   }
 
+  function handleTitleSave() {
+    if (!task) return;
+    const trimmed = titleValue.trim();
+    setEditingTitle(false);
+    if (!trimmed || trimmed === task.title) {
+      setTitleValue(task.title);
+      return;
+    }
+    setTask((prev) => prev ? { ...prev, title: trimmed } : prev);
+    startTransition(async () => {
+      await updateTask({ id: task.id, title: trimmed });
+      onTaskUpdated?.(task.id, { title: trimmed });
+    });
+  }
+
   function handleDownload() {
     if (!task) return;
     window.open(`/api/tasks/${task.id}/export?print=1`, "_blank");
@@ -327,9 +347,28 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                     ? <CheckCircle2 size={20} />
                     : <Circle size={20} />}
                 </button>
-                <h2 className={`flex-1 text-base font-semibold leading-snug ${task.status === "done" ? "text-white/40 line-through" : "text-white/90"}`}>
-                  {task.title}
-                </h2>
+                {editingTitle ? (
+                  <input
+                    ref={titleInputRef}
+                    value={titleValue}
+                    onChange={(e) => setTitleValue(e.target.value)}
+                    onBlur={handleTitleSave}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") { e.preventDefault(); handleTitleSave(); }
+                      if (e.key === "Escape") { setEditingTitle(false); setTitleValue(task.title); }
+                    }}
+                    className="flex-1 rounded-lg bg-white/[0.05] px-2 py-0.5 text-base font-semibold text-white/90 outline-none ring-1 ring-violet-500/40"
+                    autoFocus
+                  />
+                ) : (
+                  <button
+                    onClick={() => { setEditingTitle(true); setTitleValue(task.title); }}
+                    className={`group flex-1 text-left text-base font-semibold leading-snug transition-colors ${task.status === "done" ? "text-white/40 line-through" : "text-white/90 hover:text-white"}`}
+                    title={t("edit")}
+                  >
+                    {task.title}
+                  </button>
+                )}
               </div>
 
               {/* Status + Priority row */}

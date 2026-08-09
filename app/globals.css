@@ -303,8 +303,8 @@
    ───────────────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -439,3 +439,4 @@
 .comment-content strong { font-weight: 600; color: rgba(255,255,255,0.85); }
 .comment-content em { font-style: italic; }
 .comment-content u { text-decoration: underline; }
+.comment-content mark { background: rgba(250,204,21,0.25); color: rgba(253,224,71,0.9); border-radius: 2px; padding: 0 2px; }

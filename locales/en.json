@@ -3616,7 +3616,14 @@
     "yesterday": "Yesterday",
     "empty": "No history yet",
     "emptyHint": "Interactions will appear here as you work with this contact.",
-    "tabLabel": "History"
+    "tabLabel": "History",
+    "filterAll": "All",
+    "filterNotes": "Notes",
+    "filterTasks": "Tasks",
+    "filterEmails": "Email",
+    "filterDeals": "Deals",
+    "filterActivity": "Activity",
+    "filterFiles": "Files"
   },
   "attachments": {
     "badge": "Files",

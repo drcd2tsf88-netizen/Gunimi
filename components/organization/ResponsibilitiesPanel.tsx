@@ -7,6 +7,13 @@ import toast from "react-hot-toast";
 
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { getAssignments } from "@/server/actions/organization/getAssignments";
 import { createAssignment } from "@/server/actions/organization/createAssignment";
@@ -160,31 +167,36 @@ export default function ResponsibilitiesPanel({ entityType, entityId, teams }: P
               <label className="text-[10px] font-medium uppercase tracking-[0.1em] text-white/30">
                 {t("selectTeam")}
               </label>
-              <select
-                value={selectedTeamId}
-                onChange={(e) => setSelectedTeamId(e.target.value)}
-                className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[12px] text-white/80 outline-none focus:border-[#6D5BFF]/40"
-              >
-                <option value="">{t("selectTeamPlaceholder")}</option>
-                {availableTeams.map((team) => (
-                  <option key={team.id} value={team.id}>{team.name}</option>
-                ))}
-              </select>
+              <Select value={selectedTeamId} onValueChange={setSelectedTeamId}>
+                <SelectTrigger className="h-9 text-[12px]">
+                  <SelectValue placeholder={t("selectTeamPlaceholder")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableTeams.map((team) => (
+                    <SelectItem key={team.id} value={team.id} className="text-[12px]">
+                      {team.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-1.5">
               <label className="text-[10px] font-medium uppercase tracking-[0.1em] text-white/30">
                 {t("selectResponsibility")}
               </label>
-              <select
-                value={selectedResponsibility}
-                onChange={(e) => setSelectedResponsibility(e.target.value as Responsibility)}
-                className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[12px] text-white/80 outline-none focus:border-[#6D5BFF]/40"
-              >
-                {responsibilities.map((r) => (
-                  <option key={r} value={r}>{t(`responsibility.${r}`)}</option>
-                ))}
-              </select>
+              <Select value={selectedResponsibility} onValueChange={(v) => setSelectedResponsibility(v as Responsibility)}>
+                <SelectTrigger className="h-9 text-[12px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {responsibilities.map((r) => (
+                    <SelectItem key={r} value={r} className="text-[12px]">
+                      {t(`responsibility.${r}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex gap-2">
