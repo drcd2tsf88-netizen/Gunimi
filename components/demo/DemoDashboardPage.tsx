@@ -1290,7 +1290,7 @@ export default function DemoDashboardPage({ initialSection }: { initialSection?:
     switch (currentEntry.type) {
       case "section":
         switch (currentEntry.section) {
-          case "today":     return <TodayView displayName={DEMO_DISPLAY_NAME} {...DEMO_TODAY_DATA} />;
+          case "today":     return <TodayView displayName={DEMO_DISPLAY_NAME} {...DEMO_TODAY_DATA} signalCount={0} criticalSignalCount={0} recentMemory={[]} />;
           case "contacts":  return <ContactsSection nav={demoNav} />;
           case "companies": return <CompaniesSection nav={demoNav} />;
           case "deals":     return <DealsSection nav={demoNav} />;

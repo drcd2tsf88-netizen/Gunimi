@@ -3,6 +3,8 @@ import { getUser } from "@/lib/server/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getTodayData } from "@/server/actions/today/getTodayData";
 import { getWorkspaceState } from "@/server/actions/workspace/getWorkspaceState";
+import { getWorkspaceSignals } from "@/server/actions/signals/getWorkspaceSignals";
+import { getWorkspaceTimeline } from "@/server/actions/memory/getWorkspaceTimeline";
 import TodayView from "@/components/today/TodayView";
 import WorkspaceAwakening from "@/components/today/WorkspaceAwakening";
 import WorkspaceAwakenedMoment from "@/components/today/WorkspaceAwakenedMoment";
@@ -21,10 +23,12 @@ export default async function TodayPage() {
       )
     : Promise.resolve({ data: null });
 
-  const [todayData, profileResult, wsState] = await Promise.all([
+  const [todayData, profileResult, wsState, signals, recentMemory] = await Promise.all([
     getTodayData(),
     profilePromise,
     getWorkspaceState(),
+    getWorkspaceSignals(),
+    getWorkspaceTimeline(3),
   ]);
 
   const displayName =
@@ -36,6 +40,8 @@ export default async function TodayPage() {
     return <WorkspaceAwakening displayName={displayName} />;
   }
 
+  const criticalSignalCount = signals.filter((s) => s.severity === "critical").length;
+
   return (
     <WorkspaceAwakenedMoment>
       <TodayView
@@ -45,6 +51,9 @@ export default async function TodayPage() {
         attention={todayData.attention}
         relationships={todayData.relationships}
         work={todayData.work}
+        signalCount={signals.length}
+        criticalSignalCount={criticalSignalCount}
+        recentMemory={recentMemory}
       />
     </WorkspaceAwakenedMoment>
   );

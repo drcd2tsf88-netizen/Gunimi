@@ -3435,7 +3435,15 @@
     "workMarkDoneSuccess": "Task completed",
     "workMarkDoneFailed": "Could not complete task",
     "firstSignalMoment": "Your workspace has found its first opportunity to help.",
-    "firstSignalEvaluating": "Your workspace is still evaluating. Add more context and Gunimi will begin surfacing insights shortly."
+    "firstSignalEvaluating": "Your workspace is still evaluating. Add more context and Gunimi will begin surfacing insights shortly.",
+    "signalsPulseTitle": "Signals",
+    "signalsPulseCount": "{count} active",
+    "signalsPulseViewAll": "View all",
+    "signalsPulseEmpty": "No active signals",
+    "memoryTitle": "Memory",
+    "memoryCaptured": "Captured",
+    "memoryViewTimeline": "View timeline",
+    "memoryEmpty": "Nothing captured yet"
   },
   "awakening": {
     "heading": "Your workspace is ready.",

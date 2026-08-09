@@ -172,6 +172,9 @@ export default function DemoWorkspace() {
             <TodayView
               displayName={DEMO_DISPLAY_NAME}
               {...DEMO_TODAY_DATA}
+              signalCount={0}
+              criticalSignalCount={0}
+              recentMemory={[]}
             />
           </motion.div>
 

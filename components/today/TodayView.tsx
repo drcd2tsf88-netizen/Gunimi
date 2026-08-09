@@ -7,10 +7,16 @@ import TodayAttentionSection from "./TodayAttentionSection";
 import TodayRelationshipsSection from "./TodayRelationshipsSection";
 import TodayWorkSection from "./TodayWorkSection";
 import FirstSignalMoment from "./FirstSignalMoment";
+import TodaySignalsPulse from "./TodaySignalsPulse";
+import TodayMemoryWidget from "./TodayMemoryWidget";
 import type { ResolvedTodayData } from "@/lib/today/types";
+import type { MemoryEvent } from "@/lib/memory/types";
 
 type Props = {
   displayName: string;
+  signalCount: number;
+  criticalSignalCount: number;
+  recentMemory: MemoryEvent[];
 } & ResolvedTodayData;
 
 function getGreetingKey(): "greetingMorning" | "greetingAfternoon" | "greetingEvening" {
@@ -32,6 +38,9 @@ export default function TodayView({
   attention,
   relationships,
   work,
+  signalCount,
+  criticalSignalCount,
+  recentMemory,
 }: Props) {
   const t = useTranslations("today");
 
@@ -77,6 +86,12 @@ export default function TodayView({
 
       {/* ── Section 4: Today's Work ───────────────────────────────────────── */}
       <TodayWorkSection items={work} />
+
+      {/* ── Intelligence footer ───────────────────────────────────────────── */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <TodaySignalsPulse activeCount={signalCount} criticalCount={criticalSignalCount} />
+        <TodayMemoryWidget events={recentMemory} />
+      </div>
     </div>
   );
 }

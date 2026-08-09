@@ -3435,7 +3435,15 @@
     "workMarkDoneSuccess": "Úloha dokončená",
     "workMarkDoneFailed": "Nepodarilo sa dokončiť úlohu",
     "firstSignalMoment": "Váš workspace našiel prvú príležitosť pomôcť.",
-    "firstSignalEvaluating": "Váš workspace stále vyhodnocuje. Pridajte viac kontextu a Gunimi čoskoro začne zobrazovať postrehy."
+    "firstSignalEvaluating": "Váš workspace stále vyhodnocuje. Pridajte viac kontextu a Gunimi čoskoro začne zobrazovať postrehy.",
+    "signalsPulseTitle": "Signály",
+    "signalsPulseCount": "{count} aktívnych",
+    "signalsPulseViewAll": "Zobraziť všetky",
+    "signalsPulseEmpty": "Žiadne aktívne signály",
+    "memoryTitle": "Pamäť",
+    "memoryCaptured": "Zachytené",
+    "memoryViewTimeline": "Zobraziť históriu",
+    "memoryEmpty": "Zatiaľ nič nezachytené"
   },
   "awakening": {
     "heading": "Váš workspace je pripravený.",
