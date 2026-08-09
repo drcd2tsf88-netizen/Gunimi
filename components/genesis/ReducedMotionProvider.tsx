@@ -1,6 +1,22 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useSyncExternalStore } from "react";
+
+const MQ = "(prefers-reduced-motion: reduce)";
+
+function subscribe(cb: () => void) {
+  const mq = window.matchMedia(MQ);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function getSnapshot() {
+  return window.matchMedia(MQ).matches;
+}
+
+function getServerSnapshot() {
+  return false;
+}
 
 interface ReducedMotionContextType {
   shouldReduceMotion: boolean;
@@ -16,15 +32,7 @@ interface ReducedMotionProviderProps {
 }
 
 export function ReducedMotionProvider({ children, forceReduce = false }: ReducedMotionProviderProps) {
-  const [osPrefers, setOsPrefers] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setOsPrefers(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setOsPrefers(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const osPrefers = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
     <ReducedMotionContext.Provider value={{ shouldReduceMotion: forceReduce || osPrefers }}>
