@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   LayoutGrid,
   Mail,
+  Radio,
   Settings,
   StickyNote,
   TrendingUp,
@@ -28,6 +29,7 @@ export type NavItemId =
   | "calendar"
   | "automations"
   | "analytics"
+  | "signals"
   | "organization"
   | "settings";
 
@@ -120,6 +122,7 @@ export const NAV_GROUPS: NavGroup[] = [
     labelKey: null,
     separator: true,
     items: [
+      { id: "signals",   labelKey: "signals",   href: "/dashboard/signals",   icon: Radio     },
       { id: "analytics", labelKey: "analytics", href: "/dashboard/analytics", icon: BarChart3 },
       { id: "settings",  labelKey: "settings",  href: "/dashboard/settings",  icon: Settings  },
     ],
