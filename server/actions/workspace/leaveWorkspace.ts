@@ -13,7 +13,7 @@ export async function leaveWorkspace(): Promise<LeaveResult> {
   try {
     const user = await getUser();
     if (!user) return { ok: false, error: "unauthorized" };
-    if (!await checkWriteRateLimit(user.id)) return { ok: false, error: "unauthorized" };
+    if (!await checkWriteRateLimit()) return { ok: false, error: "unauthorized" };
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return { ok: false, error: "no_workspace" };

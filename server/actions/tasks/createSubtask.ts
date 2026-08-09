@@ -13,7 +13,7 @@ export async function createSubtask(
   try {
     const user = await getUser();
     if (!user) return { success: false };
-    if (!await checkWriteRateLimit(user.id)) return { success: false };
+    if (!await checkWriteRateLimit()) return { success: false };
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return { success: false };

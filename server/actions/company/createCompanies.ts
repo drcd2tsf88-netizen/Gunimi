@@ -55,7 +55,7 @@ export async function createCompany({
       return null;
     }
 
-    if (!await checkWriteRateLimit(user.id)) return null;
+    if (!await checkWriteRateLimit()) return null;
 
     const workspace =
       await getCurrentWorkspace();

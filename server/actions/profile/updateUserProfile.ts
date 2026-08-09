@@ -14,7 +14,7 @@ export async function updateUserProfile(input: UpdateProfileInput): Promise<bool
   try {
     const user = await getUser();
     if (!user) return false;
-    if (!await checkWriteRateLimit(user.id)) return false;
+    if (!await checkWriteRateLimit()) return false;
 
     const trimmed = input.full_name.trim();
     if (!trimmed) return false;

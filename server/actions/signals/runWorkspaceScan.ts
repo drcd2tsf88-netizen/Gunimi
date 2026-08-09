@@ -2,7 +2,7 @@
 
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
-import { checkWriteRateLimit } from "@/lib/server/rateLimit";
+import { ratelimit } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
 import { runScanToCompletion } from "@/lib/signals/scan";
 import type { CompletedScanResult, ScanType } from "@/lib/signals/scan";
@@ -37,8 +37,8 @@ export async function runWorkspaceScan(
       return { success: false, error: "Unauthorized" };
     }
 
-    const rateLimitKey = `scan:${workspace.id}:${scanType}`;
-    const withinLimit = await checkWriteRateLimit(rateLimitKey);
+    // Scan has its own per-workspace+type limit independent of the per-user write limit.
+    const { success: withinLimit } = await ratelimit.limit(`write:scan:${workspace.id}:${scanType}`);
     if (!withinLimit) {
       return { success: false, error: "Rate limit exceeded. Try again later." };
     }

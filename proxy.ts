@@ -1,5 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Orbit Auth Proxy
@@ -21,6 +23,25 @@ const PUBLIC_API_PREFIXES = [
   "/api/workspace/invite/",  // invite preview (user may not be signed in yet)
   "/api/sentry-example-api", // Sentry test endpoint
 ];
+
+// ── Write rate limiter — lazily initialized ───────────────────
+// Runs at the edge before server actions reach the Node.js runtime.
+// Limit: 30 writes per minute per user (sliding window).
+let _writeLimiter: Ratelimit | null = null;
+
+function getWriteLimiter(): Ratelimit | null {
+  if (_writeLimiter) return _writeLimiter;
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  _writeLimiter = new Ratelimit({
+    redis: new Redis({ url, token }),
+    limiter: Ratelimit.slidingWindow(30, "1 m"),
+    analytics: false,
+    prefix: "gunimi",
+  });
+  return _writeLimiter;
+}
 
 const SUPPORTED_LOCALES = ["en", "sk", "cs"] as const;
 
@@ -93,6 +114,28 @@ export async function proxy(request: NextRequest) {
       url.searchParams.set("next", pathname);
       return NextResponse.redirect(url);
     }
+
+    // Rate-limit server action writes at the edge (POST requests with Next-Action header).
+    // If exceeded, we set x-rate-limited: 1 on the forwarded request headers so the action
+    // can return null immediately without touching the database — keeping the existing
+    // null-return error-handling contract in place (no 429, no error boundary).
+    if (request.method === "POST" && request.headers.get("next-action")) {
+      const limiter = getWriteLimiter();
+      if (limiter) {
+        try {
+          const { success } = await limiter.limit(`write:${user.id}`);
+          if (!success) {
+            requestHeaders.set("x-rate-limited", "1");
+            const rlRes = NextResponse.next({ request: { headers: requestHeaders } });
+            response.cookies.getAll().forEach((c) => rlRes.cookies.set(c));
+            return rlRes;
+          }
+        } catch {
+          // Redis unavailable — fail open, action proceeds normally.
+        }
+      }
+    }
+
     return response;
   }
 

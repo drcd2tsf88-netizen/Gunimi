@@ -19,7 +19,7 @@ export async function updateNote({ noteId, title, content }: UpdateNoteProps) {
 
     const user = await getUser();
     if (!user) return null;
-    if (!await checkWriteRateLimit(user.id)) return null;
+    if (!await checkWriteRateLimit()) return null;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return null;

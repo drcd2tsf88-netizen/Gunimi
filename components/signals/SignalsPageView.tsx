@@ -186,7 +186,7 @@ export default function SignalsPageView({ initialSignals }: Props) {
                         const val = e.target.value as DismissalType | "";
                         if (val) handleDismiss(signal.id, val);
                       }}
-                      className="h-7 rounded-lg border border-white/[0.08] bg-zinc-900 px-2 text-xs text-zinc-500 outline-none hover:border-white/20 cursor-pointer"
+                      className="hidden h-7 rounded-lg border border-white/[0.08] bg-zinc-900 px-2 text-xs text-zinc-500 outline-none hover:border-white/20 cursor-pointer sm:block"
                     >
                       <option value="" disabled>{t("dismiss")}</option>
                       <option value="not_urgent">{t("dismissNotUrgent")}</option>

@@ -37,7 +37,7 @@ export async function uploadAttachment(
     const user = await getUser();
     if (!user) return { success: false, error: "unauthorized" };
 
-    if (!await checkWriteRateLimit(user.id)) {
+    if (!await checkWriteRateLimit()) {
       return { success: false, error: "rate_limited" };
     }
 

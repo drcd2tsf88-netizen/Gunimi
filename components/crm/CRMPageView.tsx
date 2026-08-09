@@ -220,7 +220,7 @@ export default function CRMPageView({ initialContacts }: Props) {
               <p className="mt-2 text-zinc-400">{t("searchAndManage")}</p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <GunimiButton
                 variant="secondary"
                 className={`h-10 gap-2 px-4 text-sm ${priorityOnly ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : ""}`}
@@ -242,13 +242,14 @@ export default function CRMPageView({ initialContacts }: Props) {
                 <option value="oldest">{tc("sortOldest")}</option>
               </select>
 
-              <GunimiInput
-                type="text"
-                placeholder={t("searchCustomers")}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="xl:w-80"
-              />
+              <div className="min-w-[160px] flex-1">
+                <GunimiInput
+                  type="text"
+                  placeholder={t("searchCustomers")}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
             </div>
           </div>
         </GunimiCard>

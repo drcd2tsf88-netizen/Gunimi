@@ -64,7 +64,7 @@ export async function createTask({
       return null;
     }
 
-    if (!await checkWriteRateLimit(user.id)) return null;
+    if (!await checkWriteRateLimit()) return null;
 
     // WORKSPACE
 

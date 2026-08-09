@@ -11,7 +11,7 @@ export async function updateMemberRole(memberId: string, role: string): Promise<
   try {
     const user = await getUser();
     if (!user) return false;
-    if (!await checkWriteRateLimit(user.id)) return false;
+    if (!await checkWriteRateLimit()) return false;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return false;

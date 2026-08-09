@@ -34,7 +34,7 @@ export async function deleteDeal(
       return false;
     }
 
-    if (!await checkWriteRateLimit(user.id)) return false;
+    if (!await checkWriteRateLimit()) return false;
 
     const workspace =
       await getCurrentWorkspace();

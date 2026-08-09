@@ -15,7 +15,7 @@ export async function deleteCompany(companyId: string) {
 
     const user = await getUser();
     if (!user) return false;
-    if (!await checkWriteRateLimit(user.id)) return false;
+    if (!await checkWriteRateLimit()) return false;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return false;

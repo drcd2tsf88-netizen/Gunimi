@@ -1,16 +1,9 @@
-"use server";
+import { headers } from "next/headers";
 
-import { ratelimit } from "@/lib/ratelimit";
-import { logger } from "@/lib/logger";
-
-export async function checkWriteRateLimit(userId: string): Promise<boolean> {
-  try {
-    const { success } = await ratelimit.limit(`write:${userId}`);
-    if (!success) {
-      logger.warn("Rate limit exceeded", { userId });
-    }
-    return success;
-  } catch {
-    return true;
-  }
+// Reads the x-rate-limited header injected by the middleware (proxy.ts).
+// Returns false when the current user has exceeded the write rate limit,
+// so the action can return null without touching the database.
+export async function checkWriteRateLimit(): Promise<boolean> {
+  const h = await headers();
+  return h.get("x-rate-limited") !== "1";
 }

@@ -91,7 +91,7 @@ export async function updateDeal({
       return null;
     }
 
-    if (!await checkWriteRateLimit(user.id)) return null;
+    if (!await checkWriteRateLimit()) return null;
 
     const workspace =
       await getCurrentWorkspace();

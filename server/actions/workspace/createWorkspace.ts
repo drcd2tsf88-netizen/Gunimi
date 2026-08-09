@@ -47,7 +47,7 @@ export async function createWorkspace({
   try {
     const user = await getUser();
     if (!user) return null;
-    if (!await checkWriteRateLimit(user.id)) return null;
+    if (!await checkWriteRateLimit()) return null;
 
     const trimmedName = name?.trim();
     if (!trimmedName) return null;

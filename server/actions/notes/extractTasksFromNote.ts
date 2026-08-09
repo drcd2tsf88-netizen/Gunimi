@@ -18,7 +18,7 @@ export async function extractTasksFromNote(noteId: string, noteContent: string):
   try {
     const user = await getUser();
     if (!user) return 0;
-    if (!await checkWriteRateLimit(user.id)) return 0;
+    if (!await checkWriteRateLimit()) return 0;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return 0;

@@ -21,7 +21,7 @@ export async function createNote({ title, content, companyId, contactId }: Creat
 
     const user = await getUser();
     if (!user) return null;
-    if (!await checkWriteRateLimit(user.id)) return null;
+    if (!await checkWriteRateLimit()) return null;
 
     const workspace = await getCurrentWorkspace();
     if (!workspace) return null;

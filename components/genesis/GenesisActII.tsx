@@ -124,7 +124,8 @@ function AiCoreAmbientII() {
   );
 }
 
-// ── GenesisActII ───────────────────────────────────────────────
+// ── GenesisActII ───────────────────────────
+//────────────────────
 
 export function GenesisActII() {
   const t = useTranslations("landing.actII");
