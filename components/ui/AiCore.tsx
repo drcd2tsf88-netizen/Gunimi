@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useAnimationFrame, useMotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // ─────────────────────────────────────────────────────────────
@@ -16,8 +17,91 @@ type AiCoreProps = {
   className?: string;
   showRings?: boolean;
   showParticles?: boolean;
-  intensity?: "subtle" | "medium" | "strong";
+  intensity?: "minimal" | "subtle" | "medium" | "strong";
+  /** One light impulse along the outer orbit per 13s cycle. Hero only. */
+  showImpulse?: boolean;
 };
+
+// ── ImpulseOverlay ───────────────────────────────────────────
+
+function ImpulseOverlay({ size }: { size: number }) {
+  const c = size / 2;
+  const rx = size * 0.44;
+  const ry = size * 0.118;
+
+  const glowDiameter   = size * 0.08;
+  const dotDiameter    = size * 0.018;
+  const coreGlowRadius = size * 0.18;
+
+  const glowX          = useMotionValue(c - glowDiameter / 2);
+  const glowY          = useMotionValue(c - glowDiameter / 2);
+  const dotX           = useMotionValue(c - dotDiameter / 2);
+  const dotY           = useMotionValue(c - dotDiameter / 2);
+  const impulseOpacity = useMotionValue(0);
+  const coreOpacity    = useMotionValue(0);
+  const startRef       = useRef<number | null>(null);
+
+  useAnimationFrame((t) => {
+    if (!startRef.current) startRef.current = t;
+    const elapsed  = t - startRef.current;
+    const CYCLE    = 13000;
+    const progress = (elapsed % CYCLE) / CYCLE;
+
+    const angle = -progress * 2 * Math.PI;
+    const px = c + rx * Math.cos(angle);
+    const py = c + ry * Math.sin(angle);
+
+    glowX.set(px - glowDiameter / 2);
+    glowY.set(py - glowDiameter / 2);
+    dotX.set(px - dotDiameter / 2);
+    dotY.set(py - dotDiameter / 2);
+
+    const flashDist  = Math.abs(progress - 0.5);
+    const FLASH_HALF = 0.055;
+    impulseOpacity.set(flashDist < FLASH_HALF ? (1 - flashDist / FLASH_HALF) ** 2 : 0);
+
+    if (elapsed > 1200) {
+      const returnDist  = Math.min(progress, 1 - progress);
+      const RETURN_HALF = 0.018;
+      coreOpacity.set(returnDist < RETURN_HALF ? (1 - returnDist / RETURN_HALF) ** 2 * 0.32 : 0);
+    } else {
+      coreOpacity.set(0);
+    }
+  });
+
+  return (
+    <>
+      <motion.div
+        className="pointer-events-none absolute rounded-full"
+        style={{
+          x: glowX, y: glowY,
+          width: glowDiameter, height: glowDiameter,
+          background: "radial-gradient(circle, rgba(200,187,255,0.65) 0%, rgba(109,91,255,0.22) 45%, transparent 70%)",
+          opacity: impulseOpacity,
+        }}
+      />
+      <motion.div
+        className="pointer-events-none absolute rounded-full"
+        style={{
+          x: dotX, y: dotY,
+          width: dotDiameter, height: dotDiameter,
+          background: "white",
+          boxShadow: "0 0 6px rgba(200,187,255,0.95), 0 0 12px rgba(109,91,255,0.5)",
+          opacity: impulseOpacity,
+        }}
+      />
+      <motion.div
+        className="pointer-events-none absolute rounded-full"
+        style={{
+          left: c - coreGlowRadius, top: c - coreGlowRadius,
+          width: coreGlowRadius * 2, height: coreGlowRadius * 2,
+          background: "radial-gradient(circle, rgba(200,187,255,0.88) 0%, rgba(139,125,255,0.45) 30%, rgba(109,91,255,0.12) 60%, transparent 80%)",
+          opacity: coreOpacity,
+        }}
+      />
+    </>
+  );
+}
 
 const PARTICLES = [
   { x: "16%", y: "22%", s: 1.5, d: 4.2, delay: 0.0,  cyan: false },
@@ -32,16 +116,20 @@ const PARTICLES = [
   { x: "40%", y: "92%", s: 1.0, d: 4.8, delay: 1.6,  cyan: false },
 ];
 
-export default function AiCore({
+function AiCore({
   size = 280,
   className,
   showRings = true,
   showParticles = true,
   intensity = "medium",
+  showImpulse = false,
 }: AiCoreProps) {
   const shouldReduceMotion = useReducedMotion();
   const c = size / 2;
-  const g = intensity === "subtle" ? 0.45 : intensity === "strong" ? 1.0 : 0.72;
+  const g =
+    intensity === "minimal" ? 0.25 :
+    intensity === "subtle"  ? 0.45 :
+    intensity === "strong"  ? 1.0  : 0.72;
 
   // Ring dimensions — ellipses create the 3D orbit-plane illusion
   const r1x = size * 0.44;  const r1y = size * 0.118;  // outer
@@ -211,6 +299,12 @@ export default function AiCore({
           }}
         />
       </div>
+
+      {/* ── IMPULSE OVERLAY (hero only) ── */}
+      {showImpulse && !shouldReduceMotion && <ImpulseOverlay size={size} />}
     </div>
   );
 }
+
+export default AiCore;
+export { AiCore };
