@@ -12,7 +12,8 @@ import CookieConsent from "@/components/public/CookieConsent";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  preload: false,
+  preload: true,
+  variable: "--font-inter",
 });
 
 export const viewport: Viewport = {

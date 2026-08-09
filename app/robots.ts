@@ -7,7 +7,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard/", "/api/", "/orbit-control/"],
+        disallow: [
+          "/dashboard/",
+          "/api/",
+          "/orbit-control/",
+          "/opengraph-image",   // Next.js OG image endpoint — not a page
+        ],
       },
     ],
     sitemap: `${APP_CONFIG.url}/sitemap.xml`,

@@ -7,18 +7,18 @@ import AiCore from "@/components/ui/AiCore";
 function NavGroup({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <p className="mb-3 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#9AA3B2]/35">
+      <p className="mb-3 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#9AA3B2]/55">
         {title}
       </p>
       <ul className="space-y-2">
         {links.map(({ label, href }) => (
           <li key={href}>
             {href.startsWith("#") ? (
-              <a href={href} className="text-[13px] text-[#9AA3B2]/55 transition-colors duration-200 hover:text-[#9AA3B2]">
+              <a href={href} className="text-[13px] text-[#9AA3B2]/75 transition-colors duration-200 hover:text-[#9AA3B2]">
                 {label}
               </a>
             ) : (
-              <Link href={href} className="text-[13px] text-[#9AA3B2]/55 transition-colors duration-200 hover:text-[#9AA3B2]">
+              <Link href={href} className="text-[13px] text-[#9AA3B2]/75 transition-colors duration-200 hover:text-[#9AA3B2]">
                 {label}
               </Link>
             )}
