@@ -1,16 +1,6 @@
 "use client";
 
-import { createContext, useContext } from "react";
-import { useReducedMotion } from "framer-motion";
-
-// ─────────────────────────────────────────────────────────────
-// ReducedMotionProvider
-//
-// Provides the OS-level reduced motion preference to all
-// genesis components. Also allows manual override — useful
-// when the Genesis cinematic engine wants to suppress all
-// scroll animations during a video or interactive sequence.
-// ─────────────────────────────────────────────────────────────
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface ReducedMotionContextType {
   shouldReduceMotion: boolean;
@@ -22,19 +12,22 @@ const ReducedMotionContext = createContext<ReducedMotionContextType>({
 
 interface ReducedMotionProviderProps {
   children: React.ReactNode;
-  /** Force reduced motion regardless of OS setting. Useful during cinematic sequences. */
   forceReduce?: boolean;
 }
 
-export function ReducedMotionProvider({
-  children,
-  forceReduce = false,
-}: ReducedMotionProviderProps) {
-  const osPrefers = useReducedMotion() ?? false;
-  const shouldReduceMotion = forceReduce || osPrefers;
+export function ReducedMotionProvider({ children, forceReduce = false }: ReducedMotionProviderProps) {
+  const [osPrefers, setOsPrefers] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setOsPrefers(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setOsPrefers(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   return (
-    <ReducedMotionContext.Provider value={{ shouldReduceMotion }}>
+    <ReducedMotionContext.Provider value={{ shouldReduceMotion: forceReduce || osPrefers }}>
       {children}
     </ReducedMotionContext.Provider>
   );

@@ -321,6 +321,40 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   GENESIS MOTION PRIMITIVES — CSS-only, zero framer-motion
+   Powers FadeIn / Reveal / Stagger on public pages.
+   data-visible attribute is set by IntersectionObserver in JS.
+   ───────────────────────────────────────────────────────────── */
+
+.g-reveal {
+  opacity: 0;
+  transform: translateY(var(--g-reveal-y, 20px)) translateX(var(--g-reveal-x, 0px));
+  transition:
+    opacity   var(--g-reveal-dur, 0.8s) cubic-bezier(0.16, 1, 0.3, 1) var(--g-reveal-delay, 0s),
+    transform var(--g-reveal-dur, 0.8s) cubic-bezier(0.16, 1, 0.3, 1) var(--g-reveal-delay, 0s);
+}
+
+.g-fadein {
+  opacity: 0;
+  transition: opacity var(--g-reveal-dur, 0.5s) ease var(--g-reveal-delay, 0s);
+}
+
+.g-reveal[data-visible],
+.g-fadein[data-visible] {
+  opacity: 1;
+  transform: translateY(0) translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-reveal,
+  .g-fadein {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
    SAFE AREA — notch / Dynamic Island / home bar support
    ───────────────────────────────────────────────────────────── */
 
