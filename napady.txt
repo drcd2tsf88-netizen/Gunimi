@@ -223,6 +223,11 @@ BEZPECNOSTNY AUDIT (2026-08-02)
 [DONE] - v kontkt detaaile zalozke z organizcii pridt team - je taam pokzene dropdowny prepidat do stylu gunimi
    => ResponsibilitiesPanel.tsx: native <select> → Radix Select (dark glass, violet hover, checkmark)
    - to iste ko 211 riadok ale - po zvoleni teamu uz nejde upravit pridaat dalsi alebo nieco iba vymazat chce to viac prepracovat (dlasia vec ked tam pridaame riaditela, a teadam leadra- oni si taam pridaaju vlastnych ludi vidi tento kontakt len ty dani ludia ci cele oddelenie naporuic firmou ? chcelo by to praavdepodobne oskeat iba naa tych ludi komu to je popridelovane )
+   [ODLOŽENÉ] Team management — 2 veci na neskôr:
+   A) UI bug: chýba inline edit responsibility (owner/collaborator/...) na existujúcom assignment — momentálne len vymazať + znova pridať
+      => ResponsibilitiesPanel.tsx: pridať inline Select na zmenu responsibility bez nutnosti mazania
+   B) Produktové rozhodnutie: team-level viditeľnosť — majú kontakty/dealy priradené tímu byť viditeľné len členom toho tímu alebo celému workspace?
+      => Momentálne RLS je na úrovni workspace (všetci vidia všetko). Team izolácia = zmena DB schémy + RLS policies. Treba product rozhodnutie pred implementáciou.
 [DONE] - emoji v text baroch prosim vsaade kde clovek muoze neico napisat nech su k dispozicii emoji
    => NoteEditor: Smile button s emoji grid (50 emoji) v toolbare, rovnaký ako CommentEditor
    => CommentEditor: už hotové v predošlej session

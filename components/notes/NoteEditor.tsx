@@ -86,7 +86,7 @@ export default function NoteEditor({ content, onChange, placeholder = "", disabl
   });
 
   useEffect(() => {
-    if (!editor) return;
+    if (!editor || !content) return;
     const current = editor.getHTML();
     if (current !== content) {
       editor.commands.setContent(content, { emitUpdate: false });

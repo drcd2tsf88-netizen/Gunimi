@@ -40,7 +40,7 @@ export async function linkContactToCompany({ contactId, companyId, companyName }
     }
 
     revalidatePath(`/dashboard/companies/${companyId}`);
-    revalidatePath(`/dashboard/crm/${contactId}`);
+    revalidatePath(`/dashboard/contacts/${contactId}`);
 
     return data;
   } catch (error) {

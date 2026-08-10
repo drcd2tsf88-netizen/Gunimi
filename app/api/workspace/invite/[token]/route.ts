@@ -42,8 +42,11 @@ import { logger } from "@/lib/logger";
   workspace_id,
   email,
   token,
+  role,
+  status,
   created_at,
-  expires_at
+  expires_at,
+  workspaces ( name )
 `)
         .eq(
           "token",

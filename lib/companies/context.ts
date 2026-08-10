@@ -45,7 +45,7 @@ export function resolveCompanyContext(
         labelKey: "contextLabelContact",
         primary: contact.name,
         secondary: contact.email ?? undefined,
-        href: `/dashboard/crm/${contact.id}`,
+        href: `/dashboard/contacts/${contact.id}`,
       })),
     });
   }

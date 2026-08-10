@@ -55,7 +55,7 @@ export function resolveDealContext(
       labelKey: "contextLabelContact",
       primary: deal.contact.name,
       secondary: deal.contact.email,
-      href: `/dashboard/crm/${deal.contact.id}`,
+      href: `/dashboard/contacts/${deal.contact.id}`,
     });
   }
 

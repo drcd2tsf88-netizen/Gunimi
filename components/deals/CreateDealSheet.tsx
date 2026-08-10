@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { useTranslations } from "next-intl";
 
 import toast from "react-hot-toast";
@@ -57,6 +59,7 @@ export default function CreateDealSheet({
   onCreated,
 }: Props) {
   const t = useTranslations();
+  const router = useRouter();
 
   const firstStage = stages[0]?.slug ?? "lead";
 
@@ -150,6 +153,7 @@ export default function CreateDealSheet({
           : undefined,
       } as Deal);
       onOpenChange(false);
+      router.refresh();
     } catch {
       toast.error(t("deals.failedToCreateOpportunity"), { id: "orbit-deal-create" });
     } finally {

@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 
 import { useAIStateStore } from "@/lib/store/ai-state-store";
 
-import { useWorkspaceStore } from "@/lib/store/useWorkspaceStore";
+import { useOrbitRuntimeStore } from "@/core/runtime/runtime-store";
 
 import { generateOrbitResponse } from "@/lib/ai/services/generateOrbitResponse";
 
@@ -41,7 +41,7 @@ export function useOrbitAssistant() {
 
   // WORKSPACE
 
-  const workspace = useWorkspaceStore((state) => state.workspace);
+  const workspace = useOrbitRuntimeStore((state) => state.workspace);
 
   const workspaceId = workspace?.id;
 

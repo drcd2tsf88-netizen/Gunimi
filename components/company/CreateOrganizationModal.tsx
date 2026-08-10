@@ -1,6 +1,10 @@
+"use client";
+
 import {
   useState,
 } from "react";
+
+import { useRouter } from "next/navigation";
 
 import * as Dialog
 from "@radix-ui/react-dialog";
@@ -33,8 +37,8 @@ export default function CreateOrganizationModal({
   open,
   onClose,
 }: Props) {
-  const t =
-    useTranslations();
+  const t = useTranslations();
+  const router = useRouter();
 
   const [
     creating,
@@ -112,6 +116,7 @@ export default function CreateOrganizationModal({
       setNotes("");
 
       onClose();
+      router.refresh();
     } catch {
       toast.error(t("companies.createFailed"));
     } finally {

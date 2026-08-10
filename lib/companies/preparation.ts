@@ -39,7 +39,7 @@ export function resolveCompanyPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: decision.primaryContact.name,
-          href: `/dashboard/crm/${decision.primaryContact.id}`,
+          href: `/dashboard/contacts/${decision.primaryContact.id}`,
           secondaryRaw: decision.primaryContact.email ?? undefined,
         });
       }
@@ -52,7 +52,7 @@ export function resolveCompanyPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: decision.primaryContact.name,
-          href: `/dashboard/crm/${decision.primaryContact.id}`,
+          href: `/dashboard/contacts/${decision.primaryContact.id}`,
           secondaryRaw: decision.primaryContact.email ?? undefined,
         });
       }
@@ -83,7 +83,7 @@ export function resolveCompanyPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: decision.primaryContact.name,
-          href: `/dashboard/crm/${decision.primaryContact.id}`,
+          href: `/dashboard/contacts/${decision.primaryContact.id}`,
           secondaryRaw: decision.primaryContact.email ?? undefined,
         });
       }

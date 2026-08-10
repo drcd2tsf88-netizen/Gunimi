@@ -34,7 +34,7 @@ export function resolveDealPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: deal.contact.name,
-          href: `/dashboard/crm/${deal.contact.id}`,
+          href: `/dashboard/contacts/${deal.contact.id}`,
           secondaryRaw: deal.contact.email,
         });
       }
@@ -67,7 +67,7 @@ export function resolveDealPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: deal.contact.name,
-          href: `/dashboard/crm/${deal.contact.id}`,
+          href: `/dashboard/contacts/${deal.contact.id}`,
           secondaryRaw: deal.contact.email,
         });
       }
@@ -95,7 +95,7 @@ export function resolveDealPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: deal.contact.name,
-          href: `/dashboard/crm/${deal.contact.id}`,
+          href: `/dashboard/contacts/${deal.contact.id}`,
           secondaryRaw: deal.contact.email,
         });
       }
@@ -127,7 +127,7 @@ export function resolveDealPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: deal.contact.name,
-          href: `/dashboard/crm/${deal.contact.id}`,
+          href: `/dashboard/contacts/${deal.contact.id}`,
           secondaryRaw: deal.contact.email,
         });
       }
@@ -140,7 +140,7 @@ export function resolveDealPreparation(
           iconKey: "contact",
           labelKey: "prepItemContact",
           value: deal.contact.name,
-          href: `/dashboard/crm/${deal.contact.id}`,
+          href: `/dashboard/contacts/${deal.contact.id}`,
           secondaryRaw: deal.contact.email,
         });
       }
