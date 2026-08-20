@@ -12,6 +12,7 @@ import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiInput from "@/components/ui/GunimiInput";
 import TagBadge from "@/components/ui/TagBadge";
+import TagHoverCard from "@/components/ui/TagHoverCard";
 import NoteEditor from "@/components/notes/NoteEditor";
 
 import { updateNote } from "@/server/actions/notes/updateNote";
@@ -141,7 +142,9 @@ export default function NoteDetailClient({ note }: Props) {
       {note.tags.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {note.tags.map((tag) => (
-            <TagBadge key={tag.id} tag={tag} size="sm" href={`/dashboard/tags/${tag.id}`} />
+            <TagHoverCard key={tag.id} tag={tag}>
+              <TagBadge tag={tag} size="sm" href={`/dashboard/tags/${tag.id}`} />
+            </TagHoverCard>
           ))}
         </div>
       )}

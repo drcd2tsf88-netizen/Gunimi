@@ -1483,7 +1483,9 @@
     "subscribeButton": "Subscribe — €19/month",
     "redirecting": "Redirecting to Stripe...",
     "successMessage": "Your subscription is now active. Welcome to Gunimi Pro!",
-    "manageBilling": "To manage or cancel your subscription, contact support."
+    "manageBilling": "To manage or cancel your subscription, contact support.",
+    "manageSubscription": "Manage subscription",
+    "paymentFailed": "Payment failed — please update your payment method."
   },
   "dogfood": {
     "feedbackTitle": "Internal Feedback",
@@ -3609,7 +3611,8 @@
     "noTaggedEntities": "No entities tagged yet",
     "noTaggedEntitiesDescription": "Apply this tag to contacts, companies, deals, tasks or notes to see them here.",
     "tagDetailPageTitle": "Tag",
-    "backToSettings": "Back"
+    "backToSettings": "Back",
+    "hoverViewTag": "View tag"
   },
   "timeline": {
     "today": "Today",

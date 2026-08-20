@@ -21,6 +21,7 @@ from "@/lib/workspace/getCurrentWorkspace";
 import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
 import { produceCompanySignals } from "@/lib/signals/producers/companyProducer";
+import { createAuditLog } from "@/lib/server/audit";
 
 export type CreateCompanyProps =
   {
@@ -160,6 +161,14 @@ export async function createCompany({
         activityError
       );
     }
+
+    await createAuditLog({
+      workspace_id: workspace.id,
+      user_id: user.id,
+      action: "company_created",
+      entity: "workspace_company",
+      metadata: { companyId: data.id, name: name.trim() },
+    });
 
     await executeAutomations("company.created", {
       workspaceId: workspace.id,

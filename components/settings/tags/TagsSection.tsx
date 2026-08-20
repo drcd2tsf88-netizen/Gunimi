@@ -11,6 +11,7 @@ import { createTag } from "@/server/actions/tags/createTag";
 import { updateTag } from "@/server/actions/tags/updateTag";
 import { deleteTag } from "@/server/actions/tags/deleteTag";
 import TagBadge from "@/components/ui/TagBadge";
+import TagHoverCard from "@/components/ui/TagHoverCard";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Tag } from "lucide-react";
@@ -240,7 +241,9 @@ export default function TagsSection({ initialTags }: Props) {
                 /* NORMAL ROW */
                 <>
                   <div className="flex-1">
-                    <TagBadge tag={tag} href={`/dashboard/tags/${tag.id}`} />
+                    <TagHoverCard tag={tag}>
+                      <TagBadge tag={tag} href={`/dashboard/tags/${tag.id}`} />
+                    </TagHoverCard>
                   </div>
                   <div className="flex shrink-0 gap-1.5 opacity-0 transition-opacity group-hover:opacity-100 [.group:hover_&]:opacity-100">
                     <button

@@ -16,6 +16,7 @@ export type SubscriptionStatus = {
   currentPeriodEnd: string | null;
   cancelAtPeriodEnd: boolean;
   stripeCustomerId: string | null;
+  paymentFailed: boolean;
 };
 
 export async function getSubscription(): Promise<SubscriptionStatus> {
@@ -25,6 +26,7 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
     currentPeriodEnd: null,
     cancelAtPeriodEnd: false,
     stripeCustomerId: null,
+    paymentFailed: false,
   };
 
   try {
@@ -43,6 +45,8 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
 
     if (!customerId) return empty;
 
+    const paymentFailed = !!(prefs.stripePaymentFailed as boolean | undefined);
+
     const stripe = getStripe();
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
@@ -51,7 +55,7 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
     });
 
     const sub = subscriptions.data[0];
-    if (!sub) return { ...empty, stripeCustomerId: customerId };
+    if (!sub) return { ...empty, stripeCustomerId: customerId, paymentFailed };
 
     return {
       active: sub.status === "active" || sub.status === "trialing",
@@ -59,6 +63,7 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
       currentPeriodEnd: new Date((sub as unknown as { current_period_end: number }).current_period_end * 1000).toISOString(),
       cancelAtPeriodEnd: (sub as unknown as { cancel_at_period_end: boolean }).cancel_at_period_end,
       stripeCustomerId: customerId,
+      paymentFailed,
     };
   } catch {
     return empty;

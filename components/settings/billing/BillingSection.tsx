@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCircle2, CreditCard, Zap } from "lucide-react";
+import { AlertTriangle, CheckCircle2, CreditCard, ExternalLink, Zap } from "lucide-react";
 import { createCheckoutSession } from "@/server/actions/billing/createCheckoutSession";
+import { createPortalSession } from "@/server/actions/billing/createPortalSession";
 import type { SubscriptionStatus } from "@/server/actions/billing/getSubscription";
 import GunimiSection from "@/components/layout/GunimiSection";
 
@@ -15,6 +16,7 @@ type Props = {
 export default function BillingSection({ subscription, showSuccess }: Props) {
   const t = useTranslations("billing");
   const [loading, setLoading] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubscribe() {
@@ -24,6 +26,16 @@ export default function BillingSection({ subscription, showSuccess }: Props) {
     if ("error" in result) {
       setError(result.error);
       setLoading(false);
+      return;
+    }
+    window.location.href = result.url;
+  }
+
+  async function handleManage() {
+    setPortalLoading(true);
+    const result = await createPortalSession();
+    if ("error" in result) {
+      setPortalLoading(false);
       return;
     }
     window.location.href = result.url;
@@ -46,6 +58,14 @@ export default function BillingSection({ subscription, showSuccess }: Props) {
           <div className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3">
             <CheckCircle2 size={16} className="shrink-0 text-emerald-400" />
             <p className="text-sm text-emerald-300">{t("successMessage")}</p>
+          </div>
+        )}
+
+        {/* Payment failed banner */}
+        {subscription.paymentFailed && (
+          <div className="flex items-center gap-3 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3">
+            <AlertTriangle size={16} className="shrink-0 text-red-400" />
+            <p className="text-sm text-red-300">{t("paymentFailed")}</p>
           </div>
         )}
 
@@ -119,11 +139,16 @@ export default function BillingSection({ subscription, showSuccess }: Props) {
           </div>
         )}
 
-        {/* Active subscription info */}
+        {/* Active subscription — manage button */}
         {subscription.active && (
-          <div className="rounded-xl border border-white/8 bg-white/[0.02] px-4 py-3">
-            <p className="text-xs text-white/30">{t("manageBilling")}</p>
-          </div>
+          <button
+            onClick={handleManage}
+            disabled={portalLoading}
+            className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-left transition-all hover:border-white/[0.15] hover:bg-white/[0.05] disabled:opacity-50"
+          >
+            <p className="text-sm text-white/60">{t("manageSubscription")}</p>
+            <ExternalLink size={14} className="shrink-0 text-white/30" />
+          </button>
         )}
       </div>
     </GunimiSection>

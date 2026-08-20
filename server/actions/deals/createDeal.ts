@@ -21,6 +21,7 @@ import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
 import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
 import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
+import { createAuditLog } from "@/lib/server/audit";
 
 export type CreateDealProps = {
   title: string;
@@ -237,6 +238,14 @@ probability =
         activityError
       );
     }
+
+    await createAuditLog({
+      workspace_id: workspace.id,
+      user_id: user.id,
+      action: "deal_created",
+      entity: "workspace_deal",
+      metadata: { dealId: deal.id, title: title.trim(), stage, value },
+    });
 
     await executeAutomations("deal.created", {
       workspaceId: workspace.id,

@@ -1483,7 +1483,9 @@
     "subscribeButton": "Predplatiť — €19/mesiac",
     "redirecting": "Presmerovanie na Stripe...",
     "successMessage": "Vaše predplatné je aktívne. Vitajte v Gunimi Pro!",
-    "manageBilling": "Pre správu alebo zrušenie predplatného kontaktujte podporu."
+    "manageBilling": "Pre správu alebo zrušenie predplatného kontaktujte podporu.",
+    "manageSubscription": "Spravovať predplatné",
+    "paymentFailed": "Platba zlyhala — aktualizujte spôsob platby."
   },
   "dogfood": {
     "feedbackTitle": "Interná spätná väzba",
@@ -3609,7 +3611,8 @@
     "noTaggedEntities": "Žiadne entity s týmto tagom",
     "noTaggedEntitiesDescription": "Priraď tento tag ku kontaktom, spoločnostiam, dealám, úlohám alebo poznámkam.",
     "tagDetailPageTitle": "Tag",
-    "backToSettings": "Späť"
+    "backToSettings": "Späť",
+    "hoverViewTag": "Zobraziť tag"
   },
   "timeline": {
     "today": "Dnes",

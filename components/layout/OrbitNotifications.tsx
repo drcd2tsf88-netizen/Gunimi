@@ -42,10 +42,19 @@ export default function OrbitNotifications() {
   const unreadCount = notifications.length;
 
   useEffect(() => {
+    let userId: string | null = null;
+
     async function load() {
+      if (!userId) {
+        const { data: { user } } = await supabase.auth.getUser();
+        userId = user?.id ?? null;
+      }
+      if (!userId) { setNotifications([]); return; }
+
       const { data } = await supabase
         .from("workspace_notifications")
         .select("id, type, title, body, href, read_at, created_at")
+        .eq("user_id", userId)
         .is("read_at", null)
         .order("created_at", { ascending: false })
         .limit(20);

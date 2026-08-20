@@ -54,6 +54,7 @@ import { deleteTask } from "@/server/actions/tasks/deleteTask";
 import { getTaskCounts } from "@/server/actions/tasks/getTaskCounts";
 
 import { Task, WorkspaceMember } from "@/types/task";
+import { stripHtml } from "@/lib/utils/stripHtml";
 import { useTaskFocusStore } from "@/lib/store/task-focus-store";
 
 import { createClient } from "@/lib/supabase/client";
@@ -585,7 +586,7 @@ export default function TasksPageView({ initialTasks, members, workspaceId, curr
                               </p>
                               {task.description && (
                                 <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500">
-                                  {task.description}
+                                  {stripHtml(task.description)}
                                 </p>
                               )}
                               {hasChildren && (

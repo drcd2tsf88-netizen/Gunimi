@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { createPortal } from "react-dom";
 
 import TagBadge from "@/components/ui/TagBadge";
+import TagHoverCard from "@/components/ui/TagHoverCard";
 import { TAG_COLORS, TAG_COLOR_CLASSES } from "@/types/tag";
 import type { WorkspaceTag, EntityType } from "@/types/tag";
 import { addEntityTag } from "@/server/actions/tags/addEntityTag";
@@ -184,7 +185,9 @@ export default function TagPicker({ entityType, entityId, allTags, initialTags }
   return (
     <div className="flex flex-wrap items-center gap-1.5">
       {tags.map((tag) => (
-        <TagBadge key={tag.id} tag={tag} onRemove={() => handleRemove(tag.id)} size="xs" href={`/dashboard/tags/${tag.id}`} />
+        <TagHoverCard key={tag.id} tag={tag}>
+          <TagBadge tag={tag} onRemove={() => handleRemove(tag.id)} size="xs" href={`/dashboard/tags/${tag.id}`} />
+        </TagHoverCard>
       ))}
 
       <button

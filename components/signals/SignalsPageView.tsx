@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useRef, useTransition } from "react";
 import Link from "next/link";
-import { ArrowRight, Radio, RefreshCw } from "lucide-react";
+import { ArrowRight, ChevronDown, Radio, RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
@@ -51,6 +51,8 @@ export default function SignalsPageView({ initialSignals }: Props) {
   const [signals, setSignals] = useState<EnrichedSignal[]>(initialSignals);
   const [isDismissing, startDismiss] = useTransition();
   const [isScanning, startScan] = useTransition();
+  const [openDismissId, setOpenDismissId] = useState<string | null>(null);
+  const dismissRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   function handleDismiss(signalId: string, type: DismissalType) {
     startDismiss(async () => {
@@ -179,20 +181,35 @@ export default function SignalsPageView({ initialSignals }: Props) {
                       <ArrowRight size={11} />
                     </Link>
 
-                    <select
-                      disabled={isDismissing}
-                      defaultValue=""
-                      onChange={(e) => {
-                        const val = e.target.value as DismissalType | "";
-                        if (val) handleDismiss(signal.id, val);
-                      }}
-                      className="hidden h-7 rounded-lg border border-white/[0.08] bg-zinc-900 px-2 text-xs text-zinc-500 outline-none hover:border-white/20 cursor-pointer sm:block"
+                    <div
+                      className="relative hidden sm:block"
+                      ref={(el) => { dismissRefs.current[signal.id] = el; }}
                     >
-                      <option value="" disabled>{t("dismiss")}</option>
-                      <option value="not_urgent">{t("dismissNotUrgent")}</option>
-                      <option value="remind_later">{t("dismissRemindLater")}</option>
-                      <option value="not_relevant">{t("dismissNotRelevant")}</option>
-                    </select>
+                      <button
+                        disabled={isDismissing}
+                        onClick={() => setOpenDismissId((prev) => prev === signal.id ? null : signal.id)}
+                        className="flex h-7 items-center gap-1 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-zinc-400 transition-all hover:border-violet-500/30 hover:text-violet-300 disabled:opacity-40"
+                      >
+                        {t("dismiss")}
+                        <ChevronDown size={10} className={`transition-transform ${openDismissId === signal.id ? "rotate-180" : ""}`} />
+                      </button>
+                      {openDismissId === signal.id && (
+                        <div
+                          className="absolute right-0 top-full z-20 mt-1 min-w-[160px] overflow-hidden rounded-xl border border-white/[0.08] bg-[#0A0F1F]/95 py-1 shadow-2xl backdrop-blur-xl"
+                          onMouseLeave={() => setOpenDismissId(null)}
+                        >
+                          {(["not_urgent", "remind_later", "not_relevant"] as DismissalType[]).map((type) => (
+                            <button
+                              key={type}
+                              onClick={() => { setOpenDismissId(null); handleDismiss(signal.id, type); }}
+                              className="flex w-full items-center px-3 py-2 text-left text-xs text-white/60 transition-colors hover:bg-violet-500/10 hover:text-violet-300"
+                            >
+                              {t(`dismiss${type.split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join("")}` as Parameters<typeof t>[0])}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );

@@ -235,3 +235,20 @@ BEZPECNOSTNY AUDIT (2026-08-02)
    => createTag.ts: pred insertom ilike check — ak existuje tag s rovnakým menom, vráti existujúci
    => TagPicker.tsx: klient-side match na allTags pred createTag volaním, amber hint "tag už existuje — bude priradený existujúci"
    -
+
+   20.8.2026
+
+   -import na ulohch dokumentov,obrazky mozno aaj ciatopcne nakup fakatury .. aaby ludia v ramci hitorii vedeli co vyrobili ako za kolko atd viditeľnosť
+   -ulohy zle a renderuje popis ulohy presetrit 
+   -ssignali dropwdown nieje v gunimi tyle 
+   -aauditlog necita worksspace
+   -notifikaacie necitaju ? preetrit 
+   -mat moznost praacovat z emaailom viess ked i ich chces ozncit riesim vyresssenie poptavka musssim riessit chapess neico v tom slova zmysle .
+   - mat moznssost filtrovat medzi tymy faarbami z toho emailu nech nemui hladat podlaa mena ale podla priorit 
+   - premyssliet ocislovnie zkziek obchodov neskuor budu aj faktury musime to vediet cisselne oznacovat kaaazdy faktura obchod musi mt vcislo by si to clovek vedel a hlvne musi s vediet podla toho cisla vyhldvat!
+   - daalsi vec skontrolovat ci tagy funguju jak mju priradim tag na firmu/kontaakt aa kde kolkovek ten teg zaapiem mui vyskocit mini okienko z postacujucim info o dnom tagu kde bol prirraadeny 
+   - moznost mat naabidky pri obchodoch ? asi proste ked mAS poptavku po nejakej prace od firmy tak podla predlohy ktoru si firmaaa sm spravy aby bola moznost priamo praacovat aj v takomto . ddaj navrh 
+   - emaaile si vediet vyhlaadavat pdola cisel objednaavoik faktur atd podl dnej prace aa zakaaziek 
+   - fakturizacny system vymysliet daj narvhy musi to obsaahovaaat vsetko co clovek naa to potrebuje nie len citat podla clenov niekotry len citt iny musi vediet vytvart iny aj menit updatovt atd .
+   
+    
