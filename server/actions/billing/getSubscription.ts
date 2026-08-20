@@ -3,6 +3,7 @@
 import Stripe from "stripe";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { createClient } from "@/lib/supabase/server";
+import { logger } from "@/lib/logger";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -43,7 +44,7 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
     const prefs = (data?.preferences ?? {}) as Record<string, unknown>;
     const customerId = prefs.stripeCustomerId as string | undefined;
 
-    if (!customerId) return empty;
+    if (!customerId) { logger.warn("getSubscription: no stripeCustomerId in preferences"); return empty; }
 
     const paymentFailed = !!(prefs.stripePaymentFailed as boolean | undefined);
 
@@ -65,7 +66,8 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
       stripeCustomerId: customerId,
       paymentFailed,
     };
-  } catch {
+  } catch (err) {
+    logger.error("getSubscription failed:", err);
     return empty;
   }
 }
