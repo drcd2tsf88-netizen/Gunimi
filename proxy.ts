@@ -22,6 +22,7 @@ const PUBLIC_API_PREFIXES = [
   "/api/health",             // uptime monitors
   "/api/workspace/invite/",  // invite preview (user may not be signed in yet)
   "/api/sentry-example-api", // Sentry test endpoint
+  "/api/stripe/webhook",     // Stripe webhooks — verified by signature, not session
 ];
 
 // ── Write rate limiter — lazily initialized ───────────────────
