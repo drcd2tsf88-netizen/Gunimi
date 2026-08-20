@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { createClient } from "@/lib/supabase/server";
+import { logger } from "@/lib/logger";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -52,7 +53,8 @@ export async function createCheckoutSession(): Promise<{ url: string } | { error
     if (!session.url) return { error: "Failed to create session" };
 
     return { url: session.url };
-  } catch {
+  } catch (err) {
+    logger.error("createCheckoutSession failed:", err);
     return { error: "Failed to create checkout session" };
   }
 }
