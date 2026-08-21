@@ -2,13 +2,13 @@
 
 import { useAIStateStore } from "@/lib/store/ai-state-store";
 
-type ExecuteOrbitActionsProps = {
+type ExecuteGunimiActionsProps = {
   input: string;
   response: string;
   workspaceId: string;
 };
 
-export async function executeOrbitActions({}: ExecuteOrbitActionsProps) {
+export async function executeGunimiActions({}: ExecuteGunimiActionsProps) {
   const { setThinking, setCurrentThought } = useAIStateStore.getState();
 
   try {

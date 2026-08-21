@@ -58,6 +58,10 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
     const sub = subscriptions.data[0];
     if (!sub) return { ...empty, stripeCustomerId: customerId, paymentFailed };
 
+    logger.warn("stripe sub keys:", Object.keys(sub));
+    const subRaw = sub as unknown as Record<string, unknown>;
+    logger.warn("stripe sub sample:", JSON.stringify({ status: sub.status, cpe: subRaw.current_period_end, items: subRaw.items }));
+
     const periodEnd = (sub as unknown as { current_period_end?: number }).current_period_end;
     const cancelAtPeriodEnd = (sub as unknown as { cancel_at_period_end?: boolean }).cancel_at_period_end ?? false;
 

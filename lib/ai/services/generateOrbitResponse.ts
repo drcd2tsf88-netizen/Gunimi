@@ -3,27 +3,27 @@ type HistoryMessage = {
   content: string;
 };
 
-type GenerateOrbitResponseProps = {
+type GenerateGunimiResponseProps = {
   input: string;
   agent: { name: string };
   history?: HistoryMessage[];
 };
 
-type OrbitResponse = {
+type GunimiResponse = {
   response: string;
   generatedActions: string[];
   generatedTimeline: string[];
   generatedMemory: string[];
 };
 
-export async function generateOrbitResponse(
-  props: GenerateOrbitResponseProps,
+export async function generateGunimiResponse(
+  props: GenerateGunimiResponseProps,
   onToken?: (token: string) => void
-): Promise<OrbitResponse> {
+): Promise<GunimiResponse> {
   const { input, agent, history } = props;
 
   try {
-    const res = await fetch("/api/orbit-assistant", {
+    const res = await fetch("/api/gunimi-assistant", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -34,7 +34,7 @@ export async function generateOrbitResponse(
     });
 
     if (!res.ok || !res.body) {
-      throw new Error(`orbit-assistant returned ${res.status}`);
+      throw new Error(`gunimi-assistant returned ${res.status}`);
     }
 
     const reader = res.body.getReader();

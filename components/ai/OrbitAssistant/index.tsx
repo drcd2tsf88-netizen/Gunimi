@@ -17,7 +17,7 @@ from "./OrbitInput";
 import OrbitMemory
 from "./OrbitMemory";
 
-import { useOrbitAssistant }
+import { useGunimiAssistant }
 from "./hooks/useOrbitAssistant";
 
 import { useAIStateStore }
@@ -39,7 +39,7 @@ export default function OrbitAssistant({
 
     sendMessage,
   } =
-    useOrbitAssistant();
+    useGunimiAssistant();
 
   const messages =
     useAIStateStore(

@@ -4,7 +4,7 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Orbit Auth Proxy
+// Gunimi Auth Proxy
 //
 // Validates the Supabase session on every request so both Server Components
 // and Server Actions always see a valid, up-to-date session in cookies.

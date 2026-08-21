@@ -1,4 +1,4 @@
-type BuildOrbitContextProps = {
+type BuildGunimiContextProps = {
   messages: {
     role: string;
 
@@ -30,7 +30,7 @@ type BuildOrbitContextProps = {
   };
 };
 
-export function buildOrbitContext({
+export function buildGunimiContext({
   messages,
 
   aiMemory,
@@ -40,7 +40,7 @@ export function buildOrbitContext({
   activeAgent,
 
   workspaceContext,
-}: BuildOrbitContextProps) {
+}: BuildGunimiContextProps) {
   const recentMessages =
     messages
       .slice(-6)

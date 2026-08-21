@@ -10,17 +10,15 @@ import { useAIStateStore } from "@/lib/store/ai-state-store";
 
 import { useOrbitRuntimeStore } from "@/core/runtime/runtime-store";
 
-import { generateOrbitResponse } from "@/lib/ai/services/generateOrbitResponse";
+import { generateGunimiResponse } from "@/lib/ai/services/generateOrbitResponse";
 
 import { routeAgent } from "@/lib/ai/agents/route-agent";
 
-import { executeOrbitActions } from "@/lib/ai/execution/executeOrbitActions";
-
-import { loadMemory } from "@/lib/ai/memory/load-memory";
+import { executeGunimiActions } from "@/lib/ai/execution/executeOrbitActions";
 
 import { saveMemory } from "@/lib/ai/memory/save-memory";
 
-export function useOrbitAssistant() {
+export function useGunimiAssistant() {
   const t = useTranslations("aiPanel");
 
   const [loading, setLoading] = useState(false);
@@ -72,10 +70,6 @@ export function useOrbitAssistant() {
           createdAt: new Date().toISOString(),
         });
 
-        // LOAD MEMORY
-
-        await loadMemory(workspaceId);
-
         // AGENT
 
         const agent = routeAgent(input);
@@ -95,7 +89,7 @@ export function useOrbitAssistant() {
 
         // GENERATE RESPONSE (streaming) — pass conversation history for multi-turn context
 
-        const response = await generateOrbitResponse(
+        const response = await generateGunimiResponse(
           {
             input,
             agent,
@@ -116,7 +110,7 @@ export function useOrbitAssistant() {
 
         // EXECUTION
 
-        const execution = await executeOrbitActions({
+        const execution = await executeGunimiActions({
           input,
           response: response.response,
           workspaceId,

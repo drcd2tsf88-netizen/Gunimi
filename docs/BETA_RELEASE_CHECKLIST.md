@@ -96,6 +96,7 @@ Spustiť na **produkčnom prostredí** s reálnym accountom.
 
 ---
 
+
 ## SEKCIA 6 — Workspace izolácia (KRITICKÉ — Architekt 3)
 
 Použiť **dva rôzne účty** v dvoch rôznych workspacoch.
@@ -115,9 +116,9 @@ Otestovať kompletný billing flow end-to-end.
 - [x] Vercel function logs: webhook event spracovaný bez chyby (po oprave www redirect + middleware + RangeError)
 - [x] Dashboard Settings → Billing: zobrazuje aktívne predplatné + "Spravovať predplatné"
 - [x] Customer Portal — kliknutie otvára Stripe portál ✅
-- [ ] Zrušiť predplatné v Stripe portáli → overiť stav v Gunimi
-- [ ] Znova aktivovať predplatné — prístup obnovený
-- [ ] Počas celého flow: žiadne duplikátne spracovanie
+- [x] Zrušiť predplatné v Stripe portáli → Gunimi zobrazuje "Ruší sa" badge + dátum vypršania ✅
+- [-] Znova aktivovať — odložené (predplatné aktívne do 20.9.2026)
+- [x] Počas celého flow: žiadne duplikátne spracovanie
 
 **Opravy vykonané počas testu:**
 - `proxy.ts` — `/api/stripe/webhook` pridaný do `PUBLIC_API_PREFIXES` (middleware blokoval 401)
@@ -129,6 +130,8 @@ Otestovať kompletný billing flow end-to-end.
 ---
 
 ## SEKCIA 8 — Signal Engine cron (Architekt 2)
+
+> ⏳ **ODLOŽENÉ** — CRON_SECRET nie je nastavený, overenie odložené na september 2026.
 
 - [ ] Manuálne triggernúť scan: `POST /api/cron/scan` s `Authorization: Bearer {CRON_SECRET}`
 - [ ] Vercel function logs: scan prebehol bez timeoutu
@@ -185,8 +188,8 @@ Otestovať kompletný billing flow end-to-end.
 - [x] Sekcie 1–4: všetko checked
 - [ ] Sekcia 5: WF 15, 17, 18 — **treba re-test po deploy**
 - [x] Sekcia 6: workspace izolácia potvrdená
-- [ ] Sekcia 7: Stripe lifecycle end-to-end PASS
-- [ ] Sekcia 8: Signal Engine cron bez timeoutu
+- [x] Sekcia 7: Stripe lifecycle end-to-end PASS (checkout, webhook, portal, cancel, UI)
+- [-] Sekcia 8: Signal Engine cron — odložené na september 2026
 - [x] Sekcia 9: email doručenie potvrdené (spam = DKIM, nie blocker)
 - [x] Sekcia 10: Sentry aktívny
 - [ ] Sekcia 11: function logs čisté — po deploy overiť
