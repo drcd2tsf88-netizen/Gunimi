@@ -58,11 +58,14 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
     const sub = subscriptions.data[0];
     if (!sub) return { ...empty, stripeCustomerId: customerId, paymentFailed };
 
+    const periodEnd = (sub as unknown as { current_period_end?: number }).current_period_end;
+    const cancelAtPeriodEnd = (sub as unknown as { cancel_at_period_end?: boolean }).cancel_at_period_end ?? false;
+
     return {
       active: sub.status === "active" || sub.status === "trialing",
       status: sub.status,
-      currentPeriodEnd: new Date((sub as unknown as { current_period_end: number }).current_period_end * 1000).toISOString(),
-      cancelAtPeriodEnd: (sub as unknown as { cancel_at_period_end: boolean }).cancel_at_period_end,
+      currentPeriodEnd: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
+      cancelAtPeriodEnd,
       stripeCustomerId: customerId,
       paymentFailed,
     };
