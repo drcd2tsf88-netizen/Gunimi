@@ -1485,7 +1485,11 @@
     "successMessage": "Your subscription is now active. Welcome to Gunimi Pro!",
     "manageBilling": "To manage or cancel your subscription, contact support.",
     "manageSubscription": "Manage subscription",
-    "paymentFailed": "Payment failed — please update your payment method."
+    "paymentFailed": "Payment failed — please update your payment method.",
+    "cancelsOn": "Cancels on {date}",
+    "cancelPending": "Cancels at end of billing period",
+    "statusActive": "Active",
+    "statusCanceling": "Canceling"
   },
   "dogfood": {
     "feedbackTitle": "Internal Feedback",

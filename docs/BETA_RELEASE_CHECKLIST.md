@@ -111,14 +111,20 @@ Použiť **dva rôzne účty** v dvoch rôznych workspacoch.
 
 Otestovať kompletný billing flow end-to-end.
 
-- [ ] Checkout — prejsť celým platobným flow, predplatné vytvorené
-- [ ] Vercel function logs: webhook event `customer.subscription.created` spracovaný bez chyby
-- [ ] Dashboard Settings → Billing: zobrazuje aktívne predplatné
-- [ ] Zrušiť predplatné v Stripe dashboard
-- [ ] Webhook `customer.subscription.deleted` spracovaný
-- [ ] Po zrušení: prístup správne obmedzený (alebo nie — podľa biznisovej logiky — overiť že je to zámerné)
+- [x] Checkout — prejsť celým platobným flow, predplatné vytvorené (€0.99 test price)
+- [x] Vercel function logs: webhook event spracovaný bez chyby (po oprave www redirect + middleware + RangeError)
+- [x] Dashboard Settings → Billing: zobrazuje aktívne predplatné + "Spravovať predplatné"
+- [x] Customer Portal — kliknutie otvára Stripe portál ✅
+- [ ] Zrušiť predplatné v Stripe portáli → overiť stav v Gunimi
 - [ ] Znova aktivovať predplatné — prístup obnovený
-- [ ] Počas celého flow: **žiadne** duplikátne spracovanie (webhook idempotencia)
+- [ ] Počas celého flow: žiadne duplikátne spracovanie
+
+**Opravy vykonané počas testu:**
+- `proxy.ts` — `/api/stripe/webhook` pridaný do `PUBLIC_API_PREFIXES` (middleware blokoval 401)
+- `app/api/stripe/webhook/route.ts` — prepísaný na `supabaseAdmin`, opravené event handlery
+- `server/actions/billing/getSubscription.ts` — `RangeError` fix pre `current_period_end` (dahlia API)
+- `server/actions/billing/createPortalSession.ts` — nový Customer Portal
+- Stripe webhook URL — opravená na `https://www.gunimi.com/api/stripe/webhook`
 
 ---
 

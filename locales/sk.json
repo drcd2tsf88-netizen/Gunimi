@@ -1485,7 +1485,11 @@
     "successMessage": "Vaše predplatné je aktívne. Vitajte v Gunimi Pro!",
     "manageBilling": "Pre správu alebo zrušenie predplatného kontaktujte podporu.",
     "manageSubscription": "Spravovať predplatné",
-    "paymentFailed": "Platba zlyhala — aktualizujte spôsob platby."
+    "paymentFailed": "Platba zlyhala — aktualizujte spôsob platby.",
+    "cancelsOn": "Platnosť do {date}",
+    "cancelPending": "Ruší sa koncom fakturačného obdobia",
+    "statusActive": "Aktívne",
+    "statusCanceling": "Ruší sa"
   },
   "dogfood": {
     "feedbackTitle": "Interná spätná väzba",
