@@ -1,60 +1,30 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-  useTransition,
-  useMemo,
-} from "react";
-
-import { motion } from "framer-motion";
+import { useState, useTransition, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import { useTranslations } from "next-intl";
 import {
-  ExternalLink,
+  Building2,
   FileText,
+  Loader2,
   Pencil,
   Plus,
-  Sparkles,
-  Trash2,
   Search,
-  Building2,
+  Trash2,
   User,
-  Loader2,
   Wand2,
 } from "lucide-react";
-
 import toast from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
-import { useTranslations } from "next-intl";
-
-import { getWorkspaceNotes, type WorkspaceNote } from "@/server/actions/notes/getWorkspaceNotes";
-import { createNote } from "@/server/actions/notes/createNote";
-import { deleteNote } from "@/server/actions/notes/deleteNote";
-import { extractTasksFromNote } from "@/server/actions/notes/extractTasksFromNote";
-import { getTags } from "@/server/actions/tags/getTags";
-import { getContacts } from "@/server/actions/crm/getContacts";
-import { getCompanies } from "@/server/actions/company/getCompanies";
-
-import GunimiCard from "@/components/ui/GunimiCard";
-import GunimiHeading from "@/components/ui/GunimiHeading";
-import GunimiInput from "@/components/ui/GunimiInput";
-import GunimiSkeleton from "@/components/ui/GunimiSkeleton";
-import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
-import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiButton from "@/components/ui/GunimiButton";
+import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import TagBadge from "@/components/ui/TagBadge";
 import TagHoverCard from "@/components/ui/TagHoverCard";
-import NoteEditor from "@/components/notes/NoteEditor";
 import EditNoteSheet from "@/components/notes/EditNoteSheet";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+import CreateNoteSheet from "@/components/notes/CreateNoteSheet";
 import {
   Dialog,
   DialogContent,
@@ -64,6 +34,9 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
+import { deleteNote } from "@/server/actions/notes/deleteNote";
+import { extractTasksFromNote } from "@/server/actions/notes/extractTasksFromNote";
+import type { WorkspaceNote } from "@/server/actions/notes/getWorkspaceNotes";
 import type { WorkspaceTag } from "@/types/tag";
 
 type Filter = "all" | "contacts" | "companies";
@@ -72,145 +45,142 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
-export default function NotesClientPage() {
+type Props = {
+  initialNotes: WorkspaceNote[];
+  allTags: WorkspaceTag[];
+  contactOptions: { id: string; name: string }[];
+  companyOptions: { id: string; name: string }[];
+};
+
+type RowProps = {
+  note: WorkspaceNote;
+  extractingId: string | null;
+  onEdit: (note: WorkspaceNote) => void;
+  onDelete: (note: WorkspaceNote) => void;
+  onExtract: (note: WorkspaceNote) => void;
+};
+
+function NoteRow({ note, extractingId, onEdit, onDelete, onExtract }: RowProps) {
   const t = useTranslations("notes");
   const tc = useTranslations("common");
+  const isExtracting = extractingId === note.id;
 
-  const [notes, setNotes] = useState<WorkspaceNote[]>([]);
-  const [allTags, setAllTags] = useState<WorkspaceTag[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState(false);
+  return (
+    <div className="group flex items-start gap-4 border-l-2 border-l-violet-500/30 border-b border-b-white/[0.04] px-4 py-3 transition-colors hover:bg-white/[0.025] last:border-b-0">
+      {/* Icon */}
+      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-violet-500/10">
+        <FileText size={12} className="text-violet-400" />
+      </div>
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [noteContactId, setNoteContactId] = useState("");
-  const [noteCompanyId, setNoteCompanyId] = useState("");
+      {/* Main content */}
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href={`/dashboard/notes/${note.id}`}
+            className="text-sm font-medium text-white/90 transition-colors hover:text-violet-300"
+          >
+            {note.title}
+          </Link>
 
-  const [contactOptions, setContactOptions] = useState<{ id: string; name: string }[]>([]);
-  const [companyOptions, setCompanyOptions] = useState<{ id: string; name: string }[]>([]);
+          {note.contactName && (
+            <span className="flex items-center gap-1 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2 py-0.5 text-[10px] text-cyan-300">
+              <User size={9} />
+              {note.contactName}
+            </span>
+          )}
+          {note.companyName && (
+            <span className="flex items-center gap-1 rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[10px] text-blue-300">
+              <Building2 size={9} />
+              {note.companyName}
+            </span>
+          )}
+        </div>
 
+        {note.content && (
+          <p className="mt-0.5 line-clamp-1 text-xs text-zinc-600">
+            {stripHtml(note.content)}
+          </p>
+        )}
+
+        {note.tags.length > 0 && (
+          <div className="mt-1.5 flex flex-wrap gap-1">
+            {note.tags.slice(0, 4).map((tag) => (
+              <TagHoverCard key={tag.id} tag={tag}>
+                <TagBadge tag={tag} size="xs" href={`/dashboard/tags/${tag.id}`} />
+              </TagHoverCard>
+            ))}
+            {note.tags.length > 4 && (
+              <span className="rounded-full border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/30">
+                +{note.tags.length - 4}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Date + hover actions */}
+      <div className="flex shrink-0 flex-col items-end gap-2">
+        <p className="text-xs text-zinc-600">
+          {new Date(note.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+        </p>
+
+        <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+          <button
+            onClick={() => onEdit(note)}
+            className="flex h-6 w-6 items-center justify-center rounded-md text-white/25 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+            title={tc("edit")}
+          >
+            <Pencil size={11} />
+          </button>
+          <button
+            onClick={() => onExtract(note)}
+            disabled={isExtracting}
+            className={cn(
+              "flex h-6 w-6 items-center justify-center rounded-md text-white/25 transition-colors hover:bg-white/[0.06] hover:text-violet-300",
+              isExtracting && "opacity-50 cursor-not-allowed",
+            )}
+            title={t("extractTasks")}
+          >
+            {isExtracting ? <Loader2 size={11} className="animate-spin" /> : <Wand2 size={11} />}
+          </button>
+          <button
+            onClick={() => onDelete(note)}
+            className="flex h-6 w-6 items-center justify-center rounded-md text-white/25 transition-colors hover:bg-red-500/10 hover:text-red-400"
+            title={tc("delete")}
+          >
+            <Trash2 size={11} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function NotesClientPage({
+  initialNotes,
+  allTags,
+  contactOptions,
+  companyOptions,
+}: Props) {
+  const t = useTranslations("notes");
+  const tc = useTranslations("common");
+  const router = useRouter();
+
+  const [localNotes, setLocalNotes] = useState(initialNotes);
+  const [prevNotes, setPrevNotes] = useState(initialNotes);
+  if (prevNotes !== initialNotes) {
+    setPrevNotes(initialNotes);
+    setLocalNotes(initialNotes);
+  }
+
+  const [createOpen, setCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
 
   const [editNote, setEditNote] = useState<WorkspaceNote | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<WorkspaceNote | null>(null);
   const [isDeleting, startDelete] = useTransition();
-  const [, startLoad] = useTransition();
-
   const [extractingId, setExtractingId] = useState<string | null>(null);
-
-  async function loadNotes() {
-    try {
-      const [data, tags, contacts, companies] = await Promise.all([
-        getWorkspaceNotes(),
-        getTags(),
-        getContacts(),
-        getCompanies(),
-      ]);
-      setNotes(data);
-      setAllTags(tags);
-      setContactOptions(contacts.map((c) => ({ id: c.id, name: c.name })));
-      setCompanyOptions(companies.map((c) => ({ id: c.id, name: c.name })));
-    } catch {
-      toast.error(t("failedToLoad"));
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleCreate() {
-    if (!title.trim()) {
-      toast.error(t("titleRequired"));
-      return;
-    }
-
-    try {
-      setCreating(true);
-      const result = await createNote({
-        title: title.trim(),
-        content: content.trim(),
-        contactId: noteContactId || undefined,
-        companyId: noteCompanyId || undefined,
-      });
-
-      if (!result) {
-        toast.error(t("failedToCreate"));
-        return;
-      }
-
-      toast.success(t("noteCreated"));
-      setTitle("");
-      setContent("");
-      setNoteContactId("");
-      setNoteCompanyId("");
-      await loadNotes();
-    } catch {
-      toast.error(t("failedToCreate"));
-    } finally {
-      setCreating(false);
-    }
-  }
-
-  function handleDeleteConfirm() {
-    if (!deleteTarget) return;
-
-    startDelete(async () => {
-      const ok = await deleteNote(deleteTarget.id);
-      if (ok) {
-        toast.success(t("noteDeleted"));
-        setDeleteTarget(null);
-        await loadNotes();
-      } else {
-        toast.error(t("failedToDeleteNote"));
-      }
-    });
-  }
-
-  async function handleExtract(note: WorkspaceNote) {
-    if (!note.content?.trim()) {
-      toast.error(t("noTasksFound"));
-      return;
-    }
-
-    setExtractingId(note.id);
-    try {
-      const count = await extractTasksFromNote(note.id, note.content);
-      if (count > 0) {
-        toast.success(t("tasksExtracted", { count }));
-      } else {
-        toast.error(t("noTasksFound"));
-      }
-    } catch {
-      toast.error(t("failedToExtract"));
-    } finally {
-      setExtractingId(null);
-    }
-  }
-
-  useEffect(() => {
-    startLoad(async () => {
-      await loadNotes();
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const filtered = useMemo(() => {
-    let result = notes;
-
-    if (filter === "contacts") result = result.filter((n) => n.contact_id);
-    if (filter === "companies") result = result.filter((n) => n.company_id);
-
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (n) =>
-          n.title.toLowerCase().includes(q) ||
-          stripHtml(n.content ?? "").toLowerCase().includes(q)
-      );
-    }
-
-    return result;
-  }, [notes, filter, search]);
 
   const filterButtons: { key: Filter; label: string }[] = [
     { key: "all", label: t("filterAll") },
@@ -218,101 +188,65 @@ export default function NotesClientPage() {
     { key: "companies", label: t("filterCompanies") },
   ];
 
+  const filtered = useMemo(() => {
+    let result = localNotes;
+    if (filter === "contacts") result = result.filter((n) => n.contact_id);
+    if (filter === "companies") result = result.filter((n) => n.company_id);
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (n) =>
+          n.title.toLowerCase().includes(q) ||
+          stripHtml(n.content ?? "").toLowerCase().includes(q),
+      );
+    }
+    return result;
+  }, [localNotes, filter, search]);
+
+  function handleDeleteConfirm() {
+    if (!deleteTarget) return;
+    startDelete(async () => {
+      const ok = await deleteNote(deleteTarget.id);
+      if (ok) {
+        toast.success(t("noteDeleted"));
+        setLocalNotes((prev) => prev.filter((n) => n.id !== deleteTarget.id));
+        setDeleteTarget(null);
+      } else {
+        toast.error(t("failedToDeleteNote"));
+      }
+    });
+  }
+
+  async function handleExtract(note: WorkspaceNote) {
+    if (!note.content?.trim()) { toast.error(t("noTasksFound")); return; }
+    setExtractingId(note.id);
+    try {
+      const count = await extractTasksFromNote(note.id, note.content);
+      if (count > 0) toast.success(t("tasksExtracted", { count }));
+      else toast.error(t("noTasksFound"));
+    } catch {
+      toast.error(t("failedToExtract"));
+    } finally {
+      setExtractingId(null);
+    }
+  }
+
   return (
-    <div className="space-y-8">
-      {/* HEADER */}
+    <div className="space-y-6">
+      {/* Controls */}
       <GunimiSection>
-        <GunimiHeading badge={t("badge")} title={t("title")} subtitle={t("subtitle")} />
-      </GunimiSection>
-
-      {/* CREATE */}
-      <GunimiSection>
-        <GunimiCard className="p-6">
-          <div className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-violet-300">
-            <Sparkles size={12} />
-            {t("newNote")}
-          </div>
-
-          <div className="mt-5 space-y-4">
-            <GunimiInput
-              type="text"
-              placeholder={t("noteTitlePlaceholder")}
-              value={title}
-              disabled={creating}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-
-            <NoteEditor
-              content={content}
-              onChange={setContent}
-              placeholder={t("writePlaceholder")}
-              disabled={creating}
-            />
-
-            {/* Optional contact + company link */}
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="space-y-1">
-                <label className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-500">
-                  {t("linkContact")}
-                </label>
-                <Select
-                  value={noteContactId || "__none__"}
-                  onValueChange={(v) => setNoteContactId(v === "__none__" ? "" : v)}
-                  disabled={creating}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder={t("linkContactNone")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="__none__">{t("linkContactNone")}</SelectItem>
-                    {contactOptions.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-500">
-                  {t("linkCompany")}
-                </label>
-                <Select
-                  value={noteCompanyId || "__none__"}
-                  onValueChange={(v) => setNoteCompanyId(v === "__none__" ? "" : v)}
-                  disabled={creating}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder={t("linkCompanyNone")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="__none__">{t("linkCompanyNone")}</SelectItem>
-                    {companyOptions.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <GunimiButton onClick={handleCreate} loading={creating}>
-              <Plus size={14} />
-              {t("createNote")}
-            </GunimiButton>
-          </div>
-        </GunimiCard>
-      </GunimiSection>
-
-      {/* SEARCH + FILTER */}
-      <GunimiSection>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative max-w-xs flex-1">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-1 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
+            <Search size={14} className="shrink-0 text-zinc-600" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] py-2 pl-9 pr-4 text-sm text-white/80 placeholder-white/25 outline-none transition-colors focus:border-violet-500/40"
+              className="flex-1 bg-transparent text-sm text-white/80 placeholder-white/25 outline-none"
             />
+            {search && (
+              <button onClick={() => setSearch("")} className="text-xs text-white/25 hover:text-white/60">×</button>
+            )}
           </div>
 
           <div className="flex gap-1">
@@ -320,188 +254,82 @@ export default function NotesClientPage() {
               <button
                 key={btn.key}
                 onClick={() => setFilter(btn.key)}
-                className={`rounded-xl px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={cn(
+                  "rounded-xl px-3 py-1.5 text-xs font-medium transition-colors",
                   filter === btn.key
                     ? "bg-violet-600 text-white"
-                    : "border border-white/[0.07] text-white/40 hover:border-white/15 hover:text-white/70"
-                }`}
+                    : "border border-white/[0.07] text-white/40 hover:border-white/15 hover:text-white/70",
+                )}
               >
                 {btn.label}
               </button>
             ))}
           </div>
+
+          <GunimiButton onClick={() => setCreateOpen(true)}>
+            <Plus size={14} />
+            {t("newNote")}
+          </GunimiButton>
         </div>
       </GunimiSection>
 
-      {/* NOTES LIST */}
+      {/* List */}
       <GunimiSection>
-        {loading ? (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <GunimiSkeleton key={i} className="h-40" />
-            ))}
-          </div>
-        ) : filtered.length === 0 ? (
+        {filtered.length === 0 ? (
           <GunimiEmptyState
             icon={FileText}
             title={t("noNotes")}
             description={t("noNotesDescription")}
+            action={
+              <GunimiButton onClick={() => setCreateOpen(true)}>
+                <Plus size={14} />
+                {t("newNote")}
+              </GunimiButton>
+            }
           />
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {filtered.map((note, index) => (
-              <motion.div
+          <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-[#080C14]">
+            {filtered.map((note) => (
+              <NoteRow
                 key={note.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.04 }}
-              >
-                <GunimiCard className="flex h-full flex-col p-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="line-clamp-2 text-sm font-semibold leading-snug">
-                      {note.title}
-                    </h3>
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-violet-500/10 bg-violet-500/5 text-violet-300">
-                      <FileText size={14} />
-                    </div>
-                  </div>
-
-                  {/* Entity chips */}
-                  {(note.contactName || note.companyName) && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {note.contactName && (
-                        <span className="flex items-center gap-1 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2 py-0.5 text-[10px] text-cyan-300">
-                          <User size={9} />
-                          {note.contactName}
-                        </span>
-                      )}
-                      {note.companyName && (
-                        <span className="flex items-center gap-1 rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[10px] text-blue-300">
-                          <Building2 size={9} />
-                          {note.companyName}
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Content preview (strip HTML for plain text display) */}
-                  {note.content && (
-                    <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-white/50">
-                      {stripHtml(note.content)}
-                    </p>
-                  )}
-
-                  {/* Tags */}
-                  {note.tags.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1">
-                      {note.tags.slice(0, 4).map((tag) => (
-                        <TagHoverCard key={tag.id} tag={tag}>
-                          <TagBadge tag={tag} size="xs" href={`/dashboard/tags/${tag.id}`} />
-                        </TagHoverCard>
-                      ))}
-                      {note.tags.length > 4 && (
-                        <span className="rounded-full border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/30">
-                          +{note.tags.length - 4}
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="mt-auto pt-4">
-                    <p className="text-xs text-white/25">
-                      {new Date(note.created_at).toLocaleDateString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </p>
-
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      <Link href={`/dashboard/notes/${note.id}`}>
-                        <GunimiButton
-                          variant="secondary"
-                          className="h-8 gap-1.5 px-3 text-xs"
-                        >
-                          <ExternalLink size={12} />
-                          {t("openNote")}
-                        </GunimiButton>
-                      </Link>
-
-                      <GunimiButton
-                        variant="secondary"
-                        className="h-8 gap-1.5 px-3 text-xs"
-                        onClick={() => setEditNote(note)}
-                      >
-                        <Pencil size={12} />
-                        {tc("edit")}
-                      </GunimiButton>
-
-                      <GunimiButton
-                        variant="secondary"
-                        className="h-8 gap-1.5 px-3 text-xs"
-                        disabled={extractingId === note.id}
-                        onClick={() => handleExtract(note)}
-                      >
-                        {extractingId === note.id ? (
-                          <Loader2 size={12} className="animate-spin" />
-                        ) : (
-                          <Wand2 size={12} />
-                        )}
-                        {extractingId === note.id ? t("extracting") : t("extractTasks")}
-                      </GunimiButton>
-
-                      <GunimiButton
-                        variant="danger"
-                        className="h-8 gap-1.5 px-3 text-xs"
-                        onClick={() => setDeleteTarget(note)}
-                      >
-                        <Trash2 size={12} />
-                        {tc("delete")}
-                      </GunimiButton>
-                    </div>
-                  </div>
-                </GunimiCard>
-              </motion.div>
+                note={note}
+                extractingId={extractingId}
+                onEdit={setEditNote}
+                onDelete={setDeleteTarget}
+                onExtract={handleExtract}
+              />
             ))}
           </div>
         )}
       </GunimiSection>
 
-      {/* Edit sheet */}
+      <CreateNoteSheet
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        contactOptions={contactOptions}
+        companyOptions={companyOptions}
+      />
+
       {editNote && (
         <EditNoteSheet
           note={editNote}
           allTags={allTags}
           open={!!editNote}
-          onOpenChange={(open) => {
-            if (!open) setEditNote(null);
-          }}
-          onSaved={() => { void loadNotes(); }}
+          onOpenChange={(open) => { if (!open) setEditNote(null); }}
+          onSaved={() => { setEditNote(null); router.refresh(); }}
         />
       )}
 
-      {/* Delete dialog */}
-      <Dialog
-        open={!!deleteTarget}
-        onOpenChange={(open) => {
-          if (!open) setDeleteTarget(null);
-        }}
-      >
+      <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <DialogContent showCloseButton={false} className="max-w-md">
           <DialogHeader>
             <DialogTitle>{t("deleteNote")}</DialogTitle>
             <DialogDescription>{t("confirmDeleteNote")}</DialogDescription>
           </DialogHeader>
-
           <DialogFooter className="mt-6">
-            <GunimiButton
-              variant="secondary"
-              disabled={isDeleting}
-              onClick={() => setDeleteTarget(null)}
-            >
+            <GunimiButton variant="secondary" disabled={isDeleting} onClick={() => setDeleteTarget(null)}>
               {tc("cancel")}
             </GunimiButton>
-
             <GunimiButton variant="danger" loading={isDeleting} onClick={handleDeleteConfirm}>
               {tc("delete")}
             </GunimiButton>

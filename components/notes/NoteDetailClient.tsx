@@ -1,30 +1,30 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Pencil, Save, X } from "lucide-react";
+import { ArrowLeft, Building2, FileText, Pencil, Save, User, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 import GunimiSection from "@/components/layout/GunimiSection";
-import GunimiHeading from "@/components/ui/GunimiHeading";
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiInput from "@/components/ui/GunimiInput";
-import TagBadge from "@/components/ui/TagBadge";
-import TagHoverCard from "@/components/ui/TagHoverCard";
+import TagPicker from "@/components/ui/TagPicker";
 import NoteEditor from "@/components/notes/NoteEditor";
 
 import { updateNote } from "@/server/actions/notes/updateNote";
-import type { NoteDetail } from "@/server/actions/notes/getNote";
 import { sanitizeHtml } from "@/lib/utils/sanitizeHtml";
+import type { NoteDetail } from "@/server/actions/notes/getNote";
+import type { WorkspaceTag } from "@/types/tag";
 
 type Props = {
   note: NoteDetail;
+  allTags: WorkspaceTag[];
 };
 
-
-export default function NoteDetailClient({ note }: Props) {
+export default function NoteDetailClient({ note, allTags }: Props) {
   const t = useTranslations("notes");
   const tc = useTranslations("common");
   const router = useRouter();
@@ -60,94 +60,132 @@ export default function NoteDetailClient({ note }: Props) {
 
   return (
     <GunimiSection>
-      <div className="flex items-start justify-between gap-4">
-        <GunimiHeading
-          badge={t("badge")}
-          title={editing ? title : note.title}
-          subtitle={new Date(note.created_at).toLocaleDateString(undefined, {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        />
+      <div className="space-y-4">
+        {/* Back */}
+        <Link
+          href="/dashboard/notes"
+          className="inline-flex items-center gap-1.5 text-xs text-white/30 transition-colors hover:text-white/60"
+        >
+          <ArrowLeft size={12} />
+          {t("backToNotes")}
+        </Link>
 
-        <div className="flex shrink-0 items-center gap-2 pt-1">
-          {editing ? (
-            <>
-              <GunimiButton
-                variant="secondary"
-                onClick={handleCancel}
-                className="gap-1.5 px-3 py-2 text-xs"
-              >
-                <X size={12} />
-                {tc("cancel")}
-              </GunimiButton>
-              <GunimiButton
-                onClick={handleSave}
-                loading={isPending}
-                disabled={!title.trim() || isPending}
-                className="gap-1.5 px-3 py-2 text-xs"
-              >
-                <Save size={12} />
-                {tc("save")}
-              </GunimiButton>
-            </>
-          ) : (
-            <GunimiButton
-              variant="secondary"
-              onClick={handleEdit}
-              className="gap-1.5 px-3 py-2 text-xs"
-            >
-              <Pencil size={12} />
-              {tc("edit")}
-            </GunimiButton>
-          )}
-        </div>
-      </div>
+        {/* Compact identity strip */}
+        <div className="flex flex-col gap-3 rounded-2xl border border-white/[0.07] bg-[#080C14] px-5 py-4 sm:flex-row sm:items-start sm:justify-between">
 
-      <GunimiCard className="mt-4 p-6">
-        {editing ? (
-          <div className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
-                {t("noteTitlePlaceholder")}
-              </label>
-              <GunimiInput
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder={t("noteTitlePlaceholder")}
-              />
+          {/* Left — icon + info */}
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-500/15">
+              <FileText size={20} className="text-violet-300" />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
-                {t("noteContentLabel")}
-              </label>
-              <NoteEditor
-                content={content}
-                onChange={setContent}
-                placeholder={t("writePlaceholder")}
-                minHeight="200px"
+            <div className="min-w-0 space-y-1.5">
+              {editing ? (
+                <GunimiInput
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder={t("noteTitlePlaceholder")}
+                  className="text-lg font-semibold"
+                  autoFocus
+                />
+              ) : (
+                <h1 className="text-lg font-semibold leading-tight text-white">{note.title}</h1>
+              )}
+
+              <p className="text-xs text-zinc-600">
+                {new Date(note.created_at).toLocaleDateString(undefined, {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+
+              {/* Entity chips */}
+              {(note.contactName || note.companyName) && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {note.contactName && note.contact_id && (
+                    <Link
+                      href={`/dashboard/contacts/${note.contact_id}`}
+                      className="flex items-center gap-1 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2.5 py-0.5 text-[11px] text-cyan-300 transition-colors hover:border-cyan-500/40"
+                    >
+                      <User size={10} />
+                      {note.contactName}
+                    </Link>
+                  )}
+                  {note.companyName && note.company_id && (
+                    <Link
+                      href={`/dashboard/companies/${note.company_id}`}
+                      className="flex items-center gap-1 rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-0.5 text-[11px] text-blue-300 transition-colors hover:border-blue-500/40"
+                    >
+                      <Building2 size={10} />
+                      {note.companyName}
+                    </Link>
+                  )}
+                </div>
+              )}
+
+              {/* Tags */}
+              <TagPicker
+                entityType="note"
+                entityId={note.id}
+                allTags={allTags}
+                initialTags={note.tags}
               />
             </div>
           </div>
-        ) : note.content ? (
-          <div className="note-content" dangerouslySetInnerHTML={{ __html: sanitizeHtml(note.content) }} />
-        ) : (
-          <p className="text-sm italic text-white/25">{t("writePlaceholder")}</p>
-        )}
-      </GunimiCard>
 
-      {/* Tags */}
-      {note.tags.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-2">
-          {note.tags.map((tag) => (
-            <TagHoverCard key={tag.id} tag={tag}>
-              <TagBadge tag={tag} size="sm" href={`/dashboard/tags/${tag.id}`} />
-            </TagHoverCard>
-          ))}
+          {/* Right — actions */}
+          <div className="flex shrink-0 items-center gap-2 sm:pt-0.5">
+            {editing ? (
+              <>
+                <GunimiButton
+                  variant="secondary"
+                  className="h-8 gap-1.5 px-3 text-xs"
+                  onClick={handleCancel}
+                  disabled={isPending}
+                >
+                  <X size={12} />
+                  {tc("cancel")}
+                </GunimiButton>
+                <GunimiButton
+                  className="h-8 gap-1.5 px-3 text-xs"
+                  onClick={handleSave}
+                  loading={isPending}
+                  disabled={!title.trim() || isPending}
+                >
+                  <Save size={12} />
+                  {tc("save")}
+                </GunimiButton>
+              </>
+            ) : (
+              <GunimiButton
+                variant="secondary"
+                className="h-8 gap-1.5 px-3 text-xs"
+                onClick={handleEdit}
+              >
+                <Pencil size={12} />
+                {tc("edit")}
+              </GunimiButton>
+            )}
+          </div>
         </div>
-      )}
+
+        {/* Content */}
+        <GunimiCard className="p-6">
+          {editing ? (
+            <NoteEditor
+              content={content}
+              onChange={setContent}
+              placeholder={t("writePlaceholder")}
+              minHeight="200px"
+            />
+          ) : note.content ? (
+            <div className="note-content" dangerouslySetInnerHTML={{ __html: sanitizeHtml(note.content) }} />
+          ) : (
+            <p className="text-sm italic text-white/25">{t("writePlaceholder")}</p>
+          )}
+        </GunimiCard>
+      </div>
     </GunimiSection>
   );
 }
