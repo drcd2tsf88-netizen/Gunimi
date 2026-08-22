@@ -354,7 +354,11 @@
     "mergeMerging": "Zlúčujem...",
     "mergeSuccess": "Kontakty boli úspešne zlúčené.",
     "mergeFailed": "Zlúčenie kontaktov zlyhalo.",
-    "mergeSelectTwo": "Pre zlúčenie vyberte presne 2 kontakty."
+    "mergeSelectTwo": "Pre zlúčenie vyberte presne 2 kontakty.",
+    "groupLeads": "Leady",
+    "groupWon": "Vyhraní",
+    "groupOther": "Ostatní",
+    "noPosition": "Bez pozície"
   },
   "tasks": {
     "workManagement": "Riadenie práce",

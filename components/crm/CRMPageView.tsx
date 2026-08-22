@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import {
   CheckSquare,
+  ChevronRight,
   FileUp,
   Pencil,
   Search,
@@ -28,7 +29,6 @@ import { getTags } from "@/server/actions/tags/getTags";
 import GunimiHeading from "@/components/ui/GunimiHeading";
 import GunimiInput from "@/components/ui/GunimiInput";
 import GunimiSection from "@/components/layout/GunimiSection";
-import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import GunimiStatCard from "@/components/ui/GunimiStatCard";
@@ -38,7 +38,8 @@ import EditContactSheet from "@/components/crm/EditContactSheet";
 import BulkActionBar from "@/components/crm/BulkActionBar";
 import MergeContactSheet from "@/components/crm/MergeContactSheet";
 
-import type { WorkspaceTag } from "@/types/tag";
+import { TAG_COLOR_CLASSES, type WorkspaceTag } from "@/types/tag";
+import type { ContactTagsMap } from "@/server/actions/crm/getWorkspaceContactTagsMap";
 
 import {
   Dialog,
@@ -48,6 +49,8 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 type SortOrder = "priority" | "name_asc" | "name_desc" | "newest" | "oldest";
 
@@ -67,14 +70,247 @@ type Contact = {
 
 type Props = {
   initialContacts: Contact[];
+  initialContactTagsMap?: ContactTagsMap;
 };
 
-export default function CRMPageView({ initialContacts }: Props) {
+// ─── Status config ────────────────────────────────────────────────────────────
+
+const STATUS_BORDER: Record<string, string> = {
+  lead: "border-l-amber-500/70",
+  won: "border-l-emerald-500/70",
+  _other: "border-l-zinc-700/50",
+};
+
+const STATUS_DOT: Record<string, string> = {
+  lead: "bg-amber-400",
+  won: "bg-emerald-400",
+  _other: "bg-zinc-600",
+};
+
+const STATUS_GROUPS = [
+  { key: "lead", labelKey: "groupLeads", dotClass: "bg-amber-400" },
+  { key: "won", labelKey: "groupWon", dotClass: "bg-emerald-400" },
+  { key: "_other", labelKey: "groupOther", dotClass: "bg-zinc-600" },
+] as const;
+
+const MAX_VISIBLE_TAGS = 2;
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function ContactAvatar({ name, isPriority }: { name: string; isPriority?: boolean }) {
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+  return (
+    <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-500/15 text-[11px] font-semibold text-violet-300">
+      {initials}
+      {isPriority && (
+        <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-[#080C14]">
+          <Star size={8} className="fill-amber-400 text-amber-400" />
+        </span>
+      )}
+    </div>
+  );
+}
+
+function ContactTagChips({ tags }: { tags: WorkspaceTag[] }) {
+  if (!tags.length) return null;
+  const visible = tags.slice(0, MAX_VISIBLE_TAGS);
+  const overflow = tags.length - MAX_VISIBLE_TAGS;
+  return (
+    <div className="flex items-center gap-1">
+      {visible.map((tag) => {
+        const colorClass = TAG_COLOR_CLASSES[tag.color as keyof typeof TAG_COLOR_CLASSES] ?? TAG_COLOR_CLASSES.violet;
+        return (
+          <span
+            key={tag.id}
+            className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-medium ${colorClass}`}
+          >
+            {tag.name}
+          </span>
+        );
+      })}
+      {overflow > 0 && (
+        <span className="text-[10px] text-zinc-600">+{overflow}</span>
+      )}
+    </div>
+  );
+}
+
+function GroupHeader({
+  label,
+  count,
+  dotClass,
+  collapsed,
+  onToggle,
+}: {
+  label: string;
+  count: number;
+  dotClass: string;
+  collapsed: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      className="flex w-full items-center gap-2 px-4 py-2 text-left transition-colors hover:bg-white/[0.02]"
+    >
+      <ChevronRight
+        size={13}
+        className={`shrink-0 text-zinc-600 transition-transform duration-150 ${collapsed ? "" : "rotate-90"}`}
+      />
+      <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotClass}`} />
+      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">
+        {label}
+      </span>
+      <span className="ml-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-2 py-0.5 text-[10px] text-zinc-600">
+        {count}
+      </span>
+    </button>
+  );
+}
+
+function ContactRow({
+  contact,
+  tags,
+  isSelected,
+  onSelect,
+  onNavigate,
+  onPriority,
+  onEdit,
+  onDelete,
+}: {
+  contact: Contact;
+  tags: WorkspaceTag[];
+  isSelected: boolean;
+  onSelect: (e: React.MouseEvent) => void;
+  onNavigate: () => void;
+  onPriority: (e: React.MouseEvent) => void;
+  onEdit: (e: React.MouseEvent) => void;
+  onDelete: (e: React.MouseEvent) => void;
+}) {
+  const statusKey = contact.status === "lead" || contact.status === "won" ? contact.status : "_other";
+  const borderClass = STATUS_BORDER[statusKey];
+  const dotClass = STATUS_DOT[statusKey];
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onNavigate}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onNavigate(); } }}
+      className={[
+        "group relative flex cursor-pointer items-center gap-3 border-l-2 px-4 py-2.5 transition-colors",
+        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-violet-500/40",
+        borderClass,
+        isSelected ? "bg-violet-500/[0.05]" : "hover:bg-white/[0.025]",
+      ].join(" ")}
+    >
+      {/* Checkbox */}
+      <button
+        onClick={onSelect}
+        className="shrink-0 text-white/20 transition-colors hover:text-violet-300"
+      >
+        {isSelected
+          ? <CheckSquare size={14} className="text-violet-400" />
+          : <Square size={14} />}
+      </button>
+
+      {/* Avatar */}
+      <ContactAvatar name={contact.name} isPriority={contact.is_priority} />
+
+      {/* Name + sub */}
+      <div className="min-w-0 flex-[2]">
+        <p className="truncate text-sm font-medium text-white/85 transition-colors group-hover:text-violet-200">
+          {contact.name}
+        </p>
+        <p className="truncate text-[11px] text-zinc-600">
+          {contact.email ?? "—"}
+        </p>
+      </div>
+
+      {/* Position */}
+      <div className="hidden min-w-0 flex-1 sm:block">
+        {contact.position ? (
+          <p className="truncate text-xs text-zinc-500">{contact.position}</p>
+        ) : (
+          <span className="text-xs text-zinc-700">—</span>
+        )}
+      </div>
+
+      {/* Company chip */}
+      <div className="hidden min-w-0 flex-1 lg:block">
+        {contact.companies?.name ? (
+          <Link
+            href={contact.company_id ? `/dashboard/companies/${contact.company_id}` : "#"}
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1 rounded-md border border-white/[0.07] bg-white/[0.03] px-2 py-0.5 text-[11px] text-zinc-400 transition-colors hover:border-violet-500/30 hover:text-violet-300"
+          >
+            {contact.companies.name}
+          </Link>
+        ) : (
+          <span className="text-xs text-zinc-700">—</span>
+        )}
+      </div>
+
+      {/* Tags */}
+      <div className="hidden min-w-0 xl:block">
+        <ContactTagChips tags={tags} />
+      </div>
+
+      {/* Status dot */}
+      <div className="hidden shrink-0 items-center gap-1.5 sm:flex">
+        <span className={`h-1.5 w-1.5 rounded-full ${dotClass}`} />
+        {contact.status && (
+          <span className="text-[10px] capitalize text-zinc-600">{contact.status}</span>
+        )}
+      </div>
+
+      {/* Actions */}
+      <div
+        className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onPriority}
+          className="flex h-7 w-7 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.06]"
+          title="Priority"
+        >
+          <Star
+            size={13}
+            className={contact.is_priority ? "fill-amber-400 text-amber-400" : "text-white/30 hover:text-amber-300"}
+          />
+        </button>
+        <button
+          onClick={onEdit}
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+        >
+          <Pencil size={12} />
+        </button>
+        <button
+          onClick={onDelete}
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
+        >
+          <Trash2 size={12} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+export default function CRMPageView({ initialContacts, initialContactTagsMap = {} }: Props) {
   const t = useTranslations("crm");
   const tc = useTranslations("common");
   const router = useRouter();
 
+  // ── State (unchanged) ──
   const [contacts, setContacts] = useState<Contact[]>(initialContacts);
+  const [contactTagsMap] = useState<ContactTagsMap>(initialContactTagsMap);
   const [search, setSearch] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
   const [editContact, setEditContact] = useState<Contact | null>(null);
@@ -87,14 +323,15 @@ export default function CRMPageView({ initialContacts }: Props) {
   const [mergeOpen, setMergeOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<"all" | "lead" | "won">("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("priority");
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
   const [prevInitialContacts, setPrevInitialContacts] = useState(initialContacts);
-
   if (prevInitialContacts !== initialContacts) {
     setPrevInitialContacts(initialContacts);
     setContacts(initialContacts);
   }
 
+  // ── Derived (unchanged logic) ──
   const filtered = useMemo(() => {
     let list = search
       ? contacts.filter(
@@ -120,15 +357,20 @@ export default function CRMPageView({ initialContacts }: Props) {
     return sorted;
   }, [contacts, search, priorityOnly, filterStatus, sortOrder]);
 
-  const leadCount = useMemo(
-    () => contacts.filter((c) => c.status === "lead").length,
-    [contacts]
-  );
+  const leadCount = useMemo(() => contacts.filter((c) => c.status === "lead").length, [contacts]);
+  const wonCount = useMemo(() => contacts.filter((c) => c.status === "won").length, [contacts]);
 
-  const wonCount = useMemo(
-    () => contacts.filter((c) => c.status === "won").length,
-    [contacts]
-  );
+  // Group only when no active filter/search — otherwise flat
+  const shouldGroup = filterStatus === "all" && search === "" && !priorityOnly;
+
+  // ── Handlers (unchanged) ──
+  function toggleGroup(key: string) {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
+  }
 
   function toggleSelect(id: string, e: React.MouseEvent) {
     e.stopPropagation();
@@ -167,18 +409,14 @@ export default function CRMPageView({ initialContacts }: Props) {
   }
 
   function handleEditSaved(updated: Contact) {
-    setContacts((prev) =>
-      prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c))
-    );
+    setContacts((prev) => prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c)));
     setEditContact(null);
   }
 
   function handleDeleteConfirm() {
     if (!deleteTarget) return;
-
     startDelete(async () => {
       const ok = await deleteContact(deleteTarget.id);
-
       if (ok) {
         toast.success(t("contactDeleted"));
         setContacts((prev) => prev.filter((c) => c.id !== deleteTarget.id));
@@ -189,6 +427,24 @@ export default function CRMPageView({ initialContacts }: Props) {
     });
   }
 
+  // ── Row renderer ──
+  function renderRow(contact: Contact) {
+    return (
+      <ContactRow
+        key={contact.id}
+        contact={contact}
+        tags={contactTagsMap[contact.id] ?? []}
+        isSelected={selectedIds.has(contact.id)}
+        onSelect={(e) => toggleSelect(contact.id, e)}
+        onNavigate={() => router.push(`/dashboard/contacts/${contact.id}`)}
+        onPriority={(e) => handleTogglePriority(contact, e)}
+        onEdit={(e) => { e.stopPropagation(); setEditContact(contact); }}
+        onDelete={(e) => { e.stopPropagation(); setDeleteTarget(contact); }}
+      />
+    );
+  }
+
+  // ─── JSX ─────────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-8">
 
@@ -200,62 +456,14 @@ export default function CRMPageView({ initialContacts }: Props) {
             title={t("title")}
             subtitle={t("subtitle")}
           />
-
-          <GunimiButton
-            onClick={() => setCreateOpen(true)}
-            className="shrink-0 self-start"
-          >
+          <GunimiButton onClick={() => setCreateOpen(true)} className="shrink-0 self-start">
             <UserPlus size={15} />
             {t("createContact")}
           </GunimiButton>
         </div>
       </GunimiSection>
 
-      {/* Search */}
-      <GunimiSection>
-        <GunimiCard className="p-6">
-          <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
-            <div>
-              <h2 className="text-xl font-semibold">{t("customerDatabase")}</h2>
-              <p className="mt-2 text-zinc-400">{t("searchAndManage")}</p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <GunimiButton
-                variant="secondary"
-                className={`h-10 gap-2 px-4 text-sm ${priorityOnly ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : ""}`}
-                onClick={() => setPriorityOnly((v) => !v)}
-              >
-                <Star size={13} className={priorityOnly ? "fill-amber-400 text-amber-400" : ""} />
-                {t("priorityOnly")}
-              </GunimiButton>
-
-              <select
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-                className="h-10 rounded-xl border border-white/[0.08] bg-zinc-900 px-3 text-sm text-zinc-300 outline-none focus:border-violet-500/40 cursor-pointer"
-              >
-                <option value="priority">{tc("sortPriority")}</option>
-                <option value="name_asc">{tc("sortNameAz")}</option>
-                <option value="name_desc">{tc("sortNameZa")}</option>
-                <option value="newest">{tc("sortNewest")}</option>
-                <option value="oldest">{tc("sortOldest")}</option>
-              </select>
-
-              <div className="min-w-[160px] flex-1">
-                <GunimiInput
-                  type="text"
-                  placeholder={t("searchCustomers")}
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        </GunimiCard>
-      </GunimiSection>
-
-      {/* Stats */}
+      {/* Stats — clickable filter */}
       <GunimiSection>
         <div className="grid gap-4 sm:grid-cols-3">
           <GunimiStatCard
@@ -285,170 +493,131 @@ export default function CRMPageView({ initialContacts }: Props) {
         </div>
       </GunimiSection>
 
-      {/* Contact list */}
+      {/* Controls */}
       <GunimiSection>
-        <GunimiCard className="p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={toggleSelectAll}
-                className="text-white/25 transition-colors hover:text-violet-300"
-                title={selectedIds.size === filtered.length && filtered.length > 0 ? t("bulkDeselectAll") : t("bulkSelectAll")}
-              >
-                {selectedIds.size === filtered.length && filtered.length > 0
-                  ? <CheckSquare size={16} className="text-violet-400" />
-                  : <Square size={16} />}
-              </button>
-              <div>
-                <h2 className="text-xl font-semibold">{t("customers")}</h2>
-                <p className="mt-2 text-zinc-400">{t("workspaceCrmContacts")}</p>
-              </div>
-            </div>
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Select all */}
+          <button
+            onClick={toggleSelectAll}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] text-white/25 transition-colors hover:text-violet-300"
+            title={selectedIds.size === filtered.length && filtered.length > 0 ? t("bulkDeselectAll") : t("bulkSelectAll")}
+          >
+            {selectedIds.size === filtered.length && filtered.length > 0
+              ? <CheckSquare size={15} className="text-violet-400" />
+              : <Square size={15} />}
+          </button>
 
-            <div className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-zinc-300">
-              {filtered.length} {t("results")}
-            </div>
+          {/* Priority filter */}
+          <button
+            onClick={() => setPriorityOnly((v) => !v)}
+            className={[
+              "flex h-9 items-center gap-2 rounded-xl border px-3 text-sm transition-colors",
+              priorityOnly
+                ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
+                : "border-white/[0.08] bg-white/[0.02] text-zinc-400 hover:border-white/[0.12] hover:text-white/70",
+            ].join(" ")}
+          >
+            <Star size={13} className={priorityOnly ? "fill-amber-400 text-amber-400" : ""} />
+            {t("priorityOnly")}
+          </button>
+
+          {/* Sort */}
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+            className="h-9 rounded-xl border border-white/[0.08] bg-zinc-900 px-3 text-sm text-zinc-300 outline-none focus:border-violet-500/40 cursor-pointer"
+          >
+            <option value="priority">{tc("sortPriority")}</option>
+            <option value="name_asc">{tc("sortNameAz")}</option>
+            <option value="name_desc">{tc("sortNameZa")}</option>
+            <option value="newest">{tc("sortNewest")}</option>
+            <option value="oldest">{tc("sortOldest")}</option>
+          </select>
+
+          {/* Search */}
+          <div className="min-w-[180px] flex-1">
+            <GunimiInput
+              type="text"
+              placeholder={t("searchCustomers")}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
 
-          <div className="mt-8 space-y-3">
-            {contacts.length === 0 ? (
-              <GunimiEmptyState
-                icon={Users}
-                title={t("onboardingEmptyTitle")}
-                description={t("onboardingEmptyDescription")}
-                action={
-                  <div className="flex flex-wrap justify-center gap-3">
-                    <GunimiButton onClick={() => setCreateOpen(true)}>
-                      <UserPlus size={14} />
-                      {t("onboardingCreateContact")}
-                    </GunimiButton>
-
-                    <Link href="/dashboard/import">
-                      <GunimiButton variant="secondary">
-                        <FileUp size={14} />
-                        {t("onboardingImportCSV")}
-                      </GunimiButton>
-                    </Link>
-                  </div>
-                }
-              />
-            ) : filtered.length === 0 ? (
-              <GunimiEmptyState
-                icon={Search}
-                title={t("noSearchResults")}
-              />
-            ) : (
-              filtered.map((contact) => {
-                const isSelected = selectedIds.has(contact.id);
-                return (
-                <div
-                  key={contact.id}
-                  role="button"
-                  tabIndex={0}
-                  className={`group relative flex items-center gap-4 rounded-2xl border p-4 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 ${
-                    isSelected
-                      ? "border-violet-500/30 bg-violet-500/[0.06]"
-                      : "border-white/[0.06] bg-white/[0.02] hover:border-violet-500/20 hover:bg-violet-500/[0.03]"
-                  }`}
-                  onClick={() => router.push(`/dashboard/contacts/${contact.id}`)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      router.push(`/dashboard/contacts/${contact.id}`);
-                    }
-                  }}
-                >
-                  {/* Checkbox */}
-                  <button
-                    onClick={(e) => toggleSelect(contact.id, e)}
-                    className="shrink-0 text-white/20 transition-colors hover:text-violet-300"
-                  >
-                    {isSelected
-                      ? <CheckSquare size={15} className="text-violet-400" />
-                      : <Square size={15} />}
-                  </button>
-
-                  {/* Avatar */}
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-sm font-semibold text-violet-300">
-                    {contact.name?.[0]?.toUpperCase() ?? "?"}
-                  </div>
-
-                  {/* Info */}
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-white transition-colors group-hover:text-violet-200">
-                      {contact.name}
-                    </p>
-
-                    <div className="mt-0.5 flex items-center gap-2 text-xs text-zinc-500">
-                      {contact.email && (
-                        <span className="truncate">{contact.email}</span>
-                      )}
-                      {contact.email && contact.companies?.name && (
-                        <span className="shrink-0">·</span>
-                      )}
-                      {contact.companies?.name && (
-                        <span className="truncate">{contact.companies.name}</span>
-                      )}
-                    </div>
-
-                    {contact.notes && (
-                      <p className="mt-0.5 truncate text-xs text-white/30">
-                        {contact.notes}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Status badge */}
-                  {contact.status && (
-                    <span className="hidden shrink-0 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-xs capitalize text-zinc-400 sm:block">
-                      {contact.status}
-                    </span>
-                  )}
-
-                  {/* Priority star — always visible */}
-                  <button
-                    onClick={(e) => handleTogglePriority(contact, e)}
-                    className="shrink-0 p-1 transition-colors"
-                    title={t("priorityOnly")}
-                  >
-                    <Star
-                      size={15}
-                      className={contact.is_priority ? "fill-amber-400 text-amber-400" : "text-white/20 hover:text-amber-300"}
-                    />
-                  </button>
-
-                  {/* Actions — always visible on touch, hover-reveal on pointer devices */}
-                  <div
-                    className="flex shrink-0 items-center gap-1.5 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <GunimiButton
-                      variant="secondary"
-                      className="h-8 w-8 p-0"
-                      onClick={() => setEditContact(contact)}
-                      title={tc("edit")}
-                    >
-                      <Pencil size={13} />
-                    </GunimiButton>
-
-                    <GunimiButton
-                      variant="danger"
-                      className="h-8 w-8 p-0"
-                      onClick={() => setDeleteTarget(contact)}
-                      title={tc("delete")}
-                    >
-                      <Trash2 size={13} />
-                    </GunimiButton>
-                  </div>
-                </div>
-              );
-              })
-            )}
-          </div>
-        </GunimiCard>
+          {/* Result count */}
+          <span className="shrink-0 rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 text-xs text-zinc-500">
+            {filtered.length} {t("results")}
+          </span>
+        </div>
       </GunimiSection>
 
-      {/* Bulk Action Bar */}
+      {/* Contact list */}
+      <GunimiSection>
+        {contacts.length === 0 ? (
+          <GunimiEmptyState
+            icon={Users}
+            title={t("onboardingEmptyTitle")}
+            description={t("onboardingEmptyDescription")}
+            action={
+              <div className="flex flex-wrap justify-center gap-3">
+                <GunimiButton onClick={() => setCreateOpen(true)}>
+                  <UserPlus size={14} />
+                  {t("onboardingCreateContact")}
+                </GunimiButton>
+                <Link href="/dashboard/import">
+                  <GunimiButton variant="secondary">
+                    <FileUp size={14} />
+                    {t("onboardingImportCSV")}
+                  </GunimiButton>
+                </Link>
+              </div>
+            }
+          />
+        ) : filtered.length === 0 ? (
+          <GunimiEmptyState icon={Search} title={t("noSearchResults")} />
+        ) : (
+          <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-[#080C14]">
+            {/* Table header */}
+            <div className="flex items-center gap-3 border-b border-white/[0.05] px-4 py-2.5 pl-[52px]">
+              <p className="flex-[2] text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600">{t("contactName")}</p>
+              <p className="hidden flex-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 sm:block">{t("contactPosition")}</p>
+              <p className="hidden flex-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 lg:block">{t("company")}</p>
+              <p className="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 xl:block" style={{ minWidth: 80 }}>Tags</p>
+              <p className="hidden w-16 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 sm:block">{t("status")}</p>
+              <div className="w-[88px]" />
+            </div>
+
+            {/* Rows */}
+            <div className="divide-y divide-white/[0.04]">
+              {shouldGroup ? (
+                STATUS_GROUPS.map(({ key, labelKey, dotClass }) => {
+                  const items = key === "_other"
+                    ? filtered.filter((c) => c.status !== "lead" && c.status !== "won")
+                    : filtered.filter((c) => c.status === key);
+                  if (items.length === 0) return null;
+                  const collapsed = collapsedGroups.has(key);
+                  return (
+                    <div key={key}>
+                      <GroupHeader
+                        label={t(labelKey)}
+                        count={items.length}
+                        dotClass={dotClass}
+                        collapsed={collapsed}
+                        onToggle={() => toggleGroup(key)}
+                      />
+                      {!collapsed && items.map(renderRow)}
+                    </div>
+                  );
+                })
+              ) : (
+                filtered.map(renderRow)
+              )}
+            </div>
+          </div>
+        )}
+      </GunimiSection>
+
+      {/* Bulk Action Bar (unchanged) */}
       <BulkActionBar
         selectedIds={[...selectedIds]}
         selectedContacts={contacts.filter((c) => selectedIds.has(c.id))}
@@ -458,7 +627,7 @@ export default function CRMPageView({ initialContacts }: Props) {
         onMerge={() => setMergeOpen(true)}
       />
 
-      {/* Merge sheet — only when exactly 2 selected */}
+      {/* Merge sheet (unchanged) */}
       {mergeOpen && selectedIds.size === 2 && (() => {
         const pair = contacts.filter((c) => selectedIds.has(c.id)) as [typeof contacts[0], typeof contacts[0]];
         return (
@@ -466,8 +635,11 @@ export default function CRMPageView({ initialContacts }: Props) {
             contacts={pair}
             open={mergeOpen}
             onClose={() => setMergeOpen(false)}
-            onMerged={(primaryId, deletedId) => {
-              setContacts((prev) => prev.filter((c) => c.id !== deletedId));
+            onMerged={() => {
+              setContacts((prev) => {
+                const ids = [...selectedIds];
+                return prev.filter((c) => c.id !== ids[1]);
+              });
               setSelectedIds(new Set());
               setMergeOpen(false);
             }}
@@ -475,52 +647,38 @@ export default function CRMPageView({ initialContacts }: Props) {
         );
       })()}
 
-      {/* Create sheet */}
+      {/* Create sheet (unchanged) */}
       <CreateContactSheet
         open={createOpen}
         onOpenChange={setCreateOpen}
         onCreated={handleCreated}
       />
 
-      {/* Edit sheet */}
+      {/* Edit sheet (unchanged) */}
       {editContact && (
         <EditContactSheet
           contact={editContact}
           open={!!editContact}
-          onOpenChange={(open) => {
-            if (!open) setEditContact(null);
-          }}
+          onOpenChange={(open) => { if (!open) setEditContact(null); }}
           onSaved={handleEditSaved}
         />
       )}
 
-      {/* Delete dialog */}
+      {/* Delete dialog (unchanged) */}
       <Dialog
         open={!!deleteTarget}
-        onOpenChange={(open) => {
-          if (!open) setDeleteTarget(null);
-        }}
+        onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}
       >
         <DialogContent showCloseButton={false} className="max-w-md">
           <DialogHeader>
             <DialogTitle>{t("deleteContact")}</DialogTitle>
             <DialogDescription>{t("confirmDeleteContact")}</DialogDescription>
           </DialogHeader>
-
           <DialogFooter className="mt-6">
-            <GunimiButton
-              variant="secondary"
-              disabled={isDeleting}
-              onClick={() => setDeleteTarget(null)}
-            >
+            <GunimiButton variant="secondary" disabled={isDeleting} onClick={() => setDeleteTarget(null)}>
               {tc("cancel")}
             </GunimiButton>
-
-            <GunimiButton
-              variant="danger"
-              loading={isDeleting}
-              onClick={handleDeleteConfirm}
-            >
+            <GunimiButton variant="danger" loading={isDeleting} onClick={handleDeleteConfirm}>
               {tc("delete")}
             </GunimiButton>
           </DialogFooter>

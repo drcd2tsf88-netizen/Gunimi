@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { getCRMContacts } from "@/server/actions/crm/getCRMContacts";
+import { getWorkspaceContactTagsMap } from "@/server/actions/crm/getWorkspaceContactTagsMap";
 import CRMPageView from "@/components/crm/CRMPageView";
 
 export async function generateMetadata() {
@@ -8,7 +9,10 @@ export async function generateMetadata() {
 }
 
 export default async function CRMPage() {
-  const contacts = await getCRMContacts();
+  const [contacts, contactTagsMap] = await Promise.all([
+    getCRMContacts(),
+    getWorkspaceContactTagsMap(),
+  ]);
 
-  return <CRMPageView initialContacts={contacts} />;
+  return <CRMPageView initialContacts={contacts} initialContactTagsMap={contactTagsMap} />;
 }

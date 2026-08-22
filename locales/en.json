@@ -354,7 +354,11 @@
     "mergeMerging": "Merging...",
     "mergeSuccess": "Contacts merged successfully.",
     "mergeFailed": "Failed to merge contacts.",
-    "mergeSelectTwo": "Select exactly 2 contacts to merge."
+    "mergeSelectTwo": "Select exactly 2 contacts to merge.",
+    "groupLeads": "Leads",
+    "groupWon": "Won",
+    "groupOther": "Other",
+    "noPosition": "No position"
   },
   "tasks": {
     "workManagement": "Work Management",
