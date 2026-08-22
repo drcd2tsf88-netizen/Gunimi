@@ -1,23 +1,27 @@
 import { APP_CONFIG } from "@/lib/config/app";
 import { sendEmail } from "./provider";
+import { resolveEmailLocale, getTaskDueStrings, type EmailLocale } from "./emailI18n";
 
 type Props = {
   email: string;
   taskTitle: string;
   workspaceName: string;
   dueDate: string;
+  locale?: string;
 };
 
-export async function sendTaskDueReminder({ email, taskTitle, workspaceName, dueDate }: Props): Promise<void> {
+export async function sendTaskDueReminder({ email, taskTitle, workspaceName, dueDate, locale }: Props): Promise<void> {
   const taskUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/tasks`;
+  const l: EmailLocale = resolveEmailLocale(locale);
+  const s = getTaskDueStrings(l, taskTitle, workspaceName, email, taskUrl, dueDate);
 
   const html = `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="${l}" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark light" />
-  <title>Task due today</title>
+  <title>${s.subject}</title>
   <style>
     :root { color-scheme: dark light; }
     body { margin: 0; padding: 0; background-color: #05060A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
@@ -63,35 +67,35 @@ export async function sendTaskDueReminder({ email, taskTitle, workspaceName, due
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                   <tr>
                     <td style="background-color:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:20px;padding:4px 12px;">
-                      <span style="font-size:11px;font-weight:600;color:#F59E0B;letter-spacing:0.12em;text-transform:uppercase;">Due Today</span>
+                      <span style="font-size:11px;font-weight:600;color:#F59E0B;letter-spacing:0.12em;text-transform:uppercase;">${s.badge}</span>
                     </td>
                   </tr>
                 </table>
 
                 <h1 class="heading" style="margin:24px 0 12px;font-size:26px;font-weight:700;color:#F7F8FC;letter-spacing:-0.03em;line-height:1.2;">
-                  A task is due<br />today.
+                  ${s.heading}
                 </h1>
 
                 <p class="body-text" style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#9AA3B2;">
-                  You have a task due today in <strong style="color:#F7F8FC;">${workspaceName}</strong>.
+                  ${s.body}
                 </p>
 
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom:8px;">
                   <tr>
                     <td class="task-box" style="background-color:rgba(255,255,255,0.03);border:1px solid rgba(245,158,11,0.15);border-radius:12px;padding:16px 20px;">
                       <p style="margin:0;font-size:15px;font-weight:600;color:#F7F8FC;line-height:1.4;">${taskTitle}</p>
-                      <p style="margin:8px 0 0;font-size:12px;color:rgba(245,158,11,0.7);">Due: ${dueDate}</p>
+                      <p style="margin:8px 0 0;font-size:12px;color:rgba(245,158,11,0.7);">${s.dueLabel} ${dueDate}</p>
                     </td>
                   </tr>
                 </table>
 
-                <p style="margin:0 0 24px;font-size:12px;color:rgba(154,163,178,0.4);padding:0 4px;">Mark it complete or update the due date.</p>
+                <p style="margin:0 0 24px;font-size:12px;color:rgba(154,163,178,0.4);padding:0 4px;">${s.mark}</p>
 
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                   <tr>
                     <td style="border-radius:12px;background:linear-gradient(135deg,#F59E0B,#D97706);box-shadow:0 0 24px rgba(245,158,11,0.25);">
                       <a href="${taskUrl}" target="_blank" style="display:inline-block;padding:14px 28px;font-size:14px;font-weight:600;color:#000000;text-decoration:none;border-radius:12px;letter-spacing:-0.01em;">
-                        Open Tasks &rarr;
+                        ${s.cta}
                       </a>
                     </td>
                   </tr>
@@ -104,7 +108,7 @@ export async function sendTaskDueReminder({ email, taskTitle, workspaceName, due
                 </table>
 
                 <p class="meta-text" style="margin:0;font-size:12px;color:#9AA3B2;line-height:1.5;">
-                  This reminder was sent to <strong>${email}</strong> because this task is assigned to you in Gunimi.
+                  ${s.footerNote}
                 </p>
               </div>
             </td>
@@ -125,23 +129,11 @@ export async function sendTaskDueReminder({ email, taskTitle, workspaceName, due
 </body>
 </html>`;
 
-  const text = `A task is due today in ${workspaceName}.
-
-Task: ${taskTitle}
-Due: ${dueDate}
-
-Mark it complete or update the due date:
-${taskUrl}
-
----
-Gunimi — AI Workspace OS
-${process.env.NEXT_PUBLIC_APP_URL}`;
-
   await sendEmail({
     from: APP_CONFIG.email.from,
     to: email,
-    subject: `Due today: ${taskTitle}`,
+    subject: s.subject,
     html,
-    text,
+    text: s.textBody,
   });
 }

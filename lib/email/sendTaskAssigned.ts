@@ -1,26 +1,31 @@
 import { APP_CONFIG } from "@/lib/config/app";
 import { sendEmail } from "./provider";
+import { resolveEmailLocale, getTaskAssignedStrings, type EmailLocale } from "./emailI18n";
 
 type Props = {
   email: string;
   taskTitle: string;
   workspaceName: string;
   href?: string;
+  locale?: string;
 };
 
-export async function sendTaskAssigned({ email, taskTitle, workspaceName, href }: Props): Promise<void> {
+export async function sendTaskAssigned({ email, taskTitle, workspaceName, href, locale }: Props): Promise<void> {
   const taskUrl = href
     ? `${process.env.NEXT_PUBLIC_APP_URL}${href}`
     : `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/tasks`;
 
+  const l: EmailLocale = resolveEmailLocale(locale);
+  const s = getTaskAssignedStrings(l, taskTitle, workspaceName, email, taskUrl);
+
   const html = `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="${l}" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark light" />
   <meta name="supported-color-schemes" content="dark light" />
-  <title>New task assigned to you</title>
+  <title>${s.subject}</title>
   <style>
     :root { color-scheme: dark light; supported-color-schemes: dark light; }
     body { margin: 0; padding: 0; background-color: #05060A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
@@ -70,19 +75,19 @@ export async function sendTaskAssigned({ email, taskTitle, workspaceName, href }
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                   <tr>
                     <td class="badge" style="background-color:rgba(109,91,255,0.1);border:1px solid rgba(109,91,255,0.2);border-radius:20px;padding:4px 12px;">
-                      <span style="font-size:11px;font-weight:600;color:#8B7DFF;letter-spacing:0.12em;text-transform:uppercase;">Task Assigned</span>
+                      <span style="font-size:11px;font-weight:600;color:#8B7DFF;letter-spacing:0.12em;text-transform:uppercase;">${s.badge}</span>
                     </td>
                   </tr>
                 </table>
 
                 <!-- Heading -->
                 <h1 class="heading" style="margin:24px 0 12px;font-size:26px;font-weight:700;color:#F7F8FC;letter-spacing:-0.03em;line-height:1.2;">
-                  A task has been<br />assigned to you.
+                  ${s.heading}
                 </h1>
 
                 <!-- Body -->
                 <p class="body-text" style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#9AA3B2;">
-                  You have a new task waiting in <strong style="color:#F7F8FC;">${workspaceName}</strong>.
+                  ${s.body}
                 </p>
 
                 <!-- Task box -->
@@ -99,7 +104,7 @@ export async function sendTaskAssigned({ email, taskTitle, workspaceName, href }
                   <tr>
                     <td style="border-radius:12px;background:linear-gradient(135deg,#6D5BFF,#5B4AE8);box-shadow:0 0 24px rgba(109,91,255,0.35);">
                       <a href="${taskUrl}" target="_blank" style="display:inline-block;padding:14px 28px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:12px;letter-spacing:-0.01em;">
-                        View Task &rarr;
+                        ${s.cta}
                       </a>
                     </td>
                   </tr>
@@ -113,7 +118,7 @@ export async function sendTaskAssigned({ email, taskTitle, workspaceName, href }
                 </table>
 
                 <p class="meta-text" style="margin:0;font-size:12px;color:#9AA3B2;line-height:1.5;">
-                  This notification was sent to <strong>${email}</strong> because a task was assigned to you in Gunimi.
+                  ${s.footerNote}
                 </p>
               </div>
             </td>
@@ -135,22 +140,11 @@ export async function sendTaskAssigned({ email, taskTitle, workspaceName, href }
 </body>
 </html>`;
 
-  const text = `A task has been assigned to you in ${workspaceName}.
-
-Task: ${taskTitle}
-
-View it here:
-${taskUrl}
-
----
-Gunimi — AI Workspace OS
-${process.env.NEXT_PUBLIC_APP_URL}`;
-
   await sendEmail({
     from: APP_CONFIG.email.from,
     to: email,
-    subject: `New task: ${taskTitle}`,
+    subject: s.subject,
     html,
-    text,
+    text: s.textBody,
   });
 }

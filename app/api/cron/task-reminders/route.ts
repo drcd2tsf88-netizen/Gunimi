@@ -6,10 +6,13 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { sendTaskDueReminder } from "@/lib/email/sendTaskDueReminder";
+import { resolveEmailLocale } from "@/lib/email/emailI18n";
 import { logger } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+type WorkspaceData = { name: string; preferences?: { language?: string } } | null;
 
 type TaskRow = {
   id: string;
@@ -17,7 +20,7 @@ type TaskRow = {
   due_date: string;
   assigned_to: string;
   workspace_id: string;
-  workspaces: { name: string } | { name: string }[] | null;
+  workspaces: WorkspaceData | WorkspaceData[] | null;
 };
 
 export async function GET(req: NextRequest) {
@@ -33,7 +36,7 @@ export async function GET(req: NextRequest) {
 
   const { data: tasks, error } = await supabaseAdmin
     .from("workspace_tasks")
-    .select("id, title, due_date, assigned_to, workspace_id, workspaces(name)")
+    .select("id, title, due_date, assigned_to, workspace_id, workspaces(name, preferences)")
     .eq("due_date", todayStr)
     .neq("status", "done")
     .not("assigned_to", "is", null);
@@ -81,15 +84,19 @@ export async function GET(req: NextRequest) {
         continue;
       }
 
-      const wsName = Array.isArray(task.workspaces)
-        ? (task.workspaces[0]?.name ?? "your workspace")
-        : (task.workspaces?.name ?? "your workspace");
+      const wsData = Array.isArray(task.workspaces) ? task.workspaces[0] : task.workspaces;
+      const wsName = wsData?.name ?? "your workspace";
+      const locale = resolveEmailLocale((wsData?.preferences as { language?: string } | undefined)?.language);
+
+      const dateLocaleMap: Record<string, string> = { en: "en-US", sk: "sk-SK", cs: "cs-CZ" };
+      const dateLocale = dateLocaleMap[locale] ?? "en-US";
 
       await sendTaskDueReminder({
         email: userData.user.email,
         taskTitle: task.title,
         workspaceName: wsName,
-        dueDate: new Date(task.due_date).toLocaleDateString("en-US", {
+        locale,
+        dueDate: new Date(task.due_date).toLocaleDateString(dateLocale, {
           weekday: "long",
           year: "numeric",
           month: "long",

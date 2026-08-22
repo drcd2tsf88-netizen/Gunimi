@@ -5,6 +5,8 @@ import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { logger } from "@/lib/logger";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { createNotification } from "@/lib/server/createNotification";
 
 export async function createTaskComment(
   taskId: string,
@@ -37,6 +39,32 @@ export async function createTaskComment(
     if (error) {
       logger.error("createTaskComment failed", error);
       return { success: false };
+    }
+
+    // Notify task assignee about the new comment (if not the commenter)
+    const { data: task } = await supabaseAdmin
+      .from("workspace_tasks")
+      .select("assigned_to, title")
+      .eq("id", taskId)
+      .maybeSingle();
+
+    if (task?.assigned_to && task.assigned_to !== user.id) {
+      // Resolve commenter display name from auth metadata
+      const { data: commenterData } = await supabaseAdmin.auth.admin.getUserById(user.id);
+      const commenterName =
+        (commenterData?.user?.user_metadata?.full_name as string | undefined) ??
+        commenterData?.user?.email?.split("@")[0] ??
+        "Someone";
+
+      await createNotification({
+        workspaceId: workspace.id,
+        userId: task.assigned_to,
+        type: "task_comment",
+        title: task.title ?? taskId,
+        href: `/dashboard/tasks?task=${taskId}`,
+        workspaceName: workspace.name,
+        senderName: commenterName,
+      }).catch((err) => logger.error("task_comment notification failed", err));
     }
 
     return { success: true, id: data.id };

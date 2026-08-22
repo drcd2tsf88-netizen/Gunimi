@@ -26,6 +26,7 @@ import GunimiCard from "@/components/ui/GunimiCard";
 import TagPicker from "@/components/ui/TagPicker";
 import NoteEditor from "@/components/notes/NoteEditor";
 import CommentEditor from "@/components/tasks/CommentEditor";
+import CommentContent from "@/components/tasks/CommentContent";
 import { sanitizeHtml } from "@/lib/utils/sanitizeHtml";
 import { getTaskDetail } from "@/server/actions/tasks/getTaskDetail";
 import { createTaskComment } from "@/server/actions/tasks/createTaskComment";
@@ -660,9 +661,10 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                             </div>
                             <GunimiCard className="mt-1.5 px-3 py-2.5">
                               {comment.content.trimStart().startsWith("<") ? (
-                                <div
-                                  className="comment-content"
-                                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(comment.content) }}
+                                <CommentContent
+                                  html={comment.content}
+                                  tags={allTags}
+                                  members={members}
                                 />
                               ) : (
                                 <p className="text-xs leading-relaxed text-white/60 whitespace-pre-wrap">
@@ -685,6 +687,8 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                       onSubmit={handlePostComment}
                       submitting={submittingComment}
                       resetKey={commentResetKey}
+                      tags={allTags}
+                      members={members}
                     />
                   </div>
                 </div>

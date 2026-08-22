@@ -81,6 +81,7 @@ export async function updateTask({
     const needsTaskFetch =
       fields.status === "done" ||
       fields.assigned_to !== undefined ||
+      fields.due_date !== undefined ||
       (!!fields.assigned_to && fields.title === undefined);
 
     let fetchedTaskTitle: string | null = null;
@@ -128,9 +129,10 @@ export async function updateTask({
 
     await produceTaskSignals({ workspaceId: workspace.id, taskId: id });
 
+    const notifTitle = fields.title ?? fetchedTaskTitle ?? id;
+
     const assigneeChanged = fields.assigned_to !== previousAssignedTo;
     if (fields.assigned_to && fields.assigned_to !== user.id && assigneeChanged) {
-      const notifTitle = fields.title ?? fetchedTaskTitle ?? id;
       await createNotification({
         workspaceId: workspace.id,
         userId: fields.assigned_to,
@@ -139,6 +141,36 @@ export async function updateTask({
         href: "/dashboard/tasks",
         workspaceName: workspace.name,
       });
+    }
+
+    // task_done — notify the assignee (before update) when a task is marked done by someone else
+    const taskDoneAssignee = recurringSnapshot?.assigned_to ?? (fields.status === "done" ? previousAssignedTo : null);
+    if (fields.status === "done" && taskDoneAssignee && taskDoneAssignee !== user.id) {
+      await createNotification({
+        workspaceId: workspace.id,
+        userId: taskDoneAssignee,
+        type: "task_done",
+        title: notifTitle,
+        href: "/dashboard/tasks",
+        workspaceName: workspace.name,
+      });
+    }
+
+    // task_due_changed — notify the effective assignee when due date is updated by someone else
+    if (fields.due_date !== undefined) {
+      const effectiveAssignee =
+        fields.assigned_to !== undefined ? fields.assigned_to : previousAssignedTo;
+      if (effectiveAssignee && effectiveAssignee !== user.id) {
+        await createNotification({
+          workspaceId: workspace.id,
+          userId: effectiveAssignee,
+          type: "task_due_changed",
+          title: notifTitle,
+          href: "/dashboard/tasks",
+          workspaceName: workspace.name,
+          newDueDate: fields.due_date ?? undefined,
+        });
+      }
     }
 
     if (
