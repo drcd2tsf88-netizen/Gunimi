@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 
 import CompanyWorkspaceHeader from "./CompanyWorkspaceHeader";
-import CompanyWorkspaceMetrics from "./CompanyWorkspaceMetrics";
 import CompanyProfile from "./CompanyProfile";
 import CompanyNotes from "@/components/company/CompanyNotes";
 import CompanyEmails from "@/components/company/CompanyEmails";
@@ -98,11 +97,6 @@ export default function CompanyDetailView({
   const [addContactOpen, setAddContactOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [localTasks, setLocalTasks] = useState(tasks);
-
-  const openDeals = useMemo(
-    () => deals.filter((d) => d.stage !== "won" && d.stage !== "lost"),
-    [deals],
-  );
 
   const workBadge = notes.length + emails.length || undefined;
 
@@ -299,18 +293,11 @@ export default function CompanyDetailView({
     <div className="flex flex-col gap-6">
       <CompanyWorkspaceHeader
         company={company}
-        contactsCount={contacts.length}
-        openDealsCount={openDeals.length}
+        contacts={contacts}
+        deals={deals}
         onEdit={() => setEditOpen(true)}
         allTags={allTags}
         entityTags={entityTags}
-      />
-
-      <CompanyWorkspaceMetrics
-        company={company}
-        contacts={contacts}
-        deals={deals}
-        onNavigate={setActiveTab}
       />
 
       <GunimiWorkspaceTabs
