@@ -3616,7 +3616,10 @@
     "noTaggedEntitiesDescription": "Priraď tento tag ku kontaktom, spoločnostiam, dealám, úlohám alebo poznámkam.",
     "tagDetailPageTitle": "Tag",
     "backToSettings": "Späť",
-    "hoverViewTag": "Zobraziť tag"
+    "hoverViewTag": "Zobraziť tag",
+    "aiInsightTitle": "AI pohľad",
+    "aiInsightAnalyzing": "Analyzujem...",
+    "aiInsightEmpty": "Pridajte ďalšie entity pre vygenerovanie pohľadu."
   },
   "timeline": {
     "today": "Dnes",

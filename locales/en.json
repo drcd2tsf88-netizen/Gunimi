@@ -3616,7 +3616,10 @@
     "noTaggedEntitiesDescription": "Apply this tag to contacts, companies, deals, tasks or notes to see them here.",
     "tagDetailPageTitle": "Tag",
     "backToSettings": "Back",
-    "hoverViewTag": "View tag"
+    "hoverViewTag": "View tag",
+    "aiInsightTitle": "AI Insight",
+    "aiInsightAnalyzing": "Analyzing...",
+    "aiInsightEmpty": "Add more entities to generate an insight."
   },
   "timeline": {
     "today": "Today",

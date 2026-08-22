@@ -3616,7 +3616,10 @@
     "noTaggedEntitiesDescription": "Přiřaď tento štítek ke kontaktům, společnostem, obchodům, úkolům nebo poznámkám.",
     "tagDetailPageTitle": "Štítek",
     "backToSettings": "Zpět",
-    "hoverViewTag": "Zobrazit štítek"
+    "hoverViewTag": "Zobrazit štítek",
+    "aiInsightTitle": "AI pohled",
+    "aiInsightAnalyzing": "Analyzuji...",
+    "aiInsightEmpty": "Přidejte více entit pro vygenerování pohledu."
   },
   "timeline": {
     "today": "Dnes",

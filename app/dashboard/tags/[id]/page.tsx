@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { Suspense } from "react";
 import {
   User,
   Building2,
@@ -11,6 +12,7 @@ import {
   Tag,
 } from "lucide-react";
 import { getTagWithEntities } from "@/server/actions/tags/getTagWithEntities";
+import { getTagAiSummary } from "@/server/actions/tags/getTagAiSummary";
 import { TAG_COLOR_CLASSES } from "@/types/tag";
 import GunimiSection from "@/components/layout/GunimiSection";
 import GunimiCard from "@/components/ui/GunimiCard";
@@ -76,6 +78,15 @@ export default async function TagDetailPage({ params }: Props) {
           </div>
         </div>
       </GunimiSection>
+
+      {/* AI Insight */}
+      {total > 0 && (
+        <GunimiSection>
+          <Suspense fallback={<AiInsightSkeleton />}>
+            <AiInsightCard tagId={id} />
+          </Suspense>
+        </GunimiSection>
+      )}
 
       {total === 0 ? (
         <GunimiSection>
@@ -196,6 +207,41 @@ export default async function TagDetailPage({ params }: Props) {
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+async function AiInsightCard({ tagId }: { tagId: string }) {
+  const [summary, t] = await Promise.all([
+    getTagAiSummary(tagId),
+    getTranslations("tags"),
+  ]);
+  if (!summary) return null;
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/[0.07] to-transparent p-5">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-violet-600/10 blur-3xl"
+      />
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-[10px] font-semibold tracking-widest text-violet-400/80 uppercase">
+          {t("aiInsightTitle")}
+        </span>
+      </div>
+      <p className="text-sm leading-relaxed text-white/60">{summary}</p>
+    </div>
+  );
+}
+
+function AiInsightSkeleton() {
+  return (
+    <div className="rounded-2xl border border-violet-500/10 bg-violet-500/[0.04] p-5">
+      <div className="mb-3 h-3 w-20 animate-pulse rounded bg-white/[0.06]" />
+      <div className="space-y-2">
+        <div className="h-3 w-full animate-pulse rounded bg-white/[0.05]" />
+        <div className="h-3 w-11/12 animate-pulse rounded bg-white/[0.05]" />
+        <div className="h-3 w-4/5 animate-pulse rounded bg-white/[0.04]" />
+      </div>
     </div>
   );
 }

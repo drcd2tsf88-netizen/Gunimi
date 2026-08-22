@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { TAG_COLOR_CLASSES } from "@/types/tag";
 import type { WorkspaceTag } from "@/types/tag";
 import { getTagSummary, type TagSummary } from "@/server/actions/tags/getTagSummary";
+import { getTagAiSummary } from "@/server/actions/tags/getTagAiSummary";
 import { useIsHydrated } from "@/lib/hooks/useIsHydrated";
 
 type Props = {
@@ -19,6 +20,7 @@ export default function TagHoverCard({ tag, children }: Props) {
   const mounted = useIsHydrated();
   const [visible, setVisible] = useState(false);
   const [summary, setSummary] = useState<TagSummary | null | "loading">(null);
+  const [aiSummary, setAiSummary] = useState<string | null | "loading">(null);
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrapRef = useRef<HTMLSpanElement>(null);
@@ -33,8 +35,9 @@ export default function TagHoverCard({ tag, children }: Props) {
       if (!fetchedRef.current) {
         fetchedRef.current = true;
         setSummary("loading");
-        const data = await getTagSummary(tag.id);
-        setSummary(data);
+        setAiSummary("loading");
+        getTagSummary(tag.id).then((data) => setSummary(data));
+        getTagAiSummary(tag.id).then((data) => setAiSummary(data));
       }
     }, 350);
   }, [tag.id]);
@@ -59,7 +62,7 @@ export default function TagHoverCard({ tag, children }: Props) {
         zIndex: 300,
         marginBottom: 8,
       }}
-      className="w-48 rounded-2xl border border-white/[0.08] bg-[#0A0F1F]/95 p-4 shadow-2xl backdrop-blur-2xl"
+      className="w-56 rounded-2xl border border-white/[0.08] bg-[#0A0F1F]/95 p-4 shadow-2xl backdrop-blur-2xl"
     >
       {/* Tag name */}
       <div className="mb-3 flex items-center gap-2">
@@ -105,6 +108,27 @@ export default function TagHoverCard({ tag, children }: Props) {
             </div>
           )}
         </div>
+      )}
+
+      {/* AI Insight */}
+      {aiSummary !== null && (
+        <>
+          <div className="my-3 border-t border-white/[0.05]" />
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <span className="text-[9px] font-semibold tracking-widest text-violet-400/70 uppercase">
+              {t("aiInsightTitle")}
+            </span>
+          </div>
+          {aiSummary === "loading" ? (
+            <div className="space-y-1.5">
+              <div className="h-2.5 w-full animate-pulse rounded bg-white/[0.06]" />
+              <div className="h-2.5 w-4/5 animate-pulse rounded bg-white/[0.06]" />
+              <div className="h-2.5 w-3/5 animate-pulse rounded bg-white/[0.06]" />
+            </div>
+          ) : (
+            <p className="text-[11px] leading-relaxed text-white/45">{aiSummary}</p>
+          )}
+        </>
       )}
 
       {/* View tag link */}
