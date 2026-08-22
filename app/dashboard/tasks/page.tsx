@@ -3,6 +3,7 @@ import { getWorkspaceTasks } from "@/server/actions/tasks/getWorkspaceTasks";
 import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { getUser } from "@/server/actions/auth/getUser";
+import { getWorkspaceTaskTagsMap } from "@/server/actions/tasks/getWorkspaceTaskTagsMap";
 import TasksPageView from "@/components/tasks/TasksPageView";
 import { WorkspaceMember } from "@/types/task";
 
@@ -16,12 +17,13 @@ type Props = {
 };
 
 export default async function TasksPage({ searchParams }: Props) {
-  const [{ task: initialTaskId }, tasks, members, workspace, user] = await Promise.all([
+  const [{ task: initialTaskId }, tasks, members, workspace, user, taskTagsMap] = await Promise.all([
     searchParams,
     getWorkspaceTasks(),
     getWorkspaceMembers(),
     getCurrentWorkspace(),
     getUser(),
+    getWorkspaceTaskTagsMap(),
   ]);
 
   return (
@@ -31,6 +33,7 @@ export default async function TasksPage({ searchParams }: Props) {
       workspaceId={workspace?.id ?? ""}
       currentUserId={user?.id ?? ""}
       initialTaskId={initialTaskId}
+      initialTaskTagsMap={taskTagsMap}
     />
   );
 }
