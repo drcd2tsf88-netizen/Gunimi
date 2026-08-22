@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import DealHeader from "./DealHeader";
-import DealMetrics from "./DealMetrics";
 import DealOverview from "./DealOverview";
 import DealNotes from "./DealNotes";
 import DealTasks from "./DealTasks";
@@ -291,8 +290,6 @@ export default function DealDetailView({
   return (
     <div className="flex flex-col gap-6">
       <DealHeader deal={deal} onEdit={() => setEditOpen(true)} allTags={allTags} entityTags={entityTags} />
-
-      <DealMetrics deal={deal} />
 
       <GunimiWorkspaceTabs
         tabs={tabs}

@@ -17,6 +17,13 @@ import GunimiSection from "@/components/layout/GunimiSection";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import GunimiButton from "@/components/ui/GunimiButton";
 import CreateOrganizationModal from "@/components/company/CreateOrganizationModal";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import getRelativeTime from "@/lib/utils/getRelativeTime";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
@@ -285,18 +292,19 @@ export default function CompaniesGrid({ companies }: Props) {
           {tcrm("priorityOnly")}
         </button>
 
-        <select
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
-          className="h-10 rounded-xl border border-white/[0.08] bg-zinc-900 px-3 text-sm text-zinc-300 outline-none focus:border-violet-500/40 cursor-pointer"
-        >
-          <option value="name_asc">{tc("sortNameAz")}</option>
-          <option value="name_desc">{tc("sortNameZa")}</option>
-          <option value="contacts_desc">{tc("sortMostContacts")}</option>
-          <option value="deals_desc">{tc("sortMostDeals")}</option>
-          <option value="value_desc">{tc("sortValueDesc")}</option>
-          <option value="recent">{tc("sortRecentActivity")}</option>
-        </select>
+        <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as typeof sortOrder)}>
+          <SelectTrigger className="h-10 w-auto min-w-[150px] px-3 text-sm">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="name_asc">{tc("sortNameAz")}</SelectItem>
+            <SelectItem value="name_desc">{tc("sortNameZa")}</SelectItem>
+            <SelectItem value="contacts_desc">{tc("sortMostContacts")}</SelectItem>
+            <SelectItem value="deals_desc">{tc("sortMostDeals")}</SelectItem>
+            <SelectItem value="value_desc">{tc("sortValueDesc")}</SelectItem>
+            <SelectItem value="recent">{tc("sortRecentActivity")}</SelectItem>
+          </SelectContent>
+        </Select>
 
         <GunimiButton onClick={() => setCreateOpen(true)} className="h-10">
           <PlusCircle size={14} />

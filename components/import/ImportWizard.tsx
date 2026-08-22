@@ -12,6 +12,13 @@ import {
 } from "@/lib/csv/schemas";
 import { parseCSV } from "@/lib/csv/parser";
 import { generateCSV } from "@/lib/csv/generator";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Step = "entity" | "upload" | "map" | "preview" | "importing" | "result";
 
@@ -241,21 +248,24 @@ export default function ImportWizard() {
                     </span>
                   )}
                 </div>
-                <select
+                <Select
                   value={mapping[header] ?? ""}
-                  onChange={(e) =>
-                    setMapping((prev) => ({ ...prev, [header]: e.target.value }))
+                  onValueChange={(v) =>
+                    setMapping((prev) => ({ ...prev, [header]: v }))
                   }
-                  className="rounded-xl border border-white/[0.06] bg-[#050816] px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-violet-500/40"
                 >
-                  <option value="">{t("ignore")}</option>
-                  {fields.map((f) => (
-                    <option key={f.key} value={f.key}>
-                      {f.label}
-                      {f.required ? " *" : ""}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="h-9 w-full px-3 text-sm">
+                    <SelectValue placeholder={t("ignore")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">{t("ignore")}</SelectItem>
+                    {fields.map((f) => (
+                      <SelectItem key={f.key} value={f.key}>
+                        {f.label}{f.required ? " *" : ""}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             ))}
           </div>

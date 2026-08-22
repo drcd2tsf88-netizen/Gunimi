@@ -737,6 +737,7 @@
     "expiryDate": "Expiry Date",
     "paidAmount": "Paid Amount",
     "paid": "Paid",
+    "overdue": "Overdue",
     "editOpportunity": "Edit Opportunity",
     "editOpportunitySubtitle": "Update deal details, value and relationships.",
     "opportunityUpdated": "Opportunity updated successfully",

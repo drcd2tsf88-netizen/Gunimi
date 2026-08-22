@@ -50,6 +50,14 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type SortOrder = "priority" | "name_asc" | "name_desc" | "newest" | "oldest";
@@ -522,17 +530,18 @@ export default function CRMPageView({ initialContacts, initialContactTagsMap = {
           </button>
 
           {/* Sort */}
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-            className="h-9 rounded-xl border border-white/[0.08] bg-zinc-900 px-3 text-sm text-zinc-300 outline-none focus:border-violet-500/40 cursor-pointer"
-          >
-            <option value="priority">{tc("sortPriority")}</option>
-            <option value="name_asc">{tc("sortNameAz")}</option>
-            <option value="name_desc">{tc("sortNameZa")}</option>
-            <option value="newest">{tc("sortNewest")}</option>
-            <option value="oldest">{tc("sortOldest")}</option>
-          </select>
+          <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as SortOrder)}>
+            <SelectTrigger className="h-9 w-auto min-w-[140px] px-3 text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="priority">{tc("sortPriority")}</SelectItem>
+              <SelectItem value="name_asc">{tc("sortNameAz")}</SelectItem>
+              <SelectItem value="name_desc">{tc("sortNameZa")}</SelectItem>
+              <SelectItem value="newest">{tc("sortNewest")}</SelectItem>
+              <SelectItem value="oldest">{tc("sortOldest")}</SelectItem>
+            </SelectContent>
+          </Select>
 
           {/* Search */}
           <div className="min-w-[180px] flex-1">

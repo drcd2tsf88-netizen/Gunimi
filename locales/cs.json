@@ -737,6 +737,7 @@
     "expiryDate": "Datum vypršení",
     "paidAmount": "Zaplacená částka",
     "paid": "Zaplaceno",
+    "overdue": "Po termínu",
     "editOpportunity": "Upravit příležitost",
     "editOpportunitySubtitle": "Aktualizovat detaily obchodu, hodnotu a vztahy.",
     "opportunityUpdated": "Příležitost úspěšně aktualizována",
