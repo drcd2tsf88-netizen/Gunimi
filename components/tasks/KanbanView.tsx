@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { Task, WorkspaceMember } from "@/types/task";
 import { updateTask } from "@/server/actions/tasks/updateTask";
 import GunimiButton from "@/components/ui/GunimiButton";
+import { stripHtml } from "@/lib/utils/stripHtml";
 
 type Status = "todo" | "in_progress" | "done";
 
@@ -177,7 +178,7 @@ export default function KanbanView({ tasks, members, onEdit, onDelete, onTasksCh
                   {/* Description */}
                   {task.description && (
                     <p className="mt-1 line-clamp-2 text-xs text-zinc-500">
-                      {task.description}
+                      {stripHtml(task.description)}
                     </p>
                   )}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import Link from "next/link";
@@ -98,11 +98,12 @@ type ThreadDetailPanelProps = {
 };
 
 function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
-  const [creatingTask, startCreateTask] = useTransition();
-  const [creatingNote, startCreateNote] = useTransition();
+  const [creatingTask, setCreatingTask] = useState(false);
+  const [creatingNote, setCreatingNote] = useState(false);
 
-  function handleCreateTask() {
-    startCreateTask(async () => {
+  async function handleCreateTask() {
+    setCreatingTask(true);
+    try {
       const title = `${t("followUpPrefix")}: ${thread.subject ?? t("noSubject")}`;
       const result = await createTask({ title, priority: "medium" });
       if (result) {
@@ -110,11 +111,14 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
       } else {
         toast.error(t("failedToCreateTask"));
       }
-    });
+    } finally {
+      setCreatingTask(false);
+    }
   }
 
-  function handleCreateNote() {
-    startCreateNote(async () => {
+  async function handleCreateNote() {
+    setCreatingNote(true);
+    try {
       const title = `${t("emailNotePrefix")}: ${thread.subject ?? t("noSubject")}`;
       const content = thread.snippet ? `${t("emailPreview")}:\n${thread.snippet}` : undefined;
       const contactId = thread.contact?.id ?? undefined;
@@ -124,7 +128,9 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
       } else {
         toast.error(t("failedToCreateNote"));
       }
-    });
+    } finally {
+      setCreatingNote(false);
+    }
   }
 
   const participants = thread.participant_emails.slice(0, 5);

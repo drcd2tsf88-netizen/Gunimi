@@ -22,7 +22,7 @@ export async function getAuditLogs(limit = 100): Promise<AuditLogEntry[]> {
 
     const { data, error } = await supabaseAdmin
       .from("audit_logs")
-      .select("id, action, entity, entity_id, metadata, created_at, user_id, profiles(full_name)")
+      .select("id, action, entity, entity_id, metadata, created_at, user_id")
       .eq("workspace_id", workspace.id)
       .order("created_at", { ascending: false })
       .limit(limit);
@@ -32,7 +32,22 @@ export async function getAuditLogs(limit = 100): Promise<AuditLogEntry[]> {
       return [];
     }
 
-    return (data ?? []).map((row) => ({
+    const rows = data ?? [];
+
+    // Resolve user names from profiles in one batch query
+    const userIds = [...new Set(rows.map((r) => r.user_id as string | null).filter(Boolean))] as string[];
+    const nameMap: Record<string, string> = {};
+    if (userIds.length > 0) {
+      const { data: profiles } = await supabaseAdmin
+        .from("profiles")
+        .select("id, full_name")
+        .in("id", userIds);
+      for (const p of profiles ?? []) {
+        if (p.id && p.full_name) nameMap[p.id as string] = p.full_name as string;
+      }
+    }
+
+    return rows.map((row) => ({
       id: row.id as string,
       action: row.action as string,
       entity: (row.entity as string | null) ?? null,
@@ -40,9 +55,7 @@ export async function getAuditLogs(limit = 100): Promise<AuditLogEntry[]> {
       metadata: (row.metadata as Record<string, unknown> | null) ?? null,
       created_at: row.created_at as string,
       user_id: (row.user_id as string | null) ?? null,
-      user_name:
-        (row.profiles as { full_name?: string | null } | null)?.full_name ??
-        null,
+      user_name: (row.user_id ? nameMap[row.user_id as string] : null) ?? null,
     }));
   } catch (err) {
     logger.error("getAuditLogs exception:", err);

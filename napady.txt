@@ -122,8 +122,8 @@ NAPAD: ulohy na enterprise mod — feedbacky od zeny
    => Sekcia "Posledné poznámky" pridana do Overview zastavky kontaktu — zobrazuje max 3 posledne poznamky s linkom na detail
 [DONE] - vo vytvorených priležitostiach doplnit možnot ukázania kalendaru k datumom
    => DealSidebar: datum ocakavaneho uzatvorenia je teraz klikatelny — otvori sa inline <input type="date">, po blur/Enter ulozi cez updateDeal
-[VYSETRENE] - detail s deal pri vytvoreni ulohy, vyhodilo eror
-   => Kod je spravny — createTask volane spravne. Moze byt RLS/rate-limit problem. Treba runtime debug.
+[DONE] - detail s deal pri vytvoreni ulohy, vyhodilo eror
+   => Root cause (rovnaky ako email): createTask pouzival user-scoped supabase klient, RLS blokoval. Fixnuty prechodom na supabaseAdmin.
 
 [DONE] - lokálny jazyk je SK automatizacie vytvaraju ulohy v anglictine
    => Bug: loadWorkspacePrefs pouzival user-scoped klienta → RLS mohol blokovat citanie jazyka
@@ -134,8 +134,8 @@ NAPAD: ulohy na enterprise mod — feedbacky od zeny
    => Rovnake CSS aj v poznamkach ku kontaktom a dealoch (stripHtml pre preview)
 [DONE] - pri vytvoreni poznamky neni mozne pridat ulohu, ani kontakt
    => Native <select> nahradene Radix Select (dark-mode kompatibilne) pre linkContact a linkCompany
-[VYSETRENE] - v detaile emailoch zalozka neprecitana priloha ked kliknem na e-mail tak mi nejde vytvorit uloha
-   => Kod je spravny — createTask volane spravne. Moze byt RLS/rate-limit problem. Treba runtime debug.
+[DONE] - v detaile emailoch zalozka neprecitana priloha ked kliknem na e-mail tak mi nejde vytvorit uloha
+   => Root cause: createTask pouzival user-scoped supabase klient (RLS blokoval insert). createNote a ine akcie pouzivaju supabaseAdmin. Fix: createTask prepisany na supabaseAdmin (auth/workspace kontroly zostali — bezpecnost zachovana).
 [DONE] - v poznamkch nejde zobrazit celkovu spravu detail poznamok
    => Detail poznamky /dashboard/notes/[id] implementovany (NoteDetailClient s Tiptap viewer)
 - gunimi kalendar je staticky neda a do neho nic zapisat
@@ -239,14 +239,29 @@ BEZPECNOSTNY AUDIT (2026-08-02)
    20.8.2026
 
    -import na ulohch dokumentov,obrazky mozno aaj ciatopcne nakup fakatury .. aaby ludia v ramci hitorii vedeli co vyrobili ako za kolko atd viditeľnosť
-   -ulohy zle a renderuje popis ulohy presetrit 
-   -ssignali dropwdown nieje v gunimi tyle 
-   -aauditlog necita worksspace
-   -notifikaacie necitaju ? preetrit 
+   [DONE] -ulohy zle renderuje popis ulohy — KanbanView zobrazoval raw HTML (<p>, <strong>...). Fix: stripHtml() pridany do KanbanView rovnako ako v TasksPageView.
+   [DONE] -ssignali dropwdown nieje v gunimi style
+   => Signals dismiss: hand-rolled div dropdown → Radix DropdownMenu (dismiss/not-urgent/remind-later/not-relevant)
+   => dropdown-menu.tsx kompletne prethemovany: dark glass bg-[#0A0F1F]/95 backdrop-blur-2xl, violet highlights, rounded-2xl
+   => ChevronDown rotuje 180° ked dropdown otvory (group-data-[state=open]:rotate-180)
+   [DONE] -aauditlog necita workspace — getAuditLogs pouzival profiles(full_name) PostgREST join bez FK vztahu → query padal. Fix: 2 separate queries (audit_logs + profiles IN batch).
+   [DONE] -notifikacie necitaju — markAllRead() nefiltrovalo podla user_id → mohlo mazat notifikacie inych uzivatelov. Fix: pridany .eq("user_id", user.id).
    -mat moznost praacovat z emaailom viess ked i ich chces ozncit riesim vyresssenie poptavka musssim riessit chapess neico v tom slova zmysle .
    - mat moznssost filtrovat medzi tymy faarbami z toho emailu nech nemui hladat podlaa mena ale podla priorit 
    - premyssliet ocislovnie zkziek obchodov neskuor budu aj faktury musime to vediet cisselne oznacovat kaaazdy faktura obchod musi mt vcislo by si to clovek vedel a hlvne musi s vediet podla toho cisla vyhldvat!
-   - daalsi vec skontrolovat ci tagy funguju jak mju priradim tag na firmu/kontaakt aa kde kolkovek ten teg zaapiem mui vyskocit mini okienko z postacujucim info o dnom tagu kde bol prirraadeny 
+   [DONE] - daalsi vec skontrolovat ci tagy funguju jak mju priradim tag na firmu/kontaakt aa kde kolkovek ten teg zaapiem mui vyskocit mini okienko z postacujucim info o dnom tagu kde bol prirraadeny
+   => TagHoverCard: 350ms hover, portal popup s menom, farbou tagu a pocitami entit (kontakty/firmy/dealy/ulohy/poznamky)
+   => TagBadge vsade v systeme je obaleny TagHoverCard
+   [DONE] - taagy a @ludia v komentaroch su mrtvy text - chce to hover karty s info
+   => Tiptap Mention system: #tag trigger (autocomplete z workspace tagov), @member trigger (autocomplete z clenov)
+   => CommentEditor: dve Mention extensions (TagMention + MemberMention), suggestion dropdown s klávesnicovou navigaciou (↑↓ Enter)
+   => CommentContent: html-react-parser nahradi ulozene mention spany za interaktivne TagHoverCard / MemberHoverCard
+   => MemberHoverCard: 300ms hover, initials avatar (violet), meno, email, dark glass portal popup
+   => HTML format: <span data-mention-type="tag/member" data-mention-id="..." data-mention-label="...">
+   [PENDING] - tagy posunout na AI uroven — systém vie co tag znamena automaticky bez manuálnych definicii
+   => Rozhodnutie: Option B — cisto AI, ziadne manualne popisky. Gunimi sam pochopi semantiku z entit ktore tag nesú.
+   => Plan: AI tag profile na /dashboard/tags/[id] + quick AI summary v TagHoverCard po hoveri
+   => Ziadna DB zmena, len novy server action getTagAiSummary(tagId)
    - moznost mat naabidky pri obchodoch ? asi proste ked mAS poptavku po nejakej prace od firmy tak podla predlohy ktoru si firmaaa sm spravy aby bola moznost priamo praacovat aj v takomto . ddaj navrh 
    - emaaile si vediet vyhlaadavat pdola cisel objednaavoik faktur atd podl dnej prace aa zakaaziek 
    - fakturizacny system vymysliet daj narvhy musi to obsaahovaaat vsetko co clovek naa to potrebuje nie len citat podla clenov niekotry len citt iny musi vediet vytvart iny aj menit updatovt atd .

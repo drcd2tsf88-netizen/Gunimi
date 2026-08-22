@@ -1,8 +1,5 @@
 "use server";
 
-import { createClient }
-from "@/lib/supabase/server";
-
 import { getUser }
 from "@/server/actions/auth/getUser";
 
@@ -48,9 +45,6 @@ export async function createTask({
   recurrence_interval = null,
 }: CreateTaskProps) {
   try {
-    const supabase =
-      await createClient();
-
     // AUTH
 
     const user =
@@ -92,12 +86,12 @@ export async function createTask({
       return null;
     }
 
-    // CREATE TASK
+    // CREATE TASK — supabaseAdmin bypasses RLS; auth/workspace checks above are the security gate
 
     const {
       data,
       error,
-    } = await supabase
+    } = await supabaseAdmin
       .from(
         "workspace_tasks"
       )

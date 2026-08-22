@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -63,27 +63,33 @@ type PanelProps = {
 
 function ThreadPanel({ thread, onClose }: PanelProps) {
   const t = useTranslations("email");
-  const [creatingTask, startCreateTask] = useTransition();
-  const [creatingNote, startCreateNote] = useTransition();
+  const [creatingTask, setCreatingTask] = useState(false);
+  const [creatingNote, setCreatingNote] = useState(false);
 
-  function handleCreateTask() {
-    startCreateTask(async () => {
+  async function handleCreateTask() {
+    setCreatingTask(true);
+    try {
       const title = `${t("followUpPrefix")} ${thread.subject ?? t("noSubject")}`;
       const result = await createTask({ title, priority: "medium" });
       if (result) toast.success(t("taskCreated"));
       else toast.error(t("failedToCreateTask"));
-    });
+    } finally {
+      setCreatingTask(false);
+    }
   }
 
-  function handleCreateNote() {
-    startCreateNote(async () => {
+  async function handleCreateNote() {
+    setCreatingNote(true);
+    try {
       const title = `${t("emailNotePrefix")} ${thread.subject ?? t("noSubject")}`;
       const content = thread.snippet ? `${t("emailPreview")}:\n${thread.snippet}` : undefined;
       const contactId = thread.contact?.id ?? undefined;
       const result = await createNote({ title, content, contactId });
       if (result) toast.success(t("noteCreated"));
       else toast.error(t("failedToCreateNote"));
-    });
+    } finally {
+      setCreatingNote(false);
+    }
   }
 
   return (

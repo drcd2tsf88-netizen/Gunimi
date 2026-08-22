@@ -118,9 +118,12 @@ export default function OrbitNotifications() {
 
   async function markAllRead() {
     setNotifications([]);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
     await supabase
       .from("workspace_notifications")
       .update({ read_at: new Date().toISOString() })
+      .eq("user_id", user.id)
       .is("read_at", null);
   }
 
