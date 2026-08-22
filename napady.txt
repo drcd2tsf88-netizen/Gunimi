@@ -266,4 +266,30 @@ BEZPECNOSTNY AUDIT (2026-08-02)
    - emaaile si vediet vyhlaadavat pdola cisel objednaavoik faktur atd podl dnej prace aa zakaaziek 
    - fakturizacny system vymysliet daj narvhy musi to obsaahovaaat vsetko co clovek naa to potrebuje nie len citat podla clenov niekotry len citt iny musi vediet vytvart iny aj menit updatovt atd .
    
+   22.8
+[DONE] pri hlvnej úlohe máš automaticky prepísané podúlohy, neni možné odobrať podúlohu, len vybrať. Keď tam bude veľa úloh, bude to zbytočne dlhé, nech je tam len možnosť pridania podúlohy, alebo vytvorenia spolu s odstránením vybranej podúlohy.
+   => Každá podúloha má na hover červenú ikonku koša — kliknutím sa podúloha trvalo odstráni cez nový deleteSubtask server action.
+
+[DONE] pri podúlohe keď kliknem na pridat popis, tak mi ho rovno pridat nejde, ide to len cez upravit
+   => Placeholder "Klikni pre pridanie popisu" je teraz klikateľný button — priamo otvára editor bez nutnosti hľadať tlačidlo Upraviť.
+
+[DONE] pri podulohe nejde pridat len čislo smajlik na klávesnici, osstane políčko odoslat zašednuté ide to len b prípade že to obsahuje slova
+   => isEmpty check v CommentEditor opravený — staral check používal len textContent.trim(), nový kombinuje textContent.length + doc.content.size. Číslice aj emoji z klávesnice odošlú správne.
+
+[DONE] ked otvorím podúlohu niesom si schopná zmenit prioritu ostáva tam stredná
+   => Priorita je teraz klikateľný pill — otvára dropdown (Vysoká / Stredná / Nízka) s check na aktuálnej. Ukladá sa cez updateTask, toast potvrdenie.
+
+[DONE] PRI VYTVáRANí úLOHY MI NEJDE ZíSŤ DOLU KURZOROM HNED MA Z TOHO VYHODí.
+   => sheet.tsx: onFocusOutside + onInteractOutside — Radix Dialog sa nezavrelo pri interakcii s Radix Select portalom (known Radix bug).
+   => CreateTaskSheet: ArrowDown + Enter v title inpute presunie focus priamo na description textarea.
+   => TaskDetailPanel: scroll kontajner dostal tabIndex={-1} + focus pri otvorení — šípky scrollujú panel ihneď. Zatvorenie panelu vracia focus na page (document.activeElement.blur()).
+
+-video čo ti behá v lavom rohu som ti poslala na insta
+[DONE] ak sa mi automaticky kliknutím do priestoru ukončí vytváranie úlohy a podúlohy bez upozornenia je to na figu :)
+   => Klik na backdrop teraz panel nezavrie, ak je otvorené pole pre podúlohu, edituje sa popis alebo nadpis — nevie sa ti stať že stratíš rozrobanú prácu.
+[DONE] lištička na boku ktorou možem stránku sledovaat hore dole je zle viditelná je maličká zle sa s nou pracuje
+   => scrollbar width 6px → 10px, border 2px transparent okolo thumbu (padding efekt), track svetlý podklad, hover fialová 60% opacity. Naprieč celou aplikáciou.
+[DONE] na stránke sa nedá pohybovť hore dole pomocí šípok na klávesnici niekedy
+   => Scroll focus je teraz deterministický: panel otvoriť = šípky scrollujú panel, panel zavrieť = focus na page.
+
     

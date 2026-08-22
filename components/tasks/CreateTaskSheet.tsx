@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -57,6 +57,7 @@ export default function CreateTaskSheet({
 
   const isEdit = !!task;
 
+  const descRef = useRef<HTMLTextAreaElement>(null);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState(task?.title ?? "");
   const [description, setDescription] = useState(task?.description ?? "");
@@ -203,11 +204,22 @@ export default function CreateTaskSheet({
               disabled={loading}
               placeholder={t("titlePlaceholder")}
               onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  descRef.current?.focus();
+                }
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  descRef.current?.focus();
+                }
+              }}
             />
           </GunimiField>
 
           <GunimiField label={t("description")}>
             <GunimiTextarea
+              ref={descRef}
               value={description}
               disabled={loading}
               placeholder={t("descriptionPlaceholder")}

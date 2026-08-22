@@ -32,6 +32,7 @@ import { getTaskDetail } from "@/server/actions/tasks/getTaskDetail";
 import { createTaskComment } from "@/server/actions/tasks/createTaskComment";
 import { deleteTaskComment } from "@/server/actions/tasks/deleteTaskComment";
 import { createSubtask } from "@/server/actions/tasks/createSubtask";
+import { deleteSubtask } from "@/server/actions/tasks/deleteSubtask";
 import { updateTask } from "@/server/actions/tasks/updateTask";
 import { getTags } from "@/server/actions/tags/getTags";
 import { getEntityTags } from "@/server/actions/tags/getEntityTags";
@@ -93,6 +94,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const [showSubtaskInput, setShowSubtaskInput] = useState(false);
   const [showAssigneePicker, setShowAssigneePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showPriorityPicker, setShowPriorityPicker] = useState(false);
   const [editingDescription, setEditingDescription] = useState(false);
   const [descriptionHtml, setDescriptionHtml] = useState("");
   const [editingTitle, setEditingTitle] = useState(false);
@@ -101,8 +103,10 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const subtaskRef = useRef<HTMLInputElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const assigneeRef = useRef<HTMLDivElement>(null);
   const dateRef = useRef<HTMLDivElement>(null);
+  const priorityRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!taskId) return;
@@ -130,8 +134,16 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
     if (showSubtaskInput) subtaskRef.current?.focus();
   }, [showSubtaskInput]);
 
+  // Give keyboard scroll focus to the panel when it opens
   useEffect(() => {
-    if (!showAssigneePicker && !showDatePicker) return;
+    if (taskId) {
+      const id = requestAnimationFrame(() => scrollRef.current?.focus({ preventScroll: true }));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [taskId]);
+
+  useEffect(() => {
+    if (!showAssigneePicker && !showDatePicker && !showPriorityPicker) return;
     function handleClick(e: MouseEvent) {
       if (assigneeRef.current && !assigneeRef.current.contains(e.target as Node)) {
         setShowAssigneePicker(false);
@@ -139,10 +151,13 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
       if (dateRef.current && !dateRef.current.contains(e.target as Node)) {
         setShowDatePicker(false);
       }
+      if (priorityRef.current && !priorityRef.current.contains(e.target as Node)) {
+        setShowPriorityPicker(false);
+      }
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
-  }, [showAssigneePicker, showDatePicker]);
+  }, [showAssigneePicker, showDatePicker, showPriorityPicker]);
 
   async function handleToggleStatus() {
     if (!task) return;
@@ -236,6 +251,27 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
     setAddingSubtask(false);
   }
 
+  async function handlePriorityChange(priority: "low" | "medium" | "high") {
+    if (!task) return;
+    setTask((prev) => prev ? { ...prev, priority } : prev);
+    setShowPriorityPicker(false);
+    toast.success(t("priorityChanged"));
+    startTransition(async () => {
+      await updateTask({ id: task.id, priority });
+      onTaskUpdated?.(task.id, { priority });
+    });
+  }
+
+  async function handleDeleteSubtask(subId: string) {
+    const ok = await deleteSubtask(subId);
+    if (ok) {
+      setTask((prev) => prev ? { ...prev, subtasks: prev.subtasks.filter((s) => s.id !== subId) } : prev);
+      toast.success(t("subtaskDeleted"));
+    } else {
+      toast.error(t("failedToDeleteSubtask"));
+    }
+  }
+
   async function handleToggleSubtask(subId: string, current: string) {
     const next = current === "done" ? "todo" : "done";
     setTask((prev) =>
@@ -286,7 +322,10 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
       {/* Backdrop */}
       <div
         className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px]"
-        onClick={onClose}
+        onClick={() => {
+          if (showSubtaskInput || editingDescription || editingTitle) return;
+          onClose();
+        }}
       />
 
       {/* Panel */}
@@ -322,7 +361,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto">
+        <div ref={scrollRef} tabIndex={-1} className="flex-1 overflow-y-auto outline-none">
           {loading ? (
             <div className="flex h-64 items-center justify-center">
               <Loader2 size={20} className="animate-spin text-violet-400" />
@@ -394,10 +433,30 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                     : <Square size={10} />}
                   {task.status === "done" ? t("statusDone") : task.status === "in_progress" ? t("statusInProgress") : t("statusTodo")}
                 </button>
-                <span className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium ${priorityCfg.color}`}>
-                  <Flag size={9} />
-                  {task.priority === "high" ? t("priorityHigh") : task.priority === "medium" ? t("priorityMedium") : t("priorityLow")}
-                </span>
+                <div ref={priorityRef} className="relative">
+                  <button
+                    onClick={() => setShowPriorityPicker((v) => !v)}
+                    className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium transition-opacity hover:opacity-75 ${priorityCfg.color}`}
+                  >
+                    <Flag size={9} />
+                    {task.priority === "high" ? t("priorityHigh") : task.priority === "medium" ? t("priorityMedium") : t("priorityLow")}
+                  </button>
+                  {showPriorityPicker && (
+                    <div className="absolute left-0 top-full z-20 mt-1 w-36 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0D1117] shadow-2xl">
+                      {(["high", "medium", "low"] as const).map((p) => (
+                        <button
+                          key={p}
+                          onClick={() => handlePriorityChange(p)}
+                          className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs transition-colors hover:bg-white/[0.05] ${task.priority === p ? PRIORITY_CONFIG[p].color : "text-white/70"}`}
+                        >
+                          <span className={`h-1.5 w-1.5 rounded-full ${PRIORITY_CONFIG[p].dot}`} />
+                          {p === "high" ? t("priorityHigh") : p === "medium" ? t("priorityMedium") : t("priorityLow")}
+                          {task.priority === p && <Check size={11} className="ml-auto shrink-0" />}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Meta */}
@@ -544,7 +603,12 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(descriptionHtml) }}
                   />
                 ) : (
-                  <p className="text-xs text-white/20 italic">{t("noDescription")}</p>
+                  <button
+                    onClick={() => setEditingDescription(true)}
+                    className="text-xs text-white/20 italic hover:text-white/40 transition-colors text-left"
+                  >
+                    {t("clickToAddDescription")}
+                  </button>
                 )}
               </div>
 
@@ -589,7 +653,14 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                         <span className={`flex-1 text-sm ${sub.status === "done" ? "text-zinc-600 line-through" : "text-white/75 group-hover:text-violet-300 transition-colors"}`}>
                           {sub.title}
                         </span>
-                        <ChevronRight size={11} className="text-zinc-600 transition-colors group-hover:text-violet-400" />
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleDeleteSubtask(sub.id); }}
+                          title={t("removeSubtask")}
+                          className="hidden shrink-0 text-zinc-700 transition-colors hover:text-red-400 group-hover:flex"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                        <ChevronRight size={11} className="shrink-0 text-zinc-600 transition-colors group-hover:text-violet-400 group-hover:hidden" />
                       </div>
                     ))}
                   </div>

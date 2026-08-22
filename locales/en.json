@@ -463,7 +463,12 @@
     "save": "Save",
     "cancel": "Cancel",
     "edit": "Edit",
-    "noDescription": "No description"
+    "noDescription": "No description",
+    "clickToAddDescription": "Click to add description",
+    "priorityChanged": "Priority updated",
+    "subtaskDeleted": "Subtask removed",
+    "failedToDeleteSubtask": "Failed to remove subtask",
+    "removeSubtask": "Remove subtask"
   },
   "companies": {
     "intelligence": "Company Intelligence",

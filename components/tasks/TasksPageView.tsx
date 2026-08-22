@@ -705,7 +705,11 @@ export default function TasksPageView({
         taskId={selectedTaskId}
         currentUserId={currentUserId}
         members={members}
-        onClose={() => setSelectedTaskId(null)}
+        onClose={() => {
+          setSelectedTaskId(null);
+          // Return keyboard focus to page so arrow keys scroll the task list
+          requestAnimationFrame(() => (document.activeElement as HTMLElement)?.blur());
+        }}
         onNavigateToTask={(id) => setSelectedTaskId(id)}
         onSubtaskCreated={(parentId, sub) => {
           setTasks((prev) => [...prev, { id: sub.id, title: sub.title, status: sub.status, priority: sub.priority, parent_task_id: parentId, created_at: sub.created_at, due_date: sub.due_date, assigned_to: sub.assigned_to } as Task]);

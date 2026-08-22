@@ -57,6 +57,14 @@ function SheetContent({
       <SheetOverlay />
 
       <DialogPrimitive.Content
+        onFocusOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => {
+          const target = e.target as HTMLElement;
+          // Don't close the sheet when interacting with Radix portals (Select, etc.)
+          if (target?.closest("[data-radix-popper-content-wrapper]")) {
+            e.preventDefault();
+          }
+        }}
         className={cn(
           `
           fixed

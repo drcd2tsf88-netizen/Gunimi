@@ -463,7 +463,12 @@
     "save": "Uložiť",
     "cancel": "Zrušiť",
     "edit": "Upraviť",
-    "noDescription": "Bez popisu"
+    "noDescription": "Bez popisu",
+    "clickToAddDescription": "Klikni pre pridanie popisu",
+    "priorityChanged": "Priorita aktualizovaná",
+    "subtaskDeleted": "Podúloha odstránená",
+    "failedToDeleteSubtask": "Nepodarilo sa odstrániť podúlohu",
+    "removeSubtask": "Odstrániť podúlohu"
   },
   "companies": {
     "intelligence": "Firemná inteligencia",

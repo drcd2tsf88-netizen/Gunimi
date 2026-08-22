@@ -225,7 +225,8 @@ export default function CommentEditor({
       return {
         "Mod-Enter": () => {
           const html = this.editor.getHTML();
-          const isEmpty = this.editor.state.doc.textContent.trim() === "";
+          const docText = this.editor.state.doc.textContent;
+          const isEmpty = docText.trim().length === 0 && this.editor.state.doc.content.size <= 2;
           if (!isEmpty && !submittingRef.current) {
             onSubmitRef.current(html);
             this.editor.commands.clearContent();
@@ -261,10 +262,14 @@ export default function CommentEditor({
 
   if (!editor) return null;
 
-  const isEmpty = editor.state.doc.textContent.trim() === "";
+  const docText = editor.state.doc.textContent;
+  const isEmpty = docText.trim().length === 0 && editor.state.doc.content.size <= 2;
 
   function handleSubmit() {
-    if (!editor || isEmpty || submitting) return;
+    if (!editor || submitting) return;
+    const docText = editor.state.doc.textContent;
+    const empty = docText.trim().length === 0 && editor.state.doc.content.size <= 2;
+    if (empty) return;
     onSubmit(editor.getHTML());
     editor.commands.clearContent();
   }
