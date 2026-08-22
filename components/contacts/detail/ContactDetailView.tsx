@@ -152,12 +152,6 @@ export default function ContactDetailView({
   const pendingTaskCount = tasks.filter((task) => task.status !== "done").length;
   const [localTasks, setLocalTasks] = useState(tasks);
 
-  const hasSummary = !!(
-    contact.position ||
-    contact.email ||
-    contact.phone
-  );
-
   const tabs: WorkspaceTab[] = [
     {
       id: "overview",
@@ -236,46 +230,6 @@ export default function ContactDetailView({
                   </Link>
                 ))}
               </div>
-            </GunimiCard>
-          )}
-          {hasSummary && (
-            <GunimiCard className="divide-y divide-white/[0.04] p-5">
-              {contact.position && (
-                <div className="pb-4">
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
-                    {t("position")}
-                  </p>
-                  <p className="mt-1.5 text-sm text-white/80">
-                    {contact.position}
-                  </p>
-                </div>
-              )}
-              {contact.email && (
-                <div className="py-4">
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
-                    {t("email")}
-                  </p>
-                  <a
-                    href={`mailto:${contact.email}`}
-                    className="mt-1.5 block text-sm text-violet-300 transition-colors hover:text-violet-200"
-                  >
-                    {contact.email}
-                  </a>
-                </div>
-              )}
-              {contact.phone && (
-                <div className="py-4">
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
-                    {t("phone")}
-                  </p>
-                  <a
-                    href={`tel:${contact.phone}`}
-                    className="mt-1.5 block text-sm text-violet-300 transition-colors hover:text-violet-200"
-                  >
-                    {contact.phone}
-                  </a>
-                </div>
-              )}
             </GunimiCard>
           )}
         </div>
