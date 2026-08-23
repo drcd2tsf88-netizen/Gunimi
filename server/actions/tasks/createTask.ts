@@ -51,92 +51,50 @@ export async function createTask({
       await getUser();
 
     if (!user) {
-      logger.error(
-        "Unauthorized"
-      );
-
+      logger.error("createTask: no user");
       return null;
     }
 
-    if (!await checkWriteRateLimit()) return null;
+    if (!await checkWriteRateLimit()) {
+      logger.error("createTask: rate limited");
+      return null;
+    }
 
-    // WORKSPACE
-
-    const workspace =
-      await getCurrentWorkspace();
+    const workspace = await getCurrentWorkspace();
 
     if (!workspace) {
-      logger.error(
-        "No active workspace"
-      );
-
+      logger.error("createTask: no workspace");
       return null;
     }
 
-    // VALIDATION
-
-    const cleanTitle =
-      title?.trim();
+    const cleanTitle = title?.trim();
 
     if (!cleanTitle) {
-      logger.error(
-        "Task title required"
-      );
-
+      logger.error("createTask: empty title");
       return null;
     }
 
-    // CREATE TASK — supabaseAdmin bypasses RLS; auth/workspace checks above are the security gate
-
-    const {
-      data,
-      error,
-    } = await supabaseAdmin
-      .from(
-        "workspace_tasks"
-      )
-      .insert([
-        {
-          title:
-            cleanTitle,
-
-          description: description?.trim() || null,
-
-          priority,
-
-          status,
-
-          due_date,
-
-          assigned_to,
-
-          contact_id:
-            contactId || null,
-
-          user_id:
-            user.id,
-
-          workspace_id:
-            workspace.id,
-
-          is_recurring,
-
-          recurrence_frequency,
-
-          recurrence_interval,
-
-          updated_at:
-            new Date().toISOString(),
-        },
-      ])
+    const { data, error } = await supabaseAdmin
+      .from("workspace_tasks")
+      .insert([{
+        title: cleanTitle,
+        description: description?.trim() || null,
+        priority,
+        status,
+        due_date,
+        assigned_to,
+        contact_id: contactId || null,
+        user_id: user.id,
+        workspace_id: workspace.id,
+        is_recurring,
+        recurrence_frequency,
+        recurrence_interval: recurrence_interval ?? 1,
+      }])
       .select()
       .single();
 
     if (error) {
-      logger.error(
-        error
-      );
-
+      logger.error("createTask: db error", { code: error.code, message: error.message, details: error.details });
       return null;
     }
 
