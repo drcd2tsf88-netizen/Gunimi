@@ -13,7 +13,6 @@ import {
 
 import GunimiHeading from "@/components/ui/GunimiHeading";
 import GunimiSection from "@/components/layout/GunimiSection";
-import GunimiStatCard from "@/components/ui/GunimiStatCard";
 import GunimiCard from "@/components/ui/GunimiCard";
 
 import { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
@@ -249,53 +248,34 @@ function ChartCard({
 export default function AnalyticsPageView({ stats, charts }: Props) {
   const t = useTranslations("analytics");
 
+  const metrics = [
+    { Icon: Building2,    label: t("statCompanies"),        value: stats.companies },
+    { Icon: TrendingUp,   label: t("statDeals"),            value: stats.deals },
+    { Icon: CheckSquare2, label: t("statOpenTasks"),        value: stats.openTasks },
+    { Icon: Users,        label: t("statMembers"),          value: stats.members },
+    { Icon: CalendarDays, label: t("statUpcomingMeetings"), value: stats.upcomingMeetings },
+    { Icon: Mail,         label: t("statEmailThreads"),     value: stats.emailThreads },
+  ];
+
   return (
     <div className="space-y-8">
-      {/* HEADER + STAT CARDS */}
+      {/* HEADER + METRIC STRIP */}
       <GunimiSection>
         <GunimiHeading
           badge={t("badge")}
           title={t("title")}
           subtitle={t("subtitle")}
         />
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          <GunimiStatCard
-            title={t("statCompanies")}
-            value={stats.companies}
-            icon={Building2}
-            animated
-          />
-          <GunimiStatCard
-            title={t("statDeals")}
-            value={stats.deals}
-            icon={TrendingUp}
-            animated
-          />
-          <GunimiStatCard
-            title={t("statOpenTasks")}
-            value={stats.openTasks}
-            icon={CheckSquare2}
-            animated
-          />
-          <GunimiStatCard
-            title={t("statMembers")}
-            value={stats.members}
-            icon={Users}
-            animated
-          />
-          <GunimiStatCard
-            title={t("statUpcomingMeetings")}
-            value={stats.upcomingMeetings}
-            icon={CalendarDays}
-            animated
-          />
-          <GunimiStatCard
-            title={t("statEmailThreads")}
-            value={stats.emailThreads}
-            icon={Mail}
-            animated
-          />
+        <div className="mt-6 overflow-hidden rounded-2xl border border-white/[0.07] bg-[#080C14]">
+          <div className="flex divide-x divide-white/[0.06] overflow-x-auto">
+            {metrics.map(({ Icon, label, value }) => (
+              <div key={label} className="flex min-w-[110px] flex-1 flex-col gap-1.5 px-5 py-4">
+                <Icon size={13} className="text-zinc-600" />
+                <p className="mt-0.5 text-2xl font-semibold tabular-nums text-white/90">{value}</p>
+                <p className="text-[11px] text-zinc-600">{label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </GunimiSection>
 

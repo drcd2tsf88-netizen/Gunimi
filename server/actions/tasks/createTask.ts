@@ -21,7 +21,7 @@ import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
 
 type CreateTaskProps = {
   title: string;
-  description?: string;
+  description?: string | null;
   priority?: string;
   status?: string;
   due_date?: string | null;
@@ -34,7 +34,7 @@ type CreateTaskProps = {
 
 export async function createTask({
   title,
-  description = "",
+  description = null,
   priority = "medium",
   status = "todo",
   due_date = null,
@@ -100,7 +100,7 @@ export async function createTask({
           title:
             cleanTitle,
 
-          description,
+          description: description?.trim() || null,
 
           priority,
 

@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 
 import GunimiSection from "@/components/layout/GunimiSection";
 import GunimiHeading from "@/components/ui/GunimiHeading";
-import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import {
@@ -27,10 +26,10 @@ type Props = {
   initialSignals: EnrichedSignal[];
 };
 
-const SEVERITY_DOT: Record<string, string> = {
-  critical: "bg-red-400",
-  warning:  "bg-amber-400",
-  info:     "bg-blue-400",
+const SEVERITY_BORDER: Record<string, string> = {
+  critical: "border-l-red-400",
+  warning:  "border-l-amber-400",
+  info:     "border-l-blue-400",
 };
 
 const SEVERITY_BADGE: Record<string, string> = {
@@ -96,37 +95,30 @@ export default function SignalsPageView({ initialSignals }: Props) {
     <div className="space-y-8">
       {/* Header */}
       <GunimiSection>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-start justify-between gap-4">
           <GunimiHeading
             badge={t("badge")}
             title={t("title")}
             subtitle={t("subtitle")}
           />
-          <GunimiButton
-            variant="secondary"
-            onClick={handleScanNow}
-            loading={isScanning}
-            className="shrink-0 self-start"
-          >
-            <RefreshCw size={14} />
-            {isScanning ? t("scanning") : t("scanNow")}
-          </GunimiButton>
+          <div className="flex shrink-0 items-center gap-2">
+            {signals.length > 0 && (
+              <span className="flex items-center gap-1.5 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-[11px] font-medium text-violet-300">
+                <Radio size={11} />
+                {t("totalActive", { count: signals.length })}
+              </span>
+            )}
+            <GunimiButton
+              variant="secondary"
+              onClick={handleScanNow}
+              loading={isScanning}
+            >
+              <RefreshCw size={14} />
+              {isScanning ? t("scanning") : t("scanNow")}
+            </GunimiButton>
+          </div>
         </div>
       </GunimiSection>
-
-      {/* Count */}
-      {signals.length > 0 && (
-        <GunimiSection>
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10">
-              <Radio size={14} className="text-violet-400" />
-            </div>
-            <span className="text-sm font-medium text-white/60">
-              {t("totalActive", { count: signals.length })}
-            </span>
-          </div>
-        </GunimiSection>
-      )}
 
       {/* Empty state */}
       {signals.length === 0 && (
@@ -142,19 +134,22 @@ export default function SignalsPageView({ initialSignals }: Props) {
       {/* Signal groups */}
       {Object.entries(grouped).map(([category, items]) => (
         <GunimiSection key={category}>
-          <h2 className="mb-3 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
-            {t(ENTITY_CATEGORY_KEY[category] as Parameters<typeof t>[0])}
-          </h2>
-          <GunimiCard className="divide-y divide-white/[0.04] p-0 overflow-hidden">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+              {t(ENTITY_CATEGORY_KEY[category] as Parameters<typeof t>[0])}
+            </span>
+            <span className="rounded-full border border-white/[0.07] bg-white/[0.03] px-2 py-0.5 text-[10px] text-zinc-600">
+              {items.length}
+            </span>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-[#080C14]">
             {items.map((signal) => {
               const days = getRelativeDays(signal.producedAt);
               return (
                 <div
                   key={signal.id}
-                  className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02]"
+                  className={`flex items-center gap-4 border-b border-b-white/[0.04] border-l-2 px-4 py-3.5 transition-colors hover:bg-white/[0.025] last:border-b-0 ${SEVERITY_BORDER[signal.severity] ?? "border-l-zinc-600"}`}
                 >
-                  {/* Severity dot */}
-                  <div className={`h-2 w-2 shrink-0 rounded-full ${SEVERITY_DOT[signal.severity] ?? "bg-zinc-500"}`} />
 
                   {/* Content */}
                   <div className="min-w-0 flex-1">
@@ -212,7 +207,7 @@ export default function SignalsPageView({ initialSignals }: Props) {
                 </div>
               );
             })}
-          </GunimiCard>
+          </div>
         </GunimiSection>
       ))}
     </div>

@@ -22,6 +22,7 @@ import {
   Pencil,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { cn } from "@/lib/utils";
 import GunimiCard from "@/components/ui/GunimiCard";
 import TagPicker from "@/components/ui/TagPicker";
 import NoteEditor from "@/components/notes/NoteEditor";
@@ -100,6 +101,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, setTitleValue] = useState("");
   const [, startTransition] = useTransition();
+  const [now] = useState(() => Date.now());
   const subtaskRef = useRef<HTMLInputElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -316,6 +318,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
 
   const priorityCfg = PRIORITY_CONFIG[task?.priority as keyof typeof PRIORITY_CONFIG] ?? PRIORITY_CONFIG.medium;
   const doneCount = task?.subtasks.filter((s) => s.status === "done").length ?? 0;
+  const isOverdue = !!task?.due_date && new Date(task.due_date).getTime() < now && task?.status !== "done";
 
   return (
     <>
@@ -372,188 +375,177 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
             </div>
           ) : (
             <div className="space-y-0">
-              {/* Title + prominent completion toggle */}
-              <div className="flex items-start gap-3 px-5 pb-3 pt-5">
-                <button
-                  onClick={handleToggleStatus}
-                  title={t("cycleStatusTooltip")}
-                  className={`mt-0.5 shrink-0 transition-colors ${
-                    task.status === "done"
-                      ? "text-emerald-400"
-                      : "text-zinc-600 hover:text-emerald-400"
-                  }`}
-                >
-                  {task.status === "done"
-                    ? <CheckCircle2 size={20} />
-                    : <Circle size={20} />}
-                </button>
-                {editingTitle ? (
-                  <input
-                    ref={titleInputRef}
-                    value={titleValue}
-                    onChange={(e) => setTitleValue(e.target.value)}
-                    onBlur={handleTitleSave}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") { e.preventDefault(); handleTitleSave(); }
-                      if (e.key === "Escape") { setEditingTitle(false); setTitleValue(task.title); }
-                    }}
-                    className="flex-1 rounded-lg bg-white/[0.05] px-2 py-0.5 text-base font-semibold text-white/90 outline-none ring-1 ring-violet-500/40"
-                    autoFocus
-                  />
-                ) : (
-                  <button
-                    onClick={() => { setEditingTitle(true); setTitleValue(task.title); }}
-                    className={`group flex-1 text-left text-base font-semibold leading-snug transition-colors ${task.status === "done" ? "text-white/40 line-through" : "text-white/90 hover:text-white"}`}
-                    title={t("edit")}
-                  >
-                    {task.title}
-                  </button>
-                )}
-              </div>
-
-              {/* Status + Priority row */}
-              <div className="flex flex-wrap items-center gap-2 px-5 pb-4 pl-14">
-                {/* Clickable status cycle */}
-                <button
-                  onClick={handleToggleStatus}
-                  title={t("cycleStatusTooltip")}
-                  className={[
-                    "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all hover:opacity-75",
-                    task.status === "done"
-                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-                      : task.status === "in_progress"
-                      ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
-                      : "border-white/[0.10] bg-white/[0.05] text-zinc-400",
-                  ].join(" ")}
-                >
-                  {task.status === "done"
-                    ? <Check size={10} />
-                    : task.status === "in_progress"
-                    ? <Clock size={10} />
-                    : <Square size={10} />}
-                  {task.status === "done" ? t("statusDone") : task.status === "in_progress" ? t("statusInProgress") : t("statusTodo")}
-                </button>
-                <div ref={priorityRef} className="relative">
-                  <button
-                    onClick={() => setShowPriorityPicker((v) => !v)}
-                    className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium transition-opacity hover:opacity-75 ${priorityCfg.color}`}
-                  >
-                    <Flag size={9} />
-                    {task.priority === "high" ? t("priorityHigh") : task.priority === "medium" ? t("priorityMedium") : t("priorityLow")}
-                  </button>
-                  {showPriorityPicker && (
-                    <div className="absolute left-0 top-full z-20 mt-1 w-36 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0D1117] shadow-2xl">
-                      {(["high", "medium", "low"] as const).map((p) => (
-                        <button
-                          key={p}
-                          onClick={() => handlePriorityChange(p)}
-                          className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs transition-colors hover:bg-white/[0.05] ${task.priority === p ? PRIORITY_CONFIG[p].color : "text-white/70"}`}
-                        >
-                          <span className={`h-1.5 w-1.5 rounded-full ${PRIORITY_CONFIG[p].dot}`} />
-                          {p === "high" ? t("priorityHigh") : p === "medium" ? t("priorityMedium") : t("priorityLow")}
-                          {task.priority === p && <Check size={11} className="ml-auto shrink-0" />}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Meta */}
-              <div className="border-t border-white/[0.05] px-5 py-4">
-                <div className="grid grid-cols-2 gap-3">
-
-                  {/* Assignee — clickable */}
-                  <div ref={assigneeRef} className="relative">
-                    <button
-                      onClick={() => { setShowAssigneePicker((v) => !v); setShowDatePicker(false); }}
-                      className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-white/[0.05]"
-                    >
-                      <User size={13} className="shrink-0 text-zinc-600" />
-                      <div className="min-w-0">
-                        <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("assignee")}</p>
-                        <p className="mt-0.5 truncate text-xs text-white/70">{task.assignee_name ?? t("unassigned")}</p>
-                      </div>
-                    </button>
-                    {showAssigneePicker && (
-                      <div className="absolute left-0 top-full z-20 mt-1 w-52 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0D1117] shadow-2xl">
-                        <button
-                          onClick={() => handleAssigneeChange(null)}
-                          className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs text-zinc-500 transition-colors hover:bg-white/[0.05] hover:text-white/70"
-                        >
-                          {t("unassigned")}
-                        </button>
-                        <div className="h-px bg-white/[0.06]" />
-                        {members.map((m) => (
-                          <button
-                            key={m.user_id}
-                            onClick={() => handleAssigneeChange(m.user_id)}
-                            className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs transition-colors hover:bg-white/[0.05] ${task.assigned_to === m.user_id ? "text-violet-300" : "text-white/70"}`}
-                          >
-                            <Avatar name={m.profiles?.full_name ?? null} size={20} />
-                            <span className="truncate">{m.profiles?.full_name ?? m.profiles?.email ?? "—"}</span>
-                            {task.assigned_to === m.user_id && <Check size={11} className="ml-auto shrink-0 text-violet-400" />}
-                          </button>
-                        ))}
-                      </div>
-                    )}
+              {/* Compact identity strip */}
+              <div className="border-b border-white/[0.05] px-5 pb-5 pt-5">
+                <div className="flex items-start gap-4">
+                  {/* 48px task icon */}
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-500/15">
+                    <CheckSquare size={20} className="text-violet-300" />
                   </div>
 
-                  {/* Due date — clickable */}
-                  <div ref={dateRef} className="relative">
-                    <button
-                      onClick={() => { setShowDatePicker((v) => !v); setShowAssigneePicker(false); }}
-                      className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-white/[0.05]"
-                    >
-                      <Calendar size={13} className="shrink-0 text-zinc-600" />
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("dueDate")}</p>
-                        <p className={`mt-0.5 text-xs ${task.due_date && new Date(task.due_date) < new Date() && task.status !== "done" ? "text-red-400" : "text-white/70"}`}>
-                          {formatDate(task.due_date)}
-                        </p>
-                      </div>
-                    </button>
-                    {showDatePicker && (
-                      <div className="absolute left-0 top-full z-20 mt-1 rounded-xl border border-white/[0.08] bg-[#0D1117] p-3 shadow-2xl">
+                  <div className="min-w-0 flex-1 space-y-2.5">
+                    {/* Title + completion toggle */}
+                    <div className="flex items-center gap-2.5">
+                      <button
+                        onClick={handleToggleStatus}
+                        title={t("cycleStatusTooltip")}
+                        className={`shrink-0 transition-colors ${task.status === "done" ? "text-emerald-400" : "text-zinc-600 hover:text-emerald-400"}`}
+                      >
+                        {task.status === "done" ? <CheckCircle2 size={16} /> : <Circle size={16} />}
+                      </button>
+                      {editingTitle ? (
                         <input
-                          type="date"
-                          defaultValue={task.due_date ? task.due_date.slice(0, 10) : ""}
-                          onChange={(e) => { if (e.target.value) handleDueDateChange(e.target.value); }}
-                          className="block rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs text-white/80 outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                          ref={titleInputRef}
+                          value={titleValue}
+                          onChange={(e) => setTitleValue(e.target.value)}
+                          onBlur={handleTitleSave}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") { e.preventDefault(); handleTitleSave(); }
+                            if (e.key === "Escape") { setEditingTitle(false); setTitleValue(task.title); }
+                          }}
+                          className="flex-1 rounded-lg bg-white/[0.05] px-2 py-0.5 text-base font-semibold text-white/90 outline-none ring-1 ring-violet-500/40"
                           autoFocus
                         />
-                        {task.due_date && (
-                          <button
-                            onClick={() => handleDueDateChange("")}
-                            className="mt-2 w-full rounded-lg px-3 py-1.5 text-xs text-zinc-600 transition-colors hover:bg-white/[0.04] hover:text-red-400"
-                          >
-                            {t("clearDueDate")}
-                          </button>
+                      ) : (
+                        <button
+                          onClick={() => { setEditingTitle(true); setTitleValue(task.title); }}
+                          className={`flex-1 text-left text-base font-semibold leading-snug transition-colors ${task.status === "done" ? "text-white/40 line-through" : "text-white/90 hover:text-white"}`}
+                          title={t("edit")}
+                        >
+                          {task.title}
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Status + priority badges */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        onClick={handleToggleStatus}
+                        title={t("cycleStatusTooltip")}
+                        className={[
+                          "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all hover:opacity-75",
+                          task.status === "done"
+                            ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                            : task.status === "in_progress"
+                            ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+                            : "border-white/[0.10] bg-white/[0.05] text-zinc-400",
+                        ].join(" ")}
+                      >
+                        {task.status === "done"
+                          ? <Check size={10} />
+                          : task.status === "in_progress"
+                          ? <Clock size={10} />
+                          : <Square size={10} />}
+                        {task.status === "done" ? t("statusDone") : task.status === "in_progress" ? t("statusInProgress") : t("statusTodo")}
+                      </button>
+                      <div ref={priorityRef} className="relative">
+                        <button
+                          onClick={() => setShowPriorityPicker((v) => !v)}
+                          className={`flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium transition-opacity hover:opacity-75 ${priorityCfg.color}`}
+                        >
+                          <Flag size={9} />
+                          {task.priority === "high" ? t("priorityHigh") : task.priority === "medium" ? t("priorityMedium") : t("priorityLow")}
+                        </button>
+                        {showPriorityPicker && (
+                          <div className="absolute left-0 top-full z-20 mt-1 w-36 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0D1117] shadow-2xl">
+                            {(["high", "medium", "low"] as const).map((p) => (
+                              <button
+                                key={p}
+                                onClick={() => handlePriorityChange(p)}
+                                className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs transition-colors hover:bg-white/[0.05] ${task.priority === p ? PRIORITY_CONFIG[p].color : "text-white/70"}`}
+                              >
+                                <span className={`h-1.5 w-1.5 rounded-full ${PRIORITY_CONFIG[p].dot}`} />
+                                {p === "high" ? t("priorityHigh") : p === "medium" ? t("priorityMedium") : t("priorityLow")}
+                                {task.priority === p && <Check size={11} className="ml-auto shrink-0" />}
+                              </button>
+                            ))}
+                          </div>
                         )}
                       </div>
-                    )}
-                  </div>
-
-                  {/* Created — read only */}
-                  <div className="flex items-center gap-2.5 px-2 py-1.5">
-                    <Clock size={13} className="shrink-0 text-zinc-600" />
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("creating")}</p>
-                      <p className="mt-0.5 text-xs text-white/70">{formatDateTime(task.created_at)}</p>
                     </div>
+
+                    {/* Assignee + due date + created chips */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <div ref={assigneeRef} className="relative">
+                        <button
+                          onClick={() => { setShowAssigneePicker((v) => !v); setShowDatePicker(false); }}
+                          className="flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-white/[0.03] px-2.5 py-1 text-[11px] text-white/55 transition-colors hover:border-white/15 hover:text-white/80"
+                        >
+                          <User size={10} className="text-zinc-600" />
+                          {task.assignee_name ?? t("unassigned")}
+                        </button>
+                        {showAssigneePicker && (
+                          <div className="absolute left-0 top-full z-20 mt-1 w-52 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0D1117] shadow-2xl">
+                            <button
+                              onClick={() => handleAssigneeChange(null)}
+                              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs text-zinc-500 transition-colors hover:bg-white/[0.05] hover:text-white/70"
+                            >
+                              {t("unassigned")}
+                            </button>
+                            <div className="h-px bg-white/[0.06]" />
+                            {members.map((m) => (
+                              <button
+                                key={m.user_id}
+                                onClick={() => handleAssigneeChange(m.user_id)}
+                                className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs transition-colors hover:bg-white/[0.05] ${task.assigned_to === m.user_id ? "text-violet-300" : "text-white/70"}`}
+                              >
+                                <Avatar name={m.profiles?.full_name ?? null} size={20} />
+                                <span className="truncate">{m.profiles?.full_name ?? m.profiles?.email ?? "—"}</span>
+                                {task.assigned_to === m.user_id && <Check size={11} className="ml-auto shrink-0 text-violet-400" />}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <div ref={dateRef} className="relative">
+                        <button
+                          onClick={() => { setShowDatePicker((v) => !v); setShowAssigneePicker(false); }}
+                          className={cn(
+                            "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] transition-colors hover:border-white/15 hover:text-white/80",
+                            isOverdue
+                              ? "border-red-500/30 bg-red-500/10 text-red-400"
+                              : "border-white/[0.07] bg-white/[0.03] text-white/55",
+                          )}
+                        >
+                          <Calendar size={10} className={isOverdue ? "text-red-400" : "text-zinc-600"} />
+                          {formatDate(task.due_date)}
+                        </button>
+                        {showDatePicker && (
+                          <div className="absolute left-0 top-full z-20 mt-1 rounded-xl border border-white/[0.08] bg-[#0D1117] p-3 shadow-2xl">
+                            <input
+                              type="date"
+                              defaultValue={task.due_date ? task.due_date.slice(0, 10) : ""}
+                              onChange={(e) => { if (e.target.value) handleDueDateChange(e.target.value); }}
+                              className="block rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs text-white/80 outline-none focus:border-violet-500/40 [color-scheme:dark]"
+                              autoFocus
+                            />
+                            {task.due_date && (
+                              <button
+                                onClick={() => handleDueDateChange("")}
+                                className="mt-2 w-full rounded-lg px-3 py-1.5 text-xs text-zinc-600 transition-colors hover:bg-white/[0.04] hover:text-red-400"
+                              >
+                                {t("clearDueDate")}
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <span className="flex items-center gap-1.5 text-[11px] text-zinc-600">
+                        <Clock size={10} />
+                        {formatDateTime(task.created_at)}
+                      </span>
+                    </div>
+
+                    {/* Tags */}
+                    <TagPicker
+                      entityType="task"
+                      entityId={task.id}
+                      allTags={allTags}
+                      initialTags={taskTags}
+                    />
                   </div>
-
-                </div>
-
-                {/* Tags */}
-                <div className="mt-3 px-2">
-                  <p className="mb-2 text-[10px] uppercase tracking-[0.14em] text-zinc-600">{t("taskTags")}</p>
-                  <TagPicker
-                    entityType="task"
-                    entityId={task.id}
-                    allTags={allTags}
-                    initialTags={taskTags}
-                  />
                 </div>
               </div>
 

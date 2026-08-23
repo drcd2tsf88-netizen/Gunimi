@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import GunimiCard from "@/components/ui/GunimiCard";
+import GunimiSection from "@/components/layout/GunimiSection";
+import GunimiHeading from "@/components/ui/GunimiHeading";
 import NewRuleSheet from "@/components/automations/NewRuleSheet";
 import { AUTOMATION_REGISTRY } from "@/lib/automation/registry";
 import { toggleAutomation } from "@/server/actions/automation/toggleAutomation";
@@ -182,43 +184,42 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
   return (
     <div className="space-y-8">
       {/* Page Header */}
-      <div>
-        <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-          {t("badge")}
-        </p>
-        <h1 className="mt-2 text-2xl font-bold">{t("title")}</h1>
-        <p className="mt-1 text-sm text-white/40">{t("subtitle")}</p>
-      </div>
+      <GunimiSection>
+        <GunimiHeading
+          badge={t("badge")}
+          title={t("title")}
+          subtitle={t("subtitle")}
+        />
+      </GunimiSection>
 
       {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-3">
-        <GunimiCard className="p-4">
-          <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
-            {t("activeCount")}
-          </p>
-          <p className="mt-2 text-3xl font-bold text-white/90">
-            {enabledCount}
-            <span className="ml-1 text-sm font-normal text-white/25">
-              / {AUTOMATION_REGISTRY.length}
-            </span>
-          </p>
-        </GunimiCard>
-        <GunimiCard className="p-4">
-          <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
-            {t("totalExecutions")}
-          </p>
-          <p className="mt-2 text-3xl font-bold text-white/90">{stats.total}</p>
-        </GunimiCard>
-        <GunimiCard className="p-4">
-          <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-600">
-            {t("successRate")}
-          </p>
-          <p className="mt-2 text-3xl font-bold text-emerald-300">
-            {successRate}
-            <span className="text-sm font-normal text-white/30">%</span>
-          </p>
-        </GunimiCard>
-      </div>
+      <GunimiSection>
+        <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-[#080C14]">
+          <div className="flex divide-x divide-white/[0.06]">
+            <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-5 py-4">
+              <Zap size={13} className="text-zinc-600" />
+              <p className="mt-0.5 text-2xl font-semibold tabular-nums text-white/90">
+                {enabledCount}
+                <span className="ml-1 text-sm font-normal text-white/25">/ {AUTOMATION_REGISTRY.length}</span>
+              </p>
+              <p className="text-[11px] text-zinc-600">{t("activeCount")}</p>
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-5 py-4">
+              <Activity size={13} className="text-zinc-600" />
+              <p className="mt-0.5 text-2xl font-semibold tabular-nums text-white/90">{stats.total}</p>
+              <p className="text-[11px] text-zinc-600">{t("totalExecutions")}</p>
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-5 py-4">
+              <CheckCircle2 size={13} className="text-zinc-600" />
+              <p className="mt-0.5 text-2xl font-semibold tabular-nums text-emerald-300">
+                {successRate}
+                <span className="text-sm font-normal text-white/30">%</span>
+              </p>
+              <p className="text-[11px] text-zinc-600">{t("successRate")}</p>
+            </div>
+          </div>
+        </div>
+      </GunimiSection>
 
       {/* Two-column layout */}
       <div className="grid gap-6 lg:grid-cols-2">
