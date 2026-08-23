@@ -56,6 +56,7 @@ function ActionRow({ label, delay }: { label: string; delay: number }) {
 export function GenesisEmailMoment() {
   const t = useTranslations("landing.actEmail");
   const actions = t.raw("actions") as string[];
+  const legend = t.raw("legend") as string[];
 
   return (
     <Section id="email-moment" ambient="violet">
@@ -155,10 +156,10 @@ export function GenesisEmailMoment() {
               >
                 {(
                   [
-                    { color: "#c4b5fd", label: "Contact" },
-                    { color: "#fcd34d", label: "Meeting" },
-                    { color: "#6ee7b7", label: "Deal" },
-                  ] as const
+                    { color: "#c4b5fd", label: legend[0] ?? "Contact" },
+                    { color: "#fcd34d", label: legend[1] ?? "Meeting" },
+                    { color: "#6ee7b7", label: legend[2] ?? "Deal" },
+                  ]
                 ).map(({ color, label }) => (
                   <span
                     key={label}

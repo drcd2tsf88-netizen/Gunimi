@@ -2393,6 +2393,7 @@
       "bodyPart3": "? Lukáš",
       "panelTitle": "Čo Gunimi pochopilo",
       "processedNote": "Spracované automaticky v reálnom čase",
+      "legend": ["Kontakt", "Stretnutie", "Obchod"],
       "actions": [
         "Kontakt prepojený: Lukáš Blaho",
         "Firma nájdená: Nexo Corp",
