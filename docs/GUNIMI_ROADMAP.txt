@@ -310,7 +310,7 @@ FÁZA 2 — SMB ready                            ⏳ PREBIEHA (Q3 2026)
   - [x] Contact/Company merge (#14)               ✅
   - [ ] Domain Foundation (workspace_people + relationships)
 
-FÁZA 3 — Mid-market                           📅 PLÁNOVANÁ (Q4 2026)
+FÁZA 3 — Mid-market                         📅 PLÁNOVANÁ (Q4 2026)
   Cieľ: firmy 50–200 ľudí
   - [ ] Teams / Oddelenia (#9) — po workspace_people migrácii
   - [ ] Custom dashboards (#12)
@@ -366,3 +366,5 @@ POZNÁMKY
 ================================================================================
 EOF
 ================================================================================
+
+

@@ -53,22 +53,14 @@ export default async function CookiesPage() {
               <h2 className="mb-3 text-[18px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">
                 {t("section1Title")}
               </h2>
-              <p>
-                Cookies are small text files stored on your device when you visit a website
-                or use a web application. They allow the application to remember your preferences,
-                keep you signed in, and function correctly across page loads.
-              </p>
+              <p>{t("section1Body")}</p>
             </div>
 
             <div>
               <h2 className="mb-3 text-[18px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">
                 {t("section2Title")}
               </h2>
-              <p className="mb-4">
-                Gunimi uses a minimal set of cookies. We do not use advertising cookies.
-                We do not use third-party tracking cookies. We do not sell or share cookie
-                data with advertising networks.
-              </p>
+              <p className="mb-4">{t("section2Body")}</p>
               <div className="overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#0A0E17]">
                 <table className="w-full text-[13.5px]">
                   <thead>
@@ -80,14 +72,14 @@ export default async function CookiesPage() {
                   </thead>
                   <tbody className="divide-y divide-white/[0.03]">
                     {[
-                      ["sb-access-token", "Supabase authentication session", "Session"],
-                      ["sb-refresh-token", "Supabase session refresh", "30 days"],
-                      ["gunimi_cookie_consent", "Records your cookie consent choice", "1 year"],
-                    ].map(([name, purpose, duration]) => (
+                      { name: "sb-access-token",       purposeKey: "tableRow1Purpose", durationKey: "tableRow1Duration" },
+                      { name: "sb-refresh-token",      purposeKey: "tableRow2Purpose", durationKey: "tableRow2Duration" },
+                      { name: "gunimi_cookie_consent", purposeKey: "tableRow3Purpose", durationKey: "tableRow3Duration" },
+                    ].map(({ name, purposeKey, durationKey }) => (
                       <tr key={name}>
                         <td className="px-5 py-3.5 font-mono text-[12.5px] text-[#8B7DFF]/70">{name}</td>
-                        <td className="px-5 py-3.5 text-[#9AA3B2]">{purpose}</td>
-                        <td className="px-5 py-3.5 text-[#9AA3B2]/60">{duration}</td>
+                        <td className="px-5 py-3.5 text-[#9AA3B2]">{t(purposeKey as Parameters<typeof t>[0])}</td>
+                        <td className="px-5 py-3.5 text-[#9AA3B2]/60">{t(durationKey as Parameters<typeof t>[0])}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -99,15 +91,8 @@ export default async function CookiesPage() {
               <h2 className="mb-3 text-[18px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">
                 {t("section3Title")}
               </h2>
-              <p>
-                The cookies listed above are all classified as <strong className="font-medium text-[#C8CDD8]">essential cookies</strong>.
-                They are required for the application to function. Without them, you cannot
-                sign in or use the product.
-              </p>
-              <p className="mt-3">
-                Gunimi does not currently use non-essential cookies such as analytics cookies,
-                preference cookies unrelated to authentication, or marketing cookies.
-              </p>
+              <p>{t("section3Body1")}</p>
+              <p className="mt-3">{t("section3Body2")}</p>
             </div>
 
             <div>
@@ -115,13 +100,10 @@ export default async function CookiesPage() {
                 {t("section4Title")}
               </h2>
               <p>
-                In addition to cookies, we store a small amount of data in your browser&apos;s
-                local storage. This includes your cookie consent preference (key:{" "}
+                {t("section4Body")}{" "}
                 <code className="rounded-[5px] border border-white/[0.07] bg-white/[0.04] px-1.5 py-0.5 font-mono text-[12px] text-[#8B7DFF]/70">
                   gunimi_cookie_consent
                 </code>
-                ) and certain UI state preferences. This data stays on your device and is
-                not transmitted to our servers.
               </p>
             </div>
 
@@ -129,21 +111,14 @@ export default async function CookiesPage() {
               <h2 className="mb-3 text-[18px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">
                 {t("section5Title")}
               </h2>
-              <p>
-                You can control cookies through your browser settings. Note that disabling
-                authentication cookies will prevent you from signing in to Gunimi. Most
-                browsers allow you to view, delete and block cookies via their settings pages.
-              </p>
+              <p>{t("section5Body")}</p>
             </div>
 
             <div>
               <h2 className="mb-3 text-[18px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">
                 {t("section6Title")}
               </h2>
-              <p>
-                We will update this page if our cookie usage changes. The date at the top
-                of this page reflects when the policy was last revised.
-              </p>
+              <p>{t("section6Body")}</p>
             </div>
 
             <div>
@@ -151,7 +126,7 @@ export default async function CookiesPage() {
                 {t("section7Title")}
               </h2>
               <p>
-                Questions about this policy?{" "}
+                {t("section7Body")}{" "}
                 <a
                   href="mailto:privacy@gunimi.com"
                   className="font-medium text-[#8B7DFF]/70 underline underline-offset-2 transition-colors hover:text-[#8B7DFF]"

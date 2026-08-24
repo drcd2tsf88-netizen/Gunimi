@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 
 import { useTranslations } from "next-intl";
 
-import { Mail, UserPlus, Users } from "lucide-react";
+import { Copy, Mail, RefreshCw, UserPlus, Users } from "lucide-react";
 
 import toast from "react-hot-toast";
 
 import { removeMember } from "@/server/actions/workspace/removeMember";
 import { revokeInvite } from "@/server/actions/workspace/revokeInvite";
+import { resendWorkspaceInvite } from "@/server/actions/workspace/resendWorkspaceInvite";
 
 import { WorkspaceInvite } from "@/server/actions/workspace/getWorkspaceInvites";
 
@@ -77,6 +78,24 @@ export default function MembersSection({ members, invites, currentUserId, curren
       } else {
         toast.error(t("failedToRevoke"));
       }
+    });
+  }
+
+  function handleResend(inviteId: string) {
+    startTransition(async () => {
+      const ok = await resendWorkspaceInvite(inviteId);
+      if (ok) {
+        toast.success(t("inviteResent"));
+      } else {
+        toast.error(t("failedToResend"));
+      }
+    });
+  }
+
+  function handleCopyLink(token: string) {
+    const url = `${window.location.origin}/invite/${token}`;
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success(t("inviteLinkCopied"));
     });
   }
 
@@ -159,14 +178,34 @@ export default function MembersSection({ members, invites, currentUserId, curren
                 </span>
 
                 {canInvite && (
-                  <GunimiButton
-                    variant="secondary"
-                    className="h-8 px-3 text-xs"
-                    disabled={isPending}
-                    onClick={() => handleRevoke(invite.id)}
-                  >
-                    {t("revokeInvite")}
-                  </GunimiButton>
+                  <div className="flex items-center gap-2">
+                    <GunimiButton
+                      variant="secondary"
+                      className="h-8 w-8 p-0"
+                      disabled={isPending}
+                      title={t("copyInviteLink")}
+                      onClick={() => handleCopyLink(invite.token)}
+                    >
+                      <Copy size={13} />
+                    </GunimiButton>
+                    <GunimiButton
+                      variant="secondary"
+                      className="h-8 w-8 p-0"
+                      disabled={isPending}
+                      title={t("resendInvite")}
+                      onClick={() => handleResend(invite.id)}
+                    >
+                      <RefreshCw size={13} />
+                    </GunimiButton>
+                    <GunimiButton
+                      variant="secondary"
+                      className="h-8 px-3 text-xs"
+                      disabled={isPending}
+                      onClick={() => handleRevoke(invite.id)}
+                    >
+                      {t("revokeInvite")}
+                    </GunimiButton>
+                  </div>
                 )}
               </div>
             ))}

@@ -205,8 +205,8 @@ export default function KanbanView({ tasks, members, onEdit, onDelete, onTasksCh
                     )}
                   </div>
 
-                  {/* Actions on hover */}
-                  <div className="absolute bottom-2 right-2 flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                  {/* Actions */}
+                  <div className="absolute bottom-2 right-2 flex items-center gap-1 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">
                     <GunimiButton
                       variant="secondary"
                       className="h-6 w-6 p-0"

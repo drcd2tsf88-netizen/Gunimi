@@ -124,7 +124,7 @@ function NoteRow({ note, extractingId, onEdit, onDelete, onExtract }: RowProps) 
           {new Date(note.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
         </p>
 
-        <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="flex items-center gap-1 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">
           <button
             onClick={() => onEdit(note)}
             className="flex h-6 w-6 items-center justify-center rounded-md text-white/25 transition-colors hover:bg-white/[0.06] hover:text-white/70"

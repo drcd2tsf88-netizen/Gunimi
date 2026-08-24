@@ -41,10 +41,15 @@ export default async function PrivacyPage() {
             {t("headline")}
           </h1>
           <p className="mt-3 text-[14px] text-[#9AA3B2]/50">{t("lastUpdated")} {LAST_UPDATED}</p>
+          {t("languageNote") && (
+            <div className="mt-4 rounded-[10px] border border-amber-500/[0.14] bg-amber-500/[0.05] px-4 py-3 text-[13px] text-amber-400/70">
+              {t("languageNote")}
+            </div>
+          )}
         </section>
 
         {/* BODY */}
-        <section className="relative mx-auto max-w-3xl px-6 pb-32">
+        <section className="relative mx-auto max-w-3xl px-6 pb-32" lang="en">
           <div className="space-y-10 text-[15px] leading-[1.8] text-[#9AA3B2]">
 
             <div>
