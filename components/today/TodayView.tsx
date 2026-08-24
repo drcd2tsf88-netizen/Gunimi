@@ -9,7 +9,7 @@ import TodayWorkSection from "./TodayWorkSection";
 import FirstSignalMoment from "./FirstSignalMoment";
 import TodaySignalsPulse from "./TodaySignalsPulse";
 import TodayMemoryWidget from "./TodayMemoryWidget";
-import type { ResolvedTodayData } from "@/lib/today/types";
+import type { ResolvedTodayData, TodayCalmContext } from "@/lib/today/types";
 import type { MemoryEvent } from "@/lib/memory/types";
 
 type Props = {
@@ -17,6 +17,7 @@ type Props = {
   signalCount: number;
   criticalSignalCount: number;
   recentMemory: MemoryEvent[];
+  calmContext?: TodayCalmContext;
 } & ResolvedTodayData;
 
 function getGreetingKey(): "greetingMorning" | "greetingAfternoon" | "greetingEvening" {
@@ -41,6 +42,7 @@ export default function TodayView({
   signalCount,
   criticalSignalCount,
   recentMemory,
+  calmContext,
 }: Props) {
   const t = useTranslations("today");
 
@@ -76,7 +78,7 @@ export default function TodayView({
       <FirstSignalMoment hasSignals={hasSignals} />
 
       {/* ── Section 1: Focus ──────────────────────────────────────────────── */}
-      <TodayFocusCard focus={focus} />
+      <TodayFocusCard focus={focus} calmContext={calmContext} />
 
       {/* ── Section 2: Attention Required ────────────────────────────────── */}
       <TodayAttentionSection items={attention} />

@@ -4,18 +4,30 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import GunimiCard from "@/components/ui/GunimiCard";
-import type { TodayFocus } from "@/lib/today/types";
+import type { TodayCalmContext, TodayFocus } from "@/lib/today/types";
 
 type Props = {
   focus: TodayFocus;
+  calmContext?: TodayCalmContext;
 };
 
-export default function TodayFocusCard({ focus }: Props) {
+export default function TodayFocusCard({ focus, calmContext }: Props) {
   const t = useTranslations("today");
 
   const sectionLabel = t("focusSectionLabel");
 
   if (!focus) {
+    const isNewWorkspace = calmContext?.kind === "new_workspace";
+    const headline = isNewWorkspace
+      ? t("focusCalmNewWorkspaceAction")
+      : t("focusCalmHealthyAction");
+    const proof = isNewWorkspace
+      ? t("focusCalmNewWorkspaceProof")
+      : t("focusCalmHealthyProof", {
+          dealCount: calmContext?.dealCount ?? 0,
+          contactCount: calmContext?.contactCount ?? 0,
+        });
+
     return (
       <GunimiCard className="p-5">
         <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
@@ -29,10 +41,10 @@ export default function TodayFocusCard({ focus }: Props) {
           />
           <div className="min-w-0">
             <p className="text-sm font-medium text-white/60">
-              {t("focusEmptyAction")}
+              {headline}
             </p>
             <p className="mt-1 text-xs leading-relaxed text-white/35">
-              {t("focusEmptyReason")}
+              {proof}
             </p>
           </div>
         </div>

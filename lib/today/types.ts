@@ -42,10 +42,17 @@ export type TodayHealth = {
   labelParams?: Record<string, string | number>;
 };
 
+export type TodayCalmContext = {
+  kind: "new_workspace" | "healthy";
+  contactCount: number;
+  dealCount: number;
+};
+
 export type ResolvedTodayData = {
   health: TodayHealth;
   focus: TodayFocus;
   attention: TodayAttentionItem[];
   relationships: TodayRelationshipItem[];
   work: TodayWorkItem[];
+  calmContext?: TodayCalmContext;
 };
