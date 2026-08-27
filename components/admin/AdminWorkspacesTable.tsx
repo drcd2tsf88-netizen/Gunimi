@@ -2,9 +2,10 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Ban, CheckCircle2 } from "lucide-react";
+import { Ban, CheckCircle2, ChevronDown, ChevronRight } from "lucide-react";
 import { suspendWorkspace } from "@/server/actions/admin/platformActions";
 import type { WorkspaceListItem } from "@/server/actions/admin/getWorkspacesList";
+import WorkspaceFeatureFlagsPanel from "@/components/admin/WorkspaceFeatureFlagsPanel";
 
 function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
@@ -15,6 +16,7 @@ function fmtDate(iso: string): string {
 function WorkspaceRow({ ws }: { ws: WorkspaceListItem }) {
   const t = useTranslations("admin");
   const [isSuspended, setIsSuspended] = useState(ws.isSuspended);
+  const [flagsOpen, setFlagsOpen] = useState(false);
   const [pending, startTransition] = useTransition();
 
   function toggle() {
@@ -26,6 +28,7 @@ function WorkspaceRow({ ws }: { ws: WorkspaceListItem }) {
   }
 
   return (
+    <>
     <tr className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.015]">
       <td className="px-4 py-3">
         <div className="flex items-center gap-2.5">
@@ -58,19 +61,35 @@ function WorkspaceRow({ ws }: { ws: WorkspaceListItem }) {
         </div>
       </td>
       <td className="px-4 py-3">
-        <button
-          onClick={toggle}
-          disabled={pending}
-          className={`rounded-lg px-3 py-1.5 text-[11px] font-medium transition-all disabled:opacity-50 ${
-            isSuspended
-              ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
-              : "border border-red-500/20 bg-red-500/[0.07] text-red-300 hover:bg-red-500/15"
-          }`}
-        >
-          {pending ? "..." : isSuspended ? t("wsResume") : t("wsSuspend")}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggle}
+            disabled={pending}
+            className={`rounded-lg px-3 py-1.5 text-[11px] font-medium transition-all disabled:opacity-50 ${
+              isSuspended
+                ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
+                : "border border-red-500/20 bg-red-500/[0.07] text-red-300 hover:bg-red-500/15"
+            }`}
+          >
+            {pending ? "..." : isSuspended ? t("wsResume") : t("wsSuspend")}
+          </button>
+          <button
+            onClick={() => setFlagsOpen((v) => !v)}
+            className="flex items-center gap-1 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-[11px] text-white/40 transition-all hover:bg-white/[0.06] hover:text-white/70"
+          >
+            {flagsOpen ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
+            {t("wsFlags")}
+          </button>
+        </div>
       </td>
     </tr>
+    {flagsOpen && (
+      <WorkspaceFeatureFlagsPanel
+        workspaceId={ws.id}
+        featureFlags={ws.featureFlags}
+      />
+    )}
+    </>
   );
 }
 

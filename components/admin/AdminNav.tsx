@@ -11,17 +11,21 @@ import {
   Activity,
   Mail,
   MessageSquareText,
+  Megaphone,
+  ScrollText,
   Shield,
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { id: "overview",   href: "/dashboard/admin",            icon: LayoutDashboard },
-  { id: "workspaces", href: "/dashboard/admin/workspaces", icon: Building2 },
-  { id: "users",      href: "/dashboard/admin/users",      icon: Users },
-  { id: "ai",         href: "/dashboard/admin/ai",         icon: Bot },
-  { id: "health",     href: "/dashboard/admin/health",     icon: Activity },
-  { id: "invites",    href: "/dashboard/admin/invites",    icon: Mail },
-  { id: "dogfood",    href: "/dashboard/admin/dogfood",    icon: MessageSquareText },
+  { id: "overview",   href: "/dashboard/admin",             icon: LayoutDashboard },
+  { id: "workspaces", href: "/dashboard/admin/workspaces",  icon: Building2 },
+  { id: "users",      href: "/dashboard/admin/users",       icon: Users },
+  { id: "ai",         href: "/dashboard/admin/ai",          icon: Bot },
+  { id: "health",     href: "/dashboard/admin/health",      icon: Activity },
+  { id: "invites",    href: "/dashboard/admin/invites",     icon: Mail },
+  { id: "broadcast",  href: "/dashboard/admin/broadcast",   icon: Megaphone },
+  { id: "audit",      href: "/dashboard/admin/audit",       icon: ScrollText },
+  { id: "dogfood",    href: "/dashboard/admin/dogfood",     icon: MessageSquareText },
 ] as const;
 
 export default function AdminNav() {

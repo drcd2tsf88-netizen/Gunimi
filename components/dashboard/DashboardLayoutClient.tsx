@@ -13,6 +13,7 @@ import OrbitTopbar from "@/components/layout/OrbitTopbar";
 import TaskFocusStrip from "@/components/layout/TaskFocusStrip";
 import GunimiLoader from "@/components/system/GunimiLoader";
 import FeedbackSheet from "@/components/dogfood/FeedbackSheet";
+import PlatformAnnouncementBanner from "@/components/admin/PlatformAnnouncementBanner";
 
 import { supabase } from "@/lib/supabase";
 import { SidebarNav, SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
@@ -235,6 +236,7 @@ export default function DashboardLayoutClient({
       <div className="flex min-h-dvh min-w-0 flex-1 flex-col overflow-x-hidden">
         <OrbitTopbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <TaskFocusStrip />
+        <PlatformAnnouncementBanner />
         <OrbitCommand userRole={userRole} />
         {dogfoodEnabled && <FeedbackSheet />}
 
