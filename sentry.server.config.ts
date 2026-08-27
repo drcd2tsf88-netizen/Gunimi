@@ -18,4 +18,15 @@ Sentry.init({
     // userInfo: false,
     // httpBodies: [],
   },
+
+  beforeSend(event) {
+    // Filter RSC streaming noise: fires when the browser closes a GET connection
+    // early (navigation away, page reload, pre-fetch abort). Not an app error.
+    if (event.exception?.values?.some((e) =>
+      e.value?.includes("destination stream closed early")
+    )) {
+      return null;
+    }
+    return event;
+  },
 });

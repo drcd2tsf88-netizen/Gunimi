@@ -27,7 +27,16 @@ export default getRequestConfig(async () => {
   const cookieStore = await cookies();
   const headerStore = await headers();
 
-  // ── 1. Workspace Preference (authenticated users only) ───
+  // ── 1. Locale Cookie (explicit user choice — highest priority) ───
+  // An explicit GUNIMI_LOCALE cookie always wins, including over workspace
+  // preference. This allows the public language switcher and manual overrides
+  // to work even when the user is authenticated.
+  const cookieLang = cookieStore.get("GUNIMI_LOCALE")?.value;
+  if (isValidLocale(cookieLang)) {
+    return { locale: cookieLang, messages: MESSAGES[cookieLang] };
+  }
+
+  // ── 2. Workspace Preference (authenticated users only) ───
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -66,12 +75,6 @@ export default getRequestConfig(async () => {
   } catch {
     // Fail open — user is not authenticated or Supabase unavailable.
     // Continue to next resolution step.
-  }
-
-  // ── 2. Locale Cookie (explicit user choice, pre-login) ───
-  const cookieLang = cookieStore.get("GUNIMI_LOCALE")?.value;
-  if (isValidLocale(cookieLang)) {
-    return { locale: cookieLang, messages: MESSAGES[cookieLang] };
   }
 
   // ── 3. Browser Language ───────────────────────────────────

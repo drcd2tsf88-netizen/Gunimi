@@ -1,4 +1,4 @@
-import { Building2, Plus, TrendingUp, UserPlus, Users } from "lucide-react";
+import { Building2, Plus, ShoppingBag, TrendingUp, UserPlus, Users } from "lucide-react";
 
 import { commandRegistry } from "@/lib/commands/registry";
 import type { OrbitCommand } from "@/lib/commands/types";
@@ -60,6 +60,16 @@ const commands: OrbitCommand[] = [
     group: "crm",
     routes: ["/dashboard/contacts", "/dashboard/deals"],
     keywords: ["new", "add", "deal", "create", "opportunity", "pipeline", "revenue", "sales"],
+  },
+  {
+    id: "createOrder",
+    type: "action",
+    namespace: "crm",
+    icon: ShoppingBag,
+    action: "create-order",
+    group: "crm",
+    routes: ["/dashboard/orders"],
+    keywords: ["new", "add", "order", "create", "purchase", "invoice", "sale"],
   },
 ];
 

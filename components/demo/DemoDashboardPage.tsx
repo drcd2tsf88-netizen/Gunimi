@@ -809,7 +809,7 @@ function DealsSection({ nav }: { nav: DemoNav }) {
       </div>
       <div className="rounded-[12px] border border-[#6D5BFF]/15 bg-[#6D5BFF]/[0.04] px-5 py-3">
         <p className="text-[12px] text-[#9AA3B2]/60">
-          {tDemo("detailPipeline")}: <span className="font-semibold text-[#F7F8FC]">€{total.toLocaleString()}</span>
+          {tDemo("detailPipeline")}: <span className="font-semibold text-[#F7F8FC]">€{total.toLocaleString("en-US")}</span>
         </p>
       </div>
     </div>

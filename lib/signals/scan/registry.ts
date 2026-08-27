@@ -9,6 +9,7 @@ import { companyStaleScan } from "./scanners/companyStaleScan";
 import { relationshipStaleScan } from "./scanners/relationshipStaleScan";
 import { missingFollowUpScan } from "./scanners/missingFollowUpScan";
 import { longRunningTaskScan } from "./scanners/longRunningTaskScan";
+import { orderScan } from "./scanners/orderScan";
 import type { ScannerDefinition, ScanType } from "./types";
 
 export const SCAN_REGISTRY: Record<ScanType, ScannerDefinition> = {
@@ -60,6 +61,16 @@ export const SCAN_REGISTRY: Record<ScanType, ScannerDefinition> = {
     defaultIntervalHours: 6,
     defaultBatchSize: 100,
     scanner: longRunningTaskScan,
+  },
+
+  order_stale: {
+    scanType: "order_stale",
+    description:
+      "Evaluates all active orders for temporal conditions: order_overdue, order_draft_stale, order_not_acknowledged.",
+    targetEntity: "cross_entity",
+    defaultIntervalHours: 12,
+    defaultBatchSize: 50,
+    scanner: orderScan,
   },
 };
 

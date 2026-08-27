@@ -43,7 +43,7 @@ export function ScrollTimeline({ children, className }: ScrollTimelineProps) {
 
   return (
     <ScrollTimelineContext.Provider value={{ scrollYProgress }}>
-      <div ref={ref} className={className}>
+      <div ref={ref} className={className ? `relative ${className}` : "relative"}>
         {children}
       </div>
     </ScrollTimelineContext.Provider>

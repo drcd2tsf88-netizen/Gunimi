@@ -70,6 +70,8 @@ import CreateCompanyPanel
 from "@/components/command/panels/CreateCompanyPanel";
 import CreateDealPanel
 from "@/components/command/panels/CreateDealPanel";
+import CreateOrderPanel
+from "@/components/command/panels/CreateOrderPanel";
 
 import { useCommandSearch }
 from "@/components/command/useCommandSearch";
@@ -454,6 +456,8 @@ export default function OrbitCommandPalette({
       ? t("createCompanyPlaceholder")
       : activePanel === "create-deal"
       ? t("createDealPlaceholder")
+      : activePanel === "create-order"
+      ? t("createOrderPlaceholder")
       : t("placeholder");
 
   // Text for the aria-live region — announced after search completes.
@@ -776,7 +780,7 @@ export default function OrbitCommandPalette({
                         panel.saveDraft("create-company", draft)
                       }
                     />
-                  ) : (
+                  ) : activePanel === "create-deal" ? (
                     <CreateDealPanel
                       query={search.query}
                       isSubmitting={panel.isExecuting}
@@ -785,6 +789,17 @@ export default function OrbitCommandPalette({
                       defaultValues={panel.panelDraftsRef.current["create-deal"]}
                       onDraftChange={(draft) =>
                         panel.saveDraft("create-deal", draft)
+                      }
+                    />
+                  ) : (
+                    <CreateOrderPanel
+                      query={search.query}
+                      isSubmitting={panel.isExecuting}
+                      error={panel.panelError}
+                      onSubmit={panel.handleCreateOrder}
+                      defaultValues={panel.panelDraftsRef.current["create-order"]}
+                      onDraftChange={(draft) =>
+                        panel.saveDraft("create-order", draft)
                       }
                     />
                   )

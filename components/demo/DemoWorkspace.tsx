@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import {
   LayoutDashboard, Users, Building2, TrendingUp, CheckSquare,
-  Mail, CalendarDays, BarChart3, Settings,
+  Mail, CalendarDays, BarChart3, Settings, ShoppingBag,
 } from "lucide-react";
 import { SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
 import TodayView from "@/components/today/TodayView";
@@ -22,6 +22,7 @@ const PREVIEW_NAV = [
   { id: "contacts",  icon: Users,           labelKey: "contacts"   },
   { id: "companies", icon: Building2,       labelKey: "companies"  },
   { id: "deals",     icon: TrendingUp,      labelKey: "deals"      },
+  { id: "orders",    icon: ShoppingBag,     labelKey: "orders"     },
   { id: "tasks",     icon: CheckSquare,     labelKey: "tasks"      },
   { id: "email",     icon: Mail,            labelKey: "email"      },
   { id: "calendar",  icon: CalendarDays,    labelKey: "calendar"   },

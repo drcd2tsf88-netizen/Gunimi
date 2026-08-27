@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import Link from "next/link";
@@ -8,18 +8,17 @@ import { useTranslations } from "next-intl";
 
 const CONSENT_KEY = "gunimi_cookie_consent";
 
-function getInitialVisibility(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    return !localStorage.getItem(CONSENT_KEY);
-  } catch {
-    return false;
-  }
-}
-
 export default function CookieConsent() {
   const t = useTranslations("public.cookieConsent");
-  const [visible, setVisible] = useState(getInitialVisibility);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    try {
+      setVisible(!localStorage.getItem(CONSENT_KEY));
+    } catch {
+      setVisible(true);
+    }
+  }, []);
 
   function accept() {
     try { localStorage.setItem(CONSENT_KEY, "accepted"); } catch { /* */ }

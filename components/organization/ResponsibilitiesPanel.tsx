@@ -33,7 +33,7 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 type Props = {
-  entityType: "deal" | "contact" | "company";
+  entityType: "deal" | "contact" | "company" | "order";
   entityId: string;
   teams: WorkspaceTeam[];
 };

@@ -19,6 +19,7 @@ const EXPORTS: ExportItem[] = [
   { key: "exportContacts", path: "/api/export/contacts", filename: "contacts.csv" },
   { key: "exportDeals", path: "/api/export/deals", filename: "deals.csv" },
   { key: "exportTasks", path: "/api/export/tasks", filename: "tasks.csv" },
+  { key: "exportOrders", path: "/api/export/orders", filename: "orders.csv" },
 ];
 
 export default function ExportPanel() {

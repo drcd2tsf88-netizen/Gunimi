@@ -2,10 +2,44 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AiCore } from "./AiCore";
+
+const LOCALES = ["en", "sk", "cs"] as const;
+
+function PublicLocaleSwitcher() {
+  const current = useLocale();
+
+  function switchLocale(locale: string) {
+    document.cookie = `GUNIMI_LOCALE=${locale};path=/;max-age=31536000;SameSite=Lax`;
+    window.location.reload();
+  }
+
+  return (
+    <div className="flex items-center gap-0.5">
+      {LOCALES.map((locale, i) => (
+        <span key={locale} className="flex items-center">
+          <button
+            onClick={() => switchLocale(locale)}
+            className={cn(
+              "rounded px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-[0.08em] transition-colors duration-150",
+              current === locale
+                ? "text-[#F7F8FC]"
+                : "text-[#9AA3B2]/40 hover:text-[#9AA3B2]",
+            )}
+          >
+            {locale}
+          </button>
+          {i < LOCALES.length - 1 && (
+            <span className="text-[10px] text-white/[0.10]">/</span>
+          )}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 type DropdownId = "product" | "company" | null;
 
@@ -156,7 +190,7 @@ export function GenesisNavbar() {
           </span>
         </Link>
 
-        {/* ── Dropdowns ── */}
+        {/* ── Center: Dropdowns + Locale switcher ── */}
         <div className="hidden items-center gap-1 md:flex">
           <NavDropdown
             label={t("product")}
@@ -170,6 +204,8 @@ export function GenesisNavbar() {
             onToggle={() => toggle("company")}
             links={COMPANY_LINKS}
           />
+          <div className="mx-2 h-4 w-px bg-white/[0.08]" />
+          <PublicLocaleSwitcher />
         </div>
 
         {/* ── Primary action ── */}

@@ -608,6 +608,9 @@
     "tabHistory": "História",
     "tabWork": "Práca",
     "tabContext": "Kontext",
+    "tabOrders": "Objednávky",
+    "ordersEmpty": "Zatiaľ žiadne objednávky",
+    "ordersEmptyDescription": "Objednávky prepojené s touto firmou sa zobrazia tu.",
     "workspaceTabsLabel": "Sekcie pracovného priestoru spoločnosti",
     "contextSectionContacts": "Kľúčové kontakty",
     "contextLabelContact": "Kontakt",
@@ -772,6 +775,9 @@
     "tabHistory": "História",
     "tabWork": "Práca",
     "tabContext": "Kontext",
+    "tabOrders": "Objednávky",
+    "ordersEmpty": "Žiadne prepojené objednávky",
+    "ordersEmptyDescription": "Objednávky prepojené s týmto obchodom sa zobrazia tu.",
     "workspaceType": "Obchod",
     "workspaceTabsLabel": "Navigácia pracovného priestoru",
     "situationBadge": "Dnešná situácia",
@@ -1062,11 +1068,19 @@
     "healthStatusEngaged": "Zapojený",
     "healthStatusNeedsAttention": "Vyžaduje pozornosť",
     "healthStatusNeverContacted": "Nikdy nekontaktovaný",
+    "lastContactLabel": "Posledný kontakt",
+    "lastContactToday": "Dnes",
+    "lastContactYesterday": "Včera",
+    "lastContactDaysAgo": "pred {days}d",
+    "lastContactNever": "Nikdy",
     "workspaceTabsLabel": "Navigácia pracovného priestoru kontaktu",
     "tabOverview": "Prehľad",
     "tabHistory": "História",
     "tabWork": "Práca",
     "tabContext": "Kontext",
+    "tabOrders": "Objednávky",
+    "ordersEmpty": "Žiadne prepojené objednávky",
+    "ordersEmptyDescription": "Objednávky prepojené s týmto kontaktom sa zobrazia tu.",
     "decisionSuggestedLabel": "Navrhovaný ďalší krok",
     "decisionEmptyLabel": "Vzťah je v poriadku",
     "decisionEmptyReason": "Žiadna okamžitá akcia nie je potrebná",
@@ -1821,7 +1835,11 @@
     "viewCompany": "Zobraziť spoločnosť",
     "followUpPrefix": "Sledovanie:",
     "emailNotePrefix": "E-mail:",
-    "pageTitle": "E-mail"
+    "pageTitle": "E-mail",
+    "createOrder": "Vytvoriť objednávku",
+    "orderCreated": "Objednávka vytvorená",
+    "failedToCreateOrder": "Nepodarilo sa vytvoriť objednávku",
+    "orderPrefix": "Objednávka:"
   },
   "workspace": {
     "createWorkspace": "Vytvoriť pracovný priestor",
@@ -1882,6 +1900,7 @@
     "exportContacts": "Kontakty",
     "exportDeals": "Obchody",
     "exportTasks": "Úlohy",
+    "exportOrders": "Objednávky",
     "pageTitle": "Import & Export"
   },
   "onboarding": {
@@ -1959,6 +1978,15 @@
     "createDealSubmitKey": "VYTVORIŤ",
     "createDealSuccess": "Obchod vytvorený",
     "createDealError": "Nepodarilo sa vytvoriť obchod. Skúste znova.",
+    "createOrderPlaceholder": "Názov objednávky...",
+    "createOrderHint": "Napíšte názov a stlačte Enter",
+    "createOrderBackHint": "ESC na zrušenie",
+    "createOrderSubmitPrefix": "Vytvoriť objednávku",
+    "createOrderSubmitHint": "Pridať do objednávok",
+    "createOrderSubmitKey": "VYTVORIŤ",
+    "createOrderNotesPlaceholder": "Poznámky (voliteľné)",
+    "createOrderSuccess": "Objednávka vytvorená",
+    "createOrderError": "Nepodarilo sa vytvoriť objednávku. Skúste znova.",
     "escLabel": "ESC",
     "cognition": "Gunimi Kognícia",
     "thinkingCurrentThought": "Spracovávam požiadavku...",
@@ -2014,6 +2042,10 @@
       "createDeal": {
         "title": "Vytvoriť Obchod",
         "description": "Pridať nový obchod do pipeline"
+      },
+      "createOrder": {
+        "title": "Vytvoriť Objednávku",
+        "description": "Pridať novú objednávku do pracovného priestoru"
       }
     },
     "a11yNoResults": "Žiadne výsledky",
@@ -2098,6 +2130,7 @@
     "crm": "CRM",
     "companies": "Spoločnosti",
     "deals": "Obchody",
+    "orders": "Objednávky",
     "tasks": "Úlohy",
     "notes": "Poznámky",
     "email": "E-mail",
@@ -2186,7 +2219,10 @@
       "task_due_today": "Splatné dnes",
       "task_overdue": "Úloha po termíne",
       "task_blocked": "Úloha zablokovaná",
-      "task_waiting_customer": "Čaká na zákazníka"
+      "task_waiting_customer": "Čaká na zákazníka",
+      "order_overdue": "Objednávka po termíne",
+      "order_draft_stale": "Objednávka uviazla v koncepte",
+      "order_not_acknowledged": "Objednávka čaká na potvrdenie"
     }
   },
   "notifications": {
@@ -2382,6 +2418,18 @@
           "title": "Úloha po termíne",
           "context": "Follow-up: Nova Systems · 2 dni neskoro",
           "detail": "3 súvisiace úlohy čakajú"
+        },
+        {
+          "dot": "red",
+          "title": "Objednávka nepotvrdená",
+          "context": "Objednávka #31 · Nexo Corp · odoslaná pred 12 dňami",
+          "detail": "Žiadna reakcia — odporúčame follow-up"
+        },
+        {
+          "dot": "amber",
+          "title": "Objednávka stále v koncepte",
+          "context": "Objednávka #47 · Acme Corp · vytvorená pred 4 dňami",
+          "detail": "Neodoslaná — termín sa blíži"
         }
       ]
     },
@@ -3849,6 +3897,102 @@
       "blocked": "Blokovane",
       "completed": "Dokoncene",
       "cancelled": "Zrusene"
+    }
+  },
+  "orders": {
+    "pageTitle": "Objednávky",
+    "backToOrders": "Späť na objednávky",
+    "newOrder": "Nová objednávka",
+    "noOrders": "Zatiaľ žiadne objednávky",
+    "noOrdersDescription": "Vytvorte prvú objednávku alebo konvertujte deal.",
+    "createOrder": "Vytvoriť objednávku",
+    "editOrder": "Upraviť objednávku",
+    "deleteOrder": "Zmazať objednávku",
+    "confirmDeleteOrder": "Táto akcia natrvalo zmaže objednávku aj všetky jej položky.",
+    "orderDeleted": "Objednávka zmazaná",
+    "failedToDeleteOrder": "Nepodarilo sa zmazať objednávku",
+    "orderCreated": "Objednávka vytvorená",
+    "failedToCreateOrder": "Nepodarilo sa vytvoriť objednávku",
+    "orderUpdated": "Objednávka aktualizovaná",
+    "failedToUpdateOrder": "Nepodarilo sa aktualizovať objednávku",
+    "titleLabel": "Názov",
+    "titlePlaceholder": "Názov objednávky",
+    "notesLabel": "Poznámky",
+    "notesPlaceholder": "Doplňujúce poznámky...",
+    "currencyLabel": "Mena",
+    "dueDateLabel": "Termín",
+    "companyLabel": "Firma",
+    "companyPlaceholder": "Vybrať firmu",
+    "contactLabel": "Kontakt",
+    "contactPlaceholder": "Vybrať kontakt",
+    "dealLabel": "Deal",
+    "dealPlaceholder": "Vybrať obchod",
+    "createOrderDescription": "Pridajte novú objednávku do pracovného priestoru.",
+    "noDueDate": "Bez termínu",
+    "overdue": "Po termíne",
+    "dueToday": "Dnes",
+    "dueTomorrow": "Zajtra",
+    "dueInDays": "Za {days} dní",
+    "assignee": "Zodpovedná osoba",
+    "unassigned": "Nepriradené",
+    "assigneeUpdated": "Zodpovedná osoba aktualizovaná",
+    "assigneeUpdateFailed": "Nepodarilo sa aktualizovať zodpovednú osobu",
+    "status": {
+      "draft": "Koncept",
+      "confirmed": "Potvrdená",
+      "in_progress": "V procese",
+      "completed": "Dokončená",
+      "cancelled": "Zrušená"
+    },
+    "communicationState": {
+      "not_sent": "Neodoslaná",
+      "sent": "Odoslaná",
+      "acknowledged": "Potvrdená zákazníkom"
+    },
+    "tabs": {
+      "overview": "Prehľad",
+      "items": "Položky",
+      "activity": "Aktivita",
+      "assignments": "Priradenia"
+    },
+    "items": {
+      "title": "Položky objednávky",
+      "addItem": "Pridať položku",
+      "description": "Popis",
+      "quantity": "Mn.",
+      "unitPrice": "Jedn. cena",
+      "discount": "Zľava %",
+      "tax": "DPH %",
+      "lineTotal": "Spolu",
+      "orderTotal": "Celková suma",
+      "noItems": "Zatiaľ žiadne položky",
+      "noItemsDescription": "Pridajte položky k tejto objednávke.",
+      "itemAdded": "Položka pridaná",
+      "itemUpdated": "Položka aktualizovaná",
+      "itemDeleted": "Položka odstránená",
+      "failedToAddItem": "Nepodarilo sa pridať položku",
+      "failedToDeleteItem": "Nepodarilo sa odstrániť položku",
+      "descriptionPlaceholder": "Popis položky",
+      "pricePlaceholder": "0,00"
+    },
+    "lifecycle": {
+      "markConfirmed": "Označiť ako potvrdená",
+      "markInProgress": "Označiť ako v procese",
+      "markCompleted": "Označiť ako dokončená",
+      "markCancelled": "Zrušiť objednávku",
+      "markDraft": "Vrátiť do konceptu",
+      "statusUpdated": "Stav aktualizovaný",
+      "failedToUpdateStatus": "Nepodarilo sa aktualizovať stav"
+    },
+    "communication": {
+      "markSent": "Označiť ako odoslanú",
+      "markAcknowledged": "Označiť ako potvrdenú zákazníkom",
+      "stateUpdated": "Stav komunikácie aktualizovaný",
+      "failedToUpdateState": "Nepodarilo sa aktualizovať stav komunikácie"
+    },
+    "emptyState": {
+      "heading": "Zatiaľ žiadne objednávky",
+      "description": "Objednávky sledujú vaše komerčné záväzky — od konceptu po doručenie."
     }
   }
 }

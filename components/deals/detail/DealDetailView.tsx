@@ -23,7 +23,7 @@ import { resolveDealPreparation, type PrepItem } from "@/lib/deals/preparation";
 import { resolveDealStory } from "@/lib/deals/story";
 import { resolveDealContext } from "@/lib/deals/context";
 
-import { User, Clock, CheckSquare, FileText, LucideIcon, Users, CalendarDays, TrendingUp } from "lucide-react";
+import { User, Clock, CheckSquare, FileText, LucideIcon, Users, CalendarDays, TrendingUp, ShoppingBag } from "lucide-react";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 
@@ -40,6 +40,9 @@ import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
 import type { WorkspaceTeam } from "@/types/organization";
 import type { WorkspaceMember } from "@/types/task";
+import { cn } from "@/lib/utils";
+import { ORDER_STATUS_STYLES } from "@/lib/orders/styles";
+import { formatOrderAmount, computeOrderTotal, type Order } from "@/types/order";
 
 const PREP_ICONS: Record<PrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -69,6 +72,7 @@ type Props = {
   attachments: WorkspaceAttachment[];
   teams: WorkspaceTeam[];
   members: WorkspaceMember[];
+  orders: Order[];
 };
 
 export default function DealDetailView({
@@ -84,9 +88,11 @@ export default function DealDetailView({
   attachments,
   teams,
   members,
+  orders,
 }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
+  const tOrders = useTranslations("orders");
   const [editOpen, setEditOpen] = useState(false);
   const [localTasks, setLocalTasks] = useState(tasks);
 
@@ -284,6 +290,57 @@ export default function DealDetailView({
             description={t("contextEmptyDescription")}
           />
         ),
+    },
+    {
+      id: "orders",
+      label: t("tabOrders"),
+      badge: orders.length || undefined,
+      content: orders.length === 0 ? (
+        <GunimiEmptyState
+          icon={ShoppingBag}
+          title={t("ordersEmpty")}
+          description={t("ordersEmptyDescription")}
+        />
+      ) : (
+        <div className="overflow-hidden overflow-x-auto rounded-2xl border border-white/[0.06] bg-[#080C14]">
+          <table className="w-full min-w-[480px] text-sm">
+            <tbody className="divide-y divide-white/[0.03]">
+              {orders.map((order) => {
+                const total = order.items ? computeOrderTotal(order.items) : null;
+                return (
+                  <tr
+                    key={order.id}
+                    className="group cursor-pointer transition-colors hover:bg-white/[0.02]"
+                    onClick={() => router.push(`/dashboard/orders/${order.id}`)}
+                  >
+                    <td className="px-4 py-3">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="font-medium text-white/90 group-hover:text-white">
+                          {order.title}
+                        </span>
+                        <span className="text-[11px] text-zinc-600">{order.number}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={cn(
+                          "inline-flex w-fit rounded-full border px-2 py-0.5 text-[10px] font-medium",
+                          ORDER_STATUS_STYLES[order.status] ?? ORDER_STATUS_STYLES.draft
+                        )}
+                      >
+                        {tOrders(`status.${order.status}`)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right tabular-nums text-white/60 text-xs">
+                      {total !== null ? formatOrderAmount(total, order.currency) : "—"}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ),
     },
   ];
 

@@ -608,6 +608,9 @@
     "tabHistory": "History",
     "tabWork": "Work",
     "tabContext": "Context",
+    "tabOrders": "Orders",
+    "ordersEmpty": "No orders yet",
+    "ordersEmptyDescription": "Orders linked to this company will appear here.",
     "workspaceTabsLabel": "Company workspace sections",
     "contextSectionContacts": "Key Contacts",
     "contextLabelContact": "Contact",
@@ -772,6 +775,9 @@
     "tabHistory": "History",
     "tabWork": "Work",
     "tabContext": "Context",
+    "tabOrders": "Orders",
+    "ordersEmpty": "No orders linked",
+    "ordersEmptyDescription": "Orders linked to this deal will appear here.",
     "workspaceType": "Deal",
     "workspaceTabsLabel": "Deal workspace navigation",
     "situationBadge": "Today's Situation",
@@ -1062,11 +1068,19 @@
     "healthStatusEngaged": "Engaged",
     "healthStatusNeedsAttention": "Needs attention",
     "healthStatusNeverContacted": "Never contacted",
+    "lastContactLabel": "Last contact",
+    "lastContactToday": "Today",
+    "lastContactYesterday": "Yesterday",
+    "lastContactDaysAgo": "{days}d ago",
+    "lastContactNever": "Never",
     "workspaceTabsLabel": "Contact workspace navigation",
     "tabOverview": "Overview",
     "tabHistory": "History",
     "tabWork": "Work",
     "tabContext": "Context",
+    "tabOrders": "Orders",
+    "ordersEmpty": "No orders linked",
+    "ordersEmptyDescription": "Orders linked to this contact will appear here.",
     "decisionSuggestedLabel": "Suggested Next Step",
     "decisionEmptyLabel": "Relationship in good standing",
     "decisionEmptyReason": "No immediate action needed",
@@ -1821,7 +1835,11 @@
     "viewCompany": "View Company",
     "followUpPrefix": "Follow up:",
     "emailNotePrefix": "Email:",
-    "pageTitle": "Email"
+    "pageTitle": "Email",
+    "createOrder": "Create Order",
+    "orderCreated": "Order created",
+    "failedToCreateOrder": "Failed to create order",
+    "orderPrefix": "Order:"
   },
   "workspace": {
     "createWorkspace": "Create Workspace",
@@ -1882,6 +1900,7 @@
     "exportContacts": "Contacts",
     "exportDeals": "Deals",
     "exportTasks": "Tasks",
+    "exportOrders": "Orders",
     "pageTitle": "Import & Export"
   },
   "onboarding": {
@@ -1959,6 +1978,15 @@
     "createDealSubmitKey": "CREATE",
     "createDealSuccess": "Deal created",
     "createDealError": "Failed to create deal. Please try again.",
+    "createOrderPlaceholder": "Order title...",
+    "createOrderHint": "Type a title and press Enter to create",
+    "createOrderBackHint": "ESC to cancel",
+    "createOrderSubmitPrefix": "Create order",
+    "createOrderSubmitHint": "Add to workspace orders",
+    "createOrderSubmitKey": "CREATE",
+    "createOrderNotesPlaceholder": "Notes (optional)",
+    "createOrderSuccess": "Order created",
+    "createOrderError": "Failed to create order. Please try again.",
     "escLabel": "ESC",
     "cognition": "Gunimi Cognition",
     "thinkingCurrentThought": "Processing your request...",
@@ -2014,6 +2042,10 @@
       "createDeal": {
         "title": "Create Deal",
         "description": "Add a new deal to the pipeline"
+      },
+      "createOrder": {
+        "title": "Create Order",
+        "description": "Add a new order to the workspace"
       }
     },
     "a11yNoResults": "No results found",
@@ -2098,6 +2130,7 @@
     "crm": "CRM",
     "companies": "Companies",
     "deals": "Deals",
+    "orders": "Orders",
     "tasks": "Tasks",
     "notes": "Notes",
     "email": "Email",
@@ -2186,7 +2219,10 @@
       "task_due_today": "Due today",
       "task_overdue": "Task overdue",
       "task_blocked": "Task blocked",
-      "task_waiting_customer": "Waiting on customer"
+      "task_waiting_customer": "Waiting on customer",
+      "order_overdue": "Order overdue",
+      "order_draft_stale": "Order stuck in draft",
+      "order_not_acknowledged": "Order awaiting acknowledgement"
     }
   },
   "notifications": {
@@ -2382,6 +2418,18 @@
           "title": "Task overdue",
           "context": "Follow-up: Nova Systems · 2 days late",
           "detail": "3 related tasks pending"
+        },
+        {
+          "dot": "red",
+          "title": "Order not acknowledged",
+          "context": "Order #31 · Nexo Corp · sent 12 days ago",
+          "detail": "No response — follow up recommended"
+        },
+        {
+          "dot": "amber",
+          "title": "Order still in draft",
+          "context": "Order #47 · Acme Corp · created 4 days ago",
+          "detail": "Not sent — due date approaching"
         }
       ]
     },
@@ -3849,6 +3897,102 @@
       "blocked": "Blocked",
       "completed": "Completed",
       "cancelled": "Cancelled"
+    }
+  },
+  "orders": {
+    "pageTitle": "Orders",
+    "backToOrders": "Back to Orders",
+    "newOrder": "New Order",
+    "noOrders": "No orders yet",
+    "noOrdersDescription": "Create your first order or convert a deal.",
+    "createOrder": "Create Order",
+    "editOrder": "Edit Order",
+    "deleteOrder": "Delete Order",
+    "confirmDeleteOrder": "This will permanently delete the order and all its items.",
+    "orderDeleted": "Order deleted",
+    "failedToDeleteOrder": "Failed to delete order",
+    "orderCreated": "Order created",
+    "failedToCreateOrder": "Failed to create order",
+    "orderUpdated": "Order updated",
+    "failedToUpdateOrder": "Failed to update order",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Order title",
+    "notesLabel": "Notes",
+    "notesPlaceholder": "Additional notes...",
+    "currencyLabel": "Currency",
+    "dueDateLabel": "Due Date",
+    "companyLabel": "Company",
+    "companyPlaceholder": "Select company",
+    "contactLabel": "Contact",
+    "contactPlaceholder": "Select contact",
+    "dealLabel": "Deal",
+    "dealPlaceholder": "Select deal",
+    "createOrderDescription": "Add a new order to your workspace.",
+    "noDueDate": "No due date",
+    "overdue": "Overdue",
+    "dueToday": "Due today",
+    "dueTomorrow": "Due tomorrow",
+    "dueInDays": "Due in {days} days",
+    "assignee": "Assignee",
+    "unassigned": "Unassigned",
+    "assigneeUpdated": "Assignee updated",
+    "assigneeUpdateFailed": "Failed to update assignee",
+    "status": {
+      "draft": "Draft",
+      "confirmed": "Confirmed",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "communicationState": {
+      "not_sent": "Not Sent",
+      "sent": "Sent",
+      "acknowledged": "Acknowledged"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "items": "Items",
+      "activity": "Activity",
+      "assignments": "Assignments"
+    },
+    "items": {
+      "title": "Order Items",
+      "addItem": "Add Item",
+      "description": "Description",
+      "quantity": "Qty",
+      "unitPrice": "Unit Price",
+      "discount": "Discount %",
+      "tax": "Tax %",
+      "lineTotal": "Total",
+      "orderTotal": "Order Total",
+      "noItems": "No items yet",
+      "noItemsDescription": "Add items to this order.",
+      "itemAdded": "Item added",
+      "itemUpdated": "Item updated",
+      "itemDeleted": "Item removed",
+      "failedToAddItem": "Failed to add item",
+      "failedToDeleteItem": "Failed to remove item",
+      "descriptionPlaceholder": "Item description",
+      "pricePlaceholder": "0.00"
+    },
+    "lifecycle": {
+      "markConfirmed": "Mark as Confirmed",
+      "markInProgress": "Mark as In Progress",
+      "markCompleted": "Mark as Completed",
+      "markCancelled": "Cancel Order",
+      "markDraft": "Revert to Draft",
+      "statusUpdated": "Status updated",
+      "failedToUpdateStatus": "Failed to update status"
+    },
+    "communication": {
+      "markSent": "Mark as Sent",
+      "markAcknowledged": "Mark as Acknowledged",
+      "stateUpdated": "Communication state updated",
+      "failedToUpdateState": "Failed to update state"
+    },
+    "emptyState": {
+      "heading": "No orders yet",
+      "description": "Orders track your commercial commitments — from draft to delivery."
     }
   }
 }

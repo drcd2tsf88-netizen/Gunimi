@@ -12,6 +12,7 @@ import {
   FileText,
   Users,
   CalendarDays,
+  ShoppingBag,
   type LucideIcon,
 } from "lucide-react";
 
@@ -49,6 +50,9 @@ import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPan
 import type { WorkspaceTeam } from "@/types/organization";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
+import { cn } from "@/lib/utils";
+import { ORDER_STATUS_STYLES } from "@/lib/orders/styles";
+import { formatOrderAmount, computeOrderTotal, type Order } from "@/types/order";
 
 const PREP_ICONS: Record<CompanyPrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -72,6 +76,7 @@ type Props = {
   notes: CompanyNote[];
   emails: EmailThread[];
   tasks: CompanyTask[];
+  orders: Order[];
   allTags: WorkspaceTag[];
   entityTags: WorkspaceTag[];
   attachments: WorkspaceAttachment[];
@@ -86,6 +91,7 @@ export default function CompanyDetailView({
   notes,
   emails,
   tasks,
+  orders,
   allTags,
   entityTags,
   attachments,
@@ -93,6 +99,7 @@ export default function CompanyDetailView({
 }: Props) {
   const router = useRouter();
   const t = useTranslations("companies");
+  const tOrders = useTranslations("orders");
   const [editOpen, setEditOpen] = useState(false);
   const [addContactOpen, setAddContactOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
@@ -284,6 +291,57 @@ export default function CompanyDetailView({
               description={t("contextEmptyDescription")}
             />
           )}
+        </div>
+      ),
+    },
+    {
+      id: "orders",
+      label: t("tabOrders"),
+      badge: orders.length || undefined,
+      content: orders.length === 0 ? (
+        <GunimiEmptyState
+          icon={ShoppingBag}
+          title={t("ordersEmpty")}
+          description={t("ordersEmptyDescription")}
+        />
+      ) : (
+        <div className="overflow-hidden overflow-x-auto rounded-2xl border border-white/[0.06] bg-[#080C14]">
+          <table className="w-full min-w-[480px] text-sm">
+            <tbody className="divide-y divide-white/[0.03]">
+              {orders.map((order) => {
+                const total = order.items ? computeOrderTotal(order.items) : null;
+                return (
+                  <tr
+                    key={order.id}
+                    className="group cursor-pointer transition-colors hover:bg-white/[0.02]"
+                    onClick={() => router.push(`/dashboard/orders/${order.id}`)}
+                  >
+                    <td className="px-4 py-3">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="font-medium text-white/90 group-hover:text-white">
+                          {order.title}
+                        </span>
+                        <span className="text-[11px] text-zinc-600">{order.number}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={cn(
+                          "inline-flex w-fit rounded-full border px-2 py-0.5 text-[10px] font-medium",
+                          ORDER_STATUS_STYLES[order.status] ?? ORDER_STATUS_STYLES.draft
+                        )}
+                      >
+                        {tOrders(`status.${order.status}`)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right tabular-nums text-white/60 text-xs">
+                      {total !== null ? formatOrderAmount(total, order.currency) : "—"}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       ),
     },

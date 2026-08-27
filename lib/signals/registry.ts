@@ -452,6 +452,44 @@ export const SIGNAL_REGISTRY: Record<SignalType, SignalTypeDefinition> = {
     visibleOn: [],
     taskLevelDedup: false,
   },
+
+  // ─── Category 7 — Order Signals ────────────────────────────────────────────
+
+  order_overdue: {
+    tier: 1,
+    severity: "critical",
+    defaultConfidence: "high",
+    evidenceKey: "signals.order_overdue.evidence",
+    actionType: "signals.order_overdue.action",
+    resolutionCondition: "Order completed, cancelled, or due date updated to future.",
+    ttlDays: 60,
+    visibleOn: ["today_focus", "today_attention", "workspace_decision", "workspace_situation"],
+    taskLevelDedup: false,
+  },
+
+  order_draft_stale: {
+    tier: 2,
+    severity: "warning",
+    defaultConfidence: "medium",
+    evidenceKey: "signals.order_draft_stale.evidence",
+    actionType: "signals.order_draft_stale.action",
+    resolutionCondition: "Order status changed from draft, or updated within last 7 days.",
+    ttlDays: 30,
+    visibleOn: ["today_attention", "workspace_situation"],
+    taskLevelDedup: false,
+  },
+
+  order_not_acknowledged: {
+    tier: 2,
+    severity: "warning",
+    defaultConfidence: "high",
+    evidenceKey: "signals.order_not_acknowledged.evidence",
+    actionType: "signals.order_not_acknowledged.action",
+    resolutionCondition: "Communication state changed to acknowledged.",
+    ttlDays: 30,
+    visibleOn: ["today_attention", "workspace_situation"],
+    taskLevelDedup: false,
+  },
 };
 
 /** Returns true if the given signal type is in scope for Open Alpha (Categories 1–5). */

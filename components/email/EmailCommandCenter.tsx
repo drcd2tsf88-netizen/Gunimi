@@ -15,6 +15,7 @@ import {
   FileText,
   Mail,
   MessageSquare,
+  ShoppingBag,
   Sparkles,
   TrendingUp,
   User,
@@ -33,6 +34,7 @@ import type { EmailConnection, EmailThread } from "@/types/email";
 
 import { createTask } from "@/server/actions/tasks/createTask";
 import { createNote } from "@/server/actions/notes/createNote";
+import { createOrder } from "@/server/actions/orders/createOrder";
 
 // Module-level time reference — avoids calling Date.now() during render
 const PAGE_NOW = new Date();
@@ -100,6 +102,7 @@ type ThreadDetailPanelProps = {
 function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
   const [creatingTask, setCreatingTask] = useState(false);
   const [creatingNote, setCreatingNote] = useState(false);
+  const [creatingOrder, setCreatingOrder] = useState(false);
 
   async function handleCreateTask() {
     setCreatingTask(true);
@@ -130,6 +133,22 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
       }
     } finally {
       setCreatingNote(false);
+    }
+  }
+
+  async function handleCreateOrder() {
+    setCreatingOrder(true);
+    try {
+      const title = `${t("orderPrefix")} ${thread.subject ?? thread.contact?.name ?? t("noSubject")}`;
+      const contactId = thread.contact?.id ?? undefined;
+      const result = await createOrder({ title, contact_id: contactId, currency: "EUR" });
+      if (result) {
+        toast.success(t("orderCreated"));
+      } else {
+        toast.error(t("failedToCreateOrder"));
+      }
+    } finally {
+      setCreatingOrder(false);
     }
   }
 
@@ -282,6 +301,15 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
             >
               <FileText size={13} />
               {t("createNote")}
+            </GunimiButton>
+            <GunimiButton
+              variant="secondary"
+              loading={creatingOrder}
+              onClick={handleCreateOrder}
+              className="gap-2 text-xs"
+            >
+              <ShoppingBag size={13} />
+              {t("createOrder")}
             </GunimiButton>
             {thread.contact && (
               <Link href={`/dashboard/contacts/${thread.contact.id}`}>

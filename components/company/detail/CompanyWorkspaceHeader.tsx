@@ -112,11 +112,6 @@ export default function CompanyWorkspaceHeader({
               <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-medium", HEALTH_STYLES[healthKey])}>
                 {t(healthLabelKey)}
               </span>
-              {company.status && (
-                <span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[10px] capitalize text-zinc-500">
-                  {company.status}
-                </span>
-              )}
             </div>
 
             {/* Industry · Country */}

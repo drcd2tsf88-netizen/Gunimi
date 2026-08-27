@@ -38,12 +38,16 @@ export type SignalType =
   | "email_important_unanswered"
   | "meeting_approaching"
   | "meeting_no_preparation"
-  // Category 6 — Memory Signals (post-Alpha, defined for type completeness)
+  // Category 6 — Order Signals
+  | "order_overdue"
+  | "order_draft_stale"
+  | "order_not_acknowledged"
+  // Category 7 — Memory Signals (post-Alpha, defined for type completeness)
   | "relationship_milestone"
   | "ai_pattern_detected"
   | "memory_reminder";
 
-export type EntityType = "deal" | "contact" | "company" | "task" | "email";
+export type EntityType = "deal" | "contact" | "company" | "task" | "email" | "order";
 
 /** Priority tier (1 = highest). Permanent for the lifetime of a signal type. */
 export type SignalTier = 1 | 2 | 3 | 4;
@@ -67,6 +71,7 @@ export type SignalProducer =
   | "company_resolver"
   | "task_engine"
   | "email_engine"
+  | "order_resolver"
   | "ai_core"; // post-Alpha
 
 /** Authorized signal consumers (Chapter 7). */

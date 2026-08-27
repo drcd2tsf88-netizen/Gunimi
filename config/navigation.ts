@@ -10,6 +10,7 @@ import {
   Mail,
   Radio,
   Settings,
+  ShoppingBag,
   StickyNote,
   TrendingUp,
   Users,
@@ -23,6 +24,7 @@ export type NavItemId =
   | "crm"
   | "companies"
   | "deals"
+  | "orders"
   | "tasks"
   | "notes"
   | "email"
@@ -95,7 +97,8 @@ export const NAV_GROUPS: NavGroup[] = [
     id: "sales",
     labelKey: "groupSales",
     items: [
-      { id: "deals", labelKey: "deals", href: "/dashboard/deals", icon: TrendingUp },
+      { id: "deals",  labelKey: "deals",  href: "/dashboard/deals",  icon: TrendingUp  },
+      { id: "orders", labelKey: "orders", href: "/dashboard/orders", icon: ShoppingBag },
     ],
   },
   {

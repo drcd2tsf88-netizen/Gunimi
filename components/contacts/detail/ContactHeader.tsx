@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { ArrowLeft, Mail, Pencil, Phone, Trash2, Building2 } from "lucide-react";
+import { ArrowLeft, Mail, Pencil, Phone, Trash2, Building2, Clock, User } from "lucide-react";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +45,14 @@ function computeHealth(contact: Contact, t: (k: string) => string): { level: Hea
 
 function contactInitials(name: string) {
   return name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
+}
+
+function lastContactText(lastContactedAt: string | undefined, t: (k: string, p?: Record<string, string | number>) => string): string {
+  if (!lastContactedAt) return t("lastContactNever");
+  const days = Math.floor((Date.now() - new Date(lastContactedAt).getTime()) / MS_PER_DAY);
+  if (days === 0) return t("lastContactToday");
+  if (days === 1) return t("lastContactYesterday");
+  return t("lastContactDaysAgo", { days });
 }
 
 type Props = {
@@ -111,11 +119,6 @@ export default function ContactHeader({ contact, allTags, entityTags }: Props) {
               <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-medium", HEALTH_STYLES[health.level])}>
                 {health.label}
               </span>
-              {contact.status && (
-                <span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[10px] capitalize text-zinc-500">
-                  {contact.status}
-                </span>
-              )}
             </div>
 
             {/* Position · Company */}
@@ -140,6 +143,20 @@ export default function ContactHeader({ contact, allTags, entityTags }: Props) {
                 )}
               </div>
             )}
+
+            {/* Last contact + Owner */}
+            <div className="flex flex-wrap items-center gap-3 text-[11px] text-zinc-500">
+              <span className="flex items-center gap-1">
+                <Clock size={10} className="text-zinc-600" />
+                {t("lastContactLabel")} · {lastContactText(contact.last_contacted_at, t)}
+              </span>
+              {contact.owner?.full_name && (
+                <span className="flex items-center gap-1">
+                  <User size={10} className="text-zinc-600" />
+                  {contact.owner.full_name}
+                </span>
+              )}
+            </div>
 
             {/* Contact chips */}
             <div className="flex flex-wrap items-center gap-2">
