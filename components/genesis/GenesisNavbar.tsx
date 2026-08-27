@@ -9,20 +9,20 @@ import { AiCore } from "./AiCore";
 
 const LOCALES = ["en", "sk", "cs"] as const;
 
+function switchLocaleCookie(locale: string) {
+  document.cookie = `GUNIMI_LOCALE=${locale};path=/;max-age=31536000;SameSite=Lax`;
+  window.location.reload();
+}
+
 function PublicLocaleSwitcher() {
   const current = useLocale();
-
-  function switchLocale(locale: string) {
-    document.cookie = `GUNIMI_LOCALE=${locale};path=/;max-age=31536000;SameSite=Lax`;
-    window.location.reload();
-  }
 
   return (
     <div className="flex items-center gap-0.5">
       {LOCALES.map((locale, i) => (
         <span key={locale} className="flex items-center">
           <button
-            onClick={() => switchLocale(locale)}
+            onClick={() => switchLocaleCookie(locale)}
             className={cn(
               "rounded px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-[0.08em] transition-colors duration-150",
               current === locale

@@ -22,7 +22,7 @@ export async function getCompanyTasks(companyId: string): Promise<CompanyTask[]>
     const supabase = await createClient();
 
     const { data: contacts, error: contactsError } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select("id")
       .eq("workspace_id", workspace.id)
       .eq("company_id", companyId);

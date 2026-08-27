@@ -78,7 +78,7 @@ export async function POST(req: Request) {
 
     if (inserts.length > 0) {
       const { error: insertError } = await supabaseAdmin
-        .from("workspace_contacts")
+        .from("workspace_people")
         .insert(inserts);
 
       if (insertError) return errorResponse("Import failed", 500);

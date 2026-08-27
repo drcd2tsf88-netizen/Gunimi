@@ -39,7 +39,7 @@ export async function getAIContacts(): Promise<AIContact[]> {
 
     const supabase = await createClient();
     const { data, error } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select(
         "id, name, email, phone, position, company_name, status, last_contacted_at, created_at"
       )

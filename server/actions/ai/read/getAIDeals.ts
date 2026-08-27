@@ -76,7 +76,7 @@ export async function getAIDeals(): Promise<AIDeal[]> {
     const { data, error } = await supabase
       .from("workspace_deals")
       .select(
-        "id, title, stage, value, probability, updated_at, expected_close_date, company:workspace_companies(name), contact:workspace_contacts(name)"
+        "id, title, stage, value, probability, updated_at, expected_close_date, company:workspace_companies(name), contact:workspace_people(name)"
       )
       .eq("workspace_id", workspace.id)
       .neq("stage", "won")

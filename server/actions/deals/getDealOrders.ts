@@ -18,7 +18,7 @@ export async function getDealOrders(dealId: string): Promise<Order[]> {
         status, communication_state, due_date, created_at, updated_at,
         company_id, contact_id, deal_id,
         company:workspace_companies(id, name),
-        contact:workspace_contacts(id, name, email)
+        contact:workspace_people(id, name, email)
       `)
       .eq("workspace_id", workspace.id)
       .eq("deal_id", dealId)

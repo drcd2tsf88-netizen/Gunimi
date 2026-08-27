@@ -17,12 +17,16 @@ export type WorkspaceUsageStat = {
   totalTokens: number;
   costUsd: number;
   lastActivity: string | null;
+  todayTokens: number;
+  dailyLimit: number;
+  isSuspended: boolean;
 };
 
 export type UserUsageStat = {
   userId: string;
   userName: string;
   userEmail: string;
+  workspaceId: string;
   workspaceName: string;
   requests: number;
   totalTokens: number;
@@ -114,12 +118,30 @@ export async function getAIUsageStats(): Promise<AIUsageStats> {
     const logs = rawLogs as RawLog[];
     if (logs.length === 0) return { ...EMPTY, generatedAt: new Date().toISOString() };
 
-    // Fetch workspace names
+    // Fetch workspace names + AI controls
     const wsIds = [...new Set(logs.map((l) => l.workspace_id).filter((id): id is string => !!id))];
     const { data: workspaceRows } = wsIds.length
-      ? await supabaseAdmin.from("workspaces").select("id, name").in("id", wsIds)
+      ? await supabaseAdmin
+          .from("workspaces")
+          .select("id, name, ai_suspended, ai_daily_token_limit")
+          .in("id", wsIds)
       : { data: [] };
-    const wsNameMap = new Map((workspaceRows ?? []).map((w: { id: string; name: string }) => [w.id, w.name]));
+    const wsNameMap = new Map(
+      (workspaceRows ?? []).map((w: { id: string; name: string }) => [w.id, w.name])
+    );
+    const wsControlMap = new Map(
+      (workspaceRows ?? []).map(
+        (w: { id: string; ai_suspended: boolean | null; ai_daily_token_limit: number | null }) => [
+          w.id,
+          { isSuspended: w.ai_suspended === true, dailyLimit: w.ai_daily_token_limit ?? 100_000 },
+        ]
+      )
+    );
+
+    // Compute today's start for per-workspace today-token aggregation
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayStartIso = todayStart.toISOString();
 
     // Fetch user profiles
     const userIds = [...new Set(logs.map((l) => l.user_id).filter((id): id is string => !!id))];
@@ -160,10 +182,13 @@ export async function getAIUsageStats(): Promise<AIUsageStats> {
       const cur = wsAgg.get(key);
       const tokens = (l.input_tokens ?? 0) + (l.output_tokens ?? 0);
       const cost = Number(l.estimated_cost_usd ?? 0);
+      const isToday = l.created_at >= todayStartIso;
+      const controls = wsControlMap.get(key) ?? { isSuspended: false, dailyLimit: 100_000 };
       if (cur) {
         cur.requests++;
         cur.totalTokens += tokens;
         cur.costUsd += cost;
+        if (isToday) cur.todayTokens += tokens;
         if (!cur.lastActivity || l.created_at > cur.lastActivity) cur.lastActivity = l.created_at;
       } else {
         wsAgg.set(key, {
@@ -173,6 +198,9 @@ export async function getAIUsageStats(): Promise<AIUsageStats> {
           totalTokens: tokens,
           costUsd: cost,
           lastActivity: l.created_at,
+          todayTokens: isToday ? tokens : 0,
+          dailyLimit: controls.dailyLimit,
+          isSuspended: controls.isSuspended,
         });
       }
     }
@@ -198,6 +226,7 @@ export async function getAIUsageStats(): Promise<AIUsageStats> {
           userId: uid,
           userName: profile?.name ?? "Unknown",
           userEmail: profile?.email ?? "",
+          workspaceId: wsId,
           workspaceName: wsNameMap.get(wsId) ?? "Unknown",
           requests: 1,
           totalTokens: tokens,
@@ -227,7 +256,6 @@ export async function getAIUsageStats(): Promise<AIUsageStats> {
 
     // — Cost projection —
     const now = new Date();
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const sevenDaysAgo = new Date(now);
     sevenDaysAgo.setDate(now.getDate() - 7);
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);

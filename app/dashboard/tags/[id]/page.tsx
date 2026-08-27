@@ -17,6 +17,7 @@ import { TAG_COLOR_CLASSES } from "@/types/tag";
 import GunimiSection from "@/components/layout/GunimiSection";
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
+import RefreshTagInsightButton from "@/components/tags/RefreshTagInsightButton";
 import type { TagContact, TagCompany, TagDeal, TagTask, TagNote } from "@/server/actions/tags/getTagWithEntities";
 
 type Props = { params: Promise<{ id: string }> };
@@ -223,10 +224,11 @@ async function AiInsightCard({ tagId }: { tagId: string }) {
         aria-hidden
         className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-violet-600/10 blur-3xl"
       />
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-[10px] font-semibold tracking-widest text-violet-400/80 uppercase">
+      <div className="mb-3 flex items-center gap-2">
+        <span className="flex-1 text-[10px] font-semibold tracking-widest text-violet-400/80 uppercase">
           {t("aiInsightTitle")}
         </span>
+        <RefreshTagInsightButton tagId={tagId} />
       </div>
       <p className="text-sm leading-relaxed text-white/60">{summary}</p>
     </div>

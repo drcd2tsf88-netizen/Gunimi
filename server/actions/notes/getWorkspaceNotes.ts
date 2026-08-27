@@ -52,7 +52,7 @@ export async function getWorkspaceNotes(): Promise<WorkspaceNote[]> {
 
       contactIds.length > 0
         ? supabaseAdmin
-            .from("workspace_contacts")
+            .from("workspace_people")
             .select("id, first_name, last_name")
             .in("id", contactIds)
         : { data: [], error: null },

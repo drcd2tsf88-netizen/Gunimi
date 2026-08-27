@@ -8,6 +8,7 @@ import { buildFocusedContext } from "@/lib/ai/context/buildFocusedContext";
 import { routeAgent } from "@/lib/ai/agents/route-agent";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logAIUsage } from "@/lib/ai/logUsage";
+import { checkAIBudget } from "@/lib/ai/checkAIBudget";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -49,14 +50,28 @@ export async function POST(req: Request) {
 
     if (!message.trim()) return errorResponse("Message required", 400);
 
+    // Budget guard — must pass before any GPT call
+    const workspaceEarly = await getCurrentWorkspace();
+    if (workspaceEarly?.id) {
+      const budget = await checkAIBudget(workspaceEarly.id);
+      if (!budget.allowed) {
+        return errorResponse(
+          budget.reason === "workspace_suspended"
+            ? "AI is currently suspended for this workspace."
+            : "Daily AI token limit reached. Try again tomorrow.",
+          429
+        );
+      }
+    }
+
     // Derive intent for focused data fetch
     const intent = routeAgent(message);
 
-    // Fetch overview context + focused live data + workspace in parallel
-    const [ctx, focusedContext, workspace] = await Promise.all([
+    // Fetch overview context + focused live data in parallel (workspace already resolved above)
+    const workspace = workspaceEarly;
+    const [ctx, focusedContext] = await Promise.all([
       getWorkspaceContext(),
       buildFocusedContext(intent.name, message),
-      getCurrentWorkspace(),
     ]);
 
     // Build system prompt: baseline overview + focused live data injected

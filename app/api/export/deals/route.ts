@@ -20,7 +20,7 @@ export async function GET() {
       .select(
         `id, title, value, stage, probability, description, expected_close_date, created_at,
          company:workspace_companies(name),
-         contact:workspace_contacts(name)`
+         contact:workspace_people(name)`
       )
       .eq("workspace_id", workspace.id)
       .order("created_at", { ascending: false });

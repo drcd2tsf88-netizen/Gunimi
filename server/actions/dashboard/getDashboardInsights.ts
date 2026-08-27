@@ -68,7 +68,7 @@ export async function getDashboardInsights(): Promise<DashboardInsights> {
         .limit(3),
 
       supabaseAdmin
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id, name, company_name, last_contacted_at")
         .eq("workspace_id", workspace.id)
         .or(`last_contacted_at.is.null,last_contacted_at.lt.${outreachThreshold}`)

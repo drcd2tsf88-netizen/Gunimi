@@ -29,7 +29,7 @@ export async function relationshipStaleScan(context: ScanContext): Promise<ScanR
   const startMs = Date.now();
 
   let query = supabaseAdmin
-    .from("workspace_contacts")
+    .from("workspace_people")
     .select("id, last_contacted_at, created_at, email, phone, company_id")
     .eq("workspace_id", context.workspaceId)
     .order("id")

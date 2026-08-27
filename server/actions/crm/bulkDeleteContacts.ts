@@ -18,7 +18,7 @@ export async function bulkDeleteContacts(ids: string[]): Promise<{ deleted: numb
     const supabase = await createClient();
 
     const { error, count } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .delete({ count: "exact" })
       .in("id", ids)
       .eq("workspace_id", workspace.id);

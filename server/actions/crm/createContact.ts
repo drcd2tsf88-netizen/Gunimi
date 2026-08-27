@@ -39,7 +39,7 @@ export async function createContact({ name, email, phone, companyId, companyName
     const cleanPhone = phone ? sanitize(phone) : null;
 
     const { data, error } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .insert({
         workspace_id: workspace.id,
         user_id: user.id,
@@ -58,6 +58,20 @@ export async function createContact({ name, email, phone, companyId, companyName
     if (error || !data) {
       logger.error("[createContact]", error);
       return null;
+    }
+
+    if (companyId) {
+      await supabaseAdmin.from("workspace_relationships").insert({
+        workspace_id: workspace.id,
+        entity_a_type: "person",
+        entity_a_id: data.id,
+        entity_b_type: "company",
+        entity_b_id: companyId,
+        type: "employment",
+        status: "active",
+        source: "created_via_form",
+        created_by: user.id,
+      });
     }
 
     await supabaseAdmin.from("workspace_activity").insert({

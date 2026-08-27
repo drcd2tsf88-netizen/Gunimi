@@ -23,7 +23,7 @@ export async function linkContactToCompany({ contactId, companyId, companyName }
     const supabase = await createClient();
 
     const { data, error } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .update({
         company_id: companyId,
         company_name: companyName,

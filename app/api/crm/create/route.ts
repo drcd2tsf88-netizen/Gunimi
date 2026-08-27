@@ -109,7 +109,7 @@ const {
 } =
   await supabaseAdmin
     .from(
-      "workspace_contacts"
+      "workspace_people"
     )
     .insert({
       workspace_id:

@@ -34,9 +34,9 @@ export async function linkThreadToCrm(
 
   const lowerEmails = participantEmails.map((e) => e.toLowerCase());
 
-  // Exact email match against workspace_contacts
+  // Exact email match against workspace_people
   const { data: contacts } = await supabaseAdmin
-    .from("workspace_contacts")
+    .from("workspace_people")
     .select("id, email")
     .eq("workspace_id", workspaceId)
     .in("email", lowerEmails)

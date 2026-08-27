@@ -43,7 +43,7 @@ export async function updateOrder(
 
     if (input.contact_id) {
       const { data: contact } = await supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id")
         .eq("workspace_id", workspace.id)
         .eq("id", input.contact_id)

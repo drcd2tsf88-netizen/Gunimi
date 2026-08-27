@@ -14,7 +14,7 @@ export async function getCompanyEmails(companyId: string, limit = 8): Promise<Em
       .from("email_threads")
       .select(
         `id, subject, snippet, message_count, participant_emails, last_message_at, has_unread,
-         contact:workspace_contacts(id, name, email),
+         contact:workspace_people(id, name, email),
          company:workspace_companies(id, name)`
       )
       .eq("workspace_id", workspace.id)

@@ -19,13 +19,13 @@ import GunimiTextarea from "@/components/ui/GunimiTextarea";
 import GunimiField from "@/components/ui/GunimiField";
 
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 import {
   Select,
@@ -98,7 +98,7 @@ export default function CreateDealSheet({
 
   function handleClose() {
     resetForm();
-     onOpenChange(false);
+    onOpenChange(false);
   }
 
   async function handleSubmit() {
@@ -162,47 +162,29 @@ export default function CreateDealSheet({
   }
 
   return (
-    <Sheet
+    <Dialog
       open={open}
       onOpenChange={(next) => {
         if (!next) handleClose();
         else onOpenChange(next);
       }}
     >
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>
-            {t("deals.createOpportunity")}
-          </SheetTitle>
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle>{t("deals.createOpportunity")}</DialogTitle>
+          <DialogDescription>{t("deals.commercialPipelineSubtitle")}</DialogDescription>
+        </DialogHeader>
 
-          <SheetDescription>
-            {t("deals.commercialPipelineSubtitle")}
-          </SheetDescription>
-        </SheetHeader>
-
-        {/* FORM */}
-
-        <div
-          className="
-            flex-1
-
-            overflow-y-auto
-
-            px-6
-            py-6
-          "
-        >
+        <div className="mt-4 max-h-[68vh] overflow-y-auto pr-1">
           <div className="grid gap-y-5 sm:grid-cols-2 sm:gap-x-6">
             {/* LEFT COLUMN */}
-
             <div className="space-y-5">
-              <GunimiField
-                label={t("deals.opportunityName")}
-              >
+              <GunimiField label={t("deals.opportunityName")}>
                 <GunimiInput
                   value={title}
                   disabled={loading}
                   onChange={(e) => setTitle(e.target.value)}
+                  autoFocus
                 />
               </GunimiField>
 
@@ -228,19 +210,11 @@ export default function CreateDealSheet({
                   }}
                 >
                   <SelectTrigger>
-                    <SelectValue
-                      placeholder={t(
-                        "deals.selectOrganization"
-                      )}
-                    />
+                    <SelectValue placeholder={t("deals.selectOrganization")} />
                   </SelectTrigger>
-
                   <SelectContent>
                     {companies.map((company) => (
-                      <SelectItem
-                        key={company.id}
-                        value={company.id}
-                      >
+                      <SelectItem key={company.id} value={company.id}>
                         {company.name}
                       </SelectItem>
                     ))}
@@ -259,19 +233,13 @@ export default function CreateDealSheet({
                       placeholder={
                         companyId
                           ? t("deals.selectContact")
-                          : t(
-                              "deals.selectOrganizationFirst"
-                            )
+                          : t("deals.selectOrganizationFirst")
                       }
                     />
                   </SelectTrigger>
-
                   <SelectContent>
                     {filteredContacts.map((contact) => (
-                      <SelectItem
-                        key={contact.id}
-                        value={contact.id}
-                      >
+                      <SelectItem key={contact.id} value={contact.id}>
                         {contact.name}
                       </SelectItem>
                     ))}
@@ -283,16 +251,13 @@ export default function CreateDealSheet({
                 <GunimiTextarea
                   value={description}
                   disabled={loading}
-                  onChange={(e) =>
-                    setDescription(e.target.value)
-                  }
+                  onChange={(e) => setDescription(e.target.value)}
                   className="min-h-[100px]"
                 />
               </GunimiField>
             </div>
 
             {/* RIGHT COLUMN */}
-
             <div className="space-y-5">
               <GunimiField label={t("deals.currency")}>
                 <Select value={currency} onValueChange={setCurrency} disabled={loading}>
@@ -307,9 +272,7 @@ export default function CreateDealSheet({
                 </Select>
               </GunimiField>
 
-              <GunimiField
-                label={t("deals.opportunityValue")}
-              >
+              <GunimiField label={t("deals.opportunityValue")}>
                 <GunimiInput
                   type="number"
                   min="0"
@@ -320,9 +283,7 @@ export default function CreateDealSheet({
                 />
               </GunimiField>
 
-              <GunimiField
-                label={`${t("deals.probability")} — ${probability}%`}
-              >
+              <GunimiField label={`${t("deals.probability")} — ${probability}%`}>
                 <div className="space-y-2 pt-1">
                   <input
                     type="range"
@@ -330,21 +291,10 @@ export default function CreateDealSheet({
                     max="100"
                     value={probability}
                     disabled={loading}
-                    onChange={(e) =>
-                      setProbability(Number(e.target.value))
-                    }
+                    onChange={(e) => setProbability(Number(e.target.value))}
                     className="w-full accent-violet-500"
                   />
-
-                  <div
-                    className="
-                      flex
-                      justify-between
-
-                      text-[10px]
-                      text-zinc-600
-                    "
-                  >
+                  <div className="flex justify-between text-[10px] text-zinc-600">
                     <span>0%</span>
                     <span>50%</span>
                     <span>100%</span>
@@ -352,55 +302,21 @@ export default function CreateDealSheet({
                 </div>
               </GunimiField>
 
-              {/* EXPECTED REVENUE */}
-
-              <div
-                className="
-                  rounded-xl
-
-                  border
-                  border-white/[0.08]
-
-                  bg-white/[0.02]
-
-                  p-4
-                "
-              >
-                <p
-                  className="
-                    text-[10px]
-                    uppercase
-                    tracking-[0.18em]
-
-                    text-zinc-500
-                  "
-                >
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">
                   {t("deals.expectedRevenue")}
                 </p>
-
-                <p
-                  className="
-                    mt-2
-
-                    text-2xl
-                    font-semibold
-                    text-white
-                  "
-                >
+                <p className="mt-2 text-2xl font-semibold text-white">
                   {formatCurrency(Math.round(expectedRevenue), currency)}
                 </p>
               </div>
 
-              <GunimiField
-                label={t("deals.expectedCloseDate")}
-              >
+              <GunimiField label={t("deals.expectedCloseDate")}>
                 <GunimiInput
                   type="date"
                   value={expectedCloseDate}
                   disabled={loading}
-                  onChange={(e) =>
-                    setExpectedCloseDate(e.target.value)
-                  }
+                  onChange={(e) => setExpectedCloseDate(e.target.value)}
                 />
               </GunimiField>
 
@@ -416,23 +332,15 @@ export default function CreateDealSheet({
           </div>
         </div>
 
-        <SheetFooter>
-          <GunimiButton
-            variant="secondary"
-            disabled={loading}
-            onClick={handleClose}
-          >
+        <DialogFooter className="mt-6">
+          <GunimiButton variant="secondary" disabled={loading} onClick={handleClose}>
             {t("common.cancel")}
           </GunimiButton>
-
-          <GunimiButton
-            loading={loading}
-            onClick={handleSubmit}
-          >
+          <GunimiButton loading={loading} onClick={handleSubmit}>
             {t("deals.createOpportunity")}
           </GunimiButton>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

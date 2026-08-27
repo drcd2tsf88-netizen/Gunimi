@@ -17,7 +17,7 @@ export async function toggleContactPriority(contactId: string, isPriority: boole
     const supabase = await createClient();
 
     const { error } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .update({ is_priority: isPriority, updated_at: new Date().toISOString() })
       .eq("workspace_id", workspace.id)
       .eq("id", contactId);

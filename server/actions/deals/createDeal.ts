@@ -118,7 +118,7 @@ if (contactId) {
     data: contact,
   } = await supabase
     .from(
-      "workspace_contacts"
+      "workspace_people"
     )
     .select("id")
     .eq(

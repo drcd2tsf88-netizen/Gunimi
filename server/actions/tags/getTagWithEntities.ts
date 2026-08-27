@@ -59,7 +59,7 @@ export async function getTagWithEntities(tagId: string): Promise<TagWithEntities
 
     const [contactsRes, companiesRes, dealsRes, tasksRes, notesRes] = await Promise.all([
       contactIds.length > 0
-        ? supabaseAdmin.from("workspace_contacts").select("id, first_name, last_name, email").in("id", contactIds)
+        ? supabaseAdmin.from("workspace_people").select("id, first_name, last_name, email").in("id", contactIds)
         : { data: [] },
       companyIds.length > 0
         ? supabaseAdmin.from("workspace_companies").select("id, name, industry").in("id", companyIds)

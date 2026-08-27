@@ -39,7 +39,7 @@ export async function updateContact({
     const supabase = await createClient();
 
     const { data, error } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .update({
         name: name.trim(),
         email: email?.trim() || null,

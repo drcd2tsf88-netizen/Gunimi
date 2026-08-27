@@ -13,7 +13,7 @@ export async function getContact(contactId: string): Promise<Contact | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select(`
         id,
         company_id,

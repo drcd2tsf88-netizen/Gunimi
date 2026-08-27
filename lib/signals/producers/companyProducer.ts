@@ -32,7 +32,7 @@ export async function produceCompanySignals(
 
   const [contactsResult, dealsResult] = await Promise.all([
     supabaseAdmin
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select("id")
       .eq("workspace_id", workspaceId)
       .eq("company_id", companyId),

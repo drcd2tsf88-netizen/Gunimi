@@ -114,7 +114,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       prefsRes,
     ] = await Promise.all([
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id, name, email, created_at")
         .eq("workspace_id", wid)
         .order("created_at", { ascending: false })
@@ -129,7 +129,7 @@ export async function getDashboardData(): Promise<DashboardData> {
         .from("workspace_deals")
         .select(`
           id, title, stage, value, created_at,
-          contact:workspace_contacts(name),
+          contact:workspace_people(name),
           company:workspace_companies(name)
         `)
         .eq("workspace_id", wid)
@@ -177,7 +177,7 @@ export async function getDashboardData(): Promise<DashboardData> {
 
     // Get real total count
     const { count: totalContactCount } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select("id", { count: "exact", head: true })
       .eq("workspace_id", wid);
 

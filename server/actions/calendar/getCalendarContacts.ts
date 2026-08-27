@@ -26,7 +26,7 @@ export async function getCalendarContacts(): Promise<CalendarContact[]> {
     if (!workspace) return [];
 
     const { data, error } = await supabaseAdmin
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select(`
         id,
         name,

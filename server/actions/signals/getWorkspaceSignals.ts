@@ -48,7 +48,7 @@ export async function getWorkspaceSignals(): Promise<EnrichedSignal[]> {
 
   const [dealNames, contactNames, companyNames, taskTitles] = await Promise.all([
     fetchNames("workspace_deals",    "title", dealIds),
-    fetchNames("workspace_contacts", "name",  contactIds),
+    fetchNames("workspace_people", "name",  contactIds),
     fetchNames("workspace_companies","name",  companyIds),
     fetchNames("workspace_tasks",    "title", taskIds),
   ]);

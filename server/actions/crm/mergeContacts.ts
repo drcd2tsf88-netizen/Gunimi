@@ -26,13 +26,13 @@ export async function mergeContacts(
 
     const [{ data: primary }, { data: secondary }] = await Promise.all([
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("*")
         .eq("id", primaryId)
         .eq("workspace_id", workspace.id)
         .maybeSingle(),
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("*")
         .eq("id", secondaryId)
         .eq("workspace_id", workspace.id)
@@ -97,14 +97,14 @@ export async function mergeContacts(
 
     // Update primary contact — only fill empty fields, never overwrite existing data
     await supabaseAdmin
-      .from("workspace_contacts")
+      .from("workspace_people")
       .update({ ...mergedFields, updated_at: new Date().toISOString() })
       .eq("id", primaryId)
       .eq("workspace_id", workspace.id);
 
     // Delete secondary (ON DELETE SET NULL cleans remaining nullables)
     await supabaseAdmin
-      .from("workspace_contacts")
+      .from("workspace_people")
       .delete()
       .eq("id", secondaryId)
       .eq("workspace_id", workspace.id);

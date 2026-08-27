@@ -1,21 +1,18 @@
 "use client";
 
 import { useState, useTransition } from "react";
-
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
 import { createContact } from "@/server/actions/crm/createContact";
-
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from "@/components/ui/sheet";
-
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiField from "@/components/ui/GunimiField";
 import GunimiInput from "@/components/ui/GunimiInput";
@@ -39,16 +36,11 @@ type Props = {
   onCreated: (contact: CreatedContact) => void;
 };
 
-export default function CreateContactSheet({
-  open,
-  onOpenChange,
-  onCreated,
-}: Props) {
+export default function CreateContactSheet({ open, onOpenChange, onCreated }: Props) {
   const t = useTranslations("crm");
   const tc = useTranslations("common");
 
   const [isPending, startTransition] = useTransition();
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -92,20 +84,14 @@ export default function CreateContactSheet({
   }
 
   return (
-    <Sheet
-      open={open}
-      onOpenChange={(next) => {
-        if (!next) handleClose();
-        else onOpenChange(next);
-      }}
-    >
-      <SheetContent className="max-w-md">
-        <SheetHeader>
-          <SheetTitle>{t("createContact")}</SheetTitle>
-          <SheetDescription>{t("createContactSubtitle")}</SheetDescription>
-        </SheetHeader>
+    <Dialog open={open} onOpenChange={(next) => { if (!next) handleClose(); else onOpenChange(next); }}>
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle>{t("createContact")}</DialogTitle>
+          <DialogDescription>{t("createContactSubtitle")}</DialogDescription>
+        </DialogHeader>
 
-        <div className="flex-1 space-y-4 overflow-y-auto px-6 py-6">
+        <div className="mt-4 space-y-4">
           <GunimiField label={t("contactName")}>
             <GunimiInput
               value={name}
@@ -137,15 +123,15 @@ export default function CreateContactSheet({
           </GunimiField>
         </div>
 
-        <SheetFooter>
+        <DialogFooter className="mt-6">
           <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
           </GunimiButton>
           <GunimiButton loading={isPending} onClick={handleCreate}>
             {t("createContact")}
           </GunimiButton>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

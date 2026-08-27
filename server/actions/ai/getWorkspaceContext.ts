@@ -256,7 +256,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
       supabase
         .from("workspace_deals")
         .select(
-          "id, title, stage, value, updated_at, expected_close_date, probability, company:workspace_companies(name), contact:workspace_contacts(id, name)"
+          "id, title, stage, value, updated_at, expected_close_date, probability, company:workspace_companies(name), contact:workspace_people(id, name)"
         )
         .eq("workspace_id", workspace.id)
         .neq("stage", "won")
@@ -264,14 +264,14 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
         .order("updated_at", { ascending: true })
         .limit(15),
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id, name, company_name, status, last_contacted_at")
         .eq("workspace_id", workspace.id)
         .not("last_contacted_at", "is", null)
         .order("last_contacted_at", { ascending: true })
         .limit(20),
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id, name, company_name, created_at")
         .eq("workspace_id", workspace.id)
         .is("last_contacted_at", null)
@@ -296,7 +296,7 @@ export async function getWorkspaceContext(): Promise<WorkspaceAIContext | null> 
         .limit(5),
       supabaseAdmin
         .from("email_threads")
-        .select("subject, has_unread, contact:workspace_contacts(name)")
+        .select("subject, has_unread, contact:workspace_people(name)")
         .eq("workspace_id", workspace.id)
         .order("last_message_at", { ascending: false })
         .limit(5),

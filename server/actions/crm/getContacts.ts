@@ -24,7 +24,7 @@ export async function getContacts() {
       error,
     } = await supabase
       .from(
-        "workspace_contacts"
+        "workspace_people"
       )
       .select(`
         id,

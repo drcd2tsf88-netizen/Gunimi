@@ -61,7 +61,7 @@ export async function getAIStats(): Promise<AIStats | null> {
         .neq("stage", "won")
         .neq("stage", "lost"),
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
       supabase

@@ -66,7 +66,7 @@ export async function getCompanies() {
       data: contacts,
     } = await supabase
       .from(
-        "workspace_contacts"
+        "workspace_people"
       )
       .select(
         "id, company_id"

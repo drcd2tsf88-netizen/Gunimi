@@ -41,7 +41,7 @@ export async function GET() {
         id, number, title, status, communication_state,
         currency, due_date, notes, created_at,
         company:workspace_companies(name),
-        contact:workspace_contacts(name, email),
+        contact:workspace_people(name, email),
         items:workspace_order_items(quantity, unit_price, discount, tax)
       `)
       .eq("workspace_id", workspace.id)

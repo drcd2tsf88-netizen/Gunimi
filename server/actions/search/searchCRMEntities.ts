@@ -37,7 +37,7 @@ export async function searchCRMEntities(
 
     const [contactsResult, companiesResult] = await Promise.all([
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id, name, email, position")
         .eq("workspace_id", workspace.id)
         .or(`name.ilike.${pattern},email.ilike.${pattern}`)

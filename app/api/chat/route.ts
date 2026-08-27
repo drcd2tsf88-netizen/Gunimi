@@ -6,6 +6,7 @@ import { getWorkspaceContext } from "@/server/actions/ai/getWorkspaceContext";
 import { buildChatSystemPrompt } from "@/lib/ai/context/formatWorkspacePrompt";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logAIUsage } from "@/lib/ai/logUsage";
+import { checkAIBudget } from "@/lib/ai/checkAIBudget";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -44,6 +45,19 @@ export async function POST(req: Request) {
       getWorkspaceContext(),
       getCurrentWorkspace(),
     ]);
+
+    if (workspace?.id) {
+      const budget = await checkAIBudget(workspace.id);
+      if (!budget.allowed) {
+        return errorResponse(
+          budget.reason === "workspace_suspended"
+            ? "AI is currently suspended for this workspace."
+            : "Daily AI token limit reached. Try again tomorrow.",
+          429
+        );
+      }
+    }
+
     const systemPrompt = ctx ? buildChatSystemPrompt(ctx) : FALLBACK_SYSTEM;
 
     const completion =

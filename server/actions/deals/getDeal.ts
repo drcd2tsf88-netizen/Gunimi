@@ -59,7 +59,7 @@ export async function getDeal(
           country
         ),
 
-        contact:workspace_contacts(
+        contact:workspace_people(
           id,
           name,
           email,

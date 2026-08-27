@@ -52,7 +52,7 @@ export async function getDeals() {
     name
   ),
 
-  contact:workspace_contacts(
+  contact:workspace_people(
     id,
     name,
     email

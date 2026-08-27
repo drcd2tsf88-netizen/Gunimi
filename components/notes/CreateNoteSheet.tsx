@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Plus, Sparkles } from "lucide-react";
+import { Plus } from "lucide-react";
 import toast from "react-hot-toast";
 
 import GunimiButton from "@/components/ui/GunimiButton";
@@ -17,9 +17,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Sheet,
-  SheetContent,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 import { createNote } from "@/server/actions/notes/createNote";
 
@@ -53,6 +57,13 @@ export default function CreateNoteSheet({
     setCompanyId("");
   }
 
+  function handleClose() {
+    if (!isPending) {
+      reset();
+      onOpenChange(false);
+    }
+  }
+
   function handleCreate() {
     if (!title.trim()) {
       toast.error(t("titleRequired"));
@@ -77,14 +88,14 @@ export default function CreateNoteSheet({
   }
 
   return (
-    <Sheet open={open} onOpenChange={(o) => { if (!isPending) { if (!o) reset(); onOpenChange(o); } }}>
-      <SheetContent className="flex flex-col gap-6 overflow-y-auto">
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <Sparkles size={14} className="text-violet-300" />
-          {t("newNote")}
-        </div>
+    <Dialog open={open} onOpenChange={(o) => { if (!isPending) { if (!o) reset(); onOpenChange(o); } }}>
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle>{t("newNote")}</DialogTitle>
+          <DialogDescription>{t("newNoteSubtitle")}</DialogDescription>
+        </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="mt-4 max-h-[70vh] overflow-y-auto space-y-4 pr-1">
           <GunimiInput
             placeholder={t("noteTitlePlaceholder")}
             value={title}
@@ -145,20 +156,16 @@ export default function CreateNoteSheet({
           </div>
         </div>
 
-        <div className="flex justify-end gap-2">
-          <GunimiButton
-            variant="secondary"
-            disabled={isPending}
-            onClick={() => { reset(); onOpenChange(false); }}
-          >
+        <DialogFooter className="mt-6">
+          <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
           </GunimiButton>
           <GunimiButton onClick={handleCreate} loading={isPending}>
             <Plus size={13} />
             {t("createNote")}
           </GunimiButton>
-        </div>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

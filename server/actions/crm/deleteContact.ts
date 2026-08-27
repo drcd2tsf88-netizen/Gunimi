@@ -23,7 +23,7 @@ export async function deleteContact(contactId: string) {
 
     // Fetch to verify workspace ownership and capture name for activity
     const { data: contact, error: fetchError } = await supabase
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select("id, name, company_id")
       .eq("workspace_id", workspace.id)
       .eq("id", contactId)
@@ -34,9 +34,9 @@ export async function deleteContact(contactId: string) {
       return false;
     }
 
-    // DELETE via supabaseAdmin — no DELETE RLS policy exists for workspace_contacts
+    // DELETE via supabaseAdmin — no DELETE RLS policy exists for workspace_people
     const { error: deleteError } = await supabaseAdmin
-      .from("workspace_contacts")
+      .from("workspace_people")
       .delete()
       .eq("workspace_id", workspace.id)
       .eq("id", contactId);

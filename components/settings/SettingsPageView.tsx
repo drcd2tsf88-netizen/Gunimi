@@ -20,6 +20,7 @@ import DangerSection from "./danger/DangerSection";
 import PipelineSection from "./pipeline/PipelineSection";
 import AuditLogSection from "./audit/AuditLogSection";
 import TagsSection from "./tags/TagsSection";
+import TeamsSection from "./teams/TeamsSection";
 import BillingSection from "./billing/BillingSection";
 import WebhooksSection from "./webhooks/WebhooksSection";
 import { type UserProfile } from "@/server/actions/profile/getUserProfile";
@@ -28,6 +29,7 @@ import type { AuditLogEntry } from "@/server/actions/workspace/getAuditLogs";
 import type { WorkspaceTag } from "@/types/tag";
 import type { SubscriptionStatus } from "@/server/actions/billing/getSubscription";
 import type { WorkspaceWebhook } from "@/server/actions/webhooks/getWebhooks";
+import type { WorkspaceTeamWithMembers, WorkspaceTeamMember } from "@/types/team";
 
 type Props = {
   workspace: WorkspaceSettings;
@@ -46,6 +48,8 @@ type Props = {
   subscription: SubscriptionStatus;
   billingSuccess?: boolean;
   webhooks: WorkspaceWebhook[];
+  teams: WorkspaceTeamWithMembers[];
+  unassignedMembers: WorkspaceTeamMember[];
 };
 
 export default function SettingsPageView({
@@ -65,6 +69,8 @@ export default function SettingsPageView({
   subscription,
   billingSuccess,
   webhooks,
+  teams,
+  unassignedMembers,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -113,6 +119,10 @@ export default function SettingsPageView({
 
           {section === "pipeline" && (
             <PipelineSection initialStages={dealStages} />
+          )}
+
+          {section === "teams" && (
+            <TeamsSection initialTeams={teams} initialUnassigned={unassignedMembers} />
           )}
 
           {section === "tags" && (

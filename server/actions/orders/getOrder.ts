@@ -18,7 +18,7 @@ export async function getOrder(orderId: string): Promise<Order | null> {
         status, communication_state, due_date, created_at, updated_at,
         company_id, contact_id, deal_id,
         company:workspace_companies(id, name),
-        contact:workspace_contacts(id, name, email),
+        contact:workspace_people(id, name, email),
         deal:workspace_deals(id, title),
         items:workspace_order_items(
           id, order_id, description, quantity, unit_price,

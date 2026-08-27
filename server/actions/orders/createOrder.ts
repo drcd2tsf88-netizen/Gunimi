@@ -44,9 +44,9 @@ export async function createOrder(input: CreateOrderInput): Promise<Order | null
     }
 
     if (input.contact_id) {
-      // compatibility bridge: references workspace_contacts.id (ADR-002 → workspace_people post-migration)
+      // compatibility bridge: references workspace_people.id (ADR-002 → workspace_people post-migration)
       const { data: contact } = await supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id")
         .eq("workspace_id", workspace.id)
         .eq("id", input.contact_id)

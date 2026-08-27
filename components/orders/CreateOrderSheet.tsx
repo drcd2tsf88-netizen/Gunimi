@@ -10,13 +10,13 @@ import GunimiInput from "@/components/ui/GunimiInput";
 import GunimiTextarea from "@/components/ui/GunimiTextarea";
 import GunimiField from "@/components/ui/GunimiField";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -66,7 +66,6 @@ export default function CreateOrderSheet({
   const [dueDate, setDueDate] = useState("");
   const [currency, setCurrency] = useState("EUR");
 
-  // Filter contacts by selected company
   const filteredContacts = companyId
     ? contacts.filter((c) => c.company_id === companyId)
     : contacts;
@@ -83,11 +82,15 @@ export default function CreateOrderSheet({
 
   function handleCompanyChange(val: string) {
     setCompanyId(val);
-    // Reset contact if it no longer belongs to the new company
     if (contactId && val) {
       const still = contacts.find((c) => c.id === contactId && c.company_id === val);
       if (!still) setContactId("");
     }
+  }
+
+  function handleClose() {
+    reset();
+    onOpenChange(false);
   }
 
   function handleSubmit() {
@@ -114,14 +117,14 @@ export default function CreateOrderSheet({
   }
 
   return (
-    <Sheet open={open} onOpenChange={(v) => { onOpenChange(v); if (!v) reset(); }}>
-      <SheetContent className="w-full max-w-md">
-        <SheetHeader>
-          <SheetTitle>{t("createOrder")}</SheetTitle>
-          <SheetDescription>{t("createOrderDescription")}</SheetDescription>
-        </SheetHeader>
+    <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); else onOpenChange(v); }}>
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle>{t("createOrder")}</DialogTitle>
+          <DialogDescription>{t("createOrderDescription")}</DialogDescription>
+        </DialogHeader>
 
-        <div className="mt-6 space-y-4">
+        <div className="mt-4 max-h-[70vh] overflow-y-auto space-y-4 pr-1">
           <GunimiField label={t("titleLabel")}>
             <GunimiInput
               placeholder={t("titlePlaceholder")}
@@ -212,12 +215,8 @@ export default function CreateOrderSheet({
           </GunimiField>
         </div>
 
-        <SheetFooter className="mt-8">
-          <GunimiButton
-            variant="secondary"
-            disabled={isPending}
-            onClick={() => onOpenChange(false)}
-          >
+        <DialogFooter className="mt-6">
+          <GunimiButton variant="secondary" disabled={isPending} onClick={handleClose}>
             {tc("cancel")}
           </GunimiButton>
           <GunimiButton
@@ -228,8 +227,8 @@ export default function CreateOrderSheet({
           >
             {t("createOrder")}
           </GunimiButton>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

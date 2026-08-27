@@ -39,7 +39,7 @@ export async function getOnboardingStatus(): Promise<OnboardingStatus> {
       calendarResult,
     ] = await Promise.all([
       supabaseAdmin
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("*", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
 

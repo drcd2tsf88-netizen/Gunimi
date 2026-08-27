@@ -53,14 +53,14 @@ export async function searchDeals(query: string): Promise<DealSearchRows> {
     const [titleStageResult, contactResult] = await Promise.all([
       supabase
         .from("workspace_deals")
-        .select("id, title, stage, value, contact:workspace_contacts(id, name)")
+        .select("id, title, stage, value, contact:workspace_people(id, name)")
         .eq("workspace_id", workspace.id)
         .or(`title.ilike.${pattern},stage.ilike.${pattern}`)
         .order("created_at", { ascending: false })
         .limit(5),
 
       supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select("id")
         .eq("workspace_id", workspace.id)
         .ilike("name", pattern)
@@ -93,7 +93,7 @@ export async function searchDeals(query: string): Promise<DealSearchRows> {
     if (contactIds.length > 0) {
       const { data: customerDeals, error: customerDealsError } = await supabase
         .from("workspace_deals")
-        .select("id, title, stage, value, contact:workspace_contacts(id, name)")
+        .select("id, title, stage, value, contact:workspace_people(id, name)")
         .eq("workspace_id", workspace.id)
         .in("contact_id", contactIds)
         .order("created_at", { ascending: false })

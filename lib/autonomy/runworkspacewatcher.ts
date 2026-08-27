@@ -51,7 +51,7 @@ export async function runWorkspaceWatcher() {
       error: contactsError,
     } = await supabase
       .from(
-        "workspace_contacts"
+        "workspace_people"
       )
       .select("*")
       .eq(

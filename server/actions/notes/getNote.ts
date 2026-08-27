@@ -43,7 +43,7 @@ export async function getNote(noteId: string): Promise<NoteDetail | null> {
 
       note.contact_id
         ? supabaseAdmin
-            .from("workspace_contacts")
+            .from("workspace_people")
             .select("id, first_name, last_name")
             .eq("id", note.contact_id)
             .maybeSingle()

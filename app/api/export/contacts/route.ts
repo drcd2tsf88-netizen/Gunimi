@@ -16,7 +16,7 @@ export async function GET() {
     if (!workspace) return new Response("Workspace not found", { status: 404 });
 
     const { data, error } = await supabaseAdmin
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select(
         "id, name, email, phone, position, company_name, status, notes, created_at"
       )

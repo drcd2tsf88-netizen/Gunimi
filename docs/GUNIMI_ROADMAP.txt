@@ -1,10 +1,10 @@
 ================================================================================
 GUNIMI — PRODUCT ROADMAP & GAP ANALYSIS
-Verzia: 2.1 | Dátum: 2026-08-02
+Verzia: 2.2 | Dátum: 2026-08-27
 ================================================================================
 
 --------------------------------------------------------------------------------
-ČO DNES EXISTUJE (Open Alpha — funkčné)
+ČO DNES EXISTUJE (Open Beta — funkčné)
 --------------------------------------------------------------------------------
 
 CRM JADRO
@@ -13,7 +13,7 @@ CRM JADRO
   [x] Dealy — pipeline, probability, currency (EUR/CZK/USD)
   [x] Úlohy — priority, status, due date, assignee, recurring
   [x] Poznámky — create/edit/delete, entity linking
-  [x] Tags / Labels — na kontaktoch, firmách, dealoch
+  [x] Tags / Labels — na kontaktoch, firmách, dealoch, úlohách, poznámkach
   [x] Custom deal stages — owner nastavuje vlastné fázy pipeline
   [x] Custom fields — text/date/number/select na entitách
   [x] Priority / urgency flag — VIP klienti, urgentné prípady
@@ -23,6 +23,13 @@ CRM JADRO
   [x] Bulk export CSV — firmy, kontakty, dealy, úlohy
   [x] Full-text search naprieč CRM entitami
   [x] Audit Log UI — kto zmenil čo a kedy (Settings → Audit Log)
+  [x] Orders / Objednávky — create/edit/detail, viazané na deal/kontakt/firmu
+  [x] Mentions v komentároch — @člen, #tag, hover karty (Tiptap editor)
+  [x] Kanban view pre úlohy — drag-and-drop, 3 stĺpce
+  [x] Kontaktná história — unified timeline (emaily, aktivity, poznámky, dealy)
+  [x] File attachments — upload/download/delete na dealoch, kontaktoch, firmách
+  [x] Bulk operations — tag assign, export, delete, merge (2 kontakty)
+  [x] Contact / Company merge — field-level výber, Domain Law I compliant
 
 AI & INTELIGENCIA
   [x] Orbit Assistant — chat s pamäťou, kontext workspacu
@@ -31,49 +38,78 @@ AI & INTELIGENCIA
   [x] Business Memory System — entity-level, timeline, confidence decay
   [x] Analytics — pipeline breakdown, workspace metriky
   [x] AI Usage tracking — cost monitoring per workspace
+  [x] Signal Scan Cron — každých 6h, observability (counts, lastRunAt)
+  [x] Signal Health endpoint — /api/signals/health
 
 INTEGRÁCIE
   [x] Google Calendar — OAuth 2.0, sync, event list
   [x] Gunimi Kalendár — dual-tab (Gunimi workspace items + Google Calendar)
-  [ ] Gunimi Kalendár — týždenná mriežka, drag-and-drop, AI today sidebar   ← Q3 2026
+  [ ] Gunimi Kalendár — týždenná mriežka, drag-and-drop, AI today sidebar   ← Q4 2026
   [x] Gmail — OAuth 2.0, thread sync, linkage na kontakty/firmy
   [x] Google OAuth App — verifikovaná Googlom (júl 2026)
+  [x] Webhooks — HMAC-SHA256, 5 event typov, Settings UI
 
 WORKSPACE & INFRAŠTRUKTÚRA
   [x] Multi-workspace — jeden user, viac workspacov
   [x] Role systém — owner / admin / member
-  [x] Invite systém — email tokeny, accept flow
+  [x] Teams V1 — workspace_teams, Settings → Tímy, assign members, farebné karty
+  [x] Invite systém — email tokeny (Resend), copy-link fallback, accept flow
   [x] In-app notifikácie — bell icon, notification feed
   [x] Email notifikácie — task assigned, workspace invite, digest
   [x] Row-Level Security (RLS) — každý user vidí len svoj workspace
   [x] Lokalizácia — SK / CS / EN (3 jazyky)
   [x] Sentry error tracking
-  [x] Cron job — Signal scan každých 6h
+  [x] Cron job — Signal scan každých 6h (Vercel Cron)
   [x] Health endpoints — /api/health, /api/signals/health
-  [x] Dogfood feedback systém — interný beta feedback
+  [x] Dogfood feedback systém — interný beta feedback (keyboard ?)
   [x] Admin panel — alpha approvals, AI operations, dogfood
   [x] Billing / Stripe — predplatné €19/mesiac, webhook, Settings sekcia
   [x] /demo — interaktívny demo workspace pre nových návštevníkov
+  [x] Custom Dashboard — My Dashboard, 12 widgetov, drag-and-drop, perzistencia
+  [x] Workflow Automation UI — zoznam pravidiel, toggle, detail, NewRuleSheet
+  [x] Workspace Preferences — jazyk, AI jazyk, regionálne nastavenia
+  [x] Cookie-based locale switching — v Settings
 
-ARCHITEKTÚRA & DOKUMENTÁCIA
-  [x] Domain Model — 11 entít definovaných (docs/foundation/DOMAIN_MODEL.md)
-  [x] Domain Laws — 12 zákonov ktoré sa nesmú porušiť (docs/foundation/DOMAIN_LAWS.md)
-  [x] Knowledge Layers — Reality→History→Memory→Wisdom (docs/foundation/KNOWLEDGE_LAYERS.md)
-  [x] Platform Principles — Reality Principle + 12 princípov (docs/foundation/PLATFORM_PRINCIPLES.md)
-  [x] ADR-001 až ADR-004 — 4 architektonické rozhodnutia zdokumentované
+DÁTOVÁ ARCHITEKTÚRA
+  [x] Domain Foundation — workspace_people base table (nie workspace_contacts)
+  [x] workspace_contacts — automatický VIEW pre spätnú kompatibilitu
+  [x] workspace_relationships — vzťah je entita (type, status, source)
+  [x] workspace_teams — Teams V1, RLS (SELECT pre všetkých, mutácie owner/admin)
+  [x] workspace_people migrácia — 37 TS súborov prepísaných, createContact seeduje relationship
+
+DOKUMENTÁCIA & ARCHITEKTONICKÉ ROZHODNUTIA
+  [x] Domain Model — 11 entít (docs/foundation/DOMAIN_MODEL.md)
+  [x] Domain Laws — 12 zákonov (docs/foundation/DOMAIN_LAWS.md)
+  [x] Knowledge Layers — Reality→History→Memory→Wisdom
+  [x] Platform Principles — Reality Principle + 12 princípov
+  [x] ADR-001 až ADR-004 — architektonické rozhodnutia
+  [x] Signal Engine Blueprint v1.1 — 21 kapitol
+  [x] Business Memory Blueprint v1.1 — 23 kapitol
+  [x] AI Platform Architecture v1.0 — 15 kapitol
+  [x] Workspace Lifecycle Blueprint v1.0 — 4 stavy
+  [x] Domain Foundation Blueprint — Phase 1+2+3 completed
+  [x] Order Domain Document — docs/foundation/ORDER_DOMAIN.md
 
 --------------------------------------------------------------------------------
-AKTUÁLNY SPRINT — ČO ROBIŤ TERAZ
+AKTUÁLNY SPRINT — ČO ROBIŤ ĎALEJ
 --------------------------------------------------------------------------------
 
-Poradie podľa dopadu / jednoduchosti:
+  [ ] AI tag intelligence — implementácia (rozhodnuté 2026-08-21, pending)
+        - Tag detail page + hover karta s AI quick summary
+        - Systém pochopí sémantiku z entít, žiadne manuálne definície
+        - Odhadovaný čas: 3–4 dni
 
-  [x]     17. Kanban view pre úlohy                         ✅ hotovo (júl 2026)
-  [x]     13. File attachments — prílohy                    ✅ hotovo (júl 2026)
-  [x]     18. Kontaktná história — timeline view             ✅ hotovo (júl 2026)
-  [x]     12. Custom Dashboard — My Dashboard               ✅ hotovo (aug 2026)
-  [x]     20. Webhooks                                      ✅ hotovo (aug 2026)
-  [x]     10. Workflow Automation — UI                       ✅ hotovo (aug 2026)
+  [ ] Napady sprint — 18 pending items (partner feedback)
+        - Stat karty klikateľné ✅, note detail ✅, org notes ✅
+        - company search ✅, task row ✅, notif nav ✅
+        - 18 ďalších položiek čaká
+
+  [ ] Create/Detail dialógy — dokončiť konverziu (Sheet → Dialog)
+        - Contacts, Companies, Deals, Notes, Orders: create ✅
+        - Detailné modaly pre všetky entity okrem úloh
+
+  [ ] Domain Foundation Fáza 4 — cleanup
+        - Drop company_id z workspace_people po 30-dňovej stabilite
 
 --------------------------------------------------------------------------------
 TIER 1 — KRITICKÉ BUGY & CHÝBAJÚCE ZÁKLADY
@@ -93,54 +129,57 @@ TIER 1 — KRITICKÉ BUGY & CHÝBAJÚCE ZÁKLADY
 TIER 2 — RAST (Blokuje škálovanie na viac tímov)
 --------------------------------------------------------------------------------
 
-  [x] 11. Audit Log — UI                          ✅ hotovo (júl 2026)
-  [x] 16. Tags / Labels na všetkých entitách      ✅ hotovo (júl 2026)
-
-  [x] 17. Kanban view pre úlohy                   ✅ hotovo (júl 2026)
-          - 3 stĺpce: Todo / In Progress / Done
-          - HTML5 drag-and-drop, optimistický update
-          - List/Kanban toggle v toolbar
-
-  [x] 13. File attachments — prílohy              ✅ hotovo (júl 2026)
-          - Supabase Storage bucket + RLS policies
-          - Upload (drag-and-drop), download (signed URL), delete
-          - AttachmentsPanel na Deal, Contact, Company (Work tab)
+  [x] 9.  Teams / Oddelenia v rámci workspacu     ✅ V1 hotovo (aug 2026)
+          - workspace_teams tabuľka + RLS (SELECT všetci, mutácie owner/admin)
+          - workspace_members.team_id FK (nullable, ON DELETE SET NULL)
+          - Settings → Tímy: create/rename/delete teams, assign/remove members
+          - Farebné karty (8 farieb), assign dropdown, unassigned sekcia
+          - V1 = UI-level organizačné labely, žiadna RLS izolácia dát
+          - V2 = team_id FK na entitách + RLS izolácia (trigger: prvý platiaci zákazník)
 
   [x] 10. Workflow Automation — UI                ✅ hotovo (aug 2026)
           - AutomationCenterView: zoznam pravidiel, toggle, delete, detail
           - NewRuleSheet: trigger + podmienky + akcie, Radix Select
           - Engine: lib/automation/ (existoval, UI dokončené)
 
-  [x] 18. Kontaktná história — timeline view    ✅ hotovo (júl 2026)
-          - Unified timeline: aktivity + emaily + úlohy + poznámky + dealy + prílohy
-          - Groupovanie podľa dátumu (Dnes / Včera / mesiac)
-          - Farebné ikony podľa typu udalosti
-          - History tab na Contact detail (nahrádza Story)
+  [x] 11. Audit Log — UI                          ✅ hotovo (júl 2026)
 
-  [x] 15. Bulk operations v UI                    ✅ hotovo (aug 2026)
-          - BulkActionBar: tag assign, export, delete, merge (2 kontakty)
-          - bulkDeleteContacts + bulkAssignTag server actions
+  [x] 12. Custom Dashboard — My Dashboard         ✅ hotovo (aug 2026)
+          - 12 widgetov: metriky, kontakty, dealy, úlohy, poznámky, aktivita
+          - Drag-and-drop reorder, catalog, perzistencia v workspace preferences
+
+  [x] 13. File attachments — prílohy              ✅ hotovo (júl 2026)
+          - Supabase Storage bucket + RLS policies
+          - Upload (drag-and-drop), download (signed URL), delete
+          - AttachmentsPanel na Deal, Contact, Company
 
   [x] 14. Contact / Company merge                 ✅ hotovo (aug 2026)
           - MergeContactSheet: field-level výber (primary/secondary)
           - mergeContacts server action (Domain Law I compliant)
 
-  [x] 12. Custom Dashboard — My Dashboard           ✅ hotovo (aug 2026)
-          - 12 widgetov: metriky, kontakty, dealy, úlohy, poznámky, aktivita
-          - Drag-and-drop reorder, catalog, perzistencia v workspace preferences
-          - Koexistuje s Today Brief (/dashboard/custom — separate page)
+  [x] 15. Bulk operations v UI                    ✅ hotovo (aug 2026)
+          - BulkActionBar: tag assign, export, delete, merge
 
+  [x] 16. Tags / Labels na všetkých entitách      ✅ hotovo (júl 2026)
 
-  [ ] 9.  Teams / Oddelenia v rámci workspacu     ← POZOR: architektúra
-          - NERIEŠIŤ cez team_id FK (porušuje Domain Laws)
-          - Správne: workspace_teams entita + role-based isolation
-          - Závisí o  d: workspace_people migrácie (pred 1. platiacim zákazníkom)
-          - Odhadovaný čas: 3–4 týždne
+  [x] 17. Kanban view pre úlohy                   ✅ hotovo (júl 2026)
+          - 3 stĺpce: Todo / In Progress / Done
+          - HTML5 drag-and-drop, optimistický update
+
+  [x] 18. Kontaktná história — timeline view      ✅ hotovo (júl 2026)
+          - Unified timeline: aktivity + emaily + úlohy + poznámky + dealy
+          - Groupovanie podľa dátumu (Dnes / Včera / mesiac)
 
 --------------------------------------------------------------------------------
 TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 --------------------------------------------------------------------------------
- 
+
+  [x] 20. Webhooks                                ✅ hotovo (aug 2026)
+          - workspace_webhooks tabuľka + RLS policies
+          - HMAC-SHA256 podpisovanie (X-Gunimi-Signature header)
+          - 5 event typov: contact.created, deal.created, deal.won, deal.lost, task.created
+          - Settings UI: create / toggle / test / delete + secret reveal + copy
+
   [x] 28. Billing & Subscription management       ✅ hotovo (júl 2026)
           - Stripe €19/mesiac, webhook, Settings sekcia
 
@@ -148,14 +187,6 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
           - Integrácia s SAP, ERP, interné systémy zákazníka
           - API keys per workspace, rate limiting
           - Odhadovaný čas: 2–3 týždne
-
-  [x] 20. Webhooks                                  ✅ hotovo (aug 2026)
-          - workspace_webhooks tabuľka + RLS policies
-          - HMAC-SHA256 podpisovanie (X-Gunimi-Signature header)
-          - 5 event typov: contact.created, deal.created, deal.won, deal.lost, task.created
-          - Fire-and-forget dispatch (neblokuje server actions)
-          - Settings UI: create / toggle / test / delete + secret reveal + copy
-          - Plán: Public REST API (#19) → potom SSO (#21)
 
   [ ] 21. SSO / SAML (Azure AD, Okta, Google Workspace)
           - Každá firma 200+ ľudí to vyžaduje
@@ -168,7 +199,6 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 
   [ ] 23. SLA & Uptime guarantee
           - 99.9% uptime SLA — enterprise zmluvy to vyžadujú
-          - Odhadovaný čas: proces + infraštruktúra
 
   [ ] 24. SOC 2 Type II certifikácia
           - Bez toho žiadna banka ani veľká firma nepodpíše
@@ -180,7 +210,6 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 
   [ ] 26. Dedicated instances (on-premise / VPC)
           - Alza-scale — nechcú byť na shared infrastructure
-          - Odhadovaný čas: architektonické rozhodnutie
 
   [ ] 27. GDPR tooling
           - Right to erasure — vymazať všetky dáta konkrétnej osoby
@@ -189,7 +218,7 @@ TIER 3 — ENTERPRISE (Blokuje predaj veľkým firmám)
 
   [ ] 29. Multi-language rozšírenie
           - DE, PL, HU — expanzia do DACH a okolie
-          - Odhadovaný čas: 1 deň per jazyk (ak máš prekladateľa)
+          - Odhadovaný čas: 1 deň per jazyk
 
 --------------------------------------------------------------------------------
 TIER 4 — DIFERENCIÁCIA AI (Čo odlíši Gunimi od Salesforce)
@@ -207,59 +236,54 @@ TIER 4 — DIFERENCIÁCIA AI (Čo odlíši Gunimi od Salesforce)
           - Odhadovaný čas: 2 týždne
 
   MEMORY LAYER — interpretácia (robiť druhé):
+  [ ] AI tag intelligence                         ← ROZHODNUTÉ, pending implementácia
+          - AI-generated tag profil bez manuálnych definícií
+          - Tag detail page + hover karta s AI quick summary
   [ ] 31. Relationship health score
           - Automatický score pre každý kontakt / firmu (0–100)
           - Na základe: frekvencia kontaktu, sentiment, aktivita
           - Odhadovaný čas: 1 týždeň
   [ ] 32. Automated outreach sequences
           - Email sekvencie riadené AI
-          - "Pošli follow-up ak 7 dní bez odpovede"
           - Odhadovaný čas: 2 týždne
   [ ] 36. AI-generated proposals / offerty
-          - "Vygeneruj offertu pre tento deal na základe histórie"
           - Odhadovaný čas: 1 týždeň
 
-  WISDOM LAYER — vzory a predikcie (robiť posledné — vyžadujú dáta):
+  WISDOM LAYER — vzory a predikcie (vyžadujú historické dáta):
   [ ] 30. AI deal forecasting
-          - "Tento deal sa zavrie s 73% pravd. do 14 dní"
-          - Vyžaduje historické dáta workspacu (min. 6 mesiacov)
+          - Vyžaduje min. 6 mesiacov historických dát
           - Odhadovaný čas: 1 týždeň
   [ ] 38. Predictive churn detection
-          - "Tento klient má 85% riziko odchodu"
-          - Vyžaduje historické dáta workspacu
           - Odhadovaný čas: 2 týždne
   [ ] 33. Competitor intelligence
-          - Signály z webu, správy, zmeny o konkurentoch
           - Odhadovaný čas: 2 týždne
 
   PLATFORMA:
   [ ] 34. Mobile app (iOS / Android)
-          - Field sales — obchodník na cestách
           - React Native alebo PWA
           - Odhadovaný čas: 2–3 mesiace
 
 --------------------------------------------------------------------------------
-DOMAIN FOUNDATION — pred prvým platiacim zákazníkom
+DOMAIN FOUNDATION — STAV
 --------------------------------------------------------------------------------
 
-  Tieto veci neblokujú Open Alpha, ale BLOKUJÚ prvého platiaceho zákazníka.
-  Dátový model musí byť správny pred tým, než ho zákazník začne plniť dátami.
+  [x] workspace_people migrácia                   ✅ hotovo (aug 2026)
+      - workspace_people je base table (nie workspace_contacts)
+      - workspace_contacts = automatický VIEW (plná spätná kompatibilita)
+      - 37 TS súborov prepísaných (server actions, lib, app/api)
+      - createContact seeduje workspace_relationships pri company_id
 
-  [ ] workspace_people migrácia
-      - Identity Layer — každá osoba existuje nezávisle od loginu
-      - workspace_contacts sa stane view namiesto tabuľky
-      - Referencia: ADR-002, Domain Law VI
-      - Odhadovaný čas: 3–4 dni
-
-  [ ] workspace_relationships tabuľka v1.0
-      - Vzťah je entita (type, status, valid_from, valid_to, confidence)
-      - Nie FK — contact.company_id je dočasné riešenie
+  [x] workspace_relationships tabuľka v1.0        ✅ hotovo (aug 2026)
+      - Vzťah je entita (type, status, source, valid_from, created_by)
       - Referencia: ADR-003, Domain Law III
-      - Odhadovaný čas: 4–5 dní
 
   [ ] Memory provenance column
       - Každá Memory musí mať source_events (Domain Law II)
       - Odhadovaný čas: 1 deň
+
+  [ ] Drop company_id z workspace_people           ← Fáza 4, po 30-dňovej stabilite
+      - Dočasné pole zostáva počas prechodu
+      - Vzťah firma↔osoba ide výhradne cez workspace_relationships
 
 --------------------------------------------------------------------------------
 ODVETVOVÉ USE-CASES (Vertikály)
@@ -268,7 +292,7 @@ ODVETVOVÉ USE-CASES (Vertikály)
 VYMÁHANIE POHĽADÁVOK (debt collection)
   [x] Pôvodná suma pohľadávky + zaplatené + zostatok         (Tier 1 #6 ✅)
   [x] Dátum premlčania                                        (Tier 1 #7 ✅)
-  [x] Custom stages: Nový → Oslovený → Splátkový plán → Súd → Vyriešený / Odpísaný (custom stages ✅)
+  [x] Custom stages                                           (custom stages ✅)
   [ ] Záznam z každého kontaktu s dlžníkom (automatický log)
   [ ] Upomienka keď sa blíži premlčanie (Signal Engine — pridať typ signálu)
   [ ] Filtrovanie pohľadávok podľa zostatku, dátumu, stavu
@@ -276,12 +300,12 @@ VYMÁHANIE POHĽADÁVOK (debt collection)
 REALITY / MAKLÉRSTVO
   [x] Custom fields: adresa nehnuteľnosti, výmera, typ, cena/m²  (custom fields ✅)
   [x] Stages: Dopyt → Obhliadka → Ponuka → Zmluva → Kataster → Zavreté (custom stages ✅)
-  [ ] File attachments — zmluvy, fotodokumentácia               (Tier 2 #13)
+  [x] File attachments — zmluvy, fotodokumentácia               (Tier 2 #13 ✅)
 
 ADVOKÁTSKA KANCELÁRIA
   [x] Custom fields: číslo spisu, súd, termín pojednávania      (custom fields ✅)
-  [ ] File attachments — zmluvy, podania, dôkazy                (Tier 2 #13)
-  [ ] Konfidencialita — striktná izolácia prípadov              (Teams/Oddelenia #9)
+  [x] File attachments — zmluvy, podania, dôkazy                (Tier 2 #13 ✅)
+  [ ] Konfidencialita — striktná izolácia prípadov              (Teams V2 RLS — trigger: platí)
 
 RECRUITMENT
   [x] Custom fields: pozícia, platové rozpätie, zdroj kandidáta (custom fields ✅)
@@ -298,7 +322,7 @@ FÁZA 1 — Open Alpha stabilizácia              ✅ DOKONČENÁ (júl 2026)
   - Google OAuth verifikovaný
   - Stripe billing live
 
-FÁZA 2 — SMB ready                            ⏳ PREBIEHA (Q3 2026)
+FÁZA 2 — SMB ready                            ✅ DOKONČENÁ (aug 2026)
   Cieľ: 50 platiacich tímov, 2–20 ľudí
   - [x] Kanban pre úlohy (#17)                   ✅
   - [x] File attachments (#13)                   ✅
@@ -306,17 +330,17 @@ FÁZA 2 — SMB ready                            ⏳ PREBIEHA (Q3 2026)
   - [x] Custom Dashboard (#12)                   ✅
   - [x] Webhooks (#20)                           ✅
   - [x] Workflow Automation UI (#10)             ✅
-  - [x] Bulk operations (#15)                     ✅
-  - [x] Contact/Company merge (#14)               ✅
-  - [ ] Domain Foundation (workspace_people + relationships)
+  - [x] Bulk operations (#15)                    ✅
+  - [x] Contact/Company merge (#14)              ✅
+  - [x] Domain Foundation (workspace_people + relationships) ✅
 
-FÁZA 3 — Mid-market                         📅 PLÁNOVANÁ (Q4 2026)
+FÁZA 3 — Mid-market                           ⏳ PREBIEHA (Q4 2026)
   Cieľ: firmy 50–200 ľudí
-  - [ ] Teams / Oddelenia (#9) — po workspace_people migrácii
-  - [ ] Custom dashboards (#12)
-  - [ ] Bulk operations (#15)
-  - [ ] Contact/Company merge (#14)
+  - [x] Teams / Oddelenia (#9) — V1 ✅ (aug 2026)
+  - [ ] Teams V2 — RLS izolácia dát (trigger: prvý platí)
   - [ ] Voice notes + Meeting Intelligence (History Layer AI)
+  - [ ] Public REST API (#19)
+  - [ ] AI tag intelligence (rozhodnuté, pending impl.)
 
 FÁZA 4 — Enterprise                           📅 PLÁNOVANÁ (2027)
   Cieľ: Alza-scale, 500+ ľudí
@@ -329,6 +353,7 @@ FÁZA 4 — Enterprise                           📅 PLÁNOVANÁ (2027)
 
 FÁZA 5 — AI Diferenciácia                     📅 PRIEBEŽNE
   Cieľ: "Gunimi vie viac ako ktokoľvek iný v tíme"
+  - [ ] AI tag intelligence (implementácia)
   - [ ] Relationship health scores (Memory Layer)
   - [ ] Deal forecasting (Wisdom Layer)
   - [ ] Churn detection (Wisdom Layer)
@@ -340,11 +365,15 @@ TECHNICKÝ DLUH (backend / infraštruktúra)
 
   [x] SQL migrácia: workspace_deals currency column             ✅ vyriešené
   [x] Lint stabilizácia — 0 errors, 0 warnings                 ✅ čisté (aug 2026)
+  [x] OPERATION: RUNTIME ZERO — konzola v browseri čistá       ✅ (júl 2026)
+  [x] Stripe webhook secret — pridaný do Vercel env vars       ✅
+  [x] CRON_SECRET — env var pre Vercel Cron                    ✅
+  [x] workspace_contacts → workspace_people sweep (37 súborov) ✅ (aug 2026)
   [ ] Legacy tabuľka "tasks" (bez workspace_id) — migrácia alebo cleanup
-  [ ] Orbit* mŕtvy kód — OrbitButton/OrbitCard/... existujú ako súbory, ale nič ich neimportuje → zmazať
+  [ ] Orbit* mŕtvy kód — OrbitButton/OrbitCard/... → zmazať
   [ ] AI usage cost monitoring — upozornenie pri prekročení thresholdu
-  [x] Stripe webhook secret — pridaný do Vercel env vars        ✅
-  [ ] Multi-theme systém — CSS variables, dark/midnight/slate/light, switcher v Settings (len vizuálny pocit, žiadny blocker)
+  [ ] Multi-theme systém — CSS variables, dark/midnight/slate/light
+  [ ] Drop company_id z workspace_people — po 30-dňovej stabilite
 
 --------------------------------------------------------------------------------
 POZNÁMKY
@@ -361,10 +390,13 @@ POZNÁMKY
 * ADR-001 až ADR-004 zdokumentované v docs/architecture/adr/
 * Custom Dashboard (#12) live — /dashboard/custom, 12 widgetov, drag-and-drop (2026-08-02)
 * Webhooks (#20) live — HMAC-SHA256, 5 event typov, Settings UI (2026-08-02)
-* Enterprise Task Mode — topbar badge, focus strip, inline task strips na Contact/Deal (2026-08-02)
+* Enterprise Task Mode — topbar badge, focus strip, inline task strips (2026-08-02)
+* Orders / Objednávky live — Signal Engine (3 typy), Deal+Contact+Company tabs (2026-08-25)
+* Domain Foundation Phase 1+2+3 COMPLETED — workspace_people base table, workspace_contacts VIEW, workspace_relationships, 37 TS súborov (2026-08-27)
+* Teams V1 COMPLETED — workspace_teams, RLS, Settings → Tímy, 28 locale kľúčov (2026-08-27)
+* Mention system live — Tiptap @člen, #tag, hover karty v komentároch (2026-08-21)
+* Beta Sprint COMPLETED — invite Resend+CopyLink, intelligent empty states, mobile touch fix (2026-08-24)
 
 ================================================================================
 EOF
 ================================================================================
-
-

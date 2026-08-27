@@ -12,6 +12,7 @@ import {
   Hash,
   MessageSquare,
   Shield,
+  ShieldAlert,
   Sparkles,
   TrendingUp,
   Users,
@@ -24,6 +25,7 @@ import type {
   WorkspaceUsageStat,
   UserUsageStat,
 } from "@/server/actions/admin/getAIUsageStats";
+import WorkspaceBudgetTable from "@/components/admin/WorkspaceBudgetTable";
 
 type Props = { stats: AIUsageStats };
 
@@ -381,6 +383,12 @@ export default async function AIOperationsDashboard({ stats }: Props) {
         </div>
       </Section>
 
+      {/* BUDGET CONTROLS */}
+      <Section icon={ShieldAlert} title={t("budgetTitle")} subtitle={t("budgetSubtitle")}>
+        <WorkspaceBudgetTable workspaces={workspaces} />
+        <p className="text-[11px] text-white/20">{t("budgetNote")}</p>
+      </Section>
+
       {/* PHASE 3: WORKSPACE ANALYTICS */}
       <Section icon={Building2} title={t("workspacesTitle")} subtitle={t("workspacesSubtitle")}>
         <div className="overflow-hidden rounded-2xl border border-white/[0.06]">
@@ -470,7 +478,7 @@ export default async function AIOperationsDashboard({ stats }: Props) {
               ) : (
                 users.map((u: UserUsageStat) => (
                   <tr
-                    key={`${u.userId}::${u.workspaceName}`}
+                    key={`${u.userId}::${u.workspaceId}`}
                     className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.015]"
                   >
                     <td className="px-4 py-3">

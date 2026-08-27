@@ -21,7 +21,7 @@ export async function getCRMContacts() {
 
     const { data, error } =
       await supabase
-        .from("workspace_contacts")
+        .from("workspace_people")
         .select(`
           *,
           companies:workspace_companies (

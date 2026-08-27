@@ -11,6 +11,7 @@ export type Contact = {
   last_contacted_at?: string;
   created_at?: string;
   is_priority?: boolean;
+  person_type?: string;
   owner?: {
     full_name: string;
   };

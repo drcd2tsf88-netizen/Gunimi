@@ -4,7 +4,7 @@ import type { TodayCalmContext } from "./types";
 export async function buildCalmContext(workspaceId: string): Promise<TodayCalmContext> {
   const [contactsResult, dealsResult] = await Promise.all([
     supabaseAdmin
-      .from("workspace_contacts")
+      .from("workspace_people")
       .select("id", { count: "exact", head: true })
       .eq("workspace_id", workspaceId),
     supabaseAdmin
