@@ -116,10 +116,10 @@ function CompanyRow({ company, health, onNavigate, onTogglePriority }: RowProps)
         </p>
       </div>
 
-      {/* Star */}
+      {/* Star — always visible on mobile, hover-only on desktop */}
       <button
         onClick={(e) => onTogglePriority(company, e)}
-        className="shrink-0 p-1 opacity-0 transition-opacity group-hover:opacity-100"
+        className="shrink-0 p-2 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
       >
         <Star
           size={13}

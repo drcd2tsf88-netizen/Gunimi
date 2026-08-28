@@ -75,9 +75,9 @@ export default function TodayWorkSection({ items }: Props) {
                   onClick={() => handleComplete(item.id)}
                   aria-label={t("workMarkDone")}
                   title={t("workMarkDone")}
-                  className="shrink-0 rounded-full p-1 text-white/20 transition-colors hover:bg-emerald-500/10 hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white/20 transition-colors hover:bg-emerald-500/10 hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400"
                 >
-                  <Check size={12} />
+                  <Check size={14} />
                 </button>
               </div>
             );

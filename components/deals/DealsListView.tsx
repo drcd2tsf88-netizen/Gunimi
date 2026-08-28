@@ -231,8 +231,8 @@ export default function DealsListView({ deals, onEdit }: Props) {
                 }}
                 className="
                   flex
-                  h-6
-                  w-6
+                  h-8
+                  w-8
                   items-center
                   justify-center
 
@@ -240,14 +240,15 @@ export default function DealsListView({ deals, onEdit }: Props) {
 
                   text-white/20
 
-                  opacity-0
+                  opacity-100
 
                   transition-all
 
                   hover:bg-white/[0.06]
                   hover:text-white/60
 
-                  group-hover:opacity-100
+                  sm:opacity-0
+                  sm:group-hover:opacity-100
                 "
               >
                 <Pencil size={11} />

@@ -63,7 +63,24 @@ export default function OrbitTopbar({ mobileOpen, setMobileOpen }: OrbitTopbarPr
             <Menu size={16} strokeWidth={1.75} />
           </button>
 
-          {/* Command search */}
+          {/* Mobile search button — opens command palette on mobile */}
+          <button
+            onClick={() => setOpen(true)}
+            aria-label={t("topbarPlaceholder")}
+            className="
+              flex h-10 w-10 shrink-0 items-center justify-center
+              rounded-lg
+              border border-white/[0.06] bg-white/[0.02]
+              text-[#9AA3B2]/50
+              transition-all duration-[220ms]
+              hover:border-white/[0.10] hover:text-white/80
+              md:hidden
+            "
+          >
+            <Search size={15} strokeWidth={1.75} />
+          </button>
+
+          {/* Desktop command search bar */}
           <button
             onClick={() => setOpen(true)}
             aria-label={t("topbarPlaceholder")}

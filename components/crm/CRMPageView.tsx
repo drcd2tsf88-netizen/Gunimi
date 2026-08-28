@@ -277,14 +277,14 @@ function ContactRow({
         )}
       </div>
 
-      {/* Actions */}
+      {/* Actions — always visible on mobile, hover-only on desktop */}
       <div
-        className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100"
+        className="flex shrink-0 items-center gap-1 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onPriority}
-          className="flex h-7 w-7 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.06]"
+          className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.06]"
           title="Priority"
         >
           <Star
@@ -294,13 +294,13 @@ function ContactRow({
         </button>
         <button
           onClick={onEdit}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-white/70"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-white/70"
         >
           <Pencil size={12} />
         </button>
         <button
           onClick={onDelete}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
         >
           <Trash2 size={12} />
         </button>
