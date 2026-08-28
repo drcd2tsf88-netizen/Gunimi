@@ -1990,6 +1990,16 @@
     "createOrderNotesPlaceholder": "Poznámky (voliteľné)",
     "createOrderSuccess": "Objednávka vytvorená",
     "createOrderError": "Nepodarilo sa vytvoriť objednávku. Skúste znova.",
+    "createNotePlaceholder": "Názov poznámky...",
+    "createNoteHint": "Napíšte názov a stlačte Enter",
+    "createNoteBackHint": "ESC na zrušenie",
+    "createNoteContentPlaceholder": "Obsah poznámky (voliteľné)",
+    "createNoteSubmitPrefix": "Vytvoriť poznámku",
+    "createNoteSubmittingLabel": "Vytváram poznámku...",
+    "createNoteSubmitHint": "Pridať do poznámok",
+    "createNoteSubmitKey": "VYTVORIŤ",
+    "createNoteSuccess": "Poznámka vytvorená",
+    "createNoteError": "Nepodarilo sa vytvoriť poznámku. Skúste znova.",
     "escLabel": "ESC",
     "cognition": "Gunimi Kognícia",
     "thinkingCurrentThought": "Spracovávam požiadavku...",
@@ -2049,6 +2059,14 @@
       "createOrder": {
         "title": "Vytvoriť Objednávku",
         "description": "Pridať novú objednávku do pracovného priestoru"
+      },
+      "notes": {
+        "title": "Otvoriť Poznámky",
+        "description": "Zobraziť poznámky pracovného priestoru"
+      },
+      "createNote": {
+        "title": "Vytvoriť Poznámku",
+        "description": "Vytvoriť novú poznámku pracovného priestoru"
       }
     },
     "a11yNoResults": "Žiadne výsledky",
@@ -3674,7 +3692,8 @@
     "memoryTitle": "Pamäť",
     "memoryCaptured": "Zachytené",
     "memoryViewTimeline": "Zobraziť históriu",
-    "memoryEmpty": "Zatiaľ nič nezachytené"
+    "memoryEmpty": "Zatiaľ nič nezachytené",
+    "briefLabel": "Denný prehľad"
   },
   "awakening": {
     "heading": "Váš workspace je pripravený.",
@@ -3854,7 +3873,13 @@
     "indexEntities": "entít",
     "indexAiCovered": "AI analyzovaných",
     "indexNoAiYet": "Otvorte tag pre vygenerovanie AI pohľadu.",
-    "indexEmptyDescription": "Vytvorte tagy v Nastaveniach pre kategorizáciu kontaktov, firiem, obchodov a úloh."
+    "indexEmptyDescription": "Vytvorte tagy v Nastaveniach pre kategorizáciu kontaktov, firiem, obchodov a úloh.",
+    "filterSearch": "Hľadať tagy...",
+    "filterAll": "Všetky",
+    "filterResults": "tagov",
+    "filterEmpty": "Žiadne tagy nezodpovedajú filtru.",
+    "sortByCount": "Podľa počtu",
+    "sortAlpha": "A–Z"
   },
   "teams": {
     "settingsTitle": "Tímy a oddelenia",

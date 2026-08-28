@@ -1990,6 +1990,16 @@
     "createOrderNotesPlaceholder": "Poznámky (volitelné)",
     "createOrderSuccess": "Objednávka vytvořena",
     "createOrderError": "Nepodařilo se vytvořit objednávku. Zkuste znovu.",
+    "createNotePlaceholder": "Název poznámky...",
+    "createNoteHint": "Zadejte název a stiskněte Enter",
+    "createNoteBackHint": "ESC pro zrušení",
+    "createNoteContentPlaceholder": "Obsah poznámky (volitelné)",
+    "createNoteSubmitPrefix": "Vytvořit poznámku",
+    "createNoteSubmittingLabel": "Vytvářím poznámku...",
+    "createNoteSubmitHint": "Přidat do poznámek",
+    "createNoteSubmitKey": "VYTVOŘIT",
+    "createNoteSuccess": "Poznámka vytvořena",
+    "createNoteError": "Nepodařilo se vytvořit poznámku. Zkuste znovu.",
     "escLabel": "ESC",
     "cognition": "Gunimi Kognice",
     "thinkingCurrentThought": "Zpracovávám váš požadavek...",
@@ -2049,6 +2059,14 @@
       "createOrder": {
         "title": "Vytvořit Objednávku",
         "description": "Přidat novou objednávku do pracovního prostoru"
+      },
+      "notes": {
+        "title": "Otevřít Poznámky",
+        "description": "Zobrazit poznámky pracovního prostoru"
+      },
+      "createNote": {
+        "title": "Vytvořit Poznámku",
+        "description": "Vytvořit novou poznámku pracovního prostoru"
       }
     },
     "a11yNoResults": "Žádné výsledky",
@@ -3674,7 +3692,8 @@
     "memoryTitle": "Paměť",
     "memoryCaptured": "Zachyceno",
     "memoryViewTimeline": "Zobrazit historii",
-    "memoryEmpty": "Zatím nic nezachyceno"
+    "memoryEmpty": "Zatím nic nezachyceno",
+    "briefLabel": "Denní přehled"
   },
   "awakening": {
     "heading": "Váš workspace je připraven.",
@@ -3854,7 +3873,13 @@
     "indexEntities": "entit",
     "indexAiCovered": "AI analyzovaných",
     "indexNoAiYet": "Otevřete tag pro vygenerování AI pohledu.",
-    "indexEmptyDescription": "Vytvořte tagy v Nastavení pro kategorizaci kontaktů, firem, obchodů a úkolů."
+    "indexEmptyDescription": "Vytvořte tagy v Nastavení pro kategorizaci kontaktů, firem, obchodů a úkolů.",
+    "filterSearch": "Hledat tagy...",
+    "filterAll": "Vše",
+    "filterResults": "tagů",
+    "filterEmpty": "Žádné tagy neodpovídají filtru.",
+    "sortByCount": "Podle počtu",
+    "sortAlpha": "A–Z"
   },
   "teams": {
     "settingsTitle": "Týmy a oddělení",

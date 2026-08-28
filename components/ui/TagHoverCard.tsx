@@ -22,12 +22,22 @@ export default function TagHoverCard({ tag, children }: Props) {
   const [summary, setSummary] = useState<TagSummary | null | "loading">(null);
   const [aiSummary, setAiSummary] = useState<string | null | "loading">(null);
   const [pos, setPos] = useState({ top: 0, left: 0 });
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrapRef = useRef<HTMLSpanElement>(null);
   const fetchedRef = useRef(false);
 
+  function cancelClose() {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+  }
+
+  function scheduleClose() {
+    closeTimerRef.current = setTimeout(() => setVisible(false), 120);
+  }
+
   const handleEnter = useCallback(() => {
-    timerRef.current = setTimeout(async () => {
+    cancelClose();
+    openTimerRef.current = setTimeout(async () => {
       if (!wrapRef.current) return;
       const rect = wrapRef.current.getBoundingClientRect();
       setPos({ top: rect.top - 8, left: rect.left + rect.width / 2 });
@@ -43,8 +53,8 @@ export default function TagHoverCard({ tag, children }: Props) {
   }, [tag.id]);
 
   const handleLeave = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setVisible(false);
+    if (openTimerRef.current) clearTimeout(openTimerRef.current);
+    scheduleClose();
   }, []);
 
   const colors = TAG_COLOR_CLASSES[tag.color] ?? TAG_COLOR_CLASSES.violet;
@@ -62,6 +72,8 @@ export default function TagHoverCard({ tag, children }: Props) {
         zIndex: 300,
         marginBottom: 8,
       }}
+      onMouseEnter={cancelClose}
+      onMouseLeave={scheduleClose}
       className="w-56 rounded-2xl border border-white/[0.08] bg-[#0A0F1F]/95 p-4 shadow-2xl backdrop-blur-2xl"
     >
       {/* Tag name */}

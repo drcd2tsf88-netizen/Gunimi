@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { getUser } from "@/lib/server/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getTodayData } from "@/server/actions/today/getTodayData";
+import { getAiBrief } from "@/server/actions/today/getAiBrief";
 import { getWorkspaceState } from "@/server/actions/workspace/getWorkspaceState";
 import { getSignalCounts } from "@/server/actions/signals/getSignalCounts";
 import { getWorkspaceTimeline } from "@/server/actions/memory/getWorkspaceTimeline";
@@ -23,12 +24,13 @@ export default async function TodayPage() {
       )
     : Promise.resolve({ data: null });
 
-  const [todayData, profileResult, wsState, signalCounts, recentMemory] = await Promise.all([
+  const [todayData, profileResult, wsState, signalCounts, recentMemory, aiBrief] = await Promise.all([
     getTodayData(),
     profilePromise,
     getWorkspaceState(),
     getSignalCounts(),
     getWorkspaceTimeline(3),
+    getAiBrief(),
   ]);
 
   const displayName =
@@ -50,6 +52,7 @@ export default async function TodayPage() {
         relationships={todayData.relationships}
         work={todayData.work}
         calmContext={todayData.calmContext}
+        aiBrief={aiBrief}
         signalCount={signalCounts.total}
         criticalSignalCount={signalCounts.critical}
         recentMemory={recentMemory}

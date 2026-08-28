@@ -7,7 +7,8 @@ export type CommandNamespace =
   | "analytics"
   | "settings"
   | "ai"
-  | "admin";
+  | "admin"
+  | "notes";
 
 export type CommandGroup =
   | "navigation"

@@ -1990,6 +1990,16 @@
     "createOrderNotesPlaceholder": "Notes (optional)",
     "createOrderSuccess": "Order created",
     "createOrderError": "Failed to create order. Please try again.",
+    "createNotePlaceholder": "Note title...",
+    "createNoteHint": "Type a title and press Enter to create",
+    "createNoteBackHint": "ESC to cancel",
+    "createNoteContentPlaceholder": "Note content (optional)",
+    "createNoteSubmitPrefix": "Create note",
+    "createNoteSubmittingLabel": "Creating note...",
+    "createNoteSubmitHint": "Add to workspace notes",
+    "createNoteSubmitKey": "CREATE",
+    "createNoteSuccess": "Note created",
+    "createNoteError": "Failed to create note. Please try again.",
     "escLabel": "ESC",
     "cognition": "Gunimi Cognition",
     "thinkingCurrentThought": "Processing your request...",
@@ -2049,6 +2059,14 @@
       "createOrder": {
         "title": "Create Order",
         "description": "Add a new order to the workspace"
+      },
+      "notes": {
+        "title": "Open Notes",
+        "description": "View workspace notes"
+      },
+      "createNote": {
+        "title": "Create Note",
+        "description": "Create a new workspace note"
       }
     },
     "a11yNoResults": "No results found",
@@ -3674,7 +3692,8 @@
     "memoryTitle": "Memory",
     "memoryCaptured": "Captured",
     "memoryViewTimeline": "View timeline",
-    "memoryEmpty": "Nothing captured yet"
+    "memoryEmpty": "Nothing captured yet",
+    "briefLabel": "Daily Brief"
   },
   "awakening": {
     "heading": "Your workspace is ready.",
@@ -3854,7 +3873,13 @@
     "indexEntities": "entities",
     "indexAiCovered": "AI analyzed",
     "indexNoAiYet": "Open tag to generate AI insight.",
-    "indexEmptyDescription": "Create tags in Settings to categorize contacts, companies, deals and tasks."
+    "indexEmptyDescription": "Create tags in Settings to categorize contacts, companies, deals and tasks.",
+    "filterSearch": "Search tags...",
+    "filterAll": "All",
+    "filterResults": "tags",
+    "filterEmpty": "No tags match your filter.",
+    "sortByCount": "By count",
+    "sortAlpha": "A–Z"
   },
   "teams": {
     "settingsTitle": "Teams & Departments",

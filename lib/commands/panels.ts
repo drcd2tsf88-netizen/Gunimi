@@ -9,7 +9,8 @@ export type PanelId =
   | "create-contact"
   | "create-company"
   | "create-deal"
-  | "create-order";
+  | "create-order"
+  | "create-note";
 
 export const PANEL_ACTION_IDS = new Set<string>([
   "create-task",
@@ -17,6 +18,7 @@ export const PANEL_ACTION_IDS = new Set<string>([
   "create-company",
   "create-deal",
   "create-order",
+  "create-note",
 ]);
 
 export function isPanelAction(action: string): action is PanelId {

@@ -8,10 +8,12 @@ import { createContact } from "@/server/actions/crm/createContact";
 import { createCompany } from "@/server/actions/company/createCompanies";
 import { createDeal } from "@/server/actions/deals/createDeal";
 import { createOrder } from "@/server/actions/orders/createOrder";
+import { createNote } from "@/server/actions/notes/createNote";
 import type { ContactExtra } from "@/components/command/panels/CreateContactPanel";
 import type { CompanyExtra } from "@/components/command/panels/CreateCompanyPanel";
 import type { DealExtra } from "@/components/command/panels/CreateDealPanel";
 import type { OrderExtra } from "@/components/command/panels/CreateOrderPanel";
+import type { NoteExtra } from "@/components/command/panels/CreateNotePanel";
 import type { PanelId } from "@/lib/commands/panels";
 
 interface UsePanelStateOptions {
@@ -145,6 +147,19 @@ export function usePanelState({
     );
   }
 
+  async function handleCreateNote(extra: NoteExtra) {
+    const title = query.trim();
+    if (!title) return;
+    await runPanelAction(
+      () => createNote({
+        title,
+        content: extra.content || undefined,
+      }),
+      t("createNoteSuccess"),
+      t("createNoteError")
+    );
+  }
+
   return {
     panelError,
     setPanelError,
@@ -158,5 +173,6 @@ export function usePanelState({
     handleCreateCompany,
     handleCreateDeal,
     handleCreateOrder,
+    handleCreateNote,
   };
 }

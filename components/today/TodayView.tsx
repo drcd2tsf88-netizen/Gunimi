@@ -9,8 +9,10 @@ import TodayWorkSection from "./TodayWorkSection";
 import FirstSignalMoment from "./FirstSignalMoment";
 import TodaySignalsPulse from "./TodaySignalsPulse";
 import TodayMemoryWidget from "./TodayMemoryWidget";
+import AiBriefCard from "./AiBriefCard";
 import type { ResolvedTodayData, TodayCalmContext } from "@/lib/today/types";
 import type { MemoryEvent } from "@/lib/memory/types";
+import type { AiBrief } from "@/server/actions/today/getAiBrief";
 
 type Props = {
   displayName: string;
@@ -18,6 +20,7 @@ type Props = {
   criticalSignalCount: number;
   recentMemory: MemoryEvent[];
   calmContext?: TodayCalmContext;
+  aiBrief?: AiBrief | null;
 } & ResolvedTodayData;
 
 function getGreetingKey(): "greetingMorning" | "greetingAfternoon" | "greetingEvening" {
@@ -43,6 +46,7 @@ export default function TodayView({
   criticalSignalCount,
   recentMemory,
   calmContext,
+  aiBrief,
 }: Props) {
   const t = useTranslations("today");
 
@@ -73,6 +77,9 @@ export default function TodayView({
           {healthLabel}
         </p>
       </div>
+
+      {/* ── AI Brief ─────────────────────────────────────────────────────── */}
+      {aiBrief && <AiBriefCard brief={aiBrief} />}
 
       {/* ── First Signal Moment ───────────────────────────────────────────── */}
       <FirstSignalMoment hasSignals={hasSignals} />

@@ -7,6 +7,22 @@ import { logger } from "@/lib/logger";
 
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+const LANG_NAMES: Record<string, string> = {
+  sk: "Slovak",
+  cs: "Czech",
+  en: "English",
+};
+
+async function getWorkspaceLanguage(workspaceId: string): Promise<string> {
+  const { data } = await supabaseAdmin
+    .from("workspaces")
+    .select("preferences")
+    .eq("id", workspaceId)
+    .maybeSingle();
+  const lang = (data?.preferences as { language?: string } | null)?.language ?? "en";
+  return LANG_NAMES[lang] ?? "English";
+}
+
 export async function getTagAiSummary(tagId: string, force = false): Promise<string | null> {
   try {
     // Fast path: return cached summary if fresh
@@ -30,6 +46,8 @@ export async function getTagAiSummary(tagId: string, force = false): Promise<str
     const { tag, contacts, companies, deals, tasks, notes } = result;
     const total = contacts.length + companies.length + deals.length + tasks.length + notes.length;
     if (total === 0) return null;
+
+    const language = await getWorkspaceLanguage(tag.workspace_id);
 
     const lines: string[] = [`Tag: "${tag.name}"`, `Total tagged entities: ${total}`];
 
@@ -69,7 +87,8 @@ export async function getTagAiSummary(tagId: string, force = false): Promise<str
 Analyze the tag data and write exactly 2–3 sentences describing what this tag represents and what business patterns you observe across its entities.
 Be specific: mention entity types, industries, deal stages, or themes you detect.
 If there is a clear actionable pattern (e.g. stalled deals, VIP contacts, specific industry cluster), mention it.
-Write in present tense. Do not start with "This tag". Return only the insight text, nothing else.`,
+Write in present tense. Do not start with "This tag". Return only the insight text, nothing else.
+IMPORTANT: Write your response in ${language}. Do not use any other language.`,
         },
         {
           role: "user",

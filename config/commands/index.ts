@@ -6,3 +6,4 @@ import "./crm.commands";
 import "./tasks.commands";
 import "./analytics.commands";
 import "./ai.commands";
+import "./notes.commands";
