@@ -18,15 +18,15 @@ export async function getWorkspaceState(): Promise<WorkspaceState> {
 
     const [companies, contacts, deals] = await Promise.all([
       client
-        .from("companies")
+        .from("workspace_companies")
         .select("id", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
       client
-        .from("contacts")
+        .from("workspace_people")
         .select("id", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
       client
-        .from("deals")
+        .from("workspace_deals")
         .select("id", { count: "exact", head: true })
         .eq("workspace_id", workspace.id),
     ]);

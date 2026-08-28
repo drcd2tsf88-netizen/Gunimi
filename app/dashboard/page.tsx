@@ -49,6 +49,7 @@ export default async function TodayPage() {
         attention={todayData.attention}
         relationships={todayData.relationships}
         work={todayData.work}
+        calmContext={todayData.calmContext}
         signalCount={signalCounts.total}
         criticalSignalCount={signalCounts.critical}
         recentMemory={recentMemory}
