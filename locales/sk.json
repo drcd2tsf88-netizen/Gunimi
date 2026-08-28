@@ -2300,7 +2300,8 @@
     "closeNavigation": "Zavrieť navigáciu",
     "organization": "Ludia a timy",
     "groupPeople": "Organizacia",
-    "signals": "Signály"
+    "signals": "Signály",
+    "tags": "Tagy"
   },
   "signalsPage": {
     "title": "Signály",
@@ -3845,7 +3846,15 @@
     "aiInsightTitle": "AI pohľad",
     "aiInsightAnalyzing": "Analyzujem...",
     "aiInsightEmpty": "Pridajte ďalšie entity pre vygenerovanie pohľadu.",
-    "aiInsightRefresh": "Obnoviť pohľad"
+    "aiInsightRefresh": "Obnoviť pohľad",
+    "backToTags": "Všetky tagy",
+    "indexTitle": "Tagy",
+    "indexSubtitle": "Všetky workspace tagy — každý analyzovaný AI na základe tagovaných entít.",
+    "indexBadge": "tagov",
+    "indexEntities": "entít",
+    "indexAiCovered": "AI analyzovaných",
+    "indexNoAiYet": "Otvorte tag pre vygenerovanie AI pohľadu.",
+    "indexEmptyDescription": "Vytvorte tagy v Nastaveniach pre kategorizáciu kontaktov, firiem, obchodov a úloh."
   },
   "teams": {
     "settingsTitle": "Tímy a oddelenia",

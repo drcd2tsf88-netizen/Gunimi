@@ -2300,7 +2300,8 @@
     "closeNavigation": "Close navigation",
     "organization": "People & Teams",
     "groupPeople": "Organization",
-    "signals": "Signals"
+    "signals": "Signals",
+    "tags": "Tags"
   },
   "signalsPage": {
     "title": "Signals",
@@ -3845,7 +3846,15 @@
     "aiInsightTitle": "AI Insight",
     "aiInsightAnalyzing": "Analyzing...",
     "aiInsightEmpty": "Add more entities to generate an insight.",
-    "aiInsightRefresh": "Refresh insight"
+    "aiInsightRefresh": "Refresh insight",
+    "backToTags": "All tags",
+    "indexTitle": "Tags",
+    "indexSubtitle": "All workspace tags — each one analyzed by AI based on its tagged entities.",
+    "indexBadge": "tags",
+    "indexEntities": "entities",
+    "indexAiCovered": "AI analyzed",
+    "indexNoAiYet": "Open tag to generate AI insight.",
+    "indexEmptyDescription": "Create tags in Settings to categorize contacts, companies, deals and tasks."
   },
   "teams": {
     "settingsTitle": "Teams & Departments",

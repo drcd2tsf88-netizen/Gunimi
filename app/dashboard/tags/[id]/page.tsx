@@ -57,11 +57,11 @@ export default async function TagDetailPage({ params }: Props) {
       {/* Back */}
       <GunimiSection>
         <Link
-          href="/dashboard/settings"
+          href="/dashboard/tags"
           className="flex items-center gap-1.5 text-xs text-white/30 transition-colors hover:text-white/60"
         >
           <ArrowLeft size={12} />
-          {t("backToSettings")}
+          {t("backToTags")}
         </Link>
       </GunimiSection>
 

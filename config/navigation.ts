@@ -12,6 +12,7 @@ import {
   Settings,
   ShoppingBag,
   StickyNote,
+  Tag,
   TrendingUp,
   Users,
   UsersRound,
@@ -32,6 +33,7 @@ export type NavItemId =
   | "automations"
   | "analytics"
   | "signals"
+  | "tags"
   | "organization"
   | "settings";
 
@@ -126,6 +128,7 @@ export const NAV_GROUPS: NavGroup[] = [
     separator: true,
     items: [
       { id: "signals",   labelKey: "signals",   href: "/dashboard/signals",   icon: Radio     },
+      { id: "tags",      labelKey: "tags",      href: "/dashboard/tags",      icon: Tag       },
       { id: "analytics", labelKey: "analytics", href: "/dashboard/analytics", icon: BarChart3 },
       { id: "settings",  labelKey: "settings",  href: "/dashboard/settings",  icon: Settings  },
     ],
