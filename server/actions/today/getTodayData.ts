@@ -6,7 +6,7 @@ import { buildCalmContext } from "@/lib/today/calmContext";
 import type { ResolvedTodayData } from "@/lib/today/types";
 
 const EMPTY: ResolvedTodayData = {
-  health: { level: "healthy", labelKey: "today.healthHealthy" },
+  health: { level: "healthy", labelKey: "healthHealthy" },
   focus: null,
   attention: [],
   relationships: [],
@@ -20,13 +20,7 @@ export async function getTodayData(): Promise<ResolvedTodayData> {
 
     const result = await getTodaySignals(workspace.id);
 
-    const isCalm =
-      result.focus === null &&
-      result.attention.length === 0 &&
-      result.relationships.length === 0 &&
-      result.work.length === 0;
-
-    if (isCalm) {
+    if (result.focus === null) {
       const calmContext = await buildCalmContext(workspace.id);
       return { ...result, calmContext };
     }

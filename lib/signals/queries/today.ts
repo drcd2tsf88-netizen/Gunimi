@@ -134,45 +134,45 @@ function buildFocusItem(sig: SignalRow, entityName: string): TodayFocus {
   switch (sig.type) {
     case "deal_close_date_passed":
       return {
-        actionKey: "today.focusDealPastCloseAction",
+        actionKey: "focusDealPastCloseAction",
         actionParams: { title: entityName, days },
-        reasonKey: "today.focusDealPastCloseReason",
+        reasonKey: "focusDealPastCloseReason",
         href,
       };
     case "deal_approaching_close":
       return {
-        actionKey: "today.focusDealClosingAction",
+        actionKey: "focusDealClosingAction",
         actionParams: { title: entityName, days },
-        reasonKey: "today.focusDealClosingReason",
+        reasonKey: "focusDealClosingReason",
         href,
       };
     case "deal_stale":
       return {
-        actionKey: "today.focusDealStaleAction",
+        actionKey: "focusDealStaleAction",
         actionParams: { title: entityName, days },
-        reasonKey: "today.focusDealStaleReason",
+        reasonKey: "focusDealStaleReason",
         href,
       };
     case "contact_deal_stalling":
       return {
-        actionKey: "today.focusContactStaleAction",
+        actionKey: "focusContactStaleAction",
         actionParams: { name: entityName, days },
-        reasonKey: "today.focusContactStaleReason",
+        reasonKey: "focusContactStaleReason",
         reasonParams: { deal: dealTitle, days },
         href,
       };
     case "contact_overdue_task":
       return {
-        actionKey: "today.focusContactOverdueTaskAction",
+        actionKey: "focusContactOverdueTaskAction",
         actionParams: { name: entityName, days },
-        reasonKey: "today.focusContactOverdueTaskReason",
+        reasonKey: "focusContactOverdueTaskReason",
         href,
       };
     case "company_closing_deal":
       return {
-        actionKey: "today.focusCompanyClosingDealAction",
+        actionKey: "focusCompanyClosingDealAction",
         actionParams: { company: entityName, dealTitle, days },
-        reasonKey: "today.focusCompanyClosingDealReason",
+        reasonKey: "focusCompanyClosingDealReason",
         href,
       };
     default:
@@ -191,32 +191,32 @@ function buildAttentionItem(sig: SignalRow, entityName: string): TodayAttentionI
 
   switch (sig.type) {
     case "deal_close_date_passed":
-      labelKey = "today.attentionDealPastClose";
+      labelKey = "attentionDealPastClose";
       labelParams = { title: entityName, days };
       break;
     case "deal_approaching_close":
-      labelKey = "today.attentionDealClosingSoon";
+      labelKey = "attentionDealClosingSoon";
       labelParams = { title: entityName, days };
       break;
     case "deal_stale":
-      labelKey = "today.attentionDealStale";
+      labelKey = "attentionDealStale";
       labelParams = { title: entityName, days };
       break;
     case "contact_deal_stalling":
     case "contact_stale":
-      labelKey = "today.attentionContactStale";
+      labelKey = "attentionContactStale";
       labelParams = { name: entityName, days };
       break;
     case "contact_overdue_task":
-      labelKey = "today.attentionContactOverdueTask";
+      labelKey = "attentionContactOverdueTask";
       labelParams = { name: entityName, days };
       break;
     case "company_closing_deal":
-      labelKey = "today.attentionCompanyClosingDeal";
+      labelKey = "attentionCompanyClosingDeal";
       labelParams = { company: entityName, dealTitle, days };
       break;
     case "task_overdue":
-      labelKey = "today.attentionTaskOverdue";
+      labelKey = "attentionTaskOverdue";
       labelParams = { title: entityName, days };
       break;
     default:
@@ -245,7 +245,7 @@ function buildRelationshipItem(
       return {
         id: sig.entity_id,
         name: entityName,
-        labelKey: "today.relationshipStale",
+        labelKey: "relationshipStale",
         labelParams: { days },
         href,
       };
@@ -253,7 +253,7 @@ function buildRelationshipItem(
       return {
         id: sig.entity_id,
         name: entityName,
-        labelKey: "today.relationshipNeverContacted",
+        labelKey: "relationshipNeverContacted",
         href,
       };
     default:
@@ -423,12 +423,12 @@ export async function getTodaySignals(workspaceId: string): Promise<ResolvedToda
 
   const health: TodayHealth =
     uniqueEntityCount === 0
-      ? { level: "healthy", labelKey: "today.healthHealthy" }
+      ? { level: "healthy", labelKey: "healthHealthy" }
       : hasCritical || uniqueEntityCount >= 3
-        ? { level: "urgent", labelKey: "today.healthUrgent" }
+        ? { level: "urgent", labelKey: "healthUrgent" }
         : {
             level: "attention",
-            labelKey: "today.healthAttention",
+            labelKey: "healthAttention",
             labelParams: { count: uniqueEntityCount },
           };
 
