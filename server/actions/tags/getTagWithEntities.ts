@@ -7,7 +7,7 @@ import type { WorkspaceTag } from "@/types/tag";
 
 export type TagContact = { id: string; first_name: string; last_name: string | null; email: string | null };
 export type TagCompany = { id: string; name: string; industry: string | null };
-export type TagDeal = { id: string; name: string; stage: string | null; value: number | null };
+export type TagDeal = { id: string; title: string; stage: string | null; value: number | null };
 export type TagTask = { id: string; title: string; status: string; priority: string };
 export type TagNote = { id: string; title: string; created_at: string };
 
@@ -65,7 +65,7 @@ export async function getTagWithEntities(tagId: string): Promise<TagWithEntities
         ? supabaseAdmin.from("workspace_companies").select("id, name, industry").in("id", companyIds)
         : { data: [] },
       dealIds.length > 0
-        ? supabaseAdmin.from("workspace_deals").select("id, name, stage, value").in("id", dealIds)
+        ? supabaseAdmin.from("workspace_deals").select("id, title, stage, value").in("id", dealIds)
         : { data: [] },
       taskIds.length > 0
         ? supabaseAdmin.from("workspace_tasks").select("id, title, status, priority").in("id", taskIds)

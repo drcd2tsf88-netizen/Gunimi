@@ -64,7 +64,7 @@ export async function getTagAiSummary(tagId: string, force = false): Promise<str
     if (deals.length > 0) {
       const items = deals
         .slice(0, 15)
-        .map((d) => `${d.name} [${d.stage ?? "—"}${d.value != null ? `, €${d.value.toLocaleString()}` : ""}]`);
+        .map((d) => `${d.title} [${d.stage ?? "—"}${d.value != null ? `, €${d.value.toLocaleString()}` : ""}]`);
       lines.push(`Deals (${deals.length}): ${items.join(", ")}`);
     }
     if (tasks.length > 0) {

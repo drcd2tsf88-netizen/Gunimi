@@ -153,7 +153,7 @@ export default async function TagDetailPage({ params }: Props) {
                   <EntityRow
                     key={d.id}
                     href={`/dashboard/deals/${d.id}`}
-                    primary={d.name}
+                    primary={d.title}
                     secondary={d.stage ?? undefined}
                     meta={d.value != null ? `$${d.value.toLocaleString()}` : undefined}
                     dot="bg-emerald-500"

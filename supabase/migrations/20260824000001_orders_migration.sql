@@ -86,10 +86,8 @@ create table if not exists workspace_orders (
   -- company_id: Business Entity counterparty for this Order
   company_id            uuid        references workspace_companies(id) on delete set null,
 
-  -- contact_id: compatibility bridge for ADR-002
-  -- References workspace_members.id now.
-  -- Will reference workspace_people.id after workspace_people migration.
-  contact_id            uuid        references workspace_members(id) on delete set null,
+  -- contact_id: references workspace_people.id (ADR-002 — domain foundation migration completed)
+  contact_id            uuid        references workspace_people(id) on delete set null,
 
   -- deal_id: optional — Order may originate from a Deal
   deal_id               uuid        references workspace_deals(id) on delete set null,
@@ -110,6 +108,7 @@ create table if not exists workspace_orders (
     check (number != '')
 );
 
+drop trigger if exists trg_set_order_number on workspace_orders;
 create trigger trg_set_order_number
   before insert on workspace_orders
   for each row execute function trg_set_order_number_fn();
@@ -119,7 +118,11 @@ create trigger trg_set_order_number
 
 alter table workspace_orders enable row level security;
 
--- Workspace members can read all orders in their workspace
+drop policy if exists "workspace members read orders"   on workspace_orders;
+drop policy if exists "workspace members create orders" on workspace_orders;
+drop policy if exists "workspace members update orders" on workspace_orders;
+drop policy if exists "workspace admins delete orders"  on workspace_orders;
+
 create policy "workspace members read orders"
   on workspace_orders for select
   using (
@@ -130,7 +133,6 @@ create policy "workspace members read orders"
     )
   );
 
--- Workspace members can create orders
 create policy "workspace members create orders"
   on workspace_orders for insert
   with check (
@@ -141,7 +143,6 @@ create policy "workspace members create orders"
     )
   );
 
--- Workspace members can update orders in their workspace
 create policy "workspace members update orders"
   on workspace_orders for update
   using (
@@ -152,7 +153,6 @@ create policy "workspace members update orders"
     )
   );
 
--- Only owners and admins can delete orders (hard delete is exceptional)
 create policy "workspace admins delete orders"
   on workspace_orders for delete
   using (
@@ -164,13 +164,13 @@ create policy "workspace admins delete orders"
     )
   );
 
-create index idx_orders_workspace        on workspace_orders(workspace_id);
-create index idx_orders_workspace_status on workspace_orders(workspace_id, status);
-create index idx_orders_company          on workspace_orders(company_id) where company_id is not null;
-create index idx_orders_contact          on workspace_orders(contact_id) where contact_id is not null;
-create index idx_orders_deal             on workspace_orders(deal_id) where deal_id is not null;
-create index idx_orders_due_date         on workspace_orders(workspace_id, due_date) where due_date is not null;
-create unique index idx_orders_number    on workspace_orders(workspace_id, number);
+create index if not exists idx_orders_workspace        on workspace_orders(workspace_id);
+create index if not exists idx_orders_workspace_status on workspace_orders(workspace_id, status);
+create index if not exists idx_orders_company          on workspace_orders(company_id) where company_id is not null;
+create index if not exists idx_orders_contact          on workspace_orders(contact_id) where contact_id is not null;
+create index if not exists idx_orders_deal             on workspace_orders(deal_id) where deal_id is not null;
+create index if not exists idx_orders_due_date         on workspace_orders(workspace_id, due_date) where due_date is not null;
+create unique index if not exists idx_orders_number    on workspace_orders(workspace_id, number);
 
 -- ─────────────────────────────────────────────────────────────
 -- workspace_order_items
@@ -214,7 +214,11 @@ create table if not exists workspace_order_items (
 
 alter table workspace_order_items enable row level security;
 
--- Items inherit access through their order's workspace membership
+drop policy if exists "workspace members read order items"   on workspace_order_items;
+drop policy if exists "workspace members create order items" on workspace_order_items;
+drop policy if exists "workspace members update order items" on workspace_order_items;
+drop policy if exists "workspace members delete order items" on workspace_order_items;
+
 create policy "workspace members read order items"
   on workspace_order_items for select
   using (
@@ -255,6 +259,6 @@ create policy "workspace members delete order items"
     )
   );
 
-create index idx_order_items_order     on workspace_order_items(order_id);
-create index idx_order_items_workspace on workspace_order_items(workspace_id);
-create index idx_order_items_position  on workspace_order_items(order_id, position);
+create index if not exists idx_order_items_order     on workspace_order_items(order_id);
+create index if not exists idx_order_items_workspace on workspace_order_items(workspace_id);
+create index if not exists idx_order_items_position  on workspace_order_items(order_id, position);

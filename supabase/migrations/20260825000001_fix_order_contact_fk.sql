@@ -1,10 +1,8 @@
--- Fix order contact_id FK: workspace_members → workspace_contacts
--- An order's contact is a customer contact (workspace_contacts), not an internal workspace member.
--- ADR-002: workspace_contacts is the correct compatibility bridge until workspace_people exists.
-
-alter table workspace_orders
-  drop constraint if exists workspace_orders_contact_id_fkey;
-
-alter table workspace_orders
-  add constraint workspace_orders_contact_id_fkey
-    foreign key (contact_id) references workspace_contacts(id) on delete set null;
+-- SUPERSEDED by 20260824000001_orders_migration.sql (updated 2026-08-28)
+-- The main orders migration now references workspace_people(id) directly.
+-- This file is kept for audit trail only. Do NOT run it — it is a no-op.
+--
+-- Background: originally written to fix contact_id FK from workspace_members → workspace_contacts.
+-- After domain foundation migration (2026-08-27), workspace_contacts became a VIEW.
+-- PostgreSQL does not allow FK references to VIEWs, so the main migration was
+-- updated to reference workspace_people(id) (the actual underlying table) directly.
