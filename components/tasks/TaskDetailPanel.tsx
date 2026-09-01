@@ -20,6 +20,7 @@ import {
   Check,
   Loader2,
   Pencil,
+  RefreshCw,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
@@ -531,6 +532,13 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                           </div>
                         )}
                       </div>
+
+                      {task.is_recurring && task.recurrence_frequency && (
+                        <span className="flex items-center gap-1.5 rounded-full border border-violet-500/[0.18] bg-violet-500/[0.07] px-2.5 py-1 text-[11px] text-violet-400/80">
+                          <RefreshCw size={9} />
+                          {({ daily: t("freqDaily"), weekly: t("freqWeekly"), monthly: t("freqMonthly"), yearly: t("freqYearly") } as Record<string, string>)[task.recurrence_frequency] ?? task.recurrence_frequency}
+                        </span>
+                      )}
 
                       <span className="flex items-center gap-1.5 text-[11px] text-zinc-600">
                         <Clock size={10} />

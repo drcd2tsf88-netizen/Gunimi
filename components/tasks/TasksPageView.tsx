@@ -16,6 +16,7 @@ import {
   LayoutList,
   Columns,
   AlertCircle,
+  RefreshCw,
 } from "lucide-react";
 
 import { useTranslations } from "next-intl";
@@ -369,9 +370,14 @@ export default function TasksPageView({
                 </button>
               )}
               <div className="min-w-0">
-                <p className={task.status === "done" ? "font-medium text-zinc-500 line-through" : "font-medium text-white/90 group-hover:text-violet-300 transition-colors"}>
-                  {task.title}
-                </p>
+                <div className="flex items-center gap-1.5">
+                  <p className={task.status === "done" ? "font-medium text-zinc-500 line-through" : "font-medium text-white/90 group-hover:text-violet-300 transition-colors"}>
+                    {task.title}
+                  </p>
+                  {task.is_recurring && (
+                    <RefreshCw size={10} className="shrink-0 text-violet-400/60" aria-label={t("recurring")} />
+                  )}
+                </div>
                 {!isSubtask && task.description && (
                   <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500">{stripHtml(task.description)}</p>
                 )}

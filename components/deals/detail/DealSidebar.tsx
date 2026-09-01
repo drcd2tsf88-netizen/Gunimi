@@ -21,54 +21,11 @@ import GunimiCard from "@/components/ui/GunimiCard";
 import { updateDeal } from "@/server/actions/deals/updateDeal";
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { computeDealHealth } from "@/lib/deals/dealHealth";
 
 type Props = {
   deal: Deal;
 };
-
-const STAGE_WEIGHTS: Record<string, number> = {
-  negotiation: 1.2,
-  proposal: 1.0,
-  qualified: 0.85,
-  lead: 0.7,
-};
-
-function computeDealHealth(
-  probability: number | undefined,
-  updatedAt: string | undefined,
-  expectedCloseDate: string | undefined,
-  stage: string
-): { healthScore: number; healthLabel: "Healthy" | "Warning" | "At Risk" } {
-  const now = Date.now();
-  const MS_PER_DAY = 86_400_000;
-
-  const daysSinceUpdated = updatedAt
-    ? Math.floor((now - new Date(updatedAt).getTime()) / MS_PER_DAY)
-    : 30;
-
-  const daysUntilClose = expectedCloseDate
-    ? Math.floor((new Date(expectedCloseDate).getTime() - now) / MS_PER_DAY)
-    : null;
-
-  const stageWeight = STAGE_WEIGHTS[stage.toLowerCase()] ?? 1.0;
-  const base = probability != null ? probability : stageWeight * 50;
-  const staleFactor = Math.max(0, 1 - daysSinceUpdated / 30);
-
-  let urgencyFactor = 1.0;
-  if (daysUntilClose !== null) {
-    if (daysUntilClose < 0) urgencyFactor = 0.5;
-    else if (daysUntilClose === 0) urgencyFactor = 1.5;
-    else if (daysUntilClose <= 7) urgencyFactor = 1.3;
-    else if (daysUntilClose <= 14) urgencyFactor = 1.15;
-  }
-
-  const raw = base * staleFactor * urgencyFactor;
-  const healthScore = Math.max(0, Math.min(100, Math.round(raw)));
-  const healthLabel =
-    healthScore >= 70 ? "Healthy" : healthScore >= 40 ? "Warning" : "At Risk";
-
-  return { healthScore, healthLabel };
-}
 
 const CREATED_AT_NOW = new Date();
 
@@ -114,7 +71,7 @@ export default function DealSidebar({ deal }: Props) {
     )
   );
 
-  const { healthScore, healthLabel } = computeDealHealth(
+  const health = computeDealHealth(
     deal.probability,
     deal.updated_at,
     deal.expected_close_date,
@@ -158,12 +115,7 @@ export default function DealSidebar({ deal }: Props) {
   const hasRelations =
     deal.company || deal.contact || deal.owner;
 
-  const healthColor =
-    healthLabel === "Healthy"
-      ? { bar: "bg-emerald-400", text: "text-emerald-300", badge: "border-emerald-500/20 bg-emerald-500/10 text-emerald-300" }
-      : healthLabel === "Warning"
-        ? { bar: "bg-amber-400", text: "text-amber-300", badge: "border-amber-500/20 bg-amber-500/10 text-amber-300" }
-        : { bar: "bg-red-400", text: "text-red-300", badge: "border-red-500/20 bg-red-500/10 text-red-300" };
+  const healthColor = { bar: health.barClass, text: health.textClass, badge: health.badgeClass };
 
   return (
     <div className="space-y-4">
@@ -178,19 +130,19 @@ export default function DealSidebar({ deal }: Props) {
             </p>
           </div>
           <span className={`rounded-full border px-2.5 py-0.5 text-[10px] font-medium ${healthColor.badge}`}>
-            {healthLabel}
+            {health.label}
           </span>
         </div>
 
         <div className="mt-4">
           <div className="flex items-end justify-between">
-            <span className={`text-3xl font-bold ${healthColor.text}`}>{healthScore}</span>
+            <span className={`text-3xl font-bold ${healthColor.text}`}>{health.score}</span>
             <span className="text-xs text-white/30">/100</span>
           </div>
           <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
             <div
               className={`h-full rounded-full transition-all duration-500 ${healthColor.bar}`}
-              style={{ width: `${healthScore}%` }}
+              style={{ width: `${health.score}%` }}
             />
           </div>
           <p className="mt-2 text-[10px] text-white/25">

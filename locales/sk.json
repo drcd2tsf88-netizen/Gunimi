@@ -1229,55 +1229,116 @@
     "pageTitle": "AI Mission Control"
   },
   "admin": {
-    "failedToLoad": "Nepodarilo sa načítať admin panel.",
-    "failedToUpdateRole": "Nepodarilo sa aktualizovať rolu.",
-    "failedToUpdateStatus": "Nepodarilo sa aktualizovať stav.",
-    "roleUpdated": "Rola používateľa zmenená na {role}.",
-    "statusUpdated": "Stav zmenený na {status}.",
-    "orbitInternalSystems": "Orbit Interné Systémy",
-    "orbitControlTitle": "Gunimi Control",
-    "orbitControlCenter": "Centrum",
-    "orbitDescription": "Interná operačná vrstva správy pre Gunimi AI Operating System — beta prístup, členstvá, riadenie platformy a používateľská infraštruktúra.",
-    "systemsOnline": "Systémy Online",
-    "aiInfrastructure": "AI Infraštruktúra",
-    "statPlatformUsers": "Používatelia platformy",
-    "statBetaAccess": "Beta prístup",
-    "statAdmins": "Administrátori",
-    "statPendingAccess": "Čakajúci prístup",
-    "tableTitle": "Používatelia platformy",
-    "tableSubtitle": "Správa beta prístupu, oprávnení, schvaľovaní a interných rolí Orbit.",
-    "totalProfiles": "{count} profilov celkom",
-    "colUser": "Používateľ",
-    "colRole": "Rola",
-    "colStatus": "Stav",
-    "colOnboarding": "Onboarding",
-    "colActions": "Akcie",
-    "defaultUserName": "Gunimi Používateľ",
-    "onboardingCompleted": "Dokončené",
-    "onboardingPending": "Čakajúce",
-    "actionApproveBeta": "Schváliť Beta",
-    "actionMakeTeam": "Urobiť tím",
-    "actionMakeAdmin": "Urobiť administrátora",
-    "actionUnsuspend": "Obnoviť",
-    "actionSuspend": "Pozastaviť",
-    "footerDescription": "Infraštruktúra správy Gunimi AI Operating System.",
-    "footerLabel": "Interná platforma",
-    "alpha": {
-      "pageTitle": "Fronta Open Alpha",
-      "pageSubtitle": "Posudzujte a schvaľujte registrácie Open Alpha.",
-      "colName": "Meno",
-      "colEmail": "E-mail",
-      "colRegistered": "Registrovaný",
-      "approve": "Schváliť",
-      "approving": "Schvaľujem...",
-      "approved": "Schválený",
-      "approveSuccess": "Prístup udelený. Uvítací e-mail odoslaný.",
-      "approveError": "Schválenie zlyhalo. Skúste znova.",
-      "emptyTitle": "Žiadne čakajúce žiadosti",
-      "emptySubtitle": "Všetci registrovaní boli schválení.",
-      "pendingBadge": "Čakajúci",
-      "approvedBadge": "Aktívny"
-    }
+    "badge": "Platform Admin",
+    "generatedAt": "Vygenerované",
+    "noData": "Žiadne dáta.",
+    "navOverview": "Prehľad",
+    "navWorkspaces": "Workspace",
+    "navUsers": "Používatelia",
+    "navAi": "AI Operácie",
+    "navHealth": "Zdravie platformy",
+    "navInvites": "Pozvánky",
+    "navDogfood": "Dogfood",
+    "hubTitle": "Kontrola platformy",
+    "hubSubtitle": "Aktuálny prehľad všetkých workspaces, používateľov a zdravia platformy.",
+    "hubWorkspaces": "Celkom workspaces",
+    "hubUsers": "Celkom používateľov",
+    "hubAIToday": "AI dnes",
+    "hubSignals": "Aktívne signály",
+    "hubInvites": "Pozvánky",
+    "hubDogfood": "Interná spätná väzba",
+    "hubDogfoodHint": "Zobraziť spätnú väzbu",
+    "workspacesTitle": "Správa workspaces",
+    "workspacesSubtitle": "Všetky workspace na platforme — pozastavenie, monitoring AI, správa feature flags.",
+    "wsTotal": "workspaces",
+    "wsColName": "Workspace",
+    "wsColMembers": "Členovia",
+    "wsColCreated": "Vytvorené",
+    "wsColStatus": "Stav",
+    "wsColActions": "Akcie",
+    "wsSuspend": "Pozastaviť",
+    "wsResume": "Obnoviť",
+    "wsSuspended": "Pozastavené",
+    "wsActive": "Aktívne",
+    "usersTitle": "Správa používateľov",
+    "usersSubtitle": "Všetci používatelia platformy — role, workspace a platform prístup.",
+    "usersTotal": "používateľov",
+    "usersAdminCount": "platform adminov",
+    "userColName": "Používateľ",
+    "userColRole": "Platform rola",
+    "userColWorkspaces": "Workspaces",
+    "userColJoined": "Registrovaný",
+    "userColActions": "Akcie",
+    "userAdmin": "Platform Admin",
+    "userTeam": "Platform tím",
+    "userMember": "Člen",
+    "userYou": "Vy",
+    "userMakeAdmin": "Urobiť admina",
+    "userRemoveAdmin": "Odobrať admina",
+    "healthTitle": "Zdravie platformy",
+    "healthSubtitle": "Aktuálny stav platformy, Signal Engine a AI nákladov.",
+    "healthSectionScale": "Rozsah platformy",
+    "healthSectionSignals": "Signal Engine",
+    "healthSectionAI": "AI — Dnes",
+    "healthWorkspaces": "Workspaces",
+    "healthUsers": "Používatelia",
+    "healthInvitesPending": "Čakajúce pozvánky",
+    "healthInvitesAccepted": "prijatých",
+    "healthSignalsActive": "Aktívne signály",
+    "healthSignalsTotal": "celkom",
+    "healthCritical": "Kritické signály",
+    "healthLastSignal": "Posledný signál",
+    "healthAIRequests": "AI požiadavky",
+    "healthAITokens": "Tokeny",
+    "healthAICost": "Náklady",
+    "invitesTitle": "Správa pozvánnok",
+    "invitesSubtitle": "Všetky pozvánky do workspaces — stav a možnosť zrušenia.",
+    "invPendingCount": "čakajúcich",
+    "invTotalCount": "celkom",
+    "invColWorkspace": "Workspace",
+    "invColEmail": "Pozvaný email",
+    "invColRole": "Rola",
+    "invColStatus": "Stav",
+    "invColExpires": "Platnosť",
+    "invColActions": "Akcie",
+    "invSentBy": "od",
+    "invRevoke": "Zrušiť",
+    "invExpired": "Expirované",
+    "wsFlags": "Príznaky",
+    "flagsTitle": "Funkčné príznaky",
+    "navBroadcast": "Vysielanie",
+    "navAudit": "Audit log",
+    "broadcastTitle": "Platformové vysielanie",
+    "broadcastSubtitle": "Odosielajte oznámenia všetkým používateľom dashboardu. Bannery sa zobrazia v hornej časti dashboardu.",
+    "broadcastComposeTitle": "Nové oznámenie",
+    "broadcastTitleLabel": "Nadpis",
+    "broadcastTitlePlaceholder": "Nadpis oznámenia...",
+    "broadcastBodyLabel": "Text",
+    "broadcastBodyPlaceholder": "Voliteľné podrobnosti...",
+    "broadcastTypeLabel": "Typ",
+    "broadcastTypeInfo": "Informácia",
+    "broadcastTypeWarning": "Upozornenie",
+    "broadcastTypeCritical": "Kritické",
+    "broadcastExpiryLabel": "Platnosť do",
+    "broadcastSend": "Zverejniť oznámenie",
+    "broadcastSending": "Zverejňujem...",
+    "broadcastSent": "Oznámenie bolo zverejnené.",
+    "broadcastFailed": "Zverejnenie zlyhalo.",
+    "broadcastActive": "Aktívne",
+    "broadcastInactive": "Neaktívne",
+    "broadcastDeactivate": "Deaktivovať",
+    "broadcastDeactivating": "...",
+    "broadcastDeactivated": "Deaktivované.",
+    "broadcastAllTitle": "Všetky oznámenia",
+    "broadcastNone": "Zatiaľ žiadne oznámenia.",
+    "auditTitle": "Audit log",
+    "auditSubtitle": "Všetky administratívne akcie zaznamenané platformovými administrátormi.",
+    "auditColTime": "Čas",
+    "auditColActor": "Herec",
+    "auditColAction": "Akcia",
+    "auditColEntity": "Entita",
+    "auditColWorkspace": "Workspace",
+    "auditNoData": "Zatiaľ žiadne záznamy auditu."
   },
   "settings": {
     "badge": "Nastavenia pracovného priestoru",
@@ -2208,118 +2269,6 @@
     "budgetSuspended": "Pozastavené",
     "budgetActive": "Aktívne"
   },
-  "admin": {
-    "badge": "Platform Admin",
-    "generatedAt": "Vygenerované",
-    "noData": "Žiadne dáta.",
-    "navOverview": "Prehľad",
-    "navWorkspaces": "Workspace",
-    "navUsers": "Používatelia",
-    "navAi": "AI Operácie",
-    "navHealth": "Zdravie platformy",
-    "navInvites": "Pozvánky",
-    "navDogfood": "Dogfood",
-    "hubTitle": "Kontrola platformy",
-    "hubSubtitle": "Aktuálny prehľad všetkých workspaces, používateľov a zdravia platformy.",
-    "hubWorkspaces": "Celkom workspaces",
-    "hubUsers": "Celkom používateľov",
-    "hubAIToday": "AI dnes",
-    "hubSignals": "Aktívne signály",
-    "hubInvites": "Pozvánky",
-    "hubDogfood": "Interná spätná väzba",
-    "hubDogfoodHint": "Zobraziť spätnú väzbu",
-    "workspacesTitle": "Správa workspaces",
-    "workspacesSubtitle": "Všetky workspace na platforme — pozastavenie, monitoring AI, správa feature flags.",
-    "wsTotal": "workspaces",
-    "wsColName": "Workspace",
-    "wsColMembers": "Členovia",
-    "wsColCreated": "Vytvorené",
-    "wsColStatus": "Stav",
-    "wsColActions": "Akcie",
-    "wsSuspend": "Pozastaviť",
-    "wsResume": "Obnoviť",
-    "wsSuspended": "Pozastavené",
-    "wsActive": "Aktívne",
-    "usersTitle": "Správa používateľov",
-    "usersSubtitle": "Všetci používatelia platformy — role, workspace a platform prístup.",
-    "usersTotal": "používateľov",
-    "usersAdminCount": "platform adminov",
-    "userColName": "Používateľ",
-    "userColRole": "Platform rola",
-    "userColWorkspaces": "Workspaces",
-    "userColJoined": "Registrovaný",
-    "userColActions": "Akcie",
-    "userAdmin": "Platform Admin",
-    "userTeam": "Platform tím",
-    "userMember": "Člen",
-    "userYou": "Vy",
-    "userMakeAdmin": "Urobiť admina",
-    "userRemoveAdmin": "Odobrať admina",
-    "healthTitle": "Zdravie platformy",
-    "healthSubtitle": "Aktuálny stav platformy, Signal Engine a AI nákladov.",
-    "healthSectionScale": "Rozsah platformy",
-    "healthSectionSignals": "Signal Engine",
-    "healthSectionAI": "AI — Dnes",
-    "healthWorkspaces": "Workspaces",
-    "healthUsers": "Používatelia",
-    "healthInvitesPending": "Čakajúce pozvánky",
-    "healthInvitesAccepted": "prijatých",
-    "healthSignalsActive": "Aktívne signály",
-    "healthSignalsTotal": "celkom",
-    "healthCritical": "Kritické signály",
-    "healthLastSignal": "Posledný signál",
-    "healthAIRequests": "AI požiadavky",
-    "healthAITokens": "Tokeny",
-    "healthAICost": "Náklady",
-    "invitesTitle": "Správa pozvánnok",
-    "invitesSubtitle": "Všetky pozvánky do workspaces — stav a možnosť zrušenia.",
-    "invPendingCount": "čakajúcich",
-    "invTotalCount": "celkom",
-    "invColWorkspace": "Workspace",
-    "invColEmail": "Pozvaný email",
-    "invColRole": "Rola",
-    "invColStatus": "Stav",
-    "invColExpires": "Platnosť",
-    "invColActions": "Akcie",
-    "invSentBy": "od",
-    "invRevoke": "Zrušiť",
-    "invExpired": "Expirované",
-    "wsFlags": "Príznaky",
-    "flagsTitle": "Funkčné príznaky",
-    "navBroadcast": "Vysielanie",
-    "navAudit": "Audit log",
-    "broadcastTitle": "Platformové vysielanie",
-    "broadcastSubtitle": "Odosielajte oznámenia všetkým používateľom dashboardu. Bannery sa zobrazia v hornej časti dashboardu.",
-    "broadcastComposeTitle": "Nové oznámenie",
-    "broadcastTitleLabel": "Nadpis",
-    "broadcastTitlePlaceholder": "Nadpis oznámenia...",
-    "broadcastBodyLabel": "Text",
-    "broadcastBodyPlaceholder": "Voliteľné podrobnosti...",
-    "broadcastTypeLabel": "Typ",
-    "broadcastTypeInfo": "Informácia",
-    "broadcastTypeWarning": "Upozornenie",
-    "broadcastTypeCritical": "Kritické",
-    "broadcastExpiryLabel": "Platnosť do",
-    "broadcastSend": "Zverejniť oznámenie",
-    "broadcastSending": "Zverejňujem...",
-    "broadcastSent": "Oznámenie bolo zverejnené.",
-    "broadcastFailed": "Zverejnenie zlyhalo.",
-    "broadcastActive": "Aktívne",
-    "broadcastInactive": "Neaktívne",
-    "broadcastDeactivate": "Deaktivovať",
-    "broadcastDeactivating": "...",
-    "broadcastDeactivated": "Deaktivované.",
-    "broadcastAllTitle": "Všetky oznámenia",
-    "broadcastNone": "Zatiaľ žiadne oznámenia.",
-    "auditTitle": "Audit log",
-    "auditSubtitle": "Všetky administratívne akcie zaznamenané platformovými administrátormi.",
-    "auditColTime": "Čas",
-    "auditColActor": "Herec",
-    "auditColAction": "Akcia",
-    "auditColEntity": "Entita",
-    "auditColWorkspace": "Workspace",
-    "auditNoData": "Zatiaľ žiadne záznamy auditu."
-  },
   "nav": {
     "dashboard": "Dnes",
     "contacts": "Kontakty",
@@ -2643,7 +2592,11 @@
       "bodyPart3": "? Lukáš",
       "panelTitle": "Čo Gunimi pochopilo",
       "processedNote": "Spracované automaticky v reálnom čase",
-      "legend": ["Kontakt", "Stretnutie", "Obchod"],
+      "legend": [
+        "Kontakt",
+        "Stretnutie",
+        "Obchod"
+      ],
       "actions": [
         "Kontakt prepojený: Lukáš Blaho",
         "Firma nájdená: Nexo Corp",
@@ -3112,6 +3065,118 @@
       },
       "releases": [
         {
+          "version": "1.2",
+          "date": "September 2026",
+          "title": "Platforma & Škálovanie",
+          "description": "Admin infraštruktúra, modul Objednávok, jazykové nastavenia a osobný uvítací email. Gunimi sa stáva platformou — nielen produktom.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Modul Objednávok — správa zákazníckych objednávok prepojených s kontaktmi, spoločnosťami a dealmi so Signal Engine integráciou"
+            },
+            {
+              "tag": "new",
+              "text": "Admin Console v2 — 9-sekciový panel: Workspace Manager, User Manager, AI Ops, Platform Health, Invite Control, Broadcast, Audit Log"
+            },
+            {
+              "tag": "new",
+              "text": "AI Budget Controls — denné tokeny na workspace úrovni a kill switch pre pozastavenie AI"
+            },
+            {
+              "tag": "new",
+              "text": "Jazykové nastavenia workspace — per-user jazyk, AI jazyk a regionálne nastavenia s live prepínaním"
+            },
+            {
+              "tag": "new",
+              "text": "Tímy — správa členov s rolami a pozývacím tokom v rámci workspaces"
+            },
+            {
+              "tag": "new",
+              "text": "Uvítací email — osobná správa od Michala, doručená 5 minút po vytvorení workspace"
+            },
+            {
+              "tag": "new",
+              "text": "Pitch deck — interaktívna 10-slidová prezentácia na /pitch s navigáciou klávesnicou v 3 jazykoch"
+            },
+            {
+              "tag": "improved",
+              "text": "Domain Foundation — workspace_people nahrádza workspace_contacts, všetkých 37 TypeScript súborov migrovaných"
+            },
+            {
+              "tag": "improved",
+              "text": "UI konzistencia — kompaktný identity strip a v2 riadky zoznamov na všetkých entity stránkach"
+            },
+            {
+              "tag": "fixed",
+              "text": "Login toast pretrvával po navigácii, spôsoboval nekonečný spinner 'Prihlasujeme vás'"
+            },
+            {
+              "tag": "fixed",
+              "text": "Admin AI Ops zobrazoval 'Unknown' pre všetky workspace názvy kvôli chybe dotazu"
+            },
+            {
+              "tag": "security",
+              "text": "Audit log — každá admin mutácia zaznamenaná s aktérom, cieľom a časovým razítkom"
+            }
+          ]
+        },
+        {
+          "version": "1.1",
+          "date": "August 2026",
+          "title": "Inteligencia & Pamäť",
+          "description": "AI vrstva sa prehlbuje. Business Memory zhromažďuje pochopenie z každej noty a dealu. Relationship Health hodnotí každý kontakt. Mentions prepájajú ľudí naprieč workspace.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Business Memory — workspace automaticky extrahuje a ukladá záväzky, kontext a výsledky z nôt a udalostí dealov"
+            },
+            {
+              "tag": "new",
+              "text": "Relationship Health Score — automatické skóre 0–100 na kontakt podľa frekvencie emailov, aktivít dealov a histórie taskov"
+            },
+            {
+              "tag": "new",
+              "text": "AI príprava na stretnutie — automatický brief pred každým stretnutím: kontext kontaktu, otvorené dealy, uložená pamäť"
+            },
+            {
+              "tag": "new",
+              "text": "Mark as Met — jedným klikom potvrdenie stretnutia, ktoré vytvorí signál a aktualizuje históriu vzťahu"
+            },
+            {
+              "tag": "new",
+              "text": "Systém mentions — @člen a #tag mentions v komentároch s hover kartami a real-time zoznamami návrhov"
+            },
+            {
+              "tag": "new",
+              "text": "AI Tag Intelligence — GPT sumár kontextu tagu na detail stránke a hover karte"
+            },
+            {
+              "tag": "new",
+              "text": "Dogfood feedback — interný feedback sheet dostupný klávesom ? odkiaľkoľvek v workspace"
+            },
+            {
+              "tag": "improved",
+              "text": "Detail kontaktu — sekcia Kľúčový kontext zobrazuje relevantné spomienky bez AI označenia"
+            },
+            {
+              "tag": "improved",
+              "text": "AI príprava na stretnutie obohatená o kontext z Business Memory"
+            },
+            {
+              "tag": "improved",
+              "text": "Stránka Today — pokojový kontext, live stav workspace, opravený namespace signálových labelov"
+            },
+            {
+              "tag": "fixed",
+              "text": "Stránka Today dopytovala odstránenú tabuľku contacts namiesto workspace_people"
+            },
+            {
+              "tag": "fixed",
+              "text": "Kľúče signálových labelov nesprávne obsahovali prefix namespace, spôsobujúci chýbajúce preklady"
+            }
+          ]
+        },
+        {
           "version": "1.0",
           "date": "Júl 2026",
           "title": "Open Alpha",
@@ -3342,60 +3407,80 @@
       },
       "inProgress": [
         {
-          "title": "Emailová integrácia",
-          "description": "Odosielajte a prijímajte emaily priamo v Gunimi. Zobrazenie vlákien je dostupné — compose a AI odpovede v priebehu vývoja."
+          "title": "Email — plná obojsmerná synchronizácia",
+          "description": "Odoslané aj prijaté emaily z Gmailu plne synchronizované v Gunimi. Zobrazenie vlákien je live — compose, AI odpovede a sync odoslaných v procese."
+        },
+        {
+          "title": "Časová os kontaktu",
+          "description": "Chronologický feed všetkých interakcií na kontakt: emaily, noty, tasky, signály a stretnutia v jednom pohľade."
+        },
+        {
+          "title": "Kanban pipeline dealov",
+          "description": "Drag-and-drop pohľad na pipeline vedľa existujúceho zoznamu. Presúvajte dealy medzi fázami vizuálne."
         },
         {
           "title": "Graf relačnej inteligencie",
-          "description": "Vizualizujte spojenia medzi kontaktmi, spoločnosťami a dealmi. Model identity je hotový — vizualizácia grafu prebieha."
-        },
-        {
-          "title": "AI príprava na stretnutie",
-          "description": "Automatický brief pred každým plánovaným stretnutím. Zobrazí relevantné dealy, poznámky a históriu vzťahov."
-        },
-        {
-          "title": "AI tagy s inteligenciou",
-          "description": "Kontextové tagovanie bez manuálnych definícií. Systém chápe, čo každý tag znamená, z entít, ktoré sú k nemu priradené."
+          "description": "Vizualizácia prepojení medzi kontaktmi, spoločnosťami a dealmi. Identity model hotový — grafové zobrazenie v procese."
         }
       ],
       "planned": [
         {
-          "title": "Integrácia kalendára",
-          "description": "Pripojte Google Calendar alebo Outlook. Sledujte stretnutia vedľa kontaktov a dealov."
+          "title": "Týždenný AI Digest",
+          "description": "Každé pondelkové ráno: personalizovaný emailový súhrn — signály, posunuté dealy, oneskorené tasky, zmeny zdravia vzťahov."
         },
         {
-          "title": "Mobilná aplikácia",
-          "description": "iOS a Android aplikácie s plnou offline podporou a push notifikáciami."
+          "title": "Import kontaktov z CSV",
+          "description": "Hromadný import kontaktov z tabuľky. Namapujte stĺpce, deduplikujte a naplňte workspace za minúty."
         },
         {
-          "title": "Vlastné polia",
-          "description": "Pridajte polia špecifické pre workspace do kontaktov, spoločností, dealov a úloh."
+          "title": "Opakujúce sa tasky",
+          "description": "Nastavte task na opakovanie denne, týždenne alebo mesačne. Nikdy manuálne nevytvárajte opakovanú prácu."
         },
         {
-          "title": "Pokročilé reportovanie",
-          "description": "Rýchlosť pipeline, miery výhry, metriky aktivity a vlastné dashboardy."
+          "title": "Deal Health Score",
+          "description": "Automatické skóre 0–100 na deal podľa veku, poslednej aktivity, počtu interakcií a otvorených signálov."
+        },
+        {
+          "title": "Návrhy ďalšej akcie",
+          "description": "AI navrhne najdôležitejšiu vec na vykonanie — žiadny kontakt 18 dní, otvorený deal vo fáze Proposal — bez pýtania."
+        },
+        {
+          "title": "Onboarding checklist",
+          "description": "Sprievodný checklist pre nových členov workspace: pridaj kontakt, prepoj Gmail, vytvor deal. Zmizne po dokončení."
+        },
+        {
+          "title": "Globálne fulltextové vyhľadávanie",
+          "description": "Jedno vyhľadávanie naprieč kontaktmi, spoločnosťami, dealmi, nótami, taskami a tagmi. Výsledky zoradené podľa relevancie."
         }
       ],
       "future": [
         {
+          "title": "Mobilná aplikácia",
+          "description": "Natívne iOS a Android aplikácie s offline podporou a push notifikáciami pre signály a tasky."
+        },
+        {
           "title": "Autonómni agenti",
-          "description": "AI agenti, ktorí vykonávajú akcie — plánovanie, follow-upy, obohacovanie dát — s vaším schválením."
+          "description": "AI agenti, ktorí vykonávajú akcie — plánujú follow-upy, obohacujú dáta, navrhujú oslovenie — s vaším schválením."
         },
         {
           "title": "Revenue intelligence",
-          "description": "Prediktívne skórovanie dealov, signály rizika odchodu a prognózovanie príjmov."
+          "description": "Prediktívne skórovanie dealov, signály rizika odchodu, rýchlosť pipeline a prognózy príjmov."
         },
         {
           "title": "Partnerský ekosystém",
-          "description": "Natívne integrácie s Hubspot, Salesforce, Stripe, Notion a ďalšími."
+          "description": "Natívne integrácie s HubSpotom, Salesforce, Stripe, Notion, Slack a ďalšími."
         },
         {
-          "title": "White-label workspaces",
-          "description": "Agentúry a konzultanti môžu nasadiť Gunimi pod vlastnou značkou pre klientov."
+          "title": "Vlastné polia",
+          "description": "Pridajte workspace-špecifické polia ku kontaktom, spoločnostiam, dealm a taskov. Bez kódu."
         },
         {
-          "title": "Gunimi Memory",
-          "description": "Dlhodobá trvalá AI pamäť pre workspace — kontext, ktorý sa buduje v priebehu času."
+          "title": "Pokročilé reporty",
+          "description": "Miery výhier, rýchlosť pipeline, metriky aktivity, trendy zdravia vzťahov a vlastné dashboardy."
+        },
+        {
+          "title": "White-label workspace",
+          "description": "Agentúry a konzultanti nasadia Gunimi pod vlastnou značkou pre klientov."
         }
       ]
     },
@@ -4256,79 +4341,186 @@
         "label": "Problém",
         "title": "Váš kontext je roztrieštený.",
         "body": "Obchodné tímy pracujú súčasne s 5–10 odpojenými nástrojmi. Kontext sa stráca pri každom odovzdaní. Obchody stagnujú potichu. Vzťahy sa rozpadajú nepozorovaně.",
-        "tools": ["CRM — kontakty a obchody, bez inteligencie", "Úlohy — výkon, izolovaný od vzťahov", "Poznámky — znalosti, odpojené od kontextu", "Email — komunikácia, neviditeľná pre zvyšok", "Kalendár — stretnutia bez CRM kontextu"],
+        "tools": [
+          "CRM — kontakty a obchody, bez inteligencie",
+          "Úlohy — výkon, izolovaný od vzťahov",
+          "Poznámky — znalosti, odpojené od kontextu",
+          "Email — komunikácia, neviditeľná pre zvyšok",
+          "Kalendár — stretnutia bez CRM kontextu"
+        ],
         "footer": "Tímy strácajú hodiny denne obnovou kontextu medzi nástrojmi."
       },
       "solution": {
         "label": "Riešenie",
         "title": "Jeden pracovný priestor. Plný kontext.",
         "body": "Každá entita sa prepája s každou inou. Každá akcia generuje signál. Pracovný priestor sa časom učí a zobrazuje to, na čom záleží — bez nutnosti pýtať sa.",
-        "chain": ["Spoločnosti", "Kontakty", "Obchody", "Úlohy", "Poznámky", "Email", "Kalendár", "Inteligencia"]
+        "chain": [
+          "Spoločnosti",
+          "Kontakty",
+          "Obchody",
+          "Úlohy",
+          "Poznámky",
+          "Email",
+          "Kalendár",
+          "Inteligencia"
+        ]
       },
       "relationships": {
         "label": "Inteligencia vzťahov",
         "title": "Poznajte zdravie každého vzťahu.",
         "body": "Gunimi automaticky hodnotí každý kontakt na stupnici 0–100 na základe emailovej aktivity, otvorených obchodov, úloh a dátumu posledného kontaktu. Bez manuálneho sledovania.",
         "tiers": [
-          { "label": "Zdravý", "desc": "≥60 — vzťah je aktívny" },
-          { "label": "Sledovaný", "desc": "30–59 — čoskoro treba pozornosť" },
-          { "label": "Ohrozený", "desc": "10–29 — vzťah sa zhoršuje" },
-          { "label": "Studený", "desc": "0–9 — kontakt odmlčal" }
+          {
+            "label": "Zdravý",
+            "desc": "≥60 — vzťah je aktívny"
+          },
+          {
+            "label": "Sledovaný",
+            "desc": "30–59 — čoskoro treba pozornosť"
+          },
+          {
+            "label": "Ohrozený",
+            "desc": "10–29 — vzťah sa zhoršuje"
+          },
+          {
+            "label": "Studený",
+            "desc": "0–9 — kontakt odmlčal"
+          }
         ],
-        "extras": ["AI rozhodnutie: čo robiť ďalej s týmto kontaktom", "Nadchádzajúce stretnutia na stránke kontaktu", "Kompletná časová os aktivity na kontakt"]
+        "extras": [
+          "AI rozhodnutie: čo robiť ďalej s týmto kontaktom",
+          "Nadchádzajúce stretnutia na stránke kontaktu",
+          "Kompletná časová os aktivity na kontakt"
+        ]
       },
       "signals": {
         "label": "Signal Engine",
         "title": "Systém pozoruje. Vy konáte.",
         "body": "25 typov signálov. Automatické skenovanie každých 6 hodín naprieč všetkými pracovnými priestormi. Každá interakcia — email, stretnutie, zmena obchodu — generuje signál.",
-        "examples": ["Kontakt vychladol — žiadny email 30+ dní", "Obchod stagnuje — žiadna aktivita 14 dní", "Potrebná nadväzujúca komunikácia — neprečítané vlákno, žiadna odpoveď", "Stretnutie sa konalo — zaznamenaný signál vzťahu", "Úloha oneskorená — riziko výkonu označené"],
+        "examples": [
+          "Kontakt vychladol — žiadny email 30+ dní",
+          "Obchod stagnuje — žiadna aktivita 14 dní",
+          "Potrebná nadväzujúca komunikácia — neprečítané vlákno, žiadna odpoveď",
+          "Stretnutie sa konalo — zaznamenaný signál vzťahu",
+          "Úloha oneskorená — riziko výkonu označené"
+        ],
         "footer": "Signály zobrazujú to, na čom záleží. Nemusíte kontrolovať dashboardy."
       },
       "email": {
         "label": "Emailová inteligencia",
         "title": "Vaša schránka, prepojená s každým obchodom.",
         "body": "Integrácia Gmail — čítanie aj písanie. Každé vlákno je automaticky prepojené so správnym kontaktom, obchodom a spoločnosťou.",
-        "features": ["Tvorba a odpovede priamo z Gunimi", "AI návrh emailu — kontextovo vedomý, používa otvorené obchody a úlohy", "Automatický signál pri každom odoslaní", "Miera pokrytia CRM, analýza neprečítaných, detekcia potreby nadväzujúcej komunikácie"],
+        "features": [
+          "Tvorba a odpovede priamo z Gunimi",
+          "AI návrh emailu — kontextovo vedomý, používa otvorené obchody a úlohy",
+          "Automatický signál pri každom odoslaní",
+          "Miera pokrytia CRM, analýza neprečítaných, detekcia potreby nadväzujúcej komunikácie"
+        ],
         "quote": "AI napíše prvý návrh. Vy rozhodnete, čo odošlete."
       },
       "calendar": {
         "label": "Inteligencia kalendára",
         "title": "Každé stretnutie, v kontexte.",
         "body": "Integrácia Google Kalendára s plnou CRM inteligenciou. Pred každým stretnutím s CRM kontaktom Gunimi vygeneruje brief.",
-        "features": ["AI príprava stretnutia — otvorené obchody, úlohy, posledný kontakt, navrhované témy", "Označiť ako absolvované — jedným kliknutím zaznamená signál meeting_held", "Nadchádzajúce stretnutia na stránke detailu kontaktu", "Zobrazenia Mesiac / Týždeň / Zoznam s prekryvom úloh a obchodov"],
+        "features": [
+          "AI príprava stretnutia — otvorené obchody, úlohy, posledný kontakt, navrhované témy",
+          "Označiť ako absolvované — jedným kliknutím zaznamená signál meeting_held",
+          "Nadchádzajúce stretnutia na stránke detailu kontaktu",
+          "Zobrazenia Mesiac / Týždeň / Zoznam s prekryvom úloh a obchodov"
+        ],
         "quote": "Vedzte, s kým sa stretávate, prečo to záleží a čo povedať — ešte pred stretnutím."
       },
       "execution": {
         "label": "Vrstva výkonu",
         "title": "Od znalostí cez akciu k obchodu.",
         "sections": [
-          { "title": "Úlohy", "points": ["Prepojené s kontaktmi, obchodmi, spoločnosťami", "Úrovne priority + termíny + zodpovední", "Detekcia omeškania + rýchle vytvorenie ⌘K"] },
-          { "title": "Poznámky", "points": ["Editor formátovaného textu s #tagmi a @zmienkami", "Prepojené s každou entitou", "Rýchle vytvorenie ⌘K odkiaľkoľvek"] },
-          { "title": "Objednávky", "points": ["Návrh → Potvrdená → Odoslaná → Doručená", "Prepojené s kontaktmi, obchodmi, spoločnosťami", "Signál pri každej zmene stavu"] }
+          {
+            "title": "Úlohy",
+            "points": [
+              "Prepojené s kontaktmi, obchodmi, spoločnosťami",
+              "Úrovne priority + termíny + zodpovední",
+              "Detekcia omeškania + rýchle vytvorenie ⌘K"
+            ]
+          },
+          {
+            "title": "Poznámky",
+            "points": [
+              "Editor formátovaného textu s #tagmi a @zmienkami",
+              "Prepojené s každou entitou",
+              "Rýchle vytvorenie ⌘K odkiaľkoľvek"
+            ]
+          },
+          {
+            "title": "Objednávky",
+            "points": [
+              "Návrh → Potvrdená → Odoslaná → Doručená",
+              "Prepojené s kontaktmi, obchodmi, spoločnosťami",
+              "Signál pri každej zmene stavu"
+            ]
+          }
         ]
       },
       "architecture": {
         "label": "Architektúra",
         "title": "Enterprise-grade od prvého dňa.",
         "stack": [
-          { "layer": "Frontend", "tech": "Next.js 15 — App Router, Server Components" },
-          { "layer": "Databáza", "tech": "Supabase — PostgreSQL + Row Level Security" },
-          { "layer": "AI", "tech": "OpenAI GPT-4o-mini — vbudovaná inteligencia" },
-          { "layer": "Email / Kalendár", "tech": "Gmail API + Google Calendar API — OAuth 2.0" },
-          { "layer": "Nasadenie", "tech": "Vercel — Edge Network, globálna CDN" },
-          { "layer": "Sledovanie chýb", "tech": "Sentry — nulový console.log v produkcii" }
+          {
+            "layer": "Frontend",
+            "tech": "Next.js 15 — App Router, Server Components"
+          },
+          {
+            "layer": "Databáza",
+            "tech": "Supabase — PostgreSQL + Row Level Security"
+          },
+          {
+            "layer": "AI",
+            "tech": "OpenAI GPT-4o-mini — vbudovaná inteligencia"
+          },
+          {
+            "layer": "Email / Kalendár",
+            "tech": "Gmail API + Google Calendar API — OAuth 2.0"
+          },
+          {
+            "layer": "Nasadenie",
+            "tech": "Vercel — Edge Network, globálna CDN"
+          },
+          {
+            "layer": "Sledovanie chýb",
+            "tech": "Sentry — nulový console.log v produkcii"
+          }
         ],
-        "security": ["Row Level Security — dáta pracovného priestoru plne izolované", "Admin konzola s kompletným auditným logom", "Kontroly AI rozpočtu na pracovný priestor", "3 jazyky: Angličtina, Slovenčina, Čeština"]
+        "security": [
+          "Row Level Security — dáta pracovného priestoru plne izolované",
+          "Admin konzola s kompletným auditným logom",
+          "Kontroly AI rozpočtu na pracovný priestor",
+          "3 jazyky: Angličtina, Slovenčina, Čeština"
+        ]
       },
       "pricing": {
         "label": "Začnite",
         "title": "Počas Open Beta zadarmo.",
         "subtitle": "Plný prístup ku všetkým modulom. Bez platobnej karty.",
         "tiers": [
-          { "name": "Free", "price": "€0", "desc": "Do 200 kontaktov, CRM, úlohy, poznámky" },
-          { "name": "Standard", "price": "€29/používateľ", "desc": "Neobmedzené CRM, Signal Engine, synchronizácia emailu, AI" },
-          { "name": "Pro", "price": "€79/používateľ", "desc": "Plná AI, objednávky, inteligencia kalendára, prioritná podpora" },
-          { "name": "Enterprise", "price": "Vlastné", "desc": "Admin konzola, auditný log, izolácia tímu, SSO, SLA" }
+          {
+            "name": "Free",
+            "price": "€0",
+            "desc": "Do 200 kontaktov, CRM, úlohy, poznámky"
+          },
+          {
+            "name": "Standard",
+            "price": "€29/používateľ",
+            "desc": "Neobmedzené CRM, Signal Engine, synchronizácia emailu, AI"
+          },
+          {
+            "name": "Pro",
+            "price": "€79/používateľ",
+            "desc": "Plná AI, objednávky, inteligencia kalendára, prioritná podpora"
+          },
+          {
+            "name": "Enterprise",
+            "price": "Vlastné",
+            "desc": "Admin konzola, auditný log, izolácia tímu, SSO, SLA"
+          }
         ],
         "currentOffer": "Počas Open Beta je všetko zadarmo — vrátane Pro funkcií.",
         "ctaLabel": "Začať zadarmo — Bez platobnej karty"

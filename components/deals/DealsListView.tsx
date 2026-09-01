@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { computeDealHealth } from "@/lib/deals/dealHealth";
 
 type Props = {
   deals: Deal[];
@@ -172,16 +173,15 @@ export default function DealsListView({ deals, onEdit }: Props) {
               focus-visible:bg-white/[0.025]
             "
           >
-            <p
-              className="
-                truncate
-                text-sm
-                font-medium
-                text-white
-              "
-            >
-              {deal.title}
-            </p>
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span
+                className={`h-1.5 w-1.5 shrink-0 rounded-full ${computeDealHealth(deal.probability, deal.updated_at, deal.expected_close_date, deal.stage).dotClass}`}
+                aria-hidden
+              />
+              <p className="truncate text-sm font-medium text-white">
+                {deal.title}
+              </p>
+            </div>
 
             {deal.company?.id ? (
               <Link

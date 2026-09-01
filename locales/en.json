@@ -1229,55 +1229,116 @@
     "pageTitle": "AI Mission Control"
   },
   "admin": {
-    "failedToLoad": "Failed to load admin panel.",
-    "failedToUpdateRole": "Failed to update role.",
-    "failedToUpdateStatus": "Failed to update status.",
-    "roleUpdated": "User role updated to {role}.",
-    "statusUpdated": "Status changed to {status}.",
-    "orbitInternalSystems": "Gunimi Internal Systems",
-    "orbitControlTitle": "Gunimi Control",
-    "orbitControlCenter": "Center",
-    "orbitDescription": "Internal operational management layer for Gunimi AI Operating System beta access, memberships, platform governance and user infrastructure.",
-    "systemsOnline": "Systems Online",
-    "aiInfrastructure": "AI Infrastructure",
-    "statPlatformUsers": "Platform Users",
-    "statBetaAccess": "Beta Access",
-    "statAdmins": "Admins",
-    "statPendingAccess": "Pending Access",
-    "tableTitle": "Platform Users",
-    "tableSubtitle": "Manage beta access, platform permissions, approvals and internal Orbit roles.",
-    "totalProfiles": "{count} Total Profiles",
-    "colUser": "User",
-    "colRole": "Role",
-    "colStatus": "Status",
-    "colOnboarding": "Onboarding",
-    "colActions": "Actions",
-    "defaultUserName": "Gunimi User",
-    "onboardingCompleted": "Completed",
-    "onboardingPending": "Pending",
-    "actionApproveBeta": "Approve Beta",
-    "actionMakeTeam": "Make Team",
-    "actionMakeAdmin": "Make Admin",
-    "actionUnsuspend": "Unsuspend",
-    "actionSuspend": "Suspend",
-    "footerDescription": "Gunimi AI Operating System governance infrastructure.",
-    "footerLabel": "Internal Platform Layer",
-    "alpha": {
-      "pageTitle": "Alpha Access Queue",
-      "pageSubtitle": "Review and approve Open Alpha registrations.",
-      "colName": "Name",
-      "colEmail": "Email",
-      "colRegistered": "Registered",
-      "approve": "Approve",
-      "approving": "Approving...",
-      "approved": "Approved",
-      "approveSuccess": "Access granted. Welcome email sent.",
-      "approveError": "Failed to approve. Try again.",
-      "emptyTitle": "No pending applications",
-      "emptySubtitle": "Everyone who registered has been approved.",
-      "pendingBadge": "Pending",
-      "approvedBadge": "Active"
-    }
+    "badge": "Platform Admin",
+    "generatedAt": "Generated",
+    "noData": "No data yet.",
+    "navOverview": "Overview",
+    "navWorkspaces": "Workspaces",
+    "navUsers": "Users",
+    "navAi": "AI Operations",
+    "navHealth": "Platform Health",
+    "navInvites": "Invites",
+    "navDogfood": "Dogfood",
+    "hubTitle": "Platform Control",
+    "hubSubtitle": "Real-time overview of all Gunimi workspaces, users and platform health.",
+    "hubWorkspaces": "Total Workspaces",
+    "hubUsers": "Total Users",
+    "hubAIToday": "AI Today",
+    "hubSignals": "Active Signals",
+    "hubInvites": "Invites",
+    "hubDogfood": "Internal Feedback",
+    "hubDogfoodHint": "View feedback",
+    "workspacesTitle": "Workspace Manager",
+    "workspacesSubtitle": "All platform workspaces — suspend, monitor AI usage, control feature flags.",
+    "wsTotal": "workspaces",
+    "wsColName": "Workspace",
+    "wsColMembers": "Members",
+    "wsColCreated": "Created",
+    "wsColStatus": "Status",
+    "wsColActions": "Actions",
+    "wsSuspend": "Suspend",
+    "wsResume": "Resume",
+    "wsSuspended": "Suspended",
+    "wsActive": "Active",
+    "usersTitle": "User Manager",
+    "usersSubtitle": "All platform users — view roles, workspace memberships and set platform access.",
+    "usersTotal": "users",
+    "usersAdminCount": "platform admins",
+    "userColName": "User",
+    "userColRole": "Platform Role",
+    "userColWorkspaces": "Workspaces",
+    "userColJoined": "Joined",
+    "userColActions": "Actions",
+    "userAdmin": "Platform Admin",
+    "userTeam": "Platform Team",
+    "userMember": "Member",
+    "userYou": "You",
+    "userMakeAdmin": "Make Admin",
+    "userRemoveAdmin": "Remove Admin",
+    "healthTitle": "Platform Health",
+    "healthSubtitle": "Real-time snapshot of platform scale, Signal Engine and AI spend.",
+    "healthSectionScale": "Platform Scale",
+    "healthSectionSignals": "Signal Engine",
+    "healthSectionAI": "AI — Today",
+    "healthWorkspaces": "Workspaces",
+    "healthUsers": "Users",
+    "healthInvitesPending": "Pending Invites",
+    "healthInvitesAccepted": "accepted",
+    "healthSignalsActive": "Active Signals",
+    "healthSignalsTotal": "total",
+    "healthCritical": "Critical Signals",
+    "healthLastSignal": "Last Signal",
+    "healthAIRequests": "AI Requests",
+    "healthAITokens": "Tokens Used",
+    "healthAICost": "Cost",
+    "invitesTitle": "Invite Control",
+    "invitesSubtitle": "All workspace invitations across the platform — view status and revoke pending invites.",
+    "invPendingCount": "pending",
+    "invTotalCount": "total",
+    "invColWorkspace": "Workspace",
+    "invColEmail": "Invited Email",
+    "invColRole": "Role",
+    "invColStatus": "Status",
+    "invColExpires": "Expires",
+    "invColActions": "Actions",
+    "invSentBy": "by",
+    "invRevoke": "Revoke",
+    "invExpired": "Expired",
+    "wsFlags": "Flags",
+    "flagsTitle": "Feature Flags",
+    "navBroadcast": "Broadcast",
+    "navAudit": "Audit Log",
+    "broadcastTitle": "Platform Broadcast",
+    "broadcastSubtitle": "Send announcements to all dashboard users. Banners appear at the top of the dashboard.",
+    "broadcastComposeTitle": "Compose Announcement",
+    "broadcastTitleLabel": "Title",
+    "broadcastTitlePlaceholder": "Announcement title...",
+    "broadcastBodyLabel": "Body",
+    "broadcastBodyPlaceholder": "Optional details...",
+    "broadcastTypeLabel": "Type",
+    "broadcastTypeInfo": "Info",
+    "broadcastTypeWarning": "Warning",
+    "broadcastTypeCritical": "Critical",
+    "broadcastExpiryLabel": "Expires at",
+    "broadcastSend": "Publish Announcement",
+    "broadcastSending": "Publishing...",
+    "broadcastSent": "Announcement published.",
+    "broadcastFailed": "Failed to publish.",
+    "broadcastActive": "Active",
+    "broadcastInactive": "Inactive",
+    "broadcastDeactivate": "Deactivate",
+    "broadcastDeactivating": "...",
+    "broadcastDeactivated": "Deactivated.",
+    "broadcastAllTitle": "All Announcements",
+    "broadcastNone": "No announcements yet.",
+    "auditTitle": "Audit Log",
+    "auditSubtitle": "All administrative actions logged by platform admins.",
+    "auditColTime": "Time",
+    "auditColActor": "Actor",
+    "auditColAction": "Action",
+    "auditColEntity": "Entity",
+    "auditColWorkspace": "Workspace",
+    "auditNoData": "No audit entries yet."
   },
   "settings": {
     "badge": "Workspace Settings",
@@ -2208,118 +2269,6 @@
     "budgetSuspended": "Suspended",
     "budgetActive": "Active"
   },
-  "admin": {
-    "badge": "Platform Admin",
-    "generatedAt": "Generated",
-    "noData": "No data yet.",
-    "navOverview": "Overview",
-    "navWorkspaces": "Workspaces",
-    "navUsers": "Users",
-    "navAi": "AI Operations",
-    "navHealth": "Platform Health",
-    "navInvites": "Invites",
-    "navDogfood": "Dogfood",
-    "hubTitle": "Platform Control",
-    "hubSubtitle": "Real-time overview of all Gunimi workspaces, users and platform health.",
-    "hubWorkspaces": "Total Workspaces",
-    "hubUsers": "Total Users",
-    "hubAIToday": "AI Today",
-    "hubSignals": "Active Signals",
-    "hubInvites": "Invites",
-    "hubDogfood": "Internal Feedback",
-    "hubDogfoodHint": "View feedback",
-    "workspacesTitle": "Workspace Manager",
-    "workspacesSubtitle": "All platform workspaces — suspend, monitor AI usage, control feature flags.",
-    "wsTotal": "workspaces",
-    "wsColName": "Workspace",
-    "wsColMembers": "Members",
-    "wsColCreated": "Created",
-    "wsColStatus": "Status",
-    "wsColActions": "Actions",
-    "wsSuspend": "Suspend",
-    "wsResume": "Resume",
-    "wsSuspended": "Suspended",
-    "wsActive": "Active",
-    "usersTitle": "User Manager",
-    "usersSubtitle": "All platform users — view roles, workspace memberships and set platform access.",
-    "usersTotal": "users",
-    "usersAdminCount": "platform admins",
-    "userColName": "User",
-    "userColRole": "Platform Role",
-    "userColWorkspaces": "Workspaces",
-    "userColJoined": "Joined",
-    "userColActions": "Actions",
-    "userAdmin": "Platform Admin",
-    "userTeam": "Platform Team",
-    "userMember": "Member",
-    "userYou": "You",
-    "userMakeAdmin": "Make Admin",
-    "userRemoveAdmin": "Remove Admin",
-    "healthTitle": "Platform Health",
-    "healthSubtitle": "Real-time snapshot of platform scale, Signal Engine and AI spend.",
-    "healthSectionScale": "Platform Scale",
-    "healthSectionSignals": "Signal Engine",
-    "healthSectionAI": "AI — Today",
-    "healthWorkspaces": "Workspaces",
-    "healthUsers": "Users",
-    "healthInvitesPending": "Pending Invites",
-    "healthInvitesAccepted": "accepted",
-    "healthSignalsActive": "Active Signals",
-    "healthSignalsTotal": "total",
-    "healthCritical": "Critical Signals",
-    "healthLastSignal": "Last Signal",
-    "healthAIRequests": "AI Requests",
-    "healthAITokens": "Tokens Used",
-    "healthAICost": "Cost",
-    "invitesTitle": "Invite Control",
-    "invitesSubtitle": "All workspace invitations across the platform — view status and revoke pending invites.",
-    "invPendingCount": "pending",
-    "invTotalCount": "total",
-    "invColWorkspace": "Workspace",
-    "invColEmail": "Invited Email",
-    "invColRole": "Role",
-    "invColStatus": "Status",
-    "invColExpires": "Expires",
-    "invColActions": "Actions",
-    "invSentBy": "by",
-    "invRevoke": "Revoke",
-    "invExpired": "Expired",
-    "wsFlags": "Flags",
-    "flagsTitle": "Feature Flags",
-    "navBroadcast": "Broadcast",
-    "navAudit": "Audit Log",
-    "broadcastTitle": "Platform Broadcast",
-    "broadcastSubtitle": "Send announcements to all dashboard users. Banners appear at the top of the dashboard.",
-    "broadcastComposeTitle": "Compose Announcement",
-    "broadcastTitleLabel": "Title",
-    "broadcastTitlePlaceholder": "Announcement title...",
-    "broadcastBodyLabel": "Body",
-    "broadcastBodyPlaceholder": "Optional details...",
-    "broadcastTypeLabel": "Type",
-    "broadcastTypeInfo": "Info",
-    "broadcastTypeWarning": "Warning",
-    "broadcastTypeCritical": "Critical",
-    "broadcastExpiryLabel": "Expires at",
-    "broadcastSend": "Publish Announcement",
-    "broadcastSending": "Publishing...",
-    "broadcastSent": "Announcement published.",
-    "broadcastFailed": "Failed to publish.",
-    "broadcastActive": "Active",
-    "broadcastInactive": "Inactive",
-    "broadcastDeactivate": "Deactivate",
-    "broadcastDeactivating": "...",
-    "broadcastDeactivated": "Deactivated.",
-    "broadcastAllTitle": "All Announcements",
-    "broadcastNone": "No announcements yet.",
-    "auditTitle": "Audit Log",
-    "auditSubtitle": "All administrative actions logged by platform admins.",
-    "auditColTime": "Time",
-    "auditColActor": "Actor",
-    "auditColAction": "Action",
-    "auditColEntity": "Entity",
-    "auditColWorkspace": "Workspace",
-    "auditNoData": "No audit entries yet."
-  },
   "nav": {
     "dashboard": "Today",
     "contacts": "Contacts",
@@ -2643,7 +2592,11 @@
       "bodyPart3": "? Lukáš",
       "panelTitle": "What Gunimi understood",
       "processedNote": "Processed automatically in real time",
-      "legend": ["Contact", "Meeting", "Deal"],
+      "legend": [
+        "Contact",
+        "Meeting",
+        "Deal"
+      ],
       "actions": [
         "Contact linked: Lukáš Blaho",
         "Company matched: Nexo Corp",
@@ -3112,6 +3065,118 @@
       },
       "releases": [
         {
+          "version": "1.2",
+          "date": "September 2026",
+          "title": "Platform & Scale",
+          "description": "Admin infrastructure, Orders module, workspace preferences, and the personal welcome experience. Gunimi becomes a platform — not just a product.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Orders module — manage customer orders linked to contacts, companies and deals with full Signal Engine integration"
+            },
+            {
+              "tag": "new",
+              "text": "Admin Console v2 — 9-section platform panel: Workspace Manager, User Manager, AI Ops, Platform Health, Invite Control, Broadcast, Audit Log"
+            },
+            {
+              "tag": "new",
+              "text": "AI Budget Controls — per-workspace daily token limits and suspension kill switch for platform safety"
+            },
+            {
+              "tag": "new",
+              "text": "Workspace Preferences — per-user language, AI language and regional settings with live cookie-based locale switching"
+            },
+            {
+              "tag": "new",
+              "text": "Teams — member management with role-based access and invite flow inside workspaces"
+            },
+            {
+              "tag": "new",
+              "text": "Welcome onboarding email — personal note from Michal, delivered 5 minutes after workspace creation"
+            },
+            {
+              "tag": "new",
+              "text": "Pitch deck — interactive 10-slide presentation at /pitch with keyboard navigation in 3 languages"
+            },
+            {
+              "tag": "improved",
+              "text": "Domain Foundation — workspace_people replaces workspace_contacts, all 37 TypeScript files migrated"
+            },
+            {
+              "tag": "improved",
+              "text": "UI consistency — compact identity strip and v2 list rows across Contacts, Companies, Deals and Notes"
+            },
+            {
+              "tag": "fixed",
+              "text": "Login toast persisting across navigation, causing infinite signing-in spinner on dashboard"
+            },
+            {
+              "tag": "fixed",
+              "text": "Admin AI Ops showing Unknown for all workspace names due to column query failure"
+            },
+            {
+              "tag": "security",
+              "text": "Audit log — every admin mutation recorded with actor, target and timestamp"
+            }
+          ]
+        },
+        {
+          "version": "1.1",
+          "date": "August 2026",
+          "title": "Intelligence & Memory",
+          "description": "The AI layer deepens. Business Memory accumulates understanding from every note and deal. Relationship Health scores every contact. Mentions connect people across the workspace.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Business Memory — workspace extracts and stores commitments, context and outcomes from notes and deal events automatically"
+            },
+            {
+              "tag": "new",
+              "text": "Relationship Health Score — automatic 0–100 score per contact based on email frequency, deal activity and task history"
+            },
+            {
+              "tag": "new",
+              "text": "AI Meeting Prep — automatic brief before every calendar meeting: contact context, open deals, stored memory"
+            },
+            {
+              "tag": "new",
+              "text": "Mark as Met — one-click meeting confirmation that produces a signal and updates relationship history"
+            },
+            {
+              "tag": "new",
+              "text": "Mention system — @member and #tag mentions in comments with hover cards and real-time suggestion lists"
+            },
+            {
+              "tag": "new",
+              "text": "AI Tag Intelligence — GPT-powered context summary on tag detail page and tag hover card"
+            },
+            {
+              "tag": "new",
+              "text": "Dogfood feedback — internal feedback sheet accessible with the ? key from anywhere in the workspace"
+            },
+            {
+              "tag": "improved",
+              "text": "Contact detail — Key Context section surfaces relevant business memories without AI labelling"
+            },
+            {
+              "tag": "improved",
+              "text": "AI Meeting Prep enriched with stored memory context passed to the GPT brief"
+            },
+            {
+              "tag": "improved",
+              "text": "Today page — calm context, live workspace state, corrected signal label namespace"
+            },
+            {
+              "tag": "fixed",
+              "text": "Today page querying removed contacts table instead of live workspace_people view"
+            },
+            {
+              "tag": "fixed",
+              "text": "Signal label keys incorrectly including namespace prefix causing missing translation strings"
+            }
+          ]
+        },
+        {
           "version": "1.0",
           "date": "July 2026",
           "title": "Open Alpha",
@@ -3342,60 +3407,80 @@
       },
       "inProgress": [
         {
-          "title": "Email integration",
-          "description": "Send and receive email inside Gunimi. Thread view is live — compose and AI-assisted replies in progress."
+          "title": "Email — full two-way sync",
+          "description": "Sent and received emails from Gmail fully synced inside Gunimi. Thread view live — compose, AI replies and sent-mail sync in progress."
+        },
+        {
+          "title": "Contact timeline",
+          "description": "Chronological feed of all interactions per contact: emails, notes, tasks, signals and meetings in one scrollable view."
+        },
+        {
+          "title": "Kanban deal pipeline",
+          "description": "Drag-and-drop pipeline view alongside the existing list view. Move deals between stages visually."
         },
         {
           "title": "Relationship intelligence graph",
-          "description": "Visualise connections between contacts, companies and deals. Identity model complete — graph visualisation in progress."
-        },
-        {
-          "title": "AI meeting prep",
-          "description": "Automatic brief before any scheduled meeting. Surface relevant deals, notes and relationship history."
-        },
-        {
-          "title": "AI tag intelligence",
-          "description": "Context-aware tagging without manual definitions. The system infers what each tag means from the entities attached to it."
+          "description": "Visualise connections between contacts, companies and deals. Identity model complete — graph view in progress."
         }
       ],
       "planned": [
         {
-          "title": "Calendar integration",
-          "description": "Connect Google Calendar or Outlook. See meetings alongside contacts and deals."
+          "title": "Weekly AI Digest",
+          "description": "Every Monday morning: a personalised email summary — signals fired, deals moved, tasks overdue, relationship health changes."
         },
         {
-          "title": "Mobile application",
-          "description": "iOS and Android apps with full offline support and push notifications."
+          "title": "CSV contact import",
+          "description": "Bulk import contacts from a spreadsheet. Map columns, deduplicate, and seed your workspace in minutes."
         },
         {
-          "title": "Custom fields",
-          "description": "Add workspace-specific fields to contacts, companies, deals and tasks."
+          "title": "Recurring tasks",
+          "description": "Set a task to repeat daily, weekly or monthly. Never manually recreate standing work items."
         },
         {
-          "title": "Advanced reporting",
-          "description": "Pipeline velocity, win rates, activity metrics and custom dashboards."
+          "title": "Deal Health Score",
+          "description": "0–100 automatic score per deal based on age, last activity, interaction count and open signals. Shown inline in the pipeline."
+        },
+        {
+          "title": "Next action suggestions",
+          "description": "AI surfaces the most important thing to do next — no contact in 18 days, open deal in Proposal — without being asked."
+        },
+        {
+          "title": "Onboarding checklist",
+          "description": "First-week guided checklist for new workspace members: add a contact, connect Gmail, create a deal. Disappears when complete."
+        },
+        {
+          "title": "Global full-text search",
+          "description": "One search across contacts, companies, deals, notes, tasks and tags. Results ranked by relevance and recency."
         }
       ],
       "future": [
         {
+          "title": "Mobile application",
+          "description": "iOS and Android native apps with offline support and push notifications for signals and task reminders."
+        },
+        {
           "title": "Autonomous agents",
-          "description": "AI agents that take actions — scheduling, follow-ups, data enrichment — with your approval."
+          "description": "AI agents that take actions — scheduling follow-ups, enriching data, drafting outreach — with your approval."
         },
         {
           "title": "Revenue intelligence",
-          "description": "Predictive deal scoring, churn risk signals and revenue forecasting."
+          "description": "Predictive deal scoring, churn risk signals, pipeline velocity and revenue forecasting built into the workspace."
         },
         {
           "title": "Partner ecosystem",
-          "description": "Native integrations with Hubspot, Salesforce, Stripe, Notion and more."
+          "description": "Native integrations with HubSpot, Salesforce, Stripe, Notion, Slack and more."
+        },
+        {
+          "title": "Custom fields",
+          "description": "Add workspace-specific fields to contacts, companies, deals and tasks. No code required."
+        },
+        {
+          "title": "Advanced reporting",
+          "description": "Win rates, pipeline velocity, activity metrics, relationship health trends and custom dashboards."
         },
         {
           "title": "White-label workspaces",
-          "description": "Agencies and consultancies can deploy Gunimi under their own brand for clients."
-        },
-        {
-          "title": "Gunimi Memory",
-          "description": "Long-term persistent AI memory per workspace — context that builds over time."
+          "description": "Agencies and consultancies deploy Gunimi under their own brand for clients."
         }
       ]
     },
@@ -4256,79 +4341,186 @@
         "label": "The Problem",
         "title": "Your context is scattered.",
         "body": "Business teams operate across 5–10 disconnected tools. Context is lost at every handoff. Deals stall silently. Relationships decay unnoticed.",
-        "tools": ["CRM — contacts and deals, no intelligence", "Tasks — execution, isolated from relationships", "Notes — knowledge, disconnected from context", "Email — communication, invisible to the rest", "Calendar — meetings with no CRM context"],
+        "tools": [
+          "CRM — contacts and deals, no intelligence",
+          "Tasks — execution, isolated from relationships",
+          "Notes — knowledge, disconnected from context",
+          "Email — communication, invisible to the rest",
+          "Calendar — meetings with no CRM context"
+        ],
         "footer": "Teams lose hours daily rebuilding context across tools."
       },
       "solution": {
         "label": "The Solution",
         "title": "One workspace. Full context.",
         "body": "Every entity connects to every other. Every action generates a signal. The workspace learns over time and surfaces what matters — without being asked.",
-        "chain": ["Companies", "Contacts", "Deals", "Tasks", "Notes", "Email", "Calendar", "Intelligence"]
+        "chain": [
+          "Companies",
+          "Contacts",
+          "Deals",
+          "Tasks",
+          "Notes",
+          "Email",
+          "Calendar",
+          "Intelligence"
+        ]
       },
       "relationships": {
         "label": "Relationship Intelligence",
         "title": "Know the health of every relationship.",
         "body": "Gunimi automatically scores every contact 0–100 based on email activity, open deals, tasks, and last contact. No manual tracking.",
         "tiers": [
-          { "label": "Healthy", "desc": "≥60 — relationship is active" },
-          { "label": "Watching", "desc": "30–59 — needs attention soon" },
-          { "label": "At Risk", "desc": "10–29 — relationship is decaying" },
-          { "label": "Cold", "desc": "0–9 — contact has gone dark" }
+          {
+            "label": "Healthy",
+            "desc": "≥60 — relationship is active"
+          },
+          {
+            "label": "Watching",
+            "desc": "30–59 — needs attention soon"
+          },
+          {
+            "label": "At Risk",
+            "desc": "10–29 — relationship is decaying"
+          },
+          {
+            "label": "Cold",
+            "desc": "0–9 — contact has gone dark"
+          }
         ],
-        "extras": ["AI decision: what to do next with this contact", "Upcoming meetings shown on contact page", "Full activity timeline per contact"]
+        "extras": [
+          "AI decision: what to do next with this contact",
+          "Upcoming meetings shown on contact page",
+          "Full activity timeline per contact"
+        ]
       },
       "signals": {
         "label": "Signal Engine",
         "title": "The system observes. You act.",
         "body": "25 signal types. Automatic scan every 6 hours across all workspaces. Every interaction — email, meeting, deal change — generates a signal.",
-        "examples": ["Contact went cold — no email in 30+ days", "Deal stalled — no activity in 14 days", "Follow-up needed — unread thread, no reply", "Meeting held — relationship signal logged", "Task overdue — execution risk flagged"],
+        "examples": [
+          "Contact went cold — no email in 30+ days",
+          "Deal stalled — no activity in 14 days",
+          "Follow-up needed — unread thread, no reply",
+          "Meeting held — relationship signal logged",
+          "Task overdue — execution risk flagged"
+        ],
         "footer": "Signals surface what matters. You don't need to check dashboards."
       },
       "email": {
         "label": "Email Intelligence",
         "title": "Your inbox, connected to every deal.",
         "body": "Gmail integration — read and write. Every thread is automatically linked to the right contact, deal, and company.",
-        "features": ["Compose and reply from within Gunimi", "AI email draft — context-aware, uses open deals and tasks", "Automatic signal on every send", "CRM coverage rate, unread analysis, follow-up detection"],
+        "features": [
+          "Compose and reply from within Gunimi",
+          "AI email draft — context-aware, uses open deals and tasks",
+          "Automatic signal on every send",
+          "CRM coverage rate, unread analysis, follow-up detection"
+        ],
         "quote": "AI writes the first draft. You decide what to send."
       },
       "calendar": {
         "label": "Calendar Intelligence",
         "title": "Every meeting, in context.",
         "body": "Google Calendar integration with full CRM intelligence. Before every meeting with a CRM contact, Gunimi generates a brief.",
-        "features": ["AI Meeting Prep — open deals, open tasks, last contact, suggested topics", "Mark as Met — one click logs a meeting_held signal", "Upcoming meetings shown on contact detail page", "Month / Week / List view with tasks and deals overlay"],
+        "features": [
+          "AI Meeting Prep — open deals, open tasks, last contact, suggested topics",
+          "Mark as Met — one click logs a meeting_held signal",
+          "Upcoming meetings shown on contact detail page",
+          "Month / Week / List view with tasks and deals overlay"
+        ],
         "quote": "Know who you're meeting, why it matters, and what to say — before you walk in."
       },
       "execution": {
         "label": "Execution Layer",
         "title": "From knowledge to action to commerce.",
         "sections": [
-          { "title": "Tasks", "points": ["Linked to contacts, deals, companies", "Priority levels + due dates + assignees", "Overdue detection + ⌘K quick create"] },
-          { "title": "Notes", "points": ["Rich text editor with #tags and @mentions", "Linked to every entity", "⌘K quick create from anywhere"] },
-          { "title": "Orders", "points": ["Draft → Confirmed → Shipped → Delivered", "Linked to contacts, deals, companies", "Signal on every state change"] }
+          {
+            "title": "Tasks",
+            "points": [
+              "Linked to contacts, deals, companies",
+              "Priority levels + due dates + assignees",
+              "Overdue detection + ⌘K quick create"
+            ]
+          },
+          {
+            "title": "Notes",
+            "points": [
+              "Rich text editor with #tags and @mentions",
+              "Linked to every entity",
+              "⌘K quick create from anywhere"
+            ]
+          },
+          {
+            "title": "Orders",
+            "points": [
+              "Draft → Confirmed → Shipped → Delivered",
+              "Linked to contacts, deals, companies",
+              "Signal on every state change"
+            ]
+          }
         ]
       },
       "architecture": {
         "label": "Architecture",
         "title": "Enterprise-grade from day one.",
         "stack": [
-          { "layer": "Frontend", "tech": "Next.js 15 — App Router, Server Components" },
-          { "layer": "Database", "tech": "Supabase — PostgreSQL + Row Level Security" },
-          { "layer": "AI", "tech": "OpenAI GPT-4o-mini — embedded intelligence" },
-          { "layer": "Email / Calendar", "tech": "Gmail API + Google Calendar API — OAuth 2.0" },
-          { "layer": "Deployment", "tech": "Vercel — Edge Network, global CDN" },
-          { "layer": "Error tracking", "tech": "Sentry — zero console.log in production" }
+          {
+            "layer": "Frontend",
+            "tech": "Next.js 15 — App Router, Server Components"
+          },
+          {
+            "layer": "Database",
+            "tech": "Supabase — PostgreSQL + Row Level Security"
+          },
+          {
+            "layer": "AI",
+            "tech": "OpenAI GPT-4o-mini — embedded intelligence"
+          },
+          {
+            "layer": "Email / Calendar",
+            "tech": "Gmail API + Google Calendar API — OAuth 2.0"
+          },
+          {
+            "layer": "Deployment",
+            "tech": "Vercel — Edge Network, global CDN"
+          },
+          {
+            "layer": "Error tracking",
+            "tech": "Sentry — zero console.log in production"
+          }
         ],
-        "security": ["Row Level Security — workspace data fully isolated", "Admin console with full audit log", "AI budget controls per workspace", "3 languages: English, Slovak, Czech"]
+        "security": [
+          "Row Level Security — workspace data fully isolated",
+          "Admin console with full audit log",
+          "AI budget controls per workspace",
+          "3 languages: English, Slovak, Czech"
+        ]
       },
       "pricing": {
         "label": "Get Started",
         "title": "Free during Open Beta.",
         "subtitle": "Full access to all modules. No credit card required.",
         "tiers": [
-          { "name": "Free", "price": "€0", "desc": "Up to 200 contacts, CRM, tasks, notes" },
-          { "name": "Standard", "price": "€29/user", "desc": "Unlimited CRM, Signal Engine, email sync, AI" },
-          { "name": "Pro", "price": "€79/user", "desc": "Full AI, orders, calendar intelligence, priority support" },
-          { "name": "Enterprise", "price": "Custom", "desc": "Admin console, audit log, team isolation, SSO, SLA" }
+          {
+            "name": "Free",
+            "price": "€0",
+            "desc": "Up to 200 contacts, CRM, tasks, notes"
+          },
+          {
+            "name": "Standard",
+            "price": "€29/user",
+            "desc": "Unlimited CRM, Signal Engine, email sync, AI"
+          },
+          {
+            "name": "Pro",
+            "price": "€79/user",
+            "desc": "Full AI, orders, calendar intelligence, priority support"
+          },
+          {
+            "name": "Enterprise",
+            "price": "Custom",
+            "desc": "Admin console, audit log, team isolation, SSO, SLA"
+          }
         ],
         "currentOffer": "Everything is free during Open Beta — including Pro features.",
         "ctaLabel": "Start Free — No credit card"
