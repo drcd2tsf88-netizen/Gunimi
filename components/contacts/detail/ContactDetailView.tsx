@@ -13,6 +13,7 @@ import {
   Users,
   Clock,
   ShoppingBag,
+  Sparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -50,6 +51,7 @@ import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPan
 import type { WorkspaceTeam } from "@/types/organization";
 import type { WorkspaceMember } from "@/types/task";
 import type { CalendarEventRow } from "@/types/calendar";
+import type { BusinessMemory } from "@/lib/memory/businessMemoryTypes";
 import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 import { cn } from "@/lib/utils";
@@ -89,6 +91,7 @@ type Props = {
   members: WorkspaceMember[];
   orders: Order[];
   upcomingMeetings?: CalendarEventRow[];
+  businessMemories?: BusinessMemory[];
 };
 
 export default function ContactDetailView({
@@ -105,6 +108,7 @@ export default function ContactDetailView({
   members,
   orders,
   upcomingMeetings = [],
+  businessMemories = [],
 }: Props) {
   const router = useRouter();
   const t = useTranslations("contacts");
@@ -277,6 +281,30 @@ export default function ContactDetailView({
                       </p>
                     </div>
                   </Link>
+                ))}
+              </div>
+            </GunimiCard>
+          )}
+
+          {businessMemories.length > 0 && (
+            <GunimiCard className="p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles size={12} className="text-violet-400/70" aria-hidden />
+                <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500 font-medium">
+                  {t("businessContext")}
+                </span>
+              </div>
+              <div className="space-y-1.5">
+                {businessMemories.slice(0, 3).map((memory) => (
+                  <div
+                    key={memory.id}
+                    className="rounded-xl border border-violet-500/10 bg-violet-500/[0.04] px-3 py-2.5"
+                  >
+                    <p className="text-xs text-white/75 leading-relaxed">{memory.content}</p>
+                    <p className="mt-1 text-[10px] text-white/30 uppercase tracking-[0.12em]">
+                      {t(`memoryType.${memory.memory_type}`)}
+                    </p>
+                  </div>
                 ))}
               </div>
             </GunimiCard>

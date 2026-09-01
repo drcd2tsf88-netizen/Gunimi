@@ -69,7 +69,7 @@ export default function LoginPage() {
         return;
       }
 
-      toast.loading(t("loginSyncing"), { id: "orbit-login" });
+      toast.dismiss("orbit-login");
 
       const next = params.get("next");
       const destination =

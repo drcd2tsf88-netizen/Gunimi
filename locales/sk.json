@@ -1039,6 +1039,16 @@
     "recentNotes": "Posledné poznámky",
     "upcomingMeetings": "Nadchádzajúce stretnutia",
     "allDay": "Celý deň",
+    "businessContext": "Kľúčový kontext",
+    "memoryType": {
+      "commitment": "Záväzok",
+      "relationship_pattern": "Vzorec",
+      "preference": "Preferencia",
+      "outcome": "Výsledok",
+      "context": "Kontext",
+      "team": "Tím",
+      "risk": "Riziko"
+    },
     "activityBadge": "Prevádzková časová os",
     "activity": "Časová os aktivít",
     "activitySubtitle": "Historické interakcie a udalosti súvisiace s týmto kontaktom.",
@@ -4221,6 +4231,108 @@
     "emptyState": {
       "heading": "Zatiaľ žiadne objednávky",
       "description": "Objednávky sledujú vaše komerčné záväzky — od konceptu po doručenie."
+    }
+  },
+  "pitch": {
+    "badge": "Open Beta · Pre zákazníkov a partnerov",
+    "nav": {
+      "prev": "Späť",
+      "next": "Ďalej",
+      "slideOf": "{current} z {total}"
+    },
+    "cta": {
+      "startFree": "Začať zadarmo",
+      "requestDemo": "Vyžiadať demo",
+      "openWorkspace": "Otvoriť pracovný priestor"
+    },
+    "slides": {
+      "hero": {
+        "label": "Gunimi",
+        "title": "Pracovný priestor, ktorý rozumie vášmu podnikaniu.",
+        "subtitle": "Kontakty, obchody, emaily, stretnutia a inteligencia — prepojené v jednom živom systéme, ktorý pozoruje a koná.",
+        "hint": "Na navigáciu použite šípky"
+      },
+      "problem": {
+        "label": "Problém",
+        "title": "Váš kontext je roztrieštený.",
+        "body": "Obchodné tímy pracujú súčasne s 5–10 odpojenými nástrojmi. Kontext sa stráca pri každom odovzdaní. Obchody stagnujú potichu. Vzťahy sa rozpadajú nepozorovaně.",
+        "tools": ["CRM — kontakty a obchody, bez inteligencie", "Úlohy — výkon, izolovaný od vzťahov", "Poznámky — znalosti, odpojené od kontextu", "Email — komunikácia, neviditeľná pre zvyšok", "Kalendár — stretnutia bez CRM kontextu"],
+        "footer": "Tímy strácajú hodiny denne obnovou kontextu medzi nástrojmi."
+      },
+      "solution": {
+        "label": "Riešenie",
+        "title": "Jeden pracovný priestor. Plný kontext.",
+        "body": "Každá entita sa prepája s každou inou. Každá akcia generuje signál. Pracovný priestor sa časom učí a zobrazuje to, na čom záleží — bez nutnosti pýtať sa.",
+        "chain": ["Spoločnosti", "Kontakty", "Obchody", "Úlohy", "Poznámky", "Email", "Kalendár", "Inteligencia"]
+      },
+      "relationships": {
+        "label": "Inteligencia vzťahov",
+        "title": "Poznajte zdravie každého vzťahu.",
+        "body": "Gunimi automaticky hodnotí každý kontakt na stupnici 0–100 na základe emailovej aktivity, otvorených obchodov, úloh a dátumu posledného kontaktu. Bez manuálneho sledovania.",
+        "tiers": [
+          { "label": "Zdravý", "desc": "≥60 — vzťah je aktívny" },
+          { "label": "Sledovaný", "desc": "30–59 — čoskoro treba pozornosť" },
+          { "label": "Ohrozený", "desc": "10–29 — vzťah sa zhoršuje" },
+          { "label": "Studený", "desc": "0–9 — kontakt odmlčal" }
+        ],
+        "extras": ["AI rozhodnutie: čo robiť ďalej s týmto kontaktom", "Nadchádzajúce stretnutia na stránke kontaktu", "Kompletná časová os aktivity na kontakt"]
+      },
+      "signals": {
+        "label": "Signal Engine",
+        "title": "Systém pozoruje. Vy konáte.",
+        "body": "25 typov signálov. Automatické skenovanie každých 6 hodín naprieč všetkými pracovnými priestormi. Každá interakcia — email, stretnutie, zmena obchodu — generuje signál.",
+        "examples": ["Kontakt vychladol — žiadny email 30+ dní", "Obchod stagnuje — žiadna aktivita 14 dní", "Potrebná nadväzujúca komunikácia — neprečítané vlákno, žiadna odpoveď", "Stretnutie sa konalo — zaznamenaný signál vzťahu", "Úloha oneskorená — riziko výkonu označené"],
+        "footer": "Signály zobrazujú to, na čom záleží. Nemusíte kontrolovať dashboardy."
+      },
+      "email": {
+        "label": "Emailová inteligencia",
+        "title": "Vaša schránka, prepojená s každým obchodom.",
+        "body": "Integrácia Gmail — čítanie aj písanie. Každé vlákno je automaticky prepojené so správnym kontaktom, obchodom a spoločnosťou.",
+        "features": ["Tvorba a odpovede priamo z Gunimi", "AI návrh emailu — kontextovo vedomý, používa otvorené obchody a úlohy", "Automatický signál pri každom odoslaní", "Miera pokrytia CRM, analýza neprečítaných, detekcia potreby nadväzujúcej komunikácie"],
+        "quote": "AI napíše prvý návrh. Vy rozhodnete, čo odošlete."
+      },
+      "calendar": {
+        "label": "Inteligencia kalendára",
+        "title": "Každé stretnutie, v kontexte.",
+        "body": "Integrácia Google Kalendára s plnou CRM inteligenciou. Pred každým stretnutím s CRM kontaktom Gunimi vygeneruje brief.",
+        "features": ["AI príprava stretnutia — otvorené obchody, úlohy, posledný kontakt, navrhované témy", "Označiť ako absolvované — jedným kliknutím zaznamená signál meeting_held", "Nadchádzajúce stretnutia na stránke detailu kontaktu", "Zobrazenia Mesiac / Týždeň / Zoznam s prekryvom úloh a obchodov"],
+        "quote": "Vedzte, s kým sa stretávate, prečo to záleží a čo povedať — ešte pred stretnutím."
+      },
+      "execution": {
+        "label": "Vrstva výkonu",
+        "title": "Od znalostí cez akciu k obchodu.",
+        "sections": [
+          { "title": "Úlohy", "points": ["Prepojené s kontaktmi, obchodmi, spoločnosťami", "Úrovne priority + termíny + zodpovední", "Detekcia omeškania + rýchle vytvorenie ⌘K"] },
+          { "title": "Poznámky", "points": ["Editor formátovaného textu s #tagmi a @zmienkami", "Prepojené s každou entitou", "Rýchle vytvorenie ⌘K odkiaľkoľvek"] },
+          { "title": "Objednávky", "points": ["Návrh → Potvrdená → Odoslaná → Doručená", "Prepojené s kontaktmi, obchodmi, spoločnosťami", "Signál pri každej zmene stavu"] }
+        ]
+      },
+      "architecture": {
+        "label": "Architektúra",
+        "title": "Enterprise-grade od prvého dňa.",
+        "stack": [
+          { "layer": "Frontend", "tech": "Next.js 15 — App Router, Server Components" },
+          { "layer": "Databáza", "tech": "Supabase — PostgreSQL + Row Level Security" },
+          { "layer": "AI", "tech": "OpenAI GPT-4o-mini — vbudovaná inteligencia" },
+          { "layer": "Email / Kalendár", "tech": "Gmail API + Google Calendar API — OAuth 2.0" },
+          { "layer": "Nasadenie", "tech": "Vercel — Edge Network, globálna CDN" },
+          { "layer": "Sledovanie chýb", "tech": "Sentry — nulový console.log v produkcii" }
+        ],
+        "security": ["Row Level Security — dáta pracovného priestoru plne izolované", "Admin konzola s kompletným auditným logom", "Kontroly AI rozpočtu na pracovný priestor", "3 jazyky: Angličtina, Slovenčina, Čeština"]
+      },
+      "pricing": {
+        "label": "Začnite",
+        "title": "Počas Open Beta zadarmo.",
+        "subtitle": "Plný prístup ku všetkým modulom. Bez platobnej karty.",
+        "tiers": [
+          { "name": "Free", "price": "€0", "desc": "Do 200 kontaktov, CRM, úlohy, poznámky" },
+          { "name": "Standard", "price": "€29/používateľ", "desc": "Neobmedzené CRM, Signal Engine, synchronizácia emailu, AI" },
+          { "name": "Pro", "price": "€79/používateľ", "desc": "Plná AI, objednávky, inteligencia kalendára, prioritná podpora" },
+          { "name": "Enterprise", "price": "Vlastné", "desc": "Admin konzola, auditný log, izolácia tímu, SSO, SLA" }
+        ],
+        "currentOffer": "Počas Open Beta je všetko zadarmo — vrátane Pro funkcií.",
+        "ctaLabel": "Začať zadarmo — Bez platobnej karty"
+      }
     }
   }
 }

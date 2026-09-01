@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { executeAutomations } from "@/lib/automation/engine";
 import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
 import { resolveAllEntitySignals } from "@/lib/signals/producers/_resolveByType";
+import { createOutcomeMemory } from "@/server/actions/memory/createOutcomeMemory";
 
 import { getUser }
 from "@/server/actions/auth/getUser";
@@ -164,6 +165,15 @@ export async function updateDealStage(
   });
 
     if (stageRecord.is_won || stageRecord.is_lost) {
+      void createOutcomeMemory({
+        workspaceId: existingDeal.workspace_id as string,
+        dealId,
+        dealTitle: existingDeal.title as string,
+        stage,
+        outcome: stageRecord.is_won ? "won" : "lost",
+        contactId: (existingDeal.contact_id as string | null) ?? null,
+        companyId: (existingDeal.company_id as string | null) ?? null,
+      });
       await executeAutomations(stageRecord.is_won ? "deal.won" : "deal.lost", {
         workspaceId: existingDeal.workspace_id as string,
         userId: user.id,

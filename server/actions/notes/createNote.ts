@@ -7,6 +7,7 @@ import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logger } from "@/lib/logger";
 import { resolveSignalIfExists } from "@/lib/signals/producers/_resolveByType";
+import { extractMemoriesFromNote } from "@/server/actions/memory/extractMemoriesFromNote";
 
 export type CreateNoteProps = {
   title: string;
@@ -60,6 +61,16 @@ export async function createNote({ title, content, companyId, contactId }: Creat
         resolveSignalIfExists(workspace.id, contactId, "contact_new_no_interaction", "note_created"),
       ]);
     }
+
+    void extractMemoriesFromNote({
+      workspaceId: workspace.id,
+      noteId: data.id,
+      noteTitle: title.trim(),
+      noteContent: content?.trim() ?? null,
+      contactId: contactId ?? null,
+      companyId: companyId ?? null,
+      createdAt: data.created_at,
+    });
 
     revalidatePath("/dashboard/notes");
 

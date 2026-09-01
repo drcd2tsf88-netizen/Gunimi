@@ -1039,6 +1039,16 @@
     "recentNotes": "Recent Notes",
     "upcomingMeetings": "Upcoming Meetings",
     "allDay": "All day",
+    "businessContext": "Key Context",
+    "memoryType": {
+      "commitment": "Commitment",
+      "relationship_pattern": "Pattern",
+      "preference": "Preference",
+      "outcome": "Outcome",
+      "context": "Context",
+      "team": "Team",
+      "risk": "Risk"
+    },
     "activityBadge": "Operations Timeline",
     "activity": "Activity Timeline",
     "activitySubtitle": "Historical interactions and events related to this contact.",
@@ -4221,6 +4231,108 @@
     "emptyState": {
       "heading": "No orders yet",
       "description": "Orders track your commercial commitments — from draft to delivery."
+    }
+  },
+  "pitch": {
+    "badge": "Open Beta · For Customers & Partners",
+    "nav": {
+      "prev": "Previous",
+      "next": "Next",
+      "slideOf": "{current} of {total}"
+    },
+    "cta": {
+      "startFree": "Start Free",
+      "requestDemo": "Request a Demo",
+      "openWorkspace": "Open Workspace"
+    },
+    "slides": {
+      "hero": {
+        "label": "Gunimi",
+        "title": "The workspace that understands your business.",
+        "subtitle": "Contacts, deals, emails, meetings and intelligence — connected in one living system that observes and acts.",
+        "hint": "Use arrow keys to navigate"
+      },
+      "problem": {
+        "label": "The Problem",
+        "title": "Your context is scattered.",
+        "body": "Business teams operate across 5–10 disconnected tools. Context is lost at every handoff. Deals stall silently. Relationships decay unnoticed.",
+        "tools": ["CRM — contacts and deals, no intelligence", "Tasks — execution, isolated from relationships", "Notes — knowledge, disconnected from context", "Email — communication, invisible to the rest", "Calendar — meetings with no CRM context"],
+        "footer": "Teams lose hours daily rebuilding context across tools."
+      },
+      "solution": {
+        "label": "The Solution",
+        "title": "One workspace. Full context.",
+        "body": "Every entity connects to every other. Every action generates a signal. The workspace learns over time and surfaces what matters — without being asked.",
+        "chain": ["Companies", "Contacts", "Deals", "Tasks", "Notes", "Email", "Calendar", "Intelligence"]
+      },
+      "relationships": {
+        "label": "Relationship Intelligence",
+        "title": "Know the health of every relationship.",
+        "body": "Gunimi automatically scores every contact 0–100 based on email activity, open deals, tasks, and last contact. No manual tracking.",
+        "tiers": [
+          { "label": "Healthy", "desc": "≥60 — relationship is active" },
+          { "label": "Watching", "desc": "30–59 — needs attention soon" },
+          { "label": "At Risk", "desc": "10–29 — relationship is decaying" },
+          { "label": "Cold", "desc": "0–9 — contact has gone dark" }
+        ],
+        "extras": ["AI decision: what to do next with this contact", "Upcoming meetings shown on contact page", "Full activity timeline per contact"]
+      },
+      "signals": {
+        "label": "Signal Engine",
+        "title": "The system observes. You act.",
+        "body": "25 signal types. Automatic scan every 6 hours across all workspaces. Every interaction — email, meeting, deal change — generates a signal.",
+        "examples": ["Contact went cold — no email in 30+ days", "Deal stalled — no activity in 14 days", "Follow-up needed — unread thread, no reply", "Meeting held — relationship signal logged", "Task overdue — execution risk flagged"],
+        "footer": "Signals surface what matters. You don't need to check dashboards."
+      },
+      "email": {
+        "label": "Email Intelligence",
+        "title": "Your inbox, connected to every deal.",
+        "body": "Gmail integration — read and write. Every thread is automatically linked to the right contact, deal, and company.",
+        "features": ["Compose and reply from within Gunimi", "AI email draft — context-aware, uses open deals and tasks", "Automatic signal on every send", "CRM coverage rate, unread analysis, follow-up detection"],
+        "quote": "AI writes the first draft. You decide what to send."
+      },
+      "calendar": {
+        "label": "Calendar Intelligence",
+        "title": "Every meeting, in context.",
+        "body": "Google Calendar integration with full CRM intelligence. Before every meeting with a CRM contact, Gunimi generates a brief.",
+        "features": ["AI Meeting Prep — open deals, open tasks, last contact, suggested topics", "Mark as Met — one click logs a meeting_held signal", "Upcoming meetings shown on contact detail page", "Month / Week / List view with tasks and deals overlay"],
+        "quote": "Know who you're meeting, why it matters, and what to say — before you walk in."
+      },
+      "execution": {
+        "label": "Execution Layer",
+        "title": "From knowledge to action to commerce.",
+        "sections": [
+          { "title": "Tasks", "points": ["Linked to contacts, deals, companies", "Priority levels + due dates + assignees", "Overdue detection + ⌘K quick create"] },
+          { "title": "Notes", "points": ["Rich text editor with #tags and @mentions", "Linked to every entity", "⌘K quick create from anywhere"] },
+          { "title": "Orders", "points": ["Draft → Confirmed → Shipped → Delivered", "Linked to contacts, deals, companies", "Signal on every state change"] }
+        ]
+      },
+      "architecture": {
+        "label": "Architecture",
+        "title": "Enterprise-grade from day one.",
+        "stack": [
+          { "layer": "Frontend", "tech": "Next.js 15 — App Router, Server Components" },
+          { "layer": "Database", "tech": "Supabase — PostgreSQL + Row Level Security" },
+          { "layer": "AI", "tech": "OpenAI GPT-4o-mini — embedded intelligence" },
+          { "layer": "Email / Calendar", "tech": "Gmail API + Google Calendar API — OAuth 2.0" },
+          { "layer": "Deployment", "tech": "Vercel — Edge Network, global CDN" },
+          { "layer": "Error tracking", "tech": "Sentry — zero console.log in production" }
+        ],
+        "security": ["Row Level Security — workspace data fully isolated", "Admin console with full audit log", "AI budget controls per workspace", "3 languages: English, Slovak, Czech"]
+      },
+      "pricing": {
+        "label": "Get Started",
+        "title": "Free during Open Beta.",
+        "subtitle": "Full access to all modules. No credit card required.",
+        "tiers": [
+          { "name": "Free", "price": "€0", "desc": "Up to 200 contacts, CRM, tasks, notes" },
+          { "name": "Standard", "price": "€29/user", "desc": "Unlimited CRM, Signal Engine, email sync, AI" },
+          { "name": "Pro", "price": "€79/user", "desc": "Full AI, orders, calendar intelligence, priority support" },
+          { "name": "Enterprise", "price": "Custom", "desc": "Admin console, audit log, team isolation, SSO, SLA" }
+        ],
+        "currentOffer": "Everything is free during Open Beta — including Pro features.",
+        "ctaLabel": "Start Free — No credit card"
+      }
     }
   }
 }

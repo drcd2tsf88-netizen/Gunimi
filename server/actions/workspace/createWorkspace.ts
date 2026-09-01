@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getUser } from "@/server/actions/auth/getUser";
 import { checkWriteRateLimit } from "@/lib/server/rateLimit";
 import { logger } from "@/lib/logger";
+import { sendWelcomeOnboarding } from "@/lib/email/sendWelcomeOnboarding";
 
 type CreateWorkspaceParams = {
   name: string;
@@ -93,6 +94,13 @@ export async function createWorkspace({
       title: "Workspace Created",
       description: `Created workspace ${trimmedName}`,
     });
+
+    // Fire-and-forget welcome email, scheduled 5 minutes out
+    const userEmail = user.email ?? "";
+    const userName = (user.user_metadata?.full_name as string | undefined) ?? "";
+    if (userEmail) {
+      void sendWelcomeOnboarding({ email: userEmail, name: userName }).catch(() => undefined);
+    }
 
     return workspace;
   } catch (error) {

@@ -118,19 +118,24 @@ export async function getAIUsageStats(): Promise<AIUsageStats> {
     const logs = rawLogs as RawLog[];
     if (logs.length === 0) return { ...EMPTY, generatedAt: new Date().toISOString() };
 
-    // Fetch workspace names + AI controls
+    // Fetch workspace names + AI controls (two separate queries for resilience)
     const wsIds = [...new Set(logs.map((l) => l.workspace_id).filter((id): id is string => !!id))];
-    const { data: workspaceRows } = wsIds.length
-      ? await supabaseAdmin
-          .from("workspaces")
-          .select("id, name, ai_suspended, ai_daily_token_limit")
-          .in("id", wsIds)
+
+    const { data: workspaceNameRows } = wsIds.length
+      ? await supabaseAdmin.from("workspaces").select("id, name").in("id", wsIds)
       : { data: [] };
     const wsNameMap = new Map(
-      (workspaceRows ?? []).map((w: { id: string; name: string }) => [w.id, w.name])
+      (workspaceNameRows ?? []).map((w: { id: string; name: string }) => [w.id, w.name])
     );
+
+    const { data: workspaceControlRows } = wsIds.length
+      ? await supabaseAdmin
+          .from("workspaces")
+          .select("id, ai_suspended, ai_daily_token_limit")
+          .in("id", wsIds)
+      : { data: [] };
     const wsControlMap = new Map(
-      (workspaceRows ?? []).map(
+      (workspaceControlRows ?? []).map(
         (w: { id: string; ai_suspended: boolean | null; ai_daily_token_limit: number | null }) => [
           w.id,
           { isSuspended: w.ai_suspended === true, dailyLimit: w.ai_daily_token_limit ?? 100_000 },
