@@ -42,6 +42,8 @@ import type { WorkspaceCalendarItem } from "@/server/actions/calendar/getWorkspa
 
 import { createNote } from "@/server/actions/notes/createNote";
 import { createTask } from "@/server/actions/tasks/createTask";
+import { getAiMeetingPrep, type MeetingPrep } from "@/server/actions/calendar/getAiMeetingPrep";
+import { markAsMet } from "@/server/actions/calendar/markAsMet";
 
 // Module-level time reference — avoids calling Date.now() during render
 const PAGE_NOW = new Date();
@@ -108,6 +110,35 @@ function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventD
   );
   const [saving, startSave] = useTransition();
   const [deleting, startDelete] = useTransition();
+  const [aiPrep, setAiPrep] = useState<MeetingPrep | null>(null);
+  const [loadingPrep, startLoadPrep] = useTransition();
+  const [metLogged, setMetLogged] = useState(false);
+  const [loggingMet, startLogMet] = useTransition();
+
+  function handleLoadAiPrep() {
+    if (!crmContact) return;
+    startLoadPrep(async () => {
+      const result = await getAiMeetingPrep(event.title, crmContact.id);
+      if (result) {
+        setAiPrep(result);
+      } else {
+        toast.error(t("aiMeetingPrepError"));
+      }
+    });
+  }
+
+  function handleMarkAsMet() {
+    if (!crmContact) return;
+    startLogMet(async () => {
+      const result = await markAsMet(crmContact.id, event.title);
+      if (result.ok) {
+        setMetLogged(true);
+        toast.success(t("metLogged"));
+      } else {
+        toast.error(t("metFailed"));
+      }
+    });
+  }
 
   function handleCreateMeetingNote() {
     startCreateNote(async () => {
@@ -356,6 +387,66 @@ function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventD
               </div>
             </div>
           )}
+
+          {/* AI MEETING PREP */}
+          {crmContact && (
+            <div>
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-[10px] uppercase tracking-[0.15em] text-zinc-500">
+                  {t("aiMeetingPrep")}
+                </p>
+                {!aiPrep && (
+                  <button
+                    onClick={handleLoadAiPrep}
+                    disabled={loadingPrep}
+                    className="flex items-center gap-1 rounded-lg px-2 py-0.5 text-[10px] font-medium text-violet-300/70 transition-colors hover:bg-violet-500/10 hover:text-violet-300 disabled:opacity-40"
+                  >
+                    <Sparkles size={10} />
+                    {loadingPrep ? t("aiMeetingPrepGenerating") : t("aiMeetingPrepGenerate")}
+                  </button>
+                )}
+              </div>
+              {aiPrep ? (
+                <div className="space-y-3 rounded-xl border border-violet-500/20 bg-violet-500/[0.04] p-4">
+                  <p className="text-xs leading-relaxed text-white/60">{aiPrep.contextSummary}</p>
+                  {aiPrep.suggestedTopics.length > 0 && (
+                    <div>
+                      <p className="mb-1.5 text-[10px] font-medium uppercase tracking-[0.12em] text-violet-300/60">
+                        {t("aiMeetingPrepTopics")}
+                      </p>
+                      <ul className="space-y-1">
+                        {aiPrep.suggestedTopics.map((topic, i) => (
+                          <li key={i} className="flex items-start gap-2 text-xs text-white/55">
+                            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-violet-400/50" />
+                            {topic}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {aiPrep.keyPoints.length > 0 && (
+                    <div>
+                      <p className="mb-1.5 text-[10px] font-medium uppercase tracking-[0.12em] text-cyan-300/60">
+                        {t("aiMeetingPrepKeyPoints")}
+                      </p>
+                      <ul className="space-y-1">
+                        {aiPrep.keyPoints.map((point, i) => (
+                          <li key={i} className="flex items-start gap-2 text-xs text-white/55">
+                            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-cyan-400/50" />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="rounded-xl border border-white/[0.05] bg-white/[0.01] px-4 py-3">
+                  <p className="text-xs text-white/25">{t("aiMeetingPrepHint")}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* ACTIONS */}
@@ -381,6 +472,18 @@ function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventD
                   {t("viewContact")}
                 </GunimiButton>
               </Link>
+            )}
+
+            {crmContact && (
+              <GunimiButton
+                variant="secondary"
+                loading={loggingMet}
+                onClick={handleMarkAsMet}
+                className={`gap-2 text-xs ${metLogged ? "border-emerald-500/30 text-emerald-300" : ""}`}
+              >
+                <CheckCircle2 size={13} />
+                {metLogged ? t("metLogged") : t("markAsMet")}
+              </GunimiButton>
             )}
 
             {event.html_link && (

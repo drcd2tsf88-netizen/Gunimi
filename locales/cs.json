@@ -358,7 +358,8 @@
     "groupLeads": "Leady",
     "groupWon": "Vyhraní",
     "groupOther": "Ostatní",
-    "noPosition": "Bez pozice"
+    "noPosition": "Bez pozice",
+    "health": "Zdraví"
   },
   "tasks": {
     "workManagement": "Řízení práce",
@@ -1036,6 +1037,8 @@
     "noNotes": "Žádné poznámky",
     "noNotesDescription": "S tímto kontaktem nejsou propojeny žádné poznámky.",
     "recentNotes": "Poslední poznámky",
+    "upcomingMeetings": "Nadcházející schůzky",
+    "allDay": "Celý den",
     "activityBadge": "Provozní časová osa",
     "activity": "Časová osa aktivit",
     "activitySubtitle": "Historické interakce a události související s tímto kontaktem.",
@@ -1075,6 +1078,12 @@
     "lastContactYesterday": "Včera",
     "lastContactDaysAgo": "před {days}d",
     "lastContactNever": "Nikdy",
+    "healthScore": {
+      "healthy": "Zdravý",
+      "watching": "Sledovaný",
+      "atRisk": "V ohrožení",
+      "cold": "Studený"
+    },
     "workspaceTabsLabel": "Navigace pracovního prostoru kontaktu",
     "tabOverview": "Přehled",
     "tabHistory": "Historie",
@@ -1759,7 +1768,17 @@
     "reconnectForEditing": "Znovu připojte Google Calendar pro povolení úprav",
     "deleteEvent": "Smazat",
     "eventDeleted": "Událost smazána",
-    "googleEventsLabel": "Google Calendar"
+    "googleEventsLabel": "Google Calendar",
+    "aiMeetingPrep": "Příprava schůzky",
+    "aiMeetingPrepGenerate": "Generovat",
+    "aiMeetingPrepGenerating": "Připravuji...",
+    "aiMeetingPrepError": "Nepodařilo se vygenerovat přípravu",
+    "aiMeetingPrepTopics": "Navrhovaná témata",
+    "aiMeetingPrepKeyPoints": "Klíčové body",
+    "aiMeetingPrepHint": "Vygenerujte AI přípravu pro kontext, navrhovaná témata a klíčové body k této schůzce.",
+    "markAsMet": "Označit jako absolvované",
+    "metLogged": "Schůzka zaznamenána",
+    "metFailed": "Nepodařilo se zaznamenat schůzku"
   },
   "email": {
     "badge": "E-mail",
@@ -1842,7 +1861,29 @@
     "createOrder": "Vytvořit objednávku",
     "orderCreated": "Objednávka vytvořena",
     "failedToCreateOrder": "Nepodařilo se vytvořit objednávku",
-    "orderPrefix": "Objednávka:"
+    "orderPrefix": "Objednávka:",
+    "compose": "Napsat",
+    "composeTitle": "Nový email",
+    "composeTo": "Komu",
+    "composeSubject": "Předmět",
+    "composeSubjectPlaceholder": "Předmět emailu",
+    "composeBody": "Zpráva",
+    "composeBodyPlaceholder": "Napište zprávu...",
+    "composeCancel": "Zrušit",
+    "sendEmail": "Odeslat",
+    "emailSent": "Email odeslán",
+    "sendFailed": "Nepodařilo se odeslat email",
+    "noEmailConnection": "Žádný emailový účet není propojen",
+    "replyLabel": "Odpovědět",
+    "replyPlaceholder": "Napište odpověď...",
+    "sendReply": "Odeslat odpověď",
+    "replySent": "Odpověď odeslána",
+    "replyFailed": "Nepodařilo se odeslat odpověď",
+    "reconnectRequired": "Pro odesílání emailů je potřeba znovu propojit Gmail",
+    "reconnectBanner": "Odesílání emailů vyžaduje aktualizovaná oprávnění. Znovu propojte Gmail účet.",
+    "reconnectAction": "Znovu propojit Gmail",
+    "aiDraft": "AI návrh",
+    "aiDraftFailed": "AI návrh není dostupný"
   },
   "workspace": {
     "createWorkspace": "Vytvořit pracovní prostor",

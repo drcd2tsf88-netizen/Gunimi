@@ -49,6 +49,7 @@ import AttachmentsPanel from "@/components/attachments/AttachmentsPanel";
 import ResponsibilitiesPanel from "@/components/organization/ResponsibilitiesPanel";
 import type { WorkspaceTeam } from "@/types/organization";
 import type { WorkspaceMember } from "@/types/task";
+import type { CalendarEventRow } from "@/types/calendar";
 import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 import { cn } from "@/lib/utils";
@@ -87,6 +88,7 @@ type Props = {
   teams: WorkspaceTeam[];
   members: WorkspaceMember[];
   orders: Order[];
+  upcomingMeetings?: CalendarEventRow[];
 };
 
 export default function ContactDetailView({
@@ -102,6 +104,7 @@ export default function ContactDetailView({
   teams,
   members,
   orders,
+  upcomingMeetings = [],
 }: Props) {
   const router = useRouter();
   const t = useTranslations("contacts");
@@ -236,6 +239,43 @@ export default function ContactDetailView({
                         {note.content.replace(/<[^>]+>/g, "").slice(0, 80)}
                       </p>
                     )}
+                  </Link>
+                ))}
+              </div>
+            </GunimiCard>
+          )}
+
+          {upcomingMeetings.length > 0 && (
+            <GunimiCard className="p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <CalendarDays size={12} className="text-blue-400/70" aria-hidden />
+                <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500 font-medium">
+                  {t("upcomingMeetings")}
+                </span>
+              </div>
+              <div className="space-y-1.5">
+                {upcomingMeetings.map((meeting) => (
+                  <Link
+                    key={meeting.id}
+                    href="/dashboard/calendar"
+                    className="flex items-center gap-3 rounded-xl border border-blue-500/10 bg-blue-500/[0.04] px-3 py-2.5 transition-colors hover:border-blue-500/25 hover:bg-blue-500/[0.08]"
+                  >
+                    <div className="flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10">
+                      <span className="text-[9px] font-semibold leading-none text-blue-300">
+                        {new Date(meeting.start_at).toLocaleDateString(undefined, { month: "short" }).toUpperCase()}
+                      </span>
+                      <span className="text-sm font-bold leading-none text-blue-200">
+                        {new Date(meeting.start_at).getDate()}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs font-medium text-white/80">{meeting.title}</p>
+                      <p className="mt-0.5 text-[10px] text-white/35">
+                        {meeting.all_day
+                          ? t("allDay")
+                          : new Date(meeting.start_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                      </p>
+                    </div>
                   </Link>
                 ))}
               </div>

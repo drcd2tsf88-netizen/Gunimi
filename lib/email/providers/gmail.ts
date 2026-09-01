@@ -2,6 +2,7 @@ import type {
   EmailProvider,
   ProviderMessage,
   ProviderThreadDetail,
+  SendMessageOptions,
   ThreadListOptions,
   ThreadSummary,
   TokenSet,
@@ -14,6 +15,7 @@ const GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
 
 const SCOPES = [
   "https://www.googleapis.com/auth/gmail.readonly",
+  "https://www.googleapis.com/auth/gmail.send",
   "https://www.googleapis.com/auth/userinfo.email",
 ];
 
@@ -241,4 +243,87 @@ export class GmailProvider implements EmailProvider {
       historyId: String(data.historyId ?? ""),
     };
   }
+
+  async sendMessage(accessToken: string, options: SendMessageOptions): Promise<string> {
+    const headerLines = [
+      `From: ${options.from}`,
+      `To: ${options.to}`,
+      `Subject: ${options.subject}`,
+      `MIME-Version: 1.0`,
+      `Content-Type: text/plain; charset=UTF-8`,
+    ];
+    if (options.inReplyTo) {
+      headerLines.push(`In-Reply-To: ${options.inReplyTo}`);
+      headerLines.push(`References: ${options.inReplyTo}`);
+    }
+    const raw = [...headerLines, "", options.body].join("\r\n");
+    const encoded = Buffer.from(raw)
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+
+    const reqBody: Record<string, string> = { raw: encoded };
+    if (options.threadId) reqBody.threadId = options.threadId;
+
+    const res = await fetch(`${GMAIL_BASE}/messages/send`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reqBody),
+    });
+
+    if (!res.ok) throw new Error(`Gmail sendMessage failed: ${await res.text()}`);
+    const data = await res.json();
+    return String(data.id);
+  }
+
+  async getMessageBody(accessToken: string, providerMessageId: string): Promise<string | null> {
+    const res = await fetch(`${GMAIL_BASE}/messages/${providerMessageId}?format=full`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return extractBodyFromPayload(data.payload as Record<string, unknown>);
+  }
+}
+
+function decodeBase64Url(encoded: string): string {
+  const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+  return Buffer.from(base64, "base64").toString("utf-8");
+}
+
+function extractBodyFromPayload(payload: Record<string, unknown>): string | null {
+  if (!payload) return null;
+
+  const direct = payload.body as { data?: string } | undefined;
+  if (direct?.data) return decodeBase64Url(direct.data);
+
+  const parts = (payload.parts as Array<Record<string, unknown>>) ?? [];
+
+  // Prefer text/plain
+  for (const part of parts) {
+    if (part.mimeType === "text/plain") {
+      const b = part.body as { data?: string } | undefined;
+      if (b?.data) return decodeBase64Url(b.data);
+    }
+  }
+  // Recurse into multipart
+  for (const part of parts) {
+    const mimeType = part.mimeType as string ?? "";
+    if (mimeType.startsWith("multipart/")) {
+      const nested = extractBodyFromPayload(part as Record<string, unknown>);
+      if (nested) return nested;
+    }
+  }
+  // Fallback: HTML
+  for (const part of parts) {
+    if (part.mimeType === "text/html") {
+      const b = part.body as { data?: string } | undefined;
+      if (b?.data) return decodeBase64Url(b.data);
+    }
+  }
+  return null;
 }

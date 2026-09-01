@@ -13,7 +13,7 @@ export async function getEmailConnections(): Promise<EmailConnection[]> {
 
     const { data, error } = await supabaseAdmin
       .from("email_connections")
-      .select("id, provider, provider_account_email, connected_at, last_synced_at")
+      .select("id, provider, provider_account_email, connected_at, last_synced_at, scope")
       .eq("workspace_id", workspace.id)
       .eq("user_id", user.id)
       .order("connected_at", { ascending: false });

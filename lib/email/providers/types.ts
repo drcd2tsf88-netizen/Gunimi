@@ -7,7 +7,18 @@ export interface EmailProvider {
   getConnectedEmail(accessToken: string): Promise<string>;
   listThreads(accessToken: string, options?: ThreadListOptions): Promise<ThreadSummary[]>;
   getThreadDetail(accessToken: string, threadId: string): Promise<ProviderThreadDetail | null>;
+  sendMessage(accessToken: string, options: SendMessageOptions): Promise<string>;
+  getMessageBody(accessToken: string, providerMessageId: string): Promise<string | null>;
 }
+
+export type SendMessageOptions = {
+  from: string;
+  to: string;
+  subject: string;
+  body: string;
+  threadId?: string;
+  inReplyTo?: string;
+};
 
 export type TokenSet = {
   accessToken: string;

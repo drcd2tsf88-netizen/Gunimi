@@ -15,6 +15,7 @@ import {
   FileText,
   Mail,
   MessageSquare,
+  Pencil,
   ShoppingBag,
   Sparkles,
   TrendingUp,
@@ -35,6 +36,8 @@ import type { EmailConnection, EmailThread } from "@/types/email";
 import { createTask } from "@/server/actions/tasks/createTask";
 import { createNote } from "@/server/actions/notes/createNote";
 import { createOrder } from "@/server/actions/orders/createOrder";
+import ReplyComposer from "@/components/email/ReplyComposer";
+import ComposeModal from "@/components/email/ComposeModal";
 
 // Module-level time reference — avoids calling Date.now() during render
 const PAGE_NOW = new Date();
@@ -329,6 +332,15 @@ function ThreadDetailPanel({ thread, onClose, t }: ThreadDetailPanelProps) {
             )}
           </div>
         </div>
+
+        {/* REPLY */}
+        <ReplyComposer
+          threadId={thread.id}
+          threadSubject={thread.subject}
+          recipientEmail={thread.participant_emails[0]}
+          contactId={thread.contact?.id}
+          onSent={onClose}
+        />
       </div>
     </div>
   );
@@ -802,11 +814,16 @@ function NoConnectionState({
 export default function EmailCommandCenter({ threads, connections }: Props) {
   const t = useTranslations("email");
   const [selectedThread, setSelectedThread] = useState<EmailThread | null>(null);
+  const [composeOpen, setComposeOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const isInitialConnect = searchParams.get("connected") === "true";
   const [syncDone, setSyncDone] = useState(false);
   const autoSyncing = isInitialConnect && !syncDone;
+
+  const needsReconnect = connections.some(
+    (c) => !c.scope?.includes("gmail.send")
+  );
 
   // Auto-sync on first connect — callback redirects before sync completes
   useEffect(() => {
@@ -873,6 +890,14 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
           <p className="text-[13px] text-[#9AA3B2]">{t("syncing")}</p>
         </div>
       )}
+      {needsReconnect && (
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-[12px] border border-amber-500/20 bg-amber-500/[0.06] px-4 py-3">
+          <p className="text-[13px] text-amber-300/80">{t("reconnectBanner")}</p>
+          <a href="/api/email/connect/gmail" className="shrink-0 text-[12px] font-medium text-amber-300 underline underline-offset-2 hover:text-amber-200">
+            {t("reconnectAction")}
+          </a>
+        </div>
+      )}
       <div className="space-y-6">
         {/* HEADER */}
         <div className="flex items-start justify-between gap-4">
@@ -881,12 +906,23 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
             title={t("commandCenterTitle")}
             subtitle={t("commandCenterSubtitle")}
           />
-          <a href="/api/email/connect/gmail" className="mt-1 shrink-0">
-            <GunimiButton variant="secondary" className="gap-2 text-sm">
-              <Mail size={14} />
-              {t("addEmail")}
+          <div className="mt-1 flex shrink-0 items-center gap-2">
+            <GunimiButton
+              variant="primary"
+              className="gap-2 text-sm"
+              onClick={() => setComposeOpen(true)}
+              disabled={needsReconnect}
+            >
+              <Pencil size={14} />
+              {t("compose")}
             </GunimiButton>
-          </a>
+            <a href="/api/email/connect/gmail">
+              <GunimiButton variant="secondary" className="gap-2 text-sm">
+                <Mail size={14} />
+                {t("addEmail")}
+              </GunimiButton>
+            </a>
+          </div>
         </div>
 
         {/* STATS STRIP */}
@@ -939,6 +975,12 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
           t={t}
         />
       )}
+
+      {/* COMPOSE MODAL */}
+      <ComposeModal
+        open={composeOpen}
+        onClose={() => setComposeOpen(false)}
+      />
     </>
   );
 }

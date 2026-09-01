@@ -1,6 +1,6 @@
 ================================================================================
 GUNIMI — PRODUCT ROADMAP & GAP ANALYSIS
-Verzia: 2.2 | Dátum: 2026-08-27
+Verzia: 2.3 | Dátum: 2026-08-28
 ================================================================================
 
 --------------------------------------------------------------------------------
@@ -38,6 +38,7 @@ AI & INTELIGENCIA
   [x] Business Memory System — entity-level, timeline, confidence decay
   [x] Analytics — pipeline breakdown, workspace metriky
   [x] AI Usage tracking — cost monitoring per workspace
+  [x] AI Budget Controls — per-workspace denný limit (default 100K tokenov), suspension kill switch, Admin dashboard risk bars + inline limit editor
   [x] Signal Scan Cron — každých 6h, observability (counts, lastRunAt)
   [x] Signal Health endpoint — /api/signals/health
 
@@ -62,7 +63,7 @@ WORKSPACE & INFRAŠTRUKTÚRA
   [x] Cron job — Signal scan každých 6h (Vercel Cron)
   [x] Health endpoints — /api/health, /api/signals/health
   [x] Dogfood feedback systém — interný beta feedback (keyboard ?)
-  [x] Admin panel — alpha approvals, AI operations, dogfood
+  [x] Admin Console v2 — 9 sekcií: Hub, Workspace Manager, User Manager, AI Ops, Platform Health, Invite Control, Broadcast, Audit Log, Dogfood
   [x] Billing / Stripe — predplatné €19/mesiac, webhook, Settings sekcia
   [x] /demo — interaktívny demo workspace pre nových návštevníkov
   [x] Custom Dashboard — My Dashboard, 12 widgetov, drag-and-drop, perzistencia
@@ -94,19 +95,25 @@ DOKUMENTÁCIA & ARCHITEKTONICKÉ ROZHODNUTIA
 AKTUÁLNY SPRINT — ČO ROBIŤ ĎALEJ
 --------------------------------------------------------------------------------
 
-  [ ] AI tag intelligence — implementácia (rozhodnuté 2026-08-21, pending)
-        - Tag detail page + hover karta s AI quick summary
-        - Systém pochopí sémantiku z entít, žiadne manuálne definície
-        - Odhadovaný čas: 3–4 dni
+  [x] AI tag intelligence — COMPLETED 2026-08-22
+        - getTagAiSummary (gpt-4o-mini), AI Insight karta na detail page (Suspense + skeleton)
+        - TagHoverCard rozšírená o AI sekciu, 3 locale kľúče EN/SK/CS
+        - Tagy page Sentry bug opravený 2026-08-28 (workspace_deals.title nie .name)
 
-  [ ] Napady sprint — 18 pending items (partner feedback)
-        - Stat karty klikateľné ✅, note detail ✅, org notes ✅
-        - company search ✅, task row ✅, notif nav ✅
-        - 18 ďalších položiek čaká
+  [x] Napady sprint — COMPLETED 2026-08-22
+        - Všetkých 27/27 položiek hotových vrátane 22.8 batch (Task Detail fixes)
+        - Deferred: video v ľavom rohu, team isolation (product decision), Gunimi kalendár (Q4)
 
-  [ ] Create/Detail dialógy — dokončiť konverziu (Sheet → Dialog)
-        - Contacts, Companies, Deals, Notes, Orders: create ✅
-        - Detailné modaly pre všetky entity okrem úloh
+  [ ] Lint sprint — 0 errors, 0 warnings (PRIORITA)
+        - npm run lint musí byť čistý bez akéhokoľvek warningu
+        - npm run type-check — zero errors
+        - Vždy pred commitom
+
+  [ ] CRON_SECRET nastaviť v Vercel — Signal scan cron nebeží (10 min)
+
+  [ ] Auth email end-to-end overiť — registration confirm + forgot password (15 min test)
+
+  [ ] Gate 4 + Gate 7 pre post-beta features — Orders, Admin Console, Today AI Brief
 
   [ ] Domain Foundation Fáza 4 — cleanup
         - Drop company_id z workspace_people po 30-dňovej stabilite
@@ -236,7 +243,7 @@ TIER 4 — DIFERENCIÁCIA AI (Čo odlíši Gunimi od Salesforce)
           - Odhadovaný čas: 2 týždne
 
   MEMORY LAYER — interpretácia (robiť druhé):
-  [ ] AI tag intelligence                         ← ROZHODNUTÉ, pending implementácia
+  [x] AI tag intelligence                         ✅ COMPLETED 2026-08-22
           - AI-generated tag profil bez manuálnych definícií
           - Tag detail page + hover karta s AI quick summary
   [ ] 31. Relationship health score
@@ -340,7 +347,7 @@ FÁZA 3 — Mid-market                           ⏳ PREBIEHA (Q4 2026)
   - [ ] Teams V2 — RLS izolácia dát (trigger: prvý platí)
   - [ ] Voice notes + Meeting Intelligence (History Layer AI)
   - [ ] Public REST API (#19)
-  - [ ] AI tag intelligence (rozhodnuté, pending impl.)
+  - [x] AI tag intelligence                             ✅ (aug 2026)
 
 FÁZA 4 — Enterprise                           📅 PLÁNOVANÁ (2027)
   Cieľ: Alza-scale, 500+ ľudí
@@ -353,7 +360,7 @@ FÁZA 4 — Enterprise                           📅 PLÁNOVANÁ (2027)
 
 FÁZA 5 — AI Diferenciácia                     📅 PRIEBEŽNE
   Cieľ: "Gunimi vie viac ako ktokoľvek iný v tíme"
-  - [ ] AI tag intelligence (implementácia)
+  - [x] AI tag intelligence                             ✅ (aug 2026)
   - [ ] Relationship health scores (Memory Layer)
   - [ ] Deal forecasting (Wisdom Layer)
   - [ ] Churn detection (Wisdom Layer)
@@ -361,19 +368,20 @@ FÁZA 5 — AI Diferenciácia                     📅 PRIEBEŽNE
 
 --------------------------------------------------------------------------------
 TECHNICKÝ DLUH (backend / infraštruktúra)
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------
+----
 
   [x] SQL migrácia: workspace_deals currency column             ✅ vyriešené
   [x] Lint stabilizácia — 0 errors, 0 warnings                 ✅ čisté (aug 2026)
   [x] OPERATION: RUNTIME ZERO — konzola v browseri čistá       ✅ (júl 2026)
   [x] Stripe webhook secret — pridaný do Vercel env vars       ✅
-  [x] CRON_SECRET — env var pre Vercel Cron                    ✅
+  [ ] CRON_SECRET — env var pre Vercel Cron — NEnastavené (Beta Checklist: unverified, Signal scan cron nebeží)
   [x] workspace_contacts → workspace_people sweep (37 súborov) ✅ (aug 2026)
-  [ ] Legacy tabuľka "tasks" (bez workspace_id) — migrácia alebo cleanup
-  [ ] Orbit* mŕtvy kód — OrbitButton/OrbitCard/... → zmazať
-  [ ] AI usage cost monitoring — upozornenie pri prekročení thresholdu
-  [ ] Multi-theme systém — CSS variables, dark/midnight/slate/light
-  [ ] Drop company_id z workspace_people — po 30-dňovej stabilite
+  [x] Legacy tabuľka "tasks" — neexistuje, všetok kód používa workspace_tasks ✅
+  [x] Orbit* mŕtvy kód — OrbitButton/OrbitCard preč; zostatok (OrbitControlView, OrbitThinking, OrbitNotifications, OrbitProfileDropdown, OrbitTeamPresence, OrbitAssistant/*) je aktívny kód ✅
+  [ ] AI usage cost monitoring — enforcement existuje (checkAIBudget blokuje), admin vidí risk bars, ale automatické email/notifikácia pri prekročení limitu chýba
+  [ ] Multi-theme systém — CSS variables, dark/midnight/slate/light (future feature)
+  [ ] Drop company_id z workspace_people — po 30-dňovej stabilite (cca 2026-09-26)
 
 --------------------------------------------------------------------------------
 POZNÁMKY
@@ -396,6 +404,16 @@ POZNÁMKY
 * Teams V1 COMPLETED — workspace_teams, RLS, Settings → Tímy, 28 locale kľúčov (2026-08-27)
 * Mention system live — Tiptap @člen, #tag, hover karty v komentároch (2026-08-21)
 * Beta Sprint COMPLETED — invite Resend+CopyLink, intelligent empty states, mobile touch fix (2026-08-24)
+* UI Consistency Sprint COMPLETED — compact identity strip, v2 list rows na Contacts, Companies, Deals, Notes (2026-08-22)
+* AI Tag Intelligence COMPLETED — getTagAiSummary, tag detail AI Insight karta, TagHoverCard AI sekcia (2026-08-22)
+* Napady sprint COMPLETED — 27/27 + 22.8 Task Detail batch (2026-08-22)
+* Admin Console v2 COMPLETED — 9 sekcií, audit log, broadcast, AI Ops (2026-08-27/28)
+* AI Budget Controls COMPLETED — per-workspace 100K denný limit, suspension, admin risk bars (2026-08-27)
+* Today AI Brief COMPLETED — GPT-4o-mini briefing, 24h cache, ai_brief feature flag (2026-08-28)
+* Create Note ⌘K COMPLETED — CreateNotePanel, notes.commands.ts (2026-08-28)
+* Tag Search + Filter COMPLETED — TagsGrid: search, color chips, sort by count/alpha (2026-08-28)
+* Mobile Consistency Audit COMPLETED — opacity-100 sm:opacity-0 sm:group-hover:opacity-100, h-8 w-8 min touch targets (2026-08-28)
+* Tags Sentry bug FIXED — getTagWithEntities queried workspace_deals.name (neexistuje), opravené na .title (2026-08-28)
 
 ================================================================================
 EOF

@@ -4,6 +4,7 @@ export type EmailConnection = {
   provider_account_email: string;
   connected_at: string;
   last_synced_at: string | null;
+  scope: string | null;
 };
 
 export type EmailThread = {

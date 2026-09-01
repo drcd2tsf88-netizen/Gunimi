@@ -40,6 +40,7 @@ import MergeContactSheet from "@/components/crm/MergeContactSheet";
 
 import { TAG_COLOR_CLASSES, type WorkspaceTag } from "@/types/tag";
 import type { ContactTagsMap } from "@/server/actions/crm/getWorkspaceContactTagsMap";
+import type { ContactsHealthMap } from "@/server/actions/relationships/getContactsHealthMap";
 
 import {
   Dialog,
@@ -79,6 +80,7 @@ type Contact = {
 type Props = {
   initialContacts: Contact[];
   initialContactTagsMap?: ContactTagsMap;
+  healthMap?: ContactsHealthMap;
 };
 
 // ─── Status config ────────────────────────────────────────────────────────────
@@ -184,6 +186,7 @@ function GroupHeader({
 function ContactRow({
   contact,
   tags,
+  health,
   isSelected,
   onSelect,
   onNavigate,
@@ -193,6 +196,7 @@ function ContactRow({
 }: {
   contact: Contact;
   tags: WorkspaceTag[];
+  health?: { score: number; dotClass: string; textClass: string; tierKey: string };
   isSelected: boolean;
   onSelect: (e: React.MouseEvent) => void;
   onNavigate: () => void;
@@ -277,6 +281,14 @@ function ContactRow({
         )}
       </div>
 
+      {/* Health score */}
+      {health && (
+        <div className="hidden shrink-0 items-center gap-1 sm:flex">
+          <span className={`h-1.5 w-1.5 rounded-full ${health.dotClass}`} />
+          <span className={`text-[10px] tabular-nums ${health.textClass}`}>{health.score}</span>
+        </div>
+      )}
+
       {/* Actions — always visible on mobile, hover-only on desktop */}
       <div
         className="flex shrink-0 items-center gap-1 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
@@ -311,7 +323,7 @@ function ContactRow({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function CRMPageView({ initialContacts, initialContactTagsMap = {} }: Props) {
+export default function CRMPageView({ initialContacts, initialContactTagsMap = {}, healthMap = {} }: Props) {
   const t = useTranslations("crm");
   const tc = useTranslations("common");
   const router = useRouter();
@@ -442,6 +454,7 @@ export default function CRMPageView({ initialContacts, initialContactTagsMap = {
         key={contact.id}
         contact={contact}
         tags={contactTagsMap[contact.id] ?? []}
+        health={healthMap[contact.id]}
         isSelected={selectedIds.has(contact.id)}
         onSelect={(e) => toggleSelect(contact.id, e)}
         onNavigate={() => router.push(`/dashboard/contacts/${contact.id}`)}
@@ -593,6 +606,7 @@ export default function CRMPageView({ initialContacts, initialContactTagsMap = {
               <p className="hidden flex-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 lg:block">{t("company")}</p>
               <p className="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 xl:block" style={{ minWidth: 80 }}>Tags</p>
               <p className="hidden w-16 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 sm:block">{t("status")}</p>
+              <p className="hidden w-12 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 sm:block">{t("health")}</p>
               <div className="w-[88px]" />
             </div>
 

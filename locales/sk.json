@@ -358,7 +358,8 @@
     "groupLeads": "Leady",
     "groupWon": "Vyhraní",
     "groupOther": "Ostatní",
-    "noPosition": "Bez pozície"
+    "noPosition": "Bez pozície",
+    "health": "Zdravie"
   },
   "tasks": {
     "workManagement": "Riadenie práce",
@@ -1036,6 +1037,8 @@
     "noNotes": "Žiadne poznámky",
     "noNotesDescription": "S týmto kontaktom nie sú prepojené žiadne poznámky.",
     "recentNotes": "Posledné poznámky",
+    "upcomingMeetings": "Nadchádzajúce stretnutia",
+    "allDay": "Celý deň",
     "activityBadge": "Prevádzková časová os",
     "activity": "Časová os aktivít",
     "activitySubtitle": "Historické interakcie a udalosti súvisiace s týmto kontaktom.",
@@ -1075,6 +1078,12 @@
     "lastContactYesterday": "Včera",
     "lastContactDaysAgo": "pred {days}d",
     "lastContactNever": "Nikdy",
+    "healthScore": {
+      "healthy": "Zdravý",
+      "watching": "Sledovaný",
+      "atRisk": "V ohrození",
+      "cold": "Studený"
+    },
     "workspaceTabsLabel": "Navigácia pracovného priestoru kontaktu",
     "tabOverview": "Prehľad",
     "tabHistory": "História",
@@ -1759,7 +1768,17 @@
     "reconnectForEditing": "Znovu pripojte Google Calendar na povolenie úprav",
     "deleteEvent": "Vymazať",
     "eventDeleted": "Udalosť vymazaná",
-    "googleEventsLabel": "Google Calendar"
+    "googleEventsLabel": "Google Calendar",
+    "aiMeetingPrep": "Príprava stretnutia",
+    "aiMeetingPrepGenerate": "Generovať",
+    "aiMeetingPrepGenerating": "Pripravujem...",
+    "aiMeetingPrepError": "Nepodarilo sa vygenerovať prípravu",
+    "aiMeetingPrepTopics": "Navrhované témy",
+    "aiMeetingPrepKeyPoints": "Kľúčové body",
+    "aiMeetingPrepHint": "Vygenerujte AI prípravu pre kontext, navrhované témy a kľúčové body k tomuto stretnutiu.",
+    "markAsMet": "Označiť ako absolvované",
+    "metLogged": "Stretnutie zaznamenané",
+    "metFailed": "Nepodarilo sa zaznamenať stretnutie"
   },
   "email": {
     "badge": "E-mail",
@@ -1842,7 +1861,29 @@
     "createOrder": "Vytvoriť objednávku",
     "orderCreated": "Objednávka vytvorená",
     "failedToCreateOrder": "Nepodarilo sa vytvoriť objednávku",
-    "orderPrefix": "Objednávka:"
+    "orderPrefix": "Objednávka:",
+    "compose": "Napísať",
+    "composeTitle": "Nový email",
+    "composeTo": "Komu",
+    "composeSubject": "Predmet",
+    "composeSubjectPlaceholder": "Predmet emailu",
+    "composeBody": "Správa",
+    "composeBodyPlaceholder": "Napíšte správu...",
+    "composeCancel": "Zrušiť",
+    "sendEmail": "Odoslať",
+    "emailSent": "Email odoslaný",
+    "sendFailed": "Nepodarilo sa odoslať email",
+    "noEmailConnection": "Žiadny emailový účet nie je prepojený",
+    "replyLabel": "Odpovedať",
+    "replyPlaceholder": "Napíšte odpoveď...",
+    "sendReply": "Odoslať odpoveď",
+    "replySent": "Odpoveď odoslaná",
+    "replyFailed": "Nepodarilo sa odoslať odpoveď",
+    "reconnectRequired": "Pre odosielanie emailov je potrebné znovu prepojiť Gmail",
+    "reconnectBanner": "Odosielanie emailov vyžaduje aktualizované oprávnenia. Znovu prepojte Gmail účet.",
+    "reconnectAction": "Znovu prepojiť Gmail",
+    "aiDraft": "AI návrh",
+    "aiDraftFailed": "AI návrh nie je dostupný"
   },
   "workspace": {
     "createWorkspace": "Vytvoriť pracovný priestor",

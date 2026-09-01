@@ -11,6 +11,7 @@ import { getAttachments } from "@/server/actions/attachments/getAttachments";
 import { getTeams } from "@/server/actions/organization/getTeams";
 import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
 import { getContactOrders } from "@/server/actions/crm/getContactOrders";
+import { getContactUpcomingMeetings } from "@/server/actions/calendar/getContactUpcomingMeetings";
 import ContactDetailView from "@/components/contacts/detail/ContactDetailView";
 import type { WorkspaceMember } from "@/types/task";
 
@@ -38,6 +39,8 @@ export default async function ContactDetailPage({ params }: Props) {
 
   if (!contact) notFound();
 
+  const upcomingMeetings = await getContactUpcomingMeetings(contact.email ?? null);
+
   return (
     <ContactDetailView
       contact={contact}
@@ -52,6 +55,7 @@ export default async function ContactDetailPage({ params }: Props) {
       teams={teams}
       members={members as unknown as WorkspaceMember[]}
       orders={orders}
+      upcomingMeetings={upcomingMeetings}
     />
   );
 }

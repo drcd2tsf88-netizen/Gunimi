@@ -358,7 +358,8 @@
     "groupLeads": "Leads",
     "groupWon": "Won",
     "groupOther": "Other",
-    "noPosition": "No position"
+    "noPosition": "No position",
+    "health": "Health"
   },
   "tasks": {
     "workManagement": "Work Management",
@@ -1036,6 +1037,8 @@
     "noNotes": "No notes",
     "noNotesDescription": "No notes linked to this contact.",
     "recentNotes": "Recent Notes",
+    "upcomingMeetings": "Upcoming Meetings",
+    "allDay": "All day",
     "activityBadge": "Operations Timeline",
     "activity": "Activity Timeline",
     "activitySubtitle": "Historical interactions and events related to this contact.",
@@ -1075,6 +1078,12 @@
     "lastContactYesterday": "Yesterday",
     "lastContactDaysAgo": "{days}d ago",
     "lastContactNever": "Never",
+    "healthScore": {
+      "healthy": "Healthy",
+      "watching": "Watching",
+      "atRisk": "At Risk",
+      "cold": "Cold"
+    },
     "workspaceTabsLabel": "Contact workspace navigation",
     "tabOverview": "Overview",
     "tabHistory": "History",
@@ -1759,7 +1768,17 @@
     "reconnectForEditing": "Reconnect Google Calendar to enable editing",
     "deleteEvent": "Delete",
     "eventDeleted": "Event deleted",
-    "googleEventsLabel": "Google Calendar"
+    "googleEventsLabel": "Google Calendar",
+    "aiMeetingPrep": "Meeting Prep",
+    "aiMeetingPrepGenerate": "Generate",
+    "aiMeetingPrepGenerating": "Preparing...",
+    "aiMeetingPrepError": "Failed to generate prep",
+    "aiMeetingPrepTopics": "Suggested Topics",
+    "aiMeetingPrepKeyPoints": "Key Points",
+    "aiMeetingPrepHint": "Generate AI prep to get context, suggested topics and key points for this meeting.",
+    "markAsMet": "Mark as Met",
+    "metLogged": "Meeting logged",
+    "metFailed": "Failed to log meeting"
   },
   "email": {
     "badge": "Email",
@@ -1842,7 +1861,29 @@
     "createOrder": "Create Order",
     "orderCreated": "Order created",
     "failedToCreateOrder": "Failed to create order",
-    "orderPrefix": "Order:"
+    "orderPrefix": "Order:",
+    "compose": "Compose",
+    "composeTitle": "New Email",
+    "composeTo": "To",
+    "composeSubject": "Subject",
+    "composeSubjectPlaceholder": "Email subject",
+    "composeBody": "Message",
+    "composeBodyPlaceholder": "Write your message...",
+    "composeCancel": "Cancel",
+    "sendEmail": "Send",
+    "emailSent": "Email sent",
+    "sendFailed": "Failed to send email",
+    "noEmailConnection": "No email account connected",
+    "replyLabel": "Reply",
+    "replyPlaceholder": "Write your reply...",
+    "sendReply": "Send Reply",
+    "replySent": "Reply sent",
+    "replyFailed": "Failed to send reply",
+    "reconnectRequired": "Reconnect your Gmail to enable sending",
+    "reconnectBanner": "Email sending requires updated permissions. Please reconnect your Gmail account.",
+    "reconnectAction": "Reconnect Gmail",
+    "aiDraft": "AI Draft",
+    "aiDraftFailed": "AI draft unavailable"
   },
   "workspace": {
     "createWorkspace": "Create Workspace",
