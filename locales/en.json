@@ -3830,21 +3830,46 @@
   },
   "awakening": {
     "heading": "Your workspace is ready.",
-    "subheading": "Now let's teach it about your business.",
-    "context": "Gunimi learns from context. The more it knows about your business, the more intelligent its signals become.",
+    "subheading": "Start with whoever matters most to your business.",
+    "context": "Every contact, deal, or company you add becomes something Gunimi can watch, track, and help you act on.",
     "company": {
-      "title": "Add your first company.",
-      "description": "Give your workspace its first understanding of your business."
+      "title": "Add a company.",
+      "description": "Add a company you work with — Gunimi will track its relationships, deals, and signals."
     },
     "contact": {
-      "title": "Add your first relationship.",
-      "description": "Relationships become the foundation for future signals."
+      "title": "Add a contact.",
+      "description": "Add someone you work with — Gunimi will watch that relationship so you don't have to."
     },
     "deal": {
-      "title": "Create your first opportunity.",
-      "description": "Once work begins, Gunimi can begin understanding it."
+      "title": "Add a deal.",
+      "description": "Add an open deal — Gunimi will tell you when it starts going cold."
     },
-    "awakenedMoment": "Your workspace has awakened."
+    "awakenedMoment": "Your workspace has awakened.",
+    "welcome": {
+      "readyLine": "Workspace ready.",
+      "beforeYouStart": "Before you add anything, here's what happens next:",
+      "promises": [
+        "The moment you add a client, Gunimi starts tracking that relationship — last contact, open deals, silence.",
+        "When something needs your attention, Gunimi surfaces it — without you having to remember to check.",
+        "After a few weeks, your workspace knows which relationships are cooling, which deals are at risk, and what to do next."
+      ],
+      "closingLine": "The empty workspace isn't empty. It's waiting for your first client.",
+      "ctaPrimary": "Add my first client",
+      "ctaSecondary": "I'll explore first"
+    }
+  },
+  "release": {
+    "badge": "What's new",
+    "title": "Open Alpha + Workspace Welcome",
+    "bullets": [
+      "Workspace now explains what Gunimi does the moment you sign up — before you add anything.",
+      "Open Alpha is fully open — no waitlist, no manual review, instant access for everyone.",
+      "31 signal types active — proposal unanswered, deal stale, contact cooling, and more.",
+      "Data commitment added to Privacy and Terms — your workspace data is never silently reset."
+    ],
+    "readMore": "Full release notes",
+    "dismiss": "Got it",
+    "ariaLabel": "What's new in Gunimi"
   },
   "demo": {
     "banner": "Demo Workspace",

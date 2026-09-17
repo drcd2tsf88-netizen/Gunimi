@@ -3830,21 +3830,46 @@
   },
   "awakening": {
     "heading": "Váš workspace je připraven.",
-    "subheading": "Teď ho naučíme o vašem podnikání.",
-    "context": "Gunimi se učí z kontextu. Čím více ví o vašem podnikání, tým inteligentnější jsou jeho signály.",
+    "subheading": "Začněte s tím, na kom vám záleží nejvíce.",
+    "context": "Každý kontakt, obchod nebo firma, kterou přidáte, se stane něčím, co Gunimi sleduje a pomáhá vám jednat.",
     "company": {
-      "title": "Přidejte první firmu.",
-      "description": "Dejte workspacu první pochopení vašeho podnikání."
+      "title": "Přidejte firmu.",
+      "description": "Přidejte firmu se kterou pracujete — Gunimi bude sledovat její vztahy, obchody a signály."
     },
     "contact": {
-      "title": "Přidejte první vztah.",
-      "description": "Vztahy se stávají základem pro budoucí signály."
+      "title": "Přidejte kontakt.",
+      "description": "Přidejte někoho s kým pracujete — Gunimi bude hlídat tento vztah místo vás."
     },
     "deal": {
-      "title": "Vytvořte první příležitost.",
-      "description": "Jakmile práce začne, Gunimi může začít rozumět."
+      "title": "Přidejte obchod.",
+      "description": "Přidejte otevřený obchod — Gunimi vám řekne když začne chladnout."
     },
-    "awakenedMoment": "Váš workspace se probudil."
+    "awakenedMoment": "Váš workspace se probudil.",
+    "welcome": {
+      "readyLine": "Workspace je připraven.",
+      "beforeYouStart": "Než přidáte cokoli, zde je co se stane potom:",
+      "promises": [
+        "Ve chvíli, kdy přidáte klienta, Gunimi začne sledovat tento vztah — poslední kontakt, otevřené obchody, ticho.",
+        "Když něco potřebuje vaši pozornost, Gunimi vám to ukáže — aniž byste museli každý den kontrolovat.",
+        "Po několika týdnech váš workspace ví, které vztahy chladnou, které obchody jsou v riziku, a co dělat dál."
+      ],
+      "closingLine": "Prázdný workspace není prázdný. Čeká na vašeho prvního klienta.",
+      "ctaPrimary": "Přidat prvního klienta",
+      "ctaSecondary": "Prozkoumám nejdřív"
+    }
+  },
+  "release": {
+    "badge": "Co je nového",
+    "title": "Open Alpha + Uvítací dialog workspace",
+    "bullets": [
+      "Workspace nyní vysvětlí co Gunimi dělá hned po registraci — než cokoliv přidáte.",
+      "Open Alpha je plně otevřena — žádný waitlist, žádná manuální kontrola, okamžitý přístup pro každého.",
+      "31 aktivních typů signálů — návrh bez odpovědi, stagnující obchod, chladnoucí vztah a další.",
+      "Závazek k datům přidán do Privacy a Terms — data workspace nikdy nesmažeme bez upozornění."
+    ],
+    "readMore": "Kompletní poznámky k vydání",
+    "dismiss": "Rozumím",
+    "ariaLabel": "Co je nového v Gunimi"
   },
   "demo": {
     "banner": "Demo Workspace",

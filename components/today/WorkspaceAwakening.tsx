@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { ArrowRight, Building2, TrendingUp, Users } from "lucide-react";
 import GunimiCard from "@/components/ui/GunimiCard";
+import WorkspaceWelcomeOverlay from "./WorkspaceWelcomeOverlay";
 
 // ─────────────────────────────────────────────────────────────
 // WorkspaceAwakening
@@ -129,6 +130,8 @@ export default function WorkspaceAwakening({ displayName }: { displayName: strin
   ];
 
   return (
+    <>
+    <WorkspaceWelcomeOverlay />
     <div ref={ref} className="space-y-5">
 
       {/* ── Header ─────────────────────────────────────────────── */}
@@ -182,5 +185,6 @@ export default function WorkspaceAwakening({ displayName }: { displayName: strin
       </div>
 
     </div>
+    </>
   );
 }

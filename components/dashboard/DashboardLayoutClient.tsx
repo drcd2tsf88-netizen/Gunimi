@@ -14,6 +14,7 @@ import TaskFocusStrip from "@/components/layout/TaskFocusStrip";
 import GunimiLoader from "@/components/system/GunimiLoader";
 import FeedbackSheet from "@/components/dogfood/FeedbackSheet";
 import PlatformAnnouncementBanner from "@/components/admin/PlatformAnnouncementBanner";
+import ReleaseNotificationDialog from "@/components/workspace/ReleaseNotificationDialog";
 
 import { supabase } from "@/lib/supabase";
 import { SidebarNav, SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
@@ -258,6 +259,7 @@ export default function DashboardLayoutClient({
           </motion.main>
         </AnimatePresence>
       </div>
+      <ReleaseNotificationDialog />
     </div>
   );
 }

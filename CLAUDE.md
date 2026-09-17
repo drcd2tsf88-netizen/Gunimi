@@ -199,6 +199,21 @@ Before marking any feature complete, open the browser with DevTools and verify:
 - [ ] Supabase: no PGRST116 errors (use `maybeSingle()` where 0 rows is valid)
 - [ ] Assets: all referenced icons, fonts, images return 200
 
+## Sprint Closeout — Rule #4
+
+Not every fix warrants a release notification. Apply this rule only when the sprint delivers **meaningful user-facing value** — a new feature, a significant improvement, or a change users would want to know about.
+
+**Skip the release update for:** typo fixes, minor style tweaks, internal refactors, invisible bug fixes.
+
+**Do the release update for:** new features, new modules, UX improvements users notice, policy/trust changes (privacy, terms), onboarding changes.
+
+When the sprint qualifies, before marking it complete:
+
+1. **Bump `lib/releases/current.ts`** — new `version` string + new `storageKey` (e.g. `gunimi_release_1_4_seen`)
+2. **Update `release.*` locale keys** in `locales/en.json`, `locales/sk.json`, `locales/cs.json` — new `title` + `bullets` summarising what shipped
+3. **Update `/changelog`** — add the new release entry with full detail
+4. All three steps required together. A qualifying sprint that skips any of the three is incomplete.
+
 ---
 
 # Mission
