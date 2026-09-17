@@ -3064,6 +3064,38 @@
       },
       "releases": [
         {
+          "version": "1.3",
+          "date": "September 2026",
+          "title": "Open Alpha Launch",
+          "description": "Gunimi is fully open. No waitlist, no manual review — anyone can create a workspace right now. This release also ships the workspace welcome experience, a stronger data commitment, and the most complete signal coverage yet.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Open Alpha is live — waitlist removed, instant access for everyone, free until official launch"
+            },
+            {
+              "tag": "new",
+              "text": "Workspace Welcome Overlay — first-time users see exactly what happens when they add their first client, before they add anything"
+            },
+            {
+              "tag": "new",
+              "text": "In-app release notifications — new releases are now announced directly inside your workspace"
+            },
+            {
+              "tag": "improved",
+              "text": "Signal Engine expanded to 31 types — proposal unanswered, deal stale, contact cooling, order overdue, and more"
+            },
+            {
+              "tag": "improved",
+              "text": "Landing page rewritten — focused on the real pain: losing deals to forgotten follow-ups"
+            },
+            {
+              "tag": "security",
+              "text": "Data commitment added to Privacy Policy and Terms — your workspace data will never be silently reset"
+            }
+          ]
+        },
+        {
           "version": "1.2",
           "date": "September 2026",
           "title": "Platform & Scale",
@@ -3860,12 +3892,11 @@
   },
   "release": {
     "badge": "What's new",
-    "title": "Open Alpha + Workspace Welcome",
+    "title": "Gunimi is now in Open Alpha.",
     "bullets": [
-      "Workspace now explains what Gunimi does the moment you sign up — before you add anything.",
-      "Open Alpha is fully open — no waitlist, no manual review, instant access for everyone.",
-      "31 signal types active — proposal unanswered, deal stale, contact cooling, and more.",
-      "Data commitment added to Privacy and Terms — your workspace data is never silently reset."
+      "No waitlist, no approval. Anyone can create a workspace right now — instantly.",
+      "Completely free until official launch. No credit card, no time limit.",
+      "Your data is safe. We've committed in writing — your workspace will never be silently reset."
     ],
     "readMore": "Full release notes",
     "dismiss": "Got it",

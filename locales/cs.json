@@ -3064,6 +3064,38 @@
       },
       "releases": [
         {
+          "version": "1.3",
+          "date": "Září 2026",
+          "title": "Open Alpha Launch",
+          "description": "Gunimi je plně otevřena. Žádný waitlist, žádné manuální schvalování — každý si může vytvořit workspace hned. Tento release přináší uvítací dialog při prvním vstupu, závazek k datům a nejkomplexnější pokrytí signálů dosud.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Open Alpha je živá — waitlist odstraněn, okamžitý přístup pro každého, zdarma do oficiálního spuštění"
+            },
+            {
+              "tag": "new",
+              "text": "Uvítací dialog workspace — noví uživatelé vidí přesně co se stane když přidají prvního klienta, ještě před tím než cokoliv udělají"
+            },
+            {
+              "tag": "new",
+              "text": "In-app release notifikace — nová vydání jsou oznamována přímo ve workspace"
+            },
+            {
+              "tag": "improved",
+              "text": "Signal Engine rozšířen na 31 typů — návrh bez odpovědi, stagnující obchod, chladnoucí vztah, zpožděná objednávka a další"
+            },
+            {
+              "tag": "improved",
+              "text": "Landing page přepsána — zaměřena na skutečnou bolest: ztrácení obchodů kvůli zapomenutým follow-upům"
+            },
+            {
+              "tag": "security",
+              "text": "Závazek k datům přidán do Privacy Policy a Terms — data workspace nikdy nesmažeme bez upozornění"
+            }
+          ]
+        },
+        {
           "version": "1.2",
           "date": "Září 2026",
           "title": "Platforma & Škálování",
@@ -3860,12 +3892,11 @@
   },
   "release": {
     "badge": "Co je nového",
-    "title": "Open Alpha + Uvítací dialog workspace",
+    "title": "Gunimi je nyní v Open Alpha.",
     "bullets": [
-      "Workspace nyní vysvětlí co Gunimi dělá hned po registraci — než cokoliv přidáte.",
-      "Open Alpha je plně otevřena — žádný waitlist, žádná manuální kontrola, okamžitý přístup pro každého.",
-      "31 aktivních typů signálů — návrh bez odpovědi, stagnující obchod, chladnoucí vztah a další.",
-      "Závazek k datům přidán do Privacy a Terms — data workspace nikdy nesmažeme bez upozornění."
+      "Žádný waitlist, žádné schvalování. Každý si může vytvořit workspace hned — okamžitě.",
+      "Zcela zdarma do oficiálního spuštění. Bez kreditní karty, bez časového omezení.",
+      "Vaše data jsou v bezpečí. Závazek jsme dali písemně — workspace nikdy nesmažeme bez upozornění."
     ],
     "readMore": "Kompletní poznámky k vydání",
     "dismiss": "Rozumím",
