@@ -62,18 +62,47 @@ const MAX_WORK = 8;
 const SEVERITY_RANK: Record<string, number> = { critical: 0, warning: 1, info: 2 };
 
 // Secondary sort within same tier+severity: explicit type priority.
-// Lower = shown first. Mirrors the original Today resolver urgency ordering.
+// Lower = shown first. All 31 signal types covered — types absent from this map
+// fall back to 99 (end of list). Order reflects business urgency, not category.
 const TYPE_PRIORITY: Record<string, number> = {
+  // Tier 1 — Revenue / deadline risk (most urgent)
   deal_close_date_passed: 0,
-  deal_approaching_close: 1,
-  company_closing_deal: 2,
-  deal_stale: 3,
-  contact_deal_stalling: 4,
-  contact_overdue_task: 5,
-  task_overdue: 6,
-  contact_stale: 7,
-  contact_new_no_interaction: 8,
-  task_due_today: 9,
+  order_overdue: 1,
+  deal_approaching_close: 2,
+  email_important_unanswered: 3,
+  company_closing_deal: 4,
+  proposal_unanswered: 5,
+  // Tier 1 — Relationship deterioration
+  contact_deal_stalling: 6,
+  meeting_approaching: 7,
+  contact_overdue_task: 8,
+  deal_stale: 9,
+  // Tier 1 — Meeting prep
+  meeting_no_preparation: 10,
+  // Tier 2/3 — Task commitments
+  task_overdue: 11,
+  task_blocked: 12,
+  order_not_acknowledged: 13,
+  task_waiting_customer: 14,
+  order_draft_stale: 15,
+  task_due_today: 16,
+  // Tier 2 — Relationship health
+  contact_stale: 17,
+  company_stale: 18,
+  contact_no_reach: 19,
+  contact_new_no_interaction: 20,
+  company_no_contacts: 21,
+  // Tier 2 — Data completeness (lowest urgency)
+  deal_no_primary_contact: 22,
+  contact_no_company: 23,
+  deal_missing_value: 24,
+  deal_missing_close_date: 25,
+  company_no_active_deals: 26,
+  company_incomplete_profile: 27,
+  // Tier 4 — Post-Alpha memory signals
+  relationship_milestone: 28,
+  ai_pattern_detected: 29,
+  memory_reminder: 30,
 };
 
 // ─── Lean DB row type ─────────────────────────────────────────────────────────
@@ -175,6 +204,13 @@ function buildFocusItem(sig: SignalRow, entityName: string): TodayFocus {
         reasonKey: "focusCompanyClosingDealReason",
         href,
       };
+    case "proposal_unanswered":
+      return {
+        actionKey: "focusProposalUnansweredAction",
+        actionParams: { title: entityName, days },
+        reasonKey: "focusProposalUnansweredReason",
+        href,
+      };
     default:
       return null;
   }
@@ -217,6 +253,10 @@ function buildAttentionItem(sig: SignalRow, entityName: string): TodayAttentionI
       break;
     case "task_overdue":
       labelKey = "attentionTaskOverdue";
+      labelParams = { title: entityName, days };
+      break;
+    case "proposal_unanswered":
+      labelKey = "attentionProposalUnanswered";
       labelParams = { title: entityName, days };
       break;
     default:

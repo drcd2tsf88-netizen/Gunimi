@@ -74,7 +74,7 @@
     "passwordStrengthFair": "Fair",
     "passwordStrengthStrong": "Strong",
     "passwordStrengthVeryStrong": "Very strong",
-    "loginFailed": "Sign in failed. Please check your credentials.",
+    "loginFailed": "Incorrect email or password.",
     "loginNoUser": "Authentication failed. Please try again.",
     "loginSyncing": "Signing you in...",
     "loginInitializing": "Signing in...",
@@ -3698,7 +3698,7 @@
       "section5Body": "You can control cookies through your browser settings. Note that disabling authentication cookies will prevent you from signing in to Gunimi. Most browsers allow you to view, delete and block cookies via their settings pages.",
       "section6Body": "We will update this page if our cookie usage changes. The date at the top of this page reflects when the policy was last revised.",
       "section7Body": "Questions about this policy?",
-      "languageNote": "This legal document is provided in English only."
+      "languageNote": ""
     },
     "privacy": {
       "badge": "Legal",
@@ -3801,6 +3801,8 @@
     "focusContactOverdueTaskReason": "A commitment linked to this contact is past its due date.",
     "focusCompanyClosingDealAction": "Act on \"{dealTitle}\" — {days} days to close with {company}",
     "focusCompanyClosingDealReason": "A deal with this company is approaching its close window.",
+    "focusProposalUnansweredAction": "Follow up on \"{title}\" — proposal unanswered for {days} days",
+    "focusProposalUnansweredReason": "Proposals that go unanswered lose momentum. A quick check-in can unlock a decision.",
     "attentionSectionLabel": "Attention required",
     "attentionDealPastClose": "\"{title}\" — close date passed {days} days ago",
     "attentionDealClosingSoon": "\"{title}\" — closes in {days} days",
@@ -3809,6 +3811,7 @@
     "attentionContactStale": "{name} — no contact in {days} days",
     "attentionContactOverdueTask": "{name} — task overdue by {days} days",
     "attentionCompanyClosingDeal": "{company} — \"{dealTitle}\" closes in {days} days",
+    "attentionProposalUnanswered": "\"{title}\" — proposal unanswered for {days} days",
     "relationshipsSectionLabel": "Relationships",
     "relationshipStale": "No contact in {days} days",
     "relationshipNeverContacted": "Never contacted",

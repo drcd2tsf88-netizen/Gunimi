@@ -28,7 +28,6 @@ export default function RegisterCompletePage() {
         .maybeSingle();
 
       let profileError: unknown = null;
-      let profile: { platform_role: string } | null = existingProfile;
 
       if (existingProfile) {
         const { error } = await supabase
@@ -42,7 +41,7 @@ export default function RegisterCompletePage() {
           .eq("id", user.id);
         profileError = error;
       } else {
-        const { data: newProfile, error } = await supabase
+        const { error } = await supabase
           .from("profiles")
           .insert({
             id: user.id,
@@ -52,11 +51,8 @@ export default function RegisterCompletePage() {
             onboarding_completed: true,
             platform_role: "user",
             status: "active",
-          })
-          .select()
-          .single();
+          });
         profileError = error;
-        profile = newProfile;
       }
 
       if (profileError) {
@@ -78,12 +74,9 @@ export default function RegisterCompletePage() {
       setLoading(false);
       toast.success(t("completeSuccess"));
 
-      // Approved users go to workspace setup. Everyone else waits for approval.
-      const role = profile?.platform_role || "user";
-      const hasAccess = role === "beta" || role === "team" || role === "admin";
-
+      // Open Alpha: all verified users proceed directly to workspace setup.
       setTimeout(() => {
-        window.location.href = hasAccess ? "/register/setup" : "/waitlist";
+        window.location.href = "/register/setup";
       }, 1200);
     } catch {
       toast.error(t("completeFailed"));

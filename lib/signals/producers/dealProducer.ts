@@ -10,7 +10,7 @@ import {
   resolveSignalIfExists,
   type SignalProductionStats,
 } from "./_resolveByType";
-import { MS_PER_DAY, STALE_THRESHOLD_DAYS } from "@/lib/deals/constants";
+import { MS_PER_DAY, STALE_THRESHOLD_DAYS, PROPOSAL_STALE_DAYS } from "@/lib/deals/constants";
 import { CLOSING_SOON_DAYS } from "@/lib/companies/constants";
 
 export type DealProducerInput = {
@@ -232,6 +232,39 @@ export async function produceDealSignals(
       dealId,
       "deal_no_primary_contact",
       "contact_linked",
+    );
+  }
+
+  // ─── proposal_unanswered ──────────────────────────────────────────────────
+  // Fires when a deal sits in the "proposal" stage without any activity for
+  // PROPOSAL_STALE_DAYS. Unlike deal_stale (any stage), this is specifically
+  // a follow-up signal — the proposal has been sent and the prospect hasn't responded.
+
+  const isProposalStage = stage === "proposal";
+  const isProposalStale =
+    isProposalStage &&
+    daysSinceUpdate !== null &&
+    daysSinceUpdate > PROPOSAL_STALE_DAYS;
+
+  if (isProposalStale && daysSinceUpdate !== null) {
+    if (
+      await produceSignal({
+        workspaceId,
+        entityType: "deal",
+        entityId: dealId,
+        type: "proposal_unanswered",
+        confidence: "high",
+        evidenceData: { days: daysSinceUpdate },
+        producedBy: "deal_resolver",
+        origin,
+      })
+    ) signalsProduced++;
+  } else {
+    signalsResolved += await resolveSignalIfExists(
+      workspaceId,
+      dealId,
+      "proposal_unanswered",
+      "proposal_activity_recorded",
     );
   }
 
