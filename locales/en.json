@@ -2465,7 +2465,6 @@
         "about": "About",
         "press": "Press",
         "contact": "Contact",
-        "brand": "Brand",
         "privacy": "Privacy",
         "terms": "Terms",
         "cookies": "Cookies",
@@ -2478,25 +2477,25 @@
     },
     "hero": {
       "badge": "Open Alpha — Free Today",
-      "headlineLine1": "One workspace for",
-      "headlineLine2": "your entire business.",
+      "headlineLine1": "Stop losing deals to",
+      "headlineLine2": "forgotten follow-ups.",
       "subtitle": "Gunimi unifies your relationships, deals, tasks, and knowledge into a single workspace — with AI that actually understands your business.",
       "ctaPrimary": "Create your workspace",
       "ctaSecondary": "Sign in",
       "trustSignals": [
-        "Your data stays in your workspace.",
-        "We never train AI on your workspace data.",
-        "Your workspace is private by default."
+        "Works with your existing inbox.",
+        "Set up in under 5 minutes.",
+        "No credit card required."
       ],
-      "productSentenceLine1": "Contacts, deals, tasks, emails — all in one place.",
-      "productSentenceLine2": "With AI that understands your business.",
+      "productSentenceLine1": "Gunimi watches your clients and tells you exactly what needs attention today",
+      "productSentenceLine2": "— before a deal goes cold or a relationship fades.",
       "descriptor": "The complete AI business workspace.",
       "alphaNote": "OPEN ALPHA · Free until official launch."
     },
     "actI": {
-      "statement1": "Most businesses run on scattered information.",
-      "statement2": "Emails in one place. Deals in another. Tasks somewhere else. Nobody has the full picture.",
-      "statement3": "Gunimi brings it all together."
+      "statement1": "You're managing 20+ client relationships in your head.",
+      "statement2": "One forgotten follow-up. One slow response. One cold relationship.",
+      "statement3": "That's how deals die. Gunimi makes sure it doesn't happen to you."
     },
     "actII": {
       "beat1": "Your business creates a lot every day.",
@@ -2837,9 +2836,9 @@
       ]
     },
     "cta": {
-      "headlineLine1": "Your business,",
-      "headlineLine2": "at full intelligence.",
-      "subtitle": "Join the first teams building on Gunimi. Open Alpha — every workspace reviewed and onboarded personally.",
+      "headlineLine1": "Every client.",
+      "headlineLine2": "Always remembered.",
+      "subtitle": "20 clients in your head is 20 things waiting to be forgotten. Gunimi remembers everything — free until official launch.",
       "ctaPrimary": "Start for free",
       "ctaSecondary": "Sign in",
       "statusItems": [
@@ -3713,18 +3712,13 @@
       "languageNote": ""
     },
     "waitlist": {
-      "badgeLabel": "Open Alpha Access",
-      "headlinePart1": "You're",
-      "headlinePart2": "on the list.",
-      "subtitle": "Thank you for joining Open Alpha. We're onboarding companies gradually to ensure every participant receives personal support and the best possible experience. We'll notify you by email as soon as your workspace is ready.",
-      "panelTitle": "What happens next",
-      "panelDescription": "We review each application personally. When your workspace is ready, you'll receive a welcome email with direct access.",
-      "checkStatusButton": "Check my access",
-      "checkingStatus": "Checking...",
-      "stillPending": "Still reviewing. You'll receive an email when your workspace is ready.",
-      "accessGranted": "Access confirmed. Setting up your workspace...",
+      "badgeLabel": "Open Alpha",
+      "headlinePart1": "Open Alpha",
+      "headlinePart2": "is live.",
+      "subtitle": "Everyone gets full access — free, no credit card required. Create your workspace and start today.",
+      "ctaButton": "Create your workspace",
+      "ctaSecondary": "Sign in",
       "backToHome": "Back to Home",
-      "signOut": "Sign out",
       "footerNote": "Questions? Reach out at hello@gunimi.com"
     },
     "features": {

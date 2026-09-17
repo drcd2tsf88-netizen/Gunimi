@@ -57,9 +57,7 @@ export default async function TermsPage() {
                 (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;). By creating an account, you agree to these Terms.
               </p>
               <div className="mt-4 rounded-[14px] border border-amber-500/[0.16] bg-amber-500/[0.05] p-4 text-[14px] text-amber-400/80">
-                Gunimi is in Open Alpha. Access is controlled — each workspace is personally reviewed
-                and approved. The Service is provided as-is. Features may change, and data may be
-                reset without notice during this period.
+                Gunimi is in Open Alpha. The platform is live and fully accessible. The Service is provided as-is during this phase. Features may evolve, and we will notify users of significant changes.
               </div>
             </div>
 
@@ -103,7 +101,7 @@ export default async function TermsPage() {
                   <div className="space-y-3 text-[14px]">
                     <p>You retain ownership of all content and data you create in Gunimi. We do not claim intellectual property rights over your content.</p>
                     <p>You grant Gunimi a limited license to store, process, and display your content solely as necessary to provide the Service to you.</p>
-                    <p>During Open Alpha, workspace data may be reset, migrated, or permanently deleted as part of development. We will make reasonable efforts to notify registered users in advance of any planned data resets.</p>
+                    <p>We are committed to preserving your workspace data. In cases where operational migration is required as the product scales, we will notify registered users in advance and ensure data integrity throughout the process.</p>
                   </div>
                 ),
               },
@@ -127,7 +125,7 @@ export default async function TermsPage() {
                         "The Service is unfinished and may contain bugs, incomplete features, and unstable behavior",
                         "Features shown as \"Coming Soon\" are in development and not yet available",
                         "Your feedback is valuable and may be used to improve the product",
-                        "Alpha access may be revoked at any time at our discretion",
+                        "We may modify or discontinue specific features as the product evolves — we will communicate significant changes in advance",
                       ].map((item) => (
                         <li key={item} className="flex items-start gap-2.5">
                           <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#6D5BFF]/50" />

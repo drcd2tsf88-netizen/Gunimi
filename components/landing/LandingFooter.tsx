@@ -53,7 +53,6 @@ export default function LandingFooter() {
     { label: t("links.about"),   href: "/about" },
     { label: t("links.press"),   href: "/press" },
     { label: t("links.contact"), href: "/contact" },
-    { label: t("links.brand"),   href: "/brand" },
   ];
 
   const LEGAL_LINKS = [

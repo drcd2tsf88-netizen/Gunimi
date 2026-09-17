@@ -60,9 +60,7 @@ export default async function PrivacyPage() {
                 practices described here.
               </p>
               <div className="mt-4 rounded-[14px] border border-amber-500/[0.16] bg-amber-500/[0.05] p-4 text-[14px] text-amber-400/80">
-                Gunimi is currently in Open Alpha. Access is controlled — each workspace is personally
-                reviewed and approved. Features, data practices, and this policy may evolve. We will
-                notify registered users of material changes by email.
+                Gunimi is currently in Open Alpha. The platform is live and fully accessible. Features and data practices may evolve as the product grows. We will notify registered users of material changes by email.
               </div>
             </div>
 
@@ -117,8 +115,8 @@ export default async function PrivacyPage() {
                     <p>Your data is stored in Supabase, a managed PostgreSQL platform. Data may be stored in the EU depending on your region. We enforce row-level security (RLS) so that workspace data is only accessible to authenticated members of that workspace.</p>
                     <p>Authentication is handled by Supabase Auth using email and password. Passwords are never stored in plain text. All connections are encrypted via TLS 1.3.</p>
                     <div className="rounded-[12px] border border-white/[0.055] bg-[#0A0E17] p-4">
-                      <span className="font-medium text-[#C8CDD8]">Alpha note: </span>
-                      During Open Alpha, workspace data may be reset, migrated, or deleted without advance notice as we iterate on the product. We recommend not storing business-critical information in Gunimi during this phase.
+                      <span className="font-medium text-[#C8CDD8]">Data commitment: </span>
+                      We are committed to preserving your workspace data. Operational migrations may be required as the product scales — when this happens, we will provide advance notice and ensure your data remains intact.
                     </div>
                   </div>
                 ),

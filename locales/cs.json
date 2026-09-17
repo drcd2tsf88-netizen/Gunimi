@@ -2465,7 +2465,6 @@
         "about": "O nás",
         "press": "Tisk",
         "contact": "Kontakt",
-        "brand": "Brand",
         "privacy": "Ochrana soukromí",
         "terms": "Podmínky",
         "cookies": "Cookies",
@@ -2478,25 +2477,25 @@
     },
     "hero": {
       "badge": "Open Alpha — Zdarma dnes",
-      "headlineLine1": "Jeden workspace pro",
-      "headlineLine2": "celé vaše podnikání.",
+      "headlineLine1": "Přestaňte ztrácet obchody kvůli",
+      "headlineLine2": "zapomenutým follow-upům.",
       "subtitle": "Gunimi sjednocuje vaše vztahy, obchody, úkoly a znalosti do jednoho workspace — s AI, která skutečně rozumí vašemu podnikání.",
       "ctaPrimary": "Vytvořit workspace",
       "ctaSecondary": "Přihlásit se",
       "trustSignals": [
-        "Vaše data zůstávají ve vašem workspace.",
-        "Nikdy nepoužíváme AI na vaše workspace data.",
-        "Váš workspace je standardně soukromý."
+        "Funguje s vaší stávající schránkou.",
+        "Nastavíte za 5 minut.",
+        "Bez kreditní karty."
       ],
-      "productSentenceLine1": "Kontakty, obchody, úkoly, e-maily — vše na jednom místě.",
-      "productSentenceLine2": "S AI, která rozumí vašemu podnikání.",
+      "productSentenceLine1": "Gunimi sleduje vaše klienty a řekne vám přesně co dnes potřebuje vaši pozornost",
+      "productSentenceLine2": "— dříve než obchod vychladne nebo vztah ochladne.",
       "descriptor": "Kompletní AI business workspace.",
       "alphaNote": "OPEN ALPHA · Zdarma do oficiálního spuštění."
     },
     "actI": {
-      "statement1": "Většina firem funguje na roztroušených informacích.",
-      "statement2": "E-maily na jednom místě. Obchody jinde. Úkoly někde daleko. Nikdo nemá celkový obraz.",
-      "statement3": "Gunimi to všechno propojí dohromady."
+      "statement1": "Spravujete 20+ klientských vztahů ve své hlavě.",
+      "statement2": "Jeden zapomenutý follow-up. Jedna pomalá odpověď. Jeden vychladlý vztah.",
+      "statement3": "Tak se ztrácejí obchody. Gunimi zajistí, aby se to vám nestalo."
     },
     "actII": {
       "beat1": "Vaše firma každý den generuje spoustu dat.",
@@ -2837,9 +2836,9 @@
       ]
     },
     "cta": {
-      "headlineLine1": "Vaše podnikání,",
-      "headlineLine2": "s plnou inteligencí.",
-      "subtitle": "Připojte se k prvním týmům stavějícím na Gunimi. Open Alpha — každý workspace osobně ověřen a přijat.",
+      "headlineLine1": "Každý klient.",
+      "headlineLine2": "Vždy zapamatován.",
+      "subtitle": "20 klientů v hlavě je 20 věcí čekajících na zapomenutí. Gunimi si pamatuje vše — zdarma do oficiálního spuštění.",
       "ctaPrimary": "Začít zdarma",
       "ctaSecondary": "Přihlásit se",
       "statusItems": [
@@ -3713,18 +3712,13 @@
       "languageNote": "Tento dokument je k dispozici pouze v anglickém jazyce."
     },
     "waitlist": {
-      "badgeLabel": "Open Alpha Access",
-      "headlinePart1": "Jste",
-      "headlinePart2": "na seznamu.",
-      "subtitle": "Děkujeme, že jste se připojili k Open Alpha. Onboardujeme firmy postupně, aby každý účastník obdržel osobní podporu a co nejlepší zkušenost. Upozorníme vás e-mailem, jakmile bude váš workspace připraven.",
-      "panelTitle": "Co se stane dál",
-      "panelDescription": "Každou žádost posuzujeme osobně. Jakmile bude váš workspace připraven, obdržíte uvítací e-mail s přímým přístupem.",
-      "checkStatusButton": "Zkontrolovat přístup",
-      "checkingStatus": "Kontroluji...",
-      "stillPending": "Stále probíhá kontrola. E-mail obdržíte, jakmile bude workspace připraven.",
-      "accessGranted": "Přístup potvrzen. Nastavuji workspace...",
+      "badgeLabel": "Open Alpha",
+      "headlinePart1": "Open Alpha",
+      "headlinePart2": "je živá.",
+      "subtitle": "Každý má plný přístup — zdarma, bez kreditní karty. Vytvořte si workspace a začněte ještě dnes.",
+      "ctaButton": "Vytvořit workspace",
+      "ctaSecondary": "Přihlásit se",
       "backToHome": "Zpět na hlavní stránku",
-      "signOut": "Odhlásit se",
       "footerNote": "Dotazy? Napište nám na hello@gunimi.com"
     },
     "features": {

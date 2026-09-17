@@ -143,14 +143,12 @@ export function GenesisNavbar() {
     { label: tf("links.ai"), href: "/ai-transparency" },
     { label: tf("links.pricing"), href: "/pricing" },
     { label: tf("links.changelog"), href: "/changelog" },
-    { label: tf("links.roadmap"), href: "/roadmap" },
   ];
 
   const COMPANY_LINKS = [
     { label: tf("links.about"), href: "/about" },
     { label: tf("links.press"), href: "/press" },
     { label: tf("links.contact"), href: "/contact" },
-    { label: tf("links.brand"), href: "/brand" },
   ];
 
   return (
