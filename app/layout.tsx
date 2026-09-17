@@ -8,6 +8,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { OrbitRuntimeProvider } from "@/core/runtime/OrbitRuntimeProvider";
 import { APP_CONFIG } from "@/lib/config/app";
 import CookieConsent from "@/components/public/CookieConsent";
+import PostHogProvider from "@/components/analytics/PostHogProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -75,6 +76,7 @@ export default async function RootLayout({
         className={`${inter.className} bg-black text-white`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
+        <PostHogProvider>
         <OrbitRuntimeProvider>
           <Toaster
             position="top-right"
@@ -126,6 +128,7 @@ export default async function RootLayout({
           {children}
           <CookieConsent />
         </OrbitRuntimeProvider>
+        </PostHogProvider>
         </NextIntlClientProvider>
       </body>
     </html>

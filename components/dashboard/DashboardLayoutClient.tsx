@@ -16,6 +16,7 @@ import FeedbackSheet from "@/components/dogfood/FeedbackSheet";
 import PlatformAnnouncementBanner from "@/components/admin/PlatformAnnouncementBanner";
 import ReleaseNotificationDialog from "@/components/workspace/ReleaseNotificationDialog";
 
+import posthog from "posthog-js";
 import { supabase } from "@/lib/supabase";
 import { SidebarNav, SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
 import { useDogfoodStore } from "@/lib/store/dogfood-store";
@@ -74,6 +75,8 @@ export default function DashboardLayoutClient({
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) { window.location.href = "/login"; return; }
 
+        posthog.identify(user.id, { email: user.email ?? undefined });
+
         const { data: profile } = await supabase
           .from("profiles")
           .select("platform_role, status, full_name, avatar_url")
@@ -95,9 +98,6 @@ export default function DashboardLayoutClient({
 
         const role = profile?.platform_role || "user";
         setUserRole(role);
-
-        const hasAccess = role === "beta" || role === "team" || role === "admin";
-        if (!hasAccess) { window.location.href = "/waitlist"; return; }
 
         // Approved user with no workspace — send to workspace setup.
         // This handles the first login after admin approval.

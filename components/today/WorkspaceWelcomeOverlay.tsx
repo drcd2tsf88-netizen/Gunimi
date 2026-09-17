@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import posthog from "posthog-js";
 import { useIsHydrated } from "@/lib/hooks/useIsHydrated";
 
 const WELCOME_KEY = "gunimi_welcome_seen_v1";
@@ -14,10 +15,13 @@ export default function WorkspaceWelcomeOverlay() {
   const hydrated = useIsHydrated();
   const [dismissed, setDismissed] = useState(false);
 
-  function dismiss() {
+  function dismiss(via?: "primary" | "secondary") {
+    posthog.capture(via === "primary" ? "welcome_overlay_cta_clicked" : "welcome_overlay_dismissed");
     localStorage.setItem(WELCOME_KEY, "1");
     setDismissed(true);
   }
+
+  function dismissSecondary() { dismiss("secondary"); }
 
   const visible = hydrated && !dismissed && !localStorage.getItem(WELCOME_KEY);
   const promises = t.raw("promises") as string[];
@@ -85,7 +89,7 @@ export default function WorkspaceWelcomeOverlay() {
               <div className="mt-7 flex flex-col gap-2.5 sm:flex-row">
                 <Link
                   href="/dashboard/contacts"
-                  onClick={dismiss}
+                  onClick={() => dismiss("primary")}
                   className="inline-flex flex-1 items-center justify-center gap-2 rounded-[12px] bg-[#6D5BFF] px-5 py-2.5 text-[13px] font-semibold text-white shadow-[0_0_16px_rgba(109,91,255,0.35)] transition-colors hover:bg-[#7B6BFF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6D5BFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0E17]"
                 >
                   {t("ctaPrimary")}
@@ -93,7 +97,7 @@ export default function WorkspaceWelcomeOverlay() {
                 </Link>
                 <button
                   type="button"
-                  onClick={dismiss}
+                  onClick={dismissSecondary}
                   className="inline-flex flex-1 items-center justify-center rounded-[12px] border border-white/[0.08] px-5 py-2.5 text-[13px] font-medium text-[#9AA3B2] transition-colors hover:border-white/[0.14] hover:text-[#F7F8FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6D5BFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0E17]"
                 >
                   {t("ctaSecondary")}
