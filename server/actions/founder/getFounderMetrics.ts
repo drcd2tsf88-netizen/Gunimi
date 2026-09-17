@@ -11,6 +11,7 @@ export type RecentSignup = {
   fullName: string | null;
   createdAt: string;
   workspaceCount: number;
+  aiUsed: boolean;
   role: string | null;
 };
 
@@ -21,6 +22,8 @@ export type WorkspaceActivity = {
   createdAt: string;
   lastAIActivity: string | null;
   signalCount: number;
+  todayTokens: number;
+  dailyLimit: number;
   isSuspended: boolean;
   aiSuspended: boolean;
 };
@@ -31,6 +34,15 @@ export type AIBudgetAlert = {
   todayTokens: number;
   dailyLimit: number;
   pct: number;
+};
+
+export type SignalTypeCount = { type: string; count: number };
+
+export type ConversionFunnel = {
+  signups: number;
+  workspaceActivated: number;
+  aiActivated: number;
+  retainedD7: number;
 };
 
 export type FounderMetrics = {
@@ -47,10 +59,12 @@ export type FounderMetrics = {
     lastSignalAt: string | null;
     pendingInvites: number;
   };
+  funnel: ConversionFunnel;
   growth: {
     workspacesByDay: DailyCount[];
     usersByDay: DailyCount[];
   };
+  signalBreakdown: SignalTypeCount[];
   recentSignups: RecentSignup[];
   workspaceActivity: WorkspaceActivity[];
   aiBudgetAlerts: AIBudgetAlert[];
@@ -71,7 +85,9 @@ const EMPTY: FounderMetrics = {
     lastSignalAt: null,
     pendingInvites: 0,
   },
+  funnel: { signups: 0, workspaceActivated: 0, aiActivated: 0, retainedD7: 0 },
   growth: { workspacesByDay: [], usersByDay: [] },
+  signalBreakdown: [],
   recentSignups: [],
   workspaceActivity: [],
   aiBudgetAlerts: [],
@@ -81,49 +97,53 @@ const EMPTY: FounderMetrics = {
 function buildDailyCounts(rows: Array<{ created_at: string }>, days: number): DailyCount[] {
   const counts = new Map<string, number>();
   const now = new Date();
-
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(now.getDate() - i);
     counts.set(d.toISOString().slice(0, 10), 0);
   }
-
   for (const row of rows) {
     const date = (row.created_at as string).slice(0, 10);
     if (counts.has(date)) counts.set(date, (counts.get(date) ?? 0) + 1);
   }
-
   return Array.from(counts.entries()).map(([date, count]) => ({ date, count }));
 }
 
 export async function getFounderMetrics(): Promise<FounderMetrics> {
   try {
-    const todayStart = new Date();
+    const now = new Date();
+
+    const todayStart = new Date(now);
     todayStart.setHours(0, 0, 0, 0);
     const todayIso = todayStart.toISOString();
 
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(now.getDate() - 7);
+    const sevenDaysIso = sevenDaysAgo.toISOString();
+
+    const thirtyDaysAgo = new Date(now);
+    thirtyDaysAgo.setDate(now.getDate() - 30);
     const thirtyDaysIso = thirtyDaysAgo.toISOString();
 
+    // ─── Core platform counts ──────────────────────────────────────────────────
     const [
-      wsResult,
-      profilesResult,
+      wsCountResult,
+      userCountResult,
       signalsResult,
       aiTodayResult,
       aiAllTimeResult,
       invitesResult,
-      wsRecentResult,
-      usersRecentResult,
+      wsGrowthResult,
+      userGrowthResult,
       wsActivityResult,
     ] = await Promise.all([
       supabaseAdmin.from("workspaces").select("id", { count: "exact", head: true }),
       supabaseAdmin.from("profiles").select("id", { count: "exact", head: true }),
       supabaseAdmin
         .from("workspace_signals")
-        .select("state, severity, produced_at")
+        .select("state, severity, type, produced_at")
         .order("produced_at", { ascending: false })
-        .limit(2000),
+        .limit(5000),
       supabaseAdmin
         .from("ai_usage_logs")
         .select("user_id, workspace_id, input_tokens, output_tokens, estimated_cost_usd")
@@ -144,20 +164,44 @@ export async function getFounderMetrics(): Promise<FounderMetrics> {
         .from("workspaces")
         .select("id, name, created_at, is_suspended, ai_suspended, ai_daily_token_limit")
         .order("created_at", { ascending: false })
-        .limit(50),
+        .limit(100),
     ]);
 
-    // Platform counts
-    const workspaceCount = wsResult.count ?? 0;
-    const userCount = profilesResult.count ?? 0;
+    // ─── Conversion funnel (parallel) ─────────────────────────────────────────
+    const [
+      wsMemberUserResult,
+      aiAllUserResult,
+      aiD7UserResult,
+    ] = await Promise.all([
+      supabaseAdmin.from("workspace_members").select("user_id"),
+      supabaseAdmin.from("ai_usage_logs").select("user_id"),
+      supabaseAdmin
+        .from("ai_usage_logs")
+        .select("user_id")
+        .gte("created_at", sevenDaysIso),
+    ]);
 
-    // Signals
+    const workspaceCount = wsCountResult.count ?? 0;
+    const userCount = userCountResult.count ?? 0;
+
+    // ─── Signals ──────────────────────────────────────────────────────────────
     const signals = signalsResult.data ?? [];
     const activeSignals = signals.filter((s) => s.state === "active");
     const criticalSignals = activeSignals.filter((s) => s.severity === "critical");
     const lastSignalAt = signals.length > 0 ? (signals[0].produced_at as string) : null;
 
-    // AI today
+    // Signal type breakdown (top 10 active types)
+    const typeMap = new Map<string, number>();
+    for (const s of activeSignals) {
+      const t = (s.type as string) ?? "unknown";
+      typeMap.set(t, (typeMap.get(t) ?? 0) + 1);
+    }
+    const signalBreakdown: SignalTypeCount[] = Array.from(typeMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([type, count]) => ({ type, count }));
+
+    // ─── AI today ─────────────────────────────────────────────────────────────
     const aiToday = aiTodayResult.data ?? [];
     const activeUserIdsToday = new Set(aiToday.map((r) => r.user_id).filter(Boolean));
     const aiRequestsToday = aiToday.length;
@@ -168,56 +212,50 @@ export async function getFounderMetrics(): Promise<FounderMetrics> {
       aiCostToday += Number(r.estimated_cost_usd ?? 0);
     }
 
-    // AI all-time cost
     let aiCostAllTime = 0;
     for (const r of aiAllTimeResult.data ?? []) {
       aiCostAllTime += Number(r.estimated_cost_usd ?? 0);
     }
 
-    // Invites
     const pendingInvites = (invitesResult.data ?? []).filter((i) => i.status === "pending").length;
 
-    // Growth data (30 days)
+    // ─── Conversion funnel ────────────────────────────────────────────────────
+    const wsActivatedSet = new Set(
+      (wsMemberUserResult.data ?? []).map((r) => r.user_id as string).filter(Boolean)
+    );
+    const aiActivatedSet = new Set(
+      (aiAllUserResult.data ?? []).map((r) => r.user_id as string).filter(Boolean)
+    );
+    const retainedD7Set = new Set(
+      (aiD7UserResult.data ?? []).map((r) => r.user_id as string).filter(Boolean)
+    );
+
+    const funnel: ConversionFunnel = {
+      signups: userCount,
+      workspaceActivated: wsActivatedSet.size,
+      aiActivated: aiActivatedSet.size,
+      retainedD7: retainedD7Set.size,
+    };
+
+    // ─── Growth ───────────────────────────────────────────────────────────────
     const workspacesByDay = buildDailyCounts(
-      (wsRecentResult.data ?? []) as Array<{ created_at: string }>,
+      (wsGrowthResult.data ?? []) as Array<{ created_at: string }>,
       30
     );
     const usersByDay = buildDailyCounts(
-      (usersRecentResult.data ?? []) as Array<{ created_at: string }>,
+      (userGrowthResult.data ?? []) as Array<{ created_at: string }>,
       30
     );
 
-    // Recent signups (last 15 users)
-    const { data: recentProfiles } = await supabaseAdmin
-      .from("profiles")
-      .select("id, email, full_name, platform_role, created_at")
-      .order("created_at", { ascending: false })
-      .limit(15);
-
-    const recentProfileIds = (recentProfiles ?? []).map((p) => p.id as string);
-    const { data: memberRows } = recentProfileIds.length
-      ? await supabaseAdmin
-          .from("workspace_members")
-          .select("user_id")
-          .in("user_id", recentProfileIds)
-      : { data: [] };
-
-    const wsCountMap = new Map<string, number>();
-    for (const row of memberRows ?? []) {
-      const key = row.user_id as string;
-      wsCountMap.set(key, (wsCountMap.get(key) ?? 0) + 1);
+    // ─── Today tokens per workspace ───────────────────────────────────────────
+    const todayTokensByWs = new Map<string, number>();
+    for (const r of aiToday) {
+      const k = (r.workspace_id as string) ?? "__none__";
+      const tokens = (r.input_tokens ?? 0) + (r.output_tokens ?? 0);
+      todayTokensByWs.set(k, (todayTokensByWs.get(k) ?? 0) + tokens);
     }
 
-    const recentSignups: RecentSignup[] = (recentProfiles ?? []).map((p) => ({
-      id: p.id as string,
-      email: (p.email as string) ?? "",
-      fullName: (p.full_name as string | null) ?? null,
-      createdAt: p.created_at as string,
-      workspaceCount: wsCountMap.get(p.id as string) ?? 0,
-      role: (p.platform_role as string | null) ?? null,
-    }));
-
-    // Workspace activity
+    // ─── Workspace activity enrichment ────────────────────────────────────────
     const wsActivity = wsActivityResult.data ?? [];
     const wsIds = wsActivity.map((w) => w.id as string);
 
@@ -267,33 +305,54 @@ export async function getFounderMetrics(): Promise<FounderMetrics> {
       createdAt: w.created_at as string,
       lastAIActivity: lastAIMap.get(w.id as string) ?? null,
       signalCount: signalMap.get(w.id as string) ?? 0,
+      todayTokens: todayTokensByWs.get(w.id as string) ?? 0,
+      dailyLimit: (w.ai_daily_token_limit as number) ?? 100_000,
       isSuspended: (w.is_suspended as boolean) === true,
       aiSuspended: (w.ai_suspended as boolean) === true,
     }));
 
-    // AI budget alerts (workspaces at >60% of daily limit)
-    const todayTokensByWs = new Map<string, number>();
-    for (const r of aiToday) {
-      const k = (r.workspace_id as string) ?? "__none__";
-      todayTokensByWs.set(k, (todayTokensByWs.get(k) ?? 0) + ((r.input_tokens ?? 0) + (r.output_tokens ?? 0)));
+    // ─── Budget alerts ────────────────────────────────────────────────────────
+    const aiBudgetAlerts: AIBudgetAlert[] = workspaceActivity
+      .map((w) => ({
+        workspaceId: w.id,
+        workspaceName: w.name,
+        todayTokens: w.todayTokens,
+        dailyLimit: w.dailyLimit,
+        pct: w.dailyLimit > 0 ? Math.round((w.todayTokens / w.dailyLimit) * 100) : 0,
+      }))
+      .filter((a) => a.pct >= 60)
+      .sort((a, b) => b.pct - a.pct);
+
+    // ─── Recent signups enriched ──────────────────────────────────────────────
+    const { data: recentProfiles } = await supabaseAdmin
+      .from("profiles")
+      .select("id, email, full_name, platform_role, created_at")
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    const recentProfileIds = (recentProfiles ?? []).map((p) => p.id as string);
+    const { data: recentMemberRows } = recentProfileIds.length
+      ? await supabaseAdmin
+          .from("workspace_members")
+          .select("user_id")
+          .in("user_id", recentProfileIds)
+      : { data: [] };
+
+    const recentWsCountMap = new Map<string, number>();
+    for (const row of recentMemberRows ?? []) {
+      const key = row.user_id as string;
+      recentWsCountMap.set(key, (recentWsCountMap.get(key) ?? 0) + 1);
     }
 
-    const aiBudgetAlerts: AIBudgetAlert[] = [];
-    for (const w of wsActivity) {
-      const todayTokens = todayTokensByWs.get(w.id as string) ?? 0;
-      const dailyLimit = (w.ai_daily_token_limit as number) ?? 100_000;
-      const pct = dailyLimit > 0 ? Math.round((todayTokens / dailyLimit) * 100) : 0;
-      if (pct >= 60) {
-        aiBudgetAlerts.push({
-          workspaceId: w.id as string,
-          workspaceName: (w.name as string) ?? "Unnamed",
-          todayTokens,
-          dailyLimit,
-          pct,
-        });
-      }
-    }
-    aiBudgetAlerts.sort((a, b) => b.pct - a.pct);
+    const recentSignups: RecentSignup[] = (recentProfiles ?? []).map((p) => ({
+      id: p.id as string,
+      email: (p.email as string) ?? "",
+      fullName: (p.full_name as string | null) ?? null,
+      createdAt: p.created_at as string,
+      workspaceCount: recentWsCountMap.get(p.id as string) ?? 0,
+      aiUsed: aiActivatedSet.has(p.id as string),
+      role: (p.platform_role as string | null) ?? null,
+    }));
 
     return {
       platform: {
@@ -309,7 +368,9 @@ export async function getFounderMetrics(): Promise<FounderMetrics> {
         lastSignalAt,
         pendingInvites,
       },
+      funnel,
       growth: { workspacesByDay, usersByDay },
+      signalBreakdown,
       recentSignups,
       workspaceActivity,
       aiBudgetAlerts,
