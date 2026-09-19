@@ -48,9 +48,30 @@ export default function LoginPage() {
       setLoading(true);
       toast.loading(t("loginInitializing"), { id: "orbit-login" });
 
-      // Rate limit pre-check
-      const rateRes = await fetch("/api/auth/login?action=check", { method: "POST" });
-      if (rateRes.status === 429) {
+      // Client-side rate limit fallback (5 attempts per 15 min)
+      const RL_KEY = "gunimi:login:attempts";
+      const RL_RESET_KEY = "gunimi:login:reset";
+      const now = Date.now();
+      const resetAt = Number(localStorage.getItem(RL_RESET_KEY) ?? 0);
+      let attempts = resetAt > now ? Number(localStorage.getItem(RL_KEY) ?? 0) : 0;
+      if (resetAt <= now) {
+        localStorage.setItem(RL_RESET_KEY, String(now + 15 * 60 * 1000));
+        attempts = 0;
+      }
+      if (attempts >= 5) {
+        toast.error(t("tooManyAttempts"), { id: "orbit-login" });
+        return;
+      }
+      localStorage.setItem(RL_KEY, String(attempts + 1));
+
+      // Server-side rate limit pre-check (fail closed — block if server unreachable)
+      try {
+        const rateRes = await fetch("/api/auth/login?action=check", { method: "POST" });
+        if (rateRes.status === 429 || rateRes.status >= 500) {
+          toast.error(t("tooManyAttempts"), { id: "orbit-login" });
+          return;
+        }
+      } catch {
         toast.error(t("tooManyAttempts"), { id: "orbit-login" });
         return;
       }
