@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gunimi
 
-## Getting Started
+**The AI Workspace for Client-Driven Teams**
 
-First, run the development server:
+Gunimi brings your clients, deals, tasks, notes and emails into one workspace — with AI that connects the dots between them. No more switching between tools. No more lost context. No more forgotten follow-ups.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+→ **[gunimi.com](https://gunimi.com)**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What Gunimi does
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **CRM** — Companies, contacts and deals in one place
+- **Tasks** — Linked to clients and deals, not floating in a vacuum
+- **Email** — Connected via OAuth, context preserved
+- **Notes** — Attached to the right people and deals
+- **Signal Engine** — AI that detects what needs your attention before you miss it
+- **Business Memory** — Remembers commitments, context and history across your workspace
+- **AI Assistant** — Answers questions about your clients and business
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Built with
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js 15](https://nextjs.org) — App Router
+- [Supabase](https://supabase.com) — Database, Auth, Realtime
+- [TailwindCSS](https://tailwindcss.com) — Styling
+- [next-intl](https://next-intl-docs.vercel.app) — i18n (EN / SK / CS)
+- TypeScript throughout
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Status
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Gunimi is in **Open Alpha**. Free to use. No credit card required.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[Sign up at gunimi.com →](https://gunimi.com/register)
+
+---
+
+## Security
+
+See [docs/SECURITY.md](docs/SECURITY.md) for our security overview, infrastructure details and verified test results.
+
+---
+
+*Built by [Michal Guoth](https://www.linkedin.com/in/michal-guoth) — a factory worker building an AI workspace at night.*

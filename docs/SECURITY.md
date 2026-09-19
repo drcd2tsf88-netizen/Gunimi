@@ -117,4 +117,24 @@ Please do not publicly disclose vulnerabilities before we have had a chance to a
 
 ---
 
+---
+
+## 11. Verified Security Tests
+
+The following tests were conducted manually in September 2026 against the production environment at gunimi.com.
+
+| Test | Description | Result |
+|---|---|---|
+| Data isolation | User B accessed User A's contact URL directly | 404 — no data exposed |
+| Auth bypass | Unauthenticated request to `/dashboard/contacts` | Redirected to `/login` |
+| Brute force / rate limiting | 6 consecutive failed login attempts | Blocked after 5 attempts |
+| API without authentication | `POST /api/ai/chat` and `GET /api/signals/health` without token | 401 Unauthorized |
+| XSS injection | `<script>alert('xss')</script>` entered as contact name | Not executed — safely escaped |
+
+All five tests passed. No vulnerabilities were found.
+
+These tests cover the most common attack vectors for SaaS applications. They do not replace a formal penetration test by an accredited third party, which remains on our roadmap.
+
+---
+
 *Gunimi is committed to protecting your data and being transparent about how we do it.*

@@ -46,3 +46,24 @@ next-env.d.ts
 # Supabase — local secrets (never commit actual admin emails)
 supabase/seed.sql
 .supabase/
+
+# Internal docs — competitive intelligence, never public
+CLAUDE.md
+AGENTS.md
+napady.txt
+docs/blueprints/
+docs/Genesis/
+docs/GUNIMI_PRODUCT_BIBLE.md
+docs/GUNIMI_ROADMAP.txt
+docs/GUNIMI_ENGINEERING_CHARTER.md
+docs/OPEN_ALPHA_EXPERIENCE.md
+docs/OPEN_ALPHA_MASTER_ROADMAP.md
+docs/OPEN_ALPHA_RELEASE_CHECKLIST.md
+docs/BETA_RELEASE_CHECKLIST.md
+docs/GUNIMI_WORKSPACE_BLUEPRINT.md
+docs/WORKSPACE_CONTRACT.md
+docs/WORKSPACE_GRAMMAR.md
+docs/WORKSPACE_PRINCIPLES.md
+docs/GUNIMI_VISUAL_TOKENS.md
+docs/architecture/
+docs/foundation/
