@@ -75,6 +75,7 @@
     "passwordStrengthStrong": "Silné",
     "passwordStrengthVeryStrong": "Veľmi silné",
     "loginFailed": "Nesprávny email alebo heslo.",
+    "tooManyAttempts": "Príliš veľa pokusov o prihlásenie. Počkajte 15 minút.",
     "loginNoUser": "Autentifikácia zlyhala. Skúste znova.",
     "loginSyncing": "Prihlasujeme vás...",
     "loginInitializing": "Prihlasovanie...",

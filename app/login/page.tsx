@@ -48,9 +48,22 @@ export default function LoginPage() {
       setLoading(true);
       toast.loading(t("loginInitializing"), { id: "orbit-login" });
 
+      // Rate limit pre-check
+      const rateRes = await fetch("/api/auth/login?action=check", { method: "POST" });
+      if (rateRes.status === 429) {
+        toast.error(t("tooManyAttempts"), { id: "orbit-login" });
+        return;
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
+        // Report failure for security alerting
+        fetch("/api/auth/login?action=fail", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }).catch(() => {});
         toast.error(t("loginFailed"), { id: "orbit-login" });
         return;
       }

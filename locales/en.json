@@ -75,6 +75,7 @@
     "passwordStrengthStrong": "Strong",
     "passwordStrengthVeryStrong": "Very strong",
     "loginFailed": "Incorrect email or password.",
+    "tooManyAttempts": "Too many login attempts. Please wait 15 minutes.",
     "loginNoUser": "Authentication failed. Please try again.",
     "loginSyncing": "Signing you in...",
     "loginInitializing": "Signing in...",
