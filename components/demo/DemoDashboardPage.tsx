@@ -19,6 +19,7 @@ import {
   DEMO_DISPLAY_NAME, DEMO_WORKSPACE_NAME,
   DEMO_TODAY_DATA, DEMO_CONTACTS, DEMO_COMPANIES, DEMO_DEALS,
   DEMO_TASKS, DEMO_SIGNALS, DEMO_MEMORIES, DEMO_ACTIVITIES,
+  DEMO_MEMORY_EVENTS,
 } from "@/lib/demo/demoWorkspaceData";
 import type {
   DemoContact, DemoCompany, DemoDeal, DemoTask, DemoSignal, DemoMemory,
@@ -57,9 +58,6 @@ const NAV_ITEMS: NavItem[] = [
   { id: "signals",   icon: Zap,             labelKey: "signalsTitle", useNavNs: false },
   { id: "memory",    icon: Brain,           labelKey: "memory",       useNavNs: true  },
   { id: "email",     icon: Mail,            labelKey: "email",        useNavNs: true  },
-  { id: "calendar",  icon: CalendarDays,    labelKey: "calendar",     useNavNs: true  },
-  { id: "analytics", icon: BarChart3,       labelKey: "analytics",    useNavNs: true  },
-  { id: "settings",  icon: Settings,        labelKey: "settings",     useNavNs: true  },
 ];
 
 const VALID_SECTIONS: DemoSection[] = [
@@ -1290,7 +1288,7 @@ export default function DemoDashboardPage({ initialSection }: { initialSection?:
     switch (currentEntry.type) {
       case "section":
         switch (currentEntry.section) {
-          case "today":     return <TodayView displayName={DEMO_DISPLAY_NAME} {...DEMO_TODAY_DATA} signalCount={0} criticalSignalCount={0} recentMemory={[]} />;
+          case "today":     return <TodayView displayName={DEMO_DISPLAY_NAME} {...DEMO_TODAY_DATA} signalCount={DEMO_SIGNALS.length} criticalSignalCount={DEMO_SIGNALS.filter((s) => s.urgency === "critical").length} recentMemory={DEMO_MEMORY_EVENTS} />;
           case "contacts":  return <ContactsSection nav={demoNav} />;
           case "companies": return <CompaniesSection nav={demoNav} />;
           case "deals":     return <DealsSection nav={demoNav} />;

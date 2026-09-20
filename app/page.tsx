@@ -8,6 +8,7 @@ import {
   GenesisHeroDuo,
   GenesisBridge,
   GenesisEmailMoment,
+  GenesisFounderNote,
 } from "@/components/genesis";
 
 const GenesisActIV = dynamic(() => import("@/components/genesis/GenesisActIV").then((m) => ({ default: m.GenesisActIV })));
@@ -35,6 +36,9 @@ export default function HomePage() {
 
         {/* 3 — Live demo: try it yourself */}
         <GenesisActIV />
+
+        {/* 4 — Founder note */}
+        <GenesisFounderNote />
 
         <LandingFooter />
       </main>

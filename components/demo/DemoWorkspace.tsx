@@ -15,6 +15,8 @@ import {
   DEMO_WORKSPACE_NAME,
   DEMO_PROFILE,
   DEMO_TODAY_DATA,
+  DEMO_SIGNALS,
+  DEMO_MEMORY_EVENTS,
 } from "@/lib/demo/demoWorkspaceData";
 
 const PREVIEW_NAV = [
@@ -173,9 +175,9 @@ export default function DemoWorkspace() {
             <TodayView
               displayName={DEMO_DISPLAY_NAME}
               {...DEMO_TODAY_DATA}
-              signalCount={0}
-              criticalSignalCount={0}
-              recentMemory={[]}
+              signalCount={DEMO_SIGNALS.length}
+              criticalSignalCount={DEMO_SIGNALS.filter((s) => s.urgency === "critical").length}
+              recentMemory={DEMO_MEMORY_EVENTS}
             />
           </motion.div>
 

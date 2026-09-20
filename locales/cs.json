@@ -2491,7 +2491,17 @@
       "productSentenceLine1": "Gunimi sleduje vaše klienty a řekne vám přesně co dnes potřebuje vaši pozornost",
       "productSentenceLine2": "— dříve než obchod vychladne nebo vztah ochladne.",
       "descriptor": "Kompletní AI business workspace.",
-      "alphaNote": "OPEN ALPHA · Zdarma do oficiálního spuštění."
+      "alphaNote": "OPEN ALPHA · Zdarma do oficiálního spuštění.",
+      "icpLine": "Pro freelancery, konzultanty a malé agentury.",
+      "ctaBooking": "Domluvit 20minutové nastavení",
+      "trustDataLine": "Data zůstávají v EU · Přístup k e-mailu jen pro čtení · Smazání kdykoli",
+      "trustDataLink": "Detaily zabezpečení"
+    },
+    "founder": {
+      "heading": "Poznámka od zakladatele",
+      "intro": "Ahoj, jsem Michal.",
+      "body": "Pracuji ve výrobě a Gunimi jsem budoval večery a o víkendech. Když jsem viděl, jak složitě funguje administrativa v 21. století — přepínání nástrojů, ztráta kontextu, zapomenuté follow-upy — musel jsem s tím něco udělat. Nejen pro svou ženu, ale i pro lidi daleko široko, kteří řeší stejný chaos. Pokud něco nesedí, napiš mi přímo.",
+      "emailLabel": "hello@gunimi.com"
     },
     "actI": {
       "statement1": "Spravujete 20+ klientských vztahů ve své hlavě.",
@@ -2884,11 +2894,11 @@
       "badge": "O Gunimi",
       "headline": "Workspace, který myslí.",
       "subline": "Gunimi byl postaven na jednom předpokladu: nástroje, které podniky používají ke správě vztahů, znalostí a komunikace, by měly být stejně inteligentní jako lidé, kteří je používají.",
-      "story0": "Většina workspaců byla navržena před érou AI. Byla navržena kolem záznamů — řádky, sloupce, stavy. Žádá vás vyplňovat pole, udržovat pipeline a aktualizovat tabulky. Je optimalizována pro systém, ne pro vás.",
-      "story1Start": "Gunimi je navržen od jiného výchozího bodu:",
-      "story1Emphasis": "co kdyby váš workspace rozuměl kontextu?",
-      "story1End": "Co kdyby propojil deal s poznámkou, s e-mailem, se společností? Co kdyby vám zobrazil tu správnou věc dříve, než byste ji museli hledat?",
-      "story2": "Budujeme AI Workspace Operating System — platformu, kde společnosti, kontakty, dealy, úkoly, poznámky a komunikace existují ve společné inteligentní vrstvě. Jeden systém. Plný kontext. Vždy dostupné.",
+      "story0": "Jsem Michal. Pracuji ve výrobě. Večery a o víkendech jsem budoval Gunimi — protože jsem viděl lidi kolem sebe přepínat mezi pěti různými nástroji pro správu klientů, při každém přepnutí ztrácet kontext a zapomínat na věci, které je stály obchody.",
+      "story1Start": "Frustrace byla jednoduchá:",
+      "story1Emphasis": "administrativa v 21. století by neměla být tak těžká.",
+      "story1End": "Vaše kontakty, dealy, e-maily, úkoly a poznámky jsou všechny propojené — ale vaše nástroje se tváří, že nejsou. Gunimi to mění.",
+      "story2": "Můj cíl nikdy nebyl vybudovat další CRM. Chtěl jsem vybudovat něco, co skutečně pomáhá — nejen té, která mě o to poprosila, ale každému, kdo se potýká se stejným chaosem. Jeden workspace. Plný kontext. AI, která si všimne toho, co by vám uniklo.",
       "pillarsHeadline": "Za čím stojíme.",
       "pillars": [
         {
@@ -2909,7 +2919,7 @@
         }
       ],
       "quote": "\"Vztahy jsou tím nejdůležitějším aktivem v každém podniku. Budujeme OS pro jejich správu.\"",
-      "quoteAttrib": "— Tým Gunimi"
+      "quoteAttrib": "— Michal Guoth, zakladatel"
     },
     "contact": {
       "badge": "Kontakt",
@@ -3046,8 +3056,8 @@
           "body": "Vaše výzvy a odpovědi AI se neukládají v naší databázi mimo aktuální relaci. Nejsou dostupné jiným uživatelům ani členům týmu."
         },
         {
-          "title": "Modely třetích stran",
-          "body": "Gunimi využívá poskytovatele AI modelů třetích stran k napájení inteligentních funkcí. Máme smlouvy o zpracování dat, které zakazují použití vašich dat k trénování modelů."
+          "title": "OpenAI API — vaše data se nikdy nepoužívají k trénování",
+          "body": "Gunimi používá OpenAI API k napájení AI funkcí. Podmínky API společnosti OpenAI výslovně uvádějí: data odeslaná přes API se ve výchozím nastavení nepoužívají k trénování modelů OpenAI. Toto platí pro všechny zákazníky API a je smluvně zaručeno. Je to jiné než ChatGPT — použití API má přísnější ochranu dat. Můžete si to ověřit přímo v zásadách používání OpenAI na platform.openai.com."
         }
       ],
       "warningTitle": "AI se může mýlit.",

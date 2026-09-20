@@ -39,3 +39,4 @@ export { GenesisActIII } from "./GenesisActIII";
 export { GenesisEmailMoment } from "./GenesisEmailMoment";
 export { GenesisActIV } from "./GenesisActIV";
 export { GenesisBeats } from "./GenesisBeats";
+export { GenesisFounderNote } from "./GenesisFounderNote";

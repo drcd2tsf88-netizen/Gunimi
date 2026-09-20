@@ -2491,7 +2491,17 @@
       "productSentenceLine1": "Gunimi sleduje vašich klientov a povie vám presne čo si dnes vyžaduje pozornosť",
       "productSentenceLine2": "— skôr než obchod vychladne alebo vzťah ochladne.",
       "descriptor": "Kompletný AI business workspace.",
-      "alphaNote": "OPEN ALPHA · Zadarmo až do oficiálneho spustenia."
+      "alphaNote": "OPEN ALPHA · Zadarmo až do oficiálneho spustenia.",
+      "icpLine": "Pre freelancerov, konzultantov a malé agentúry.",
+      "ctaBooking": "Dohodnem 20-minútové nastavenie",
+      "trustDataLine": "Dáta zostávajú v EÚ · Emailový prístup len na čítanie · Vymazanie kedykoľvek",
+      "trustDataLink": "Detaily bezpečnosti"
+    },
+    "founder": {
+      "heading": "Poznámka od zakladateľa",
+      "intro": "Ahoj, som Michal.",
+      "body": "Pracujem vo výrobe a Gunimi som budoval večermi a cez víkendy. Keď som videl, ako zložito funguje administratíva v 21. storočí — prepínanie medzi nástrojmi, strata kontextu, zabudnuté follow-upy — napadlo mi s tým niečo spraviť. Nielen pre svoju ženu, ale aj pre ľudí ďaleko široko, ktorí riešia ten istý chaos. Ak čokoľvek nesedí, napíš mi priamo.",
+      "emailLabel": "hello@gunimi.com"
     },
     "actI": {
       "statement1": "Spravujete 20+ klientských vzťahov vo svojej hlave.",
@@ -2884,11 +2894,11 @@
       "badge": "O Gunimi",
       "headline": "Workspace, ktorý myslí.",
       "subline": "Gunimi bol postavený na jednom predpoklade: nástroje, ktoré podniky používajú na správu vzťahov, znalostí a komunikácie, by mali byť rovnako inteligentné ako ľudia, ktorí ich používajú.",
-      "story0": "Väčšina workspacov bola navrhnutá pred érou AI. Bola navrhnutá okolo záznamov — riadky, stĺpce, stavy. Žiada vás vyplniť polia, udržiavať pipeline a aktualizovať tabuľky. Je optimalizovaná pre systém, nie pre vás.",
-      "story1Start": "Gunimi je navrhnutý od iného východiska:",
-      "story1Emphasis": "čo keby váš workspace rozumel kontextu?",
-      "story1End": "Čo keby prepojil deal s poznámkou, s emailom, so spoločnosťou? Čo keby vám zobrazil to správne skôr, ako by ste to museli hľadať?",
-      "story2": "Budujeme AI Workspace Operating System — platformu, kde spoločnosti, kontakty, dealy, úlohy, poznámky a komunikácia existujú v spoločnej inteligenčnej vrstve. Jeden systém. Plný kontext. Vždy dostupné.",
+      "story0": "Som Michal. Pracujem vo výrobe. Večermi a cez víkendy som budoval Gunimi — pretože som videl ľudí okolo seba prepínať medzi piatimi rôznymi nástrojmi na správu klientov, pri každom prepnutí strácajúcich kontext a zabúdajúcich na veci, ktoré ich stáli dealy.",
+      "story1Start": "Frustrácia bola jednoduchá:",
+      "story1Emphasis": "administratíva v 21. storočí by nemala byť takto ťažká.",
+      "story1End": "Vaše kontakty, dealy, emaily, úlohy a poznámky sú všetky prepojené — ale vaše nástroje sa tvária, že nie sú. Gunimi to mení.",
+      "story2": "Môj cieľ nikdy nebol vybudovať ďalší CRM. Chcel som vybudovať niečo, čo skutočne pomáha — nielen tomu, kto ma o to požiadal, ale každému kto sa potýka s rovnakým chaosom. Jeden workspace. Plný kontext. AI, ktorá si všimne to, čo by vám uniklo.",
       "pillarsHeadline": "Za čím stojíme.",
       "pillars": [
         {
@@ -2908,8 +2918,8 @@
           "body": "Multi-workspace architektúra podporuje spôsob, akým je vaša firma skutočne štruktúrovaná — nie idealizovaný org chart."
         }
       ],
-      "quote": "\"Vzťahy sú tým najdôležitejším aktívom v každom podniku. Budujeme OS na ich správu.\"",
-      "quoteAttrib": "— Tím Gunimi"
+      "quote": "\"Chcel som vybudovať niečo, čo skutočne pomáha ľuďom — nielen mojej žene, ale každému kto každý deň prepína medzi piatimi nástrojmi a stráca kontext.\"",
+      "quoteAttrib": "— Michal Guoth, zakladateľ"
     },
     "contact": {
       "badge": "Kontakt",
@@ -3046,8 +3056,8 @@
           "body": "Vaše výzvy a odpovede AI sa neukladajú v našej databáze mimo aktuálnej relácie. Nie sú dostupné iným používateľom ani členom tímu."
         },
         {
-          "title": "Modely tretích strán",
-          "body": "Gunimi využíva poskytovateľov AI modelov tretích strán na napájanie inteligenčných funkcií. Máme dohody o spracovaní dát, ktoré zakazujú použitie vašich dát na trénovanie modelov."
+          "title": "OpenAI API — vaše dáta sa nikdy nepoužívajú na trénovanie",
+          "body": "Gunimi používa OpenAI API na napájanie AI funkcií. Podmienky API spoločnosti OpenAI výslovne uvádzajú: dáta odoslané cez API sa predvolene nepoužívajú na trénovanie modelov OpenAI. Toto platí pre všetkých zákazníkov API a je zmluvne garantované. Je to iné ako ChatGPT — použitie API má prísnejšiu ochranu dát. Môžete si to overiť priamo v politikách používania OpenAI na platform.openai.com."
         }
       ],
       "warningTitle": "AI sa môže mýliť.",

@@ -2491,7 +2491,17 @@
       "productSentenceLine1": "Gunimi watches your clients and tells you exactly what needs attention today",
       "productSentenceLine2": "— before a deal goes cold or a relationship fades.",
       "descriptor": "The complete AI business workspace.",
-      "alphaNote": "OPEN ALPHA · Free until official launch."
+      "alphaNote": "OPEN ALPHA · Free until official launch.",
+      "icpLine": "For freelancers, consultants and small agencies.",
+      "ctaBooking": "Book a 20-min setup",
+      "trustDataLine": "Your data stays in the EU · Read-only email access · Delete anytime",
+      "trustDataLink": "Security details"
+    },
+    "founder": {
+      "heading": "A note from the founder",
+      "intro": "Hi, I'm Michal.",
+      "body": "I work in a factory and built Gunimi in the evenings and weekends. When I saw how complicated administration still is in the 21st century — switching between tools, losing context, forgetting who you talked to — I had to do something about it. Not just for my wife, but for people everywhere dealing with the same chaos. If something feels off, write to me directly.",
+      "emailLabel": "hello@gunimi.com"
     },
     "actI": {
       "statement1": "You're managing 20+ client relationships in your head.",
@@ -2884,11 +2894,11 @@
       "badge": "About Gunimi",
       "headline": "The workspace that thinks.",
       "subline": "Gunimi was built on a single premise: the tools businesses use to manage relationships, knowledge and communication should be as intelligent as the people using them.",
-      "story0": "Most workspace software was designed before AI existed. It was designed around records — rows, columns, statuses. It asks you to fill in fields, maintain pipelines and update boards. It is optimized for the system, not for you.",
-      "story1Start": "Gunimi is designed from a different starting point:",
-      "story1Emphasis": "what if your workspace understood context?",
-      "story1End": "What if it connected the deal to the note to the email to the company? What if it surfaced the right thing before you had to go looking for it?",
-      "story2": "We are building an AI Workspace Operating System — a platform where companies, contacts, deals, tasks, notes and communication exist inside a shared intelligence layer. One system. Full context. Always available.",
+      "story0": "I'm Michal. I work in a factory. In the evenings and weekends I built Gunimi — because I watched people around me switching between five different tools to manage their clients, losing context every single time, and forgetting things that cost them deals.",
+      "story1Start": "The frustration was simple:",
+      "story1Emphasis": "administration in the 21st century shouldn't be this hard.",
+      "story1End": "Your contacts, deals, emails, tasks and notes are all connected — but your tools pretend they're not. Gunimi changes that.",
+      "story2": "My goal was never to build another CRM. It was to build something that actually helps — not just the person who asked me to fix it, but anyone dealing with the same chaos. One workspace. Full context. AI that notices what you'd miss.",
       "pillarsHeadline": "What we stand for.",
       "pillars": [
         {
@@ -2908,8 +2918,8 @@
           "body": "Multi-workspace architecture supports the way your business is actually structured — not an idealized org chart."
         }
       ],
-      "quote": "\"Relationships are the most important asset in any business. We're building the OS to manage them.\"",
-      "quoteAttrib": "— Gunimi Team"
+      "quote": "\"I wanted to build something that actually helps people — not just my wife, but anyone dealing with the same chaos of switching between five tools and losing context every day.\"",
+      "quoteAttrib": "— Michal Guoth, Founder"
     },
     "contact": {
       "badge": "Contact",
@@ -3046,8 +3056,8 @@
           "body": "Your prompts and AI responses are not stored in our database beyond the current session. They are not accessible to other users or team members."
         },
         {
-          "title": "Third-party models",
-          "body": "Gunimi uses third-party AI model providers to power intelligence features. We have data processing agreements in place that prohibit use of your data for model training."
+          "title": "OpenAI API — your data is never used for training",
+          "body": "Gunimi uses the OpenAI API to power AI features. OpenAI's API Terms explicitly state: data submitted via the API is not used to train OpenAI models by default. This applies to all API customers and is contractually guaranteed. This is different from ChatGPT — API usage has stricter data protections. You can verify this directly in OpenAI's usage policies at platform.openai.com."
         }
       ],
       "warningTitle": "AI can be wrong.",

@@ -1,4 +1,5 @@
 import type { ResolvedTodayData } from "@/lib/today/types";
+import type { MemoryEvent } from "@/lib/memory/types";
 
 // ─── Identity ────────────────────────────────────────────────
 export const DEMO_DISPLAY_NAME   = "Jan";
@@ -58,7 +59,11 @@ export const DEMO_TODAY_DATA: ResolvedTodayData = {
       href: "/register?ref=demo",
     },
   ],
-  work: [],
+  work: [
+    { id: "t1", title: "Call Martin Novák — deal is going cold", tag: "overdue" },
+    { id: "t2", title: "Follow up with Jana Horáková",           tag: "today"   },
+    { id: "t3", title: "Send StarBridge proposal draft",         tag: "today"   },
+  ],
 };
 
 // ─── Contacts ────────────────────────────────────────────────
@@ -168,6 +173,43 @@ export const DEMO_MEMORIES: DemoMemory[] = [
   { id: "m5", content: "Prioritized StarBridge proposal over Nexus Ltd discovery this week.",                 type: "decision",     confidence: 0.99, source: "Manual Entry",     observedAt: "7 days ago"  },
   { id: "m6", content: "Jana Horáková and Martin Novák collaborate closely within Acme Corp.",                type: "relationship", confidence: 0.71, source: "Email Analysis",   observedAt: "10 days ago" },
   { id: "m7", content: "Eva Kratochvíl prefers written communication (email) over calls.",                    type: "fact",         confidence: 0.68, source: "Pattern Analysis", observedAt: "40 days ago" },
+];
+
+// ─── Memory Events (for TodayView widget) ────────────────────
+export const DEMO_MEMORY_EVENTS: MemoryEvent[] = [
+  {
+    id: "me1",
+    type: "commitment",
+    title: "Acme Corp Q3 renewal discussed",
+    description: "Martin mentioned budget approval is expected in late Q3. Follow up after August.",
+    importance: "high",
+    dealId: "d1",
+    contactId: "c3",
+    companyId: "co1",
+    createdAt: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "me2",
+    type: "context",
+    title: "StarBridge responds within 10 business days",
+    description: "Historical pattern confirmed across 3 proposals. Decision imminent for current proposal.",
+    importance: "normal",
+    dealId: "d2",
+    contactId: null,
+    companyId: "co2",
+    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "me3",
+    type: "relationship",
+    title: "Jana & Martin make joint decisions at Acme Corp",
+    description: "Emails from Jana frequently cc Martin. Both must be aligned before any deal moves forward.",
+    importance: "high",
+    dealId: null,
+    contactId: "c1",
+    companyId: "co1",
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+  },
 ];
 
 // ─── Activities (per entity) ─────────────────────────────────

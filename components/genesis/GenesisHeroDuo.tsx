@@ -3,9 +3,12 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
+import { Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FadeIn } from "./FadeIn";
 import { Reveal } from "./Reveal";
+
+const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL ?? "";
 
 const AiCore = dynamic(() => import("./AiCore").then((m) => ({ default: m.AiCore })), { ssr: false });
 
@@ -140,6 +143,11 @@ export function GenesisHeroDuo() {
                 {th("headlineLine2")}
               </span>
             </Reveal>
+            <Reveal delay={0.52} duration={0.7} y={10}>
+              <p className="mt-2 text-[13px] font-medium text-[#9AA3B2]/60">
+                {th("icpLine")}
+              </p>
+            </Reveal>
           </div>
 
           {/* Product sentence */}
@@ -152,30 +160,48 @@ export function GenesisHeroDuo() {
 
           {/* CTAs */}
           <Reveal delay={0.72} duration={0.6} y={8}>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/register"
-                className={cn(
-                  "inline-flex flex-1 items-center justify-center rounded-[12px] px-6 py-3",
-                  "bg-[var(--g-primary)] text-[15px] font-medium text-white",
-                  "transition-colors duration-150 hover:bg-[var(--g-primary-2)]",
-                  "outline-none focus-visible:ring-2 focus-visible:ring-[var(--g-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--g-bg)]",
-                )}
-              >
-                {th("ctaPrimary")}
-              </Link>
-              <Link
-                href="/login"
-                className={cn(
-                  "inline-flex flex-1 items-center justify-center rounded-[12px] px-6 py-3",
-                  "text-[15px] font-medium text-[#9AA3B2]",
-                  "border border-white/[0.08]",
-                  "transition-colors duration-150 hover:border-white/[0.16] hover:text-[var(--g-text)]",
-                  "outline-none focus-visible:ring-2 focus-visible:ring-[var(--g-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--g-bg)]",
-                )}
-              >
-                {th("ctaSecondary")}
-              </Link>
+            <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/register"
+                  className={cn(
+                    "inline-flex flex-1 items-center justify-center rounded-[12px] px-6 py-3",
+                    "bg-[var(--g-primary)] text-[15px] font-medium text-white",
+                    "transition-colors duration-150 hover:bg-[var(--g-primary-2)]",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-[var(--g-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--g-bg)]",
+                  )}
+                >
+                  {th("ctaPrimary")}
+                </Link>
+                <Link
+                  href="/login"
+                  className={cn(
+                    "inline-flex flex-1 items-center justify-center rounded-[12px] px-6 py-3",
+                    "text-[15px] font-medium text-[#9AA3B2]",
+                    "border border-white/[0.08]",
+                    "transition-colors duration-150 hover:border-white/[0.16] hover:text-[var(--g-text)]",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-[var(--g-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--g-bg)]",
+                  )}
+                >
+                  {th("ctaSecondary")}
+                </Link>
+              </div>
+              {BOOKING_URL && (
+                <a
+                  href={BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "inline-flex w-full items-center justify-center gap-2 rounded-[12px] px-6 py-3",
+                    "text-[14px] font-medium text-[#9AA3B2]",
+                    "border border-dashed border-white/[0.10]",
+                    "transition-colors duration-150 hover:border-white/[0.20] hover:text-[var(--g-text)]",
+                  )}
+                >
+                  <Calendar size={14} strokeWidth={1.75} />
+                  {th("ctaBooking")}
+                </a>
+              )}
             </div>
           </Reveal>
 
@@ -183,6 +209,16 @@ export function GenesisHeroDuo() {
           <FadeIn delay={0.88} duration={0.5}>
             <p className="text-[11px] font-medium tracking-[0.06em] text-[#9AA3B2]/45">
               {th("alphaNote")}
+            </p>
+          </FadeIn>
+
+          {/* Trust data line */}
+          <FadeIn delay={0.96} duration={0.5}>
+            <p className="text-[11px] leading-[1.6] text-[#9AA3B2]/35">
+              {th("trustDataLine")}{" "}
+              <Link href="/security" className="underline underline-offset-2 transition-colors hover:text-[#9AA3B2]/60">
+                {th("trustDataLink")}
+              </Link>
             </p>
           </FadeIn>
 

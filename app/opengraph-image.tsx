@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { APP_CONFIG } from "@/lib/config/app";
 
 export const runtime = "edge";
-export const alt = `${APP_CONFIG.name} — ${APP_CONFIG.tagline}`;
+export const alt = "Gunimi — Every client. Always remembered.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -64,7 +64,7 @@ export default function Image() {
             letterSpacing: "-0.01em",
           }}
         >
-          {APP_CONFIG.tagline}
+          Every client. Always remembered.
         </div>
       </div>
     ),

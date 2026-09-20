@@ -7,8 +7,8 @@
 
 export const APP_CONFIG = {
   name: "Gunimi",
-  tagline: "AI Workspace Operating System",
-  description: "AI-powered workspace for teams — manage relationships, knowledge, and communication in one place.",
+  tagline: "Every client. Always remembered.",
+  description: "Gunimi watches your clients and tells you what needs attention today, before a deal goes cold. Free during Open Alpha.",
 
   url: process.env.NEXT_PUBLIC_APP_URL ?? "https://gunimi.com",
 
