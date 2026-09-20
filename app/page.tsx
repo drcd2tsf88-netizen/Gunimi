@@ -16,6 +16,17 @@ const GenesisActIV = dynamic(() => import("@/components/genesis/GenesisActIV").t
 export const metadata: Metadata = {
   title: { absolute: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}` },
   description: APP_CONFIG.description,
+  openGraph: {
+    title: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}`,
+    description: APP_CONFIG.description,
+    type: "website",
+    url: APP_CONFIG.url,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}`,
+    description: APP_CONFIG.description,
+  },
 };
 
 export default function HomePage() {

@@ -2450,8 +2450,8 @@
       "company": "Společnost"
     },
     "footer": {
-      "tagline": "AI Workspace OS",
-      "description": "Vztahy, znalosti a příležitosti — v jednom inteligentním workspace.",
+      "tagline": "Každý klient. Vždy zapamatován.",
+      "description": "Pro freelancery, konzultanty a malé agentury, které si nemohou dovolit ztratit kontext.",
       "groups": {
         "product": "Produkt",
         "company": "Společnost",
@@ -2500,7 +2500,7 @@
     "founder": {
       "heading": "Poznámka od zakladatele",
       "intro": "Ahoj, jsem Michal.",
-      "body": "Pracuji ve výrobě a Gunimi jsem budoval večery a o víkendech. Když jsem viděl, jak složitě funguje administrativa v 21. století — přepínání nástrojů, ztráta kontextu, zapomenuté follow-upy — musel jsem s tím něco udělat. Nejen pro svou ženu, ale i pro lidi daleko široko, kteří řeší stejný chaos. Pokud něco nesedí, napiš mi přímo.",
+      "body": "Pracuji ve výrobě a Gunimi jsem budoval večery a o víkendech. Stále jsem viděl totéž: ztratí se objednávka, zničí se kontakt, zapomene se na follow-up. Ne proto, že by byl někdo nedbalý — prostě proto, že zapomenout je lidské. To je jednoduchý problém. Chtěl jsem ho vyřešit. Nejen v jedné firmě, ale pro každého, kdo se s tím potýká. Pokud něco nesedí, napiš mi přímo.",
       "emailLabel": "hello@gunimi.com"
     },
     "actI": {
@@ -2918,7 +2918,7 @@
           "body": "Multi-tenant architektura podporuje způsob, jakým je vaše firma skutečně strukturována — ne idealizovaný org chart."
         }
       ],
-      "quote": "\"Vztahy jsou tím nejdůležitějším aktivem v každém podniku. Budujeme OS pro jejich správu.\"",
+      "quote": "\"Ztratí se objednávka. Zničí se kontakt. Follow-up se nestane. Ne proto, že by byl někdo nedbalý — prostě proto, že zapomenout je lidské. Gunimi jsem postavil proto, aby vás to nestálo obchod.\"",
       "quoteAttrib": "— Michal Guoth, zakladatel"
     },
     "contact": {

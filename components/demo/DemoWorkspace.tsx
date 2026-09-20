@@ -5,8 +5,7 @@ import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-mot
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import {
-  LayoutDashboard, Users, Building2, TrendingUp, CheckSquare,
-  Mail, CalendarDays, BarChart3, Settings, ShoppingBag,
+  LayoutDashboard, Users, Building2, TrendingUp, CheckSquare, Mail,
 } from "lucide-react";
 import { SidebarHeader, SidebarFooter } from "@/components/sidebar/SidebarShell";
 import TodayView from "@/components/today/TodayView";
@@ -20,16 +19,12 @@ import {
 } from "@/lib/demo/demoWorkspaceData";
 
 const PREVIEW_NAV = [
-  { id: "today",     icon: LayoutDashboard, labelKey: "dashboard"  },
-  { id: "contacts",  icon: Users,           labelKey: "contacts"   },
-  { id: "companies", icon: Building2,       labelKey: "companies"  },
-  { id: "deals",     icon: TrendingUp,      labelKey: "deals"      },
-  { id: "orders",    icon: ShoppingBag,     labelKey: "orders"     },
-  { id: "tasks",     icon: CheckSquare,     labelKey: "tasks"      },
-  { id: "email",     icon: Mail,            labelKey: "email"      },
-  { id: "calendar",  icon: CalendarDays,    labelKey: "calendar"   },
-  { id: "analytics", icon: BarChart3,       labelKey: "analytics"  },
-  { id: "settings",  icon: Settings,        labelKey: "settings"   },
+  { id: "today",     icon: LayoutDashboard, labelKey: "dashboard" },
+  { id: "contacts",  icon: Users,           labelKey: "contacts"  },
+  { id: "companies", icon: Building2,       labelKey: "companies" },
+  { id: "deals",     icon: TrendingUp,      labelKey: "deals"     },
+  { id: "tasks",     icon: CheckSquare,     labelKey: "tasks"     },
+  { id: "email",     icon: Mail,            labelKey: "email"     },
 ] as const;
 
 export default function DemoWorkspace() {

@@ -2450,8 +2450,8 @@
       "company": "Company"
     },
     "footer": {
-      "tagline": "AI Workspace OS",
-      "description": "Relationships, knowledge, and opportunity — inside one intelligent workspace.",
+      "tagline": "Every client. Always remembered.",
+      "description": "For freelancers, consultants and small agencies who can't afford to lose context.",
       "groups": {
         "product": "Product",
         "company": "Company",
@@ -2500,7 +2500,7 @@
     "founder": {
       "heading": "A note from the founder",
       "intro": "Hi, I'm Michal.",
-      "body": "I work in a factory and built Gunimi in the evenings and weekends. When I saw how complicated administration still is in the 21st century — switching between tools, losing context, forgetting who you talked to — I had to do something about it. Not just for my wife, but for people everywhere dealing with the same chaos. If something feels off, write to me directly.",
+      "body": "I work in a factory and built Gunimi in the evenings and weekends. I kept seeing the same thing happen: an order gets lost, a contact disappears, a follow-up never happens. Not because anyone was careless — just because forgetting is human. That's a simple problem. I wanted to fix it. Not just at one company, but for everyone dealing with it. If something feels off, write to me directly.",
       "emailLabel": "hello@gunimi.com"
     },
     "actI": {
@@ -2918,7 +2918,7 @@
           "body": "Multi-workspace architecture supports the way your business is actually structured — not an idealized org chart."
         }
       ],
-      "quote": "\"I wanted to build something that actually helps people — not just my wife, but anyone dealing with the same chaos of switching between five tools and losing context every day.\"",
+      "quote": "\"An order gets lost. A contact disappears. A follow-up never happens. Not because anyone was careless — just because forgetting is human. I built Gunimi so that doesn't have to cost you a deal.\"",
       "quoteAttrib": "— Michal Guoth, Founder"
     },
     "contact": {

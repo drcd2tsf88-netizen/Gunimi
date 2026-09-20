@@ -2450,8 +2450,8 @@
       "company": "Spoločnosť"
     },
     "footer": {
-      "tagline": "AI Workspace OS",
-      "description": "Vzťahy, znalosti a príležitosti — v jednom inteligentnom workspace.",
+      "tagline": "Každý klient. Vždy zapamätaný.",
+      "description": "Pre freelancerov, konzultantov a malé agentúry, ktoré si nemôžu dovoliť stratiť kontext.",
       "groups": {
         "product": "Produkt",
         "company": "Spoločnosť",
@@ -2500,7 +2500,7 @@
     "founder": {
       "heading": "Poznámka od zakladateľa",
       "intro": "Ahoj, som Michal.",
-      "body": "Pracujem vo výrobe a Gunimi som budoval večermi a cez víkendy. Keď som videl, ako zložito funguje administratíva v 21. storočí — prepínanie medzi nástrojmi, strata kontextu, zabudnuté follow-upy — napadlo mi s tým niečo spraviť. Nielen pre svoju ženu, ale aj pre ľudí ďaleko široko, ktorí riešia ten istý chaos. Ak čokoľvek nesedí, napíš mi priamo.",
+      "body": "Pracujem vo výrobe a Gunimi som budoval večermi a cez víkendy. Stále som videl to isté: stratí sa objednávka, zničí sa kontakt, zabudne sa na follow-up. Nie preto, že by bol niekto nedbanlivý — jednoducho preto, že zabudnúť je ľudské. To je jednoduchý problém. Chcel som ho vyriešiť. Nielen v jednej firme, ale pre každého kto sa s tým stretáva. Ak čokoľvek nesedí, napíš mi priamo.",
       "emailLabel": "hello@gunimi.com"
     },
     "actI": {
@@ -2918,7 +2918,7 @@
           "body": "Multi-workspace architektúra podporuje spôsob, akým je vaša firma skutočne štruktúrovaná — nie idealizovaný org chart."
         }
       ],
-      "quote": "\"Chcel som vybudovať niečo, čo skutočne pomáha ľuďom — nielen mojej žene, ale každému kto každý deň prepína medzi piatimi nástrojmi a stráca kontext.\"",
+      "quote": "\"Stratí sa objednávka. Zničí sa kontakt. Follow-up sa nestane. Nie preto, že by bol niekto nedbanlivý — len preto, že zabudnúť je ľudské. Gunimi som postavil preto, aby vás to nestálo deal.\"",
       "quoteAttrib": "— Michal Guoth, zakladateľ"
     },
     "contact": {
