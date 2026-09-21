@@ -2433,7 +2433,7 @@
   },
   "landing": {
     "nav": {
-      "tagline": "AI Workspace OS",
+      "tagline": "Every client. Always remembered.",
       "links": {
         "features": "Features",
         "ai": "AI",
@@ -3584,7 +3584,7 @@
         },
         {
           "label": "Category",
-          "value": "AI Workspace OS"
+          "value": "Workspace OS"
         },
         {
           "label": "HQ",
@@ -3746,7 +3746,91 @@
       "badge": "Legal",
       "headline": "Privacy Policy",
       "lastUpdated": "Last updated:",
-      "languageNote": ""
+      "languageNote": "",
+      "intro": "Gunimi (\"we\", \"our\", \"us\") operates an AI-first workspace for business teams. This Privacy Policy explains what personal data we collect, how we use it, and your rights. By creating an account you agree to the practices described here.",
+      "alphaNote": "Gunimi is currently in Open Alpha. The platform is live and fully accessible. Features and data practices may evolve as the product grows. We will notify registered users of material changes by email.",
+      "controllerTitle": "Data Controller",
+      "controllerBody": "Gunimi is operated by Michal Guoth (sole trader / živnostník), Czech Republic, European Union. For all data enquiries: hello@gunimi.com",
+      "legalBasisTitle": "Legal Basis for Processing",
+      "legalBasisIntro": "We process your personal data under GDPR Article 6 on the following legal bases:",
+      "legalBasisItems": [
+        "Contract performance (Art. 6(1)(b)) — processing necessary to provide the Gunimi service you signed up for",
+        "Legitimate interests (Art. 6(1)(f)) — security monitoring, fraud prevention, product improvement",
+        "Legal obligation (Art. 6(1)(c)) — where applicable law requires retention of certain records"
+      ],
+      "s1Title": "1. Data We Collect",
+      "s1AccountHeading": "Account Information",
+      "s1AccountBody": "When you register, we collect your email address, full name, and any profile information you choose to provide (job title, avatar).",
+      "s1WorkspaceHeading": "Workspace Data",
+      "s1WorkspaceBody": "All content you create inside Gunimi — companies, contacts, deals, notes, tasks, and activity records — is stored in your workspace and associated with your account.",
+      "s1UsageHeading": "Usage Activity",
+      "s1UsageBody": "We record workspace activity events (e.g. \"deal created\", \"task completed\") to power your activity feed and workspace analytics.",
+      "s1TechHeading": "Technical Data",
+      "s1TechBody": "Standard server logs including IP addresses, browser type, and request timestamps for security and debugging purposes.",
+      "s2Title": "2. How We Use Your Data",
+      "s2Items": [
+        "To provide and operate the Gunimi platform",
+        "To authenticate your identity and secure your workspace",
+        "To power AI features: relevant content may be sent to OpenAI's API to generate summaries and insights (see Section 5)",
+        "To send transactional emails (workspace invites, verification, notifications) via Postmark",
+        "To monitor application errors and platform stability via Sentry",
+        "To understand feature usage and improve the product via PostHog (EU cloud)"
+      ],
+      "s2NoSell": "We do not sell your data. We do not use your data for advertising.",
+      "s3Title": "3. Data Storage & Security",
+      "s3Body1": "Your data is stored in Supabase on infrastructure in North EU (Stockholm, Sweden). We do not store primary workspace data outside the European Union. Row-level security (RLS) is enforced at the database layer — workspace data is only accessible to authenticated members of that workspace.",
+      "s3Body2": "Authentication is handled by Supabase Auth using email and password. Passwords are never stored in plain text. All connections are encrypted via TLS 1.3.",
+      "s3CommitmentLabel": "Data commitment:",
+      "s3CommitmentBody": "We are committed to preserving your workspace data. Operational migrations may be required as the product scales — when this happens we will provide advance notice and ensure data integrity.",
+      "s4Title": "4. Your Rights (GDPR)",
+      "s4Intro": "Under the General Data Protection Regulation, you have the following rights:",
+      "s4Rights": [
+        "Access — request a copy of the personal data we hold about you",
+        "Rectification — request correction of inaccurate or incomplete data",
+        "Erasure — request deletion of your account and associated personal data",
+        "Portability — request an export of your workspace data in a structured format",
+        "Restriction — request limitation of processing in certain circumstances",
+        "Objection — object to processing based on legitimate interests"
+      ],
+      "s4ContactIntro": "To exercise any of these rights, email",
+      "s4ContactSuffix": ". We will respond within 30 days.",
+      "s5Title": "5. AI & Third-Party Processors",
+      "s5Services": [
+        {"name": "OpenAI (AI features)", "body": "When you use AI features, relevant content is sent to OpenAI's API. OpenAI's API Terms contractually prohibit use of API-submitted data to train models. We have a data processing agreement with OpenAI. As a US company, data transfer is governed by Standard Contractual Clauses (SCCs)."},
+        {"name": "Supabase (database & auth)", "body": "Database, authentication, and real-time features. Data stored in North EU (Stockholm, Sweden). Supabase is SOC 2 Type II certified."},
+        {"name": "Postmark (transactional email)", "body": "Transactional emails (verification, invites, notifications). Email addresses shared only for delivery purposes."},
+        {"name": "PostHog (analytics)", "body": "Usage analytics via PostHog EU cloud. Data stored in the EU. No personal content from your workspace is sent to PostHog."},
+        {"name": "Sentry (error monitoring)", "body": "Application error monitoring and crash reporting. Configured to exclude personally identifiable information from error payloads."},
+        {"name": "Upstash Redis (rate limiting)", "body": "User IDs stored temporarily for rate limiting. No personal data beyond user ID is stored."}
+      ],
+      "s6Title": "6. International Data Transfers",
+      "s6Body": "Most data is processed within the European Union. The exception is OpenAI (United States), used exclusively for AI features. This transfer is governed by Standard Contractual Clauses (SCCs) as required under GDPR Chapter V. OpenAI is also certified under the EU–US Data Privacy Framework.",
+      "s7Title": "7. Data Retention",
+      "s7Body": "We retain your account and workspace data for as long as your account is active. If you request deletion, we will remove your personal data within 30 days, except where retention is required by law.",
+      "s8Title": "8. Cookies",
+      "s8Body": "Gunimi uses session cookies provided by Supabase Auth to keep you logged in. These are strictly necessary for the service to function and do not track you across third-party websites.",
+      "s8LinkLabel": "Cookie Policy",
+      "s9Title": "9. Supervisory Authority",
+      "s9Body": "You have the right to lodge a complaint with your national data protection authority. Slovakia: Úrad na ochranu osobných údajov SR (dataprotection.gov.sk). Czech Republic: Úřad pro ochranu osobních údajů (uoou.cz). Other EU countries: contact your local data protection authority.",
+      "s10Title": "10. Google API Services",
+      "s10LimitedUseLabel": "Limited Use Disclosure",
+      "s10LimitedUseBody": "Gunimi's use and transfer to any other app of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements.",
+      "s10GooglePolicyLink": "Google API Services User Data Policy",
+      "s10GoogleScopesIntro": "When you connect a Google account, we may access the following data depending on the integrations you enable:",
+      "s10GoogleScopes": [
+        "Gmail: read email headers and message content to surface communication context within your workspace",
+        "Google Calendar: read and create calendar events to support scheduling and meeting preparation features",
+        "Google profile: your name and email address for authentication and workspace identity"
+      ],
+      "s10GoogleProhibitionsIntro": "Google user data is used exclusively for features you request within your workspace. We do not:",
+      "s10GoogleProhibitions": [
+        "Transfer Google user data to third parties except as necessary to operate and improve our service",
+        "Use Google user data for advertising purposes",
+        "Allow humans to read your Google data unless you have given explicit consent, or it is required for security purposes",
+        "Use Google user data to train AI or machine learning models"
+      ],
+      "s11Title": "11. Contact",
+      "s11Body": "For privacy questions, data requests, or concerns, contact us at"
     },
     "terms": {
       "badge": "Legal",

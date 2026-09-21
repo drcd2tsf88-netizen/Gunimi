@@ -34,7 +34,7 @@ export function getTaskAssignedStrings(
       body: `You have a new task waiting in <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
       cta: "View Task →",
       footerNote: `This notification was sent to <strong>${email}</strong> because a task was assigned to you in Gunimi.`,
-      textBody: `A task has been assigned to you in ${workspaceName}.\n\nTask: ${taskTitle}\n\nView it here:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `A task has been assigned to you in ${workspaceName}.\n\nTask: ${taskTitle}\n\nView it here:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     sk: {
       subject: `Nová úloha: ${taskTitle}`,
@@ -43,7 +43,7 @@ export function getTaskAssignedStrings(
       body: `Máte novú úlohu v <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
       cta: "Zobraziť úlohu →",
       footerNote: `Toto upozornenie bolo odoslané na <strong>${email}</strong>, pretože vám bola priradená úloha v Gunimi.`,
-      textBody: `Bola vám priradená nová úloha v ${workspaceName}.\n\nÚloha: ${taskTitle}\n\nZobrazte ju tu:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Bola vám priradená nová úloha v ${workspaceName}.\n\nÚloha: ${taskTitle}\n\nZobrazte ju tu:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     cs: {
       subject: `Nový úkol: ${taskTitle}`,
@@ -52,7 +52,7 @@ export function getTaskAssignedStrings(
       body: `Máte nový úkol v <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
       cta: "Zobrazit úkol →",
       footerNote: `Toto upozornění bylo odesláno na <strong>${email}</strong>, protože vám byl přiřazen úkol v Gunimi.`,
-      textBody: `Byl vám přiřazen nový úkol v ${workspaceName}.\n\nÚkol: ${taskTitle}\n\nZobrazte ho zde:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Byl vám přiřazen nový úkol v ${workspaceName}.\n\nÚkol: ${taskTitle}\n\nZobrazte ho zde:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
   };
   return s[locale];
@@ -85,7 +85,7 @@ export function getTaskDoneStrings(
       body: `The task in <strong style="color:#F7F8FC;">${workspaceName}</strong> was marked as done.`,
       cta: "View Task →",
       footerNote: `This notification was sent to <strong>${email}</strong> because you are involved in this task in Gunimi.`,
-      textBody: `A task was marked as done in ${workspaceName}.\n\nTask: ${taskTitle}\n\nView it here:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `A task was marked as done in ${workspaceName}.\n\nTask: ${taskTitle}\n\nView it here:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     sk: {
       subject: `Hotovo: ${taskTitle}`,
@@ -94,7 +94,7 @@ export function getTaskDoneStrings(
       body: `Úloha v <strong style="color:#F7F8FC;">${workspaceName}</strong> bola označená ako hotová.`,
       cta: "Zobraziť úlohu →",
       footerNote: `Toto upozornenie bolo odoslané na <strong>${email}</strong>, pretože ste zapojený do tejto úlohy v Gunimi.`,
-      textBody: `Úloha bola dokončená v ${workspaceName}.\n\nÚloha: ${taskTitle}\n\nZobrazte ju tu:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Úloha bola dokončená v ${workspaceName}.\n\nÚloha: ${taskTitle}\n\nZobrazte ju tu:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     cs: {
       subject: `Hotovo: ${taskTitle}`,
@@ -103,7 +103,7 @@ export function getTaskDoneStrings(
       body: `Úkol v <strong style="color:#F7F8FC;">${workspaceName}</strong> byl označen jako hotový.`,
       cta: "Zobrazit úkol →",
       footerNote: `Toto upozornění bylo odesláno na <strong>${email}</strong>, protože jste zapojen do tohoto úkolu v Gunimi.`,
-      textBody: `Úkol byl dokončen v ${workspaceName}.\n\nÚkol: ${taskTitle}\n\nZobrazte ho zde:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Úkol byl dokončen v ${workspaceName}.\n\nÚkol: ${taskTitle}\n\nZobrazte ho zde:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
   };
   return s[locale];
@@ -137,7 +137,7 @@ export function getTaskCommentStrings(
       body: `<strong style="color:#F7F8FC;">${commenterName}</strong> commented on a task in <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
       cta: "View Comment →",
       footerNote: `This notification was sent to <strong>${email}</strong> because you are assigned to this task in Gunimi.`,
-      textBody: `${commenterName} commented on a task in ${workspaceName}.\n\nTask: ${taskTitle}\n\nView the comment:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `${commenterName} commented on a task in ${workspaceName}.\n\nTask: ${taskTitle}\n\nView the comment:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     sk: {
       subject: `Nový komentár: ${taskTitle}`,
@@ -146,7 +146,7 @@ export function getTaskCommentStrings(
       body: `<strong style="color:#F7F8FC;">${commenterName}</strong> okomentoval(a) úlohu v <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
       cta: "Zobraziť komentár →",
       footerNote: `Toto upozornenie bolo odoslané na <strong>${email}</strong>, pretože ste priradený k tejto úlohe v Gunimi.`,
-      textBody: `${commenterName} pridal(a) komentár k úlohe v ${workspaceName}.\n\nÚloha: ${taskTitle}\n\nZobrazte komentár:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `${commenterName} pridal(a) komentár k úlohe v ${workspaceName}.\n\nÚloha: ${taskTitle}\n\nZobrazte komentár:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     cs: {
       subject: `Nový komentář: ${taskTitle}`,
@@ -155,7 +155,7 @@ export function getTaskCommentStrings(
       body: `<strong style="color:#F7F8FC;">${commenterName}</strong> okomentoval(a) úkol v <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
       cta: "Zobrazit komentář →",
       footerNote: `Toto upozornění bylo odesláno na <strong>${email}</strong>, protože jste přiřazen k tomuto úkolu v Gunimi.`,
-      textBody: `${commenterName} přidal(a) komentář k úkolu v ${workspaceName}.\n\nÚkol: ${taskTitle}\n\nZobrazte komentář:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `${commenterName} přidal(a) komentář k úkolu v ${workspaceName}.\n\nÚkol: ${taskTitle}\n\nZobrazte komentář:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
   };
   return s[locale];
@@ -189,7 +189,7 @@ export function getTaskDueDateChangedStrings(
       body: `The due date for a task in <strong style="color:#F7F8FC;">${workspaceName}</strong> was changed to <strong style="color:#F7F8FC;">${newDueDate}</strong>.`,
       cta: "View Task →",
       footerNote: `This notification was sent to <strong>${email}</strong> because you are assigned to this task in Gunimi.`,
-      textBody: `The due date for a task in ${workspaceName} was changed.\n\nTask: ${taskTitle}\nNew due date: ${newDueDate}\n\nView it here:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `The due date for a task in ${workspaceName} was changed.\n\nTask: ${taskTitle}\nNew due date: ${newDueDate}\n\nView it here:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     sk: {
       subject: `Termín zmenený: ${taskTitle}`,
@@ -198,7 +198,7 @@ export function getTaskDueDateChangedStrings(
       body: `Termín úlohy v <strong style="color:#F7F8FC;">${workspaceName}</strong> bol zmenený na <strong style="color:#F7F8FC;">${newDueDate}</strong>.`,
       cta: "Zobraziť úlohu →",
       footerNote: `Toto upozornenie bolo odoslané na <strong>${email}</strong>, pretože ste priradený k tejto úlohe v Gunimi.`,
-      textBody: `Termín úlohy v ${workspaceName} bol zmenený.\n\nÚloha: ${taskTitle}\nNový termín: ${newDueDate}\n\nZobrazte ju tu:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Termín úlohy v ${workspaceName} bol zmenený.\n\nÚloha: ${taskTitle}\nNový termín: ${newDueDate}\n\nZobrazte ju tu:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
     cs: {
       subject: `Termín změněn: ${taskTitle}`,
@@ -207,7 +207,7 @@ export function getTaskDueDateChangedStrings(
       body: `Termín úkolu v <strong style="color:#F7F8FC;">${workspaceName}</strong> byl změněn na <strong style="color:#F7F8FC;">${newDueDate}</strong>.`,
       cta: "Zobrazit úkol →",
       footerNote: `Toto upozornění bylo odesláno na <strong>${email}</strong>, protože jste přiřazen k tomuto úkolu v Gunimi.`,
-      textBody: `Termín úkolu v ${workspaceName} byl změněn.\n\nÚkol: ${taskTitle}\nNový termín: ${newDueDate}\n\nZobrazte ho zde:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Termín úkolu v ${workspaceName} byl změněn.\n\nÚkol: ${taskTitle}\nNový termín: ${newDueDate}\n\nZobrazte ho zde:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
     },
   };
   return s[locale];
@@ -246,7 +246,7 @@ export function getTaskDueStrings(
       dueLabel: "Due:",
       mark: "Mark it complete or update the due date.",
       footerNote: `This reminder was sent to <strong>${email}</strong> because this task is assigned to you in Gunimi.`,
-      textBody: `A task is due today in ${workspaceName}.\n\nTask: ${taskTitle}\nDue: ${dueDate}\n\nMark it complete or update the due date:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `A task is due today in ${workspaceName}.\n\nTask: ${taskTitle}\nDue: ${dueDate}\n\nMark it complete or update the due date:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
       dateLocale: "en-US",
     },
     sk: {
@@ -258,7 +258,7 @@ export function getTaskDueStrings(
       dueLabel: "Termín:",
       mark: "Označte ju ako hotovú alebo aktualizujte termín.",
       footerNote: `Toto pripomenutie bolo odoslané na <strong>${email}</strong>, pretože táto úloha je priradená vám v Gunimi.`,
-      textBody: `Máte úlohu na dnes v ${workspaceName}.\n\nÚloha: ${taskTitle}\nTermín: ${dueDate}\n\nOznačte ju ako hotovú alebo aktualizujte termín:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Máte úlohu na dnes v ${workspaceName}.\n\nÚloha: ${taskTitle}\nTermín: ${dueDate}\n\nOznačte ju ako hotovú alebo aktualizujte termín:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
       dateLocale: "sk-SK",
     },
     cs: {
@@ -270,7 +270,7 @@ export function getTaskDueStrings(
       dueLabel: "Termín:",
       mark: "Označte ho jako hotový nebo aktualizujte termín.",
       footerNote: `Toto připomenutí bylo odesláno na <strong>${email}</strong>, protože tento úkol je přiřazen vám v Gunimi.`,
-      textBody: `Máte úkol na dnes v ${workspaceName}.\n\nÚkol: ${taskTitle}\nTermín: ${dueDate}\n\nOznačte ho jako hotový nebo aktualizujte termín:\n${taskUrl}\n\n---\nGunimi — AI Workspace OS`,
+      textBody: `Máte úkol na dnes v ${workspaceName}.\n\nÚkol: ${taskTitle}\nTermín: ${dueDate}\n\nOznačte ho jako hotový nebo aktualizujte termín:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
       dateLocale: "cs-CZ",
     },
   };

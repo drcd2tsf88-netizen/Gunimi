@@ -2433,7 +2433,7 @@
   },
   "landing": {
     "nav": {
-      "tagline": "AI Workspace OS",
+      "tagline": "Every client. Always remembered.",
       "links": {
         "features": "Funkcie",
         "ai": "AI",
@@ -3584,7 +3584,7 @@
         },
         {
           "label": "Kategória",
-          "value": "AI Workspace OS"
+          "value": "Workspace OS"
         },
         {
           "label": "Sídlo",
@@ -3746,7 +3746,91 @@
       "badge": "Právne",
       "headline": "Zásady ochrany súkromia",
       "lastUpdated": "Posledná aktualizácia:",
-      "languageNote": "Tento dokument je dostupný iba v anglickom jazyku."
+      "languageNote": "",
+      "intro": "Gunimi (\"my\", \"naše\", \"nás\") prevádzkuje AI workspace pre podnikateľské tímy. Tieto Zásady ochrany súkromia vysvetľujú, aké osobné údaje zbierame, ako ich používame a aké máte práva. Vytvorením účtu súhlasíte s postupmi opísanými tu.",
+      "alphaNote": "Gunimi je momentálne v Open Alpha. Platforma funguje a je plne dostupná. Funkcie a postupy pri spracovaní údajov sa môžu vyvíjať s rastom produktu. O podstatných zmenách budeme registrovaných používateľov informovať e-mailom.",
+      "controllerTitle": "Prevádzkovateľ osobných údajov",
+      "controllerBody": "Gunimi prevádzkuje Michal Guoth (živnostník), Česká republika, Európska únia. Kontakt pre všetky otázky k údajom: hello@gunimi.com",
+      "legalBasisTitle": "Právny základ spracúvania",
+      "legalBasisIntro": "Vaše osobné údaje spracúvame na nasledovných právnych základoch podľa čl. 6 GDPR:",
+      "legalBasisItems": [
+        "Plnenie zmluvy (čl. 6 ods. 1 písm. b)) — spracúvanie nevyhnutné na poskytovanie služby Gunimi, na ktorú ste sa zaregistrovali",
+        "Oprávnené záujmy (čl. 6 ods. 1 písm. f)) — bezpečnostné monitorovanie, predchádzanie podvodom, zlepšovanie produktu",
+        "Zákonná povinnosť (čl. 6 ods. 1 písm. c)) — ak platné právo vyžaduje uchovávanie určitých záznamov"
+      ],
+      "s1Title": "1. Aké údaje zbierame",
+      "s1AccountHeading": "Informácie o účte",
+      "s1AccountBody": "Pri registrácii zbierame vašu e-mailovú adresu, celé meno a akékoľvek ďalšie profilové informácie, ktoré sa rozhodnete uviesť (pracovná pozícia, avatar).",
+      "s1WorkspaceHeading": "Dáta workspacu",
+      "s1WorkspaceBody": "Všetok obsah, ktorý vytvoríte v Gunimi — firmy, kontakty, dealy, poznámky, úlohy a záznamy aktivít — je uložený vo vašom workspace a priradený k vášmu účtu.",
+      "s1UsageHeading": "Aktivita v aplikácii",
+      "s1UsageBody": "Zaznamenávame udalosti aktivity v workspace (napr. „deal vytvorený“, „úloha dokončená“) na napájanie vášho prehľadu aktivít a analytiky.",
+      "s1TechHeading": "Technické údaje",
+      "s1TechBody": "Štandardné serverové logy vrátane IP adries, typu prehliadača a časových pečiatok požiadaviek na účely bezpečnosti a ladenia.",
+      "s2Title": "2. Ako používame vaše údaje",
+      "s2Items": [
+        "Na poskytovanie a prevádzku platformy Gunimi",
+        "Na overenie vašej identity a zabezpečenie vášho workspacu",
+        "Na napájanie AI funkcií: relevantný obsah môže byť odoslaný do API OpenAI na generovanie zhrnutí a poznatkov (pozri sekciu 5)",
+        "Na odosielanie transakčných e-mailov (pozvánky do workspacu, overenie, notifikácie) prostredníctvom Postmark",
+        "Na monitorovanie chýb aplikácie a stability platformy prostredníctvom Sentry",
+        "Na pochopenie používania funkcií a zlepšenie produktu prostredníctvom PostHog (EU cloud)"
+      ],
+      "s2NoSell": "Vaše údaje nepredávame. Vaše údaje nepoužívame na reklamné účely.",
+      "s3Title": "3. Ukladanie a bezpečnosť údajov",
+      "s3Body1": "Vaše údaje sú uložené v Supabase na infraštruktúre v Severnej EÚ (Štokholm, Švédsko). Primárne dáta workspacu neukladáme mimo Európskej únie. Na úrovni databázy vynucujeme zabezpečenie na úrovni riadkov (RLS) — dáta workspacu sú prístupné iba overeným členom daného workspacu.",
+      "s3Body2": "Overovanie totožnosti zabezpečuje Supabase Auth pomocou e-mailu a hesla. Heslá sa nikdy neukladajú ako čistý text. Všetky spojenia sú šifrované protokolom TLS 1.3.",
+      "s3CommitmentLabel": "Záväzok k údajom:",
+      "s3CommitmentBody": "Zaväzujeme sa uchovávať dáta vášho workspacu. Pri škálovaní produktu môžu byť potrebné prevádzkové migrácie — v takom prípade poskytneme predbežné oznámenie a zaistíme integritu údajov.",
+      "s4Title": "4. Vaše práva (GDPR)",
+      "s4Intro": "Podľa Všeobecného nariadenia o ochrane údajov máte nasledovné práva:",
+      "s4Rights": [
+        "Prístup — požiadajte o kópiu osobných údajov, ktoré o vás uchovávame",
+        "Oprava — požiadajte o opravu nesprávnych alebo neúplných údajov",
+        "Vymazanie — požiadajte o vymazanie vášho účtu a súvisiacich osobných údajov",
+        "Prenosnosť — požiadajte o export dát vášho workspacu v štruktúrovanom formáte",
+        "Obmedzenie — požiadajte o obmedzenie spracúvania v určitých okolnostiach",
+        "Námietka — namietajte proti spracúvaniu na základe oprávnených záujmov"
+      ],
+      "s4ContactIntro": "Na uplatnenie ktoréhokoľvek z týchto práv nás kontaktujte na",
+      "s4ContactSuffix": ". Odpovieme do 30 dní.",
+      "s5Title": "5. AI a sprostredkovatelia spracúvania",
+      "s5Services": [
+        {"name": "OpenAI (AI funkcie)", "body": "Pri používaní AI funkcií sa relevantný obsah odošle do API OpenAI. Podmienky API spoločnosti OpenAI zakazujú použitie údajov odoslaných prostredníctvom API na trénovanie modelov. So spoločnosťou OpenAI máme uzatvorenú zmluvu o spracúvaní údajov. Prenos do USA sa riadi Štandardnými zmluvnými doložkami (SCC)."},
+        {"name": "Supabase (databáza a overovanie)", "body": "Databáza, overovanie a funkcie v reálnom čase. Údaje uložené v Severnej EÚ (Štokholm, Švédsko). Supabase je certifikovaný podľa SOC 2 Type II."},
+        {"name": "Postmark (transakčné e-maily)", "body": "Transakčné e-maily (overenie, pozvánky, notifikácie). E-mailové adresy sa zdieľajú len na účely doručenia."},
+        {"name": "PostHog (analytika)", "body": "Analytika používania cez PostHog EU cloud. Údaje uložené v EÚ. Žiadny osobný obsah z vášho workspacu sa do PostHog neodosiela."},
+        {"name": "Sentry (monitorovanie chýb)", "body": "Monitorovanie chýb aplikácie. Nakonfigurované tak, aby sa z chybových hlásení vylúčili osobne identifikovateľné informácie."},
+        {"name": "Upstash Redis (obmedzovanie rýchlosti)", "body": "ID používateľov uložené dočasne na účely obmedzenia rýchlosti. Okrem ID používateľa sa neukladajú žiadne osobné údaje."}
+      ],
+      "s6Title": "6. Medzinárodné prenosy údajov",
+      "s6Body": "Väčšina údajov sa spracúva v Európskej únii. Výnimkou je OpenAI (Spojené štáty), ktorý sa používa výhradne pre AI funkcie. Prenos sa riadi Štandardnými zmluvnými doložkami (SCC) podľa kapitoly V GDPR. OpenAI je taktiež certifikovaný v rámci rámca EÚ–USA pre ochranu údajov.",
+      "s7Title": "7. Uchovávanie údajov",
+      "s7Body": "Váš účet a dáta workspacu uchovávame po dobu aktivity vášho účtu. Ak požiadate o vymazanie, vaše osobné údaje odstránime do 30 dní, s výnimkou prípadov, kde to vyžaduje zákon.",
+      "s8Title": "8. Cookies",
+      "s8Body": "Gunimi používa relačné cookies poskytované Supabase Auth na udržanie prihlásenia. Tieto sú nevyhnutne potrebné na fungovanie služby a nesledujú vás na webových stránkach tretích strán.",
+      "s8LinkLabel": "Zásady cookies",
+      "s9Title": "9. Dozorný orgán",
+      "s9Body": "Máte právo podať sťažnosť na príslušný vnútroštátny dozorný orgán. Slovensko: Úrad na ochranu osobných údajov SR (dataprotection.gov.sk). Česká republika: Úřad pro ochranu osobních údajů (uoou.cz). Ostatné krajiny EÚ: kontaktujte miestny dozorný orgán.",
+      "s10Title": "10. Google API služby",
+      "s10LimitedUseLabel": "Vyhlásenie o obmedzenom použití",
+      "s10LimitedUseBody": "Použitie a prenos informácií prijatých z Google API do akejkoľvek inej aplikácie spoločnosťou Gunimi bude v súlade so Zásadami používania údajov používateľov služieb Google API vrátane požiadaviek na obmedzené použitie.",
+      "s10GooglePolicyLink": "Zásady používania údajov používateľov služieb Google API",
+      "s10GoogleScopesIntro": "Pri prepojení účtu Google môžeme v závislosti od aktivovaných integrácií pristupovať k nasledujúcim údajom:",
+      "s10GoogleScopes": [
+        "Gmail: čítanie hlavičiek e-mailov a obsahu správ na zobrazenie komunikačného kontextu vo vašom workspace",
+        "Google Kalendár: čítanie a vytváranie kalendárových udalostí na podporu plánovania a prípravu stretnutí",
+        "Profil Google: vaše meno a e-mailová adresa na overenie totožnosti a identitu v workspace"
+      ],
+      "s10GoogleProhibitionsIntro": "Dáta používateľov Google sa používajú výhradne na funkcie, ktoré ste požadovali. Nevykonávame:",
+      "s10GoogleProhibitions": [
+        "Prenos dát používateľov Google tretím stranám okrem prípadov potrebných na prevádzku a zlepšenie našej služby",
+        "Použitie dát používateľov Google na reklamné účely",
+        "Umožnenie ľuďom čítať vaše dáta z Google bez výslovného súhlasu alebo bezpečnostnej potreby",
+        "Použitie dát používateľov Google na trénovanie AI alebo modelov strojového učenia"
+      ],
+      "s11Title": "11. Kontakt",
+      "s11Body": "Pre otázky k ochrane súkromia, žiadosti o údaje alebo sťažnosti nás kontaktujte na"
     },
     "terms": {
       "badge": "Právne",

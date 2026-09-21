@@ -155,7 +155,7 @@ export function SidebarHeader({
             </p>
           ) : (
             <p className="mt-px text-[10px] tracking-[0.06em] text-[#9AA3B2]/45">
-              AI Workspace OS
+              Every client. Always remembered.
             </p>
           )}
         </div>

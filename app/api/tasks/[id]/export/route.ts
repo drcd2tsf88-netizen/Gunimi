@@ -248,7 +248,7 @@ export async function GET(
     </div>
 
     <div class="footer">
-      <span>Gunimi — AI Workspace OS &mdash; gunimi.com</span>
+      <span>Gunimi — Every client. Always remembered. &mdash; gunimi.com</span>
       <span>Task ID: ${task.id}</span>
     </div>
 

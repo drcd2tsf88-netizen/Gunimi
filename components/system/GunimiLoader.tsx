@@ -48,7 +48,7 @@ export default function GunimiLoader() {
           Gunimi
         </p>
         <p className="text-[11px] tracking-[0.18em] uppercase text-[#9AA3B2]/60">
-          AI Workspace OS
+          Every client. Always remembered.
         </p>
       </motion.div>
 

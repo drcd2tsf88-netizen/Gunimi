@@ -89,8 +89,12 @@ export async function sendWelcomeOnboarding({ email, name }: Props): Promise<voi
                   If something doesn't work — or you have an idea — there's a feedback button built directly into your workspace. Press <strong style="color:#F7F8FC;">?</strong> on your keyboard from anywhere inside Gunimi, or look for the small button in the bottom-left corner of the sidebar. I read every submission during Alpha personally.
                 </p>
 
-                <p class="body-text" style="margin:0 0 28px;font-size:15px;line-height:1.75;color:#9AA3B2;">
+                <p class="body-text" style="margin:0 0 18px;font-size:15px;line-height:1.75;color:#9AA3B2;">
                   What Gunimi is at its core: contacts, deals, notes, tasks, email, and relationship intelligence — all in one workspace. No switching between six different tools. Your context travels with you.
+                </p>
+
+                <p class="body-text" style="margin:0 0 28px;font-size:15px;line-height:1.75;color:#9AA3B2;">
+                  If you'd like a quick 15-minute walkthrough — just reply to this email. During Alpha I'm doing these personally.
                 </p>
 
                 <!-- CTA -->
@@ -129,7 +133,7 @@ export async function sendWelcomeOnboarding({ email, name }: Props): Promise<voi
           <tr>
             <td style="padding:24px 0;text-align:center;">
               <p style="margin:0;font-size:12px;color:rgba(154,163,178,0.35);line-height:1.5;">
-                Gunimi &mdash; AI Workspace OS<br />
+                Gunimi &mdash; Every client. Always remembered.<br />
                 <a href="${appUrl}" style="color:rgba(109,91,255,0.45);text-decoration:none;">${appUrl}</a>
               </p>
             </td>
@@ -154,6 +158,8 @@ Gunimi is in early Alpha. Most things work well — but some are still being bui
 If something doesn't work — or you have an idea — there's a feedback button built directly into your workspace. Press "?" on your keyboard from anywhere inside Gunimi, or look for the small button in the bottom-left corner of the sidebar. I read every submission during Alpha personally.
 
 What Gunimi is at its core: contacts, deals, notes, tasks, email, and relationship intelligence — all in one workspace. No switching between six different tools. Your context travels with you.
+
+If you'd like a quick 15-minute walkthrough — just reply to this email. During Alpha I'm doing these personally.
 
 Open my workspace: ${dashboardUrl}
 

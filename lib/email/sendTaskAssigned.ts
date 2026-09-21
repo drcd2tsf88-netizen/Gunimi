@@ -128,7 +128,7 @@ export async function sendTaskAssigned({ email, taskTitle, workspaceName, href, 
           <tr>
             <td style="padding:24px 0;text-align:center;">
               <p class="footer-text" style="margin:0;font-size:12px;color:rgba(154,163,178,0.4);line-height:1.5;">
-                Gunimi &mdash; AI Workspace OS<br />
+                Gunimi &mdash; Every client. Always remembered.<br />
                 <a href="${process.env.NEXT_PUBLIC_APP_URL}" style="color:rgba(109,91,255,0.5);text-decoration:none;">${process.env.NEXT_PUBLIC_APP_URL}</a>
               </p>
             </td>
