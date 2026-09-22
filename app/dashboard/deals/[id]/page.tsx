@@ -13,6 +13,8 @@ import { getAttachments } from "@/server/actions/attachments/getAttachments";
 import { getTeams } from "@/server/actions/organization/getTeams";
 import { getWorkspaceMembers } from "@/server/actions/workspace/getWorkspaceMembers";
 import { getDealOrders } from "@/server/actions/deals/getDealOrders";
+import { getCalendarConnections } from "@/server/actions/calendar/getCalendarConnections";
+import { getDealUpcomingMeetings } from "@/server/actions/calendar/getDealUpcomingMeetings";
 
 import DealDetailView from "@/components/deals/detail/DealDetailView";
 import type { WorkspaceMember } from "@/types/task";
@@ -32,7 +34,7 @@ export default async function DealPage({ params }: Props) {
   const companyId = dealData.deal.company?.id ?? null;
   const contactId = dealData.deal.contact?.id ?? null;
 
-  const [companies, contacts, notes, tasks, stages, allTags, entityTags, attachments, teams, members, orders] = await Promise.all([
+  const [companies, contacts, notes, tasks, stages, allTags, entityTags, attachments, teams, members, orders, calendarConnections, upcomingMeetings] = await Promise.all([
     getCompanies(),
     getContacts(),
     getDealRelatedNotes(companyId, contactId),
@@ -44,6 +46,8 @@ export default async function DealPage({ params }: Props) {
     getTeams(),
     getWorkspaceMembers(),
     getDealOrders(id),
+    getCalendarConnections(),
+    getDealUpcomingMeetings(id),
   ]);
 
   return (
@@ -68,6 +72,8 @@ export default async function DealPage({ params }: Props) {
         teams={teams}
         members={members as unknown as WorkspaceMember[]}
         orders={orders}
+        hasCalendar={calendarConnections.length > 0}
+        upcomingMeetings={upcomingMeetings}
       />
     </div>
   );

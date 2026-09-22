@@ -691,10 +691,10 @@ function ContactsSection({ nav }: { nav: DemoNav }) {
       <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">{tDemo("commandContacts")}</h2>
       <div className="overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#0A0E17]">
         <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#9AA3B2]/40 sm:grid-cols-[1fr_1fr_auto_auto]">
-          <span>Name</span>
-          <span className="hidden sm:block">Company</span>
+          <span>{tDemo("columnName")}</span>
+          <span className="hidden sm:block">{tDemo("columnCompany")}</span>
           <span className="hidden sm:block">{tDemo("detailLastContact")}</span>
-          <span>Status</span>
+          <span>{tDemo("columnStatus")}</span>
         </div>
         {DEMO_CONTACTS.map((c, i) => {
           const pill = statusPill(c.status);

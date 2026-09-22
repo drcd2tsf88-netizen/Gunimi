@@ -204,6 +204,7 @@ function ContactRow({
   onEdit: (e: React.MouseEvent) => void;
   onDelete: (e: React.MouseEvent) => void;
 }) {
+  const t = useTranslations("crm");
   const statusKey = contact.status === "lead" || contact.status === "won" ? contact.status : "_other";
   const borderClass = STATUS_BORDER[statusKey];
   const dotClass = STATUS_DOT[statusKey];
@@ -297,7 +298,7 @@ function ContactRow({
         <button
           onClick={onPriority}
           className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.06]"
-          title="Priority"
+          title={t("priorityToggle")}
         >
           <Star
             size={13}
@@ -604,7 +605,7 @@ export default function CRMPageView({ initialContacts, initialContactTagsMap = {
               <p className="flex-[2] text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600">{t("contactName")}</p>
               <p className="hidden flex-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 sm:block">{t("contactPosition")}</p>
               <p className="hidden flex-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 lg:block">{t("company")}</p>
-              <p className="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 xl:block" style={{ minWidth: 80 }}>Tags</p>
+              <p className="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 xl:block" style={{ minWidth: 80 }}>{t("tags")}</p>
               <p className="hidden w-16 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 sm:block">{t("status")}</p>
               <p className="hidden w-12 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-600 sm:block">{t("health")}</p>
               <div className="w-[88px]" />

@@ -360,7 +360,10 @@
     "groupWon": "Vyhraní",
     "groupOther": "Ostatní",
     "noPosition": "Bez pozice",
-    "health": "Zdraví"
+    "health": "Zdraví",
+    "priorityToggle": "Přepnout prioritu",
+    "status": "Stav",
+    "tags": "Štítky"
   },
   "tasks": {
     "workManagement": "Řízení práce",
@@ -474,7 +477,14 @@
     "priorityChanged": "Priorita aktualizována",
     "subtaskDeleted": "Dílčí úkol odstraněn",
     "failedToDeleteSubtask": "Nepodařilo se odstranit dílčí úkol",
-    "removeSubtask": "Odstranit dílčí úkol"
+    "removeSubtask": "Odstranit dílčí úkol",
+    "editorBold": "Tučné",
+    "editorItalic": "Kurzíva",
+    "editorUnderline": "Podtržení",
+    "editorHighlight": "Zvýraznění",
+    "editorBulletList": "Seznam",
+    "editorOrderedList": "Číslovaný seznam",
+    "editorEmoji": "Emoji"
   },
   "companies": {
     "intelligence": "Firemní inteligence",
@@ -838,7 +848,8 @@
     "contextLabelOwner": "Vlastník",
     "contextEmptyTitle": "Žádný kontext není k dispozici",
     "contextEmptyDescription": "Propojte společnost nebo kontakt a začněte budovat kontext pro tuto příležitost.",
-    "pageTitle": "Obchody"
+    "pageTitle": "Obchody",
+    "scheduleMeetingShort": "Schůzka"
   },
   "notes": {
     "badge": "Znalostní báze pracovního prostoru",
@@ -896,7 +907,8 @@
     "toolbarCode": "Inline kód",
     "toolbarAlignLeft": "Zarovnat vlevo",
     "toolbarAlignCenter": "Zarovnat na střed",
-    "toolbarAlignRight": "Zarovnat vpravo"
+    "toolbarAlignRight": "Zarovnat vpravo",
+    "editorEmoji": "Emoji"
   },
   "automations": {
     "badge": "Gunimi Automatizace",
@@ -1165,7 +1177,8 @@
     "headerLastContactedWeeksAgo": "před {weeks} týdny",
     "headerLastContactedMonthsAgo": "před {months} měsíci",
     "headerLastContactedNever": "Nikdy nekontaktován",
-    "pageTitle": "Kontakty"
+    "pageTitle": "Kontakty",
+    "scheduleMeetingShort": "Schůzka"
   },
   "common": {
     "create": "Vytvořit",
@@ -1850,7 +1863,34 @@
     "aiMeetingPrepHint": "Vygenerujte AI přípravu pro kontext, navrhovaná témata a klíčové body k této schůzce.",
     "markAsMet": "Označit jako absolvované",
     "metLogged": "Schůzka zaznamenána",
-    "metFailed": "Nepodařilo se zaznamenat schůzku"
+    "metFailed": "Nepodařilo se zaznamenat schůzku",
+    "scheduleMeeting": "Naplánovat schůzku",
+    "scheduleMeetingSubtitle": "Vytvoří událost ve vašem propojeném Google Kalendáři",
+    "meetingTitleLabel": "Název schůzky",
+    "meetingTitlePlaceholder": "např. Navazující hovor",
+    "meetingDateLabel": "Datum",
+    "meetingTimeLabel": "Čas začátku",
+    "meetingDurationLabel": "Délka",
+    "meetingLocationLabel": "Místo",
+    "meetingLocationPlaceholder": "např. Zoom, telefon, kancelář",
+    "meetingNotesLabel": "Poznámky",
+    "meetingNotesPlaceholder": "Program, kontext...",
+    "scheduleBtn": "Naplánovat",
+    "scheduling": "Plánuji...",
+    "meetingScheduled": "Schůzka naplánována",
+    "meetingScheduleFailed": "Nepodařilo se naplánovat schůzku",
+    "meetingScheduleReconnect": "Google Kalendář je potřeba znovu připojit",
+    "meetingScheduleReconnectHint": "Vaše připojení nemá oprávnění k zápisu. Odpojte a znovu připojte Google Kalendář v Nastavení → Integrace.",
+    "meetingScheduleTokenExpired": "Relace Google Kalendáře vypršela. Znovu se připojte v Nastavení → Integrace.",
+    "noCalendarForSchedule": "Žádný kalendář nepřipojen",
+    "noCalendarForScheduleHint": "Připojte Google Kalendář v Nastavení → Integrace.",
+    "duration15": "15 min",
+    "duration30": "30 min",
+    "duration45": "45 min",
+    "duration60": "1 hodina",
+    "duration90": "1,5 hodiny",
+    "duration120": "2 hodiny",
+    "upcomingMeetings": "Nadcházející schůzky"
   },
   "email": {
     "badge": "E-mail",
@@ -1955,7 +1995,8 @@
     "reconnectBanner": "Odesílání emailů vyžaduje aktualizovaná oprávnění. Znovu propojte Gmail účet.",
     "reconnectAction": "Znovu propojit Gmail",
     "aiDraft": "AI návrh",
-    "aiDraftFailed": "AI návrh není dostupný"
+    "aiDraftFailed": "AI návrh není dostupný",
+    "composeToPlaceholder": "email@priklad.cz"
   },
   "workspace": {
     "createWorkspace": "Vytvořit pracovní prostor",
@@ -3796,12 +3837,30 @@
       "s4ContactSuffix": ". Odpovíme do 30 dnů.",
       "s5Title": "5. AI a zpracovatelé dat",
       "s5Services": [
-        {"name": "OpenAI (funkce AI)", "body": "Při používání funkcí AI je relevantní obsah odeslán do API OpenAI. Podmínky API společnosti OpenAI zakazují použití dat odeslaných prostřednictvím API k trénování modelů. Se společností OpenAI máme uzavřenou smlouvu o zpracování dat. Přenos do USA se řídí Standardními smluvními doložkami (SCC)."},
-        {"name": "Supabase (databáze a ověřování)", "body": "Databáze, ověřování a funkce v reálném čase. Data uložena v severní EU (Stockholm, Švédsko). Supabase je certifikován dle SOC 2 Type II."},
-        {"name": "Postmark (transakční e-maily)", "body": "Transakční e-maily (ověření, pozvánky, notifikace). E-mailové adresy sdíleny pouze pro účely doručení."},
-        {"name": "PostHog (analytika)", "body": "Analytika využití prostřednictvím PostHog EU cloudu. Data uložena v EU. Žádný osobní obsah z vašeho workspacu není do PostHog odesílán."},
-        {"name": "Sentry (monitoring chyb)", "body": "Monitoring chyb aplikace a hlášení pádů. Nakonfigurováno tak, aby z chybových hlášení byly vyloučeny osobně identifikovatelné informace."},
-        {"name": "Upstash Redis (omezování rychlosti)", "body": "ID uživatelů uložena dočasně pro omezení rychlosti. Kromě ID uživatele nejsou ukládána žádná osobní data."}
+        {
+          "name": "OpenAI (funkce AI)",
+          "body": "Při používání funkcí AI je relevantní obsah odeslán do API OpenAI. Podmínky API společnosti OpenAI zakazují použití dat odeslaných prostřednictvím API k trénování modelů. Se společností OpenAI máme uzavřenou smlouvu o zpracování dat. Přenos do USA se řídí Standardními smluvními doložkami (SCC)."
+        },
+        {
+          "name": "Supabase (databáze a ověřování)",
+          "body": "Databáze, ověřování a funkce v reálném čase. Data uložena v severní EU (Stockholm, Švédsko). Supabase je certifikován dle SOC 2 Type II."
+        },
+        {
+          "name": "Postmark (transakční e-maily)",
+          "body": "Transakční e-maily (ověření, pozvánky, notifikace). E-mailové adresy sdíleny pouze pro účely doručení."
+        },
+        {
+          "name": "PostHog (analytika)",
+          "body": "Analytika využití prostřednictvím PostHog EU cloudu. Data uložena v EU. Žádný osobní obsah z vašeho workspacu není do PostHog odesílán."
+        },
+        {
+          "name": "Sentry (monitoring chyb)",
+          "body": "Monitoring chyb aplikace a hlášení pádů. Nakonfigurováno tak, aby z chybových hlášení byly vyloučeny osobně identifikovatelné informace."
+        },
+        {
+          "name": "Upstash Redis (omezování rychlosti)",
+          "body": "ID uživatelů uložena dočasně pro omezení rychlosti. Kromě ID uživatele nejsou ukládána žádná osobní data."
+        }
       ],
       "s6Title": "6. Mezinárodní přenosy dat",
       "s6Body": "Většina dat je zpracovávána v Evropské unii. Výjimkou je OpenAI (Spojené státy), používaný výhradně pro funkce AI. Přenos se řídí Standardními smluvními doložkami (SCC) dle kapitoly V GDPR. OpenAI je také certifikován v rámci rámce EU–USA pro ochranu dat.",
@@ -4089,7 +4148,10 @@
     "activityNote": "Poznámka přidána",
     "activityDealUpdate": "Obchod aktualizován",
     "activityCreated": "Kontakt vytvořen",
-    "activitySection": "Aktivita"
+    "activitySection": "Aktivita",
+    "columnName": "Jméno",
+    "columnStatus": "Stav",
+    "columnCompany": "Společnost"
   },
   "invite": {
     "loadingTitle": "Načítání pozvánky",
@@ -4206,7 +4268,36 @@
     "filterEmails": "E-mail",
     "filterDeals": "Obchody",
     "filterActivity": "Aktivita",
-    "filterFiles": "Soubory"
+    "filterFiles": "Soubory",
+    "activityType": {
+      "calendar_disconnected": "Kalendář odpojen",
+      "calendar_event_created": "Schůzka naplánována",
+      "company_deleted": "Společnost odstraněna",
+      "company_updated": "Společnost aktualizována",
+      "contact_created": "Kontakt vytvořen",
+      "contact_deleted": "Kontakt odstraněn",
+      "contact_merged": "Kontakty sloučeny",
+      "contact_stale": "Kontakt vyžaduje pozornost",
+      "contact_updated": "Kontakt aktualizován",
+      "deal_deleted": "Obchod odstraněn",
+      "deal_updated": "Obchod aktualizován",
+      "email_disconnected": "E-mail odpojen",
+      "email_sent": "E-mail odeslán",
+      "invite_sent": "Pozvánka odeslána",
+      "meeting_held": "Schůzka uskutečněna",
+      "member_removed": "Člen odebrán",
+      "note_created": "Poznámka vytvořena",
+      "note_deleted": "Poznámka odstraněna",
+      "note_updated": "Poznámka aktualizována",
+      "task_assigned": "Úkol přiřazen",
+      "task_comment": "Komentář přidán",
+      "task_deleted": "Úkol odstraněn",
+      "task_done": "Úkol dokončen",
+      "task_due_changed": "Termín změněn",
+      "task_updated": "Úkol aktualizován",
+      "workspace_created": "Workspace vytvořen",
+      "workspace_renamed": "Workspace přejmenován"
+    }
   },
   "attachments": {
     "badge": "Soubory",
@@ -4674,5 +4765,11 @@
         "ctaLabel": "Začít zdarma — Bez platební karty"
       }
     }
+  },
+  "editor": {
+    "bold": "Tučné",
+    "italic": "Kurzíva",
+    "underline": "Podtržení",
+    "emoji": "Emoji"
   }
 }

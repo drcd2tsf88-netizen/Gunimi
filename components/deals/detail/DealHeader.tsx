@@ -8,6 +8,7 @@ import {
   Activity,
   ArrowLeft,
   Calendar,
+  CalendarPlus,
   ChevronDown,
   Pencil,
   Target,
@@ -91,11 +92,12 @@ function computeHealth(deal: Deal): { key: HealthKey; labelKey: "healthStatusHea
 type Props = {
   deal: Deal;
   onEdit: () => void;
+  onSchedule?: () => void;
   allTags: WorkspaceTag[];
   entityTags: WorkspaceTag[];
 };
 
-export default function DealHeader({ deal, onEdit, allTags, entityTags }: Props) {
+export default function DealHeader({ deal, onEdit, onSchedule, allTags, entityTags }: Props) {
   const t = useTranslations("deals");
   const tc = useTranslations("common");
   const router = useRouter();
@@ -266,6 +268,16 @@ export default function DealHeader({ deal, onEdit, allTags, entityTags }: Props)
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
 
+          {onSchedule && (
+            <GunimiButton
+              variant="secondary"
+              className="h-8 gap-1.5 px-3 text-xs"
+              onClick={onSchedule}
+            >
+              <CalendarPlus size={12} />
+              {t("scheduleMeetingShort")}
+            </GunimiButton>
+          )}
           <GunimiButton
             variant="secondary"
             className="h-8 gap-1.5 px-3 text-xs"

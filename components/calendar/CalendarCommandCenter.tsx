@@ -1526,6 +1526,9 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
         html_link: null,
         status: "confirmed",
         all_day: false,
+        contact_id: null,
+        deal_id: null,
+        company_id: null,
       };
       setLocalEvents((prev) =>
         [...prev, newRow].sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime()),

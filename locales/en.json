@@ -360,7 +360,10 @@
     "groupWon": "Won",
     "groupOther": "Other",
     "noPosition": "No position",
-    "health": "Health"
+    "health": "Health",
+    "priorityToggle": "Toggle priority",
+    "status": "Status",
+    "tags": "Tags"
   },
   "tasks": {
     "workManagement": "Work Management",
@@ -474,7 +477,14 @@
     "priorityChanged": "Priority updated",
     "subtaskDeleted": "Subtask removed",
     "failedToDeleteSubtask": "Failed to remove subtask",
-    "removeSubtask": "Remove subtask"
+    "removeSubtask": "Remove subtask",
+    "editorBold": "Bold",
+    "editorItalic": "Italic",
+    "editorUnderline": "Underline",
+    "editorHighlight": "Highlight",
+    "editorBulletList": "Bullet list",
+    "editorOrderedList": "Ordered list",
+    "editorEmoji": "Emoji"
   },
   "companies": {
     "intelligence": "Company Intelligence",
@@ -838,7 +848,8 @@
     "contextLabelOwner": "Owner",
     "contextEmptyTitle": "No context available",
     "contextEmptyDescription": "Link a company or contact to start building context for this opportunity.",
-    "pageTitle": "Deals"
+    "pageTitle": "Deals",
+    "scheduleMeetingShort": "Meeting"
   },
   "notes": {
     "badge": "Workspace Knowledge",
@@ -896,7 +907,8 @@
     "toolbarCode": "Inline code",
     "toolbarAlignLeft": "Align left",
     "toolbarAlignCenter": "Align center",
-    "toolbarAlignRight": "Align right"
+    "toolbarAlignRight": "Align right",
+    "editorEmoji": "Emoji"
   },
   "automations": {
     "badge": "Gunimi Automation Engine",
@@ -1165,7 +1177,8 @@
     "headerLastContactedWeeksAgo": "{weeks} weeks ago",
     "headerLastContactedMonthsAgo": "{months} months ago",
     "headerLastContactedNever": "Never contacted",
-    "pageTitle": "Contacts"
+    "pageTitle": "Contacts",
+    "scheduleMeetingShort": "Meeting"
   },
   "common": {
     "create": "Create",
@@ -1850,7 +1863,34 @@
     "aiMeetingPrepHint": "Generate AI prep to get context, suggested topics and key points for this meeting.",
     "markAsMet": "Mark as Met",
     "metLogged": "Meeting logged",
-    "metFailed": "Failed to log meeting"
+    "metFailed": "Failed to log meeting",
+    "scheduleMeeting": "Schedule Meeting",
+    "scheduleMeetingSubtitle": "Creates an event in your connected Google Calendar",
+    "meetingTitleLabel": "Meeting Title",
+    "meetingTitlePlaceholder": "e.g. Follow-up call",
+    "meetingDateLabel": "Date",
+    "meetingTimeLabel": "Start Time",
+    "meetingDurationLabel": "Duration",
+    "meetingLocationLabel": "Location",
+    "meetingLocationPlaceholder": "e.g. Zoom, phone, office",
+    "meetingNotesLabel": "Notes",
+    "meetingNotesPlaceholder": "Agenda, context...",
+    "scheduleBtn": "Schedule",
+    "scheduling": "Scheduling...",
+    "meetingScheduled": "Meeting scheduled",
+    "meetingScheduleFailed": "Failed to schedule meeting",
+    "meetingScheduleReconnect": "Google Calendar needs to be reconnected",
+    "meetingScheduleReconnectHint": "Your connection is missing write permission. Disconnect and reconnect Google Calendar in Settings → Integrations.",
+    "meetingScheduleTokenExpired": "Your Google Calendar session has expired. Please reconnect in Settings → Integrations.",
+    "noCalendarForSchedule": "No calendar connected",
+    "noCalendarForScheduleHint": "Connect Google Calendar in Settings → Integrations to enable scheduling.",
+    "duration15": "15 min",
+    "duration30": "30 min",
+    "duration45": "45 min",
+    "duration60": "1 hour",
+    "duration90": "1.5 hours",
+    "duration120": "2 hours",
+    "upcomingMeetings": "Upcoming meetings"
   },
   "email": {
     "badge": "Email",
@@ -1955,7 +1995,8 @@
     "reconnectBanner": "Email sending requires updated permissions. Please reconnect your Gmail account.",
     "reconnectAction": "Reconnect Gmail",
     "aiDraft": "AI Draft",
-    "aiDraftFailed": "AI draft unavailable"
+    "aiDraftFailed": "AI draft unavailable",
+    "composeToPlaceholder": "email@example.com"
   },
   "workspace": {
     "createWorkspace": "Create Workspace",
@@ -3796,12 +3837,30 @@
       "s4ContactSuffix": ". We will respond within 30 days.",
       "s5Title": "5. AI & Third-Party Processors",
       "s5Services": [
-        {"name": "OpenAI (AI features)", "body": "When you use AI features, relevant content is sent to OpenAI's API. OpenAI's API Terms contractually prohibit use of API-submitted data to train models. We have a data processing agreement with OpenAI. As a US company, data transfer is governed by Standard Contractual Clauses (SCCs)."},
-        {"name": "Supabase (database & auth)", "body": "Database, authentication, and real-time features. Data stored in North EU (Stockholm, Sweden). Supabase is SOC 2 Type II certified."},
-        {"name": "Postmark (transactional email)", "body": "Transactional emails (verification, invites, notifications). Email addresses shared only for delivery purposes."},
-        {"name": "PostHog (analytics)", "body": "Usage analytics via PostHog EU cloud. Data stored in the EU. No personal content from your workspace is sent to PostHog."},
-        {"name": "Sentry (error monitoring)", "body": "Application error monitoring and crash reporting. Configured to exclude personally identifiable information from error payloads."},
-        {"name": "Upstash Redis (rate limiting)", "body": "User IDs stored temporarily for rate limiting. No personal data beyond user ID is stored."}
+        {
+          "name": "OpenAI (AI features)",
+          "body": "When you use AI features, relevant content is sent to OpenAI's API. OpenAI's API Terms contractually prohibit use of API-submitted data to train models. We have a data processing agreement with OpenAI. As a US company, data transfer is governed by Standard Contractual Clauses (SCCs)."
+        },
+        {
+          "name": "Supabase (database & auth)",
+          "body": "Database, authentication, and real-time features. Data stored in North EU (Stockholm, Sweden). Supabase is SOC 2 Type II certified."
+        },
+        {
+          "name": "Postmark (transactional email)",
+          "body": "Transactional emails (verification, invites, notifications). Email addresses shared only for delivery purposes."
+        },
+        {
+          "name": "PostHog (analytics)",
+          "body": "Usage analytics via PostHog EU cloud. Data stored in the EU. No personal content from your workspace is sent to PostHog."
+        },
+        {
+          "name": "Sentry (error monitoring)",
+          "body": "Application error monitoring and crash reporting. Configured to exclude personally identifiable information from error payloads."
+        },
+        {
+          "name": "Upstash Redis (rate limiting)",
+          "body": "User IDs stored temporarily for rate limiting. No personal data beyond user ID is stored."
+        }
       ],
       "s6Title": "6. International Data Transfers",
       "s6Body": "Most data is processed within the European Union. The exception is OpenAI (United States), used exclusively for AI features. This transfer is governed by Standard Contractual Clauses (SCCs) as required under GDPR Chapter V. OpenAI is also certified under the EU–US Data Privacy Framework.",
@@ -4089,7 +4148,10 @@
     "activityNote": "Note added",
     "activityDealUpdate": "Deal updated",
     "activityCreated": "Contact created",
-    "activitySection": "Activity"
+    "activitySection": "Activity",
+    "columnName": "Name",
+    "columnStatus": "Status",
+    "columnCompany": "Company"
   },
   "invite": {
     "loadingTitle": "Loading Invitation",
@@ -4206,7 +4268,36 @@
     "filterEmails": "Email",
     "filterDeals": "Deals",
     "filterActivity": "Activity",
-    "filterFiles": "Files"
+    "filterFiles": "Files",
+    "activityType": {
+      "calendar_disconnected": "Calendar disconnected",
+      "calendar_event_created": "Meeting scheduled",
+      "company_deleted": "Company deleted",
+      "company_updated": "Company updated",
+      "contact_created": "Contact created",
+      "contact_deleted": "Contact deleted",
+      "contact_merged": "Contacts merged",
+      "contact_stale": "Contact needs attention",
+      "contact_updated": "Contact updated",
+      "deal_deleted": "Deal deleted",
+      "deal_updated": "Deal updated",
+      "email_disconnected": "Email disconnected",
+      "email_sent": "Email sent",
+      "invite_sent": "Invite sent",
+      "meeting_held": "Meeting held",
+      "member_removed": "Member removed",
+      "note_created": "Note created",
+      "note_deleted": "Note deleted",
+      "note_updated": "Note updated",
+      "task_assigned": "Task assigned",
+      "task_comment": "Comment added",
+      "task_deleted": "Task deleted",
+      "task_done": "Task completed",
+      "task_due_changed": "Due date changed",
+      "task_updated": "Task updated",
+      "workspace_created": "Workspace created",
+      "workspace_renamed": "Workspace renamed"
+    }
   },
   "attachments": {
     "badge": "Files",
@@ -4674,5 +4765,11 @@
         "ctaLabel": "Start Free — No credit card"
       }
     }
+  },
+  "editor": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "emoji": "Emoji"
   }
 }

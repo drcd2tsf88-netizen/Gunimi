@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import GunimiButton from "@/components/ui/GunimiButton";
 
@@ -52,6 +53,7 @@ function SheetContent({
   showCloseButton = true,
   ...props
 }: SheetContentProps) {
+  const t = useTranslations("common");
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -119,7 +121,7 @@ function SheetContent({
               "
             >
               <XIcon size={16} />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{t("close")}</span>
             </GunimiButton>
           </DialogPrimitive.Close>
         )}

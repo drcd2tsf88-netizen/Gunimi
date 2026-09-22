@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { ArrowLeft, Mail, Pencil, Phone, Trash2, Building2, Clock, User } from "lucide-react";
+import { ArrowLeft, CalendarPlus, Mail, Pencil, Phone, Trash2, Building2, Clock, User } from "lucide-react";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 
@@ -59,9 +59,10 @@ type Props = {
   contact: Contact;
   allTags: WorkspaceTag[];
   entityTags: WorkspaceTag[];
+  onSchedule?: () => void;
 };
 
-export default function ContactHeader({ contact, allTags, entityTags }: Props) {
+export default function ContactHeader({ contact, allTags, entityTags, onSchedule }: Props) {
   const t = useTranslations("contacts");
   const tc = useTranslations("common");
   const tCrm = useTranslations("crm");
@@ -192,6 +193,16 @@ export default function ContactHeader({ contact, allTags, entityTags }: Props) {
 
         {/* Right — actions */}
         <div className="flex shrink-0 items-center gap-2 sm:pt-0.5">
+          {onSchedule && (
+            <GunimiButton
+              variant="secondary"
+              className="h-8 gap-1.5 px-3 text-xs"
+              onClick={onSchedule}
+            >
+              <CalendarPlus size={12} />
+              {t("scheduleMeetingShort")}
+            </GunimiButton>
+          )}
           <GunimiButton
             variant="secondary"
             className="h-8 gap-1.5 px-3 text-xs"

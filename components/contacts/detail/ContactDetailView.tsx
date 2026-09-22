@@ -57,6 +57,7 @@ import OpenTasksStrip from "@/components/tasks/OpenTasksStrip";
 import { cn } from "@/lib/utils";
 import { ORDER_STATUS_STYLES } from "@/lib/orders/styles";
 import { formatOrderAmount, computeOrderTotal, type Order } from "@/types/order";
+import ScheduleMeetingSheet from "@/components/calendar/ScheduleMeetingSheet";
 
 const CONTACT_PREP_ICONS: Record<ContactPrepItem["iconKey"], LucideIcon> = {
   company: Building2,
@@ -92,6 +93,7 @@ type Props = {
   orders: Order[];
   upcomingMeetings?: CalendarEventRow[];
   businessMemories?: BusinessMemory[];
+  hasCalendar?: boolean;
 };
 
 export default function ContactDetailView({
@@ -109,10 +111,14 @@ export default function ContactDetailView({
   orders,
   upcomingMeetings = [],
   businessMemories = [],
+  hasCalendar = false,
 }: Props) {
   const router = useRouter();
   const t = useTranslations("contacts");
+
   const tOrders = useTranslations("orders");
+
+  const [scheduleOpen, setScheduleOpen] = useState(false);
 
   const decision = useMemo(
     () => resolveContactDecision(contact, tasks, deals),
@@ -427,11 +433,18 @@ export default function ContactDetailView({
 
   return (
     <div className="space-y-6">
-      <ContactHeader contact={contact} allTags={allTags} entityTags={entityTags} />
+      <ContactHeader contact={contact} allTags={allTags} entityTags={entityTags} onSchedule={() => setScheduleOpen(true)} />
       <GunimiWorkspaceTabs
         tabs={tabs}
         defaultTab="overview"
         listLabel={t("workspaceTabsLabel")}
+      />
+      <ScheduleMeetingSheet
+        open={scheduleOpen}
+        onOpenChange={setScheduleOpen}
+        hasCalendar={hasCalendar}
+        defaultTitle={contact.name ? `Meeting with ${contact.name}` : ""}
+        contactId={contact.id}
       />
     </div>
   );

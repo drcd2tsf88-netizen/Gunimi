@@ -19,4 +19,7 @@ export type CalendarEventRow = {
   html_link: string | null;
   status: "confirmed" | "tentative" | "cancelled";
   all_day: boolean;
+  contact_id: string | null;
+  deal_id: string | null;
+  company_id: string | null;
 };

@@ -200,6 +200,15 @@ function relativeTime(dateStr: string): string {
   return new Date(dateStr).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
 }
 
+const KNOWN_ACTIVITY_TYPES = new Set([
+  "calendar_disconnected","calendar_event_created","company_deleted","company_updated",
+  "contact_created","contact_deleted","contact_merged","contact_stale","contact_updated",
+  "deal_deleted","deal_updated","email_disconnected","email_sent","invite_sent",
+  "meeting_held","member_removed","note_created","note_deleted","note_updated",
+  "task_assigned","task_comment","task_deleted","task_done","task_due_changed",
+  "task_updated","workspace_created","workspace_renamed",
+]);
+
 const FILTER_KINDS: { id: FilterKind; labelKey: string }[] = [
   { id: "all",      labelKey: "filterAll"      },
   { id: "note",     labelKey: "filterNotes"    },
@@ -342,7 +351,9 @@ export default function WorkspaceTimeline({
                               event.done ? "text-zinc-500 line-through" : "text-white/85",
                             )}
                           >
-                            {event.title}
+                            {event.kind === "activity" && event.subtype && KNOWN_ACTIVITY_TYPES.has(event.subtype)
+                              ? t(`activityType.${event.subtype}` as Parameters<typeof t>[0])
+                              : event.title}
                           </p>
                           <div className="flex shrink-0 items-center gap-1.5">
                             {event.badge && event.kind === "task" && (

@@ -317,30 +317,30 @@ export default function CommentEditor({
         {/* Footer: toolbar + submit */}
         <div className="flex items-center justify-between gap-2 border-t border-white/[0.05] px-2 py-1.5">
           <div className="flex items-center gap-0.5">
-            <ToolbarBtn active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} title="Bold">
+            <ToolbarBtn active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} title={t("editorBold")}>
               <Bold size={11} />
             </ToolbarBtn>
-            <ToolbarBtn active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()} title="Italic">
+            <ToolbarBtn active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()} title={t("editorItalic")}>
               <Italic size={11} />
             </ToolbarBtn>
-            <ToolbarBtn active={editor.isActive("underline")} onClick={() => editor.chain().focus().toggleUnderline().run()} title="Underline">
+            <ToolbarBtn active={editor.isActive("underline")} onClick={() => editor.chain().focus().toggleUnderline().run()} title={t("editorUnderline")}>
               <UnderlineIcon size={11} />
             </ToolbarBtn>
-            <ToolbarBtn active={editor.isActive("highlight")} onClick={() => editor.chain().focus().toggleHighlight().run()} title="Highlight">
+            <ToolbarBtn active={editor.isActive("highlight")} onClick={() => editor.chain().focus().toggleHighlight().run()} title={t("editorHighlight")}>
               <Highlighter size={11} />
             </ToolbarBtn>
             <div className="mx-1 h-3.5 w-px bg-white/[0.08]" />
-            <ToolbarBtn active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()} title="Bullet list">
+            <ToolbarBtn active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()} title={t("editorBulletList")}>
               <List size={11} />
             </ToolbarBtn>
-            <ToolbarBtn active={editor.isActive("orderedList")} onClick={() => editor.chain().focus().toggleOrderedList().run()} title="Ordered list">
+            <ToolbarBtn active={editor.isActive("orderedList")} onClick={() => editor.chain().focus().toggleOrderedList().run()} title={t("editorOrderedList")}>
               <ListOrdered size={11} />
             </ToolbarBtn>
             <div className="mx-1 h-3.5 w-px bg-white/[0.08]" />
 
             {/* Emoji picker */}
             <div className="relative" ref={emojiRef}>
-              <ToolbarBtn active={emojiOpen} onClick={() => setEmojiOpen((v) => !v)} title="Emoji">
+              <ToolbarBtn active={emojiOpen} onClick={() => setEmojiOpen((v) => !v)} title={t("editorEmoji")}>
                 <Smile size={11} />
               </ToolbarBtn>
               {emojiOpen && (

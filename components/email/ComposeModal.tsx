@@ -78,7 +78,7 @@ export default function ComposeModal({ open, onClose, defaultTo = "", defaultSub
               type="email"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              placeholder="email@example.com"
+              placeholder={t("composeToPlaceholder")}
             />
           </div>
           <div>

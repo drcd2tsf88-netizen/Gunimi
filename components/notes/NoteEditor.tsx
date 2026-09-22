@@ -186,7 +186,7 @@ export default function NoteEditor({ content, onChange, placeholder = "", disabl
           <ToolbarButton
             active={emojiOpen}
             onClick={() => setEmojiOpen((v) => !v)}
-            title="Emoji"
+            title={t("editorEmoji")}
           >
             <Smile size={12} />
           </ToolbarButton>
