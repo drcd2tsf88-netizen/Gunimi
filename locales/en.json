@@ -1883,6 +1883,8 @@
     "meetingScheduleReconnect": "Google Calendar needs to be reconnected",
     "meetingScheduleReconnectHint": "Your connection is missing write permission. Disconnect and reconnect Google Calendar in Settings → Integrations.",
     "meetingScheduleTokenExpired": "Your Google Calendar session has expired. Please reconnect in Settings → Integrations.",
+    "meetingScheduleTryAgain": "Try again",
+    "meetingScheduleGoSettings": "Go to Settings → Integrations",
     "noCalendarForSchedule": "No calendar connected",
     "noCalendarForScheduleHint": "Connect Google Calendar in Settings → Integrations to enable scheduling.",
     "duration15": "15 min",
@@ -4097,6 +4099,10 @@
     }
   },
   "release": {
+    "badge": "What's New",
+    "ariaLabel": "Release notification",
+    "readMore": "View changelog",
+    "dismiss": "Got it",
     "title": "Calendar Intelligence — v1.4",
     "bullets": [
       "Edit and cancel meetings directly from contact, deal, and company pages.",

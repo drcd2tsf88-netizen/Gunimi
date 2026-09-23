@@ -61,10 +61,10 @@ export async function createCalendarEvent(
     } catch (apiErr) {
       const detail = apiErr instanceof Error ? apiErr.message : String(apiErr);
       logger.error("createCalendarEvent Google API error:", detail);
-      if (detail.includes("403") || detail.toLowerCase().includes("insufficient")) {
+      if (detail.toLowerCase().includes("insufficient") || detail.toLowerCase().includes("insufficientpermissions")) {
         return { success: false, error: "insufficient_scope" };
       }
-      if (detail.includes("401")) {
+      if (detail.includes("401") || detail.toLowerCase().includes("unauthorized") || detail.toLowerCase().includes("invalid_grant")) {
         return { success: false, error: "token_expired" };
       }
       return { success: false, error: "google_api_error", detail };

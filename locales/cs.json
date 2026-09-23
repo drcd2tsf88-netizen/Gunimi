@@ -1883,6 +1883,8 @@
     "meetingScheduleReconnect": "Google Kalendář je potřeba znovu připojit",
     "meetingScheduleReconnectHint": "Vaše připojení nemá oprávnění k zápisu. Odpojte a znovu připojte Google Kalendář v Nastavení → Integrace.",
     "meetingScheduleTokenExpired": "Relace Google Kalendáře vypršela. Znovu se připojte v Nastavení → Integrace.",
+    "meetingScheduleTryAgain": "Zkusit znovu",
+    "meetingScheduleGoSettings": "Přejít do Nastavení → Integrace",
     "noCalendarForSchedule": "Žádný kalendář nepřipojen",
     "noCalendarForScheduleHint": "Připojte Google Kalendář v Nastavení → Integrace.",
     "duration15": "15 min",
@@ -4097,6 +4099,10 @@
     }
   },
   "release": {
+    "badge": "Novinky",
+    "ariaLabel": "Upozornění o vydání",
+    "readMore": "Zobrazit changelog",
+    "dismiss": "Rozumím",
     "title": "Inteligence kalendáře — v1.4",
     "bullets": [
       "Upravujte a rušte schůzky přímo na stránkách kontaktů, obchodů a společností.",

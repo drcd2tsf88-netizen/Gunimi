@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Activity,
   ArrowRight,
@@ -64,8 +64,8 @@ const TRIGGER_COLOR: Record<string, string> = {
   "task.completed": "border-amber-500/20 bg-amber-500/10 text-amber-300",
 };
 
-function formatDate(ts: string): string {
-  return new Date(ts).toLocaleString(undefined, {
+function formatDate(ts: string, locale: string): string {
+  return new Date(ts).toLocaleString(locale, {
     month: "short",
     day: "numeric",
     hour: "2-digit",
@@ -101,6 +101,7 @@ function StatusBadge({ status }: { status: "success" | "partial" | "failed" }) {
 
 export default function AutomationCenterView({ history, stats, disabledAutomations, customRules }: Props) {
   const t = useTranslations("automations");
+  const locale = useLocale();
 
   const [disabledSet, setDisabledSet] = useState<Set<string>>(
     () => new Set(disabledAutomations)
@@ -358,7 +359,7 @@ export default function AutomationCenterView({ history, stats, disabledAutomatio
                         )}
 
                         <span className="text-[10px] text-white/20">
-                          {formatDate(item.created_at)}
+                          {formatDate(item.created_at, locale)}
                         </span>
 
                         {item.deal_id && (

@@ -23,7 +23,6 @@ export default function ResetPasswordPage() {
   const [ready, setReady]                   = useState(false);
   const [success, setSuccess]               = useState(false);
 
-  // Wait for Supabase to finish the PKCE code exchange before enabling the form.
   useEffect(() => {
     const {
       data: { subscription },
@@ -33,13 +32,22 @@ export default function ResetPasswordPage() {
         setReady(true);
         return;
       }
-      if (event === "INITIAL_SESSION") {
-        if (session) {
-          subscription.unsubscribe();
-          setReady(true);
-        }
+      if (event === "INITIAL_SESSION" && session) {
+        subscription.unsubscribe();
+        setReady(true);
       }
     });
+
+    // PKCE flow: the reset email lands with ?code=... in the URL.
+    // exchangeCodeForSession() converts it into a real session, which then
+    // fires PASSWORD_RECOVERY on the listener above. Without this call
+    // the listener never fires and the page times out.
+    const code = new URLSearchParams(window.location.search).get("code");
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code).catch(() => {
+        // exchange failure — the timeout below will handle the redirect
+      });
+    }
 
     const timeout = setTimeout(() => {
       subscription.unsubscribe();

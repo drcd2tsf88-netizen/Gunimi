@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { CalendarPlus, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
@@ -158,18 +159,36 @@ export default function ScheduleMeetingSheet({
               <p className="text-[13px] text-[#9AA3B2]/60">{t("noCalendarForScheduleHint")}</p>
             </div>
           ) : reconnectNeeded ? (
-            <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
               <div className="flex h-10 w-10 items-center justify-center rounded-[12px] border border-red-500/20 bg-red-500/10">
                 <AlertCircle size={18} className="text-red-400/70" strokeWidth={1.75} />
               </div>
-              <p className="text-[14px] font-medium text-[#F7F8FC]">
-                {t("meetingScheduleReconnect")}
-              </p>
-              <p className="text-[13px] text-[#9AA3B2]/60">
-                {reconnectNeeded === "scope"
-                  ? t("meetingScheduleReconnectHint")
-                  : t("meetingScheduleTokenExpired")}
-              </p>
+              <div>
+                <p className="text-[14px] font-medium text-[#F7F8FC]">
+                  {t("meetingScheduleReconnect")}
+                </p>
+                <p className="mt-1.5 text-[13px] text-[#9AA3B2]/60">
+                  {reconnectNeeded === "scope"
+                    ? t("meetingScheduleReconnectHint")
+                    : t("meetingScheduleTokenExpired")}
+                </p>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setReconnectNeeded(null)}
+                  className="rounded-[8px] border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[13px] font-medium text-[#F7F8FC] transition-colors hover:bg-white/[0.07]"
+                >
+                  {t("meetingScheduleTryAgain")}
+                </button>
+                <Link
+                  href="/dashboard/settings/integrations"
+                  onClick={() => handleOpenChange(false)}
+                  className="text-[12px] text-[#8B7DFF]/70 transition-colors hover:text-[#8B7DFF]"
+                >
+                  {t("meetingScheduleGoSettings")}
+                </Link>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-1 flex-col overflow-y-auto">
