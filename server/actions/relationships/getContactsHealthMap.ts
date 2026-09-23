@@ -25,8 +25,8 @@ export async function getContactsHealthMap(): Promise<ContactsHealthMap> {
 
     const contactIds = people.map((p: { id: string }) => p.id);
 
-    // 2. Parallel: email threads, open tasks, deals
-    const [emailsRes, tasksRes, dealsRes] = await Promise.all([
+    // 2. Parallel: email threads, open tasks, deals, recent meetings
+    const [emailsRes, tasksRes, dealsRes, meetingsRes] = await Promise.all([
       supabaseAdmin
         .from("email_threads")
         .select("contact_id, last_message_at")
@@ -40,6 +40,13 @@ export async function getContactsHealthMap(): Promise<ContactsHealthMap> {
         .from("workspace_deals")
         .select("contact_id")
         .in("contact_id", contactIds),
+      supabaseAdmin
+        .from("calendar_events")
+        .select("contact_id")
+        .eq("workspace_id", wid)
+        .in("contact_id", contactIds)
+        .neq("status", "cancelled")
+        .gte("start_at", thirtyDaysAgo),
     ]);
 
     // Aggregate per contact
@@ -63,6 +70,12 @@ export async function getContactsHealthMap(): Promise<ContactsHealthMap> {
       dealCount.set(row.contact_id, (dealCount.get(row.contact_id) ?? 0) + 1);
     }
 
+    const meetingCount = new Map<string, number>();
+    for (const row of (meetingsRes.data ?? []) as { contact_id: string | null }[]) {
+      if (!row.contact_id) continue;
+      meetingCount.set(row.contact_id, (meetingCount.get(row.contact_id) ?? 0) + 1);
+    }
+
     const map: ContactsHealthMap = {};
 
     for (const id of contactIds) {
@@ -83,6 +96,7 @@ export async function getContactsHealthMap(): Promise<ContactsHealthMap> {
         emailsLast30d,
         openTasks: openTaskCount.get(id) ?? 0,
         totalDeals: dealCount.get(id) ?? 0,
+        recentMeetings: meetingCount.get(id) ?? 0,
       });
     }
 

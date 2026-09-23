@@ -4,7 +4,7 @@ import { useTransition, useState, useEffect, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   AlertCircle,
   AlertTriangle,
@@ -66,15 +66,15 @@ function isSameDay(a: Date, b: Date): boolean {
   );
 }
 
-function formatTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString(undefined, {
+function formatTime(iso: string, locale: string): string {
+  return new Date(iso).toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
   });
 }
 
-function localDayName(dayIndex: number): string {
-  return new Date(2024, 0, 7 + dayIndex).toLocaleDateString(undefined, { weekday: "long" });
+function localDayName(dayIndex: number, locale: string): string {
+  return new Date(2024, 0, 7 + dayIndex).toLocaleDateString(locale, { weekday: "long" });
 }
 
 function formatEventDuration(startIso: string, endIso: string): string {
@@ -96,9 +96,10 @@ type EventDetailPanelProps = {
   onEventUpdated?: (id: string, changes: Partial<CalendarEventRow>) => void;
   onEventDeleted?: (id: string) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
+  locale: string;
 };
 
-function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventDeleted, t }: EventDetailPanelProps) {
+function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventDeleted, t, locale }: EventDetailPanelProps) {
   const [creatingNote, startCreateNote] = useTransition();
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(event.title);
@@ -303,7 +304,7 @@ function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventD
                   <p className="mt-0.5 text-sm text-white/80">{t("allDay")}</p>
                 ) : (
                   <p className="mt-0.5 text-sm text-white/80">
-                    {formatTime(event.start_at)} – {formatTime(event.end_at)}
+                    {formatTime(event.start_at, locale)} – {formatTime(event.end_at, locale)}
                     <span className="ml-2 text-xs text-white/35">
                       ({formatEventDuration(event.start_at, event.end_at)})
                     </span>
@@ -556,10 +557,12 @@ function MeetingIntelligenceWidget({
   events,
   thisWeekEvents,
   t,
+  locale,
 }: {
   events: CalendarEventRow[];
   thisWeekEvents: CalendarEventRow[];
   t: ReturnType<typeof useTranslations<"calendar">>;
+  locale: string;
 }) {
   const signals: IntelSignal[] = [];
 
@@ -583,7 +586,7 @@ function MeetingIntelligenceWidget({
       signals.push({
         icon: TrendingUp,
         color: "text-violet-300",
-        text: t("intelBusiest", { day: localDayName(busiestDayIndex), count: busiestDayCount }),
+        text: t("intelBusiest", { day: localDayName(busiestDayIndex, locale), count: busiestDayCount }),
       });
     }
 
@@ -619,7 +622,7 @@ function MeetingIntelligenceWidget({
           text: t("intelNextMeetingHours", { hours: Math.round(minutesUntil / 60) }),
         });
       } else {
-        const dateStr = new Date(nextEvent.start_at).toLocaleDateString(undefined, {
+        const dateStr = new Date(nextEvent.start_at).toLocaleDateString(locale, {
           weekday: "short",
           month: "short",
           day: "numeric",
@@ -711,6 +714,7 @@ function WeekGrid({
   onSelectEvent,
   contactByEmail,
   t,
+  locale,
 }: {
   items: WorkspaceCalendarItem[];
   weekOffset: number;
@@ -719,6 +723,7 @@ function WeekGrid({
   onSelectEvent?: (event: CalendarEventRow, contact: CalendarContact | null) => void;
   contactByEmail?: Map<string, CalendarContact>;
   t: ReturnType<typeof useTranslations<"calendar">>;
+  locale: string;
 }) {
   const weekStart = useMemo(() => getWeekStart(weekOffset), [weekOffset]);
   const days = useMemo(() => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)), [weekStart]);
@@ -792,9 +797,9 @@ function WeekGrid({
           const isPast = day < PAGE_NOW && !isToday;
           const key = dateKey(day);
           const dayItems = byDay.get(key) ?? [];
-          const dayName = day.toLocaleDateString(undefined, { weekday: "short" });
+          const dayName = day.toLocaleDateString(locale, { weekday: "short" });
           const dayNum = day.getDate();
-          const monthShort = day.toLocaleDateString(undefined, { month: "short" });
+          const monthShort = day.toLocaleDateString(locale, { month: "short" });
 
           return (
             <div
@@ -861,7 +866,7 @@ function WeekGrid({
                           <div className="min-w-0 flex-1">
                             <p className="truncate text-[10px] font-medium leading-snug text-blue-200">{ev.title}</p>
                             {!ev.all_day && (
-                              <p className="text-[9px] text-blue-300/50">{formatTime(ev.start_at)}</p>
+                              <p className="text-[9px] text-blue-300/50">{formatTime(ev.start_at, locale)}</p>
                             )}
                           </div>
                         </button>
@@ -958,6 +963,7 @@ function MonthGrid({
   contactByEmail,
   onTaskCreated,
   t,
+  locale,
 }: {
   items: WorkspaceCalendarItem[];
   monthOffset: number;
@@ -966,6 +972,7 @@ function MonthGrid({
   contactByEmail: Map<string, CalendarContact>;
   onTaskCreated?: (item: WorkspaceCalendarItem) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
+  locale: string;
 }) {
   const monthStart = useMemo(() => getMonthStart(monthOffset), [monthOffset]);
 
@@ -994,9 +1001,9 @@ function MonthGrid({
 
   const weekDayHeaders = useMemo(
     () => Array.from({ length: 7 }, (_, i) =>
-      addDays(gridStart, i).toLocaleDateString(undefined, { weekday: "short" }),
+      addDays(gridStart, i).toLocaleDateString(locale, { weekday: "short" }),
     ),
-    [gridStart],
+    [gridStart, locale],
   );
 
   const [addingToDay, setAddingToDay] = useState<string | null>(null);
@@ -1153,7 +1160,7 @@ function MonthGrid({
                         className="truncate rounded px-1.5 py-0.5 text-left text-[9px] font-medium leading-snug text-blue-300 bg-blue-500/15 hover:bg-blue-500/25 transition-colors"
                       >
                         {!ev.all_day && (
-                          <span className="mr-0.5 text-blue-400/50">{formatTime(ev.start_at)}</span>
+                          <span className="mr-0.5 text-blue-400/50">{formatTime(ev.start_at, locale)}</span>
                         )}
                         {ev.title}
                       </button>
@@ -1174,7 +1181,7 @@ function MonthGrid({
 
 // ── List View (legacy) ─────────────────────────────────────────────────────────
 
-function ListRow({ item }: { item: WorkspaceCalendarItem }) {
+function ListRow({ item, locale }: { item: WorkspaceCalendarItem; locale: string }) {
   const TypeIcon = item.type === "task" ? CheckCircle2 : TrendingUp;
   return (
     <Link
@@ -1203,7 +1210,7 @@ function ListRow({ item }: { item: WorkspaceCalendarItem }) {
       </div>
       <div className="shrink-0 text-right">
         <p className={`text-[10px] font-medium ${item.isOverdue ? "text-red-400" : item.isDueToday ? "text-emerald-400" : "text-white/30"}`}>
-          {new Date(item.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+          {new Date(item.date).toLocaleDateString(locale, { month: "short", day: "numeric" })}
         </p>
       </div>
     </Link>
@@ -1218,12 +1225,14 @@ function GunimCalendarWidget({
   contactByEmail,
   onSelectEvent,
   t,
+  locale,
 }: {
   items: WorkspaceCalendarItem[];
   events: CalendarEventRow[];
   contactByEmail: Map<string, CalendarContact>;
   onSelectEvent: (event: CalendarEventRow, contact: CalendarContact | null) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
+  locale: string;
 }) {
   const [viewMode, setViewMode] = useState<"month" | "week" | "list">("month");
   const [weekOffset, setWeekOffset] = useState(0);
@@ -1249,10 +1258,10 @@ function GunimCalendarWidget({
 
   const weekStart = getWeekStart(weekOffset);
   const weekEnd = addDays(weekStart, 6);
-  const weekLabel = `${weekStart.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${weekEnd.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
+  const weekLabel = `${weekStart.toLocaleDateString(locale, { month: "short", day: "numeric" })} – ${weekEnd.toLocaleDateString(locale, { month: "short", day: "numeric" })}`;
 
   const monthStart = getMonthStart(monthOffset);
-  const monthLabel = monthStart.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  const monthLabel = monthStart.toLocaleDateString(locale, { month: "long", year: "numeric" });
 
   return (
     <div className="space-y-3">
@@ -1369,6 +1378,7 @@ function GunimCalendarWidget({
           contactByEmail={contactByEmail}
           onTaskCreated={handleTaskCreated}
           t={t}
+          locale={locale}
         />
       ) : viewMode === "week" ? (
         <WeekGrid
@@ -1379,6 +1389,7 @@ function GunimCalendarWidget({
           onSelectEvent={onSelectEvent}
           contactByEmail={contactByEmail}
           t={t}
+          locale={locale}
         />
       ) : (
         <div className="overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.02]">
@@ -1390,12 +1401,12 @@ function GunimCalendarWidget({
                 </p>
               </div>
               <div className="divide-y divide-white/[0.03]">
-                {localItems.filter((i) => i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
+                {localItems.filter((i) => i.isOverdue).map((item) => <ListRow key={item.id} item={item} locale={locale} />)}
               </div>
             </div>
           )}
           <div className="divide-y divide-white/[0.03]">
-            {localItems.filter((i) => !i.isOverdue).map((item) => <ListRow key={item.id} item={item} />)}
+            {localItems.filter((i) => !i.isOverdue).map((item) => <ListRow key={item.id} item={item} locale={locale} />)}
           </div>
         </div>
       )}
@@ -1453,6 +1464,7 @@ function NoConnectionState({
 
 export default function CalendarCommandCenter({ events: initialEvents, connections, contacts, workspaceItems }: Props) {
   const t = useTranslations("calendar");
+  const locale = useLocale();
   const [localEvents, setLocalEvents] = useState(initialEvents);
   const [selectedEvent, setSelectedEvent] = useState<{
     event: CalendarEventRow;
@@ -1644,10 +1656,11 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
           contactByEmail={contactByEmail}
           onSelectEvent={handleSelectEvent}
           t={t}
+          locale={locale}
         />
 
         {/* MEETING INTELLIGENCE */}
-        <MeetingIntelligenceWidget events={events} thisWeekEvents={thisWeekEvents} t={t} />
+        <MeetingIntelligenceWidget events={events} thisWeekEvents={thisWeekEvents} t={t} locale={locale} />
 
         {/* CONNECTION MANAGEMENT */}
         <div>
@@ -1667,6 +1680,7 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
           onEventUpdated={handleEventUpdated}
           onEventDeleted={handleEventDeleted}
           t={t}
+          locale={locale}
         />
       )}
     </>

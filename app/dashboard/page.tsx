@@ -6,6 +6,7 @@ import { getAiBrief } from "@/server/actions/today/getAiBrief";
 import { getWorkspaceState } from "@/server/actions/workspace/getWorkspaceState";
 import { getSignalCounts } from "@/server/actions/signals/getSignalCounts";
 import { getWorkspaceTimeline } from "@/server/actions/memory/getWorkspaceTimeline";
+import { getTodayMeetings } from "@/server/actions/calendar/getTodayMeetings";
 import TodayView from "@/components/today/TodayView";
 import WorkspaceAwakening from "@/components/today/WorkspaceAwakening";
 import WorkspaceAwakenedMoment from "@/components/today/WorkspaceAwakenedMoment";
@@ -24,13 +25,14 @@ export default async function TodayPage() {
       )
     : Promise.resolve({ data: null });
 
-  const [todayData, profileResult, wsState, signalCounts, recentMemory, aiBrief] = await Promise.all([
+  const [todayData, profileResult, wsState, signalCounts, recentMemory, aiBrief, todayMeetings] = await Promise.all([
     getTodayData(),
     profilePromise,
     getWorkspaceState(),
     getSignalCounts(),
     getWorkspaceTimeline(3),
     getAiBrief(),
+    getTodayMeetings(),
   ]);
 
   const displayName =
@@ -56,6 +58,7 @@ export default async function TodayPage() {
         signalCount={signalCounts.total}
         criticalSignalCount={signalCounts.critical}
         recentMemory={recentMemory}
+        todayMeetings={todayMeetings}
       />
     </WorkspaceAwakenedMoment>
   );

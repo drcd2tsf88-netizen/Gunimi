@@ -12,6 +12,8 @@ import { getAttachments } from "@/server/actions/attachments/getAttachments";
 import { getCompanyTasks } from "@/server/actions/company/getCompanyTasks";
 import { getCompanyOrders } from "@/server/actions/company/getCompanyOrders";
 import { getTeams } from "@/server/actions/organization/getTeams";
+import { getCalendarConnections } from "@/server/actions/calendar/getCalendarConnections";
+import { getCompanyUpcomingMeetings } from "@/server/actions/calendar/getCompanyUpcomingMeetings";
 
 import CompanyDetailView from "@/components/company/detail/CompanyDetailView";
 
@@ -22,7 +24,7 @@ type Props = {
 export default async function CompanyPage({ params }: Props) {
   const { id: companyId } = await params;
 
-  const [company, contacts, deals, activity, notes, emails, tasks, orders, allTags, entityTags, attachments, teams] = await Promise.all([
+  const [company, contacts, deals, activity, notes, emails, tasks, orders, allTags, entityTags, attachments, teams, calendarConnections, upcomingMeetings] = await Promise.all([
     getCompany(companyId),
     getCompanyContacts(companyId),
     getCompanyDeals(companyId),
@@ -35,6 +37,8 @@ export default async function CompanyPage({ params }: Props) {
     getEntityTags("company", companyId),
     getAttachments("company", companyId),
     getTeams(),
+    getCalendarConnections(),
+    getCompanyUpcomingMeetings(companyId),
   ]);
 
   if (!company) notFound();
@@ -53,6 +57,8 @@ export default async function CompanyPage({ params }: Props) {
       entityTags={entityTags}
       attachments={attachments}
       teams={teams}
+      hasCalendar={calendarConnections.length > 0}
+      upcomingMeetings={upcomingMeetings}
     />
   );
 }

@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   Briefcase,
   Building2,
+  CalendarPlus,
   ExternalLink,
   Pencil,
   TrendingUp,
@@ -41,6 +42,7 @@ type Props = {
   contacts: Contact[];
   deals: Deal[];
   onEdit: () => void;
+  onSchedule?: () => void;
   allTags: WorkspaceTag[];
   entityTags: WorkspaceTag[];
 };
@@ -50,6 +52,7 @@ export default function CompanyWorkspaceHeader({
   contacts,
   deals,
   onEdit,
+  onSchedule,
   allTags,
   entityTags,
 }: Props) {
@@ -167,8 +170,18 @@ export default function CompanyWorkspaceHeader({
           </div>
         </div>
 
-        {/* Right — Edit */}
-        <div className="shrink-0 sm:pt-0.5">
+        {/* Right — Meeting + Edit */}
+        <div className="flex shrink-0 items-center gap-2 sm:pt-0.5">
+          {onSchedule && (
+            <GunimiButton
+              variant="secondary"
+              className="h-8 gap-1.5 px-3 text-xs"
+              onClick={onSchedule}
+            >
+              <CalendarPlus size={12} />
+              {t("scheduleMeetingShort")}
+            </GunimiButton>
+          )}
           <GunimiButton
             variant="secondary"
             className="h-8 gap-1.5 px-3 text-xs"

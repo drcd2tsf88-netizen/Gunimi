@@ -661,7 +661,8 @@
     "contactLinked": "Kontakt propojen.",
     "contactLinkFailed": "Nepodařilo se propojit kontakt.",
     "createFailed": "Vytvoření organizace selhalo",
-    "createSuccess": "Organizace vytvořena"
+    "createSuccess": "Organizace vytvořena",
+    "scheduleMeetingShort": "Schůzka"
   },
   "deals": {
     "commercialPipeline": "Obchodní Pipeline",
@@ -1890,7 +1891,19 @@
     "duration60": "1 hodina",
     "duration90": "1,5 hodiny",
     "duration120": "2 hodiny",
-    "upcomingMeetings": "Nadcházející schůzky"
+    "upcomingMeetings": "Nadcházející schůzky",
+    "editMeeting": "Upravit schůzku",
+    "editMeetingSubtitle": "Aktualizujte detaily schůzky ve vašem Google Kalendáři",
+    "meetingUpdated": "Schůzka aktualizována",
+    "meetingUpdateFailed": "Nepodařilo se aktualizovat schůzku",
+    "cancelMeeting": "Zrušit schůzku",
+    "meetingCancelled": "Schůzka zrušena",
+    "meetingCancelFailed": "Nepodařilo se zrušit schůzku",
+    "saving": "Ukládám...",
+    "saveChanges": "Uložit změny",
+    "meetingDefaultTitleContact": "Schůzka s {name}",
+    "meetingDefaultTitleDeal": "Schůzka — {name}",
+    "meetingDefaultTitleCompany": "Schůzka — {name}"
   },
   "email": {
     "badge": "E-mail",
@@ -3116,6 +3129,42 @@
       },
       "releases": [
         {
+          "version": "1.4",
+          "date": "Září 2026",
+          "title": "Inteligence kalendáře",
+          "description": "Kompletní CRUD schůzek, AI příprava na schůzku a lokalizovaný kalendář — vše, co potřebujete ke správě a přípravě schůzek v Gunimi.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Upravujte a rušte schůzky přímo na stránkách kontaktů, obchodů a společností."
+            },
+            {
+              "tag": "new",
+              "text": "AI příprava na schůzku: klikněte na jiskřičku u jakékoli schůzky a okamžitě získáte kontext, navrhovaná témata a klíčové poznámky z vašich CRM dat."
+            },
+            {
+              "tag": "new",
+              "text": "Stránka Dnes nyní zobrazuje vaše dnešní schůzky spolu s úkoly a signály."
+            },
+            {
+              "tag": "new",
+              "text": "Aktivita schůzek se nyní zohledňuje v skóre zdraví vztahů."
+            },
+            {
+              "tag": "improved",
+              "text": "Názvy dnů, měsíců a časy v kalendáři nyní sledují jazyk pracovního prostoru (plná podpora slovenštiny a češtiny)."
+            },
+            {
+              "tag": "improved",
+              "text": "Naplánováním schůzky se seznam okamžitě aktualizuje — bez nutnosti obnovení stránky."
+            },
+            {
+              "tag": "fixed",
+              "text": "Úprava a zrušení schůzky nyní správně aktualizuje lokální databázi i Google Kalendář."
+            }
+          ]
+        },
+        {
           "version": "1.3",
           "date": "Září 2026",
           "title": "Open Alpha Launch",
@@ -4012,7 +4061,10 @@
     "memoryCaptured": "Zachyceno",
     "memoryViewTimeline": "Zobrazit historii",
     "memoryEmpty": "Zatím nic nezachyceno",
-    "briefLabel": "Denní přehled"
+    "briefLabel": "Denní přehled",
+    "todayMeetings": "Dnešní schůzky",
+    "past": "Proběhlo",
+    "allDay": "Celý den"
   },
   "awakening": {
     "heading": "Váš workspace je připraven.",
@@ -4045,16 +4097,13 @@
     }
   },
   "release": {
-    "badge": "Co je nového",
-    "title": "Gunimi je nyní v Open Alpha.",
+    "title": "Inteligence kalendáře — v1.4",
     "bullets": [
-      "Žádný waitlist, žádné schvalování. Každý si může vytvořit workspace hned — okamžitě.",
-      "Zcela zdarma do oficiálního spuštění. Bez kreditní karty, bez časového omezení.",
-      "Vaše data jsou v bezpečí. Závazek jsme dali písemně — workspace nikdy nesmažeme bez upozornění."
-    ],
-    "readMore": "Kompletní poznámky k vydání",
-    "dismiss": "Rozumím",
-    "ariaLabel": "Co je nového v Gunimi"
+      "Upravujte a rušte schůzky přímo na stránkách kontaktů, obchodů a společností.",
+      "AI příprava na schůzku: jedním kliknutím získáte kontext, navrhovaná témata a klíčové body.",
+      "Stránka Dnes zobrazuje vaše dnešní schůzky.",
+      "Názvy dnů a měsíců v kalendáři nyní sledují jazyk pracovního prostoru."
+    ]
   },
   "demo": {
     "banner": "Demo Workspace",

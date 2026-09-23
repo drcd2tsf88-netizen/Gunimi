@@ -16,7 +16,6 @@ import GunimiPreparationCard, { type PreparationItem } from "@/components/ui/Gun
 import GunimiStory, { type RenderedStoryEvent } from "@/components/ui/GunimiStory";
 import GunimiContextCard, { type ContextEntry } from "@/components/ui/GunimiContextCard";
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
-import GunimiCard from "@/components/ui/GunimiCard";
 import type { WorkspaceTab } from "@/components/ui/GunimiWorkspaceTabs";
 
 import { resolveDealDecision } from "@/lib/deals/decision";
@@ -45,8 +44,8 @@ import { cn } from "@/lib/utils";
 import { ORDER_STATUS_STYLES } from "@/lib/orders/styles";
 import { formatOrderAmount, computeOrderTotal, type Order } from "@/types/order";
 import ScheduleMeetingSheet from "@/components/calendar/ScheduleMeetingSheet";
+import UpcomingMeetingsList from "@/components/calendar/UpcomingMeetingsList";
 import type { CalendarEventRow } from "@/types/calendar";
-import Link from "next/link";
 
 const PREP_ICONS: Record<PrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -224,42 +223,11 @@ export default function DealDetailView({
               ])
             }
           />
-          {upcomingMeetings.length > 0 ? (
-            <GunimiCard className="p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <CalendarDays size={12} className="text-blue-400/70" aria-hidden />
-                <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500 font-medium">
-                  {tCal("upcomingMeetings")}
-                </span>
-              </div>
-              <div className="space-y-1.5">
-                {upcomingMeetings.map((meeting) => (
-                  <Link
-                    key={meeting.id}
-                    href="/dashboard/calendar"
-                    className="flex items-center gap-3 rounded-xl border border-blue-500/10 bg-blue-500/[0.04] px-3 py-2.5 transition-colors hover:border-blue-500/25 hover:bg-blue-500/[0.08]"
-                  >
-                    <div className="flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10">
-                      <span className="text-[9px] font-semibold leading-none text-blue-300">
-                        {new Date(meeting.start_at).toLocaleDateString(undefined, { month: "short" }).toUpperCase()}
-                      </span>
-                      <span className="text-sm font-bold leading-none text-blue-200">
-                        {new Date(meeting.start_at).getDate()}
-                      </span>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-medium text-white/80">{meeting.title}</p>
-                      <p className="mt-0.5 text-[10px] text-white/35">
-                        {meeting.all_day
-                          ? tCal("allDay")
-                          : new Date(meeting.start_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </GunimiCard>
-          ) : null}
+          <UpcomingMeetingsList
+            meetings={upcomingMeetings}
+            hasCalendar={hasCalendar}
+            dealId={deal.id}
+          />
           <DealOverview deal={deal} />
         </div>
       ),
@@ -415,8 +383,9 @@ export default function DealDetailView({
         open={scheduleOpen}
         onOpenChange={setScheduleOpen}
         hasCalendar={hasCalendar}
-        defaultTitle={deal.title ? `Meeting — ${deal.title}` : ""}
+        defaultTitle={deal.title ? tCal("meetingDefaultTitleDeal", { name: deal.title }) : ""}
         dealId={deal.id}
+        onScheduled={() => router.refresh()}
       />
     </div>
   );

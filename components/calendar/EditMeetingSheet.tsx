@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { CalendarPlus, AlertCircle } from "lucide-react";
+import { CalendarCog, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
 import {
@@ -24,17 +24,20 @@ import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiField from "@/components/ui/GunimiField";
 import GunimiInput from "@/components/ui/GunimiInput";
 
-import { createCalendarEvent } from "@/server/actions/calendar/createCalendarEvent";
+import { updateCalendarEvent } from "@/server/actions/calendar/updateCalendarEvent";
+import type { CalendarEventRow } from "@/types/calendar";
+
+export type MeetingUpdatedPayload = {
+  title: string;
+  startAt: string;
+  endAt: string;
+};
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  hasCalendar: boolean;
-  defaultTitle?: string;
-  contactId?: string;
-  dealId?: string;
-  companyId?: string;
-  onScheduled?: () => void;
+  event: CalendarEventRow;
+  onUpdated?: (payload: MeetingUpdatedPayload) => void;
 };
 
 const DURATIONS = [15, 30, 45, 60, 90, 120] as const;
@@ -49,49 +52,35 @@ const DURATION_KEYS: Record<Duration, string> = {
   120: "duration120",
 };
 
-function todayString() {
-  return new Date().toISOString().split("T")[0];
+function toDateString(iso: string) {
+  return iso.split("T")[0];
 }
 
-function nowTimeString() {
-  const d = new Date();
-  d.setMinutes(Math.ceil(d.getMinutes() / 15) * 15, 0, 0);
-  return d.toTimeString().slice(0, 5);
+function toTimeString(iso: string) {
+  return new Date(iso).toTimeString().slice(0, 5);
 }
 
-export default function ScheduleMeetingSheet({
-  open,
-  onOpenChange,
-  hasCalendar,
-  defaultTitle = "",
-  contactId,
-  dealId,
-  companyId,
-  onScheduled,
-}: Props) {
+function guessDuration(startIso: string, endIso: string): Duration {
+  const diff = Math.round(
+    (new Date(endIso).getTime() - new Date(startIso).getTime()) / 60_000
+  );
+  const valid: Duration[] = [15, 30, 45, 60, 90, 120];
+  return valid.includes(diff as Duration) ? (diff as Duration) : 30;
+}
+
+export default function EditMeetingSheet({ open, onOpenChange, event, onUpdated }: Props) {
   const t = useTranslations("calendar");
   const [isPending, startTransition] = useTransition();
 
-  const [title, setTitle] = useState(defaultTitle);
-  const [date, setDate] = useState(todayString);
-  const [time, setTime] = useState(nowTimeString);
-  const [duration, setDuration] = useState<Duration>(30);
-  const [location, setLocation] = useState("");
-  const [notes, setNotes] = useState("");
-  const [reconnectNeeded, setReconnectNeeded] = useState<"scope" | "expired" | null>(null);
-
-  function handleOpenChange(val: boolean) {
-    if (!val) {
-      setTitle(defaultTitle);
-      setDate(todayString());
-      setTime(nowTimeString());
-      setDuration(30);
-      setLocation("");
-      setNotes("");
-      setReconnectNeeded(null);
-    }
-    onOpenChange(val);
-  }
+  const [title, setTitle] = useState(event.title);
+  const [date, setDate] = useState(() => toDateString(event.start_at));
+  const [time, setTime] = useState(() => toTimeString(event.start_at));
+  const [duration, setDuration] = useState<Duration>(() =>
+    guessDuration(event.start_at, event.end_at)
+  );
+  const [location, setLocation] = useState(event.location ?? "");
+  const [notes, setNotes] = useState(event.description ?? "");
+  const [reconnectNeeded, setReconnectNeeded] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -101,27 +90,31 @@ export default function ScheduleMeetingSheet({
     const endAt = new Date(startAt.getTime() + duration * 60 * 1000);
 
     startTransition(async () => {
-      const result = await createCalendarEvent({
+      const result = await updateCalendarEvent({
+        eventId: event.id,
+        providerEventId: event.provider_event_id,
         title: title.trim(),
         startAt,
         endAt,
         description: notes.trim() || undefined,
         location: location.trim() || undefined,
-        contactId,
-        dealId,
-        companyId,
+        contactId: event.contact_id,
+        dealId: event.deal_id,
+        companyId: event.company_id,
       });
 
       if (result.success) {
-        toast.success(t("meetingScheduled"), { id: "schedule-meeting" });
-        handleOpenChange(false);
-        onScheduled?.();
-      } else if (result.error === "insufficient_scope") {
-        setReconnectNeeded("scope");
-      } else if (result.error === "token_expired") {
-        setReconnectNeeded("expired");
+        toast.success(t("meetingUpdated"), { id: "update-meeting" });
+        onOpenChange(false);
+        onUpdated?.({
+          title: title.trim(),
+          startAt: startAt.toISOString(),
+          endAt: endAt.toISOString(),
+        });
+      } else if (result.error === "insufficient_scope" || result.error === "token_expired") {
+        setReconnectNeeded(true);
       } else {
-        toast.error(t("meetingScheduleFailed"), { id: "schedule-meeting-err" });
+        toast.error(t("meetingUpdateFailed"), { id: "update-meeting-err" });
       }
     });
   }
@@ -130,46 +123,32 @@ export default function ScheduleMeetingSheet({
     "w-full rounded-[10px] border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[13px] text-[#F7F8FC] placeholder:text-[#9AA3B2]/40 focus:border-[#6D5BFF]/40 focus:outline-none focus:ring-1 focus:ring-[#6D5BFF]/20 transition-colors";
 
   return (
-    <Sheet open={open} onOpenChange={handleOpenChange}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full max-w-[420px] bg-[#07090F] p-0">
         <div className="flex h-full flex-col">
           <SheetHeader className="border-b border-white/[0.06] px-6 py-5">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#6D5BFF]/20 bg-[#6D5BFF]/10">
-                <CalendarPlus size={15} className="text-[#8B7DFF]" strokeWidth={1.75} />
+                <CalendarCog size={15} className="text-[#8B7DFF]" strokeWidth={1.75} />
               </div>
               <div>
                 <SheetTitle className="text-[15px] font-semibold text-[#F7F8FC]">
-                  {t("scheduleMeeting")}
+                  {t("editMeeting")}
                 </SheetTitle>
                 <SheetDescription className="text-[12px] text-[#9AA3B2]/50">
-                  {t("scheduleMeetingSubtitle")}
+                  {t("editMeetingSubtitle")}
                 </SheetDescription>
               </div>
             </div>
           </SheetHeader>
 
-          {!hasCalendar ? (
-            <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-[12px] border border-amber-500/20 bg-amber-500/10">
-                <AlertCircle size={18} className="text-amber-400/70" strokeWidth={1.75} />
-              </div>
-              <p className="text-[14px] font-medium text-[#F7F8FC]">{t("noCalendarForSchedule")}</p>
-              <p className="text-[13px] text-[#9AA3B2]/60">{t("noCalendarForScheduleHint")}</p>
-            </div>
-          ) : reconnectNeeded ? (
+          {reconnectNeeded ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
               <div className="flex h-10 w-10 items-center justify-center rounded-[12px] border border-red-500/20 bg-red-500/10">
                 <AlertCircle size={18} className="text-red-400/70" strokeWidth={1.75} />
               </div>
-              <p className="text-[14px] font-medium text-[#F7F8FC]">
-                {t("meetingScheduleReconnect")}
-              </p>
-              <p className="text-[13px] text-[#9AA3B2]/60">
-                {reconnectNeeded === "scope"
-                  ? t("meetingScheduleReconnectHint")
-                  : t("meetingScheduleTokenExpired")}
-              </p>
+              <p className="text-[14px] font-medium text-[#F7F8FC]">{t("meetingScheduleReconnect")}</p>
+              <p className="text-[13px] text-[#9AA3B2]/60">{t("meetingScheduleReconnectHint")}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-1 flex-col overflow-y-auto">
@@ -188,7 +167,6 @@ export default function ScheduleMeetingSheet({
                     <input
                       type="date"
                       value={date}
-                      min={todayString()}
                       onChange={(e) => setDate(e.target.value)}
                       required
                       className={inputClass}
@@ -249,7 +227,7 @@ export default function ScheduleMeetingSheet({
                   disabled={isPending || !title.trim()}
                   className="w-full"
                 >
-                  {isPending ? t("scheduling") : t("scheduleBtn")}
+                  {isPending ? t("saving") : t("saveChanges")}
                 </GunimiButton>
               </SheetFooter>
             </form>

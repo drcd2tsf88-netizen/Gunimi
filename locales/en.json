@@ -661,7 +661,8 @@
     "contactLinked": "Contact linked.",
     "contactLinkFailed": "Failed to link contact.",
     "createFailed": "Failed to create organization",
-    "createSuccess": "Organization created"
+    "createSuccess": "Organization created",
+    "scheduleMeetingShort": "Meeting"
   },
   "deals": {
     "commercialPipeline": "Commercial Pipeline",
@@ -1890,7 +1891,19 @@
     "duration60": "1 hour",
     "duration90": "1.5 hours",
     "duration120": "2 hours",
-    "upcomingMeetings": "Upcoming meetings"
+    "upcomingMeetings": "Upcoming meetings",
+    "editMeeting": "Edit Meeting",
+    "editMeetingSubtitle": "Update meeting details in your Google Calendar",
+    "meetingUpdated": "Meeting updated",
+    "meetingUpdateFailed": "Failed to update meeting",
+    "cancelMeeting": "Cancel Meeting",
+    "meetingCancelled": "Meeting cancelled",
+    "meetingCancelFailed": "Failed to cancel meeting",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "meetingDefaultTitleContact": "Meeting with {name}",
+    "meetingDefaultTitleDeal": "Meeting — {name}",
+    "meetingDefaultTitleCompany": "Meeting — {name}"
   },
   "email": {
     "badge": "Email",
@@ -3116,6 +3129,42 @@
       },
       "releases": [
         {
+          "version": "1.4",
+          "date": "September 2026",
+          "title": "Calendar Intelligence",
+          "description": "Full meeting CRUD, AI Meeting Prep, and a locale-aware calendar — everything you need to manage and prepare for meetings inside Gunimi.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Edit and cancel meetings directly from contact, deal, and company detail pages."
+            },
+            {
+              "tag": "new",
+              "text": "AI Meeting Prep: tap the sparkle icon on any meeting for instant context, suggested discussion topics, and key reminders — powered by your CRM data."
+            },
+            {
+              "tag": "new",
+              "text": "Today page now surfaces your meetings for the day alongside tasks and signals."
+            },
+            {
+              "tag": "new",
+              "text": "Meeting activity now factors into relationship health scores."
+            },
+            {
+              "tag": "improved",
+              "text": "Calendar day names, month names, and times now follow your workspace language (Slovak and Czech fully supported)."
+            },
+            {
+              "tag": "improved",
+              "text": "Scheduling a new meeting instantly refreshes the list — no page reload required."
+            },
+            {
+              "tag": "fixed",
+              "text": "Meeting edit and cancel now correctly update the local database in addition to Google Calendar."
+            }
+          ]
+        },
+        {
           "version": "1.3",
           "date": "September 2026",
           "title": "Open Alpha Launch",
@@ -4012,7 +4061,10 @@
     "memoryCaptured": "Captured",
     "memoryViewTimeline": "View timeline",
     "memoryEmpty": "Nothing captured yet",
-    "briefLabel": "Daily Brief"
+    "briefLabel": "Daily Brief",
+    "todayMeetings": "Today's Meetings",
+    "past": "Past",
+    "allDay": "All day"
   },
   "awakening": {
     "heading": "Your workspace is ready.",
@@ -4045,16 +4097,13 @@
     }
   },
   "release": {
-    "badge": "What's new",
-    "title": "Gunimi is now in Open Alpha.",
+    "title": "Calendar Intelligence — v1.4",
     "bullets": [
-      "No waitlist, no approval. Anyone can create a workspace right now — instantly.",
-      "Completely free until official launch. No credit card, no time limit.",
-      "Your data is safe. We've committed in writing — your workspace will never be silently reset."
-    ],
-    "readMore": "Full release notes",
-    "dismiss": "Got it",
-    "ariaLabel": "What's new in Gunimi"
+      "Edit and cancel meetings directly from contact, deal, and company pages.",
+      "AI Meeting Prep: one click generates context, suggested topics, and key points before every meeting.",
+      "Today page now shows your meetings for the day.",
+      "Calendar day and month names now follow your workspace language (SK/CS)."
+    ]
   },
   "demo": {
     "banner": "Demo Workspace",

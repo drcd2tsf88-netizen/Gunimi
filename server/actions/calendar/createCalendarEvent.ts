@@ -7,6 +7,7 @@ import { getWorkspaceAccessToken } from "@/lib/calendar/getAccessToken";
 import { getProvider } from "@/lib/calendar/providers";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
+import { produceSignal } from "@/lib/signals/engine";
 
 export type CreateCalendarEventInput = {
   title: string;
@@ -101,6 +102,33 @@ export async function createCalendarEvent(
       contact_id: input.contactId ?? null,
       deal_id: input.dealId ?? null,
     });
+
+    // Produce meeting_approaching signal for the linked contact or deal
+    if (input.contactId) {
+      await produceSignal({
+        workspaceId: workspace.id,
+        type: "meeting_approaching",
+        entityType: "contact",
+        entityId: input.contactId,
+        confidence: "high",
+        evidenceData: { title: event.title },
+        producedBy: "task_engine",
+        origin: "calendar_create",
+        expiresAt: endAt.toISOString(),
+      }).catch((err) => logger.error("createCalendarEvent signal error:", err));
+    } else if (input.dealId) {
+      await produceSignal({
+        workspaceId: workspace.id,
+        type: "meeting_approaching",
+        entityType: "deal",
+        entityId: input.dealId,
+        confidence: "high",
+        evidenceData: { title: event.title },
+        producedBy: "task_engine",
+        origin: "calendar_create",
+        expiresAt: endAt.toISOString(),
+      }).catch((err) => logger.error("createCalendarEvent signal error:", err));
+    }
 
     revalidatePath("/dashboard/calendar");
     if (input.contactId) revalidatePath(`/dashboard/contacts/${input.contactId}`);

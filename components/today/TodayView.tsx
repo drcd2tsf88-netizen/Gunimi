@@ -10,9 +10,11 @@ import FirstSignalMoment from "./FirstSignalMoment";
 import TodaySignalsPulse from "./TodaySignalsPulse";
 import TodayMemoryWidget from "./TodayMemoryWidget";
 import AiBriefCard from "./AiBriefCard";
+import TodayMeetingsSection from "./TodayMeetingsSection";
 import type { ResolvedTodayData, TodayCalmContext } from "@/lib/today/types";
 import type { MemoryEvent } from "@/lib/memory/types";
 import type { AiBrief } from "@/server/actions/today/getAiBrief";
+import type { CalendarEventRow } from "@/types/calendar";
 
 type Props = {
   displayName: string;
@@ -21,6 +23,7 @@ type Props = {
   recentMemory: MemoryEvent[];
   calmContext?: TodayCalmContext;
   aiBrief?: AiBrief | null;
+  todayMeetings?: CalendarEventRow[];
 } & ResolvedTodayData;
 
 function getGreetingKey(): "greetingMorning" | "greetingAfternoon" | "greetingEvening" {
@@ -47,6 +50,7 @@ export default function TodayView({
   recentMemory,
   calmContext,
   aiBrief,
+  todayMeetings = [],
 }: Props) {
   const t = useTranslations("today");
 
@@ -80,6 +84,9 @@ export default function TodayView({
 
       {/* ── AI Brief ─────────────────────────────────────────────────────── */}
       {aiBrief && <AiBriefCard brief={aiBrief} />}
+
+      {/* ── Today's Meetings ─────────────────────────────────────────────── */}
+      <TodayMeetingsSection meetings={todayMeetings} />
 
       {/* ── First Signal Moment ───────────────────────────────────────────── */}
       <FirstSignalMoment hasSignals={hasSignals} />

@@ -15,6 +15,7 @@ export type HealthInput = {
   emailsLast30d: number;
   openTasks: number;
   totalDeals: number;
+  recentMeetings?: number;
 };
 
 export function computeContactHealth(input: HealthInput): HealthScore {
@@ -40,9 +41,13 @@ export function computeContactHealth(input: HealthInput): HealthScore {
   if (input.totalDeals >= 2)       pts += 20;
   else if (input.totalDeals === 1) pts += 14;
 
-  // Open tasks (0–15 pts)
-  if (input.openTasks >= 2)       pts += 15;
-  else if (input.openTasks === 1) pts += 10;
+  // Open tasks (0–10 pts)
+  if (input.openTasks >= 2)       pts += 10;
+  else if (input.openTasks === 1) pts += 7;
+
+  // Recent meetings last 30d (0–10 pts)
+  if ((input.recentMeetings ?? 0) >= 2)  pts += 10;
+  else if ((input.recentMeetings ?? 0) >= 1) pts += 7;
 
   const score = Math.min(100, pts);
 

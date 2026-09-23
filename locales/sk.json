@@ -661,7 +661,8 @@
     "contactLinked": "Kontakt prepojený.",
     "contactLinkFailed": "Nepodarilo sa prepojiť kontakt.",
     "createFailed": "Vytvorenie organizácie zlyhalo",
-    "createSuccess": "Organizácia vytvorená"
+    "createSuccess": "Organizácia vytvorená",
+    "scheduleMeetingShort": "Stretnutie"
   },
   "deals": {
     "commercialPipeline": "Obchodná Pipeline",
@@ -1890,7 +1891,19 @@
     "duration60": "1 hodina",
     "duration90": "1,5 hodiny",
     "duration120": "2 hodiny",
-    "upcomingMeetings": "Nadchádzajúce stretnutia"
+    "upcomingMeetings": "Nadchádzajúce stretnutia",
+    "editMeeting": "Upraviť stretnutie",
+    "editMeetingSubtitle": "Aktualizujte detaily stretnutia vo vašom Google Kalendári",
+    "meetingUpdated": "Stretnutie aktualizované",
+    "meetingUpdateFailed": "Nepodarilo sa aktualizovať stretnutie",
+    "cancelMeeting": "Zrušiť stretnutie",
+    "meetingCancelled": "Stretnutie zrušené",
+    "meetingCancelFailed": "Nepodarilo sa zrušiť stretnutie",
+    "saving": "Ukladám...",
+    "saveChanges": "Uložiť zmeny",
+    "meetingDefaultTitleContact": "Stretnutie s {name}",
+    "meetingDefaultTitleDeal": "Stretnutie — {name}",
+    "meetingDefaultTitleCompany": "Stretnutie — {name}"
   },
   "email": {
     "badge": "E-mail",
@@ -3116,6 +3129,42 @@
       },
       "releases": [
         {
+          "version": "1.4",
+          "date": "September 2026",
+          "title": "Inteligencia kalendára",
+          "description": "Kompletné CRUD stretnutí, AI príprava na stretnutie a lokalizovaný kalendár — všetko, čo potrebujete na správu a prípravu stretnutí v Gunimi.",
+          "changes": [
+            {
+              "tag": "new",
+              "text": "Upravujte a rušte stretnutia priamo na stránkach kontaktov, obchodov a spoločností."
+            },
+            {
+              "tag": "new",
+              "text": "AI príprava na stretnutie: kliknite na iskričku pri akomkoľvek stretnutí a okamžite získate kontext, navrhované témy a kľúčové poznámky z vašich CRM dát."
+            },
+            {
+              "tag": "new",
+              "text": "Stránka Dnes teraz zobrazuje vaše dnešné stretnutia spolu s úlohami a signálmi."
+            },
+            {
+              "tag": "new",
+              "text": "Aktivita stretnutí sa teraz zohľadňuje v skóre zdravia vzťahov."
+            },
+            {
+              "tag": "improved",
+              "text": "Názvy dní, mesiacov a časy v kalendári teraz sledujú jazyk pracovného priestoru (plná podpora slovenčiny a češtiny)."
+            },
+            {
+              "tag": "improved",
+              "text": "Naplánovaním stretnutia sa zoznam okamžite aktualizuje — bez nutnosti obnovy stránky."
+            },
+            {
+              "tag": "fixed",
+              "text": "Úprava a zrušenie stretnutia teraz správne aktualizuje lokálnu databázu aj Google Kalendár."
+            }
+          ]
+        },
+        {
           "version": "1.3",
           "date": "September 2026",
           "title": "Open Alpha Launch",
@@ -4012,7 +4061,10 @@
     "memoryCaptured": "Zachytené",
     "memoryViewTimeline": "Zobraziť históriu",
     "memoryEmpty": "Zatiaľ nič nezachytené",
-    "briefLabel": "Denný prehľad"
+    "briefLabel": "Denný prehľad",
+    "todayMeetings": "Dnešné stretnutia",
+    "past": "Prebehlo",
+    "allDay": "Celý deň"
   },
   "awakening": {
     "heading": "Váš workspace je pripravený.",
@@ -4045,16 +4097,13 @@
     }
   },
   "release": {
-    "badge": "Čo je nové",
-    "title": "Gunimi je od teraz v Open Alpha.",
+    "title": "Inteligencia kalendára — v1.4",
     "bullets": [
-      "Žiadny waitlist, žiadne schvaľovanie. Každý si môže vytvoriť workspace hneď — okamžite.",
-      "Úplne zadarmo až do oficiálneho spustenia. Bez kreditnej karty, bez časového obmedzenia.",
-      "Vaše dáta sú v bezpečí. Záväzok sme dali písomne — workspace nikdy nevymažeme bez upozornenia."
-    ],
-    "readMore": "Celé poznámky k vydaniu",
-    "dismiss": "Rozumiem",
-    "ariaLabel": "Čo je nové v Gunimi"
+      "Upravujte a rušte stretnutia priamo na stránkach kontaktov, obchodov a spoločností.",
+      "AI príprava na stretnutie: jedným kliknutím získate kontext, navrhované témy a kľúčové body.",
+      "Stránka Dnes zobrazuje vaše dnešné stretnutia.",
+      "Názvy dní a mesiacov v kalendári teraz sledujú jazyk pracovného priestoru."
+    ]
   },
   "demo": {
     "banner": "Demo Workspace",

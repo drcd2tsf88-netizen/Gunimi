@@ -53,6 +53,9 @@ import WorkspaceTimeline from "@/components/timeline/WorkspaceTimeline";
 import { cn } from "@/lib/utils";
 import { ORDER_STATUS_STYLES } from "@/lib/orders/styles";
 import { formatOrderAmount, computeOrderTotal, type Order } from "@/types/order";
+import UpcomingMeetingsList from "@/components/calendar/UpcomingMeetingsList";
+import ScheduleMeetingSheet from "@/components/calendar/ScheduleMeetingSheet";
+import type { CalendarEventRow } from "@/types/calendar";
 
 const PREP_ICONS: Record<CompanyPrepItem["iconKey"], LucideIcon> = {
   contact: User,
@@ -81,6 +84,8 @@ type Props = {
   entityTags: WorkspaceTag[];
   attachments: WorkspaceAttachment[];
   teams: WorkspaceTeam[];
+  hasCalendar?: boolean;
+  upcomingMeetings?: CalendarEventRow[];
 };
 
 export default function CompanyDetailView({
@@ -96,12 +101,16 @@ export default function CompanyDetailView({
   entityTags,
   attachments,
   teams,
+  hasCalendar = false,
+  upcomingMeetings = [],
 }: Props) {
   const router = useRouter();
   const t = useTranslations("companies");
+  const tCal = useTranslations("calendar");
   const tOrders = useTranslations("orders");
   const [editOpen, setEditOpen] = useState(false);
   const [addContactOpen, setAddContactOpen] = useState(false);
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [localTasks, setLocalTasks] = useState(tasks);
 
@@ -211,6 +220,11 @@ export default function CompanyDetailView({
                 ...prev,
               ])
             }
+          />
+          <UpcomingMeetingsList
+            meetings={upcomingMeetings}
+            hasCalendar={hasCalendar}
+            companyId={company.id}
           />
           <CompanyProfile company={company} />
         </div>
@@ -354,6 +368,7 @@ export default function CompanyDetailView({
         contacts={contacts}
         deals={deals}
         onEdit={() => setEditOpen(true)}
+        onSchedule={hasCalendar ? () => setScheduleOpen(true) : undefined}
         allTags={allTags}
         entityTags={entityTags}
       />
@@ -379,6 +394,14 @@ export default function CompanyDetailView({
         open={addContactOpen}
         onOpenChange={setAddContactOpen}
         onAdded={() => router.refresh()}
+      />
+      <ScheduleMeetingSheet
+        open={scheduleOpen}
+        onOpenChange={setScheduleOpen}
+        hasCalendar={hasCalendar}
+        defaultTitle={company.name ? tCal("meetingDefaultTitleCompany", { name: company.name }) : ""}
+        companyId={company.id}
+        onScheduled={() => router.refresh()}
       />
     </div>
   );
