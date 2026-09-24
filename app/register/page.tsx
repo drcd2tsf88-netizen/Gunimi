@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 import { registerUser } from "@/server/actions/auth/register";
 import GunimiInput from "@/components/ui/GunimiInput";
@@ -132,7 +133,10 @@ export default function RegisterPage() {
   const [password, setPassword]               = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gdprConsent, setGdprConsent]         = useState(false);
+  const [turnstileToken, setTurnstileToken]   = useState<string | null>(null);
   const [loading, setLoading]                 = useState(false);
+
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   async function handleRegister() {
     if (!fullName || !email || !password || !confirmPassword) {
@@ -163,12 +167,16 @@ export default function RegisterPage() {
       toast.error(t("gdprRequired"));
       return;
     }
+    if (turnstileSiteKey && !turnstileToken) {
+      toast.error(t("turnstileRequired"));
+      return;
+    }
 
     try {
       setLoading(true);
       toast.loading(t("loginInitializing"), { id: "orbit-register" });
 
-      const result = await registerUser(email, password, fullName);
+      const result = await registerUser(email, password, fullName, turnstileToken ?? undefined);
 
       if ("error" in result) {
         toast.error(t(result.error as Parameters<typeof t>[0]), { id: "orbit-register" });
@@ -303,6 +311,19 @@ export default function RegisterPage() {
             </p>
           </div>
         </div>
+
+        {/* CLOUDFLARE TURNSTILE */}
+        {turnstileSiteKey && (
+          <div className="flex justify-center">
+            <Turnstile
+              siteKey={turnstileSiteKey}
+              onSuccess={(token) => setTurnstileToken(token)}
+              onError={() => setTurnstileToken(null)}
+              onExpire={() => setTurnstileToken(null)}
+              options={{ theme: "dark", size: "normal" }}
+            />
+          </div>
+        )}
 
         {/* PRIMARY CTA */}
         <button

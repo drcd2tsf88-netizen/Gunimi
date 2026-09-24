@@ -35,16 +35,36 @@ function isPasswordStrong(pwd: string): boolean {
 
 type Result = { success: true } | { error: string };
 
+async function verifyTurnstile(token: string): Promise<boolean> {
+  const secret = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY;
+  if (!secret) return true; // skipped when not configured (local dev)
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ secret, response: token }),
+    });
+    const data = await res.json() as { success: boolean };
+    return data.success === true;
+  } catch {
+    return false;
+  }
+}
+
 export async function registerUser(
   email: string,
   password: string,
   fullName: string,
+  turnstileToken?: string,
 ): Promise<Result> {
   const normalized = email.trim().toLowerCase();
   const name = fullName.trim();
 
   if (isDisposableEmail(normalized)) return { error: "disposableEmail" };
   if (!isPasswordStrong(password)) return { error: "passwordTooWeak" };
+  if (turnstileToken && !(await verifyTurnstile(turnstileToken))) {
+    return { error: "turnstileFailed" };
+  }
 
   const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL}/register/complete`;
 

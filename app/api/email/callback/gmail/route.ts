@@ -5,6 +5,7 @@ import { getProvider } from "@/lib/email/providers";
 import { syncEmailConnection } from "@/lib/email/sync";
 import { verifyOAuthState } from "@/lib/server/oauth/state";
 import { logger } from "@/lib/logger";
+import { runScanToCompletion, getAllScanTypes } from "@/lib/signals/scan";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -101,8 +102,16 @@ export async function GET(request: NextRequest) {
       description: `Connected Gmail account ${connectedEmail}`,
     });
 
-    // Fire-and-forget initial sync
+    // Fire-and-forget initial sync + immediate signal scan
     syncEmailConnection(connection.id).catch((err) => logger.error("Initial email sync failed", err));
+
+    // Trigger a full signal scan immediately so the user sees signals within seconds, not 6h
+    ;(async () => {
+      const scanTypes = getAllScanTypes();
+      for (const scanType of scanTypes) {
+        await runScanToCompletion(scanType, workspaceId).catch(() => undefined);
+      }
+    })().catch(() => undefined);
 
     return NextResponse.redirect(
       new URL("/dashboard/email?connected=true", request.url)

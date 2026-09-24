@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, Radio, RefreshCw } from "lucide-react";
+import { ArrowRight, ChevronDown, Radio, RefreshCw, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
@@ -19,6 +19,7 @@ import {
 
 import { dismissSignal } from "@/server/actions/signals/dismissSignal";
 import { runWorkspaceScan } from "@/server/actions/signals/runWorkspaceScan";
+import { submitSignalFeedback, type SignalFeedback } from "@/server/actions/signals/submitSignalFeedback";
 import type { EnrichedSignal } from "@/server/actions/signals/getWorkspaceSignals";
 import type { DismissalType } from "@/lib/signals/types";
 
@@ -56,6 +57,7 @@ export default function SignalsPageView({ initialSignals }: Props) {
   const [signals, setSignals] = useState<EnrichedSignal[]>(initialSignals);
   const [isDismissing, startDismiss] = useTransition();
   const [isScanning, startScan] = useTransition();
+  const [feedbackMap, setFeedbackMap] = useState<Record<string, SignalFeedback>>({});
 
   function handleDismiss(signalId: string, type: DismissalType) {
     startDismiss(async () => {
@@ -64,6 +66,13 @@ export default function SignalsPageView({ initialSignals }: Props) {
         setSignals((prev) => prev.filter((s) => s.id !== signalId));
         toast.success(t("dismissed"));
       }
+    });
+  }
+
+  function handleFeedback(signalId: string, feedback: SignalFeedback) {
+    setFeedbackMap((prev) => ({ ...prev, [signalId]: feedback }));
+    submitSignalFeedback(signalId, feedback).then((res) => {
+      if (res.success) toast.success(t("feedbackSaved"), { id: `feedback-${signalId}` });
     });
   }
 
@@ -173,6 +182,32 @@ export default function SignalsPageView({ initialSignals }: Props) {
 
                   {/* Actions */}
                   <div className="flex shrink-0 items-center gap-2">
+                    {/* Feedback: thumbs up / down */}
+                    <div className="hidden items-center sm:flex">
+                      <button
+                        onClick={() => handleFeedback(signal.id, "useful")}
+                        title={t("feedbackUseful")}
+                        className={`flex h-7 w-7 items-center justify-center rounded-l-lg border border-white/[0.08] transition-colors ${
+                          feedbackMap[signal.id] === "useful"
+                            ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-400"
+                            : "bg-white/[0.03] text-zinc-600 hover:border-emerald-500/30 hover:text-emerald-400"
+                        }`}
+                      >
+                        <ThumbsUp size={11} />
+                      </button>
+                      <button
+                        onClick={() => handleFeedback(signal.id, "not_useful")}
+                        title={t("feedbackNotUseful")}
+                        className={`flex h-7 w-7 items-center justify-center rounded-r-lg border border-l-0 border-white/[0.08] transition-colors ${
+                          feedbackMap[signal.id] === "not_useful"
+                            ? "border-red-500/40 bg-red-500/15 text-red-400"
+                            : "bg-white/[0.03] text-zinc-600 hover:border-red-500/30 hover:text-red-400"
+                        }`}
+                      >
+                        <ThumbsDown size={11} />
+                      </button>
+                    </div>
+
                     <Link
                       href={signal.entityHref}
                       className="flex h-7 items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 text-xs text-zinc-400 transition-all hover:border-violet-500/30 hover:text-violet-300"
