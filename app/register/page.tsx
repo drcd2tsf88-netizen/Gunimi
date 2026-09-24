@@ -131,6 +131,7 @@ export default function RegisterPage() {
   const [email, setEmail]                     = useState("");
   const [password, setPassword]               = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [gdprConsent, setGdprConsent]         = useState(false);
   const [loading, setLoading]                 = useState(false);
 
   async function handleRegister() {
@@ -156,6 +157,10 @@ export default function RegisterPage() {
     }
     if (password !== confirmPassword) {
       toast.error(t("passwordsMustMatch"));
+      return;
+    }
+    if (!gdprConsent) {
+      toast.error(t("gdprRequired"));
       return;
     }
 
@@ -256,6 +261,37 @@ export default function RegisterPage() {
           autoComplete="new-password"
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
+
+        {/* GDPR CONSENT */}
+        <label className="flex cursor-pointer items-start gap-3 rounded-[10px] border border-white/[0.06] bg-white/[0.02] px-4 py-3.5 transition-colors hover:border-white/[0.1]">
+          <div className="relative mt-0.5 shrink-0">
+            <input
+              type="checkbox"
+              checked={gdprConsent}
+              onChange={(e) => setGdprConsent(e.target.checked)}
+              disabled={loading}
+              className="sr-only"
+            />
+            <div className={`flex h-4 w-4 items-center justify-center rounded border transition-colors ${
+              gdprConsent
+                ? "border-[#6D5BFF] bg-[#6D5BFF]"
+                : "border-white/[0.2] bg-white/[0.04]"
+            }`}>
+              {gdprConsent && (
+                <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                  <path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+            </div>
+          </div>
+          <p className="text-[12px] leading-relaxed text-[#9AA3B2]">
+            {t("gdprConsentPrefix")}{" "}
+            <Link href="/privacy" target="_blank" className="text-[#C8CDD8] underline underline-offset-2 transition-colors hover:text-[#F7F8FC]">
+              {t("privacyLink")}
+            </Link>
+            .
+          </p>
+        </label>
 
         {/* VERIFICATION NOTICE */}
         <div className="flex items-start gap-3 rounded-[10px] border border-[#6D5BFF]/[0.12] bg-[#6D5BFF]/[0.06] px-4 py-3.5">

@@ -55,7 +55,7 @@ export async function sendAdminRegistrationAlert({ name, email }: Props): Promis
             </table>
 
             <p style="margin:20px 0 0;font-size:13px;color:#9AA3B2;line-height:1.6;">
-              Go to <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/admin/alpha" style="color:#8B7DFF;text-decoration:none;">Admin → Alpha</a> to review and approve.
+              Open Alpha — workspace created automatically. No action needed.
             </p>
 
           </div>
@@ -73,7 +73,7 @@ Name:  ${name || "—"}
 Email: ${email}
 Time:  ${now}
 
-Approve at: ${process.env.NEXT_PUBLIC_APP_URL}/dashboard/admin/alpha`;
+Open Alpha — workspace created automatically. No action needed.`;
 
   await sendEmail({
     from: "Gunimi Alerts <noreply@gunimi.com>",

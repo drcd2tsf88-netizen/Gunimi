@@ -182,7 +182,7 @@ export default function ScheduleMeetingSheet({
                   {t("meetingScheduleTryAgain")}
                 </button>
                 <Link
-                  href="/dashboard/settings/integrations"
+                  href="/dashboard/calendar"
                   onClick={() => handleOpenChange(false)}
                   className="text-[12px] text-[#8B7DFF]/70 transition-colors hover:text-[#8B7DFF]"
                 >

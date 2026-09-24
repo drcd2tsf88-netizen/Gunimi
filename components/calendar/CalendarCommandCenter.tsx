@@ -511,6 +511,248 @@ function EventDetailPanel({ event, crmContact, onClose, onEventUpdated, onEventD
   );
 }
 
+// ─── Day Detail Panel (hourly timeline) ──────────────────────────────────────
+
+const DAY_HOURS = Array.from({ length: 17 }, (_, i) => i + 6); // 6:00 – 22:00
+
+type DayDetailPanelProps = {
+  day: Date;
+  events: CalendarEventRow[];
+  workItems: WorkspaceCalendarItem[];
+  hasCalendar: boolean;
+  onClose: () => void;
+  onSelectEvent: (event: CalendarEventRow, contact: CalendarContact | null) => void;
+  onEventCreated: (event: CalendarEventRow) => void;
+  contactByEmail: Map<string, CalendarContact>;
+  t: ReturnType<typeof useTranslations<"calendar">>;
+  locale: string;
+};
+
+function formatHour(hour: number, locale: string): string {
+  return new Date(2024, 0, 1, hour, 0).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+}
+
+function DayDetailPanel({ day, events, workItems, hasCalendar, onClose, onSelectEvent, onEventCreated, contactByEmail, t, locale }: DayDetailPanelProps) {
+  const dateLabel = day.toLocaleDateString(locale, { weekday: "long", month: "long", day: "numeric" });
+  const [addingToHour, setAddingToHour] = useState<number | null>(null);
+  const [newEventTitle, setNewEventTitle] = useState("");
+  const [creatingEvent, startCreateEvent] = useTransition();
+
+  const timedEvents = useMemo(
+    () => events.filter((e) => !e.all_day),
+    [events],
+  );
+  const allDayEvents = useMemo(
+    () => events.filter((e) => e.all_day),
+    [events],
+  );
+
+  const eventsByHour = useMemo(() => {
+    const map = new Map<number, CalendarEventRow[]>();
+    for (const ev of timedEvents) {
+      const h = new Date(ev.start_at).getHours();
+      const arr = map.get(h) ?? [];
+      arr.push(ev);
+      map.set(h, arr);
+    }
+    return map;
+  }, [timedEvents]);
+
+  const dateIso = day.toISOString().slice(0, 10);
+  const totalCount = events.length + workItems.length;
+
+  function handleAddEvent(hour: number) {
+    const title = newEventTitle.trim();
+    if (!title) { setAddingToHour(null); return; }
+    startCreateEvent(async () => {
+      const pad = (n: number) => String(n).padStart(2, "0");
+      const endHour = Math.min(hour + 1, 23);
+      const startAt = new Date(`${dateIso}T${pad(hour)}:00:00`).toISOString();
+      const endAt = new Date(`${dateIso}T${pad(endHour)}:00:00`).toISOString();
+      const res = await fetch("/api/calendar/events/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, startAt, endAt }),
+      });
+      if (res.status === 403) {
+        toast.error(t("reconnectForEditing"));
+      } else if (!res.ok) {
+        toast.error(t("failedToSaveEvent"));
+      } else {
+        const data = await res.json() as { id: string; title: string; start_at: string; end_at: string };
+        onEventCreated({
+          id: data.id,
+          provider_event_id: data.id,
+          title: data.title,
+          description: null,
+          start_at: data.start_at,
+          end_at: data.end_at,
+          organizer_email: null,
+          organizer_name: null,
+          location: null,
+          html_link: null,
+          status: "confirmed",
+          all_day: false,
+          contact_id: null,
+          deal_id: null,
+          company_id: null,
+        });
+        toast.success(t("eventCreated"));
+      }
+      setAddingToHour(null);
+      setNewEventTitle("");
+    });
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="relative flex h-full w-full max-w-md flex-col overflow-hidden border-l border-white/10 bg-[#060816]/95 backdrop-blur-3xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* HEADER */}
+        <div className="flex items-start justify-between gap-3 border-b border-white/[0.06] px-6 py-5">
+          <div className="min-w-0">
+            <h2 className="capitalize text-base font-semibold text-white/90">{dateLabel}</h2>
+            <p className="mt-0.5 text-[12px] text-white/30">
+              {totalCount === 0 ? t("noItemsThisDay") : `${totalCount} ${t("calendarDayDetailItems")}`}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-xl border border-white/[0.08] p-1.5 text-white/40 transition-colors hover:text-white/70"
+          >
+            <X size={14} />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto">
+          {/* All-day events + work items (tasks/deals) at the top */}
+          {(allDayEvents.length > 0 || workItems.length > 0) && (
+            <div className="space-y-1 border-b border-white/[0.05] px-4 py-3">
+              {allDayEvents.map((ev) => {
+                const contact = ev.organizer_email ? (contactByEmail.get(ev.organizer_email.toLowerCase()) ?? null) : null;
+                return (
+                  <button
+                    key={ev.id}
+                    onClick={() => { onClose(); onSelectEvent(ev, contact); }}
+                    className="flex w-full items-center gap-2 rounded-lg border border-blue-500/20 bg-blue-500/[0.08] px-3 py-2 text-left transition-colors hover:bg-blue-500/15"
+                  >
+                    <span className="h-2 w-2 shrink-0 rounded-full bg-blue-500" />
+                    <p className="truncate text-[12px] font-medium text-blue-200">{ev.title}</p>
+                    <span className="ml-auto shrink-0 text-[10px] text-blue-300/40">{t("allDay")}</span>
+                  </button>
+                );
+              })}
+              {workItems.map((item) => (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  onClick={onClose}
+                  className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors ${
+                    item.type === "task"
+                      ? "border-violet-500/20 bg-violet-500/[0.08] hover:bg-violet-500/15"
+                      : "border-emerald-500/20 bg-emerald-500/[0.08] hover:bg-emerald-500/15"
+                  }`}
+                >
+                  <span className={`h-2 w-2 shrink-0 rounded-full ${item.type === "task" ? "bg-violet-500" : "bg-emerald-400"}`} />
+                  <p className={`truncate text-[12px] font-medium ${item.type === "task" ? "text-violet-200" : "text-emerald-200"}`}>
+                    {item.title}
+                  </p>
+                  {item.entityName && (
+                    <span className="ml-auto shrink-0 text-[10px] text-white/25">{item.entityName}</span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Hourly timeline */}
+          <div className="py-1">
+            {DAY_HOURS.map((hour) => {
+              const hourEvents = eventsByHour.get(hour) ?? [];
+              const isAdding = addingToHour === hour;
+
+              return (
+                <div key={hour} className="group relative flex min-h-[44px] items-start gap-0 hover:bg-white/[0.015] transition-colors">
+                  {/* Time column */}
+                  <div className="w-14 shrink-0 pt-2.5 pr-3 text-right">
+                    <span className="text-[10px] tabular-nums text-white/20">{formatHour(hour, locale)}</span>
+                  </div>
+
+                  {/* Top border */}
+                  <div className="absolute left-14 right-0 top-0 h-px bg-white/[0.04]" />
+
+                  {/* Content column */}
+                  <div className="flex flex-1 flex-col gap-1 py-2 pr-4">
+                    {hourEvents.map((ev) => {
+                      const contact = ev.organizer_email
+                        ? (contactByEmail.get(ev.organizer_email.toLowerCase()) ?? null)
+                        : null;
+                      return (
+                        <button
+                          key={ev.id}
+                          onClick={() => { onClose(); onSelectEvent(ev, contact); }}
+                          className="flex w-full items-center gap-2 rounded-lg border border-blue-500/25 bg-blue-500/[0.08] px-3 py-2 text-left transition-colors hover:bg-blue-500/[0.14]"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-[12px] font-medium text-blue-200">{ev.title}</p>
+                            <p className="text-[10px] text-blue-300/40">
+                              {formatTime(ev.start_at, locale)} – {formatTime(ev.end_at, locale)}
+                              <span className="ml-1.5">({formatEventDuration(ev.start_at, ev.end_at)})</span>
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
+
+                    {isAdding ? (
+                      <div className="flex gap-1.5">
+                        <input
+                          autoFocus
+                          value={newEventTitle}
+                          onChange={(e) => setNewEventTitle(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") handleAddEvent(hour);
+                            if (e.key === "Escape") { setAddingToHour(null); setNewEventTitle(""); }
+                          }}
+                          placeholder={t("eventTitlePlaceholder")}
+                          className="flex-1 rounded-lg border border-violet-500/30 bg-white/[0.04] px-2 py-1 text-[11px] text-white outline-none placeholder:text-white/20 focus:border-violet-500/60"
+                        />
+                        <button
+                          onClick={() => handleAddEvent(hour)}
+                          disabled={creatingEvent || !newEventTitle.trim()}
+                          className="rounded-lg bg-violet-600/80 px-2 py-1 text-[10px] font-medium text-white transition-colors hover:bg-violet-600 disabled:opacity-40"
+                        >
+                          {t("add")}
+                        </button>
+                        <button
+                          onClick={() => { setAddingToHour(null); setNewEventTitle(""); }}
+                          className="rounded-lg px-1.5 text-[10px] text-zinc-500 hover:text-white/40"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ) : hasCalendar ? (
+                      <button
+                        onClick={() => { setAddingToHour(hour); setNewEventTitle(""); }}
+                        className="flex items-center gap-1 rounded-md py-0.5 text-[10px] text-white/15 opacity-0 transition-all group-hover:opacity-100 hover:text-white/45"
+                      >
+                        <Plus size={9} />
+                        {t("newEvent")}
+                      </button>
+                    ) : null}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Widget shell ─────────────────────────────────────────────────────────────
 
 type WidgetProps = {
@@ -960,6 +1202,7 @@ function MonthGrid({
   monthOffset,
   eventsByDay,
   onSelectEvent,
+  onSelectDay,
   contactByEmail,
   onTaskCreated,
   t,
@@ -969,6 +1212,7 @@ function MonthGrid({
   monthOffset: number;
   eventsByDay: Map<string, CalendarEventRow[]>;
   onSelectEvent?: (event: CalendarEventRow, contact: CalendarContact | null) => void;
+  onSelectDay?: (day: Date) => void;
   contactByEmail: Map<string, CalendarContact>;
   onTaskCreated?: (item: WorkspaceCalendarItem) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
@@ -1081,23 +1325,24 @@ function MonthGrid({
             >
               {/* Day number */}
               <div className="mb-1 flex items-center justify-between">
-                <span
-                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold ${
+                <button
+                  onClick={() => onSelectDay?.(day)}
+                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold transition-colors ${
                     isToday
-                      ? "bg-violet-600 text-white"
+                      ? "bg-violet-600 text-white hover:bg-violet-500"
                       : isCurrentMonth
-                      ? "text-white/50"
+                      ? "text-white/50 hover:bg-white/[0.08] hover:text-white/80"
                       : "text-white/20"
                   }`}
                 >
                   {day.getDate()}
-                </span>
+                </button>
                 {isCurrentMonth && !isPast && addingToDay !== key && (
                   <button
-                    onClick={() => { setAddingToDay(key); setNewTaskTitle(""); }}
-                    className="flex h-4 w-4 items-center justify-center rounded text-white/20 opacity-0 transition-all group-hover:opacity-100 hover:bg-white/[0.06] hover:text-white/50"
+                    onClick={(e) => { e.stopPropagation(); setAddingToDay(key); setNewTaskTitle(""); }}
+                    className="flex h-5 w-5 items-center justify-center rounded-md border border-transparent text-white/25 opacity-0 transition-all group-hover:opacity-100 hover:border-violet-500/30 hover:bg-violet-500/[0.12] hover:text-violet-300"
                   >
-                    <Plus size={9} />
+                    <Plus size={11} />
                   </button>
                 )}
               </div>
@@ -1222,15 +1467,19 @@ function ListRow({ item, locale }: { item: WorkspaceCalendarItem; locale: string
 function GunimCalendarWidget({
   items: initialItems,
   events,
+  hasCalendar,
   contactByEmail,
   onSelectEvent,
+  onEventCreated,
   t,
   locale,
 }: {
   items: WorkspaceCalendarItem[];
   events: CalendarEventRow[];
+  hasCalendar: boolean;
   contactByEmail: Map<string, CalendarContact>;
   onSelectEvent: (event: CalendarEventRow, contact: CalendarContact | null) => void;
+  onEventCreated: (event: CalendarEventRow) => void;
   t: ReturnType<typeof useTranslations<"calendar">>;
   locale: string;
 }) {
@@ -1238,6 +1487,7 @@ function GunimCalendarWidget({
   const [weekOffset, setWeekOffset] = useState(0);
   const [monthOffset, setMonthOffset] = useState(0);
   const [localItems, setLocalItems] = useState(initialItems);
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
   function handleTaskCreated(item: WorkspaceCalendarItem) {
     setLocalItems((prev) =>
@@ -1375,6 +1625,7 @@ function GunimCalendarWidget({
           monthOffset={monthOffset}
           eventsByDay={eventsByDay}
           onSelectEvent={onSelectEvent}
+          onSelectDay={setSelectedDay}
           contactByEmail={contactByEmail}
           onTaskCreated={handleTaskCreated}
           t={t}
@@ -1409,6 +1660,22 @@ function GunimCalendarWidget({
             {localItems.filter((i) => !i.isOverdue).map((item) => <ListRow key={item.id} item={item} locale={locale} />)}
           </div>
         </div>
+      )}
+
+      {/* DAY DETAIL PANEL */}
+      {selectedDay && (
+        <DayDetailPanel
+          day={selectedDay}
+          events={eventsByDay.get(dateKey(selectedDay)) ?? []}
+          workItems={localItems.filter((i) => dateKey(new Date(i.date)) === dateKey(selectedDay) && !i.isOverdue)}
+          hasCalendar={hasCalendar}
+          onClose={() => setSelectedDay(null)}
+          onSelectEvent={(ev, contact) => { setSelectedDay(null); onSelectEvent(ev, contact); }}
+          onEventCreated={onEventCreated}
+          contactByEmail={contactByEmail}
+          t={t}
+          locale={locale}
+        />
       )}
     </div>
   );
@@ -1495,6 +1762,12 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
     contacts.forEach((c) => { if (c.email) map.set(c.email.toLowerCase(), c); });
     return map;
   }, [contacts]);
+
+  function handleEventCreated(event: CalendarEventRow) {
+    setLocalEvents((prev) =>
+      [...prev, event].sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime()),
+    );
+  }
 
   function handleEventUpdated(id: string, changes: Partial<CalendarEventRow>) {
     setLocalEvents((prev) => prev.map((e) => e.id === id ? { ...e, ...changes } : e));
@@ -1653,8 +1926,10 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
         <GunimCalendarWidget
           items={workspaceItems}
           events={events}
+          hasCalendar={hasConnection}
           contactByEmail={contactByEmail}
           onSelectEvent={handleSelectEvent}
+          onEventCreated={handleEventCreated}
           t={t}
           locale={locale}
         />
