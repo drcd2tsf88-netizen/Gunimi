@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Activity,
   Building2,
@@ -77,6 +77,7 @@ function ActivityIcon({
 
 export default function EntityMemoryPanel({ activities }: Props) {
   const t = useTranslations("memory");
+  const locale = useLocale();
 
   const milestones = activities.filter((a) => isMilestone(a.type ?? ""));
 
@@ -120,7 +121,7 @@ export default function EntityMemoryPanel({ activities }: Props) {
                 </div>
 
                 <p className="mt-0.5 text-[10px] text-white/25">
-                  {new Date(item.created_at).toLocaleDateString(undefined, {
+                  {new Date(item.created_at).toLocaleDateString(locale, {
                     month: "short",
                     day: "numeric",
                     year: "numeric",

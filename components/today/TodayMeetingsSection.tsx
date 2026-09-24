@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { CalendarDays } from "lucide-react";
 import type { CalendarEventRow } from "@/types/calendar";
 
@@ -11,6 +11,7 @@ type Props = {
 
 export default function TodayMeetingsSection({ meetings }: Props) {
   const t = useTranslations("today");
+  const locale = useLocale();
 
   if (meetings.length === 0) return null;
 
@@ -36,7 +37,7 @@ export default function TodayMeetingsSection({ meetings }: Props) {
             >
               <div className="flex h-7 w-7 shrink-0 flex-col items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10">
                 <span className="text-[8px] font-semibold leading-none text-blue-300/70">
-                  {start.toLocaleDateString(undefined, { month: "short" }).toUpperCase()}
+                  {start.toLocaleDateString(locale, { month: "short" }).toUpperCase()}
                 </span>
                 <span className="text-xs font-bold leading-none text-blue-200">
                   {start.getDate()}
@@ -49,7 +50,7 @@ export default function TodayMeetingsSection({ meetings }: Props) {
                 <p className="mt-0.5 text-[10px] text-white/30">
                   {meeting.all_day
                     ? t("allDay")
-                    : start.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                    : start.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
                   {meeting.location && (
                     <span className="ml-1.5 text-white/20">· {meeting.location}</span>
                   )}

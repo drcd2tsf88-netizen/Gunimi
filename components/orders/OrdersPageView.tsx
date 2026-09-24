@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { PlusCircle, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import GunimiButton from "@/components/ui/GunimiButton";
@@ -24,6 +24,7 @@ type Props = {
 
 export default function OrdersPageView({ orders, companies, contacts, deals }: Props) {
   const t = useTranslations("orders");
+  const locale = useLocale();
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
@@ -115,7 +116,7 @@ export default function OrdersPageView({ orders, companies, contacts, deals }: P
               {filtered.map((order) => {
                 const total = order.items ? computeOrderTotal(order.items) : null;
                 const dueDate = order.due_date
-                  ? new Date(order.due_date).toLocaleDateString(undefined, {
+                  ? new Date(order.due_date).toLocaleDateString(locale, {
                       month: "short",
                       day: "numeric",
                     })

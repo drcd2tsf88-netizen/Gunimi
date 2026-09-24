@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { ArrowLeft, Building2, FileText, Pencil, Save, User, X } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -27,6 +27,7 @@ type Props = {
 export default function NoteDetailClient({ note, allTags }: Props) {
   const t = useTranslations("notes");
   const tc = useTranslations("common");
+  const locale = useLocale();
   const router = useRouter();
 
   const [editing, setEditing] = useState(false);
@@ -93,7 +94,7 @@ export default function NoteDetailClient({ note, allTags }: Props) {
               )}
 
               <p className="text-xs text-zinc-600">
-                {new Date(note.created_at).toLocaleDateString(undefined, {
+                {new Date(note.created_at).toLocaleDateString(locale, {
                   month: "long",
                   day: "numeric",
                   year: "numeric",

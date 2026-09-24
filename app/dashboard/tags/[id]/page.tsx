@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import Link from "next/link";
 import { Suspense } from "react";
 import {
@@ -43,7 +43,7 @@ const STATUS_DOT: Record<string, string> = {
 
 export default async function TagDetailPage({ params }: Props) {
   const { id } = await params;
-  const t = await getTranslations("tags");
+  const [t, locale] = await Promise.all([getTranslations("tags"), getLocale()]);
 
   const result = await getTagWithEntities(id);
   if (!result) notFound();
@@ -199,7 +199,7 @@ export default async function TagDetailPage({ params }: Props) {
                     key={n.id}
                     href={`/dashboard/notes/${n.id}`}
                     primary={n.title}
-                    secondary={new Date(n.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
+                    secondary={new Date(n.created_at).toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" })}
                     dot="bg-amber-500"
                   />
                 ))}

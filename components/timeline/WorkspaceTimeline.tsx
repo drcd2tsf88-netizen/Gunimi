@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Mail,
   FileText,
@@ -188,7 +188,7 @@ function priorityColor(priority?: string) {
   return "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
 }
 
-function relativeTime(dateStr: string): string {
+function relativeTime(dateStr: string, locale: string): string {
   const now = Date.now();
   const then = new Date(dateStr).getTime();
   const diff = now - then;
@@ -197,7 +197,7 @@ function relativeTime(dateStr: string): string {
   if (mins < 60)  return `${mins}m`;
   const hrs = Math.floor(mins / 60);
   if (hrs < 24)   return `${hrs}h`;
-  return new Date(dateStr).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+  return new Date(dateStr).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
 }
 
 const KNOWN_ACTIVITY_TYPES = new Set([
@@ -228,6 +228,7 @@ export default function WorkspaceTimeline({
   attachments = [],
 }: Props) {
   const t = useTranslations("timeline");
+  const locale = useLocale();
   const [activeFilter, setActiveFilter] = useState<FilterKind>("all");
 
   const events = useMemo(
@@ -253,7 +254,7 @@ export default function WorkspaceTimeline({
     if (raw === "__yesterday__") return t("yesterday");
     const [year, month] = raw.split("-");
     const d = new Date(Number(year), Number(month) - 1, 1);
-    return d.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+    return d.toLocaleDateString(locale, { month: "long", year: "numeric" });
   }
 
   const availableFilters = FILTER_KINDS.filter(
@@ -372,7 +373,7 @@ export default function WorkspaceTimeline({
                               </span>
                             )}
                             <span className="whitespace-nowrap text-[10px] text-zinc-600">
-                              {relativeTime(event.date)}
+                              {relativeTime(event.date, locale)}
                             </span>
                           </div>
                         </div>

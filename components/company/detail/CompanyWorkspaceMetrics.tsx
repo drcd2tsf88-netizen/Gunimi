@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp, Briefcase, Users, Clock } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 import GunimiSection from "@/components/layout/GunimiSection";
 import GunimiStatCard from "@/components/ui/GunimiStatCard";
@@ -20,6 +20,7 @@ type Props = {
 
 export default function CompanyWorkspaceMetrics({ company, contacts, deals, onNavigate }: Props) {
   const t = useTranslations("companies");
+  const locale = useLocale();
 
   const openDeals = deals.filter(
     (d) => d.stage !== "won" && d.stage !== "lost",
@@ -31,7 +32,7 @@ export default function CompanyWorkspaceMetrics({ company, contacts, deals, onNa
   );
 
   const lastActivityValue = company.last_activity_at
-    ? new Date(company.last_activity_at).toLocaleDateString(undefined, {
+    ? new Date(company.last_activity_at).toLocaleDateString(locale, {
         month: "short",
         day: "numeric",
       })

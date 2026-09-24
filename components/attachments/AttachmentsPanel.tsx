@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Paperclip,
   Upload,
@@ -54,8 +54,8 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(undefined, {
+function formatDate(iso: string, locale: string): string {
+  return new Date(iso).toLocaleDateString(locale, {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -64,6 +64,7 @@ function formatDate(iso: string): string {
 
 export default function AttachmentsPanel({ entityType, entityId, initialAttachments }: Props) {
   const t = useTranslations("attachments");
+  const locale = useLocale();
   const [attachments, setAttachments] = useState<WorkspaceAttachment[]>(initialAttachments);
   const [uploading, setUploading] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -203,7 +204,7 @@ export default function AttachmentsPanel({ entityType, entityId, initialAttachme
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-white/80">{a.file_name}</p>
                   <p className="text-[11px] text-zinc-500">
-                    {formatBytes(a.file_size)} · {formatDate(a.created_at)}
+                    {formatBytes(a.file_size)} · {formatDate(a.created_at, locale)}
                   </p>
                 </div>
 

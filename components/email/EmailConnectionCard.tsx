@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { CheckCircle2, Loader2, Mail, RefreshCw, Trash2, Unplug } from "lucide-react";
@@ -24,8 +24,8 @@ type Props = {
   connections: EmailConnection[];
 };
 
-function formatDate(ts: string): string {
-  return new Date(ts).toLocaleString(undefined, {
+function formatDate(ts: string, locale: string): string {
+  return new Date(ts).toLocaleString(locale, {
     month: "short",
     day: "numeric",
     hour: "2-digit",
@@ -36,6 +36,7 @@ function formatDate(ts: string): string {
 export default function EmailConnectionCard({ connections }: Props) {
   const t = useTranslations("email");
   const tc = useTranslations("common");
+  const locale = useLocale();
   const router = useRouter();
   const [syncing, setSyncing] = useState(false);
   const [disconnectTarget, setDisconnectTarget] = useState<EmailConnection | null>(null);
@@ -124,7 +125,7 @@ export default function EmailConnectionCard({ connections }: Props) {
                     </p>
                   )}
                   <p className="mt-0.5 text-xs text-white/25">
-                    {t("lastSynced")}: {conn.last_synced_at ? formatDate(conn.last_synced_at) : tc("never")}
+                    {t("lastSynced")}: {conn.last_synced_at ? formatDate(conn.last_synced_at, locale) : tc("never")}
                   </p>
                 </div>
               </div>

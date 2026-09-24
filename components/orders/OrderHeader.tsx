@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { ArrowLeft, Building2, Calendar, ChevronDown, Pencil, Trash2, User, UserCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
@@ -54,6 +54,7 @@ type Props = {
 export default function OrderHeader({ order, companies, contacts, deals, members, initialAssignee }: Props) {
   const t = useTranslations("orders");
   const tc = useTranslations("common");
+  const locale = useLocale();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isDeleting, startDelete] = useTransition();
@@ -81,7 +82,7 @@ export default function OrderHeader({ order, companies, contacts, deals, members
   const total = order.items ? computeOrderTotal(order.items) : null;
 
   const dueDate = order.due_date
-    ? new Date(order.due_date).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })
+    ? new Date(order.due_date).toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" })
     : null;
 
   const isOverdue =

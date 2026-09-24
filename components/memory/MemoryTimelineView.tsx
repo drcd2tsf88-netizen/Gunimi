@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Activity,
   Building2,
@@ -90,8 +90,8 @@ function entityLink(event: MemoryEvent): string | null {
   return null;
 }
 
-function formatDate(ts: string): string {
-  return new Date(ts).toLocaleString(undefined, {
+function formatDate(ts: string, locale: string): string {
+  return new Date(ts).toLocaleString(locale, {
     month: "short",
     day: "numeric",
     hour: "2-digit",
@@ -99,8 +99,8 @@ function formatDate(ts: string): string {
   });
 }
 
-function formatDateShort(ts: string): string {
-  return new Date(ts).toLocaleDateString(undefined, {
+function formatDateShort(ts: string, locale: string): string {
+  return new Date(ts).toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -110,9 +110,11 @@ function formatDateShort(ts: string): string {
 function MilestonePill({
   event,
   t,
+  locale,
 }: {
   event: MemoryEvent;
   t: ReturnType<typeof useTranslations>;
+  locale: string;
 }) {
   const link = entityLink(event);
 
@@ -133,7 +135,7 @@ function MilestonePill({
         {event.title}
       </p>
 
-      <p className="text-[10px] text-white/30">{formatDateShort(event.createdAt)}</p>
+      <p className="text-[10px] text-white/30">{formatDateShort(event.createdAt, locale)}</p>
     </div>
   );
 
@@ -151,10 +153,12 @@ function TimelineEventRow({
   event,
   t,
   isLast,
+  locale,
 }: {
   event: MemoryEvent;
   t: ReturnType<typeof useTranslations>;
   isLast: boolean;
+  locale: string;
 }) {
   const link = entityLink(event);
 
@@ -193,7 +197,7 @@ function TimelineEventRow({
               {t(IMPORTANCE_LABEL_KEY[event.importance])}
             </span>
             <span className="text-[10px] text-white/25">
-              {formatDate(event.createdAt)}
+              {formatDate(event.createdAt, locale)}
             </span>
           </div>
         </div>
@@ -214,6 +218,7 @@ function TimelineEventRow({
 
 export default function MemoryTimelineView({ timeline, milestones, stats }: Props) {
   const t = useTranslations("memory");
+  const locale = useLocale();
 
   return (
     <div className="space-y-8">
@@ -266,7 +271,7 @@ export default function MemoryTimelineView({ timeline, milestones, stats }: Prop
           <div className="p-5">
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {milestones.slice(0, 6).map((m) => (
-                <MilestonePill key={m.id} event={m} t={t} />
+                <MilestonePill key={m.id} event={m} t={t} locale={locale} />
               ))}
             </div>
           </div>
@@ -299,6 +304,7 @@ export default function MemoryTimelineView({ timeline, milestones, stats }: Prop
                 event={event}
                 t={t}
                 isLast={i === timeline.length - 1}
+                locale={locale}
               />
             ))}
           </div>

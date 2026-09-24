@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   AlertCircle,
   CalendarDays,
@@ -43,9 +43,9 @@ function buildTodayStr(): string {
   ].join("-");
 }
 
-function formatMeetingTime(startAt: string, allDay: boolean, allDayLabel: string): string {
+function formatMeetingTime(startAt: string, allDay: boolean, allDayLabel: string, locale: string): string {
   if (allDay) return allDayLabel;
-  return new Date(startAt).toLocaleTimeString(undefined, {
+  return new Date(startAt).toLocaleTimeString(locale, {
     hour: "numeric",
     minute: "2-digit",
   });
@@ -53,6 +53,7 @@ function formatMeetingTime(startAt: string, allDay: boolean, allDayLabel: string
 
 export default function TodaysPrioritiesWidget({ tasks, events, staleDealsCount }: Props) {
   const t = useTranslations("dashboard");
+  const locale = useLocale();
   const router = useRouter();
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [, startTransition] = useTransition();
@@ -229,7 +230,7 @@ export default function TodaysPrioritiesWidget({ tasks, events, staleDealsCount 
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm text-white/80">{event.title}</p>
                         <p className="text-[11px] text-white/35">
-                          {formatMeetingTime(event.start_at, event.all_day, t("allDay"))}
+                          {formatMeetingTime(event.start_at, event.all_day, t("allDay"), locale)}
                         </p>
                       </div>
                     </Link>

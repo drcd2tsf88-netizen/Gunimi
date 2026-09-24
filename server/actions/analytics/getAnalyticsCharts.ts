@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
+import { getLocale } from "next-intl/server";
 import { logger } from "@/lib/logger";
 
 export type DealsByStage = {
@@ -38,7 +39,7 @@ const FALLBACK: AnalyticsCharts = {
 
 export async function getAnalyticsCharts(): Promise<AnalyticsCharts> {
   try {
-    const workspace = await getCurrentWorkspace();
+    const [workspace, locale] = await Promise.all([getCurrentWorkspace(), getLocale()]);
     if (!workspace) return FALLBACK;
 
     const supabase = await createClient();
@@ -73,7 +74,7 @@ export async function getAnalyticsCharts(): Promise<AnalyticsCharts> {
     const months: { year: number; month: number; label: string; key: string }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const label = d.toLocaleDateString(undefined, { month: "short", year: "2-digit" });
+      const label = d.toLocaleDateString(locale, { month: "short", year: "2-digit" });
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
       months.push({ year: d.getFullYear(), month: d.getMonth(), label, key });
     }

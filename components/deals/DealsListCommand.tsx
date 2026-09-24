@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ArrowRight,
   Building2,
@@ -46,9 +46,9 @@ function closeDateClass(dateStr?: string): string {
   return "text-zinc-500";
 }
 
-function formatCloseDate(dateStr?: string): string {
+function formatCloseDate(dateStr: string | undefined, locale: string): string {
   if (!dateStr) return "—";
-  return new Date(dateStr).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return new Date(dateStr).toLocaleDateString(locale, { month: "short", day: "numeric" });
 }
 
 type RowProps = {
@@ -60,6 +60,7 @@ type RowProps = {
 
 function DealRow({ deal, stage, onNavigate, onEdit }: RowProps) {
   const t = useTranslations("deals");
+  const locale = useLocale();
   const [now] = useState(() => Date.now());
   const borderClass = SLUG_BORDER[stage.slug] ?? "border-l-zinc-700/50";
   const isOverdue = !!deal.expected_close_date && new Date(deal.expected_close_date).getTime() < now;
@@ -128,7 +129,7 @@ function DealRow({ deal, stage, onNavigate, onEdit }: RowProps) {
       {/* Close date */}
       <div className="hidden w-20 shrink-0 text-right md:block">
         <p className={cn("text-xs tabular-nums", closeDateClass(deal.expected_close_date))}>
-          {formatCloseDate(deal.expected_close_date)}
+          {formatCloseDate(deal.expected_close_date, locale)}
         </p>
         {isOverdue && (
           <p className="text-[10px] text-red-500/70">{t("overdue")}</p>

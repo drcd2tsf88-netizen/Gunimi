@@ -3,7 +3,7 @@
 import { useState, useTransition, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Building2,
   FileText,
@@ -63,6 +63,7 @@ type RowProps = {
 function NoteRow({ note, extractingId, onEdit, onDelete, onExtract }: RowProps) {
   const t = useTranslations("notes");
   const tc = useTranslations("common");
+  const locale = useLocale();
   const isExtracting = extractingId === note.id;
 
   return (
@@ -121,7 +122,7 @@ function NoteRow({ note, extractingId, onEdit, onDelete, onExtract }: RowProps) 
       {/* Date + hover actions */}
       <div className="flex shrink-0 flex-col items-end gap-2">
         <p className="text-xs text-zinc-600">
-          {new Date(note.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+          {new Date(note.created_at).toLocaleDateString(locale, { month: "short", day: "numeric" })}
         </p>
 
         <div className="flex items-center gap-1 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">

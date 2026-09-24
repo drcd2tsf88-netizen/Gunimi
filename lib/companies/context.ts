@@ -13,8 +13,8 @@ const MEETING_TYPES = new Set([
   "phone_call",
 ]);
 
-function shortDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString(undefined, {
+function shortDate(dateStr: string, locale: string): string {
+  return new Date(dateStr).toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -30,6 +30,7 @@ export function resolveCompanyContext(
   deals: Deal[],
   activities: WorkspaceActivity[],
   notes: { id: string; title: string; created_at: string }[],
+  locale: string,
 ): RawContextSection[] {
   const sections: RawContextSection[] = [];
 
@@ -77,7 +78,7 @@ export function resolveCompanyContext(
       entries: topNotes.map((note): RawContextEntry => ({
         id: note.id,
         primary: note.title,
-        metaRaw: shortDate(note.created_at),
+        metaRaw: shortDate(note.created_at, locale),
       })),
     });
   }
@@ -97,7 +98,7 @@ export function resolveCompanyContext(
           id: recentMeeting.id,
           primary: recentMeeting.title ?? recentMeeting.type ?? "Meeting",
           secondary: recentMeeting.user?.full_name,
-          metaRaw: shortDate(recentMeeting.created_at),
+          metaRaw: shortDate(recentMeeting.created_at, locale),
         },
       ],
     });

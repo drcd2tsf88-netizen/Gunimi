@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   X,
   Calendar,
@@ -58,13 +58,13 @@ const PRIORITY_CONFIG = {
   low: { color: "text-zinc-500", dot: "bg-zinc-600" },
 } as const;
 
-function formatDate(iso: string | null): string {
+function formatDate(iso: string | null, locale: string): string {
   if (!iso) return "—";
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  return new Date(iso).toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" });
 }
 
-function formatDateTime(iso: string): string {
-  return new Date(iso).toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+function formatDateTime(iso: string, locale: string): string {
+  return new Date(iso).toLocaleString(locale, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
 function Avatar({ name, size = 28 }: { name: string | null; size?: number }) {
@@ -83,6 +83,7 @@ function Avatar({ name, size = 28 }: { name: string | null; size?: number }) {
 
 export default function TaskDetailPanel({ taskId, currentUserId, members, onClose, onTaskUpdated, onSubtaskCreated, onNavigateToTask }: Props) {
   const t = useTranslations("tasks");
+  const locale = useLocale();
   const currentUserName = members.find(m => m.user_id === currentUserId)?.profiles?.full_name ?? null;
 
   const [task, setTask] = useState<TaskDetail | null>(null);
@@ -510,7 +511,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                           )}
                         >
                           <Calendar size={10} className={isOverdue ? "text-red-400" : "text-zinc-600"} />
-                          {formatDate(task.due_date)}
+                          {formatDate(task.due_date, locale)}
                         </button>
                         {showDatePicker && (
                           <div className="absolute left-0 top-full z-20 mt-1 rounded-xl border border-white/[0.08] bg-[#0D1117] p-3 shadow-2xl">
@@ -542,7 +543,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
 
                       <span className="flex items-center gap-1.5 text-[11px] text-zinc-600">
                         <Clock size={10} />
-                        {formatDateTime(task.created_at)}
+                        {formatDateTime(task.created_at, locale)}
                       </span>
                     </div>
 
@@ -719,7 +720,7 @@ export default function TaskDetailPanel({ taskId, currentUserId, members, onClos
                                 {comment.author_name ?? "Unknown"}
                               </span>
                               <span className="text-[10px] text-zinc-700">
-                                {formatDateTime(comment.created_at)}
+                                {formatDateTime(comment.created_at, locale)}
                               </span>
                               {comment.user_id === currentUserId && (
                                 <button

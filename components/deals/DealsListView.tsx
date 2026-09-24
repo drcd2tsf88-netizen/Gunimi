@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Briefcase, ChevronUp, ChevronDown, Pencil } from "lucide-react";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { Deal } from "@/types/deal";
@@ -31,6 +31,7 @@ function SortIcon({ field, sortField, sortDir }: { field: SortField; sortField: 
 export default function DealsListView({ deals, onEdit }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
+  const locale = useLocale();
   const [sortField, setSortField] = useState<SortField>("title");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
@@ -132,7 +133,7 @@ export default function DealsListView({ deals, onEdit }: Props) {
         const closeLabel = deal.expected_close_date
           ? new Date(
               deal.expected_close_date
-            ).toLocaleDateString(undefined, {
+            ).toLocaleDateString(locale, {
               month: "short",
               day: "numeric",
             })

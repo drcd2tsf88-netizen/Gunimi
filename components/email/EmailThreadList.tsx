@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Building2, Mail, User } from "lucide-react";
 import GunimiCard from "@/components/ui/GunimiCard";
 import type { EmailThread } from "@/types/email";
@@ -9,7 +9,7 @@ type Props = {
   threads: EmailThread[];
 };
 
-function formatDate(ts: string | null): string {
+function formatDate(ts: string | null, locale: string): string {
   if (!ts) return "";
   const d = new Date(ts);
   const now = new Date();
@@ -19,15 +19,15 @@ function formatDate(ts: string | null): string {
     d.getFullYear() === now.getFullYear();
 
   if (isToday) {
-    return d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+    return d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
   }
 
   const diffDays = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
   if (diffDays < 7) {
-    return d.toLocaleDateString(undefined, { weekday: "short" });
+    return d.toLocaleDateString(locale, { weekday: "short" });
   }
 
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return d.toLocaleDateString(locale, { month: "short", day: "numeric" });
 }
 
 function getSenderDisplay(thread: EmailThread): string | null {
@@ -38,6 +38,7 @@ function getSenderDisplay(thread: EmailThread): string | null {
 export default function EmailThreadList({ threads }: Props) {
   const t  = useTranslations("email");
   const tc = useTranslations("common");
+  const locale = useLocale();
 
   if (threads.length === 0) {
     return (
@@ -82,7 +83,7 @@ export default function EmailThreadList({ threads }: Props) {
                 {getSenderDisplay(thread) ?? tc("unknown")}
               </p>
               <span className="shrink-0 text-xs text-white/25">
-                {formatDate(thread.last_message_at)}
+                {formatDate(thread.last_message_at, locale)}
               </span>
             </div>
 

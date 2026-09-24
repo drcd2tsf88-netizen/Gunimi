@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { CalendarClock, ExternalLink, MapPin, User } from "lucide-react";
 
 import GunimiCard from "@/components/ui/GunimiCard";
@@ -12,16 +12,16 @@ type Props = {
   events: CalendarEventRow[];
 };
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(undefined, {
+function formatDate(iso: string, locale: string): string {
+  return new Date(iso).toLocaleDateString(locale, {
     weekday: "short",
     month: "short",
     day: "numeric",
   });
 }
 
-function formatTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString(undefined, {
+function formatTime(iso: string, locale: string): string {
+  return new Date(iso).toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -39,6 +39,7 @@ function isToday(iso: string): boolean {
 
 export default function CalendarEventList({ events }: Props) {
   const t = useTranslations("calendar");
+  const locale = useLocale();
 
   if (events.length === 0) {
     return (
@@ -73,10 +74,10 @@ export default function CalendarEventList({ events }: Props) {
                   ) : (
                     <>
                       <p className="text-xs font-semibold text-white/80">
-                        {formatTime(event.start_at)}
+                        {formatTime(event.start_at, locale)}
                       </p>
                       <p className="mt-0.5 text-[10px] text-white/30">
-                        {formatTime(event.end_at)}
+                        {formatTime(event.end_at, locale)}
                       </p>
                     </>
                   )}
@@ -84,7 +85,7 @@ export default function CalendarEventList({ events }: Props) {
                     {today ? (
                       <span className="font-medium text-emerald-400">{t("today")}</span>
                     ) : (
-                      formatDate(event.start_at)
+                      formatDate(event.start_at, locale)
                     )}
                   </p>
                 </div>

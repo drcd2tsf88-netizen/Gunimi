@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 import {
   User,
@@ -108,6 +108,7 @@ export default function CompanyDetailView({
   const t = useTranslations("companies");
   const tCal = useTranslations("calendar");
   const tOrders = useTranslations("orders");
+  const locale = useLocale();
   const [editOpen, setEditOpen] = useState(false);
   const [addContactOpen, setAddContactOpen] = useState(false);
   const [scheduleOpen, setScheduleOpen] = useState(false);
@@ -132,8 +133,8 @@ export default function CompanyDetailView({
   );
 
   const rawContext = useMemo(
-    () => resolveCompanyContext(contacts, deals, activities, notes),
-    [contacts, deals, activities, notes],
+    () => resolveCompanyContext(contacts, deals, activities, notes, locale),
+    [contacts, deals, activities, notes, locale],
   );
 
   const decisionAction = decision ? t(decision.actionKey) : t("decisionEmptyLabel");

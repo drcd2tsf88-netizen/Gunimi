@@ -14,16 +14,16 @@ const MEETING_TYPES = new Set([
   "phone_call",
 ]);
 
-function shortDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString(undefined, {
+function shortDate(dateStr: string, locale: string): string {
+  return new Date(dateStr).toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
   });
 }
 
-function shortDateNoYear(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString(undefined, {
+function shortDateNoYear(dateStr: string, locale: string): string {
+  return new Date(dateStr).toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
   });
@@ -34,6 +34,7 @@ export function resolveDealContext(
   notes: DealRelatedNote[],
   tasks: DealRelatedTask[],
   activities: WorkspaceActivity[],
+  locale: string,
 ): RawContextSection[] {
   const sections: RawContextSection[] = [];
 
@@ -90,7 +91,7 @@ export function resolveDealContext(
           note.source === "contact"
             ? (deal.contact?.name ?? undefined)
             : (deal.company?.name ?? undefined),
-        metaRaw: shortDate(note.created_at),
+        metaRaw: shortDate(note.created_at, locale),
       })),
     });
   }
@@ -105,7 +106,7 @@ export function resolveDealContext(
       entries: pendingTasks.map((task) => ({
         id: task.id,
         primary: task.title,
-        metaRaw: task.due_date ? shortDateNoYear(task.due_date) : undefined,
+        metaRaw: task.due_date ? shortDateNoYear(task.due_date, locale) : undefined,
       })),
     });
   }
@@ -125,7 +126,7 @@ export function resolveDealContext(
           id: recentMeeting.id,
           primary: recentMeeting.title ?? recentMeeting.type ?? "Meeting",
           secondary: recentMeeting.user?.full_name,
-          metaRaw: shortDate(recentMeeting.created_at),
+          metaRaw: shortDate(recentMeeting.created_at, locale),
         },
       ],
     });

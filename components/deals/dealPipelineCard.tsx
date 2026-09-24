@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Pencil } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
@@ -19,9 +19,10 @@ type Props = {
 export default function DealPipelineCard({ deal, onDragStart, onEdit }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
+  const locale = useLocale();
 
   const closeLabel = deal.expected_close_date
-    ? new Date(deal.expected_close_date).toLocaleDateString(undefined, {
+    ? new Date(deal.expected_close_date).toLocaleDateString(locale, {
         month: "short",
         day: "numeric",
       })

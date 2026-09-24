@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ArrowLeft,
   Briefcase,
@@ -58,6 +58,7 @@ export default function CompanyWorkspaceHeader({
 }: Props) {
   const t = useTranslations("companies");
   const tc = useTranslations("common");
+  const locale = useLocale();
 
   const [now] = useState(() => Date.now());
   const openDeals = deals.filter((d) => d.stage !== "won" && d.stage !== "lost");
@@ -83,7 +84,7 @@ export default function CompanyWorkspaceHeader({
   const subLine = [company.industry, company.country].filter(Boolean).join(" · ");
 
   const lastActivityLabel = company.last_activity_at
-    ? new Date(company.last_activity_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })
+    ? new Date(company.last_activity_at).toLocaleDateString(locale, { month: "short", day: "numeric" })
     : t("metricNever");
 
   return (

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 import DealHeader from "./DealHeader";
 import DealOverview from "./DealOverview";
@@ -101,6 +101,7 @@ export default function DealDetailView({
   const t = useTranslations("deals");
   const tCal = useTranslations("calendar");
   const tOrders = useTranslations("orders");
+  const locale = useLocale();
   const [editOpen, setEditOpen] = useState(false);
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [localTasks, setLocalTasks] = useState(tasks);
@@ -114,8 +115,8 @@ export default function DealDetailView({
   );
   const rawStory = useMemo(() => resolveDealStory(deal, activities), [deal, activities]);
   const rawContext = useMemo(
-    () => resolveDealContext(deal, notes, tasks, activities),
-    [deal, notes, tasks, activities],
+    () => resolveDealContext(deal, notes, tasks, activities, locale),
+    [deal, notes, tasks, activities, locale],
   );
 
   const decisionAction = decision ? t(decision.actionKey) : t("decisionEmptyLabel");

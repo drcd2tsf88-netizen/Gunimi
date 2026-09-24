@@ -1,6 +1,7 @@
 "use client";
 
 import { Flag, Users, Mail, Phone, ArrowRight, MoreHorizontal, LucideIcon } from "lucide-react";
+import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import GunimiCard from "@/components/ui/GunimiCard";
 import type { StoryIconKey } from "@/lib/workspace/types";
@@ -31,8 +32,8 @@ const ICONS: Record<StoryIconKey, LucideIcon> = {
   group: MoreHorizontal,
 };
 
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString(undefined, {
+function formatDate(dateStr: string, locale: string): string {
+  return new Date(dateStr).toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -40,6 +41,7 @@ function formatDate(dateStr: string): string {
 }
 
 export default function GunimiStory({ label, events, earlyNoteTitle, earlyNoteDescription }: Props) {
+  const locale = useLocale();
   return (
     <GunimiCard className="p-5">
       <p className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">{label}</p>
@@ -96,7 +98,7 @@ export default function GunimiStory({ label, events, earlyNoteTitle, earlyNoteDe
                 )}
                 <p className="mt-1 text-xs text-white/30">
                   {event.who && `${event.who} · `}
-                  {formatDate(event.date)}
+                  {formatDate(event.date, locale)}
                 </p>
               </div>
             </li>

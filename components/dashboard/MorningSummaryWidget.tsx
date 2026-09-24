@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Sparkles } from "lucide-react";
 import GunimiCard from "@/components/ui/GunimiCard";
 import type { AnalyticsOverview } from "@/server/actions/analytics/getAnalyticsOverview";
@@ -46,12 +46,13 @@ export default function MorningSummaryWidget({
   onOpenAI,
 }: Props) {
   const t = useTranslations("dashboard");
+  const locale = useLocale();
 
   const hour = new Date().getHours();
   const greeting =
     hour < 12 ? t("goodMorning") : hour < 18 ? t("goodAfternoon") : t("goodEvening");
 
-  const today = new Date().toLocaleDateString(undefined, {
+  const today = new Date().toLocaleDateString(locale, {
     weekday: "long",
     month: "long",
     day: "numeric",

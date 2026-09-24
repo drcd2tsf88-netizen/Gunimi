@@ -19,7 +19,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import toast from "react-hot-toast";
 
 import GunimiHeading from "@/components/ui/GunimiHeading";
@@ -94,13 +94,13 @@ function priorityBadge(priority: string) {
   return "text-zinc-500 border-zinc-500/20 bg-zinc-500/10";
 }
 
-function dueDateInfo(date?: string | null): { label: string; className: string } {
+function dueDateInfo(date: string | null | undefined, locale: string): { label: string; className: string } {
   if (!date) return { label: "–", className: "text-zinc-500" };
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const due = new Date(date);
   due.setHours(0, 0, 0, 0);
-  const label = due.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  const label = due.toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" });
   if (due < today) return { label, className: "text-red-400 font-medium" };
   if (due.getTime() === today.getTime()) return { label, className: "text-amber-400 font-medium" };
   return { label, className: "text-zinc-400" };
@@ -188,6 +188,7 @@ export default function TasksPageView({
 }: Props) {
   const t = useTranslations("tasks");
   const tc = useTranslations("common");
+  const locale = useLocale();
   const { setTaskCounts } = useTaskFocusStore();
 
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -340,7 +341,7 @@ export default function TasksPageView({
 
   // ── TASK ROW ───────────────────────────────────────────────────────────────
   function renderTaskRow(task: Task, isSubtask = false) {
-    const due = dueDateInfo(task.due_date);
+    const due = dueDateInfo(task.due_date, locale);
     const children = subtaskMap.get(task.id) ?? [];
     const hasChildren = children.length > 0;
     const isExpanded = expandedTaskIds.has(task.id);

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { CalendarDays, Pencil, X, Loader2, Sparkles, ChevronDown } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -29,6 +29,7 @@ export default function UpcomingMeetingsList({
   companyId,
 }: Props) {
   const t = useTranslations("calendar");
+  const locale = useLocale();
   const [editEvent, setEditEvent] = useState<CalendarEventRow | null>(null);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -119,7 +120,7 @@ export default function UpcomingMeetingsList({
                     <div className="flex h-8 w-8 flex-col items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10">
                       <span className="text-[9px] font-semibold leading-none text-blue-300">
                         {new Date(meeting.start_at)
-                          .toLocaleDateString(undefined, { month: "short" })
+                          .toLocaleDateString(locale, { month: "short" })
                           .toUpperCase()}
                       </span>
                       <span className="text-sm font-bold leading-none text-blue-200">
@@ -134,7 +135,7 @@ export default function UpcomingMeetingsList({
                     <p className="mt-0.5 text-[10px] text-white/35">
                       {meeting.all_day
                         ? t("allDay")
-                        : new Date(meeting.start_at).toLocaleTimeString(undefined, {
+                        : new Date(meeting.start_at).toLocaleTimeString(locale, {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}

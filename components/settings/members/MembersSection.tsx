@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 import { Copy, Mail, RefreshCw, UserPlus, Users } from "lucide-react";
 
@@ -41,6 +41,7 @@ type Props = {
 
 export default function MembersSection({ members, invites, currentUserId, currentUserRole }: Props) {
   const t = useTranslations("settings");
+  const locale = useLocale();
   const router = useRouter();
 
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -166,7 +167,7 @@ export default function MembersSection({ members, invites, currentUserId, curren
                   <p className="truncate text-sm text-white/80">{invite.email}</p>
                   <p className="mt-0.5 text-xs text-white/30">
                     {t("invited")}{" "}
-                    {new Date(invite.created_at).toLocaleDateString(undefined, {
+                    {new Date(invite.created_at).toLocaleDateString(locale, {
                       month: "short",
                       day: "numeric",
                     })}

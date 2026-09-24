@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Building2,
   CalendarDays,
@@ -118,6 +118,7 @@ export default function ContactDetailView({
   const t = useTranslations("contacts");
   const tCal = useTranslations("calendar");
   const tOrders = useTranslations("orders");
+  const locale = useLocale();
 
   const [scheduleOpen, setScheduleOpen] = useState(false);
 
@@ -132,8 +133,8 @@ export default function ContactDetailView({
   );
 
   const rawContext = useMemo(
-    () => resolveContactContext(contact, deals, notes, tasks, activities),
-    [contact, deals, notes, tasks, activities],
+    () => resolveContactContext(contact, deals, notes, tasks, activities, locale),
+    [contact, deals, notes, tasks, activities, locale],
   );
 
   const prepItems: PreparationItem[] = useMemo(

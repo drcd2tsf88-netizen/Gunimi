@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ArrowRight,
   Building2,
@@ -24,7 +24,7 @@ import { createNote } from "@/server/actions/notes/createNote";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatDate(ts: string | null): string {
+function formatDate(ts: string | null, locale: string): string {
   if (!ts) return "";
   const d = new Date(ts);
   const now = new Date();
@@ -32,15 +32,15 @@ function formatDate(ts: string | null): string {
     d.getDate() === now.getDate() &&
     d.getMonth() === now.getMonth() &&
     d.getFullYear() === now.getFullYear();
-  if (isToday) return d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+  if (isToday) return d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
   const diffDays = Math.floor((now.getTime() - d.getTime()) / 86_400_000);
-  if (diffDays < 7) return d.toLocaleDateString(undefined, { weekday: "short" });
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  if (diffDays < 7) return d.toLocaleDateString(locale, { weekday: "short" });
+  return d.toLocaleDateString(locale, { month: "short", day: "numeric" });
 }
 
-function formatFullDate(ts: string | null): string {
+function formatFullDate(ts: string | null, locale: string): string {
   if (!ts) return "";
-  return new Date(ts).toLocaleString(undefined, {
+  return new Date(ts).toLocaleString(locale, {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -59,9 +59,10 @@ function senderName(thread: EmailThread): string {
 type PanelProps = {
   thread: EmailThread;
   onClose: () => void;
+  locale: string;
 };
 
-function ThreadPanel({ thread, onClose }: PanelProps) {
+function ThreadPanel({ thread, onClose, locale }: PanelProps) {
   const t = useTranslations("email");
   const [creatingTask, setCreatingTask] = useState(false);
   const [creatingNote, setCreatingNote] = useState(false);
@@ -110,7 +111,7 @@ function ThreadPanel({ thread, onClose }: PanelProps) {
             <h2 className="mt-1 truncate text-base font-semibold text-white/90">
               {thread.subject ?? t("noSubject")}
             </h2>
-            <p className="mt-1 text-xs text-white/35">{formatFullDate(thread.last_message_at)}</p>
+            <p className="mt-1 text-xs text-white/35">{formatFullDate(thread.last_message_at, locale)}</p>
           </div>
           <button
             onClick={onClose}
@@ -267,9 +268,10 @@ type RowProps = {
   showCompany?: boolean;
   compact?: boolean;
   t: ReturnType<typeof useTranslations<"email">>;
+  locale: string;
 };
 
-function ThreadRow({ thread, onClick, showContact, showCompany, compact, t }: RowProps) {
+function ThreadRow({ thread, onClick, showContact, showCompany, compact, t, locale }: RowProps) {
   return (
     <div
       role="button"
@@ -293,7 +295,7 @@ function ThreadRow({ thread, onClick, showContact, showCompany, compact, t }: Ro
             {thread.subject ?? t("noSubject")}
           </p>
           <span className="shrink-0 whitespace-nowrap text-[10px] text-white/30">
-            {formatDate(thread.last_message_at)}
+            {formatDate(thread.last_message_at, locale)}
           </span>
         </div>
 
@@ -334,6 +336,7 @@ type Props = {
 
 export default function EmailThreadCompactList({ threads, showContact, showCompany, compact }: Props) {
   const t = useTranslations("email");
+  const locale = useLocale();
   const [selectedThread, setSelectedThread] = useState<EmailThread | null>(null);
 
   return (
@@ -348,6 +351,7 @@ export default function EmailThreadCompactList({ threads, showContact, showCompa
             showCompany={showCompany}
             compact={compact}
             t={t}
+            locale={locale}
           />
         ))}
       </div>
@@ -356,6 +360,7 @@ export default function EmailThreadCompactList({ threads, showContact, showCompa
         <ThreadPanel
           thread={selectedThread}
           onClose={() => setSelectedThread(null)}
+          locale={locale}
         />
       )}
     </>

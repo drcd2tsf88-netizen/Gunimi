@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Clock, CheckCircle2, CircleDot, GripVertical, Pencil, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { Task, WorkspaceMember } from "@/types/task";
@@ -75,6 +75,7 @@ function getInitial(userId: string | null | undefined, members: WorkspaceMember[
 
 export default function KanbanView({ tasks, members, onEdit, onDelete, onTasksChange }: Props) {
   const t = useTranslations("tasks");
+  const locale = useLocale();
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [overColumn, setOverColumn] = useState<Status | null>(null);
   const dragTaskRef = useRef<Task | null>(null);
@@ -193,7 +194,7 @@ export default function KanbanView({ tasks, members, onEdit, onDelete, onTasksCh
                     {/* Due date */}
                     {task.due_date && (
                       <span className={`text-[10px] font-medium ${dateColor}`}>
-                        {new Date(task.due_date).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+                        {new Date(task.due_date).toLocaleDateString(locale, { month: "short", day: "numeric" })}
                       </span>
                     )}
 
