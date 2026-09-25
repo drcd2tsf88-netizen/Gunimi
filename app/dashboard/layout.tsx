@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     template: "%s — Gunimi",
   },
   description: "Gunimi AI Workspace Operating System — manage relationships, knowledge, and communication.",
+  robots: { index: false, follow: false },
 };
 
 export default function DashboardLayout({

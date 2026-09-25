@@ -11,7 +11,11 @@ export default function robots(): MetadataRoute.Robots {
           "/dashboard/",
           "/api/",
           "/orbit-control/",
-          "/opengraph-image",   // Next.js OG image endpoint — not a page
+          "/founder",
+          "/register/complete",
+          "/register/verify",
+          "/monitoring",
+          "/opengraph-image",
         ],
       },
     ],

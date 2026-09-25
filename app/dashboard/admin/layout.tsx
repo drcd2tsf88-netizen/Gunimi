@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import AdminNav from "@/components/admin/AdminNav";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 async function assertPlatformAdmin(): Promise<boolean> {
   const supabase = await createClient();

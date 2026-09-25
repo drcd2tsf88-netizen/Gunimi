@@ -27,7 +27,6 @@ const PUBLIC_API_PREFIXES = [
 ];
 
 // ── Write rate limiter — lazily initialized ───────────────────
-// Runs at the edge before server actions reach the Node.js runtime.
 // Limit: 30 writes per minute per user (sliding window).
 let _writeLimiter: Ratelimit | null = null;
 
@@ -43,6 +42,25 @@ function getWriteLimiter(): Ratelimit | null {
     prefix: "gunimi",
   });
   return _writeLimiter;
+}
+
+// ── Auth rate limiter — lazily initialized ────────────────────
+// Limit: 10 login/register attempts per 5 minutes per IP.
+// Blocks brute-force credential attacks at the edge.
+let _authLimiter: Ratelimit | null = null;
+
+function getAuthLimiter(): Ratelimit | null {
+  if (_authLimiter) return _authLimiter;
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  _authLimiter = new Ratelimit({
+    redis: new Redis({ url, token }),
+    limiter: Ratelimit.slidingWindow(10, "5 m"),
+    analytics: false,
+    prefix: "gunimi:auth",
+  });
+  return _authLimiter;
 }
 
 const SUPPORTED_LOCALES = ["en", "sk", "cs"] as const;
@@ -157,6 +175,28 @@ export async function proxy(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     return response;
+  }
+
+  // ── /login + /register — rate limit POST (brute-force protection) ──
+  if (
+    (pathname === "/login" || pathname === "/register") &&
+    request.method === "POST"
+  ) {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      request.headers.get("x-real-ip") ??
+      "unknown";
+    const authLimiter = getAuthLimiter();
+    if (authLimiter) {
+      try {
+        const { success } = await authLimiter.limit(`auth:${ip}`);
+        if (!success) {
+          return NextResponse.json({ error: "Too many attempts. Try again later." }, { status: 429 });
+        }
+      } catch {
+        // Redis unavailable — fail open
+      }
+    }
   }
 
   // ── /login — redirect authenticated users to dashboard ───────
