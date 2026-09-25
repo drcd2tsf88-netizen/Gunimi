@@ -19,7 +19,8 @@ export async function deleteTaskComment(commentId: string): Promise<boolean> {
       .from("task_comments")
       .delete()
       .eq("id", commentId)
-      .eq("workspace_id", workspace.id);
+      .eq("workspace_id", workspace.id)
+      .eq("user_id", user.id);
 
     if (error) {
       logger.error("deleteTaskComment failed", error);

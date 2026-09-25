@@ -112,7 +112,8 @@ export default function PreferencesSection({ preferences, currentUserRole, local
     startLangTransition(async () => {
       const ok = await updateWorkspacePreferences(buildPrefs());
       if (ok) {
-        document.cookie = `GUNIMI_LOCALE=${language}; path=/; max-age=31536000; SameSite=Lax`;
+        const secure = location.protocol === "https:" ? "; Secure" : "";
+        document.cookie = `GUNIMI_LOCALE=${language}; path=/; max-age=31536000; SameSite=Lax${secure}`;
         toast.success(t("preferencesSaved"));
         window.location.reload();
       } else {

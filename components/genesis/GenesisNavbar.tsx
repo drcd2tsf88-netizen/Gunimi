@@ -10,7 +10,8 @@ import { AiCore } from "./AiCore";
 const LOCALES = ["en", "sk", "cs"] as const;
 
 function switchLocaleCookie(locale: string) {
-  document.cookie = `GUNIMI_LOCALE=${locale};path=/;max-age=31536000;SameSite=Lax`;
+  const secure = location.protocol === "https:" ? ";Secure" : "";
+  document.cookie = `GUNIMI_LOCALE=${locale};path=/;max-age=31536000;SameSite=Lax${secure}`;
   window.location.reload();
 }
 

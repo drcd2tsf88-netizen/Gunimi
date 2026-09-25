@@ -1,5 +1,18 @@
+import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
+
+async function assertPlatformAdmin(): Promise<boolean> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+  const { data: profile } = await supabaseAdmin
+    .from("profiles")
+    .select("platform_role")
+    .eq("id", user.id)
+    .maybeSingle();
+  return profile?.platform_role === "admin";
+}
 
 export type UserListItem = {
   id: string;
@@ -11,6 +24,7 @@ export type UserListItem = {
 };
 
 export async function getUsersList(): Promise<UserListItem[]> {
+  if (!(await assertPlatformAdmin())) return [];
   try {
     const { data: profiles, error } = await supabaseAdmin
       .from("profiles")
