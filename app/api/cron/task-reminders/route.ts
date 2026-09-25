@@ -12,15 +12,12 @@ import { logger } from "@/lib/logger";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-type WorkspaceData = { name: string; preferences?: { language?: string } } | null;
-
 type TaskRow = {
   id: string;
   title: string;
   due_date: string;
   assigned_to: string;
   workspace_id: string;
-  workspaces: WorkspaceData | WorkspaceData[] | null;
 };
 
 export async function GET(req: NextRequest) {
@@ -36,7 +33,7 @@ export async function GET(req: NextRequest) {
 
   const { data: tasks, error } = await supabaseAdmin
     .from("workspace_tasks")
-    .select("id, title, due_date, assigned_to, workspace_id, workspaces(name, preferences)")
+    .select("id, title, due_date, assigned_to, workspace_id")
     .eq("due_date", todayStr)
     .neq("status", "done")
     .not("assigned_to", "is", null);
@@ -84,9 +81,13 @@ export async function GET(req: NextRequest) {
         continue;
       }
 
-      const wsData = Array.isArray(task.workspaces) ? task.workspaces[0] : task.workspaces;
-      const wsName = wsData?.name ?? "your workspace";
-      const locale = resolveEmailLocale((wsData?.preferences as { language?: string } | undefined)?.language);
+      const { data: wsRow } = await supabaseAdmin
+        .from("workspaces")
+        .select("name, preferences")
+        .eq("id", task.workspace_id)
+        .maybeSingle();
+      const wsName = wsRow?.name ?? "your workspace";
+      const locale = resolveEmailLocale((wsRow?.preferences as { language?: string } | undefined)?.language);
 
       const dateLocaleMap: Record<string, string> = { en: "en-US", sk: "sk-SK", cs: "cs-CZ" };
       const dateLocale = dateLocaleMap[locale] ?? "en-US";
