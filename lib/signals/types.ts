@@ -72,6 +72,7 @@ export type SignalProducer =
   | "task_engine"
   | "email_engine"
   | "order_resolver"
+  | "meeting_scanner"
   | "ai_core"; // post-Alpha
 
 /** Authorized signal consumers (Chapter 7). */

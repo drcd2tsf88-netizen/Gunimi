@@ -2452,7 +2452,9 @@
       "task_waiting_customer": "Waiting on customer",
       "order_overdue": "Order overdue",
       "order_draft_stale": "Order stuck in draft",
-      "order_not_acknowledged": "Order awaiting acknowledgement"
+      "order_not_acknowledged": "Order awaiting acknowledgement",
+      "meeting_approaching": "Meeting approaching",
+      "meeting_no_preparation": "Meeting with no prep"
     }
   },
   "notifications": {

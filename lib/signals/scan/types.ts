@@ -13,7 +13,8 @@ export type ScanType =
   | "relationship_stale"
   | "missing_follow_up"
   | "long_running_tasks"
-  | "order_stale";
+  | "order_stale"
+  | "meeting_scan";
 
 // ─── Execution inputs ─────────────────────────────────────────────────────────
 

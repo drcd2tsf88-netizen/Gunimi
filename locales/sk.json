@@ -2452,7 +2452,9 @@
       "task_waiting_customer": "Čaká na zákazníka",
       "order_overdue": "Objednávka po termíne",
       "order_draft_stale": "Objednávka uviazla v koncepte",
-      "order_not_acknowledged": "Objednávka čaká na potvrdenie"
+      "order_not_acknowledged": "Objednávka čaká na potvrdenie",
+      "meeting_approaching": "Stretnutie sa blíži",
+      "meeting_no_preparation": "Stretnutie bez prípravy"
     }
   },
   "notifications": {
