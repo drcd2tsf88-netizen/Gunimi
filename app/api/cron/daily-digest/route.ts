@@ -14,9 +14,10 @@ import csMessages from "@/locales/cs.json";
 
 type LocaleMessages = typeof enMessages;
 
-function getSignalTitle(type: string, lang?: string): string {
-  const msgs: LocaleMessages = lang === "sk" ? skMessages : lang === "cs" ? csMessages : enMessages;
-  const types = (msgs as { signals?: { types?: Record<string, string> } }).signals?.types ?? {};
+function getSignalTitle(type: string, lang?: string | null): string {
+  const l = (lang ?? "en").toLowerCase().slice(0, 2);
+  const msgs = l === "sk" ? skMessages : l === "cs" ? csMessages : enMessages;
+  const types = (msgs as unknown as { signals?: { types?: Record<string, string> } }).signals?.types ?? {};
   return types[type] ?? type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
@@ -125,6 +126,7 @@ export async function GET(request: NextRequest) {
   let totalFailed = 0;
 
   for (const ws of workspaces as WorkspaceRow[]) {
+    logger.debug(`[DailyDigest] Workspace ${ws.name} lang=${ws.preferences?.language ?? "none"}`);
     try {
       // ─── Workspace-level data ──────────────────────────────────────────
 

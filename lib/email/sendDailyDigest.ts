@@ -105,7 +105,10 @@ export async function sendDailyDigest({
 
   const signalRows = signals
     .slice(0, 5)
-    .map((sig) => renderRow("◉", sig.title, sig.entityName ? `${sig.entityName} — ${sig.summary}` : sig.summary))
+    .map((sig) => {
+      const sub = [sig.entityName, sig.summary].filter(Boolean).join(" — ");
+      return renderRow("◉", sig.title, sub);
+    })
     .join("");
 
   const html = `<!DOCTYPE html>
