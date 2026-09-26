@@ -124,7 +124,7 @@ export async function GET(request: NextRequest) {
   let totalSent = 0;
   let totalSkipped = 0;
   let totalFailed = 0;
-  const debugInfo: { ws: string; lang: string | null; signals: number; tasks?: number }[] = [];
+  const debugInfo: { ws: string; lang: string | null; signals: number; entityNames?: string[] }[] = [];
 
   for (const ws of workspaces as WorkspaceRow[]) {
     const wsLang = ws.preferences?.language ?? null;
@@ -167,7 +167,10 @@ export async function GET(request: NextRequest) {
       }));
 
       const dbgEntry = debugInfo[debugInfo.length - 1];
-      if (dbgEntry) dbgEntry.signals = signals.length;
+      if (dbgEntry) {
+        dbgEntry.signals = signals.length;
+        dbgEntry.entityNames = signals.map((s) => `${s.entityName || "??"}(${topSignals.find((r) => r.id === s.id)?.entityType ?? "?"})`);
+      }
 
       const members = (membersRes.data ?? []) as unknown as MemberRow[];
 
