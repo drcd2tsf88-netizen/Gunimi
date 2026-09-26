@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Props = {
   suggestion: string;
 };
 
 export default function NextActionDisplay({ suggestion }: Props) {
+  const t = useTranslations("signalsPage");
   const [dismissed, setDismissed] = useState(false);
 
   if (dismissed) return null;
@@ -26,7 +28,7 @@ export default function NextActionDisplay({ suggestion }: Props) {
         <p className="text-sm leading-relaxed text-white/70">{suggestion}</p>
         <button
           onClick={() => setDismissed(true)}
-          aria-label="Dismiss"
+          aria-label={t("dismiss")}
           className="mt-0.5 shrink-0 rounded-lg p-1 text-white/20 transition-colors hover:text-white/50"
         >
           <X size={13} />
