@@ -28,6 +28,7 @@ import {
 import {
   Building2,
   ClipboardCheck,
+  FileText,
   Search,
   SearchX,
   Sparkles,
@@ -909,6 +910,7 @@ export default function OrbitCommandPalette({
                               company: Building2,
                               deal: TrendingUp,
                               task: ClipboardCheck,
+                              note: FileText,
                             };
 
                             const entityBadgeKeys: Record<
@@ -919,6 +921,7 @@ export default function OrbitCommandPalette({
                               company: t("badgeCompany"),
                               deal: t("badgeDeal"),
                               task: t("badgeTask"),
+                              note: t("badgeNote"),
                             };
 
                             const Icon: LucideIcon =

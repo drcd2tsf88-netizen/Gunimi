@@ -2131,6 +2131,7 @@
     "badgeCompany": "COMPANY",
     "badgeDeal": "DEAL",
     "badgeTask": "TASK",
+    "badgeNote": "NOTE",
     "createTaskPlaceholder": "Task title...",
     "createTaskHint": "Type a title and press Enter to create",
     "createTaskBackHint": "ESC to cancel",

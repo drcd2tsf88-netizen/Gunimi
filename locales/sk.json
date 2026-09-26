@@ -2131,6 +2131,7 @@
     "badgeCompany": "FIRMA",
     "badgeDeal": "OBCHOD",
     "badgeTask": "ÚLOHA",
+    "badgeNote": "POZNÁMKA",
     "createTaskPlaceholder": "Názov úlohy...",
     "createTaskHint": "Zadajte názov a stlačte Enter na vytvorenie",
     "createTaskBackHint": "ESC na zrušenie",
