@@ -7,6 +7,7 @@ import { Globe, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { updateWorkspacePreferences } from "@/server/actions/workspace/updateWorkspacePreferences";
+import { updateWorkspaceAILimit } from "@/server/actions/workspace/updateWorkspaceAILimit";
 import type { WorkspacePreferences } from "@/server/actions/workspace/getWorkspaceSettings";
 import type { WorkspaceAIUsage } from "@/server/actions/workspace/getWorkspaceAIUsage";
 
@@ -99,6 +100,11 @@ export default function PreferencesSection({ preferences, currentUserRole, local
   const [emailDigest, setEmailDigest] = useState(preferences?.emailDigest ?? true);
   const [isDigestPending, startDigestTransition] = useTransition();
 
+  // ── AI limit state ────────────────────────────────────────
+  const isOwner = currentUserRole === "owner";
+  const [aiLimitInput, setAiLimitInput] = useState(String(aiUsage?.dailyLimit ?? 100000));
+  const [isLimitPending, startLimitTransition] = useTransition();
+
   function buildPrefs(): WorkspacePreferences {
     return {
       ...preferences,
@@ -151,6 +157,19 @@ export default function PreferencesSection({ preferences, currentUserRole, local
       } else {
         setDogfoodEnabled(!next);
         toast.error(t("failedToSavePreferences"));
+      }
+    });
+  }
+
+  function handleSaveAILimit() {
+    const limit = parseInt(aiLimitInput, 10);
+    if (isNaN(limit)) return;
+    startLimitTransition(async () => {
+      const ok = await updateWorkspaceAILimit(limit);
+      if (ok) {
+        toast.success(t("aiUsageLimitSaved"));
+      } else {
+        toast.error(t("aiUsageLimitFailed"));
       }
     });
   }
@@ -495,6 +514,33 @@ export default function PreferencesSection({ preferences, currentUserRole, local
                     limit: aiUsage.dailyLimit.toLocaleString(),
                   })}
                 </p>
+
+                {isOwner && (
+                  <div className="border-t border-white/[0.05] pt-4">
+                    <GunimiField label={t("aiUsageLimitLabel")}>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          min={10000}
+                          max={1000000}
+                          step={10000}
+                          value={aiLimitInput}
+                          onChange={(e) => setAiLimitInput(e.target.value)}
+                          disabled={isLimitPending}
+                          className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#6D5BFF]/50 focus:ring-1 focus:ring-[#6D5BFF]/30 disabled:opacity-50"
+                        />
+                        <GunimiButton
+                          onClick={handleSaveAILimit}
+                          loading={isLimitPending}
+                          disabled={isLimitPending}
+                        >
+                          {t("aiUsageLimitSave")}
+                        </GunimiButton>
+                      </div>
+                      <p className="mt-1.5 text-[11px] text-white/30">{t("aiUsageLimitHint")}</p>
+                    </GunimiField>
+                  </div>
+                )}
               </>
             )}
           </GunimiCard>
