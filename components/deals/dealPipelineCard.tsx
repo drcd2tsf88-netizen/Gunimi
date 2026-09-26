@@ -9,6 +9,7 @@ import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiButton from "@/components/ui/GunimiButton";
 import { Deal } from "@/types/deal";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { computeDealHealth } from "@/lib/deals/dealHealth";
 
 type Props = {
   deal: Deal;
@@ -20,6 +21,8 @@ export default function DealPipelineCard({ deal, onDragStart, onEdit }: Props) {
   const router = useRouter();
   const t = useTranslations("deals");
   const locale = useLocale();
+
+  const health = computeDealHealth(deal.probability, deal.updated_at, deal.expected_close_date, deal.stage);
 
   const closeLabel = deal.expected_close_date
     ? new Date(deal.expected_close_date).toLocaleDateString(locale, {
@@ -51,7 +54,10 @@ export default function DealPipelineCard({ deal, onDragStart, onEdit }: Props) {
                 {deal.company.name}
               </Link>
             )}
-            <h3 className="text-sm font-semibold leading-snug">{deal.title}</h3>
+            <div className="flex items-center gap-2">
+              <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${health.dotClass}`} />
+              <h3 className="text-sm font-semibold leading-snug">{deal.title}</h3>
+            </div>
           </div>
 
           {/* INLINE METADATA */}
