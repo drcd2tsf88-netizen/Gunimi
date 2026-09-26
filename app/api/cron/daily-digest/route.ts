@@ -51,6 +51,7 @@ async function resolveEntityNames(
   const contactIds = signals.filter((s) => s.entityType === "contact").map((s) => s.entityId);
   const dealIds    = signals.filter((s) => s.entityType === "deal").map((s) => s.entityId);
   const companyIds = signals.filter((s) => s.entityType === "company").map((s) => s.entityId);
+  const taskIds    = signals.filter((s) => s.entityType === "task").map((s) => s.entityId);
 
   await Promise.all([
     contactIds.length
@@ -76,6 +77,14 @@ async function resolveEntityNames(
           .eq("workspace_id", workspaceId)
           .in("id", companyIds)
           .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.name as string)))
+      : null,
+    taskIds.length
+      ? supabaseAdmin
+          .from("workspace_tasks")
+          .select("id, title")
+          .eq("workspace_id", workspaceId)
+          .in("id", taskIds)
+          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.title as string)))
       : null,
   ]);
 
