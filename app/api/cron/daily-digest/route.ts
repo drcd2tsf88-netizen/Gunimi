@@ -8,6 +8,17 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
 import { sendDailyDigest, type DigestTask, type DigestMeeting, type DigestSignal } from "@/lib/email/sendDailyDigest";
 import { getActiveSignalsForWorkspace } from "@/lib/signals/queries";
+import enMessages from "@/locales/en.json";
+import skMessages from "@/locales/sk.json";
+import csMessages from "@/locales/cs.json";
+
+type LocaleMessages = typeof enMessages;
+
+function getSignalTitle(type: string, lang?: string): string {
+  const msgs: LocaleMessages = lang === "sk" ? skMessages : lang === "cs" ? csMessages : enMessages;
+  const types = (msgs as { signals?: { types?: Record<string, string> } }).signals?.types ?? {};
+  return types[type] ?? type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -101,8 +112,8 @@ export async function GET(request: NextRequest) {
 
       const signals: DigestSignal[] = signalsRaw.slice(0, 5).map((sig) => ({
         id: sig.id,
-        title: sig.type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        summary: sig.evidenceKey ?? "",
+        title: getSignalTitle(sig.type, ws.preferences?.language),
+        summary: "",
         entityName: "",
       }));
 
