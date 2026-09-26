@@ -124,9 +124,11 @@ export async function GET(request: NextRequest) {
   let totalSent = 0;
   let totalSkipped = 0;
   let totalFailed = 0;
+  const debugInfo: { ws: string; lang: string | null; signals: number; tasks?: number }[] = [];
 
   for (const ws of workspaces as WorkspaceRow[]) {
-    logger.debug(`[DailyDigest] Workspace ${ws.name} lang=${ws.preferences?.language ?? "none"}`);
+    const wsLang = ws.preferences?.language ?? null;
+    debugInfo.push({ ws: ws.name, lang: wsLang, signals: 0 });
     try {
       // ─── Workspace-level data ──────────────────────────────────────────
 
@@ -159,10 +161,13 @@ export async function GET(request: NextRequest) {
 
       const signals: DigestSignal[] = topSignals.map((sig) => ({
         id: sig.id,
-        title: getSignalTitle(sig.type, ws.preferences?.language),
+        title: getSignalTitle(sig.type, wsLang),
         summary: "",
         entityName: entityNames.get(sig.entityId) ?? "",
       }));
+
+      const dbgEntry = debugInfo[debugInfo.length - 1];
+      if (dbgEntry) dbgEntry.signals = signals.length;
 
       const members = (membersRes.data ?? []) as unknown as MemberRow[];
 
@@ -262,5 +267,6 @@ export async function GET(request: NextRequest) {
     totalSkipped,
     totalFailed,
     durationMs: Date.now() - startMs,
+    debug: debugInfo,
   });
 }
