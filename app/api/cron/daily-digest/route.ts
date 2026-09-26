@@ -40,6 +40,47 @@ type TaskRow = {
   due_date: string;
 };
 
+async function resolveEntityNames(
+  signals: { entityId: string; entityType: string }[],
+  workspaceId: string,
+): Promise<Map<string, string>> {
+  const result = new Map<string, string>();
+  if (signals.length === 0) return result;
+
+  const contactIds = signals.filter((s) => s.entityType === "contact").map((s) => s.entityId);
+  const dealIds    = signals.filter((s) => s.entityType === "deal").map((s) => s.entityId);
+  const companyIds = signals.filter((s) => s.entityType === "company").map((s) => s.entityId);
+
+  await Promise.all([
+    contactIds.length
+      ? supabaseAdmin
+          .from("workspace_people")
+          .select("id, full_name")
+          .eq("workspace_id", workspaceId)
+          .in("id", contactIds)
+          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.full_name as string)))
+      : null,
+    dealIds.length
+      ? supabaseAdmin
+          .from("workspace_deals")
+          .select("id, name")
+          .eq("workspace_id", workspaceId)
+          .in("id", dealIds)
+          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.name as string)))
+      : null,
+    companyIds.length
+      ? supabaseAdmin
+          .from("workspace_companies")
+          .select("id, name")
+          .eq("workspace_id", workspaceId)
+          .in("id", companyIds)
+          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.name as string)))
+      : null,
+  ]);
+
+  return result;
+}
+
 type MeetingRow = {
   id: string;
   title: string;
@@ -110,11 +151,15 @@ export async function GET(request: NextRequest) {
         startAt: m.start_at,
       }));
 
-      const signals: DigestSignal[] = signalsRaw.slice(0, 5).map((sig) => ({
+      // Resolve entity names for signals
+      const topSignals = signalsRaw.slice(0, 5);
+      const entityNames = await resolveEntityNames(topSignals, ws.id);
+
+      const signals: DigestSignal[] = topSignals.map((sig) => ({
         id: sig.id,
         title: getSignalTitle(sig.type, ws.preferences?.language),
         summary: "",
-        entityName: "",
+        entityName: entityNames.get(sig.entityId) ?? "",
       }));
 
       const members = (membersRes.data ?? []) as unknown as MemberRow[];
