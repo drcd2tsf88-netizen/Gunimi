@@ -353,7 +353,78 @@ export function getTaskDueStrings(
       dueLabel: "Termín:",
       mark: "Označte ho jako hotový nebo aktualizujte termín.",
       footerNote: `Toto připomenutí bylo odesláno na <strong>${email}</strong>, protože tento úkol je přiřazen vám v Gunimi.`,
-      textBody: `Máte úkol na dnes v ${workspaceName}.\n\nÚkol: ${taskTitle}\nTermín: ${dueDate}\n\nOznačte ho jako hotový nebo aktualizujte termín:\n${taskUrl}\n\n---\nGunimi — Every client. Always remembered.`,
+      textBody: `Máte úkol na dnes v ${workspaceName}.\n\nÚkol: ${taskTitle}\nTermín: ${dueDate}\n\nOznačte ho jako hotový nebo aktualizujte termín:\n${taskUrl}\n\n---\nGuními — Every client. Always remembered.`,
+      dateLocale: "cs-CZ",
+    },
+  };
+  return s[locale];
+}
+
+// ─── Weekly Digest ────────────────────────────────────────────────────────────
+
+export type WeeklyDigestStrings = {
+  subject: string;
+  greeting: string;
+  intro: string;
+  sectionSignals: string;
+  sectionDeals: string;
+  sectionRelationships: string;
+  noSignals: string;
+  noDeals: string;
+  noRelationships: string;
+  cta: string;
+  footerNote: string;
+  dateLocale: string;
+};
+
+export function getWeeklyDigestStrings(
+  locale: EmailLocale,
+  firstName: string,
+  workspaceName: string,
+  email: string,
+  weekLabel: string,
+): WeeklyDigestStrings {
+  const s: Record<EmailLocale, WeeklyDigestStrings> = {
+    en: {
+      subject: `Your week in ${workspaceName}`,
+      greeting: `Good morning, ${firstName}.`,
+      intro: `Here's what happened in ${workspaceName} last week — ${weekLabel}.`,
+      sectionSignals: "Signals",
+      sectionDeals: "Pipeline",
+      sectionRelationships: "Relationships",
+      noSignals: "No active signals this week.",
+      noDeals: "No active deals.",
+      noRelationships: "No relationship updates.",
+      cta: "Open Gunimi →",
+      footerNote: `This weekly digest was sent to <strong>${email}</strong>. You can turn it off in Workspace Settings.`,
+      dateLocale: "en-US",
+    },
+    sk: {
+      subject: `Váš týždeň v ${workspaceName}`,
+      greeting: `Dobré ráno, ${firstName}.`,
+      intro: `Tu je čo sa dialo v ${workspaceName} minulý týždeň — ${weekLabel}.`,
+      sectionSignals: "Signály",
+      sectionDeals: "Pipeline",
+      sectionRelationships: "Vzťahy",
+      noSignals: "Tento týždeň žiadne aktívne signály.",
+      noDeals: "Žiadne aktívne obchody.",
+      noRelationships: "Žiadne aktualizácie vzťahov.",
+      cta: "Otvoriť Gunimi →",
+      footerNote: `Tento týždenný súhrn bol odoslaný na <strong>${email}</strong>. Môžete ho vypnúť v nastaveniach workspace.`,
+      dateLocale: "sk-SK",
+    },
+    cs: {
+      subject: `Váš týden v ${workspaceName}`,
+      greeting: `Dobré ráno, ${firstName}.`,
+      intro: `Zde je co se dělo v ${workspaceName} minulý týden — ${weekLabel}.`,
+      sectionSignals: "Signály",
+      sectionDeals: "Pipeline",
+      sectionRelationships: "Vztahy",
+      noSignals: "Tento týden žádné aktivní signály.",
+      noDeals: "Žádné aktivní obchody.",
+      noRelationships: "Žádné aktualizace vztahů.",
+      cta: "Otevřít Gunimi →",
+      footerNote: `Tento týdenní souhrn byl odeslán na <strong>${email}</strong>. Můžete ho vypnout v nastavení workspace.`,
       dateLocale: "cs-CZ",
     },
   };
