@@ -3160,6 +3160,21 @@
       },
       "releases": [
         {
+          "version": "1.5",
+          "date": "September 2026",
+          "title": "Intelligence Layer",
+          "description": "AI-powered next actions, a weekly digest email for owners, meeting signals, notes in global search, and pipeline health dots — Gunimi's intelligence layer comes to life.",
+          "changes": [
+            { "tag": "new", "text": "Next Action: AI suggests your best move on every contact and deal detail page — context-aware, 2 sentences, dismissible." },
+            { "tag": "new", "text": "Weekly Digest: workspace owners receive a Monday morning email with pipeline health, top signals, relationship health scores, and an AI narrative." },
+            { "tag": "new", "text": "Meeting Signals: the signal engine now detects upcoming meetings with no preparation note (meeting_no_preparation) and meetings within 24 h (meeting_approaching)." },
+            { "tag": "new", "text": "Notes now appear in global search (⌘K) alongside contacts, deals, companies, and tasks." },
+            { "tag": "new", "text": "Pipeline cards show a real-time health dot (green / amber / red) computed from stage, probability, and close date." },
+            { "tag": "improved", "text": "Workspace owners can now view today's AI token consumption and edit the daily token limit directly in Settings." },
+            { "tag": "improved", "text": "Email digest can be toggled per workspace in Settings — owners and admins control it." }
+          ]
+        },
+        {
           "version": "1.4",
           "date": "September 2026",
           "title": "Calendar Intelligence",
@@ -4132,12 +4147,13 @@
     "ariaLabel": "Release notification",
     "readMore": "View changelog",
     "dismiss": "Got it",
-    "title": "Calendar Intelligence — v1.4",
+    "title": "Intelligence Layer — v1.5",
     "bullets": [
-      "Edit and cancel meetings directly from contact, deal, and company pages.",
-      "AI Meeting Prep: one click generates context, suggested topics, and key points before every meeting.",
-      "Today page now shows your meetings for the day.",
-      "Calendar day and month names now follow your workspace language (SK/CS)."
+      "Next Action: AI suggests your best move on every contact and deal page.",
+      "Weekly Digest: receive a Monday email with your pipeline, signals, and an AI brief.",
+      "Meeting Signals: get notified before meetings with no recent notes or preparation.",
+      "Notes now appear in global search (⌘K).",
+      "Pipeline cards now show deal health at a glance."
     ]
   },
   "demo": {

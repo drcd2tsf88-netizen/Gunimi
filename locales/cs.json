@@ -3160,6 +3160,21 @@
       },
       "releases": [
         {
+          "version": "1.5",
+          "date": "Září 2026",
+          "title": "Vrstva inteligence",
+          "description": "AI návrhy dalšího kroku, týdenní souhrn pro vlastníky, signály schůzek, poznámky v globálním vyhledávání a zdravotní tečky v pipeline — inteligentní vrstva Gunimi ožívá.",
+          "changes": [
+            { "tag": "new", "text": "Další krok: AI navrhuje váš nejlepší tah na každé stránce kontaktu a obchodu — kontextově, 2 věty, zavření jedním kliknutím." },
+            { "tag": "new", "text": "Týdenní souhrn: vlastníci workspace dostávají každé pondělí ráno email s pipeline, signály, zdravím vztahů a AI narativem." },
+            { "tag": "new", "text": "Signály schůzek: engine signálů nyní detekuje schůzky bez přípravné poznámky (meeting_no_preparation) a schůzky do 24 h (meeting_approaching)." },
+            { "tag": "new", "text": "Poznámky se nyní zobrazují v globálním vyhledávání (⌘K) spolu s kontakty, obchody, společnostmi a úkoly." },
+            { "tag": "new", "text": "Karty v pipeline zobrazují zdravotní tečku v reálném čase (zelená / oranžová / červená) podle fáze, pravděpodobnosti a data uzávěrky." },
+            { "tag": "improved", "text": "Vlastníci workspace si nyní mohou zobrazit dnešní spotřebu AI tokenů a upravit denní limit přímo v Nastavení." },
+            { "tag": "improved", "text": "Email digest lze přepnout pro každý workspace v Nastavení — ovládají ho vlastníci a administrátoři." }
+          ]
+        },
+        {
           "version": "1.4",
           "date": "Září 2026",
           "title": "Inteligence kalendáře",
@@ -4132,12 +4147,13 @@
     "ariaLabel": "Upozornění o vydání",
     "readMore": "Zobrazit changelog",
     "dismiss": "Rozumím",
-    "title": "Inteligence kalendáře — v1.4",
+    "title": "Vrstva inteligence — v1.5",
     "bullets": [
-      "Upravujte a rušte schůzky přímo na stránkách kontaktů, obchodů a společností.",
-      "AI příprava na schůzku: jedním kliknutím získáte kontext, navrhovaná témata a klíčové body.",
-      "Stránka Dnes zobrazuje vaše dnešní schůzky.",
-      "Názvy dnů a měsíců v kalendáři nyní sledují jazyk pracovního prostoru."
+      "Další krok: AI navrhuje váš nejlepší tah na každé stránce kontaktu a obchodu.",
+      "Týdenní souhrn: každé pondělí dostanete email s pipeline, signály a AI briefem.",
+      "Signály schůzek: upozornění před schůzkami bez nedávných poznámek nebo přípravy.",
+      "Poznámky se nyní zobrazují v globálním vyhledávání (⌘K).",
+      "Karty v pipeline nyní zobrazují zdraví obchodu na první pohled."
     ]
   },
   "demo": {

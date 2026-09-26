@@ -3160,6 +3160,21 @@
       },
       "releases": [
         {
+          "version": "1.5",
+          "date": "September 2026",
+          "title": "Vrstva inteligencie",
+          "description": "AI návrhy ďalšieho kroku, týždenný súhrn pre vlastníkov, signály stretnutí, poznámky v globálnom vyhľadávaní a zdravotné body v pipeline — inteligentná vrstva Gunimi ožíva.",
+          "changes": [
+            { "tag": "new", "text": "Ďalší krok: AI navrhuje váš najlepší ťah na každej stránke kontaktu a obchodu — kontextovo, 2 vety, zavretie jedným klikom." },
+            { "tag": "new", "text": "Týždenný súhrn: vlastníci workspace dostávajú každý pondelok ráno email s pipeline, signálmi, zdravím vzťahov a AI naratiívom." },
+            { "tag": "new", "text": "Signály stretnutí: engine signálov teraz detekuje stretnutia bez prípravnej poznámky (meeting_no_preparation) a stretnutia do 24 h (meeting_approaching)." },
+            { "tag": "new", "text": "Poznámky sa teraz zobrazujú v globálnom vyhľadávaní (⌘K) spolu s kontaktmi, obchodmi, spoločnosťami a úlohami." },
+            { "tag": "new", "text": "Karty v pipeline zobrazujú zdravotný bod v reálnom čase (zelená / oranžová / červená) podľa fázy, pravdepodobnosti a dátumu uzávierky." },
+            { "tag": "improved", "text": "Vlastníci workspace si teraz môžu pozrieť dnešnú spotrebu AI tokenov a upraviť denný limit priamo v Nastaveniach." },
+            { "tag": "improved", "text": "Email digest možno prepnúť pre každý workspace v Nastaveniach — ovládajú ho vlastníci a administrátori." }
+          ]
+        },
+        {
           "version": "1.4",
           "date": "September 2026",
           "title": "Inteligencia kalendára",
@@ -4132,12 +4147,13 @@
     "ariaLabel": "Upozornenie o vydaní",
     "readMore": "Zobraziť changelog",
     "dismiss": "Rozumiem",
-    "title": "Inteligencia kalendára — v1.4",
+    "title": "Vrstva inteligencie — v1.5",
     "bullets": [
-      "Upravujte a rušte stretnutia priamo na stránkach kontaktov, obchodov a spoločností.",
-      "AI príprava na stretnutie: jedným kliknutím získate kontext, navrhované témy a kľúčové body.",
-      "Stránka Dnes zobrazuje vaše dnešné stretnutia.",
-      "Názvy dní a mesiacov v kalendári teraz sledujú jazyk pracovného priestoru."
+      "Ďalší krok: AI navrhuje váš najlepší ťah na každej stránke kontaktu a obchodu.",
+      "Týždenný súhrn: každý pondelok dostanete email s pipeline, signálmi a AI briefom.",
+      "Signály stretnutí: upozornenie pred stretnutiami bez nedávnych poznámok alebo prípravy.",
+      "Poznámky sa teraz zobrazujú v globálnom vyhľadávaní (⌘K).",
+      "Karty v pipeline teraz zobrazujú zdravie obchodu na prvý pohľad."
     ]
   },
   "demo": {
