@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { OrbitRuntimeProvider } from "@/core/runtime/OrbitRuntimeProvider";
 import { APP_CONFIG } from "@/lib/config/app";
 import CookieConsent from "@/components/public/CookieConsent";
 import PostHogProvider from "@/components/analytics/PostHogProvider";
@@ -77,7 +76,6 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
         <PostHogProvider>
-        <OrbitRuntimeProvider>
           <Toaster
             position="top-right"
             toastOptions={{
@@ -127,7 +125,6 @@ export default async function RootLayout({
 
           {children}
           <CookieConsent />
-        </OrbitRuntimeProvider>
         </PostHogProvider>
         </NextIntlClientProvider>
       </body>

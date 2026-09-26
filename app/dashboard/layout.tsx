@@ -2,8 +2,8 @@ import type {
   Metadata,
 } from "next";
 
-import DashboardLayoutClient
-from "@/components/dashboard/DashboardLayoutClient";
+import DashboardLayoutClient from "@/components/dashboard/DashboardLayoutClient";
+import { OrbitRuntimeProvider } from "@/core/runtime/OrbitRuntimeProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -20,8 +20,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <DashboardLayoutClient>
-      {children}
-    </DashboardLayoutClient>
+    <OrbitRuntimeProvider>
+      <DashboardLayoutClient>
+        {children}
+      </DashboardLayoutClient>
+    </OrbitRuntimeProvider>
   );
 }

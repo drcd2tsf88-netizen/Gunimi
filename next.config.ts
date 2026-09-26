@@ -70,6 +70,8 @@ const nextConfig: NextConfig = {
                 ${supabaseWss}
                 https://*.upstash.io
                 https://*.sentry.io
+                https://*.posthog.com
+                https://eu.i.posthog.com
                 ${process.env.NODE_ENV === "development" ? "ws://localhost:3000 ws://127.0.0.1:3000" : ""};
 
               worker-src
