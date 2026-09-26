@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gunimi — Zmluva o spracúvaní osobných údajov (DPA)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12px;
+      line-height: 1.75;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 54px 72px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .doc-title {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .doc-subtitle {
+      font-size: 11.5px;
+      color: #555;
+    }
+
+    h1 {
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+    }
+    h2 {
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    p { margin-bottom: 8px; text-align: justify; }
+
+    ol { padding-left: 22px; margin-bottom: 10px; }
+    ol li { margin-bottom: 6px; }
+    ul { padding-left: 22px; margin-bottom: 10px; }
+    ul li { margin-bottom: 4px; }
+
+    .parties {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .party {
+      padding: 14px 18px;
+      border-bottom: 1px solid #ccc;
+    }
+    .party:last-child { border-bottom: none; }
+    .party-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .party-name {
+      font-weight: 700;
+      font-size: 12.5px;
+    }
+    .party-detail {
+      font-size: 11.5px;
+      color: #444;
+      margin-top: 2px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px 0;
+      font-size: 11.5px;
+    }
+    th {
+      background: #f0f0f0;
+      font-weight: 700;
+      text-align: left;
+      padding: 7px 10px;
+      border: 1px solid #ccc;
+    }
+    td {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+
+    .signature-block {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .sig-col h2 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #555;
+      border-bottom: none;
+      margin-bottom: 32px;
+    }
+    .sig-line {
+      border-top: 1px solid #1a1a1a;
+      padding-top: 6px;
+      font-size: 11px;
+      color: #444;
+      margin-top: 0;
+    }
+    .sig-detail { font-size: 11px; color: #666; margin-top: 4px; }
+
+    .footnote {
+      margin-top: 36px;
+      padding-top: 14px;
+      border-top: 1px solid #ccc;
+      font-size: 10.5px;
+      color: #777;
+    }
+
+    .fill {
+      border-bottom: 1px dotted #999;
+      display: inline-block;
+      min-width: 180px;
+      color: #888;
+      font-style: italic;
+    }
+    .fill-block {
+      border: 1px dotted #aaa;
+      padding: 6px 10px;
+      min-height: 28px;
+      margin: 4px 0 10px 0;
+      background: #fafafa;
+      font-style: italic;
+      color: #888;
+      font-size: 11.5px;
+    }
+
+    @media print {
+      body { padding: 28px 48px; }
+      h1 { page-break-after: avoid; }
+      table { page-break-inside: avoid; }
+      .signature-block { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">GUNIMI</div>
+    <div class="doc-title">Zmluva o spracúvaní osobných údajov</div>
+    <div class="doc-subtitle">Data Processing Agreement (DPA) · V súlade s čl. 28 Nariadenia (EÚ) 2016/679 (GDPR)</div>
+  </div>
+
+  <p>
+    Táto Zmluva o spracúvaní osobných údajov (<strong>„Zmluva"</strong>) je uzatvorená medzi nasledujúcimi stranami:
+  </p>
+
+  <div class="parties">
+    <div class="party">
+      <div class="party-label">Prevádzkovateľ (Controller)</div>
+      <div class="party-name"><span class="fill">[Obchodné meno zákazníka]</span></div>
+      <div class="party-detail">IČO: <span class="fill">[IČO]</span> &nbsp;·&nbsp; Sídlo: <span class="fill">[Adresa]</span></div>
+      <div class="party-detail">Zastúpený: <span class="fill">[Meno a funkcia]</span></div>
+      <div class="party-detail">(ďalej len <strong>„Prevádzkovateľ"</strong>)</div>
+    </div>
+    <div class="party">
+      <div class="party-label">Sprostredkovateľ (Processor)</div>
+      <div class="party-name">Gunimi s.r.o.</div>
+      <div class="party-detail">IČO: <span class="fill">[IČO Gunimi]</span> &nbsp;·&nbsp; Sídlo: <span class="fill">[Adresa Gunimi]</span></div>
+      <div class="party-detail">Zastúpený: <span class="fill">[Meno a funkcia]</span></div>
+      <div class="party-detail">(ďalej len <strong>„Sprostredkovateľ"</strong>)</div>
+    </div>
+  </div>
+
+  <p>
+    spoločne označované ako <strong>„Strany"</strong>, uzatvárajú túto Zmluvu v súvislosti s poskytovaním
+    platformy Gunimi na základe Podmienok poskytovania služieb (<strong>„Hlavná zmluva"</strong>).
+  </p>
+
+  <!-- Článok 1 -->
+  <h1>Článok 1 — Predmet a účel zmluvy</h1>
+  <p>
+    1.1. Táto Zmluva upravuje podmienky spracúvania osobných údajov Sprostredkovateľom v mene Prevádzkovateľa
+    v súlade s čl. 28 Nariadenia Európskeho parlamentu a Rady (EÚ) 2016/679 (GDPR).
+  </p>
+  <p>
+    1.2. Sprostredkovateľ spracúva osobné údaje výhradne na základe písomných pokynov Prevádzkovateľa
+    a na účely plnenia Hlavnej zmluvy — poskytovania SaaS platformy Gunimi.
+  </p>
+  <p>
+    1.3. Táto Zmluva má prednosť pred akýmikoľvek predchádzajúcimi dojednaniami medzi Stranami
+    týkajúcimi sa ochrany osobných údajov.
+  </p>
+
+  <!-- Článok 2 -->
+  <h1>Článok 2 — Popis spracúvania</h1>
+
+  <h2>2.1. Predmet spracúvania</h2>
+  <table>
+    <tr><th style="width:35%">Parameter</th><th>Popis</th></tr>
+    <tr>
+      <td>Účel spracúvania</td>
+      <td>Poskytovanie funkcií platformy Gunimi: správa kontaktov, firiem, dealov, úloh, poznámok, komunikácie a analytiky v rámci pracovného priestoru (workspace) Prevádzkovateľa.</td>
+    </tr>
+    <tr>
+      <td>Povaha spracúvania</td>
+      <td>Ukladanie, organizácia, zobrazovanie, vyhľadávanie, export a automatizované spracúvanie (AI funkcie) osobných údajov zadaných Prevádzkovateľom.</td>
+    </tr>
+    <tr>
+      <td>Typy osobných údajov</td>
+      <td>Meno a priezvisko, e-mailová adresa, telefónne číslo, pracovná pozícia, obchodná história, poznámky a ďalšie údaje zadané Prevádzkovateľom do systému.</td>
+    </tr>
+    <tr>
+      <td>Kategórie dotknutých osôb</td>
+      <td>Zákazníci, obchodní partneri, potenciálni zákazníci (leady) a zamestnanci Prevádzkovateľa.</td>
+    </tr>
+    <tr>
+      <td>Trvanie spracúvania</td>
+      <td>Po dobu trvania Hlavnej zmluvy a 30 dní po jej skončení (lehota na export dát).</td>
+    </tr>
+  </table>
+
+  <!-- Článok 3 -->
+  <h1>Článok 3 — Povinnosti Sprostredkovateľa</h1>
+
+  <p>Sprostredkovateľ sa zaväzuje:</p>
+  <ol>
+    <li>
+      Spracúvať osobné údaje <strong>výhradne podľa pokynov Prevádzkovateľa</strong> a na účely stanovené v čl. 2.
+      Ak zákon EÚ alebo členského štátu vyžaduje iné spracúvanie, Sprostredkovateľ o tom Prevádzkovateľa vopred informuje.
+    </li>
+    <li>
+      <strong>Zachovávať mlčanlivosť</strong> o spracúvaných osobných údajoch. Všetky oprávnené osoby
+      Sprostredkovateľa sú viazané zákonnou alebo zmluvnou povinnosťou zachovávať mlčanlivosť.
+    </li>
+    <li>
+      Prijať <strong>primerané technické a organizačné opatrenia</strong> (TOMs) na ochranu osobných údajov
+      podľa čl. 32 GDPR — podrobne uvedené v Prílohe B tejto Zmluvy.
+    </li>
+    <li>
+      <strong>Nezapájať ďalšieho sprostredkovateľa (sub-processor)</strong> bez predchádzajúceho
+      písomného súhlasu Prevádzkovateľa, s výnimkou sub-procesorov uvedených v Prílohe A tejto Zmluvy,
+      s ktorými Prevádzkovateľ súhlasí uzavretím tejto Zmluvy. Prevádzkovateľ bude o plánovaných
+      zmenách zoznamu sub-procesorov informovaný s dostatočným predstihom.
+    </li>
+    <li>
+      <strong>Pomáhať Prevádzkovateľovi</strong> pri plnení jeho povinností voči dotknutým osobám
+      (právo na prístup, opravu, vymazanie, prenosnosť, námietku) v primeranom rozsahu a lehotách.
+    </li>
+    <li>
+      Po skončení poskytovania služieb <strong>vymazať alebo vrátiť</strong> všetky osobné údaje
+      Prevádzkovateľovi podľa jeho voľby, pokiaľ zákon nevyžaduje ich ďalšie uchovávanie.
+    </li>
+    <li>
+      <strong>Umožniť a prispieť k auditom</strong> vrátane inšpekcií vykonávaných Prevádzkovateľom
+      alebo ním poverených audítorov. Sprostredkovateľ je oprávnený požadovať, aby audítori
+      podpísali primeranú dohodu o zachovaní dôvernosti.
+    </li>
+    <li>
+      <strong>Bezodkladne informovať</strong> Prevádzkovateľa, ak sa domnieva, že pokyn Prevádzkovateľa
+      porušuje GDPR alebo iné predpisy EÚ alebo členského štátu o ochrane údajov.
+    </li>
+  </ol>
+
+  <!-- Článok 4 -->
+  <h1>Článok 4 — Bezpečnostné incidenty</h1>
+  <p>
+    4.1. V prípade bezpečnostného incidentu (úniku, neoprávneného prístupu alebo straty osobných údajov)
+    Sprostredkovateľ <strong>bez zbytočného odkladu, najneskôr do 36 hodín</strong> od zistenia incidentu,
+    informuje Prevádzkovateľa prostredníctvom e-mailu na adresu určenú Prevádzkovateľom.
+  </p>
+  <p>
+    4.2. Oznámenie incidentu bude obsahovať: popis incidentu, kategórie a počet dotknutých osôb,
+    kategórie a počet dotknutých záznamov, pravdepodobné dôsledky a opatrenia prijaté na nápravu.
+  </p>
+  <p>
+    4.3. Sprostredkovateľ bude Prevádzkovateľa priebežne informovať o vývoji incidentu a prijatých opatreniach.
+  </p>
+
+  <!-- Článok 5 -->
+  <h1>Článok 5 — Medzinárodné prenosy osobných údajov</h1>
+  <p>
+    5.1. Sprostredkovateľ môže prenášať osobné údaje do tretích krajín mimo EÚ/EHP výhradne
+    prostredníctvom sub-procesorov uvedených v Prílohe A, pričom každý takýto prenos je krytý
+    niektorým z nasledujúcich mechanizmov:
+  </p>
+  <ul>
+    <li>Štandardnými zmluvnými doložkami EK (SCC) v znení rozhodnutia 2021/914/EÚ</li>
+    <li>Rozhodnutím o primeranosti príslušnej krajiny</li>
+    <li>Záväznými podnikovými pravidlami (BCR)</li>
+  </ul>
+  <p>
+    5.2. Zoznam sub-procesorov vrátane umiestnenia ich serverov a mechanizmu prenosu je uvedený
+    v Prílohe A tejto Zmluvy.
+  </p>
+
+  <!-- Článok 6 -->
+  <h1>Článok 6 — Povinnosti Prevádzkovateľa</h1>
+  <ol>
+    <li>Prevádzkovateľ prehlasuje, že má zákonný titul na spracúvanie osobných údajov, ktoré zadáva do systému.</li>
+    <li>Prevádzkovateľ je zodpovedný za informovanie dotknutých osôb o spracúvaní ich údajov v systéme Gunimi.</li>
+    <li>Prevádzkovateľ vydáva pokyny na spracúvanie výhradne v súlade s platným právom.</li>
+    <li>Prevádzkovateľ zabezpečí, aby prístupy jeho používateľov do systému boli chránené primeranými bezpečnostnými opatreniami (silné heslá, bezpečné zariadenia).</li>
+  </ol>
+
+  <!-- Článok 7 -->
+  <h1>Článok 7 — Záverečné ustanovenia</h1>
+  <p>
+    7.1. Táto Zmluva nadobúda platnosť a účinnosť dňom jej podpisu oboma Stranami a je platná
+    po dobu trvania Hlavnej zmluvy.
+  </p>
+  <p>
+    7.2. V prípade rozporu medzi touto Zmluvou a Hlavnou zmluvou má v otázkach ochrany osobných
+    údajov prednosť táto Zmluva.
+  </p>
+  <p>
+    7.3. Táto Zmluva sa riadi právnym poriadkom <span class="fill">[Slovenská republika / Česká republika]</span>.
+    Príslušným súdom na riešenie sporov je súd v sídle Sprostredkovateľa, pokiaľ sa Strany nedohodnú inak.
+  </p>
+  <p>
+    7.4. Zmeny tejto Zmluvy sú platné len v písomnej forme podpísanej oboma Stranami.
+  </p>
+  <p>
+    7.5. Táto Zmluva je vyhotovená v dvoch rovnopisoch, každá Strana obdrží jeden.
+  </p>
+
+  <!-- Podpisy -->
+  <div class="signature-block">
+    <div class="sig-col">
+      <h2>Za Prevádzkovateľa</h2>
+      <div class="sig-line">Podpis oprávnenej osoby</div>
+      <div class="sig-detail">Meno: <span class="fill" style="min-width:140px"></span></div>
+      <div class="sig-detail">Funkcia: <span class="fill" style="min-width:140px"></span></div>
+      <div class="sig-detail">Dátum: <span class="fill" style="min-width:100px"></span></div>
+      <div class="sig-detail">Pečiatka:</div>
+    </div>
+    <div class="sig-col">
+      <h2>Za Sprostredkovateľa — Gunimi</h2>
+      <div class="sig-line">Podpis oprávnenej osoby</div>
+      <div class="sig-detail">Meno: <span class="fill" style="min-width:140px"></span></div>
+      <div class="sig-detail">Funkcia: <span class="fill" style="min-width:140px"></span></div>
+      <div class="sig-detail">Dátum: <span class="fill" style="min-width:100px"></span></div>
+      <div class="sig-detail">Pečiatka:</div>
+    </div>
+  </div>
+
+  <br/><br/>
+
+  <!-- PRÍLOHA A -->
+  <h1>Príloha A — Zoznam schválených sub-procesorov</h1>
+  <p>
+    Prevádzkovateľ uzavretím tejto Zmluvy udeľuje všeobecné povolenie na zapojenie nasledujúcich
+    sub-procesorov:
+  </p>
+
+  <table>
+    <tr>
+      <th>Sub-procesor</th>
+      <th>Sídlo</th>
+      <th>Účel</th>
+      <th>Servery</th>
+      <th>Mechanizmus prenosu</th>
+    </tr>
+    <tr>
+      <td><strong>Vercel Inc.</strong></td>
+      <td>USA</td>
+      <td>Hosting aplikácie, serverless výpočty</td>
+      <td>EU Edge / AWS</td>
+      <td>SCC</td>
+    </tr>
+    <tr>
+      <td><strong>Supabase Inc.</strong></td>
+      <td>USA</td>
+      <td>Databáza, autentifikácia, úložisko</td>
+      <td>AWS Frankfurt (EU)</td>
+      <td>SCC · SOC 2</td>
+    </tr>
+    <tr>
+      <td><strong>OpenAI, L.L.C.</strong></td>
+      <td>USA</td>
+      <td>AI spracúvanie — len metadáta, nie citlivé osobné údaje</td>
+      <td>USA / EU</td>
+      <td>SCC · DPA</td>
+    </tr>
+    <tr>
+      <td><strong>Postmark (Wildbit LLC)</strong></td>
+      <td>USA</td>
+      <td>Transakčné emaily (notifikácie systému)</td>
+      <td>EU</td>
+      <td>SCC</td>
+    </tr>
+    <tr>
+      <td><strong>Sentry (Functional Software)</strong></td>
+      <td>USA</td>
+      <td>Monitorovanie chýb aplikácie</td>
+      <td>EU</td>
+      <td>SCC · SOC 2</td>
+    </tr>
+    <tr>
+      <td><strong>Upstash Inc.</strong></td>
+      <td>USA</td>
+      <td>Rate limiting (Redis cache, bez osobných dát)</td>
+      <td>EU</td>
+      <td>SCC</td>
+    </tr>
+  </table>
+
+  <!-- PRÍLOHA B -->
+  <h1>Príloha B — Technické a organizačné opatrenia (TOMs)</h1>
+  <p>
+    Sprostredkovateľ implementoval nasledujúce opatrenia na ochranu osobných údajov podľa čl. 32 GDPR:
+  </p>
+
+  <h2>Pseudonymizácia a šifrovanie</h2>
+  <ul>
+    <li>Šifrovanie dát v pokoji: AES-256 (Supabase/AWS)</li>
+    <li>Šifrovanie dát pri prenose: TLS 1.2+ na všetkých spojeniach</li>
+    <li>Heslá používateľov: bcrypt hash, nikdy plaintext</li>
+    <li>Session tokeny: HttpOnly, Secure cookies — neprístupné pre JavaScript</li>
+  </ul>
+
+  <h2>Riadenie prístupu</h2>
+  <ul>
+    <li>Row Level Security (RLS) — izolácia dát na úrovni databázy</li>
+    <li>Princíp minimálnych privilégií pri prístupoch zamestnancov Sprostredkovateľa</li>
+    <li>Rate limiting — obmedzenie počtu pokusov o prihlásenie (10 za 5 minút per IP)</li>
+    <li>Bot ochrana (Cloudflare Turnstile) pri registrácii</li>
+    <li>Viacúrovňová autentifikácia pre administrátorský prístup</li>
+  </ul>
+
+  <h2>Dostupnosť a obnova</h2>
+  <ul>
+    <li>Infraštruktúra na AWS s SLA 99.9%</li>
+    <li>Automatické zálohovanie databázy (Point-in-Time Recovery)</li>
+    <li>Monitorovanie dostupnosti a chýb (Sentry)</li>
+  </ul>
+
+  <h2>Organizačné opatrenia</h2>
+  <ul>
+    <li>Prístup k produkčnej databáze majú len nevyhnutní členovia tímu</li>
+    <li>Prístupy sú auditované v admin konzole platformy</li>
+    <li>Bezpečnostný audit zdrojového kódu: september 2026</li>
+  </ul>
+
+  <div class="footnote">
+    <strong>Poznámka:</strong> Tento dokument je šablónou DPA určenou na uzatvorenie medzi Gunimi a jej B2B zákazníkmi.
+    Pred prvým použitím odporúčame právne posúdenie advokátom so špecializáciou na GDPR.
+    Gunimi, verzia 1.0 · September 2026
+  </div>
+
+</body>
+</html>

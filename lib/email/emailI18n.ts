@@ -213,6 +213,89 @@ export function getTaskDueDateChangedStrings(
   return s[locale];
 }
 
+// ─── Daily Digest ────────────────────────────────────────────────────────────
+
+export type DailyDigestStrings = {
+  subject: string;
+  greeting: string;
+  intro: string;
+  sectionMeetings: string;
+  sectionTasks: string;
+  sectionSignals: string;
+  noMeetings: string;
+  noTasks: string;
+  noSignals: string;
+  meetingAt: string;
+  taskDueToday: string;
+  taskOverdue: string;
+  cta: string;
+  footerNote: string;
+  dateLocale: string;
+};
+
+export function getDailyDigestStrings(
+  locale: EmailLocale,
+  firstName: string,
+  workspaceName: string,
+  email: string,
+  dateLabel: string,
+): DailyDigestStrings {
+  const s: Record<EmailLocale, DailyDigestStrings> = {
+    en: {
+      subject: `Your Gunimi update — ${dateLabel}`,
+      greeting: `Good morning, ${firstName}.`,
+      intro: `Here's what's happening in <strong style="color:#F7F8FC;">${workspaceName}</strong> today.`,
+      sectionMeetings: "Today's meetings",
+      sectionTasks: "Tasks due today",
+      sectionSignals: "Things needing attention",
+      noMeetings: "No meetings scheduled for today.",
+      noTasks: "No tasks due today.",
+      noSignals: "No active signals.",
+      meetingAt: "at",
+      taskDueToday: "Due today",
+      taskOverdue: "Overdue",
+      cta: "Open Gunimi →",
+      footerNote: `This digest was sent to <strong>${email}</strong>. You can adjust notification settings inside Gunimi.`,
+      dateLocale: "en-US",
+    },
+    sk: {
+      subject: `Váš prehľad Gunimi — ${dateLabel}`,
+      greeting: `Dobré ráno, ${firstName}.`,
+      intro: `Tu je prehľad toho, čo sa dnes deje v <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
+      sectionMeetings: "Dnešné stretnutia",
+      sectionTasks: "Úlohy na dnes",
+      sectionSignals: "Vyžaduje pozornosť",
+      noMeetings: "Dnes nemáte naplánované žiadne stretnutia.",
+      noTasks: "Dnes nemáte žiadne úlohy.",
+      noSignals: "Žiadne aktívne signály.",
+      meetingAt: "o",
+      taskDueToday: "Na dnes",
+      taskOverdue: "Po termíne",
+      cta: "Otvoriť Gunimi →",
+      footerNote: `Tento prehľad bol odoslaný na <strong>${email}</strong>. Nastavenia notifikácií môžete zmeniť v Gunimi.`,
+      dateLocale: "sk-SK",
+    },
+    cs: {
+      subject: `Váš přehled Gunimi — ${dateLabel}`,
+      greeting: `Dobré ráno, ${firstName}.`,
+      intro: `Zde je přehled toho, co se dnes děje v <strong style="color:#F7F8FC;">${workspaceName}</strong>.`,
+      sectionMeetings: "Dnešní schůzky",
+      sectionTasks: "Úkoly na dnes",
+      sectionSignals: "Vyžaduje pozornost",
+      noMeetings: "Dnes nemáte naplánované žádné schůzky.",
+      noTasks: "Dnes nemáte žádné úkoly.",
+      noSignals: "Žádné aktivní signály.",
+      meetingAt: "v",
+      taskDueToday: "Na dnes",
+      taskOverdue: "Po termínu",
+      cta: "Otevřít Gunimi →",
+      footerNote: `Tento přehled byl odeslán na <strong>${email}</strong>. Nastavení oznámení můžete změnit v Gunimi.`,
+      dateLocale: "cs-CZ",
+    },
+  };
+  return s[locale];
+}
+
 // ─── Task Due Reminder ────────────────────────────────────────────────────────
 
 export type TaskDueStrings = {

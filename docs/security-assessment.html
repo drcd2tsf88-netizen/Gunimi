@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gunimi — Bezpečnostné hodnotenie</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #1a1a2e;
+      background: #fff;
+      padding: 48px 64px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #6d28d9;
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: #6d28d9;
+      letter-spacing: -0.5px;
+    }
+    .doc-meta {
+      text-align: right;
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.8;
+    }
+    .doc-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+    .doc-subtitle {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 28px;
+    }
+
+    /* Verdict box */
+    .verdict {
+      background: #f0fdf4;
+      border: 1.5px solid #16a34a;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .verdict-icon {
+      font-size: 22px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+    .verdict-text strong {
+      display: block;
+      font-size: 13.5px;
+      color: #15803d;
+      margin-bottom: 4px;
+    }
+    .verdict-text span {
+      color: #374151;
+      font-size: 12.5px;
+    }
+
+    /* Sections */
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #6d28d9;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      margin-top: 32px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e9d5ff;
+    }
+    h2:first-of-type { margin-top: 0; }
+
+    p { margin-bottom: 10px; color: #374151; }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+      font-size: 12.5px;
+    }
+    th {
+      background: #f5f3ff;
+      color: #5b21b6;
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid #e9d5ff;
+    }
+    td {
+      padding: 7px 12px;
+      border: 1px solid #e5e7eb;
+      color: #374151;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-yellow { background: #fef9c3; color: #92400e; }
+    .badge-blue { background: #dbeafe; color: #1d4ed8; }
+    .badge-gray { background: #f3f4f6; color: #4b5563; }
+
+    /* Check list */
+    .checklist { list-style: none; padding: 0; margin-bottom: 12px; }
+    .checklist li {
+      padding: 5px 0 5px 26px;
+      position: relative;
+      color: #374151;
+      font-size: 12.5px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #16a34a;
+      font-weight: 700;
+    }
+    .checklist li.warn::before {
+      content: "⚠";
+      color: #d97706;
+    }
+    .checklist li.info::before {
+      content: "→";
+      color: #6d28d9;
+    }
+
+    /* Two columns */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .card h3 {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+    .card p { font-size: 12px; margin-bottom: 0; }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    /* Signature block */
+    .signature {
+      margin-top: 32px;
+      padding: 16px 20px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    .signature p { margin: 0; font-size: 12px; color: #6b7280; }
+    .sig-line {
+      margin-top: 32px;
+      border-top: 1px solid #d1d5db;
+      padding-top: 6px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    @media print {
+      body { padding: 24px 40px; }
+      h2 { page-break-after: avoid; }
+      table { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">Gunimi</div>
+    <div class="doc-meta">
+      <div>Dokument č.: GSEC-2026-001</div>
+      <div>Dátum: 26. september 2026</div>
+      <div>Klasifikácia: Dôverné</div>
+      <div>Verzia: 1.0</div>
+    </div>
+  </div>
+
+  <div class="doc-title">Bezpečnostné hodnotenie platformy</div>
+  <div class="doc-subtitle">Technická správa — Infraštruktúra, ochrana dát a aplikačná bezpečnosť</div>
+
+  <!-- Verdict -->
+  <div class="verdict">
+    <div class="verdict-icon">✅</div>
+    <div class="verdict-text">
+      <strong>Celkový záver: Platforma je bezpečná pre bežné obchodné použitie</strong>
+      <span>
+        Gunimi spĺňa štandardy bežné pre SaaS platformy kategórie B2B (CRM, projektové riadenie, knowledge management).
+        Bezpečnostná úroveň je porovnateľná s nástrojmi ako Notion, HubSpot alebo monday.com.
+        Platforma je vhodná na ukladanie obchodných kontaktov, firemných dát, dealov, úloh, poznámok a internej komunikácie.
+      </span>
+    </div>
+  </div>
+
+  <!-- 1. Infraštruktúra -->
+  <h2>1. Infraštruktúra a hosting</h2>
+  <div class="two-col">
+    <div class="card">
+      <h3>Aplikačný server — Vercel</h3>
+      <p>
+        Vercel beží na infraštruktúre <strong>Amazon Web Services (AWS)</strong>.
+        Je certifikovaný podľa <strong>SOC 2 Type II</strong> a <strong>ISO 27001</strong>.
+        Každý request beží v izolovanom serverless kontajneri — neexistuje zdieľaná pamäť medzi požiadavkami.
+        Vercel zabezpečuje automatické OS/kernel aktualizácie, TLS šifrovanie a DDoS ochranu.
+      </p>
+    </div>
+    <div class="card">
+      <h3>Databáza — Supabase (PostgreSQL)</h3>
+      <p>
+        Dáta sú uložené v <strong>Supabase</strong> (PostgreSQL na AWS).
+        Supabase je SOC 2 Type II certifikovaný.
+        Databáza beží v EU regiónoch.
+        Všetky pripojenia sú šifrované (TLS 1.2+).
+        Dáta v pokoji sú šifrované pomocou AES-256.
+      </p>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th>Komponent</th>
+      <th>Poskytovateľ</th>
+      <th>Certifikácia</th>
+      <th>Región</th>
+    </tr>
+    <tr>
+      <td>Aplikačný server</td>
+      <td>Vercel / AWS</td>
+      <td><span class="badge badge-green">SOC 2 Type II · ISO 27001</span></td>
+      <td>EU / Global Edge</td>
+    </tr>
+    <tr>
+      <td>Databáza</td>
+      <td>Supabase / AWS</td>
+      <td><span class="badge badge-green">SOC 2 Type II</span></td>
+      <td>EU (Frankfurt)</td>
+    </tr>
+    <tr>
+      <td>AI spracovanie</td>
+      <td>OpenAI API</td>
+      <td><span class="badge badge-blue">SOC 2 Type II</span></td>
+      <td>EU/US</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>Postmark</td>
+      <td><span class="badge badge-blue">SOC 2 Type II</span></td>
+      <td>EU</td>
+    </tr>
+    <tr>
+      <td>Monitoring chýb</td>
+      <td>Sentry</td>
+      <td><span class="badge badge-blue">SOC 2 Type II</span></td>
+      <td>EU</td>
+    </tr>
+  </table>
+
+  <!-- 2. Prístup k dátam -->
+  <h2>2. Prístup k dátam a izolácia</h2>
+  <p>
+    Gunimi využíva <strong>Row Level Security (RLS)</strong> — bezpečnostný mechanizmus priamo v databáze,
+    ktorý vynucuje, že každý používateľ môže čítať a upravovať výhradne dáta svojho workspacu.
+    Toto pravidlo platí na úrovni databázy — nie len v aplikačnom kóde.
+    Ak by aplikačný kód obsahoval chybu, RLS stále zabraňuje úniku dát medzi workspacmi.
+  </p>
+
+  <ul class="checklist">
+    <li>Každý workspace je plne izolovaný od ostatných</li>
+    <li>Používateľ vidí len dáta svojho workspacu — vynútené priamo v databáze (RLS)</li>
+    <li>Servisný kľúč (service role) je dostupný len na serveri, nikdy klientovi</li>
+    <li>Prístupy do admin konzoly sú chránené dvojúrovňovým overením (session + platform_role)</li>
+    <li>Zakladateľský panel je chránený hardcoded overením konkrétnej emailovej adresy</li>
+  </ul>
+
+  <!-- 3. Autentifikácia -->
+  <h2>3. Autentifikácia a sessions</h2>
+  <table>
+    <tr>
+      <th>Mechanizmus</th>
+      <th>Implementácia</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>Heslá</td>
+      <td>Supabase Auth — bcrypt hash, nikdy plaintext</td>
+      <td><span class="badge badge-green">✓ Aktívne</span></td>
+    </tr>
+    <tr>
+      <td>Session tokeny</td>
+      <td>HttpOnly cookies — JavaScript nemá prístup</td>
+      <td><span class="badge badge-green">✓ Aktívne</span></td>
+    </tr>
+    <tr>
+      <td>Brute-force ochrana</td>
+      <td>Rate limit 10 pokusov / 5 minút per IP (Upstash Redis)</td>
+      <td><span class="badge badge-green">✓ Aktívne</span></td>
+    </tr>
+    <tr>
+      <td>HTTPS</td>
+      <td>TLS 1.2+ na všetkých endpointoch, automaticky Vercel</td>
+      <td><span class="badge badge-green">✓ Aktívne</span></td>
+    </tr>
+    <tr>
+      <td>Cloudflare Turnstile</td>
+      <td>Bot ochrana na registrácii</td>
+      <td><span class="badge badge-green">✓ Aktívne</span></td>
+    </tr>
+    <tr>
+      <td>OAuth (Google)</td>
+      <td>PKCE flow, state parameter HMAC podpis</td>
+      <td><span class="badge badge-green">✓ Aktívne</span></td>
+    </tr>
+  </table>
+
+  <!-- 4. Aplikačná bezpečnosť -->
+  <h2>4. Aplikačná bezpečnosť — výsledky auditu (september 2026)</h2>
+  <p>
+    V septembri 2026 bol vykonaný kompletný bezpečnostný audit zdrojového kódu.
+    Nižšie sú výsledky a stav opráv:
+  </p>
+
+  <table>
+    <tr>
+      <th>Nález</th>
+      <th>Závažnosť</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>Secrets v git repozitári (.env.local)</td>
+      <td><span class="badge badge-green">Nenájdené</span></td>
+      <td><span class="badge badge-green">✓ Bezpečné</span></td>
+    </tr>
+    <tr>
+      <td>XSS — HTML sanitizácia len v prehliadači, nie na serveri</td>
+      <td><span class="badge badge-yellow">Vysoká</span></td>
+      <td><span class="badge badge-green">✓ Opravené</span></td>
+    </tr>
+    <tr>
+      <td>IDOR — mazanie komentárov bez overenia vlastníctva</td>
+      <td><span class="badge badge-yellow">Vysoká</span></td>
+      <td><span class="badge badge-green">✓ Opravené</span></td>
+    </tr>
+    <tr>
+      <td>Admin server action bez overenia role</td>
+      <td><span class="badge badge-yellow">Stredná</span></td>
+      <td><span class="badge badge-green">✓ Opravené</span></td>
+    </tr>
+    <tr>
+      <td>Cookies bez Secure flagu</td>
+      <td><span class="badge badge-yellow">Stredná</span></td>
+      <td><span class="badge badge-green">✓ Opravené</span></td>
+    </tr>
+    <tr>
+      <td>Brute-force na prihlásenie</td>
+      <td><span class="badge badge-yellow">Vysoká</span></td>
+      <td><span class="badge badge-green">✓ Opravené</span></td>
+    </tr>
+    <tr>
+      <td>Privátne stránky indexované Googlom</td>
+      <td><span class="badge badge-yellow">Stredná</span></td>
+      <td><span class="badge badge-green">✓ Opravené</span></td>
+    </tr>
+    <tr>
+      <td>Webhook secrets v databáze plaintext</td>
+      <td><span class="badge badge-gray">Nízka</span></td>
+      <td><span class="badge badge-gray">→ Plánované</span></td>
+    </tr>
+  </table>
+
+  <!-- 5. Bezpečnostné hlavičky -->
+  <h2>5. Bezpečnostné HTTP hlavičky</h2>
+  <ul class="checklist">
+    <li>Content-Security-Policy (CSP) — obmedzuje zdroje skriptov, štýlov a sieťových spojení</li>
+    <li>X-Frame-Options: DENY — zabraňuje clickjacking útokom</li>
+    <li>X-Content-Type-Options: nosniff — zabraňuje MIME type sniffing</li>
+    <li>Referrer-Policy: strict-origin-when-cross-origin</li>
+    <li>Permissions-Policy — kamera, mikrofón a geolokácia explicitne zakázané</li>
+    <li>HTTPS vynútené Vercelom na všetkých doménach</li>
+  </ul>
+
+  <!-- 6. Čo NIE je vhodné ukladať -->
+  <h2>6. Vhodnosť pre rôzne typy dát</h2>
+  <table>
+    <tr>
+      <th>Typ dát</th>
+      <th>Vhodnosť</th>
+      <th>Poznámka</th>
+    </tr>
+    <tr>
+      <td>Obchodné kontakty, firmy, dealy</td>
+      <td><span class="badge badge-green">✓ Vhodné</span></td>
+      <td>Primárny use case platformy</td>
+    </tr>
+    <tr>
+      <td>Úlohy, projekty, interné poznámky</td>
+      <td><span class="badge badge-green">✓ Vhodné</span></td>
+      <td>Plne podporované</td>
+    </tr>
+    <tr>
+      <td>Obchodná korešpondencia, emaily</td>
+      <td><span class="badge badge-green">✓ Vhodné</span></td>
+      <td>Šifrované pri prenose aj v pokoji</td>
+    </tr>
+    <tr>
+      <td>Zmluvy a dokumenty (ako prílohy)</td>
+      <td><span class="badge badge-yellow">Podmienečne</span></td>
+      <td>Vhodné pre interné dokumenty, nie regulované dáta</td>
+    </tr>
+    <tr>
+      <td>Osobné údaje (GDPR)</td>
+      <td><span class="badge badge-yellow">Podmienečne</span></td>
+      <td>Meno, email, telefón — áno. Rodné číslo — nie</td>
+    </tr>
+    <tr>
+      <td>Platobné karty, bankové údaje</td>
+      <td><span class="badge badge-gray">✗ Nevhodné</span></td>
+      <td>Vyžaduje PCI DSS certifikáciu</td>
+    </tr>
+    <tr>
+      <td>Zdravotné záznamy</td>
+      <td><span class="badge badge-gray">✗ Nevhodné</span></td>
+      <td>Vyžaduje HIPAA / zdravotnú certifikáciu</td>
+    </tr>
+  </table>
+
+  <!-- 7. GDPR -->
+  <h2>7. GDPR a ochrana osobných údajov</h2>
+  <ul class="checklist">
+    <li>Dáta sú uložené v EU regiónoch (AWS Frankfurt)</li>
+    <li>Prenosy dát mimo EÚ (OpenAI, Sentry) sú kryté štandardnými zmluvnými doložkami (SCC)</li>
+    <li>Cookie consent je implementovaný pred spustením analytiky</li>
+    <li class="info">Spracovateľská zmluva (DPA) s Vercel a Supabase dostupná na vyžiadanie</li>
+    <li class="warn">Formálna Privacy Policy a DPA pre zákazníkov — odporúčame doplniť pre B2B klientov</li>
+  </ul>
+
+  <!-- Podpis -->
+  <div class="signature">
+    <p><strong>Dokument vypracoval:</strong> Technický tím Gunimi</p>
+    <p><strong>Audit vykonali:</strong> Interný kódový audit + automatizovaná analýza zdrojového kódu</p>
+    <p><strong>Dátum auditu:</strong> September 2026</p>
+    <p><strong>Kontakt pre bezpečnostné otázky:</strong> hello@gunimi.com</p>
+    <div class="sig-line">
+      Tento dokument je dôverný a je určený pre adresáta. Akékoľvek ďalšie šírenie vyžaduje písomný súhlas Gunimi.
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Gunimi — AI Workspace Operating System</span>
+    <span>GSEC-2026-001 · v1.0 · September 2026</span>
+  </div>
+
+</body>
+</html>
