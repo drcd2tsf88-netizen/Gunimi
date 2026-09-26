@@ -1,0 +1,208 @@
+// Vercel Cron — Daily Workspace Digest
+// Schedule: 0 7 * * * (every day at 07:00 UTC)
+// For each workspace member, sends a digest of today's meetings, due tasks, and active signals.
+// Skips if nothing to show. Deduplicates via workspace_notifications.
+
+import { type NextRequest } from "next/server";
+import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { logger } from "@/lib/logger";
+import { sendDailyDigest, type DigestTask, type DigestMeeting, type DigestSignal } from "@/lib/email/sendDailyDigest";
+import { getActiveSignalsForWorkspace } from "@/lib/signals/queries";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+type WorkspaceRow = {
+  id: string;
+  name: string;
+  preferences: { language?: string } | null;
+};
+
+type MemberRow = {
+  user_id: string;
+  profiles: { full_name: string | null }[] | { full_name: string | null } | null;
+};
+
+type TaskRow = {
+  id: string;
+  title: string;
+  due_date: string;
+};
+
+type MeetingRow = {
+  id: string;
+  title: string;
+  start_at: string;
+};
+
+export async function GET(request: NextRequest) {
+  // ─── Auth ─────────────────────────────────────────────────────────────────
+
+  const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret) {
+    logger.error("[DailyDigest] CRON_SECRET not set");
+    return Response.json({ error: "Server misconfiguration" }, { status: 500 });
+  }
+
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${cronSecret}`) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const startMs = Date.now();
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.gunimi.com";
+  const dashboardUrl = `${appUrl}/dashboard`;
+
+  const todayStr = new Date().toISOString().split("T")[0]!;
+  const startOfDay = `${todayStr}T00:00:00.000Z`;
+  const endOfDay = `${todayStr}T23:59:59.999Z`;
+
+  // ─── Fetch workspaces ─────────────────────────────────────────────────────
+
+  const { data: workspaces, error: wsError } = await supabaseAdmin
+    .from("workspaces")
+    .select("id, name, preferences");
+
+  if (wsError || !workspaces) {
+    logger.error("[DailyDigest] Failed to fetch workspaces", wsError);
+    return Response.json({ error: "db_error" }, { status: 500 });
+  }
+
+  let totalSent = 0;
+  let totalSkipped = 0;
+  let totalFailed = 0;
+
+  for (const ws of workspaces as WorkspaceRow[]) {
+    try {
+      // ─── Workspace-level data ──────────────────────────────────────────
+
+      const [signalsRaw, meetingsRes, membersRes] = await Promise.all([
+        getActiveSignalsForWorkspace(ws.id, supabaseAdmin),
+        supabaseAdmin
+          .from("calendar_events")
+          .select("id, title, start_at")
+          .eq("workspace_id", ws.id)
+          .neq("status", "cancelled")
+          .gte("start_at", startOfDay)
+          .lte("start_at", endOfDay)
+          .order("start_at", { ascending: true })
+          .limit(10),
+        supabaseAdmin
+          .from("workspace_members")
+          .select("user_id, profiles(full_name)")
+          .eq("workspace_id", ws.id),
+      ]);
+
+      const meetings: DigestMeeting[] = ((meetingsRes.data ?? []) as MeetingRow[]).map((m) => ({
+        id: m.id,
+        title: m.title,
+        startAt: m.start_at,
+      }));
+
+      const signals: DigestSignal[] = signalsRaw.slice(0, 5).map((sig) => ({
+        id: sig.id,
+        title: sig.type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        summary: sig.evidenceKey ?? "",
+        entityName: "",
+      }));
+
+      const members = (membersRes.data ?? []) as unknown as MemberRow[];
+
+      // ─── Per-member ────────────────────────────────────────────────────
+
+      for (const member of members) {
+        try {
+          // Dedup: skip if digest already sent today
+          const { data: existing } = await supabaseAdmin
+            .from("workspace_notifications")
+            .select("id")
+            .eq("workspace_id", ws.id)
+            .eq("user_id", member.user_id)
+            .eq("type", "daily_digest")
+            .gte("created_at", startOfDay)
+            .maybeSingle();
+
+          if (existing) {
+            totalSkipped++;
+            continue;
+          }
+
+          // Tasks due today or overdue (assigned to this user)
+          const { data: taskData } = await supabaseAdmin
+            .from("workspace_tasks")
+            .select("id, title, due_date")
+            .eq("workspace_id", ws.id)
+            .eq("assigned_to", member.user_id)
+            .neq("status", "done")
+            .lte("due_date", todayStr)
+            .not("due_date", "is", null)
+            .order("due_date", { ascending: true })
+            .limit(10);
+
+          const tasks: DigestTask[] = ((taskData ?? []) as TaskRow[]).map((t) => ({
+            id: t.id,
+            title: t.title,
+            isOverdue: t.due_date < todayStr,
+          }));
+
+          // Skip only if truly nothing to show
+          if (tasks.length === 0 && meetings.length === 0 && signals.length === 0) {
+            totalSkipped++;
+            continue;
+          }
+
+          // Get user email
+          const { data: userData } = await supabaseAdmin.auth.admin.getUserById(member.user_id);
+          const userEmail = userData?.user?.email;
+
+          logger.debug(`[DailyDigest] Sending to ${userEmail ?? member.user_id}: ${tasks.length} tasks, ${meetings.length} meetings, ${signals.length} signals`);
+          if (!userEmail) {
+            totalSkipped++;
+            continue;
+          }
+
+          const profileData = Array.isArray(member.profiles) ? member.profiles[0] : member.profiles;
+          const fullName = profileData?.full_name ?? userEmail;
+
+          await sendDailyDigest({
+            email: userEmail,
+            name: fullName,
+            workspaceName: ws.name,
+            language: ws.preferences?.language,
+            tasks,
+            meetings,
+            signals,
+            dashboardUrl,
+          });
+
+          // Log dedup record
+          await supabaseAdmin.from("workspace_notifications").insert({
+            workspace_id: ws.id,
+            user_id: member.user_id,
+            type: "daily_digest",
+            title: "Daily digest sent",
+            href: dashboardUrl,
+          });
+
+          totalSent++;
+        } catch (memberErr) {
+          logger.error(`[DailyDigest] Failed for member ${member.user_id} in workspace ${ws.id}`, memberErr);
+          totalFailed++;
+        }
+      }
+    } catch (wsErr) {
+      logger.error(`[DailyDigest] Failed for workspace ${ws.id}`, wsErr);
+      totalFailed++;
+    }
+  }
+
+  logger.debug("[DailyDigest] Run complete", { totalSent, totalSkipped, totalFailed, durationMs: Date.now() - startMs });
+
+  return Response.json({
+    ok: true,
+    totalSent,
+    totalSkipped,
+    totalFailed,
+    durationMs: Date.now() - startMs,
+  });
+}
