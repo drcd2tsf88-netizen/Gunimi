@@ -56,18 +56,18 @@ async function resolveEntityNames(
     contactIds.length
       ? supabaseAdmin
           .from("workspace_people")
-          .select("id, full_name")
+          .select("id, name")
           .eq("workspace_id", workspaceId)
           .in("id", contactIds)
-          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.full_name as string)))
+          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.name as string)))
       : null,
     dealIds.length
       ? supabaseAdmin
           .from("workspace_deals")
-          .select("id, name")
+          .select("id, title")
           .eq("workspace_id", workspaceId)
           .in("id", dealIds)
-          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.name as string)))
+          .then(({ data }) => data?.forEach((r) => result.set(r.id as string, r.title as string)))
       : null,
     companyIds.length
       ? supabaseAdmin
