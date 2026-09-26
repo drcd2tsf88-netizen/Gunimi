@@ -16,6 +16,8 @@ import { getCalendarConnections } from "@/server/actions/calendar/getCalendarCon
 import { getEntityBusinessMemories } from "@/server/actions/memory/getEntityBusinessMemories";
 import ContactDetailView from "@/components/contacts/detail/ContactDetailView";
 import type { WorkspaceMember } from "@/types/task";
+import { Suspense } from "react";
+import NextActionCard from "@/components/ai/NextActionCard";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -48,8 +50,12 @@ export default async function ContactDetailPage({ params }: Props) {
   ]);
 
   return (
-    <ContactDetailView
-      contact={contact}
+    <div className="space-y-4">
+      <Suspense fallback={null}>
+        <NextActionCard entityType="contact" entityId={contactId} />
+      </Suspense>
+      <ContactDetailView
+        contact={contact}
       deals={deals}
       tasks={tasks}
       activities={activities}
@@ -64,6 +70,7 @@ export default async function ContactDetailPage({ params }: Props) {
       upcomingMeetings={upcomingMeetings}
       hasCalendar={calendarConnections.length > 0}
       businessMemories={businessMemories}
-    />
+      />
+    </div>
   );
 }

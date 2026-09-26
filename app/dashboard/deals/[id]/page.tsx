@@ -19,6 +19,8 @@ import { getDealUpcomingMeetings } from "@/server/actions/calendar/getDealUpcomi
 import DealDetailView from "@/components/deals/detail/DealDetailView";
 import type { WorkspaceMember } from "@/types/task";
 import GunimiBreadcrumbs from "@/components/ui/GunimiBreadcrumbs";
+import { Suspense } from "react";
+import NextActionCard from "@/components/ai/NextActionCard";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -58,6 +60,9 @@ export default async function DealPage({ params }: Props) {
           { label: dealData.deal.title },
         ]}
       />
+      <Suspense fallback={null}>
+        <NextActionCard entityType="deal" entityId={id} />
+      </Suspense>
       <DealDetailView
         deal={dealData.deal}
         activities={dealData.activities}
