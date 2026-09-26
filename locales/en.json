@@ -1549,7 +1549,20 @@
     "auditFilter_workspace_member": "Members",
     "auditFilter_workspace": "Workspace",
     "nav_billing": "Billing",
-    "nav_webhooks": "Webhooks"
+    "nav_webhooks": "Webhooks",
+    "notificationsTitle": "Notifications",
+    "notificationsSubtitle": "Control how and when Gunimi sends workspace updates.",
+    "emailDigestLabel": "Daily email digest",
+    "emailDigestDescription": "Gunimi sends a morning email with your meetings, tasks, and signals.",
+    "emailDigestEnabled": "Sending daily",
+    "emailDigestDisabled": "Digest paused",
+    "emailDigestSaved": "Notification preferences saved",
+    "aiUsageTitle": "AI Usage",
+    "aiUsageSubtitle": "Daily token consumption for this workspace.",
+    "aiUsageToday": "Used today",
+    "aiUsageLimit": "Daily limit",
+    "aiUsageSuspended": "AI is currently suspended for this workspace.",
+    "aiUsageTokensOf": "{used} of {limit} tokens"
   },
   "webhooks": {
     "badge": "Developer",

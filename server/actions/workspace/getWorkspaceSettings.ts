@@ -26,6 +26,8 @@ export type WorkspacePreferences = {
   disabledAutomations?: string[];
   /** Ordered list of enabled widget IDs for the Custom Dashboard. */
   dashboardWidgets?: string[];
+  /** Whether to send daily digest emails to workspace members. Default true. */
+  emailDigest?: boolean;
 };
 
 export type WorkspaceSettings = {

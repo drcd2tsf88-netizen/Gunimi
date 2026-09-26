@@ -30,6 +30,7 @@ import type { WorkspaceTag } from "@/types/tag";
 import type { SubscriptionStatus } from "@/server/actions/billing/getSubscription";
 import type { WorkspaceWebhook } from "@/server/actions/webhooks/getWebhooks";
 import type { WorkspaceTeamWithMembers, WorkspaceTeamMember } from "@/types/team";
+import type { WorkspaceAIUsage } from "@/server/actions/workspace/getWorkspaceAIUsage";
 
 type Props = {
   workspace: WorkspaceSettings;
@@ -50,6 +51,7 @@ type Props = {
   webhooks: WorkspaceWebhook[];
   teams: WorkspaceTeamWithMembers[];
   unassignedMembers: WorkspaceTeamMember[];
+  aiUsage: WorkspaceAIUsage | null;
 };
 
 export default function SettingsPageView({
@@ -71,6 +73,7 @@ export default function SettingsPageView({
   webhooks,
   teams,
   unassignedMembers,
+  aiUsage,
 }: Props) {
   const t = useTranslations("settings");
   const [section, setSection] = useState<SettingsSection>(initialSection ?? "workspace");
@@ -110,6 +113,7 @@ export default function SettingsPageView({
               currentUserRole={currentUserRole}
               localeSource={localeSource}
               isDogfoodEligible={isDogfoodEligible}
+              aiUsage={aiUsage}
             />
           )}
 

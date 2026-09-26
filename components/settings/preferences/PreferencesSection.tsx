@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 
 import { updateWorkspacePreferences } from "@/server/actions/workspace/updateWorkspacePreferences";
 import type { WorkspacePreferences } from "@/server/actions/workspace/getWorkspaceSettings";
+import type { WorkspaceAIUsage } from "@/server/actions/workspace/getWorkspaceAIUsage";
 
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiField from "@/components/ui/GunimiField";
@@ -63,9 +64,10 @@ type Props = {
   currentUserRole: string;
   localeSource: "workspace" | "cookie" | "browser";
   isDogfoodEligible: boolean;
+  aiUsage: WorkspaceAIUsage | null;
 };
 
-export default function PreferencesSection({ preferences, currentUserRole, localeSource, isDogfoodEligible }: Props) {
+export default function PreferencesSection({ preferences, currentUserRole, localeSource, isDogfoodEligible, aiUsage }: Props) {
   const t = useTranslations("settings");
   const router = useRouter();
 
@@ -92,6 +94,10 @@ export default function PreferencesSection({ preferences, currentUserRole, local
   // ── Dogfood state ─────────────────────────────────────────
   const [dogfoodEnabled, setDogfoodEnabled] = useState(preferences?.dogfoodEnabled ?? false);
   const [isDogfoodPending, startDogfoodTransition] = useTransition();
+
+  // ── Email digest state ────────────────────────────────────
+  const [emailDigest, setEmailDigest] = useState(preferences?.emailDigest ?? true);
+  const [isDigestPending, startDigestTransition] = useTransition();
 
   function buildPrefs(): WorkspacePreferences {
     return {
@@ -144,6 +150,20 @@ export default function PreferencesSection({ preferences, currentUserRole, local
         router.refresh();
       } else {
         setDogfoodEnabled(!next);
+        toast.error(t("failedToSavePreferences"));
+      }
+    });
+  }
+
+  function handleToggleEmailDigest() {
+    const next = !emailDigest;
+    setEmailDigest(next);
+    startDigestTransition(async () => {
+      const ok = await updateWorkspacePreferences({ ...buildPrefs(), emailDigest: next });
+      if (ok) {
+        toast.success(t("emailDigestSaved"));
+      } else {
+        setEmailDigest(!next);
         toast.error(t("failedToSavePreferences"));
       }
     });
@@ -394,6 +414,89 @@ export default function PreferencesSection({ preferences, currentUserRole, local
                 {dogfoodEnabled ? t("dogfoodDisable") : t("dogfoodEnable")}
               </GunimiButton>
             </div>
+          </GunimiCard>
+        </section>
+      )}
+
+      {/* ── NOTIFICATIONS ─────────────────────────────────── */}
+      {canEdit && (
+        <section aria-labelledby="notifications-heading">
+          <div className="mb-4">
+            <h3 id="notifications-heading" className="text-[15px] font-semibold text-white">
+              {t("notificationsTitle")}
+            </h3>
+            <p className="mt-0.5 text-sm text-white/40">{t("notificationsSubtitle")}</p>
+          </div>
+
+          <GunimiCard className="p-6">
+            <div className="flex items-center justify-between gap-6">
+              <div>
+                <p className="text-[13px] font-medium text-white/80">{t("emailDigestLabel")}</p>
+                <p className="mt-0.5 text-[11px] text-white/35">{t("emailDigestDescription")}</p>
+              </div>
+              <GunimiButton
+                variant={emailDigest ? "secondary" : "primary"}
+                onClick={handleToggleEmailDigest}
+                loading={isDigestPending}
+                disabled={isDigestPending}
+              >
+                {emailDigest ? t("emailDigestEnabled") : t("emailDigestDisabled")}
+              </GunimiButton>
+            </div>
+          </GunimiCard>
+        </section>
+      )}
+
+      {/* ── AI USAGE ─ (owner/admin only) ─────────────────── */}
+      {canEdit && aiUsage && (
+        <section aria-labelledby="ai-usage-heading">
+          <div className="mb-4">
+            <h3 id="ai-usage-heading" className="text-[15px] font-semibold text-white">
+              {t("aiUsageTitle")}
+            </h3>
+            <p className="mt-0.5 text-sm text-white/40">{t("aiUsageSubtitle")}</p>
+          </div>
+
+          <GunimiCard className="p-6 space-y-4">
+            {aiUsage.isSuspended ? (
+              <p className="text-[13px] text-rose-400">{t("aiUsageSuspended")}</p>
+            ) : (
+              <>
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.12em] text-white/30">{t("aiUsageToday")}</p>
+                    <p className="mt-0.5 text-[22px] font-semibold text-white leading-none">
+                      {aiUsage.tokensUsedToday.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[11px] uppercase tracking-[0.12em] text-white/30">{t("aiUsageLimit")}</p>
+                    <p className="mt-0.5 text-[22px] font-semibold text-white/50 leading-none">
+                      {aiUsage.dailyLimit.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-white/[0.06] overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${aiUsage.percentUsed}%`,
+                      background: aiUsage.percentUsed >= 90
+                        ? "linear-gradient(90deg,#f43f5e,#fb7185)"
+                        : aiUsage.percentUsed >= 70
+                          ? "linear-gradient(90deg,#f59e0b,#fbbf24)"
+                          : "linear-gradient(90deg,#6D5BFF,#22D3EE)",
+                    }}
+                  />
+                </div>
+                <p className="text-[11px] text-white/30">
+                  {t("aiUsageTokensOf", {
+                    used: aiUsage.tokensUsedToday.toLocaleString(),
+                    limit: aiUsage.dailyLimit.toLocaleString(),
+                  })}
+                </p>
+              </>
+            )}
           </GunimiCard>
         </section>
       )}

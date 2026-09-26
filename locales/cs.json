@@ -1549,7 +1549,20 @@
     "auditFilter_workspace_member": "Členové",
     "auditFilter_workspace": "Workspace",
     "nav_billing": "Fakturace",
-    "nav_webhooks": "Webhooky"
+    "nav_webhooks": "Webhooky",
+    "notificationsTitle": "Oznámení",
+    "notificationsSubtitle": "Nastavte, kdy a jak Gunimi odesílá aktualizace vašeho pracovního prostoru.",
+    "emailDigestLabel": "Denní e-mailový souhrn",
+    "emailDigestDescription": "Gunimi odesílá ranní e-mail s vašimi schůzkami, úkoly a signály.",
+    "emailDigestEnabled": "Odesílání aktivní",
+    "emailDigestDisabled": "Souhrn pozastaven",
+    "emailDigestSaved": "Nastavení oznámení uložena",
+    "aiUsageTitle": "Využití AI",
+    "aiUsageSubtitle": "Denná spotřeba tokenů pro tento pracovní prostor.",
+    "aiUsageToday": "Spotřebováno dnes",
+    "aiUsageLimit": "Denní limit",
+    "aiUsageSuspended": "AI je momentálně pozastaveno pro tento pracovní prostor.",
+    "aiUsageTokensOf": "{used} z {limit} tokenů"
   },
   "webhooks": {
     "badge": "Vývojář",

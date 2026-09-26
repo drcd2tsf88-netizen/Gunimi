@@ -27,7 +27,7 @@ export const dynamic = "force-dynamic";
 type WorkspaceRow = {
   id: string;
   name: string;
-  preferences: { language?: string } | null;
+  preferences: { language?: string; emailDigest?: boolean } | null;
 };
 
 type MemberRow = {
@@ -137,6 +137,12 @@ export async function GET(request: NextRequest) {
   const debugInfo: { ws: string; lang: string | null; signals: number; entityNames?: string[] }[] = [];
 
   for (const ws of workspaces as WorkspaceRow[]) {
+    // Skip workspaces that have explicitly disabled the digest (default is enabled)
+    if (ws.preferences?.emailDigest === false) {
+      totalSkipped++;
+      continue;
+    }
+
     const wsLang = ws.preferences?.language ?? null;
     debugInfo.push({ ws: ws.name, lang: wsLang, signals: 0 });
     try {
