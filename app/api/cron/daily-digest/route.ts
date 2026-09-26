@@ -102,6 +102,7 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const dryRun = request.nextUrl.searchParams.get("dry_run") === "true";
   const startMs = Date.now();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.gunimi.com";
   const dashboardUrl = `${appUrl}/dashboard`;
@@ -230,19 +231,21 @@ export async function GET(request: NextRequest) {
           const profileData = Array.isArray(member.profiles) ? member.profiles[0] : member.profiles;
           const fullName = profileData?.full_name ?? userEmail;
 
-          await sendDailyDigest({
-            email: userEmail,
-            name: fullName,
-            workspaceName: ws.name,
-            language: ws.preferences?.language,
-            tasks,
-            meetings,
-            signals,
-            dashboardUrl,
-          });
+          if (!dryRun) {
+            await sendDailyDigest({
+              email: userEmail,
+              name: fullName,
+              workspaceName: ws.name,
+              language: ws.preferences?.language,
+              tasks,
+              meetings,
+              signals,
+              dashboardUrl,
+            });
+          }
 
-          // Log dedup record
-          await supabaseAdmin.from("workspace_notifications").insert({
+          // Log dedup record (skip in dry_run)
+          if (!dryRun) await supabaseAdmin.from("workspace_notifications").insert({
             workspace_id: ws.id,
             user_id: member.user_id,
             type: "daily_digest",
@@ -266,6 +269,7 @@ export async function GET(request: NextRequest) {
 
   return Response.json({
     ok: true,
+    dryRun,
     totalSent,
     totalSkipped,
     totalFailed,
