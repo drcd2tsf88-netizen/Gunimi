@@ -30,7 +30,7 @@ const VALID_SECTIONS: SettingsSection[] = ["workspace", "members", "teams", "pre
 export default async function SettingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ section?: string; success?: string }>;
+  searchParams: Promise<{ section?: string; success?: string; founder?: string }>;
 }) {
   const cookieStore = await cookies();
   const [t, params, settings, membership, members, invites, user, workspaceSummaries, userProfile, dealStages, auditLogs, workspaceTags, subscription, webhooks, teamsData, aiUsage] = await Promise.all([
@@ -73,6 +73,7 @@ export default async function SettingsPage({
     : undefined;
 
   const billingSuccess = params.success === "1";
+  const founderSuccess = params.founder === "1";
 
   const hasWorkspacePref = !!settings.preferences?.language;
   const hasCookie = !!cookieStore.get("GUNIMI_LOCALE")?.value;
@@ -103,6 +104,7 @@ export default async function SettingsPage({
       workspaceTags={workspaceTags}
       subscription={subscription}
       billingSuccess={billingSuccess}
+      founderSuccess={founderSuccess}
       webhooks={webhooks}
       teams={teamsData.teams}
       unassignedMembers={teamsData.unassignedMembers}

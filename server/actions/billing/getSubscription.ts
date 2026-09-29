@@ -18,6 +18,7 @@ export type SubscriptionStatus = {
   cancelAtPeriodEnd: boolean;
   stripeCustomerId: string | null;
   paymentFailed: boolean;
+  founderPlan: boolean;
 };
 
 export async function getSubscription(): Promise<SubscriptionStatus> {
@@ -28,6 +29,7 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
     cancelAtPeriodEnd: false,
     stripeCustomerId: null,
     paymentFailed: false,
+    founderPlan: false,
   };
 
   try {
@@ -43,12 +45,14 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
 
     const prefs = (data?.preferences ?? {}) as Record<string, unknown>;
     const customerId = prefs.stripeCustomerId as string | undefined;
+    const founderPlan = !!(prefs.founderPlan as boolean | undefined);
 
-    if (!customerId) { logger.warn("getSubscription: no stripeCustomerId in preferences"); return empty; }
+    if (!customerId) { logger.warn("getSubscription: no stripeCustomerId in preferences"); return { ...empty, founderPlan }; }
 
     const paymentFailed = !!(prefs.stripePaymentFailed as boolean | undefined);
 
     const stripe = getStripe();
+
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
       status: "all",
@@ -56,7 +60,7 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
     });
 
     const sub = subscriptions.data[0];
-    if (!sub) return { ...empty, stripeCustomerId: customerId, paymentFailed };
+    if (!sub) return { ...empty, stripeCustomerId: customerId, paymentFailed, founderPlan };
 
     logger.warn("stripe sub keys:", Object.keys(sub));
     const subRaw = sub as unknown as Record<string, unknown>;
@@ -72,6 +76,7 @@ export async function getSubscription(): Promise<SubscriptionStatus> {
       cancelAtPeriodEnd,
       stripeCustomerId: customerId,
       paymentFailed,
+      founderPlan,
     };
   } catch (err) {
     logger.error("getSubscription failed:", err);

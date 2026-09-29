@@ -56,13 +56,21 @@ export async function POST(req: Request) {
         const session = event.data.object as Stripe.Checkout.Session;
         const workspaceId = session.metadata?.workspace_id;
         const customerId = session.customer as string;
+        const planType = session.metadata?.plan_type;
 
         if (workspaceId && customerId) {
-          await patchPreferences(workspaceId, {
-            stripeCustomerId: customerId,
-            stripeStatus: "active",
-            stripePaymentFailed: false,
-          });
+          if (planType === "founder") {
+            await patchPreferences(workspaceId, {
+              stripeCustomerId: customerId,
+              founderPlan: true,
+            });
+          } else {
+            await patchPreferences(workspaceId, {
+              stripeCustomerId: customerId,
+              stripeStatus: "active",
+              stripePaymentFailed: false,
+            });
+          }
         }
         break;
       }

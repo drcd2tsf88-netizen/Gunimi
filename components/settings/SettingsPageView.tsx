@@ -48,6 +48,7 @@ type Props = {
   workspaceTags: WorkspaceTag[];
   subscription: SubscriptionStatus;
   billingSuccess?: boolean;
+  founderSuccess?: boolean;
   webhooks: WorkspaceWebhook[];
   teams: WorkspaceTeamWithMembers[];
   unassignedMembers: WorkspaceTeamMember[];
@@ -70,6 +71,7 @@ export default function SettingsPageView({
   workspaceTags,
   subscription,
   billingSuccess,
+  founderSuccess,
   webhooks,
   teams,
   unassignedMembers,
@@ -138,7 +140,7 @@ export default function SettingsPageView({
           )}
 
           {section === "billing" && (
-            <BillingSection subscription={subscription} showSuccess={billingSuccess} />
+            <BillingSection subscription={subscription} showSuccess={billingSuccess} showFounderSuccess={founderSuccess} />
           )}
 
           {section === "webhooks" && (
