@@ -48,7 +48,8 @@ const nextConfig: NextConfig = {
               script-src
                 'self'
                 'unsafe-inline'
-                'unsafe-eval';
+                'unsafe-eval'
+                https://challenges.cloudflare.com;
 
               style-src
                 'self'
@@ -77,6 +78,9 @@ const nextConfig: NextConfig = {
               worker-src
                 blob:
                 'self';
+
+              frame-src
+                https://challenges.cloudflare.com;
 
               frame-ancestors 'none';
 
