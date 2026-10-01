@@ -168,10 +168,7 @@ export default function RegisterPage() {
       toast.error(t("gdprRequired"));
       return;
     }
-    if (turnstileSiteKey && !turnstileToken && !turnstileError) {
-      toast.error(t("turnstileRequired"));
-      return;
-    }
+    // Turnstile is best-effort — token included when available, not required client-side
 
     try {
       setLoading(true);
