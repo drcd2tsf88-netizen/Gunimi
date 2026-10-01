@@ -134,6 +134,7 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gdprConsent, setGdprConsent]         = useState(false);
   const [turnstileToken, setTurnstileToken]   = useState<string | null>(null);
+  const [turnstileError, setTurnstileError]   = useState(false);
   const [loading, setLoading]                 = useState(false);
 
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
@@ -167,7 +168,7 @@ export default function RegisterPage() {
       toast.error(t("gdprRequired"));
       return;
     }
-    if (turnstileSiteKey && !turnstileToken) {
+    if (turnstileSiteKey && !turnstileToken && !turnstileError) {
       toast.error(t("turnstileRequired"));
       return;
     }
@@ -317,9 +318,9 @@ export default function RegisterPage() {
           <div className="flex justify-center">
             <Turnstile
               siteKey={turnstileSiteKey}
-              onSuccess={(token) => setTurnstileToken(token)}
-              onError={() => setTurnstileToken(null)}
-              onExpire={() => setTurnstileToken(null)}
+              onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
+              onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
+              onExpire={() => { setTurnstileToken(null); setTurnstileError(false); }}
               options={{ theme: "dark", size: "normal" }}
             />
           </div>

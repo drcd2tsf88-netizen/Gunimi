@@ -8,7 +8,7 @@ import { ArrowRight, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
-import { supabase } from "@/lib/supabase";
+import { resendVerificationEmail } from "@/server/actions/auth/resendVerificationEmail";
 import AiCore from "@/components/ui/AiCore";
 import AuthCard from "@/components/auth/AuthCard";
 
@@ -24,8 +24,8 @@ function VerifyContent() {
     if (!email || resending) return;
     try {
       setResending(true);
-      const { error } = await supabase.auth.resend({ type: "signup", email });
-      if (error) {
+      const result = await resendVerificationEmail(email);
+      if ("error" in result) {
         toast.error(t("resendFailed"));
         return;
       }
