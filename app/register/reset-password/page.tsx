@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, RefreshCw, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
@@ -22,44 +22,61 @@ export default function ResetPasswordPage() {
   const [loading, setLoading]               = useState(false);
   const [ready, setReady]                   = useState(false);
   const [success, setSuccess]               = useState(false);
+  const [linkInvalid, setLinkInvalid]       = useState(false);
+  const timeoutRef                          = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
+    let settled = false;
+
+    function settle(ready: boolean) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutRef.current);
+      subscription.unsubscribe();
+      if (ready) setReady(true);
+      else setLinkInvalid(true);
+    }
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" || event === "PASSWORD_RECOVERY") {
-        subscription.unsubscribe();
-        setReady(true);
+      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
+        settle(true);
         return;
       }
+      // INITIAL_SESSION fires immediately with whatever session exists.
+      // If Supabase auto-exchanged the code before this listener registered,
+      // the session is already present here.
       if (event === "INITIAL_SESSION" && session) {
-        subscription.unsubscribe();
-        setReady(true);
+        settle(true);
       }
     });
 
-    // PKCE flow: the reset email lands with ?code=... in the URL.
-    // exchangeCodeForSession() converts it into a real session, which then
-    // fires PASSWORD_RECOVERY on the listener above. Without this call
-    // the listener never fires and the page times out.
+    // PKCE: exchange the one-time code for a session.
+    // On failure, also check getSession() — the singleton client may have
+    // already exchanged the code before this component mounted.
     const code = new URLSearchParams(window.location.search).get("code");
     if (code) {
-      supabase.auth.exchangeCodeForSession(code).catch(() => {
-        // exchange failure — the timeout below will handle the redirect
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (!error) return; // onAuthStateChange will settle
+        supabase.auth.getSession().then(({ data }) => {
+          settle(!!data.session);
+        });
+      });
+    } else {
+      // No code in URL — check if session already exists from auto-exchange.
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session) settle(true);
+        // else: wait for onAuthStateChange INITIAL_SESSION or timeout
       });
     }
 
-    const timeout = setTimeout(() => {
-      subscription.unsubscribe();
-      toast.error(t("sessionExpired"));
-      router.push("/register/forgot-password");
-    }, 15_000);
+    timeoutRef.current = setTimeout(() => settle(false), 30_000);
 
     return () => {
-      clearTimeout(timeout);
+      clearTimeout(timeoutRef.current);
       subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleResetPassword() {
@@ -95,6 +112,37 @@ export default function ResetPasswordPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (linkInvalid) {
+    return (
+      <AuthCard maxWidth="max-w-[448px]">
+        <div className="mb-8 flex items-center gap-2.5">
+          <AiCore size={24} showRings={false} showParticles={false} intensity="strong" />
+          <span className="text-[13px] font-semibold tracking-[-0.01em] text-[#F7F8FC]">Gunimi</span>
+        </div>
+        <div className="flex items-start gap-3 rounded-[12px] border border-amber-500/[0.20] bg-amber-500/[0.06] p-5">
+          <RefreshCw size={15} className="mt-0.5 shrink-0 text-amber-400" />
+          <div>
+            <p className="text-[13px] font-medium text-[#C8CDD8]">{t("resetLinkExpiredTitle")}</p>
+            <p className="mt-1 text-[12px] leading-relaxed text-[#9AA3B2]">{t("resetLinkExpiredDesc")}</p>
+          </div>
+        </div>
+        <Link
+          href="/register/forgot-password"
+          className="mt-5 group flex h-12 w-full items-center justify-center gap-2 rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] transition-all duration-300 hover:bg-[#7B6BFF]"
+        >
+          {t("requestNewLink")}
+          <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+        </Link>
+        <div className="mt-6 border-t border-white/[0.05] pt-5 text-[13px] text-[#9AA3B2]/60">
+          {t("returnToLogin")}{" — "}
+          <Link href="/login" className="text-[#C8CDD8] transition-colors hover:text-[#F7F8FC]">
+            {t("signIn")}
+          </Link>
+        </div>
+      </AuthCard>
+    );
   }
 
   if (!ready) {
