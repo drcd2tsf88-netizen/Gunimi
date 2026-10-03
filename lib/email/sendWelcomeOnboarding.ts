@@ -10,7 +10,6 @@ export async function sendWelcomeOnboarding({ email, name }: Props): Promise<voi
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.gunimi.com";
   const dashboardUrl = `${appUrl}/dashboard`;
   const firstName = name?.split(" ")[0]?.trim() || "there";
-  const sendAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
 
   const html = `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -171,8 +170,6 @@ Founder, Gunimi
 ${appUrl}`;
 
   const client = getEmailClient();
-  // SendAt is a valid Postmark API parameter for scheduled delivery.
-  // It is missing from this SDK version's Message type, so we use a cast.
   await client.sendEmail({
     From: "Michal from Gunimi <hello@gunimi.com>",
     To: email,
@@ -181,6 +178,5 @@ ${appUrl}`;
     TextBody: text,
     ReplyTo: "hello@gunimi.com",
     MessageStream: "outbound",
-    SendAt: sendAt,
-  } as unknown as Message);
+  } as Message);
 }

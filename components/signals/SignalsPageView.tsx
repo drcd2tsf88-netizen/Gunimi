@@ -54,6 +54,7 @@ function getRelativeDays(iso: string): number {
 
 export default function SignalsPageView({ initialSignals }: Props) {
   const t = useTranslations("signalsPage");
+  const tTypes = useTranslations("signals");
   const [signals, setSignals] = useState<EnrichedSignal[]>(initialSignals);
   const [isDismissing, startDismiss] = useTransition();
   const [isScanning, startScan] = useTransition();
@@ -94,7 +95,7 @@ export default function SignalsPageView({ initialSignals }: Props) {
 
   const signalTypeLabel = (type: string): string => {
     try {
-      return t(`types.${type}` as Parameters<typeof t>[0]);
+      return tTypes(`types.${type}` as Parameters<typeof tTypes>[0]);
     } catch {
       return type.replace(/_/g, " ");
     }
