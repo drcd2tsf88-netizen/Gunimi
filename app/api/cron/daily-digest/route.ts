@@ -12,8 +12,6 @@ import enMessages from "@/locales/en.json";
 import skMessages from "@/locales/sk.json";
 import csMessages from "@/locales/cs.json";
 
-type LocaleMessages = typeof enMessages;
-
 function getSignalTitle(type: string, lang?: string | null): string {
   const l = (lang ?? "en").toLowerCase().slice(0, 2);
   const msgs = l === "sk" ? skMessages : l === "cs" ? csMessages : enMessages;
