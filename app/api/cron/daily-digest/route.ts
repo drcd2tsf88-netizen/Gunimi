@@ -17,7 +17,7 @@ type LocaleMessages = typeof enMessages;
 function getSignalTitle(type: string, lang?: string | null): string {
   const l = (lang ?? "en").toLowerCase().slice(0, 2);
   const msgs = l === "sk" ? skMessages : l === "cs" ? csMessages : enMessages;
-  const types = (msgs as unknown as { signals?: { types?: Record<string, string> } }).signals?.types ?? {};
+  const types = (msgs as unknown as { signalsPage?: { types?: Record<string, string> } }).signalsPage?.types ?? {};
   return types[type] ?? type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
