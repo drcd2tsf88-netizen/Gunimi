@@ -176,12 +176,41 @@ export default function ContactDetailView({
   const pendingTaskCount = tasks.filter((task) => task.status !== "done").length;
   const [localTasks, setLocalTasks] = useState(tasks);
 
+  const aiFirstLook = businessMemories.find(
+    (m) => m.created_by === "ai_core" && m.memory_type === "context",
+  );
+  const otherMemories = businessMemories.filter(
+    (m) => !(m.created_by === "ai_core" && m.memory_type === "context"),
+  );
+
   const tabs: WorkspaceTab[] = [
     {
       id: "overview",
       label: t("tabOverview"),
       content: (
         <div className="space-y-4">
+          {aiFirstLook && (
+            <div className="relative overflow-hidden rounded-2xl border border-violet-500/[0.18] bg-violet-500/[0.05] p-4">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{ background: "radial-gradient(ellipse at top left, rgba(109,91,255,0.10), transparent 60%)" }}
+              />
+              <div className="relative flex items-start gap-3">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-violet-500/20 bg-violet-500/10">
+                  <Sparkles size={12} className="text-violet-400" aria-hidden />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-violet-400/70">
+                    {t("aiFirstLookBadge")}
+                  </p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-white/70">
+                    {aiFirstLook.content}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           <ContactIntelligence
             contact={contact}
             deals={deals}
@@ -263,7 +292,7 @@ export default function ContactDetailView({
             contactId={contact.id}
           />
 
-          {businessMemories.length > 0 && (
+          {otherMemories.length > 0 && (
             <GunimiCard className="p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles size={12} className="text-violet-400/70" aria-hidden />
@@ -272,7 +301,7 @@ export default function ContactDetailView({
                 </span>
               </div>
               <div className="space-y-1.5">
-                {businessMemories.slice(0, 3).map((memory) => (
+                {otherMemories.slice(0, 3).map((memory) => (
                   <div
                     key={memory.id}
                     className="rounded-xl border border-violet-500/10 bg-violet-500/[0.04] px-3 py-2.5"

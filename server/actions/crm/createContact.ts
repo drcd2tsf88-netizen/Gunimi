@@ -12,6 +12,7 @@ import { executeAutomations } from "@/lib/automation/engine";
 import { logger } from "@/lib/logger";
 import { produceContactSignals } from "@/lib/signals/producers/contactProducer";
 import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
+import { generateContactFirstLook } from "@/server/actions/crm/generateContactFirstLook";
 
 type CreateContactProps = {
   name: string;
@@ -117,6 +118,14 @@ export async function createContact({ name, email, phone, companyId, companyName
       name: cleanName,
       email: cleanEmail,
     });
+
+    void generateContactFirstLook({
+      workspaceId: workspace.id,
+      contactId: data.id,
+      name: cleanName,
+      email: cleanEmail,
+      companyName: companyName ? sanitize(companyName) : null,
+    }).catch(() => undefined);
 
     revalidatePath("/dashboard/contacts");
 
