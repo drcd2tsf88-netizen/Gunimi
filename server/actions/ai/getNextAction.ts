@@ -27,6 +27,15 @@ export async function getNextAction(
     const budget = await checkAIBudget(workspace.id);
     if (!budget.allowed) return null;
 
+    const LANG_NAMES: Record<string, string> = { sk: "Slovak", cs: "Czech", en: "English" };
+    const { data: wsRow } = await supabaseAdmin
+      .from("workspaces")
+      .select("preferences")
+      .eq("id", workspace.id)
+      .maybeSingle();
+    const wsPrefs = wsRow?.preferences as { language?: string } | null;
+    const language = LANG_NAMES[(wsPrefs?.language ?? "en").slice(0, 2)] ?? "English";
+
     let contextLines: string[] = [];
 
     if (entityType === "contact") {
@@ -109,7 +118,8 @@ Rules:
 - Maximum 2 sentences
 - Be specific — use names, values, number of days
 - No AI labels, no jargon, no markdown
-- Sound like advice from a trusted colleague who knows this business`,
+- Sound like advice from a trusted colleague who knows this business
+- Write in ${language}`,
         },
         {
           role: "user",
