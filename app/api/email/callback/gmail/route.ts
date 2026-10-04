@@ -6,6 +6,7 @@ import { syncEmailConnection } from "@/lib/email/sync";
 import { verifyOAuthState } from "@/lib/server/oauth/state";
 import { logger } from "@/lib/logger";
 import { runScanToCompletion, getAllScanTypes } from "@/lib/signals/scan";
+import { generateEmailConnectionWakeup } from "@/server/actions/crm/generateEmailConnectionWakeup";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -102,8 +103,13 @@ export async function GET(request: NextRequest) {
       description: `Connected Gmail account ${connectedEmail}`,
     });
 
-    // Fire-and-forget initial sync + immediate signal scan
-    syncEmailConnection(connection.id).catch((err) => logger.error("Initial email sync failed", err));
+    // Fire-and-forget: sync → AI wakeup → signal scan (chained so AI sees synced threads)
+    void (async () => {
+      await syncEmailConnection(connection.id).catch((err) =>
+        logger.error("Initial email sync failed", err),
+      );
+      await generateEmailConnectionWakeup({ workspaceId }).catch(() => undefined);
+    })();
 
     // Trigger a full signal scan immediately so the user sees signals within seconds, not 6h
     ;(async () => {

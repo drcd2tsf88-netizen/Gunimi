@@ -1062,6 +1062,7 @@
     "allDay": "All day",
     "businessContext": "Key Context",
     "aiFirstLookBadge": "AI First Look",
+    "aiEmailInsightBadge": "Email Relationship Insight",
     "memoryType": {
       "commitment": "Commitment",
       "relationship_pattern": "Pattern",

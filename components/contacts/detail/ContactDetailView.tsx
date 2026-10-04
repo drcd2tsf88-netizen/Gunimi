@@ -179,8 +179,11 @@ export default function ContactDetailView({
   const aiFirstLook = businessMemories.find(
     (m) => m.created_by === "ai_core" && m.memory_type === "context",
   );
+  const aiEmailInsight = businessMemories.find(
+    (m) => m.created_by === "ai_core" && m.memory_type === "relationship_pattern",
+  );
   const otherMemories = businessMemories.filter(
-    (m) => !(m.created_by === "ai_core" && m.memory_type === "context"),
+    (m) => !(m.created_by === "ai_core" && (m.memory_type === "context" || m.memory_type === "relationship_pattern")),
   );
 
   const tabs: WorkspaceTab[] = [
@@ -206,6 +209,28 @@ export default function ContactDetailView({
                   </p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-white/70">
                     {aiFirstLook.content}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          {aiEmailInsight && (
+            <div className="relative overflow-hidden rounded-2xl border border-cyan-500/[0.18] bg-cyan-500/[0.04] p-4">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{ background: "radial-gradient(ellipse at top left, rgba(6,182,212,0.08), transparent 60%)" }}
+              />
+              <div className="relative flex items-start gap-3">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-cyan-500/20 bg-cyan-500/10">
+                  <Sparkles size={12} className="text-cyan-400" aria-hidden />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-cyan-400/70">
+                    {t("aiEmailInsightBadge")}
+                  </p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-white/70">
+                    {aiEmailInsight.content}
                   </p>
                 </div>
               </div>

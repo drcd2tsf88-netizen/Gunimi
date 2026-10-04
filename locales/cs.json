@@ -1062,6 +1062,7 @@
     "allDay": "Celý den",
     "businessContext": "Klíčový kontext",
     "aiFirstLookBadge": "AI First Look",
+    "aiEmailInsightBadge": "E-mailový přehled vztahu",
     "memoryType": {
       "commitment": "Závazek",
       "relationship_pattern": "Vzorec",
