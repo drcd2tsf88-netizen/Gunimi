@@ -4,24 +4,9 @@ import { openai } from "@/lib/ai/providers/openai";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getTagWithEntities } from "./getTagWithEntities";
 import { logger } from "@/lib/logger";
+import { getWorkspaceAILanguage } from "@/lib/ai/getWorkspaceAILanguage";
 
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
-
-const LANG_NAMES: Record<string, string> = {
-  sk: "Slovak",
-  cs: "Czech",
-  en: "English",
-};
-
-async function getWorkspaceLanguage(workspaceId: string): Promise<string> {
-  const { data } = await supabaseAdmin
-    .from("workspaces")
-    .select("preferences")
-    .eq("id", workspaceId)
-    .maybeSingle();
-  const lang = (data?.preferences as { language?: string } | null)?.language ?? "en";
-  return LANG_NAMES[lang] ?? "English";
-}
 
 export async function getTagAiSummary(tagId: string, force = false): Promise<string | null> {
   try {
@@ -47,7 +32,7 @@ export async function getTagAiSummary(tagId: string, force = false): Promise<str
     const total = contacts.length + companies.length + deals.length + tasks.length + notes.length;
     if (total === 0) return null;
 
-    const language = await getWorkspaceLanguage(tag.workspace_id);
+    const language = await getWorkspaceAILanguage(tag.workspace_id);
 
     const lines: string[] = [`Tag: "${tag.name}"`, `Total tagged entities: ${total}`];
 

@@ -7,6 +7,7 @@ import { getUser } from "@/server/actions/auth/getUser";
 import { checkAIBudget } from "@/lib/ai/checkAIBudget";
 import { logAIUsage } from "@/lib/ai/logUsage";
 import { getActiveSignalsForWorkspace } from "@/lib/signals/queries";
+import { getWorkspaceAILanguage } from "@/lib/ai/getWorkspaceAILanguage";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -27,14 +28,7 @@ export async function getNextAction(
     const budget = await checkAIBudget(workspace.id);
     if (!budget.allowed) return null;
 
-    const LANG_NAMES: Record<string, string> = { sk: "Slovak", cs: "Czech", en: "English" };
-    const { data: wsRow } = await supabaseAdmin
-      .from("workspaces")
-      .select("preferences")
-      .eq("id", workspace.id)
-      .maybeSingle();
-    const wsPrefs = wsRow?.preferences as { language?: string } | null;
-    const language = LANG_NAMES[(wsPrefs?.language ?? "en").slice(0, 2)] ?? "English";
+    const language = await getWorkspaceAILanguage(workspace.id);
 
     let contextLines: string[] = [];
 

@@ -4,8 +4,7 @@ import { openai } from "@/lib/ai/providers/openai";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logger } from "@/lib/logger";
-
-const LANG_NAMES: Record<string, string> = { sk: "Slovak", cs: "Czech", en: "English" };
+import { getWorkspaceAILanguage } from "@/lib/ai/getWorkspaceAILanguage";
 
 export type AiBrief = {
   text: string;
@@ -34,8 +33,7 @@ export async function getAiBrief(): Promise<AiBrief | null> {
       return { text: cached.text, generatedAt: today };
     }
 
-    const lang = (prefs.language as string) ?? "en";
-    const language = LANG_NAMES[lang] ?? "English";
+    const language = await getWorkspaceAILanguage(workspace.id);
 
     const [contactsRes, dealsRes, tasksRes, signalsRes] = await Promise.all([
       supabaseAdmin

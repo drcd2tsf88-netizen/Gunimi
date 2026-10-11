@@ -6,22 +6,7 @@ import { insertBusinessMemory } from "@/lib/memory/businessMemoryQueries";
 import { checkAIBudget } from "@/lib/ai/checkAIBudget";
 import { logAIUsage } from "@/lib/ai/logUsage";
 import { logger } from "@/lib/logger";
-
-const LANG_NAMES: Record<string, string> = {
-  sk: "Slovak",
-  cs: "Czech",
-  en: "English",
-};
-
-async function getWorkspaceLanguage(workspaceId: string): Promise<string> {
-  const { data } = await supabaseAdmin
-    .from("workspaces")
-    .select("preferences")
-    .eq("id", workspaceId)
-    .maybeSingle();
-  const lang = (data?.preferences as { language?: string } | null)?.language ?? "en";
-  return LANG_NAMES[lang] ?? "English";
-}
+import { getWorkspaceAILanguage } from "@/lib/ai/getWorkspaceAILanguage";
 
 async function firstLookExists(workspaceId: string, contactId: string): Promise<boolean> {
   const { data } = await supabaseAdmin
@@ -58,7 +43,7 @@ export async function generateContactFirstLook({
     const budget = await checkAIBudget(workspaceId);
     if (!budget.allowed) return;
 
-    const language = await getWorkspaceLanguage(workspaceId);
+    const language = await getWorkspaceAILanguage(workspaceId);
 
     const domain = email?.split("@")[1] ?? null;
 

@@ -4,12 +4,7 @@ import { openai } from "@/lib/ai/providers/openai";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getCurrentWorkspace } from "@/lib/workspace/getCurrentWorkspace";
 import { logger } from "@/lib/logger";
-
-const LANG_NAMES: Record<string, string> = {
-  sk: "Slovak",
-  cs: "Czech",
-  en: "English",
-};
+import { getWorkspaceAILanguage } from "@/lib/ai/getWorkspaceAILanguage";
 
 export async function getAiEmailDraft(opts: {
   contactId?: string;
@@ -21,14 +16,7 @@ export async function getAiEmailDraft(opts: {
     const workspace = await getCurrentWorkspace();
     if (!workspace) return null;
 
-    // Workspace language
-    const { data: ws } = await supabaseAdmin
-      .from("workspaces")
-      .select("preferences")
-      .eq("id", workspace.id)
-      .maybeSingle();
-    const lang = (ws?.preferences as { language?: string } | null)?.language ?? "en";
-    const language = LANG_NAMES[lang] ?? "English";
+    const language = await getWorkspaceAILanguage(workspace.id);
 
     const contextLines: string[] = [];
 
