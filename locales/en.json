@@ -2112,7 +2112,22 @@
     "exportDeals": "Deals",
     "exportTasks": "Tasks",
     "exportOrders": "Orders",
-    "pageTitle": "Import & Export"
+    "pageTitle": "Import & Export",
+    "dropMultiple": "Drop CSV files here",
+    "dropMultipleHint": "Multiple files supported — contacts, companies, deals, tasks",
+    "addMoreFiles": "Add more files",
+    "detectedAs": "Detected as",
+    "fileRows": "rows",
+    "noFilesYet": "No files added yet",
+    "noFilesHint": "Drop CSV files above to get started",
+    "universalPreviewTitle": "Ready to Import",
+    "universalPreviewSubtitle": "Review what will be created in your workspace.",
+    "willCreate": "Will create",
+    "autoCreateNote": "Companies referenced in contacts and deals will be created automatically if they don't exist.",
+    "importAll": "Import All",
+    "importMore": "Import More Files",
+    "duplicatesSkipped": "duplicates skipped",
+    "importFailed": "Import failed. Please try again."
   },
   "onboarding": {
     "welcomeTitle": "Welcome to Gunimi",

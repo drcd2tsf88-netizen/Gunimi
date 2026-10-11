@@ -7,7 +7,7 @@ export type ImportField = {
   transform?: (value: string) => unknown;
 };
 
-export type EntityType = "companies" | "contacts" | "deals";
+export type EntityType = "companies" | "contacts" | "deals" | "tasks";
 
 export type ValidatedRow = {
   data: Record<string, unknown>;
@@ -248,10 +248,47 @@ export const DEAL_FIELDS: ImportField[] = [
   },
 ];
 
+export const TASK_FIELDS: ImportField[] = [
+  {
+    key: "title",
+    label: "Task Title",
+    required: true,
+    aliases: ["task", "name", "subject", "task_name", "task name", "todo", "action item"],
+  },
+  {
+    key: "due_date",
+    label: "Due Date",
+    required: false,
+    aliases: ["deadline", "due", "target_date", "due date", "date"],
+    transform: parseDate,
+  },
+  {
+    key: "priority",
+    label: "Priority",
+    required: false,
+    aliases: ["urgency", "importance", "task_priority", "task priority", "level"],
+    validate: validateEnum(["low", "medium", "high", "urgent"]),
+  },
+  {
+    key: "status",
+    label: "Status",
+    required: false,
+    aliases: ["state", "task_status", "task status", "progress", "completion"],
+    validate: validateEnum(["todo", "in_progress", "done"]),
+  },
+  {
+    key: "description",
+    label: "Description",
+    required: false,
+    aliases: ["notes", "details", "comment", "body", "content", "note"],
+  },
+];
+
 export const ENTITY_FIELDS: Record<EntityType, ImportField[]> = {
   companies: COMPANY_FIELDS,
   contacts: CONTACT_FIELDS,
   deals: DEAL_FIELDS,
+  tasks: TASK_FIELDS,
 };
 
 export function autoDetectMapping(

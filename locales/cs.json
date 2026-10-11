@@ -2112,7 +2112,22 @@
     "exportDeals": "Obchody",
     "exportTasks": "Úkoly",
     "exportOrders": "Objednávky",
-    "pageTitle": "Import & Export"
+    "pageTitle": "Import & Export",
+    "dropMultiple": "Přetáhněte CSV soubory sem",
+    "dropMultipleHint": "Více souborů najednou — kontakty, firmy, dealy, úkoly",
+    "addMoreFiles": "Přidat další soubory",
+    "detectedAs": "Detekováno jako",
+    "fileRows": "řádků",
+    "noFilesYet": "Zatím žádné soubory",
+    "noFilesHint": "Přetáhněte CSV soubory výše nebo klikněte na plochu",
+    "universalPreviewTitle": "Připraveno k importu",
+    "universalPreviewSubtitle": "Zkontrolujte co se vytvoří ve vašem pracovním prostoru.",
+    "willCreate": "Vytvoří se",
+    "autoCreateNote": "Firmy uvedené v kontaktech a dealech budou automaticky vytvořeny, pokud ještě neexistují.",
+    "importAll": "Importovat vše",
+    "importMore": "Importovat další soubory",
+    "duplicatesSkipped": "duplikátů přeskočeno",
+    "importFailed": "Import se nezdařil. Zkuste to znovu."
   },
   "onboarding": {
     "welcomeTitle": "Vítejte v Gunimi",
