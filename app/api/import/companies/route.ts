@@ -44,17 +44,16 @@ export async function POST(req: Request) {
 
       inserts.push({
         workspace_id: workspace.id,
-        user_id: user.id,
         owner_id: user.id,
         name: data.name,
         industry: data.industry ?? null,
         website: data.website ?? null,
         country: data.country ?? null,
-        phone: data.phone ?? null,
         company_size: data.company_size ?? null,
-        status: data.status ?? "lead",
-        relationship_stage: data.relationship_stage ?? "lead",
-        updated_at: new Date().toISOString(),
+        status: data.status ?? "active",
+        relationship_stage: data.relationship_stage ?? "prospect",
+        annual_value: 0,
+        last_activity_at: new Date().toISOString(),
       });
     });
 

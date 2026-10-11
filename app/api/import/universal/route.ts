@@ -26,6 +26,7 @@ type BatchResult = {
   entityType: EntityType;
   imported: number;
   skipped: number;
+  error?: string;
 };
 
 const ENTITY_ORDER: EntityType[] = ["companies", "contacts", "deals", "tasks"];
@@ -50,12 +51,12 @@ async function ensureCompanies(
 
   const inserts = missing.map((name) => ({
     workspace_id: workspaceId,
-    user_id: userId,
     owner_id: userId,
     name,
-    status: "lead",
-    relationship_stage: "lead",
-    updated_at: new Date().toISOString(),
+    status: "active",
+    relationship_stage: "prospect",
+    annual_value: 0,
+    last_activity_at: new Date().toISOString(),
   }));
 
   const { data: inserted } = await supabaseAdmin
@@ -95,15 +96,30 @@ export async function POST(req: Request) {
     );
 
     // Pre-fetch existing companies for dedup + linking
-    const { data: existing } = await supabaseAdmin
+    const { data: existingCompanies } = await supabaseAdmin
       .from("workspace_companies")
       .select("id, name")
       .eq("workspace_id", workspace.id);
 
     const companyMap = new Map<string, string>();
-    for (const c of existing ?? []) {
+    for (const c of existingCompanies ?? []) {
       companyMap.set(c.name.toLowerCase(), c.id);
     }
+
+    // Pre-fetch existing contacts by email for dedup / company-link repair
+    const { data: existingContacts } = await supabaseAdmin
+      .from("workspace_people")
+      .select("id, email, company_id")
+      .eq("workspace_id", workspace.id)
+      .not("email", "is", null);
+
+    // email → { id, company_id }
+    const existingContactMap = new Map<string, { id: string; company_id: string | null }>(
+      (existingContacts ?? []).map((c) => [
+        (c.email as string).toLowerCase(),
+        { id: c.id, company_id: c.company_id as string | null },
+      ])
+    );
 
     const results: BatchResult[] = [];
 
@@ -111,6 +127,7 @@ export async function POST(req: Request) {
       const fields = FIELDS_MAP[batch.entityType];
       let imported = 0;
       let skipped = 0;
+      let batchError: string | undefined;
 
       // Validate all rows upfront
       const validData: Record<string, unknown>[] = [];
@@ -138,34 +155,31 @@ export async function POST(req: Request) {
           companyMap.set(name.toLowerCase(), "__pending__");
           toInsert.push({
             workspace_id: workspace.id,
-            user_id: user.id,
             owner_id: user.id,
             name,
             industry: data.industry ?? null,
             website: data.website ?? null,
             country: data.country ?? null,
-            phone: data.phone ?? null,
             company_size: data.company_size ?? null,
-            status: data.status ?? "lead",
-            relationship_stage: data.relationship_stage ?? "lead",
-            updated_at: new Date().toISOString(),
+            status: data.status ?? "active",
+            relationship_stage: data.relationship_stage ?? "prospect",
+            annual_value: 0,
+            last_activity_at: new Date().toISOString(),
           });
         }
 
         if (toInsert.length > 0) {
-          const { data: inserted, error } = await supabaseAdmin
+          const { data: inserted, error: compErr } = await supabaseAdmin
             .from("workspace_companies")
             .insert(toInsert)
             .select("id, name");
 
-          if (!error && inserted) {
+          if (!compErr && inserted) {
             imported = inserted.length;
-            // Replace __pending__ placeholders with actual IDs
             for (const c of inserted) {
               companyMap.set(c.name.toLowerCase(), c.id);
             }
           } else {
-            // Insert failed — remove pending placeholders so contacts don't get bad IDs
             for (const row of toInsert) {
               const key = String(row.name ?? "").toLowerCase();
               if (companyMap.get(key) === "__pending__") {
@@ -173,6 +187,7 @@ export async function POST(req: Request) {
               }
             }
             skipped += toInsert.length;
+            batchError = compErr?.message;
           }
         }
 
@@ -182,36 +197,68 @@ export async function POST(req: Request) {
           .filter(Boolean);
         await ensureCompanies(companyNames, companyMap, workspace.id, user.id);
 
-        const toInsert = validData.map((data) => {
+        // Separate contacts into: new inserts vs existing-but-needs-company-link-repair
+        const toInsert: { row: Record<string, unknown>; dataIdx: number }[] = [];
+        const toRepair: { id: string; company_id: string }[] = [];
+
+        for (let i = 0; i < validData.length; i++) {
+          const data = validData[i];
+          const emailRaw = data.email ? String(data.email).trim().toLowerCase() : null;
           const cName = String(data.company_name ?? "").trim();
           const cId = cName ? (companyMap.get(cName.toLowerCase()) ?? null) : null;
-          return {
-            workspace_id: workspace.id,
-            user_id: user.id,
-            assigned_to: user.id,
-            name: data.name,
-            email: data.email ?? null,
-            phone: data.phone ?? null,
-            position: data.position ?? null,
-            company_name: cName || null,
-            // Only set company_id if it's a real UUID, not a failed placeholder
-            company_id: cId && cId !== "__pending__" ? cId : null,
-            status: data.status ?? "lead",
-            notes: data.notes ?? null,
-            updated_at: new Date().toISOString(),
-          };
-        });
+          const safeCompanyId = cId && cId !== "__pending__" ? cId : null;
+
+          if (emailRaw && existingContactMap.has(emailRaw)) {
+            const existing = existingContactMap.get(emailRaw)!;
+            // If existing contact has no company link and we now have one → repair it
+            if (!existing.company_id && safeCompanyId) {
+              toRepair.push({ id: existing.id, company_id: safeCompanyId });
+            } else {
+              skipped++;
+            }
+            continue;
+          }
+
+          toInsert.push({
+            dataIdx: i,
+            row: {
+              workspace_id: workspace.id,
+              user_id: user.id,
+              assigned_to: user.id,
+              name: data.name,
+              email: data.email ?? null,
+              phone: data.phone ?? null,
+              position: data.position ?? null,
+              company_name: cName || null,
+              company_id: safeCompanyId,
+              status: data.status ?? "lead",
+              notes: data.notes ?? null,
+              updated_at: new Date().toISOString(),
+            },
+          });
+        }
+
+        // Repair existing contacts that are missing their company link
+        for (const { id, company_id } of toRepair) {
+          await supabaseAdmin
+            .from("workspace_people")
+            .update({ company_id, updated_at: new Date().toISOString() })
+            .eq("id", id);
+          imported++;
+        }
 
         if (toInsert.length > 0) {
-          const { data: inserted, error } = await supabaseAdmin
+          const { data: inserted, error: batchErr } = await supabaseAdmin
             .from("workspace_people")
-            .insert(toInsert)
+            .insert(toInsert.map((t) => t.row))
             .select("id");
-          if (!error && inserted) {
-            imported = inserted.length;
-            // Fire AI first look for each imported contact (non-blocking)
+
+          if (!batchErr && inserted) {
             for (let i = 0; i < inserted.length; i++) {
-              const d = validData[i];
+              imported++;
+              const d = validData[toInsert[i].dataIdx];
+              const emailKey = d.email ? String(d.email).trim().toLowerCase() : null;
+              if (emailKey) existingContactMap.set(emailKey, { id: inserted[i].id, company_id: String(d.company_name ?? "") ? (companyMap.get(String(d.company_name ?? "").toLowerCase()) ?? null) : null });
               void generateContactFirstLook({
                 workspaceId: workspace.id,
                 contactId: inserted[i].id,
@@ -222,7 +269,31 @@ export async function POST(req: Request) {
               });
             }
           } else {
-            skipped += toInsert.length;
+            // Batch failed — insert row-by-row so partial failures don't block all
+            for (const { row, dataIdx } of toInsert) {
+              const { data: single, error: rowErr } = await supabaseAdmin
+                .from("workspace_people")
+                .insert(row)
+                .select("id")
+                .maybeSingle();
+              if (!rowErr && single) {
+                imported++;
+                const d = validData[dataIdx];
+                const emailKey = d.email ? String(d.email).trim().toLowerCase() : null;
+                if (emailKey) existingContactMap.set(emailKey, { id: single.id, company_id: null });
+                void generateContactFirstLook({
+                  workspaceId: workspace.id,
+                  contactId: single.id,
+                  name: String(d.name ?? ""),
+                  email: d.email ? String(d.email) : null,
+                  companyName: d.company_name ? String(d.company_name) : null,
+                  position: d.position ? String(d.position) : null,
+                });
+              } else {
+                skipped++;
+                batchError = rowErr?.message ?? "Row insert failed";
+              }
+            }
           }
         }
 
@@ -280,7 +351,7 @@ export async function POST(req: Request) {
         }
       }
 
-      results.push({ entityType: batch.entityType, imported, skipped });
+      results.push({ entityType: batch.entityType, imported, skipped, ...(batchError ? { error: batchError } : {}) });
     }
 
     const totalImported = results.reduce((sum, r) => sum + r.imported, 0);
