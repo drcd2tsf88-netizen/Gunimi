@@ -12,6 +12,7 @@ import {
 } from "@/lib/csv/schemas";
 import { NextResponse } from "next/server";
 import { ratelimit } from "@/lib/ratelimit";
+import { generateContactFirstLook } from "@/server/actions/crm/generateContactFirstLook";
 
 const MAX_TOTAL_ROWS = 2000;
 
@@ -36,31 +37,35 @@ const FIELDS_MAP: Record<EntityType, typeof COMPANY_FIELDS> = {
   tasks: TASK_FIELDS,
 };
 
+// Insert companies that don't exist yet; add confirmed IDs to companyMap.
+// Never pre-populates companyMap before a confirmed DB insert.
 async function ensureCompanies(
   names: string[],
   companyMap: Map<string, string>,
   workspaceId: string,
   userId: string
 ): Promise<void> {
-  const missing = names.filter((n) => n && !companyMap.has(n.toLowerCase()));
+  const missing = [...new Set(names.filter((n) => n && !companyMap.has(n.toLowerCase())))];
   if (missing.length === 0) return;
 
-  const inserts = missing.map((name) => {
-    const id = crypto.randomUUID();
-    companyMap.set(name.toLowerCase(), id);
-    return {
-      id,
-      workspace_id: workspaceId,
-      user_id: userId,
-      owner_id: userId,
-      name,
-      status: "lead",
-      relationship_stage: "lead",
-      updated_at: new Date().toISOString(),
-    };
-  });
+  const inserts = missing.map((name) => ({
+    workspace_id: workspaceId,
+    user_id: userId,
+    owner_id: userId,
+    name,
+    status: "lead",
+    relationship_stage: "lead",
+    updated_at: new Date().toISOString(),
+  }));
 
-  await supabaseAdmin.from("workspace_companies").insert(inserts);
+  const { data: inserted } = await supabaseAdmin
+    .from("workspace_companies")
+    .insert(inserts)
+    .select("id, name");
+
+  for (const c of inserted ?? []) {
+    companyMap.set(c.name.toLowerCase(), c.id);
+  }
 }
 
 export async function POST(req: Request) {
@@ -125,13 +130,13 @@ export async function POST(req: Request) {
           const name = String(data.name ?? "").trim();
           if (!name) { skipped++; continue; }
           if (companyMap.has(name.toLowerCase())) {
+            // Already exists — dedup
             skipped++;
             continue;
           }
-          const id = crypto.randomUUID();
-          companyMap.set(name.toLowerCase(), id);
+          // Mark as pending so duplicates within the same batch don't double-insert
+          companyMap.set(name.toLowerCase(), "__pending__");
           toInsert.push({
-            id,
             workspace_id: workspace.id,
             user_id: user.id,
             owner_id: user.id,
@@ -148,11 +153,27 @@ export async function POST(req: Request) {
         }
 
         if (toInsert.length > 0) {
-          const { error } = await supabaseAdmin
+          const { data: inserted, error } = await supabaseAdmin
             .from("workspace_companies")
-            .insert(toInsert);
-          if (!error) imported = toInsert.length;
-          else skipped += toInsert.length;
+            .insert(toInsert)
+            .select("id, name");
+
+          if (!error && inserted) {
+            imported = inserted.length;
+            // Replace __pending__ placeholders with actual IDs
+            for (const c of inserted) {
+              companyMap.set(c.name.toLowerCase(), c.id);
+            }
+          } else {
+            // Insert failed — remove pending placeholders so contacts don't get bad IDs
+            for (const row of toInsert) {
+              const key = String(row.name ?? "").toLowerCase();
+              if (companyMap.get(key) === "__pending__") {
+                companyMap.delete(key);
+              }
+            }
+            skipped += toInsert.length;
+          }
         }
 
       } else if (batch.entityType === "contacts") {
@@ -163,6 +184,7 @@ export async function POST(req: Request) {
 
         const toInsert = validData.map((data) => {
           const cName = String(data.company_name ?? "").trim();
+          const cId = cName ? (companyMap.get(cName.toLowerCase()) ?? null) : null;
           return {
             workspace_id: workspace.id,
             user_id: user.id,
@@ -172,7 +194,8 @@ export async function POST(req: Request) {
             phone: data.phone ?? null,
             position: data.position ?? null,
             company_name: cName || null,
-            company_id: cName ? (companyMap.get(cName.toLowerCase()) ?? null) : null,
+            // Only set company_id if it's a real UUID, not a failed placeholder
+            company_id: cId && cId !== "__pending__" ? cId : null,
             status: data.status ?? "lead",
             notes: data.notes ?? null,
             updated_at: new Date().toISOString(),
@@ -180,11 +203,27 @@ export async function POST(req: Request) {
         });
 
         if (toInsert.length > 0) {
-          const { error } = await supabaseAdmin
+          const { data: inserted, error } = await supabaseAdmin
             .from("workspace_people")
-            .insert(toInsert);
-          if (!error) imported = toInsert.length;
-          else skipped += toInsert.length;
+            .insert(toInsert)
+            .select("id");
+          if (!error && inserted) {
+            imported = inserted.length;
+            // Fire AI first look for each imported contact (non-blocking)
+            for (let i = 0; i < inserted.length; i++) {
+              const d = validData[i];
+              void generateContactFirstLook({
+                workspaceId: workspace.id,
+                contactId: inserted[i].id,
+                name: String(d.name ?? ""),
+                email: d.email ? String(d.email) : null,
+                companyName: d.company_name ? String(d.company_name) : null,
+                position: d.position ? String(d.position) : null,
+              });
+            }
+          } else {
+            skipped += toInsert.length;
+          }
         }
 
       } else if (batch.entityType === "deals") {
@@ -195,6 +234,7 @@ export async function POST(req: Request) {
 
         const toInsert = validData.map((data) => {
           const cName = String(data.company_name ?? "").trim();
+          const cId = cName ? (companyMap.get(cName.toLowerCase()) ?? null) : null;
           return {
             workspace_id: workspace.id,
             owner_id: user.id,
@@ -204,16 +244,17 @@ export async function POST(req: Request) {
             probability: data.probability ?? null,
             description: data.description ?? null,
             expected_close_date: data.expected_close_date ?? null,
-            company_id: cName ? (companyMap.get(cName.toLowerCase()) ?? null) : null,
+            company_id: cId && cId !== "__pending__" ? cId : null,
             updated_at: new Date().toISOString(),
           };
         });
 
         if (toInsert.length > 0) {
-          const { error } = await supabaseAdmin
+          const { data: inserted, error } = await supabaseAdmin
             .from("workspace_deals")
-            .insert(toInsert);
-          if (!error) imported = toInsert.length;
+            .insert(toInsert)
+            .select("id");
+          if (!error && inserted) imported = inserted.length;
           else skipped += toInsert.length;
         }
 
@@ -230,10 +271,11 @@ export async function POST(req: Request) {
         }));
 
         if (toInsert.length > 0) {
-          const { error } = await supabaseAdmin
+          const { data: inserted, error } = await supabaseAdmin
             .from("workspace_tasks")
-            .insert(toInsert);
-          if (!error) imported = toInsert.length;
+            .insert(toInsert)
+            .select("id");
+          if (!error && inserted) imported = inserted.length;
           else skipped += toInsert.length;
         }
       }
