@@ -22,6 +22,14 @@ from "@/lib/workspace/getCurrentWorkspace";
 import { ratelimit }
 from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
+import { z } from "zod";
+
+const createTaskSchema = z.object({
+  companyId: z.string().uuid().optional().nullable(),
+  title: z.string().min(1).max(500),
+  description: z.string().max(5000).optional().nullable(),
+  priority: z.enum(["low", "medium", "high"]).optional().default("medium"),
+});
 
 export async function POST(
   req: Request
@@ -29,15 +37,11 @@ export async function POST(
 
   try {
 
-    const body =
-      await req.json();
-
-    const {
-      companyId,
-      title,
-      description,
-      priority,
-    } = body;
+    const parsed = createTaskSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return errorResponse("Invalid input", 400);
+    }
+    const { companyId, title, description, priority } = parsed.data;
 
     const user =
       await getUser();
@@ -74,19 +78,11 @@ export async function POST(
       );
     }
 
-    if (!title) {
-
-      return errorResponse(
-        "Missing fields",
-        400
-      );
-    }
-
     const cleanTitle =
       sanitize(title);
 
     const cleanDescription =
-      sanitize(description);
+      sanitize(description ?? "");
 
     const { data, error } =
 

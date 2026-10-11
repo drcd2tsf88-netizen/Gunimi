@@ -4,6 +4,17 @@ function fmt(value: number): string {
   return `$${value.toLocaleString()}`;
 }
 
+// Strips newlines and control characters from user-controlled strings before
+// they are embedded in AI system prompts, preventing prompt injection via
+// crafted deal titles, contact names, or email subjects.
+function s(text: string, maxLen = 120): string {
+  return text
+    .replace(/[\r\n\t]/g, " ")
+    .replace(/[<>{}[\]]/g, "")
+    .trim()
+    .slice(0, maxLen);
+}
+
 export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-US", {
@@ -80,8 +91,8 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
     lines.push(``, `OPEN PIPELINE (${ctx.deals.length} deals)`);
     ctx.deals.slice(0, 8).forEach((d) => {
       const val = d.value != null ? fmt(d.value) : "no value";
-      const co = d.company ? ` @ ${d.company}` : "";
-      const contact = d.contactName ? ` | contact: ${d.contactName}` : "";
+      const co = d.company ? ` @ ${s(d.company)}` : "";
+      const contact = d.contactName ? ` | contact: ${s(d.contactName)}` : "";
       const prob = d.probability != null ? ` | ${d.probability}%` : "";
       const close =
         d.daysUntilClose != null && d.daysUntilClose >= 0
@@ -91,23 +102,23 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
             : "";
       const health = ` | health: ${d.healthScore} ${d.healthLabel}`;
       const stale = d.daysSinceUpdated > 7 ? ` ⚠ ${d.daysSinceUpdated}d stale` : "";
-      lines.push(`• ${d.title}${co} — ${d.stage} — ${val}${prob}${close}${health}${contact}${stale}`);
+      lines.push(`• ${s(d.title)}${co} — ${d.stage} — ${val}${prob}${close}${health}${contact}${stale}`);
     });
   }
 
   if (stalledDeals.length > 0) {
     lines.push(
       ``,
-      `⚠ STALLED DEALS: ${stalledDeals.map((d) => d.title).join(", ")}`
+      `⚠ STALLED DEALS: ${stalledDeals.map((d) => s(d.title)).join(", ")}`
     );
   }
 
   if (derived.pastDueDeals.length > 0) {
     lines.push(``, `⚠ PAST DUE CLOSE DATES`);
     derived.pastDueDeals.forEach((d) => {
-      const co = d.company ? ` @ ${d.company}` : "";
+      const co = d.company ? ` @ ${s(d.company)}` : "";
       const val = d.value != null ? ` — ${fmt(d.value)}` : "";
-      lines.push(`• ${d.title}${co} — ${d.daysPastDue} days past expected close${val}`);
+      lines.push(`• ${s(d.title)}${co} — ${d.daysPastDue} days past expected close${val}`);
     });
   }
 
@@ -116,9 +127,9 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
     derived.upcomingClosings.forEach((d) => {
       const val = d.value != null ? ` — ${fmt(d.value)}` : "";
       const prob = d.probability != null ? ` — ${d.probability}% probability` : "";
-      const co = d.company ? ` @ ${d.company}` : "";
+      const co = d.company ? ` @ ${s(d.company)}` : "";
       lines.push(
-        `• ${d.title}${co} — closes in ${d.daysUntilClose} day${d.daysUntilClose !== 1 ? "s" : ""}${val}${prob}`
+        `• ${s(d.title)}${co} — closes in ${d.daysUntilClose} day${d.daysUntilClose !== 1 ? "s" : ""}${val}${prob}`
       );
     });
   }
@@ -126,25 +137,25 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
   if (derived.neglectedContacts.length > 0) {
     lines.push(``, `NEGLECTED CONTACTS (last contact >14 days ago)`);
     derived.neglectedContacts.forEach((c) => {
-      const co = c.company ? ` @ ${c.company}` : "";
+      const co = c.company ? ` @ ${s(c.company)}` : "";
       const status = c.status ? ` [${c.status}]` : "";
-      lines.push(`• ${c.name}${status}${co} — ${c.daysSinceContacted} days since last contact`);
+      lines.push(`• ${s(c.name)}${status}${co} — ${c.daysSinceContacted} days since last contact`);
     });
   }
 
   if (derived.neverContactedContacts.length > 0) {
     lines.push(``, `NEVER-CONTACTED LEADS (added >7 days ago, no outreach)`);
     derived.neverContactedContacts.forEach((c) => {
-      const co = c.company ? ` @ ${c.company}` : "";
-      lines.push(`• ${c.name}${co} — ${c.ageInDays} days since added`);
+      const co = c.company ? ` @ ${s(c.company)}` : "";
+      lines.push(`• ${s(c.name)}${co} — ${c.ageInDays} days since added`);
     });
   }
 
   if (overdueTasks.length > 0) {
     lines.push(``, `OVERDUE TASKS (${overdueTasks.length})`);
     overdueTasks.slice(0, 8).forEach((t) => {
-      const owner = t.assigneeName ? ` | owner: ${t.assigneeName}` : "";
-      lines.push(`• [${t.priority.toUpperCase()}] ${t.title} — OVERDUE${owner}`);
+      const owner = t.assigneeName ? ` | owner: ${s(t.assigneeName)}` : "";
+      lines.push(`• [${t.priority.toUpperCase()}] ${s(t.title)} — OVERDUE${owner}`);
     });
   }
 
@@ -154,8 +165,8 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
       const due = t.dueDate
         ? ` — due ${new Date(t.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
         : "";
-      const owner = t.assigneeName ? ` | owner: ${t.assigneeName}` : "";
-      lines.push(`• [${t.priority.toUpperCase()}] ${t.title}${due}${owner}`);
+      const owner = t.assigneeName ? ` | owner: ${s(t.assigneeName)}` : "";
+      lines.push(`• [${t.priority.toUpperCase()}] ${s(t.title)}${due}${owner}`);
     });
   }
 
@@ -164,11 +175,11 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
   if (wf.tasks.length > 0 || wf.meetings.length > 0 || wf.closings.length > 0) {
     lines.push(``, `WEEKLY FOCUS (next 7 days)`);
     if (wf.tasks.length > 0)
-      lines.push(`• Tasks due: ${wf.tasks.map((t) => t.title).join(", ")}`);
+      lines.push(`• Tasks due: ${wf.tasks.map((t) => s(t.title)).join(", ")}`);
     if (wf.meetings.length > 0)
-      lines.push(`• Meetings: ${wf.meetings.map((m) => m.title).join(", ")}`);
+      lines.push(`• Meetings: ${wf.meetings.map((m) => s(m.title)).join(", ")}`);
     if (wf.closings.length > 0)
-      lines.push(`• Closings: ${wf.closings.map((d) => `${d.title} (${d.daysUntilClose}d)`).join(", ")}`);
+      lines.push(`• Closings: ${wf.closings.map((d) => `${s(d.title)} (${d.daysUntilClose}d)`).join(", ")}`);
   }
 
   if (ctx.meetings.length > 0) {
@@ -181,29 +192,29 @@ export function formatWorkspacePrompt(ctx: WorkspaceAIContext): string {
         hour: "numeric",
         minute: "2-digit",
       });
-      lines.push(`• ${m.title} — ${when}`);
+      lines.push(`• ${s(m.title)} — ${when}`);
     });
   }
 
   if (unreadEmails.length > 0) {
     lines.push(``, `UNREAD EMAILS (${unreadEmails.length})`);
     unreadEmails.forEach((e) => {
-      const from = e.contact ? ` from ${e.contact}` : "";
-      lines.push(`• ${e.subject}${from}`);
+      const from = e.contact ? ` from ${s(e.contact)}` : "";
+      lines.push(`• ${s(e.subject)}${from}`);
     });
   }
 
   if (ctx.activity.length > 0) {
     lines.push(``, `RECENT ACTIVITY`);
     ctx.activity.slice(0, 6).forEach((a) => {
-      lines.push(`• ${a.description}`);
+      lines.push(`• ${s(a.description, 200)}`);
     });
   }
 
   if (ctx.memory.length > 0) {
     lines.push(``, `WORKSPACE KNOWLEDGE`);
     ctx.memory.forEach((m) => {
-      lines.push(`• ${m}`);
+      lines.push(`• ${s(m, 300)}`);
     });
   }
 

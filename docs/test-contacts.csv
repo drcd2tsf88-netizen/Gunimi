@@ -1,0 +1,6 @@
+name,email,phone,company,role,notes
+Jana Testová,jana.testova@acme-test.sk,+421 900 111 001,Acme s.r.o.,CEO,Testovací kontakt pre import
+Peter Skúšobný,peter.skusobny@beta-test.sk,+421 900 111 002,Beta Tech,CFO,Testovací kontakt pre import
+Marta Fiktívna,marta.fiktivna@gamma-test.sk,+421 900 111 003,Gamma Corp,VP Sales,Testovací kontakt pre import
+Tomáš Vzorový,tomas.vzorovy@delta-test.sk,+421 900 111 004,Delta s.r.o.,CTO,Testovací kontakt pre import
+Zuzana Pokusná,zuzana.pokuska@omega-test.sk,+421 900 111 005,Omega a.s.,Head of Marketing,Testovací kontakt pre import

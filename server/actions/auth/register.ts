@@ -16,6 +16,9 @@ const DISPOSABLE_DOMAINS = new Set([
   "mytemp.email","temp-mail.org","emailondeck.com","getairmail.com",
   "spamfree24.org","trashmail.at","trashmail.io","spamherelots.com",
   "throwam.com","tempsky.com","spambox.us","inboxalias.com","filzmail.com",
+  // Free providers not relevant to SK/CZ B2B — high fraud signal
+  "qq.com","163.com","126.com","yeah.net","sina.com","sohu.com",
+  "mail.ru","inbox.ru","bk.ru","list.ru","rambler.ru","ro.ru",
 ]);
 
 function isDisposableEmail(email: string): boolean {

@@ -151,6 +151,19 @@ export default function DashboardLayoutClient({
     };
   }, [router, setContext, setTaskCounts]);
 
+  // Prevent the browser from navigating away when a file is dropped outside a
+  // designated drop zone (e.g. the import wizard). Without this, dropping a CSV
+  // anywhere on the page would trigger a file:// navigation.
+  useEffect(() => {
+    function prevent(e: DragEvent) { e.preventDefault(); }
+    document.addEventListener("dragover", prevent);
+    document.addEventListener("drop", prevent);
+    return () => {
+      document.removeEventListener("dragover", prevent);
+      document.removeEventListener("drop", prevent);
+    };
+  }, []);
+
   // Keyboard shortcut: ? opens the feedback sheet when dogfood mode is active
   useEffect(() => {
     if (!dogfoodEnabled) return;

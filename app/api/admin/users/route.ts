@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
+import { z } from "zod";
+
+const patchSchema = z.object({
+  id: z.string().uuid(),
+  platform_role: z.enum(["admin", "team", "user"]).optional(),
+  status: z.string().max(50).optional(),
+});
 
 async function getAdminUser() {
   const supabase = await createClient();
@@ -41,11 +48,11 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { id, platform_role, status } = await req.json();
-
-  if (!id) {
-    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  const parsed = patchSchema.safeParse(await req.json());
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
+  const { id, platform_role, status } = parsed.data;
 
   const updates: Record<string, string> = {};
   if (platform_role) updates.platform_role = platform_role;

@@ -1,4 +1,4 @@
-import { Activity, LayoutDashboard } from "lucide-react";
+import { Activity, FileUp, LayoutDashboard } from "lucide-react";
 
 import { commandRegistry } from "@/lib/commands/registry";
 import type { OrbitCommand } from "@/lib/commands/types";
@@ -21,6 +21,15 @@ const commands: OrbitCommand[] = [
     href: "/dashboard/activity",
     group: "workspace",
     keywords: ["log", "feed", "history", "events", "observatory"],
+  },
+  {
+    id: "import",
+    type: "navigate",
+    namespace: "dashboard",
+    icon: FileUp,
+    href: "/dashboard/import",
+    group: "workspace",
+    keywords: ["import", "export", "csv", "data", "upload", "contacts", "companies"],
   },
 ];
 

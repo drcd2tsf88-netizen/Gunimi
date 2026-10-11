@@ -7,6 +7,7 @@ import { verifyOAuthState } from "@/lib/server/oauth/state";
 import { logger } from "@/lib/logger";
 import { runScanToCompletion, getAllScanTypes } from "@/lib/signals/scan";
 import { generateEmailConnectionWakeup } from "@/server/actions/crm/generateEmailConnectionWakeup";
+import { encryptToken } from "@/lib/server/crypto";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -76,8 +77,8 @@ export async function GET(request: NextRequest) {
           user_id: userId,
           provider: "gmail",
           provider_account_email: connectedEmail,
-          access_token: tokens.accessToken,
-          refresh_token: tokens.refreshToken ?? null,
+          access_token: encryptToken(tokens.accessToken),
+          refresh_token: tokens.refreshToken ? encryptToken(tokens.refreshToken) : null,
           token_expires_at: tokens.expiresAt.toISOString(),
           scope: tokens.scope ?? null,
           connected_at: new Date().toISOString(),

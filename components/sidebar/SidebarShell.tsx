@@ -155,7 +155,7 @@ export function SidebarHeader({
             </p>
           ) : (
             <p className="mt-px text-[10px] tracking-[0.06em] text-[#9AA3B2]/45">
-              Every client. Always remembered.
+              {t("workspaceTagline")}
             </p>
           )}
         </div>

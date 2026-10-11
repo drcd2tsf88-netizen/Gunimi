@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   autoDetectMapping,
@@ -24,6 +24,9 @@ type Step = "entity" | "upload" | "map" | "preview" | "importing" | "result";
 
 type ImportError = { row: number; field: string; error: string };
 type ImportResult = { imported: number; skipped: number; errors: ImportError[] };
+
+// Radix Select does not support empty string as a value — use a sentinel instead.
+const IGNORE = "__none__";
 
 const ENTITY_OPTIONS: { key: EntityType; label: string }[] = [
   { key: "companies", label: "Companies" },
@@ -54,8 +57,15 @@ export default function ImportWizard() {
 
   // ── helpers ──────────────────────────────────────────────────────────────
 
+  function cleanMapping(): Record<string, string> {
+    return Object.fromEntries(
+      Object.entries(mapping).filter(([, v]) => v && v !== IGNORE)
+    );
+  }
+
   function getValidatedRows(): ValidatedRow[] {
-    return csvRows.map((row) => validateRow(row, mapping, fields));
+    const m = cleanMapping();
+    return csvRows.map((row) => validateRow(row, m, fields));
   }
 
   const validCount = getValidatedRows().filter((r) => r.errors.length === 0).length;
@@ -68,33 +78,36 @@ export default function ImportWizard() {
     }
     const reader = new FileReader();
     reader.onload = (e) => {
-      const raw = e.target?.result;
-      if (typeof raw !== "string") return;
-      const { headers, rows } = parseCSV(raw);
-      if (!headers.length || !rows.length) {
-        setFileError(t("emptyFile"));
-        return;
+      try {
+        const raw = e.target?.result;
+        if (typeof raw !== "string") return;
+        const { headers, rows } = parseCSV(raw);
+        if (!headers.length || !rows.length) {
+          setFileError(t("emptyFile"));
+          return;
+        }
+        setCsvHeaders(headers);
+        setCsvRows(rows);
+        const detected = autoDetectMapping(headers, fields);
+        setMapping(detected);
+        setAutoDetected(new Set(Object.keys(detected)));
+        setFileError(null);
+        setStep("map");
+      } catch {
+        setFileError(t("invalidFileType"));
       }
-      setCsvHeaders(headers);
-      setCsvRows(rows);
-      const detected = autoDetectMapping(headers, fields);
-      setMapping(detected);
-      setAutoDetected(new Set(Object.keys(detected)));
-      setFileError(null);
-      setStep("map");
     };
-    reader.readAsText(file);
+    reader.onerror = () => {
+      setFileError(t("invalidFileType"));
+    };
+    reader.readAsText(file, "utf-8");
   }
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (file) handleFileRead(file);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [fields]
-  );
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileRead(file);
+  }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -105,15 +118,16 @@ export default function ImportWizard() {
     if (!entityType) return;
     setStep("importing");
 
+    const m = cleanMapping();
     const validRows = csvRows.filter(
-      (row) => validateRow(row, mapping, fields).errors.length === 0
+      (row) => validateRow(row, m, fields).errors.length === 0
     );
 
     try {
       const res = await fetch(IMPORT_ENDPOINTS[entityType], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rows: validRows, mapping }),
+        body: JSON.stringify({ rows: validRows, mapping: m }),
       });
       const json = await res.json();
       setResult({
@@ -157,7 +171,7 @@ export default function ImportWizard() {
 
   // ── mapped preview columns ────────────────────────────────────────────────
 
-  const mappedColumns = csvHeaders.filter((h) => mapping[h]);
+  const mappedColumns = csvHeaders.filter((h) => mapping[h] && mapping[h] !== IGNORE);
   const previewRows = csvRows.slice(0, 5);
 
   // ── render ────────────────────────────────────────────────────────────────
@@ -249,16 +263,16 @@ export default function ImportWizard() {
                   )}
                 </div>
                 <Select
-                  value={mapping[header] ?? ""}
+                  value={mapping[header] || IGNORE}
                   onValueChange={(v) =>
-                    setMapping((prev) => ({ ...prev, [header]: v }))
+                    setMapping((prev) => ({ ...prev, [header]: v === IGNORE ? "" : v }))
                   }
                 >
                   <SelectTrigger className="h-9 w-full px-3 text-sm">
                     <SelectValue placeholder={t("ignore")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">{t("ignore")}</SelectItem>
+                    <SelectItem value={IGNORE}>{t("ignore")}</SelectItem>
                     {fields.map((f) => (
                       <SelectItem key={f.key} value={f.key}>
                         {f.label}{f.required ? " *" : ""}
@@ -278,7 +292,7 @@ export default function ImportWizard() {
             </button>
             <button
               onClick={() => setStep("preview")}
-              disabled={!Object.values(mapping).some(Boolean)}
+              disabled={!Object.values(mapping).some(v => v && v !== IGNORE)}
               className="rounded-xl bg-violet-600 px-5 py-2 text-sm font-medium text-white transition-opacity hover:bg-violet-500 disabled:opacity-40"
             >
               {t("next")}

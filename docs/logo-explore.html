@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gunimi · Logo — V3 Bold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#03040A;color:#F7F8FC;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;padding:60px 48px;min-height:100vh}
+h1{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#4A5568;margin-bottom:48px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.04);border-radius:20px;overflow:hidden;margin-bottom:2px}
+.cell{background:#080B14;padding:52px 44px;display:flex;flex-direction:column;gap:32px}
+.label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4A5568}
+.desc{font-size:12px;color:#4A5568;line-height:1.65}
+.logo-row{display:flex;align-items:center;gap:12px}
+.wm{font-size:22px;font-weight:900;letter-spacing:-.05em;color:#F7F8FC}
+.sizes{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.sz-label{font-size:8px;color:#4A5568;font-weight:600;letter-spacing:.08em;margin-top:6px;text-align:center}
+
+/* pill helper */
+.pill{
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r);
+  background:linear-gradient(135deg,rgba(109,91,255,.14),rgba(34,211,238,.07));
+  border:1px solid rgba(109,91,255,.22);
+  flex-shrink:0;
+}
+
+.navtest{margin-top:4px;background:#080B14;border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:28px 36px}
+.navtest-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4A5568;margin-bottom:20px}
+.navbar{display:flex;align-items:center;height:58px;background:#0A0E17;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:0 28px;gap:52px}
+.nav-logo{display:flex;align-items:center;gap:9px}
+.nav-wm{font-size:16px;font-weight:900;letter-spacing:-.05em;color:#F7F8FC}
+.nav-tag{font-size:9px;color:#4A5568;font-weight:700;letter-spacing:.1em}
+
+/* large hero test */
+.herotest{margin-top:4px;background:#080B14;border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:40px 48px;display:flex;align-items:center;gap:20px}
+.hero-wm{font-size:28px;font-weight:900;letter-spacing:-.05em;color:#F7F8FC}
+</style>
+</head>
+<body>
+
+<h1>Gunimi · Logo V3 — stroke hrúbka</h1>
+
+<!-- 3 stroke weights -->
+<div class="grid">
+
+  <!-- W1: stroke 3.0 -->
+  <div class="cell">
+    <div class="label">Stroke 3.0 — tenší</div>
+    <div class="logo-row">
+      <div class="pill" style="--r:11px;width:42px;height:42px">
+        <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+          <defs><linearGradient id="a1" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="60%" stop-color="#8B7DFF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs>
+          <path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#a1)" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="26" cy="9.5" r="2.6" fill="#22D3EE"/>
+          <circle cx="26" cy="9.5" r="5" fill="#22D3EE" opacity=".12"/>
+        </svg>
+      </div>
+      <div class="wm">Gunimi</div>
+    </div>
+    <div class="sizes">
+      <div style="text-align:center">
+        <div class="pill" style="--r:5px;width:18px;height:18px"><svg width="10" height="10" viewBox="0 0 36 36" fill="none"><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="#8B7DFF" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div>
+        <div class="sz-label">18</div>
+      </div>
+      <div style="text-align:center">
+        <div class="pill" style="--r:8px;width:32px;height:32px"><svg width="19" height="19" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="a1b" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#a1b)" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.6" fill="#22D3EE"/></svg></div>
+        <div class="sz-label">32</div>
+      </div>
+      <div style="text-align:center">
+        <div class="pill" style="--r:14px;width:56px;height:56px"><svg width="33" height="33" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="a1c" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#a1c)" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.6" fill="#22D3EE"/><circle cx="26" cy="9.5" r="5" fill="#22D3EE" opacity=".12"/></svg></div>
+        <div class="sz-label">56</div>
+      </div>
+    </div>
+    <div class="desc">Elegantný, tenší. Na malej veľkosti môže zmiznúť.</div>
+  </div>
+
+  <!-- W2: stroke 4.0 — recommended -->
+  <div class="cell" style="position:relative">
+    <div style="position:absolute;top:18px;right:18px;background:rgba(109,91,255,.15);border:1px solid rgba(109,91,255,.25);border-radius:999px;padding:3px 10px;font-size:9px;font-weight:700;color:#A998FF;letter-spacing:.1em">ODPORÚČAM</div>
+    <div class="label">Stroke 4.0 — balanced</div>
+    <div class="logo-row">
+      <div class="pill" style="--r:11px;width:42px;height:42px">
+        <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+          <defs><linearGradient id="b1" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="60%" stop-color="#8B7DFF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs>
+          <path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#b1)" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/>
+          <circle cx="26" cy="9.5" r="5.5" fill="#22D3EE" opacity=".15"/>
+        </svg>
+      </div>
+      <div class="wm">Gunimi</div>
+    </div>
+    <div class="sizes">
+      <div style="text-align:center">
+        <div class="pill" style="--r:5px;width:18px;height:18px"><svg width="10" height="10" viewBox="0 0 36 36" fill="none"><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="#8B7DFF" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/></svg></div>
+        <div class="sz-label">18</div>
+      </div>
+      <div style="text-align:center">
+        <div class="pill" style="--r:8px;width:32px;height:32px"><svg width="19" height="19" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="b1b" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#b1b)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/></svg></div>
+        <div class="sz-label">32</div>
+      </div>
+      <div style="text-align:center">
+        <div class="pill" style="--r:14px;width:56px;height:56px"><svg width="33" height="33" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="b1c" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#b1c)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/><circle cx="26" cy="9.5" r="5.5" fill="#22D3EE" opacity=".15"/></svg></div>
+        <div class="sz-label">56</div>
+      </div>
+      <div style="text-align:center">
+        <div class="pill" style="--r:18px;width:72px;height:72px"><svg width="42" height="42" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="b1d" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#b1d)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/><circle cx="26" cy="9.5" r="5.5" fill="#22D3EE" opacity=".15"/></svg></div>
+        <div class="sz-label">72</div>
+      </div>
+    </div>
+    <div class="desc">Ideálna hrúbka — G je výrazné, čitateľné aj na 18px. Iskra jasne viditeľná.</div>
+  </div>
+
+  <!-- W3: stroke 5.0 — hefty -->
+  <div class="cell">
+    <div class="label">Stroke 5.0 — výrazný</div>
+    <div class="logo-row">
+      <div class="pill" style="--r:11px;width:42px;height:42px">
+        <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+          <defs><linearGradient id="c1" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="60%" stop-color="#8B7DFF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs>
+          <path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#c1)" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="26" cy="9.5" r="3" fill="#22D3EE"/>
+          <circle cx="26" cy="9.5" r="6" fill="#22D3EE" opacity=".15"/>
+        </svg>
+      </div>
+      <div class="wm">Gunimi</div>
+    </div>
+    <div class="sizes">
+      <div style="text-align:center">
+        <div class="pill" style="--r:5px;width:18px;height:18px"><svg width="10" height="10" viewBox="0 0 36 36" fill="none"><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="#8B7DFF" stroke-width="5" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="3" fill="#22D3EE"/></svg></div>
+        <div class="sz-label">18</div>
+      </div>
+      <div style="text-align:center">
+        <div class="pill" style="--r:8px;width:32px;height:32px"><svg width="19" height="19" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="c1b" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#c1b)" stroke-width="5" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="3" fill="#22D3EE"/></svg></div>
+        <div class="sz-label">32</div>
+      </div>
+      <div style="text-align:center">
+        <div class="pill" style="--r:14px;width:56px;height:56px"><svg width="33" height="33" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="c1c" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#c1c)" stroke-width="5" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="3" fill="#22D3EE"/><circle cx="26" cy="9.5" r="6" fill="#22D3EE" opacity=".15"/></svg></div>
+        <div class="sz-label">56</div>
+      </div>
+    </div>
+    <div class="desc">Najhrubší — dominantný. Na malých veľkostiach stráca detail crossbaru.</div>
+  </div>
+
+</div>
+
+<!-- NAV BAR -->
+<div class="navtest">
+  <div class="navtest-label">Nav bar kontext</div>
+  <div class="navbar">
+
+    <div class="nav-logo">
+      <div class="pill" style="--r:7px;width:26px;height:26px">
+        <svg width="15" height="15" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="nv1" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#nv1)" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.6" fill="#22D3EE"/></svg>
+      </div>
+      <span class="nav-wm">Gunimi</span>
+      <span class="nav-tag">3.0</span>
+    </div>
+
+    <div class="nav-logo">
+      <div class="pill" style="--r:7px;width:26px;height:26px">
+        <svg width="15" height="15" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="nv2" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#nv2)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/></svg>
+      </div>
+      <span class="nav-wm">Gunimi</span>
+      <span class="nav-tag" style="color:#A998FF">4.0 ★</span>
+    </div>
+
+    <div class="nav-logo">
+      <div class="pill" style="--r:7px;width:26px;height:26px">
+        <svg width="15" height="15" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="nv3" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#nv3)" stroke-width="5" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="3" fill="#22D3EE"/></svg>
+      </div>
+      <span class="nav-wm">Gunimi</span>
+      <span class="nav-tag">5.0</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- HERO SIZE TEST -->
+<div class="herotest" style="margin-top:4px;border-radius:20px">
+  <div class="pill" style="--r:16px;width:64px;height:64px">
+    <svg width="38" height="38" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="hv1" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="60%" stop-color="#8B7DFF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#hv1)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/><circle cx="26" cy="9.5" r="5.5" fill="#22D3EE" opacity=".15"/></svg>
+  </div>
+  <span class="hero-wm">Gunimi</span>
+  <span style="font-size:9px;color:#4A5568;margin-left:-10px">— hero / about page</span>
+</div>
+
+</body>
+</html>

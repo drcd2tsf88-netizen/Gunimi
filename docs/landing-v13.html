@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gunimi — AI Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020307;
+  --s1:#07090F;--s2:#0A0D16;--s3:#0D1120;
+  --b:rgba(255,255,255,.05);--b2:rgba(255,255,255,.03);
+  --text:#F0F2FA;--t2:#8A94A8;--muted:#3D4558;
+  --p:#6D5BFF;--p2:#8B7DFF;--p3:#A998FF;
+  --ai:#22D3EE;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444;
+  --max:1280px;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ── Animations ── */
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes slin{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+@keyframes ring{0%{opacity:.2;transform:scale(1)}100%{opacity:0;transform:scale(2.2)}}
+@keyframes grid-drift{0%{transform:translateY(0)}100%{transform:translateY(60px)}}
+@keyframes float-up{0%{opacity:0;transform:translateY(40px) rotateX(8deg)}100%{opacity:1;transform:translateY(0) rotateX(8deg)}}
+@keyframes glow-in{0%{opacity:0}100%{opacity:1}}
+@keyframes scan{0%{top:-10%}100%{top:110%}}
+
+/* ─────────────────────────────────────── NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:56px;
+  background:rgba(2,3,7,.7);backdrop-filter:blur(32px);
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.nav-inner{
+  max-width:var(--max);margin:0 auto;
+  padding:0 40px;height:100%;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{
+  width:28px;height:28px;border-radius:8px;flex-shrink:0;
+  background:rgba(109,91,255,.08);
+  border:1px solid rgba(109,91,255,.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-wm{font-size:15px;font-weight:800;letter-spacing:-.05em;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:13px;font-weight:500;color:rgba(138,148,168,.5);text-decoration:none;letter-spacing:-.01em;transition:color .15s}
+.nav-links a:hover{color:rgba(138,148,168,.85)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-login{font-size:13px;font-weight:500;color:rgba(138,148,168,.45);background:none;border:none;cursor:pointer;transition:color .15s;letter-spacing:-.01em}
+.btn-login:hover{color:rgba(138,148,168,.8)}
+.btn-cta{
+  background:var(--p);color:#fff;border:none;
+  padding:8px 20px;border-radius:10px;
+  font:700 13px 'Inter',sans-serif;cursor:pointer;
+  box-shadow:0 0 0 1px rgba(109,91,255,.4),0 4px 20px rgba(109,91,255,.2);
+  transition:all .2s;letter-spacing:-.02em;
+}
+.btn-cta:hover{background:var(--p2);transform:translateY(-1px);box-shadow:0 0 0 1px rgba(139,125,255,.5),0 6px 28px rgba(109,91,255,.32)}
+
+/* ─────────────────────────────────────── HERO */
+.hero{
+  position:relative;
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  align-items:center;
+  padding-top:56px; /* nav height */
+  overflow:hidden;
+}
+
+/* Ambient background — holographic grid */
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;
+  overflow:hidden;
+}
+.hero-grid::before{
+  content:'';
+  position:absolute;inset:-60px;
+  background-image:
+    linear-gradient(rgba(109,91,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(109,91,255,.035) 1px,transparent 1px);
+  background-size:64px 64px;
+  animation:grid-drift 24s linear infinite;
+  mask-image:radial-gradient(ellipse at 50% 40%,black 20%,transparent 75%);
+}
+.hero-grid::after{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:100%;
+  background:
+    radial-gradient(ellipse at 50% -10%,rgba(109,91,255,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 80%,rgba(34,211,238,.05) 0%,transparent 35%),
+    radial-gradient(ellipse at 85% 60%,rgba(109,91,255,.06) 0%,transparent 35%);
+}
+
+/* Scan line effect */
+.hero-scan{
+  position:absolute;left:0;right:0;height:180px;pointer-events:none;
+  background:linear-gradient(to bottom,transparent,rgba(109,91,255,.025),transparent);
+  animation:scan 8s ease-in-out infinite;
+  z-index:1;
+}
+
+/* Copy — centered, architectural */
+.hero-copy{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;
+  align-items:center;text-align:center;
+  padding:80px 40px 0;
+  max-width:var(--max);width:100%;
+}
+
+/* Problem line — single row, minimal */
+.hero-problem{
+  display:inline-flex;align-items:center;gap:12px;
+  margin-bottom:32px;
+  opacity:.35;
+}
+.hp{font-size:13px;font-weight:500;letter-spacing:-.01em;color:var(--text)}
+.hs{font-size:10px;color:rgba(109,91,255,.6)}
+
+/* The headline — architectural scale */
+.hero-h1{
+  font-size:clamp(52px,8.5vw,112px);
+  font-weight:900;
+  letter-spacing:-.06em;
+  line-height:.88;
+  margin-bottom:28px;
+  background:linear-gradient(160deg,
+    rgba(240,242,250,.95) 0%,
+    rgba(200,190,255,.9) 40%,
+    rgba(146,232,248,.8) 100%
+  );
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  max-width:900px;
+}
+
+.hero-sub{
+  font-size:17px;font-weight:400;
+  color:rgba(138,148,168,.6);
+  line-height:1.7;max-width:400px;
+  margin-bottom:44px;
+  letter-spacing:-.01em;
+}
+
+/* CTAs */
+.hero-ctas{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.btn-hero{
+  background:var(--p);color:#fff;border:none;
+  padding:15px 36px;border-radius:12px;
+  font:700 15px 'Inter',sans-serif;cursor:pointer;
+  box-shadow:
+    0 0 0 1px rgba(109,91,255,.4),
+    0 8px 40px rgba(109,91,255,.28),
+    inset 0 1px 0 rgba(255,255,255,.12);
+  transition:all .25s;letter-spacing:-.025em;
+}
+.btn-hero:hover{
+  background:var(--p2);transform:translateY(-2px);
+  box-shadow:0 0 0 1px rgba(139,125,255,.5),0 14px 50px rgba(109,91,255,.38),inset 0 1px 0 rgba(255,255,255,.15);
+}
+.btn-ghost-hero{
+  display:inline-flex;align-items:center;gap:8px;
+  font:500 14px 'Inter',sans-serif;
+  color:rgba(138,148,168,.45);
+  background:none;border:none;cursor:pointer;
+  text-decoration:none;letter-spacing:-.01em;
+  transition:color .15s;
+}
+.btn-ghost-hero:hover{color:rgba(138,148,168,.75)}
+.play-btn{
+  width:24px;height:24px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;color:rgba(255,255,255,.4);
+}
+.hero-fine{font-size:11px;letter-spacing:.02em;color:rgba(138,148,168,.3);margin-bottom:88px}
+
+/* ── UI portal — floating, tilted, full-width ── */
+.hero-portal{
+  position:relative;z-index:2;
+  width:100%;max-width:var(--max);
+  padding:0 0; /* no horizontal padding — edge to edge */
+}
+.portal-glow{
+  position:absolute;inset:-1px;
+  border-radius:20px 20px 0 0;
+  background:linear-gradient(180deg,rgba(109,91,255,.12) 0%,transparent 60%);
+  pointer-events:none;
+  filter:blur(40px);
+}
+.portal-wrap{
+  perspective:1400px;
+  transform-style:preserve-3d;
+}
+.portal-tilt{
+  transform:rotateX(9deg) scale(.97);
+  transform-origin:50% 0%;
+  animation:float-up .9s cubic-bezier(.16,1,.3,1) both;
+  animation-delay:.1s;
+  border-radius:18px 18px 0 0;
+  overflow:hidden;
+  box-shadow:
+    0 0 0 1px rgba(109,91,255,.1),
+    0 0 60px rgba(109,91,255,.08),
+    0 40px 100px rgba(0,0,0,.8);
+  position:relative;
+}
+.portal-overlay{
+  position:absolute;inset:0;z-index:10;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;text-decoration:none;
+  transition:background .2s;
+}
+.portal-overlay:hover{background:rgba(2,3,7,.38)}
+.portal-play{
+  background:rgba(109,91,255,.92);
+  border:1px solid rgba(139,125,255,.5);
+  border-radius:14px;padding:14px 28px;
+  display:flex;align-items:center;gap:10px;
+  font:700 14px 'Inter',sans-serif;color:#fff;
+  box-shadow:0 8px 36px rgba(109,91,255,.45),inset 0 1px 0 rgba(255,255,255,.12);
+  opacity:0;transform:scale(.9);transition:all .25s;
+  letter-spacing:-.02em;
+}
+.portal-overlay:hover .portal-play{opacity:1;transform:scale(1)}
+.tri{width:0;height:0;border:6px solid transparent;border-left:10px solid #fff;border-right:none;margin-left:2px}
+/* Bottom fade — portal dissolves into bg */
+.portal-fade{
+  position:absolute;bottom:0;left:0;right:0;
+  height:160px;
+  background:linear-gradient(to top,var(--bg) 0%,transparent 100%);
+  pointer-events:none;z-index:11;
+}
+
+/* ────────── REAL GUNIMI UI ────────── */
+.demo-ui{
+  background:#03040B;
+  display:flex;flex-direction:column;
+  height:540px;
+}
+
+/* Topbar */
+.ui-topbar{
+  height:46px;flex-shrink:0;
+  background:rgba(3,4,11,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+}
+.ui-search-bar{
+  display:flex;align-items:center;gap:9px;
+  height:32px;width:300px;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:10px;background:rgba(255,255,255,.02);
+  padding:0 12px;
+}
+.ui-search-bar span{font-size:12px;color:rgba(138,148,168,.3);flex:1}
+.ui-kbd{border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:5px;padding:2px 7px;font-size:9px;color:rgba(138,148,168,.35);font-family:'Inter',sans-serif}
+.ui-tr{display:flex;align-items:center;gap:6px}
+.ui-top-btn{width:32px;height:32px;border-radius:9px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:center;position:relative}
+.ui-top-dot{width:5px;height:5px;border-radius:50%;background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,.5);position:absolute;top:5px;right:5px}
+.ui-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6D5BFF,#22D3EE);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff}
+
+/* Body */
+.ui-body{display:flex;flex:1;overflow:hidden}
+
+/* Sidebar */
+.ui-side{
+  width:228px;flex-shrink:0;
+  border-right:1px solid rgba(255,255,255,.04);
+  background:#03040B;
+  display:flex;flex-direction:column;
+}
+.ui-side-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);
+}
+.ui-brand{display:flex;align-items:center;gap:10px}
+.ui-aico{position:relative;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ui-aico-d{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#A998FF,#6D5BFF);box-shadow:0 0 12px rgba(109,91,255,.7);animation:pulse 2.5s ease-in-out infinite}
+.ui-aico-r{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(109,91,255,.4);animation:ring 2.5s ease-out infinite}
+.ui-bn{font-size:13px;font-weight:600;letter-spacing:-.02em;color:#F0F2FA}
+.ui-bws{font-size:10px;color:rgba(138,148,168,.55);margin-top:1px}
+.ui-dbadge{border:1px solid rgba(245,158,11,.22);background:rgba(245,158,11,.07);border-radius:999px;padding:2px 8px;font-size:8px;font-weight:700;letter-spacing:.1em;color:#f59e0b}
+.ui-nav{flex:1;padding:10px;overflow:hidden}
+.ui-ni{display:flex;align-items:center;gap:10px;padding:8.5px 11px;border-radius:12px;margin-bottom:1px;cursor:default}
+.ui-ni.on{background:#0C1119;box-shadow:inset 2px 0 0 #6D5BFF}
+.ui-ni-ic{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ui-ni.on .ui-ni-ic{background:rgba(109,91,255,.1)}
+.ui-ni-lb{font-size:12.5px;font-weight:500;letter-spacing:-.01em;color:rgba(138,148,168,.55)}
+.ui-ni.on .ui-ni-lb{color:#F0F2FA}
+.ui-ni-badge{margin-left:auto;background:#ef4444;color:#fff;border-radius:999px;font-size:9px;font-weight:700;padding:1px 6px;min-width:18px;text-align:center}
+.ui-sf{padding:10px 12px;border-top:1px solid rgba(255,255,255,.04)}
+.ui-eb{display:flex;align-items:center;justify-content:center;gap:6px;background:#6D5BFF;color:#fff;border:none;width:100%;padding:9px;border-radius:12px;font:600 12px 'Inter',sans-serif;cursor:default;box-shadow:0 0 20px rgba(109,91,255,.18)}
+
+/* Main */
+.ui-main{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#03040B}
+.ui-mi{flex:1;padding:20px 22px;display:flex;flex-direction:column;gap:13px;overflow:hidden}
+.ui-mhd{display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
+.ui-mt{font-size:20px;font-weight:600;letter-spacing:-.025em;color:#F0F2FA}
+.ui-mst{font-size:11px;color:rgba(138,148,168,.5);margin-top:3px}
+.ui-madd{background:#6D5BFF;color:#fff;border:none;padding:7px 16px;border-radius:9px;font:600 12px 'Inter',sans-serif}
+
+/* Contact table */
+.ui-ct{border:1px solid rgba(255,255,255,.05);border-radius:16px;overflow:hidden;background:#07090F;flex-shrink:0}
+.ui-cr{display:grid;grid-template-columns:1fr 110px 60px;align-items:center;gap:16px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.03)}
+.ui-cr:last-child{border-bottom:0}
+.ui-cl{display:flex;align-items:center;gap:11px}
+.ui-cav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.ui-cn{font-size:13px;font-weight:500;color:#F0F2FA;letter-spacing:-.01em}
+.ui-cro{font-size:10px;color:rgba(138,148,168,.45);margin-top:2px}
+.ui-sp{border-radius:999px;padding:3px 10px;font-size:10.5px;font-weight:500;text-align:center;letter-spacing:-.01em}
+.ui-sp.a{background:rgba(34,197,94,.09);color:#22c55e}
+.ui-sp.w{background:rgba(245,158,11,.09);color:#f59e0b}
+.ui-sp.c{background:rgba(239,68,68,.09);color:#ef4444}
+.ui-sc{font-size:13px;font-weight:700;text-align:right}
+.ui-sc.g{color:#22c55e}.ui-sc.y{color:#f59e0b}.ui-sc.r{color:#ef4444}
+
+/* AI card */
+.ui-aic{
+  background:rgba(109,91,255,.04);
+  border:1px solid rgba(109,91,255,.14);
+  border-radius:16px;padding:16px 18px;
+  position:relative;overflow:hidden;
+  animation:fadein .7s .5s ease both;flex-shrink:0;
+}
+.ui-aic::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(109,91,255,.2),transparent)}
+.ui-aic-i{display:flex;align-items:flex-start;gap:12px}
+.ui-aic-core{position:relative;width:26px;height:26px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center}
+.ui-aic-d{width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#A998FF,#6D5BFF);box-shadow:0 0 8px rgba(109,91,255,.55);animation:pulse 2.5s ease-in-out infinite}
+.ui-aic-r{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(109,91,255,.3);animation:ring 2.5s ease-out infinite}
+.ui-aic-lb{font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8B7DFF;margin-bottom:6px}
+.ui-aic-tx{font-size:13px;color:rgba(240,242,250,.78);line-height:1.6;letter-spacing:-.01em}
+
+/* Right panel */
+.ui-rp{width:216px;flex-shrink:0;border-left:1px solid rgba(255,255,255,.04);padding:18px 14px;background:rgba(0,0,0,.15);overflow:hidden}
+.ui-rpl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(61,69,88,.9);margin-bottom:12px}
+.ui-sig{display:flex;gap:9px;align-items:flex-start;background:#07090F;border:1px solid rgba(255,255,255,.04);border-radius:10px;padding:10px 12px;margin-bottom:6px;opacity:0;animation:slin .4s ease forwards}
+.ui-sig:nth-child(2){animation-delay:.2s}.ui-sig:nth-child(3){animation-delay:.4s}.ui-sig:nth-child(4){animation-delay:.6s}
+.ui-sgd{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.ui-sgd.r{background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,.5)}.ui-sgd.o{background:#f59e0b;box-shadow:0 0 5px rgba(245,158,11,.4)}.ui-sgd.b{background:#22D3EE;box-shadow:0 0 5px rgba(34,211,238,.4)}
+.ui-sgt{font-size:11px;font-weight:600;color:#F0F2FA;line-height:1.35;letter-spacing:-.01em}
+.ui-sgs{font-size:9px;color:rgba(61,69,88,.9);margin-top:2px}
+
+/* ─────────────────────────────────────── DIVIDER */
+.s-divider{
+  max-width:var(--max);margin:0 auto;
+  padding:80px 40px 0;
+  display:flex;align-items:center;gap:24px;
+}
+.div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent)}
+.div-num{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(109,91,255,.3)}
+
+/* ─────────────────────────────────────── PROBLEM */
+.s-problem{padding:56px 40px 80px}
+.prob-inner{max-width:var(--max);margin:0 auto}
+.prob-eyebrow{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(61,69,88,.8);margin-bottom:48px}
+.prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.04);border-radius:20px;overflow:hidden}
+.prob-card{background:var(--s1);padding:36px 32px}
+.prob-n{font-size:11px;font-weight:700;letter-spacing:.15em;color:rgba(109,91,255,.3);margin-bottom:20px}
+.prob-title{font-size:16px;font-weight:700;color:rgba(240,242,250,.75);margin-bottom:10px;letter-spacing:-.03em;line-height:1.2}
+.prob-desc{font-size:13px;color:rgba(138,148,168,.55);line-height:1.7;letter-spacing:-.01em}
+
+/* ─────────────────────────────────────── FEATURES */
+.s-feats{padding:0 40px 80px}
+
+/* Full-width numbered feature panel */
+.feat-panel{
+  max-width:var(--max);margin:0 auto;
+  padding:72px 0;
+  border-top:1px solid rgba(255,255,255,.04);
+  display:grid;grid-template-columns:320px 1fr;
+  gap:80px;align-items:center;
+}
+.feat-panel.rev{direction:rtl}.feat-panel.rev>*{direction:ltr}
+.feat-num{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(109,91,255,.28);margin-bottom:16px}
+.feat-h{font-size:clamp(24px,2.8vw,38px);font-weight:800;letter-spacing:-.05em;line-height:1.04;color:var(--text);margin-bottom:14px}
+.feat-p{font-size:15px;color:rgba(138,148,168,.6);line-height:1.75;margin-bottom:20px;letter-spacing:-.01em}
+.feat-p b{color:rgba(138,148,168,.85);font-weight:500}
+.feat-ai-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(34,211,238,.04);border:1px solid rgba(34,211,238,.1);border-radius:999px;padding:4px 12px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(34,211,238,.7)}
+.feat-ai-tag::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--ai);animation:blink 2s infinite}
+
+/* Feature card — matches real app */
+.feat-card{
+  background:var(--s1);border:1px solid rgba(255,255,255,.06);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 16px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.fc-bar{background:var(--s3);border-bottom:1px solid rgba(255,255,255,.03);padding:9px 14px;display:flex;align-items:center;gap:6px}
+.fc-dots{display:flex;gap:5px}.fc-dots s{display:block;width:7px;height:7px;border-radius:50%;text-decoration:none}
+.fc-title{font-size:10px;color:rgba(61,69,88,.9);margin-left:5px;letter-spacing:-.01em}
+.fc-body{padding:16px;display:flex;flex-direction:column;gap:5px}
+
+.f1-row{display:flex;align-items:center;gap:10px;background:var(--s2);border:1px solid rgba(255,255,255,.03);border-radius:10px;padding:10px 12px}
+.f1-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff}
+.f1-nm{font-size:12px;font-weight:500;color:var(--text);letter-spacing:-.01em}.f1-mt{font-size:10px;color:rgba(61,69,88,.9);margin-top:1px}
+.f1-hs{margin-left:auto;text-align:right}
+.f1-hl{font-size:8px;color:rgba(61,69,88,.7);margin-bottom:2px;letter-spacing:.05em}
+.f1-hv{font-size:12px;font-weight:700}
+.f1-hv.g{color:#22c55e}.f1-hv.y{color:#f59e0b}.f1-hv.r{color:#ef4444}
+.f1-hbar{width:48px;height:2px;background:rgba(255,255,255,.04);border-radius:999px;overflow:hidden;margin-top:3px}
+.f1-hf{height:100%;border-radius:999px}
+.f1-hf.g{background:#22c55e}.f1-hf.y{background:#f59e0b}.f1-hf.r{background:#ef4444}
+
+.f2-sig{display:flex;align-items:flex-start;gap:10px;background:var(--s2);border:1px solid rgba(255,255,255,.03);border-radius:10px;padding:11px 13px;opacity:0;animation:slin .4s ease forwards}
+.f2-sig:nth-child(1){animation-delay:.15s}.f2-sig:nth-child(2){animation-delay:.4s}.f2-sig:nth-child(3){animation-delay:.65s}
+.f2-d{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.f2-d.r{background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,.5)}.f2-d.o{background:#f59e0b;box-shadow:0 0 5px rgba(245,158,11,.4)}.f2-d.b{background:#22D3EE;box-shadow:0 0 5px rgba(34,211,238,.4)}
+.f2-t{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;letter-spacing:-.01em}
+.f2-st{font-size:10px;color:rgba(61,69,88,.9);line-height:1.5}
+.f2-ts{font-size:9px;color:rgba(61,69,88,.7);margin-top:3px}
+
+.f3-email{background:var(--s2);border:1px solid rgba(255,255,255,.03);border-radius:10px;padding:12px 14px;margin-bottom:5px}
+.f3-fr{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;display:flex;justify-content:space-between;letter-spacing:-.01em}
+.f3-su{font-size:12px;color:rgba(138,148,168,.7);margin-bottom:6px}
+.f3-pv{font-size:11px;color:rgba(61,69,88,.9);line-height:1.55}
+.f3-tg{display:inline-flex;align-items:center;gap:4px;margin-top:7px;background:rgba(109,91,255,.06);border:1px solid rgba(109,91,255,.12);border-radius:999px;padding:2px 9px;font-size:9px;color:rgba(139,125,255,.8);font-weight:600;letter-spacing:-.01em}
+.f3-tm{font-size:9px;color:rgba(61,69,88,.7)}
+
+/* ─────────────────────────────────────── CTA */
+.s-cta{
+  padding:100px 40px 120px;
+  border-top:1px solid rgba(255,255,255,.04);
+  position:relative;overflow:hidden;
+}
+.cta-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,rgba(109,91,255,.06) 0%,transparent 60%);
+}
+.cta-grid{
+  position:absolute;inset:-40px;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(109,91,255,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(109,91,255,.02) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 50%,black 10%,transparent 70%);
+}
+.cta-inner{max-width:640px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.cta-stem{width:1px;height:56px;background:linear-gradient(to bottom,transparent,rgba(109,91,255,.3));margin:0 auto 32px}
+.cta-h{
+  font-size:clamp(36px,5.5vw,68px);font-weight:900;
+  letter-spacing:-.065em;line-height:.9;
+  color:rgba(240,242,250,.55);margin-bottom:16px;
+}
+.cta-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FF,#F0EEFF,#93E8F8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-sub{font-size:16px;color:rgba(138,148,168,.5);max-width:360px;margin:0 auto 44px;line-height:1.7;letter-spacing:-.01em}
+.cta-btn{
+  background:var(--p);color:#fff;border:none;
+  padding:18px 56px;border-radius:14px;
+  font:700 16px 'Inter',sans-serif;cursor:pointer;letter-spacing:-.025em;
+  box-shadow:0 0 0 1px rgba(109,91,255,.4),0 10px 44px rgba(109,91,255,.32),inset 0 1px 0 rgba(255,255,255,.1);
+  transition:all .25s;margin-bottom:16px;
+}
+.cta-btn:hover{background:var(--p2);transform:translateY(-2px);box-shadow:0 0 0 1px rgba(139,125,255,.5),0 16px 56px rgba(109,91,255,.42),inset 0 1px 0 rgba(255,255,255,.12)}
+.cta-fine{font-size:11px;color:rgba(138,148,168,.28);letter-spacing:.02em}
+
+/* ─────────────────────────────────────── FOOTER */
+footer{border-top:1px solid rgba(255,255,255,.04);padding:24px 40px}
+.fi{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.fl{display:flex;align-items:center;gap:9px}
+.fp{width:22px;height:22px;border-radius:6px;background:rgba(109,91,255,.07);border:1px solid rgba(109,91,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fw{font-size:13px;font-weight:800;letter-spacing:-.05em;color:var(--text)}
+footer p{font-size:11px;color:rgba(61,69,88,.7)}
+
+/* ─────────────────────────────────────── REVEAL */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="/">
+      <div class="logo-mark">
+        <svg width="15" height="15" viewBox="0 0 36 36" fill="none">
+          <defs><linearGradient id="lg" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="55%" stop-color="#8B7DFF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs>
+          <path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#lg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/>
+        </svg>
+      </div>
+      <span class="logo-wm">Gunimi</span>
+    </a>
+    <div class="nav-links">
+      <a href="#">Funkcie</a>
+      <a href="/demo">Demo</a>
+      <a href="#">Changelog</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-login">Prihlásiť sa</button>
+      <button class="btn-cta">Začať zadarmo →</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-scan"></div>
+
+  <div class="hero-copy">
+    <!-- Problem — single ambient line, barely there -->
+    <div class="hero-problem">
+      <span class="hp">Zákazník napísal.</span>
+      <span class="hs">—</span>
+      <span class="hp">Ty si zabudol.</span>
+      <span class="hs">—</span>
+      <span class="hp">Deal odišiel.</span>
+    </div>
+
+    <!-- Architectural headline -->
+    <h1 class="hero-h1">Gunimi si pamätá za teba.</h1>
+
+    <p class="hero-sub">Sleduje tvojich zákazníkov a povie ti, komu sa dnes ozvať.</p>
+
+    <div class="hero-ctas">
+      <button class="btn-hero">Začať zadarmo →</button>
+      <a class="btn-ghost-hero" href="/demo">
+        <span class="play-btn">▶</span>
+        Interaktívne demo
+      </a>
+    </div>
+    <p class="hero-fine">Open Alpha · bez karty · dáta v EÚ</p>
+  </div>
+
+  <!-- UI portal — full-width, tilted, dissolves at bottom -->
+  <div class="hero-portal">
+    <div class="portal-glow"></div>
+    <div class="portal-wrap">
+      <div class="portal-tilt" style="position:relative">
+
+        <a class="portal-overlay" href="/demo">
+          <div class="portal-play"><div class="tri"></div>Otvoriť interaktívne demo</div>
+        </a>
+        <div class="portal-fade"></div>
+
+        <div class="demo-ui">
+          <!-- Topbar -->
+          <div class="ui-topbar">
+            <div class="ui-search-bar">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.35)" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <span>Hľadaj v Gunimi...</span>
+              <span class="ui-kbd">⌘K</span>
+            </div>
+            <div class="ui-tr">
+              <div class="ui-top-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.4)" stroke-width="1.75" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <div class="ui-top-dot"></div>
+              </div>
+              <div class="ui-top-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.4)" stroke-width="1.75" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <div class="ui-av">MK</div>
+            </div>
+          </div>
+
+          <div class="ui-body">
+            <!-- Sidebar -->
+            <div class="ui-side">
+              <div class="ui-side-hd">
+                <div class="ui-brand">
+                  <div class="ui-aico"><div class="ui-aico-d"></div><div class="ui-aico-r"></div></div>
+                  <div><div class="ui-bn">Gunimi</div><div class="ui-bws">Acme s.r.o.</div></div>
+                </div>
+                <div class="ui-dbadge">Demo</div>
+              </div>
+              <div class="ui-nav">
+                <div class="ui-ni"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.5)" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><span class="ui-ni-lb">Prehľad</span></div>
+                <div class="ui-ni on"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B7DFF" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="ui-ni-lb">Kontakty</span></div>
+                <div class="ui-ni"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.5)" stroke-width="1.75" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><span class="ui-ni-lb">Firmy</span></div>
+                <div class="ui-ni"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.5)" stroke-width="1.75" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><span class="ui-ni-lb">Dealy</span></div>
+                <div class="ui-ni"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.5)" stroke-width="1.75" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><span class="ui-ni-lb">Úlohy</span></div>
+                <div class="ui-ni"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(239,68,68,.65)" stroke-width="1.75" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><span class="ui-ni-lb">AI Signály</span><span class="ui-ni-badge">3</span></div>
+                <div class="ui-ni"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.5)" stroke-width="1.75" stroke-linecap="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.04z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.04z"/></svg></div><span class="ui-ni-lb">Pamäť</span></div>
+                <div class="ui-ni"><div class="ui-ni-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(138,148,168,.5)" stroke-width="1.75" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><span class="ui-ni-lb">Email</span></div>
+              </div>
+              <div class="ui-sf">
+                <button class="ui-eb"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>Vstúpiť do Gunimi</button>
+              </div>
+            </div>
+
+            <!-- Main -->
+            <div class="ui-main">
+              <div class="ui-mi">
+                <div class="ui-mhd">
+                  <div><div class="ui-mt">Kontakty</div><div class="ui-mst">3 kontakty potrebujú pozornosť dnes</div></div>
+                  <button class="ui-madd">+ Pridať</button>
+                </div>
+                <div class="ui-ct">
+                  <div class="ui-cr"><div class="ui-cl"><div class="ui-cav" style="background:linear-gradient(135deg,#6D5BFF,#A998FF)">TK</div><div><div class="ui-cn">Tomáš Kováč</div><div class="ui-cro">CEO · Acme s.r.o.</div></div></div><span class="ui-sp a">Aktívny</span><div class="ui-sc g">87</div></div>
+                  <div class="ui-cr"><div class="ui-cl"><div class="ui-cav" style="background:linear-gradient(135deg,#22D3EE,#6D5BFF)">MN</div><div><div class="ui-cn">Marta Nováková</div><div class="ui-cro">CFO · Beta Tech</div></div></div><span class="ui-sp w">Stagnuje</span><div class="ui-sc y">54</div></div>
+                  <div class="ui-cr"><div class="ui-cl"><div class="ui-cav" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">PH</div><div><div class="ui-cn">Peter Horváth</div><div class="ui-cro">VP Sales · Delta Corp</div></div></div><span class="ui-sp c">Chladí</span><div class="ui-sc r">21</div></div>
+                </div>
+                <div class="ui-aic">
+                  <div class="ui-aic-i">
+                    <div class="ui-aic-core"><div class="ui-aic-d"></div><div class="ui-aic-r"></div></div>
+                    <div><div class="ui-aic-lb">Gunimi AI</div><div class="ui-aic-tx">Peter Horváth — 42 dní bez kontaktu. Vzťah chladne. Odporúčam krátku správu pred koncom týždňa.</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Signals -->
+            <div class="ui-rp">
+              <div class="ui-rpl">AI Signály</div>
+              <div class="ui-sig"><div class="ui-sgd r"></div><div><div class="ui-sgt">Peter H. — 42 dní bez kontaktu</div><div class="ui-sgs">Kritické · práve</div></div></div>
+              <div class="ui-sig"><div class="ui-sgd o"></div><div><div class="ui-sgt">Deal ERP — stojí 14 dní</div><div class="ui-sgs">2 hodiny</div></div></div>
+              <div class="ui-sig"><div class="ui-sgd o"></div><div><div class="ui-sgt">Ponuka bez odpovede</div><div class="ui-sgs">4 hodiny</div></div></div>
+              <div class="ui-sig"><div class="ui-sgd b"></div><div><div class="ui-sgt">Súhrn stretnutia pripravený</div><div class="ui-sgs">14:00 dnes</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="s-problem">
+  <div class="prob-inner">
+    <div class="prob-eyebrow rv">01 · Problém</div>
+    <div class="prob-grid">
+      <div class="prob-card rv" style="transition-delay:.05s">
+        <div class="prob-n">01</div>
+        <div class="prob-title">Zabudnuté ozvanie</div>
+        <div class="prob-desc">Zákazník čakal na odpoveď tri týždne. Ty si zabudol. Kým si sa ozval, podpísal inde.</div>
+      </div>
+      <div class="prob-card rv" style="transition-delay:.1s">
+        <div class="prob-n">02</div>
+        <div class="prob-title">Kontext roztrúsený všade</div>
+        <div class="prob-desc">Gmail, WhatsApp, Notion, Asana. Prepínaš každý deň. Niečo vždy vypadne.</div>
+      </div>
+      <div class="prob-card rv" style="transition-delay:.15s">
+        <div class="prob-n">03</div>
+        <div class="prob-title">Stretnutia naslepo</div>
+        <div class="prob-desc">Stretnutie o 9:00. Nepamätáš si čo ste riešili naposledy ani čo si sľúbil. Improvizuješ — zákazník to vycíti.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="s-feats">
+
+  <div class="feat-panel rv">
+    <div>
+      <div class="feat-num">02 · Relationship Intelligence</div>
+      <h3 class="feat-h">Vieš presne kde stojí každý vzťah.</h3>
+      <p class="feat-p">Gunimi počíta <b>Health Score</b> automaticky — emaily, dealy, čas od posledného kontaktu. Červená znamená konaj teraz.</p>
+      <span class="feat-ai-tag">AI</span>
+    </div>
+    <div class="feat-card">
+      <div class="fc-bar"><div class="fc-dots"><s style="background:rgba(239,68,68,.28)"></s><s style="background:rgba(245,158,11,.28)"></s><s style="background:rgba(34,197,94,.28)"></s></div><span class="fc-title">Kontakty · Health Score</span></div>
+      <div class="fc-body">
+        <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#6D5BFF,#A998FF)">TK</div><div><div class="f1-nm">Tomáš Kováč</div><div class="f1-mt">Acme · 2 dni</div></div><div class="f1-hs"><div class="f1-hl">Health Score</div><div class="f1-hv g">87</div><div class="f1-hbar"><div class="f1-hf g" style="width:87%"></div></div></div></div>
+        <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#22D3EE,#6D5BFF)">MN</div><div><div class="f1-nm">Marta Nováková</div><div class="f1-mt">Beta · 18 dní</div></div><div class="f1-hs"><div class="f1-hl">Health Score</div><div class="f1-hv y">54</div><div class="f1-hbar"><div class="f1-hf y" style="width:54%"></div></div></div></div>
+        <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">PH</div><div><div class="f1-nm">Peter Horváth</div><div class="f1-mt">Delta · 42 dní</div></div><div class="f1-hs"><div class="f1-hl">Health Score</div><div class="f1-hv r">21</div><div class="f1-hbar"><div class="f1-hf r" style="width:21%"></div></div></div></div>
+        <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#10b981,#22D3EE)">JS</div><div><div class="f1-nm">Jana Svobodová</div><div class="f1-mt">Omega · včera</div></div><div class="f1-hs"><div class="f1-hl">Health Score</div><div class="f1-hv g">92</div><div class="f1-hbar"><div class="f1-hf g" style="width:92%"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feat-panel rev rv">
+    <div>
+      <div class="feat-num">03 · AI Signály</div>
+      <h3 class="feat-h">AI upozorní skôr než deal chladne.</h3>
+      <p class="feat-p">Keď niečo stojí — dostaneš <b>presný signál s kontextom</b>. Nie notifikáciu. Informáciu.</p>
+      <span class="feat-ai-tag">AI</span>
+    </div>
+    <div class="feat-card">
+      <div class="fc-bar"><div class="fc-dots"><s style="background:rgba(239,68,68,.28)"></s><s style="background:rgba(245,158,11,.28)"></s><s style="background:rgba(34,197,94,.28)"></s></div><span class="fc-title">AI Signály · dnes</span></div>
+      <div class="fc-body">
+        <div class="f2-sig"><div class="f2-d r"></div><div><div class="f2-t">Peter Horváth — vzťah chladne</div><div class="f2-st">42 dní bez kontaktu. Odporúčame kontakt do 24h.</div><div class="f2-ts">Práve · Kritické</div></div></div>
+        <div class="f2-sig"><div class="f2-d o"></div><div><div class="f2-t">Deal "ERP nasadenie" — 14 dní bez pohybu</div><div class="f2-st">Ponuka odoslaná, odpoveď chýba.</div><div class="f2-ts">2 hodiny</div></div></div>
+        <div class="f2-sig"><div class="f2-d b"></div><div><div class="f2-t">Súhrn na stretnutie s Betou o 14:00</div><div class="f2-st">Gunimi pripravil súhrn vzťahu a záväzky.</div><div class="f2-ts">Dnes 14:00</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feat-panel rv">
+    <div>
+      <div class="feat-num">04 · Email Connect</div>
+      <h3 class="feat-h">Emaily priamo pri zákazníkovi.</h3>
+      <p class="feat-p">Napoj Gmail a každý email sa automaticky priraďuje k správnemu zákazníkovi. <b>Celá komunikácia na jednom mieste.</b></p>
+    </div>
+    <div class="feat-card">
+      <div class="fc-bar"><div class="fc-dots"><s style="background:rgba(239,68,68,.28)"></s><s style="background:rgba(245,158,11,.28)"></s><s style="background:rgba(34,197,94,.28)"></s></div><span class="fc-title">Peter Horváth · Emaily</span></div>
+      <div class="fc-body">
+        <div class="f3-email"><div class="f3-fr"><span>Peter Horváth</span><span class="f3-tm">42 dní</span></div><div class="f3-su">Re: Cenová ponuka — ERP nasadenie</div><div class="f3-pv">"Dobrý deň, posielam spätnú väzbu. Máme pár otázok ohľadom implementácie..."</div><span class="f3-tg">⚡ Bez odpovede 42 dní</span></div>
+        <div class="f3-email"><div class="f3-fr"><span>Peter Horváth</span><span class="f3-tm">58 dní</span></div><div class="f3-su">Záujem o demo — Q4 plán</div><div class="f3-pv">"Chceli by sme si dohodnúť demo pred koncom kvartálu..."</div><span class="f3-tg">✓ Odpovedané</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<section class="s-cta">
+  <div class="cta-bg"></div>
+  <div class="cta-grid"></div>
+  <div class="cta-inner">
+    <div class="cta-stem rv"></div>
+    <h2 class="cta-h rv" style="transition-delay:.05s">Koľko dealov si stratil lebo si <em>zabudol</em>?</h2>
+    <p class="cta-sub rv" style="transition-delay:.1s">Gunimi to nevie zmeniť spätne. Ale od zajtrajška — vie.</p>
+    <button class="cta-btn rv" style="transition-delay:.15s">Vyskúšať Gunimi zadarmo →</button>
+    <p class="cta-fine rv" style="transition-delay:.2s">Open Alpha · bez karty · dáta v EÚ · setup za 2 min</p>
+  </div>
+</section>
+
+<footer>
+  <div class="fi">
+    <div class="fl">
+      <div class="fp">
+        <svg width="12" height="12" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="flg" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FF"/><stop offset="60%" stop-color="#8B7DFF"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M26,9.5 A14,14 0 1,0 26,26.5 L26,20 L16,20" stroke="url(#flg)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="26" cy="9.5" r="2.8" fill="#22D3EE"/></svg>
+      </div>
+      <span class="fw">Gunimi</span>
+    </div>
+    <p>© 2026 Gunimi · AI Workspace Operating System</p>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

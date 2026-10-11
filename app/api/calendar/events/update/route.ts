@@ -6,6 +6,14 @@ import { getWorkspaceAccessToken } from "@/lib/calendar/getAccessToken";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { errorResponse } from "@/lib/server/apiResponse";
 import { logger } from "@/lib/logger";
+import { z } from "zod";
+
+const updateEventSchema = z.object({
+  eventId: z.string().uuid(),
+  title: z.string().min(1).max(500).optional(),
+  startAt: z.string().datetime().optional(),
+  endAt: z.string().datetime().optional(),
+});
 
 export async function PATCH(req: NextRequest) {
   try {
@@ -15,21 +23,16 @@ export async function PATCH(req: NextRequest) {
     const workspace = await getCurrentWorkspace();
     if (!workspace) return errorResponse("Workspace not found", 404);
 
-    const body = await req.json() as {
-      eventId?: string;
-      title?: string;
-      startAt?: string;
-      endAt?: string;
-    };
-
-    if (!body.eventId) return errorResponse("eventId is required", 400);
+    const parsed = updateEventSchema.safeParse(await req.json());
+    if (!parsed.success) return errorResponse("Invalid input", 400);
+    const { eventId, title, startAt, endAt } = parsed.data;
 
     // Look up the event to get provider_event_id + connection
     const { data: eventRow } = await supabaseAdmin
       .from("calendar_events")
       .select("id, provider_event_id, connection_id")
       .eq("workspace_id", workspace.id)
-      .eq("id", body.eventId)
+      .eq("id", eventId)
       .maybeSingle();
 
     if (!eventRow) return errorResponse("Event not found", 404);
@@ -48,9 +51,9 @@ export async function PATCH(req: NextRequest) {
     const provider = getProvider(connection.provider as string);
     const updated = await provider.updateEvent(tokenResult.accessToken, {
       providerEventId: eventRow.provider_event_id as string,
-      title: body.title,
-      startAt: body.startAt ? new Date(body.startAt) : undefined,
-      endAt: body.endAt ? new Date(body.endAt) : undefined,
+      title,
+      startAt: startAt ? new Date(startAt) : undefined,
+      endAt: endAt ? new Date(endAt) : undefined,
     });
 
     // Persist updates
@@ -62,7 +65,7 @@ export async function PATCH(req: NextRequest) {
         end_at: updated.endAt.toISOString(),
         updated_at: new Date().toISOString(),
       })
-      .eq("id", body.eventId);
+      .eq("id", eventId);
 
     return NextResponse.json({
       title: updated.title,

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gunimi · Integrácie — Design Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#03040A;--s1:#080B14;--s2:#0D1220;--s3:#111827;
+  --b:rgba(255,255,255,.06);--b2:rgba(255,255,255,.04);
+  --text:#ECEEF5;--t2:#9BA5B8;--muted:#4A5568;
+  --p:#6D5BFF;--p2:#8B7DFF;--p3:#A998FF;
+  --ai:#22D3EE;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;padding:40px;min-height:100vh}
+
+.shell{display:flex;gap:28px;max-width:960px;margin:0 auto}
+
+/* Sidebar nav */
+.sidenav{width:200px;flex-shrink:0}
+.snl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 10px;margin-bottom:6px}
+.sni{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:9px;font-size:13px;color:rgba(255,255,255,.35);margin-bottom:1px;cursor:default}
+.sni.on{background:rgba(255,255,255,.07);color:var(--text)}
+.sni.on .snicon{color:var(--p3)}
+.snicon{font-size:14px;width:16px;text-align:center;flex-shrink:0;color:var(--muted)}
+
+/* Main content */
+.main{flex:1;min-width:0}
+
+.sec-header{margin-bottom:28px}
+.sec-eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sec-title{font-size:20px;font-weight:700;letter-spacing:-.03em}
+.sec-sub{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.6}
+
+/* Channel cards */
+.channel-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+
+.channel-card{
+  background:var(--s1);border:1px solid var(--b);border-radius:14px;
+  overflow:hidden;
+}
+
+.channel-top{display:flex;align-items:center;gap:14px;padding:16px 18px}
+
+.ch-icon{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:20px;
+}
+.ch-icon.gmail{background:rgba(234,67,53,.12);border:1px solid rgba(234,67,53,.15)}
+.ch-icon.wa{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.15)}
+.ch-icon.teams{background:rgba(100,100,255,.1);border:1px solid rgba(100,100,255,.15)}
+
+.ch-info{flex:1;min-width:0}
+.ch-name{font-size:14px;font-weight:600;letter-spacing:-.02em}
+.ch-desc{font-size:12px;color:var(--muted);margin-top:2px}
+
+.ch-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+/* Status badges */
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600}
+.badge.connected{background:rgba(34,197,94,.1);color:var(--ok);border:1px solid rgba(34,197,94,.15)}
+.badge.disconnected{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--b)}
+.badge.soon{background:rgba(109,91,255,.08);color:var(--p3);border:1px solid rgba(109,91,255,.12)}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* Buttons */
+.btn{border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;border-radius:8px;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-sm{font-size:12px;padding:6px 14px}
+.btn-primary{background:var(--p);color:#fff;box-shadow:0 0 12px rgba(109,91,255,.2)}
+.btn-primary:hover{background:var(--p2)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--t2);border:1px solid var(--b)}
+.btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.btn-danger{background:rgba(239,68,68,.1);color:rgba(239,68,68,.8);border:1px solid rgba(239,68,68,.15)}
+.btn-danger:hover{background:rgba(239,68,68,.15)}
+.btn-muted{background:rgba(255,255,255,.03);color:var(--muted);border:1px solid var(--b);cursor:not-allowed;opacity:.6}
+
+/* WhatsApp explanation panel */
+.wa-explain{
+  border-top:1px solid var(--b);
+  background:rgba(245,158,11,.03);
+  padding:14px 18px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.wa-explain-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.wa-explain-body{}
+.wa-explain-title{font-size:12px;font-weight:600;color:rgba(245,158,11,.85);margin-bottom:4px}
+.wa-explain-text{font-size:12px;color:var(--muted);line-height:1.65}
+.wa-explain-text a{color:rgba(37,211,102,.7);text-decoration:none}
+.wa-explain-text a:hover{text-decoration:underline}
+
+/* Teams "coming" panel */
+.teams-soon{
+  border-top:1px solid var(--b);
+  background:var(--s2);
+  padding:12px 18px;
+  display:flex;gap:10px;align-items:center;
+}
+.teams-soon-text{font-size:12px;color:var(--muted);line-height:1.5}
+.teams-soon-text b{color:var(--t2);font-weight:500}
+
+/* Signal connection section */
+.signal-section{margin-top:8px}
+.signal-header{margin-bottom:14px}
+.signal-title{font-size:15px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.signal-sub{font-size:12px;color:var(--muted);line-height:1.6}
+
+.signal-card{
+  background:rgba(109,91,255,.05);border:1px solid rgba(109,91,255,.12);
+  border-radius:14px;padding:16px 18px;
+}
+.signal-row{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);
+}
+.signal-row:last-child{border-bottom:none;padding-bottom:0}
+.signal-row:first-child{padding-top:0}
+.signal-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.signal-dot.email{background:#ea4335;box-shadow:0 0 5px rgba(234,67,53,.5)}
+.signal-dot.wa{background:#25d366;box-shadow:0 0 5px rgba(37,211,102,.5)}
+.signal-dot.teams{background:#6464ff;box-shadow:0 0 5px rgba(100,100,255,.4)}
+.signal-dot.any{background:var(--warn);box-shadow:0 0 5px rgba(245,158,11,.4)}
+.signal-info{}
+.signal-name{font-size:12px;font-weight:600;color:var(--text)}
+.signal-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5}
+.signal-source{font-size:10px;font-weight:600;letter-spacing:.08em;margin-top:4px}
+.signal-source.email{color:rgba(234,67,53,.7)}
+.signal-source.wa{color:rgba(37,211,102,.7)}
+.signal-source.teams{color:rgba(100,100,255,.7)}
+.signal-source.any{color:rgba(245,158,11,.7)}
+.signal-source.future{color:var(--muted);font-style:italic}
+
+.note{
+  margin-top:24px;background:var(--s2);border:1px solid var(--b);
+  border-radius:12px;padding:14px 16px;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.note-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.note-text{font-size:12px;color:var(--muted);line-height:1.65}
+.note-text b{color:var(--t2);font-weight:500}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR NAV (context) -->
+  <nav class="sidenav">
+    <div class="snl">Nastavenia</div>
+    <div class="sni"><span class="snicon">🏢</span>Workspace</div>
+    <div class="sni"><span class="snicon">👥</span>Členovia</div>
+    <div class="sni"><span class="snicon">⚙️</span>Preferencie</div>
+    <div class="sni"><span class="snicon">🔗</span><b style="color:var(--text)">Integrácie</b></div>
+    <div class="sni on"><span class="snicon" style="font-size:12px">◀</span><span style="color:var(--p3)">— tu sme</span></div>
+    <div class="sni"><span class="snicon">💼</span>Pipeline</div>
+    <div class="sni"><span class="snicon">🏷️</span>Tagy</div>
+    <div class="sni"><span class="snicon">📋</span>Audit Log</div>
+    <div class="sni"><span class="snicon">💳</span>Billing</div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="sec-header">
+      <div class="sec-eyebrow">Integrácie</div>
+      <div class="sec-title">Kanály a prepojenia</div>
+      <div class="sec-sub">Napoj Gunimi na komunikačné kanály kde žijú tvoji zákazníci. Každá prepojená správa obohacuje vzťahový kontext a AI signály.</div>
+    </div>
+
+    <!-- CHANNEL CARDS -->
+    <div class="channel-grid">
+
+      <!-- Gmail — CONNECTED -->
+      <div class="channel-card">
+        <div class="channel-top">
+          <div class="ch-icon gmail">📧</div>
+          <div class="ch-info">
+            <div class="ch-name">Gmail</div>
+            <div class="ch-desc">michal@firma.sk · naposledy sync pred 12 min</div>
+          </div>
+          <div class="ch-right">
+            <span class="badge connected"><span class="badge-dot"></span>Prepojený</span>
+            <button class="btn btn-sm btn-ghost">↺ Sync</button>
+            <button class="btn btn-sm btn-danger">Odpojiť</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp Business — NOT CONNECTED + explanation -->
+      <div class="channel-card">
+        <div class="channel-top">
+          <div class="ch-icon wa">💬</div>
+          <div class="ch-info">
+            <div class="ch-name">WhatsApp Business</div>
+            <div class="ch-desc">Správy automaticky priraďované k zákazníkom</div>
+          </div>
+          <div class="ch-right">
+            <span class="badge disconnected">Neprepojený</span>
+            <button class="btn btn-sm btn-primary">Pripojiť →</button>
+          </div>
+        </div>
+        <!-- Explanation panel -->
+        <div class="wa-explain">
+          <span class="wa-explain-icon">⚠️</span>
+          <div class="wa-explain-body">
+            <div class="wa-explain-title">Prečo len WhatsApp Business, nie osobné číslo?</div>
+            <div class="wa-explain-text">
+              Meta (vlastník WhatsApp) <b style="color:rgba(245,158,11,.7)">nepovoľuje API prístup k osobným číslam</b> — akékoľvek nástroje čo to obchádzajú porušujú podmienky WhatsApp a riskujú trvalý ban čísla. Gunimi to robí správne: pripojenie funguje cez <a href="#">officiálne WhatsApp Business API</a>, čo vyžaduje firemné číslo overené cez Meta.<br/>
+              Ak zatiaľ komunikuješ z osobného čísla, tlačidlo <b style="color:var(--t2)">Odpovedať</b> na karte zákazníka ťa priamo presmeruje do WhatsApp apky.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Microsoft Teams — COMING SOON -->
+      <div class="channel-card">
+        <div class="channel-top">
+          <div class="ch-icon teams">🟦</div>
+          <div class="ch-info">
+            <div class="ch-name">Microsoft Teams</div>
+            <div class="ch-desc">Chaty a hovory so zákazníkmi priamo v kontexte</div>
+          </div>
+          <div class="ch-right">
+            <span class="badge soon">Čoskoro</span>
+            <button class="btn btn-sm btn-muted" disabled>Pripojiť</button>
+          </div>
+        </div>
+        <div class="teams-soon">
+          <span style="font-size:14px;flex-shrink:0">🔔</span>
+          <div class="teams-soon-text">
+            Teams integrácia je <b>naplánovaná</b>. Využíva Microsoft Graph API (bezplatné od Aug 2025). Napíš nám ak je pre teba prioritou — posunieme v roadmape.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIGNAL CONNECTION -->
+    <div class="signal-section">
+      <div class="signal-header">
+        <div class="signal-title">⚡ Ako integrácie napájajú AI Signály</div>
+        <div class="signal-sub">Každý prepojený kanál rozširuje to, čo Gunimi vie o zákazníkovi. Čím viac zdrojov, tým presnejšie signály.</div>
+      </div>
+
+      <div class="signal-card">
+        <div class="signal-row">
+          <div class="signal-dot any"></div>
+          <div class="signal-info">
+            <div class="signal-name">Zákazník chladne — bez kontaktu 30 dní</div>
+            <div class="signal-desc">Dnes: počíta len emaily. S WA+Teams: počíta všetky kanály — oveľa presnejší obraz aktivity.</div>
+            <div class="signal-source any">Email · WA · Teams</div>
+          </div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-dot wa"></div>
+          <div class="signal-info">
+            <div class="signal-name">WA správa bez odpovede +48h</div>
+            <div class="signal-desc">Zákazník napísal na WhatsApp Business, nikto neodpovedal cez 48 hodín. Nový signál po pripojení WA.</div>
+            <div class="signal-source future">Po prepojení WhatsApp Business</div>
+          </div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-dot teams"></div>
+          <div class="signal-info">
+            <div class="signal-name">Teams meeting bez follow-upu</div>
+            <div class="signal-desc">Hovor prebehol, žiadny email ani úloha do 24h nevznikla. Čoskoro po Teams integrácii.</div>
+            <div class="signal-source future">Po prepojení Microsoft Teams</div>
+          </div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-dot email"></div>
+          <div class="signal-info">
+            <div class="signal-name">Kanálový shift — zákazník prešiel z emailu na WA</div>
+            <div class="signal-desc">Zákazník prestáva odpovedať na email ale aktívny na WA. Gunimi to zachytí a upozorní.</div>
+            <div class="signal-source future">Po prepojení oboch kanálov</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="note-icon">💡</span>
+        <div class="note-text">
+          <b>Health Score</b> zákazníka sa tiež obohacuje — dnes počíta len emailovú aktivitu. Po prepojení WA a Teams bude celkový obraz komunikácie oveľa presnejší a skóre spoľahlivejšie.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

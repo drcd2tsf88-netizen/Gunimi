@@ -2276,6 +2276,10 @@
       "createNote": {
         "title": "Vytvořit Poznámku",
         "description": "Vytvořit novou poznámku pracovního prostoru"
+      },
+      "import": {
+        "title": "Import & Export",
+        "description": "Importovat kontakty, firmy nebo dealy z CSV"
       }
     },
     "a11yNoResults": "Žádné výsledky",
@@ -2416,7 +2420,8 @@
     "organization": "Lidé a týmy",
     "groupPeople": "Organizace",
     "signals": "Signály",
-    "tags": "Tagy"
+    "tags": "Tagy",
+    "workspaceTagline": "Každý klient. Vždy zapamatovaný."
   },
   "signalsPage": {
     "title": "Signály",
@@ -2433,6 +2438,7 @@
     "severityWarning": "Upozornění",
     "severityInfo": "Info",
     "detected": "Zachyceno",
+    "detectedDaysAgo": "· Zachyceno před {days}d",
     "dismiss": "Odmítnout",
     "dismissNotUrgent": "Není urgentní",
     "dismissRemindLater": "Připomenout později",

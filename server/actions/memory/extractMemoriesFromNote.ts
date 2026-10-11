@@ -2,6 +2,8 @@
 
 import { openai } from "@/lib/ai/providers/openai";
 import { logger } from "@/lib/logger";
+import { checkAIBudget } from "@/lib/ai/checkAIBudget";
+import { logAIUsage } from "@/lib/ai/logUsage";
 import { insertBusinessMemory } from "@/lib/memory/businessMemoryQueries";
 import type { BusinessMemoryType, MemoryConfidence, ProvenanceEntry } from "@/lib/memory/businessMemoryTypes";
 
@@ -49,6 +51,9 @@ export async function extractMemoriesFromNote(input: ExtractionInput): Promise<v
     const fullText = [input.noteTitle, input.noteContent ?? ""].join("\n").trim();
     if (fullText.length < 30) return;
 
+    const budget = await checkAIBudget(input.workspaceId);
+    if (!budget.allowed) return;
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       max_tokens: 300,
@@ -62,6 +67,17 @@ export async function extractMemoriesFromNote(input: ExtractionInput): Promise<v
 
     const raw = completion.choices[0]?.message?.content;
     if (!raw) return;
+
+    if (completion.usage) {
+      await logAIUsage({
+        workspaceId: input.workspaceId,
+        userId: null,
+        feature: "summary",
+        model: "gpt-4o-mini",
+        inputTokens: completion.usage.prompt_tokens,
+        outputTokens: completion.usage.completion_tokens,
+      });
+    }
 
     const parsed = JSON.parse(raw) as { memories?: ExtractedItem[] };
     const items = parsed.memories ?? [];

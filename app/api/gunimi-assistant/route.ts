@@ -117,6 +117,7 @@ RESPONSE RULES:
       model: "gpt-4.1-mini",
       temperature: 0.6,
       stream: true,
+      stream_options: { include_usage: true },
       messages: [
         { role: "system", content: systemPrompt },
         ...history.map((m) => ({
@@ -131,8 +132,10 @@ RESPONSE RULES:
 
     const readable = new ReadableStream({
       async start(controller) {
+        let proseUsage: OpenAI.CompletionUsage | undefined;
         try {
           for await (const chunk of proseStream) {
+            if (chunk.usage) proseUsage = chunk.usage;
             const token = chunk.choices[0]?.delta?.content ?? "";
             if (token) {
               controller.enqueue(
@@ -159,12 +162,13 @@ RESPONSE RULES:
           controller.enqueue(encoder.encode("data: [DONE]\n\n"));
         } finally {
           controller.close();
+          const actionsUsage = (await actionsPromise.catch(() => null))?.usage;
           void logAIUsage({
             workspaceId: workspace?.id ?? null,
             userId: user.id,
             feature: "assistant",
-            inputTokens: 0,
-            outputTokens: 0,
+            inputTokens: (proseUsage?.prompt_tokens ?? 0) + (actionsUsage?.prompt_tokens ?? 0),
+            outputTokens: (proseUsage?.completion_tokens ?? 0) + (actionsUsage?.completion_tokens ?? 0),
           });
         }
       },

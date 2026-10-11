@@ -20,23 +20,27 @@ import { ratelimit }
 from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
 import { produceContactSignals } from "@/lib/signals/producers/contactProducer";
+import { z } from "zod";
+
+const createContactSchema = z.object({
+  companyId: z.string().uuid().optional().nullable(),
+  name: z.string().min(1).max(200),
+  email: z.string().email().max(254).optional().nullable(),
+  phone: z.string().max(50).optional().nullable(),
+  company: z.string().max(200).optional().nullable(),
+  position: z.string().max(200).optional().nullable(),
+  notes: z.string().max(5000).optional().nullable(),
+});
 
 export async function POST(
   req: Request
 ) {
   try {
-    const body =
-      await req.json();
-
-    const {
-      companyId,
-      name,
-      email,
-      phone,
-      company,
-      position,
-      notes,
-    } = body;
+    const parsed = createContactSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return errorResponse("Invalid input", 400);
+    }
+    const { companyId, name, email, phone, company, position, notes } = parsed.data;
 
     const user =
       await getUser();
@@ -45,13 +49,6 @@ export async function POST(
       return errorResponse(
         "Unauthorized",
         401
-      );
-    }
-
-    if (!name) {
-      return errorResponse(
-        "Contact name required",
-        400
       );
     }
 
@@ -88,19 +85,19 @@ const workspaceId =
       sanitize(name);
 
     const cleanEmail =
-      sanitize(email);
+      sanitize(email ?? "");
 
     const cleanPhone =
-      sanitize(phone);
+      sanitize(phone ?? "");
 
     const cleanCompany =
-      sanitize(company);
+      sanitize(company ?? "");
 
     const cleanPosition =
-      sanitize(position);
+      sanitize(position ?? "");
 
     const cleanNotes =
-      sanitize(notes);
+      sanitize(notes ?? "");
 
     // CREATE CONTACT
 const {

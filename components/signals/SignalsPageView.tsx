@@ -174,7 +174,7 @@ export default function SignalsPageView({ initialSignals }: Props) {
                       {signal.entityName}
                       {days > 0 && (
                         <span className="ml-2 text-zinc-600">
-                          · {t("detected")} {days}d {days === 1 ? "ago" : "ago"}
+                          {t("detectedDaysAgo", { days })}
                         </span>
                       )}
                     </p>

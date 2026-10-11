@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<title>Gunimi — Cheat Sheet pre stretnutie</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1a1a2e;
+    background: #fff;
+    padding: 20mm 18mm;
+  }
+
+  @page {
+    size: A4;
+    margin: 14mm 16mm;
+  }
+
+  @media print {
+    body { padding: 0; font-size: 10.5px; }
+    .page-break { page-break-before: always; }
+    .no-break { page-break-inside: avoid; }
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 2px solid #6d5bff;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+  }
+  .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: #6d5bff; }
+  .tagline { font-size: 10px; color: #666; margin-top: 2px; }
+  .header-meta { text-align: right; font-size: 9.5px; color: #999; }
+
+  /* ── Grid layout ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  /* ── Sections ── */
+  .section { margin-bottom: 14px; }
+  .section-title {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6d5bff;
+    border-bottom: 1px solid #e8e4ff;
+    padding-bottom: 3px;
+    margin-bottom: 8px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: #f8f7ff;
+    border: 1px solid #e8e4ff;
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .card-title { font-weight: 600; font-size: 10.5px; margin-bottom: 4px; color: #2d1b69; }
+
+  /* ── Feature list ── */
+  ul { padding-left: 14px; }
+  li { margin-bottom: 2px; }
+  li strong { color: #2d1b69; }
+
+  /* ── Q&A ── */
+  .qa { margin-bottom: 8px; }
+  .qa-q { font-weight: 600; color: #1a1a2e; margin-bottom: 2px; }
+  .qa-q::before { content: "Q "; color: #6d5bff; }
+  .qa-a { color: #444; padding-left: 14px; }
+  .qa-a::before { content: "→ "; color: #6d5bff; }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  th { background: #f0eeff; color: #2d1b69; font-weight: 600; padding: 4px 8px; text-align: left; }
+  td { padding: 3px 8px; border-bottom: 1px solid #f0eeff; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-red { background: #fee2e2; color: #b91c1c; }
+  .badge-amber { background: #fef9c3; color: #a16207; }
+
+  /* ── Pitch box ── */
+  .pitch-box {
+    background: linear-gradient(135deg, #f0eeff 0%, #faf9ff 100%);
+    border: 1px solid #c4b5fd;
+    border-left: 4px solid #6d5bff;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    font-style: italic;
+    color: #2d1b69;
+  }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid #e8e4ff; margin: 12px 0; }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 14px;
+    border-top: 1px solid #e8e4ff;
+    padding-top: 8px;
+    font-size: 9px;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ PAGE 1 ══════════════ -->
+
+<div class="header">
+  <div>
+    <div class="logo">Gunimi</div>
+    <div class="tagline">AI-first Workspace pre obchodné tímy</div>
+  </div>
+  <div class="header-meta">
+    Cheat sheet pre stretnutie<br>
+    Október 2026<br>
+    michal@gunimi.com
+  </div>
+</div>
+
+<!-- Pitch -->
+<div class="pitch-box">
+  „Gunimi je workspace pre malé obchodné tímy. Nie ďalší CRM — miesto kde žijú kontakty, emaily, obchody a úlohy a kde AI sleduje vzťahy namiesto vás. Nasadenie do 15 minút, žiadne zložité konfigurácie."
+</div>
+
+<!-- Features grid -->
+<div class="grid-2" style="margin-bottom:14px;">
+
+  <div class="section no-break">
+    <div class="section-title">Čo Gunimi vie dnes</div>
+    <ul>
+      <li><strong>Kontakty a firmy</strong> — profil, história, tagy, zdravotné skóre</li>
+      <li><strong>Pipeline obchodov</strong> — Kanban, hodnota, pravdepodobnosť, stav</li>
+      <li><strong>Úlohy</strong> — deadlines, opakovanie, priradenie členom</li>
+      <li><strong>Poznámky</strong> — prepojené na kontakty a firmy</li>
+      <li><strong>Email (Gmail)</strong> — história priamo na kontakte</li>
+      <li><strong>Kalendár a stretnutia</strong> — vytvoriť priamo z kontaktu</li>
+      <li><strong>Signály</strong> — upozornenie keď vzťah stagnuje alebo chladne</li>
+      <li><strong>Today</strong> — denný prehľad úloh, stretnutí, signálov</li>
+      <li><strong>Vyhľadávanie</strong> — ⌘K cez všetko</li>
+      <li><strong>Import CSV</strong> — kontakty, firmy, obchody (max 500)</li>
+      <li><strong>Export CSV</strong> — kedykoľvek, bez obmedzení</li>
+      <li><strong>Tím</strong> — viacero členov, zdieľané dáta</li>
+    </ul>
+  </div>
+
+  <div>
+    <div class="section no-break">
+      <div class="section-title">AI funkcie (živé dnes)</div>
+      <ul>
+        <li><strong>AI First Look</strong> — pri novom kontakte: 2-vetový brief (odvetvie, potenciál)</li>
+        <li><strong>AI Email Insight</strong> — po Gmail connect: prehľad vzťahu z histórie</li>
+        <li><strong>AI Meeting Prep</strong> — brief pred stretnutím</li>
+        <li><strong>Next Action</strong> — čo urobiť ďalej s kontaktom/dealom</li>
+        <li><strong>AI Chat</strong> — otázky o kontakte, firme, deale</li>
+        <li><strong>Denný digest email</strong> — každé ráno úlohy + signály</li>
+      </ul>
+    </div>
+
+    <div class="section no-break" style="margin-top:10px;">
+      <div class="section-title">Čo zatiaľ nevieme (buďte úprimní)</div>
+      <ul>
+        <li>Mobilná appka — web je responzívny</li>
+        <li>Integrácie (Slack, HubSpot...) — roadmap</li>
+        <li>SAML / SSO — roadmap</li>
+        <li>Formálny pentest — manuálne testy prebehli ✓</li>
+        <li>Import úloh cez CSV — čoskoro</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<hr>
+
+<!-- Import detail -->
+<div class="section no-break">
+  <div class="section-title">Import — kde to je a ako funguje</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Kde nájdem import?</div>
+      Dashboard → ⚙ Nastavenia → <strong>Import</strong><br>
+      alebo priamo <code>/dashboard/import</code>
+    </div>
+    <div class="card">
+      <div class="card-title">Čo sa dá importovať?</div>
+      <span class="badge badge-green">✓ Kontakty</span>&nbsp;
+      <span class="badge badge-green">✓ Firmy</span>&nbsp;
+      <span class="badge badge-green">✓ Obchody</span><br>
+      Formát: <strong>CSV</strong> · Max <strong>500 riadkov</strong>
+    </div>
+    <div class="card">
+      <div class="card-title">Ako import prebieha?</div>
+      1. Nahráš CSV<br>
+      2. Zmapuješ stĺpce (auto-detekcia)<br>
+      3. Náhľad pred importom<br>
+      4. Potvrdíš → importované
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PAGE 2 ══════════════ -->
+<div class="page-break"></div>
+
+<div class="header">
+  <div>
+    <div class="logo">Gunimi</div>
+    <div class="tagline">GDPR, Bezpečnosť & Časté otázky</div>
+  </div>
+  <div class="header-meta">hello@gunimi.com | gunimi.com/security</div>
+</div>
+
+<!-- Security grid -->
+<div class="grid-2" style="margin-bottom:14px;">
+
+  <div class="section no-break">
+    <div class="section-title">Bezpečnosť a infraštruktúra</div>
+    <table>
+      <tr><th>Vrstva</th><th>Provider</th><th>Cert.</th></tr>
+      <tr><td>Hosting</td><td>Vercel</td><td>SOC 2 II</td></tr>
+      <tr><td>Databáza & Auth</td><td>Supabase</td><td>SOC 2 II</td></tr>
+      <tr><td>Email delivery</td><td>Postmark</td><td>SOC 2 II</td></tr>
+      <tr><td>Monitoring</td><td>Sentry</td><td>SOC 2 II</td></tr>
+    </table>
+    <div style="margin-top:8px;">
+      <ul>
+        <li><strong>Dáta v EÚ</strong> — EU-West región, nič neopúšťa EÚ</li>
+        <li><strong>AES-256</strong> šifrovanie v databáze</li>
+        <li><strong>TLS 1.3</strong> pri prenose</li>
+        <li><strong>RLS</strong> — každý workspace izolovaný na DB úrovni</li>
+        <li><strong>Brute force</strong> — blok po 5 neúspešných pokusoch</li>
+        <li><strong>Gmail</strong> — OAuth 2.0, heslo Gunimi nikdy nevidí</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section no-break">
+    <div class="section-title">GDPR</div>
+    <ul>
+      <li>Prevádzka z EÚ, dáta v EÚ</li>
+      <li>Export dát: kedykoľvek, bez obmedzení</li>
+      <li>Zmazanie dát: na žiadosť na hello@gunimi.com</li>
+      <li><strong>DPA</strong> (Data Processing Agreement) — k dispozícii na vyžiadanie</li>
+      <li>Notifikácia pri incidente do 72 h (GDPR čl. 33)</li>
+      <li><strong>AI a trénovanie</strong> — OpenAI API: vaše dáta sa <em>nepoužívajú</em> na trénovanie modelov (zmluvne)</li>
+      <li>Heslá — bcrypt, nikdy čitateľné</li>
+    </ul>
+
+    <div style="margin-top:8px;">
+      <div class="section-title">Manuálne testy (sept. 2026)</div>
+      <table>
+        <tr><th>Test</th><th>Výsledok</th></tr>
+        <tr><td>Prístup k dátam iného usera</td><td><span class="badge badge-green">404</span></td></tr>
+        <tr><td>Neautentifikovaný dashboard</td><td><span class="badge badge-green">Login redirect</span></td></tr>
+        <tr><td>Brute force (6 pokusov)</td><td><span class="badge badge-green">Blok po 5</span></td></tr>
+        <tr><td>API bez tokenu</td><td><span class="badge badge-green">401</span></td></tr>
+        <tr><td>XSS injekcia</td><td><span class="badge badge-green">Bezpečne</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<hr>
+
+<!-- Q&A -->
+<div class="section">
+  <div class="section-title">Najčastejšie otázky — vaše odpovede</div>
+  <div class="grid-2">
+    <div>
+      <div class="qa no-break">
+        <div class="qa-q">Prečo nie HubSpot alebo Pipedrive?</div>
+        <div class="qa-a">Navrhnuté pre väčšie tímy — pre 2–10 ľudí je to zbytočná komplexnosť. Gunimi je presne pre vašu veľkosť. Rýchle nasadenie, AI funguje od prvého dňa, bez rok-dlhého onboardingu.</div>
+      </div>
+      <div class="qa no-break">
+        <div class="qa-q">Ako dlho trvá nasadenie?</div>
+        <div class="qa-a">Workspace funkčný do 5 minút. Import kontaktov z CSV ďalších 10 minút. Gmail pripojený na 2 kliknutia.</div>
+      </div>
+      <div class="qa no-break">
+        <div class="qa-q">Čo ak Gunimi zanikne?</div>
+        <div class="qa-a">Kedykoľvek exportujete všetky dáta do CSV. Ste vlastník dát — nie my. Pred vypnutím poskytneme export.</div>
+      </div>
+      <div class="qa no-break">
+        <div class="qa-q">Viete importovať z nášho systému?</div>
+        <div class="qa-a">Ak váš systém (Excel, HubSpot, Pipedrive, Notion...) exportuje CSV, vieme importovať kontakty, firmy a obchody. Pre väčšie migrácie kontaktujte nás.</div>
+      </div>
+    </div>
+    <div>
+      <div class="qa no-break">
+        <div class="qa-q">Je to bezpečné pre firemné dáta?</div>
+        <div class="qa-a">Dáta v EÚ, šifrovanie AES-256, TLS 1.3, databázová izolácia workspaceov. Infraštruktúra SOC 2 Type II. DPA k dispozícii.</div>
+      </div>
+      <div class="qa no-break">
+        <div class="qa-q">Funguje po slovensky / česky?</div>
+        <div class="qa-a">Áno — plná lokalizácia SK, CS, EN. AI asistent odpovedá v jazyku vášho workspace.</div>
+      </div>
+      <div class="qa no-break">
+        <div class="qa-q">Koľko to stojí?</div>
+        <div class="qa-a">Open Alpha je zadarmo. Founder Plan €10 jednorazovo — trvalý prístup. Platené plány pri spustení 1.0 (dátum TBD).</div>
+      </div>
+      <div class="qa no-break">
+        <div class="qa-q">Koľko môže mať workspace členov?</div>
+        <div class="qa-a">Viacero — pozvete celý tím. Každý člen vidí zdieľané kontakty, firmy a obchody.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Cenník + CTA -->
+<div class="grid-2">
+  <div class="section no-break">
+    <div class="section-title">Cenník (aktuálny stav)</div>
+    <table>
+      <tr><th>Plán</th><th>Cena</th><th>Pre koho</th></tr>
+      <tr><td>Open Alpha</td><td><strong>Zdarma</strong></td><td>Všetci teraz</td></tr>
+      <tr><td>Founder Plan</td><td><strong>€10</strong> jednorazovo</td><td>Trvalý prístup, prví zákazníci</td></tr>
+      <tr><td>Pro (roadmap)</td><td>TBD</td><td>Tímy, pri spustení 1.0</td></tr>
+    </table>
+  </div>
+  <div class="section no-break">
+    <div class="section-title">Úvodná veta na stretnutí</div>
+    <div class="pitch-box" style="margin-bottom:0; font-size:10px;">
+      „Nesnažím sa vám predať ďalší CRM. Chcem ukázať čo sa stane keď dáte kontakty, emaily a úlohy na jedno miesto a necháte AI sledovať vzťahy za vás. Trvá to 15 minút — ak to nedáva zmysel, poviem vám to sám."
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Gunimi · gunimi.com · hello@gunimi.com · security@gunimi.com</span>
+  <span>Október 2026 · verzia 1.0 · Interný dokument</span>
+</div>
+
+</body>
+</html>

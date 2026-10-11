@@ -2276,6 +2276,10 @@
       "createNote": {
         "title": "Create Note",
         "description": "Create a new workspace note"
+      },
+      "import": {
+        "title": "Import & Export",
+        "description": "Import contacts, companies or deals from CSV"
       }
     },
     "a11yNoResults": "No results found",
@@ -2416,7 +2420,8 @@
     "organization": "People & Teams",
     "groupPeople": "Organization",
     "signals": "Signals",
-    "tags": "Tags"
+    "tags": "Tags",
+    "workspaceTagline": "Every client. Always remembered."
   },
   "signalsPage": {
     "title": "Signals",
@@ -2433,6 +2438,7 @@
     "severityWarning": "Warning",
     "severityInfo": "Info",
     "detected": "Detected",
+    "detectedDaysAgo": "· Detected {days}d ago",
     "dismiss": "Dismiss",
     "dismissNotUrgent": "Not urgent",
     "dismissRemindLater": "Remind later",

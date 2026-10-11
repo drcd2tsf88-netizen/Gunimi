@@ -49,8 +49,8 @@ export async function generateEmailConnectionWakeup({
   workspaceId: string;
 }): Promise<void> {
   try {
-    const allowed = await checkAIBudget(workspaceId);
-    if (!allowed) return;
+    const budget = await checkAIBudget(workspaceId);
+    if (!budget.allowed) return;
 
     const language = await getWorkspaceLanguage(workspaceId);
 

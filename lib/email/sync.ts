@@ -2,6 +2,7 @@ import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getProvider } from "./providers";
 import { linkThreadToCrm } from "./crm-linker";
 import { logger } from "@/lib/logger";
+import { decryptToken, encryptToken } from "@/lib/server/crypto";
 
 const THREAD_BATCH_SIZE = 10;
 
@@ -25,7 +26,7 @@ export async function syncEmailConnection(
   const provider = getProvider(connection.provider);
 
   // Refresh token if expiring within 60 seconds
-  let accessToken: string = connection.access_token;
+  let accessToken: string = decryptToken(connection.access_token);
   if (
     connection.token_expires_at &&
     new Date(connection.token_expires_at).getTime() < Date.now() + 60_000
@@ -35,13 +36,13 @@ export async function syncEmailConnection(
     }
 
     try {
-      const refreshed = await provider.refreshAccessToken(connection.refresh_token);
+      const refreshed = await provider.refreshAccessToken(decryptToken(connection.refresh_token));
       accessToken = refreshed.accessToken;
 
       await supabaseAdmin
         .from("email_connections")
         .update({
-          access_token: refreshed.accessToken,
+          access_token: encryptToken(refreshed.accessToken),
           token_expires_at: refreshed.expiresAt.toISOString(),
           updated_at: new Date().toISOString(),
         })

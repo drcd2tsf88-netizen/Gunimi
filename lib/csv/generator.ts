@@ -17,3 +17,4 @@ export function generateCSV(
   );
   return bom + [headerRow, ...dataRows].join("\n");
 }
+

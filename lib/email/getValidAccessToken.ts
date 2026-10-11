@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getProvider } from "./providers";
 import { logger } from "@/lib/logger";
+import { decryptToken, encryptToken } from "@/lib/server/crypto";
 
 export type EmailConnectionRow = {
   id: string;
@@ -26,7 +27,7 @@ export async function getValidAccessToken(
   if (!connection?.access_token) return null;
 
   const provider = getProvider(connection.provider);
-  let accessToken: string = connection.access_token;
+  let accessToken: string = decryptToken(connection.access_token);
 
   if (
     connection.token_expires_at &&
@@ -34,12 +35,12 @@ export async function getValidAccessToken(
   ) {
     if (!connection.refresh_token) return null;
     try {
-      const refreshed = await provider.refreshAccessToken(connection.refresh_token);
+      const refreshed = await provider.refreshAccessToken(decryptToken(connection.refresh_token));
       accessToken = refreshed.accessToken;
       await supabaseAdmin
         .from("email_connections")
         .update({
-          access_token: refreshed.accessToken,
+          access_token: encryptToken(refreshed.accessToken),
           token_expires_at: refreshed.expiresAt.toISOString(),
           updated_at: new Date().toISOString(),
         })

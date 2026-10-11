@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gunimi — AI Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#03040A;--s1:#080B14;--s2:#0D1220;--s3:#111827;
+  --b:rgba(255,255,255,.06);--b2:rgba(255,255,255,.04);
+  --text:#ECEEF5;--t2:#9BA5B8;--muted:#4A5568;
+  --p:#6D5BFF;--p2:#8B7DFF;--p3:#A998FF;
+  --ai:#22D3EE;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  height:60px;padding:0 56px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(3,4,10,.88);backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--b);
+}
+.logo{font-size:17px;font-weight:900;letter-spacing:-.05em}
+.logo em{font-style:normal;background:linear-gradient(130deg,var(--p3),var(--ai));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:var(--t2)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-login{font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .15s}
+.nav-login:hover{color:var(--t2)}
+.nav-cta{background:var(--p);color:#fff;border:none;padding:8px 20px;border-radius:8px;font:700 13px 'Inter',sans-serif;cursor:pointer;transition:all .15s;box-shadow:0 0 18px rgba(109,91,255,.25)}
+.nav-cta:hover{background:var(--p2);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero{
+  position:relative;
+  min-height:calc(100vh - 60px);
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:80px 56px;
+  gap:64px;
+  overflow:hidden;
+}
+.hero-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 70% 40%,rgba(109,91,255,.09) 0%,transparent 55%),
+    radial-gradient(ellipse at 20% 80%,rgba(34,211,238,.04) 0%,transparent 45%);
+}
+
+/* ── Left: copy ── */
+.hero-copy{position:relative;z-index:1}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(109,91,255,.08);border:1px solid rgba(109,91,255,.16);
+  border-radius:999px;padding:5px 14px;margin-bottom:28px;
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p3);
+}
+.ey-dot{width:5px;height:5px;border-radius:50%;background:var(--ai);box-shadow:0 0 5px rgba(34,211,238,.7);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:.35}50%{opacity:1}}
+
+.hero-h1{
+  font-size:clamp(40px,5vw,68px);
+  font-weight:900;letter-spacing:-.06em;line-height:.92;
+  margin-bottom:24px;
+}
+.hero-h1 .line-a{color:var(--text)}
+.hero-h1 .line-b{
+  background:linear-gradient(130deg,#C4B5FF 0%,#ECEEF5 45%,#6EE8F9 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.hero-sub{
+  font-size:18px;color:var(--t2);line-height:1.65;
+  max-width:440px;margin-bottom:40px;
+  font-weight:400;
+}
+.hero-sub b{color:var(--text);font-weight:500}
+
+.hero-ctas{display:flex;align-items:center;gap:12px;margin-bottom:48px}
+.btn-primary{
+  background:var(--p);color:#fff;border:none;
+  padding:15px 30px;border-radius:11px;
+  font:700 15px 'Inter',sans-serif;cursor:pointer;
+  box-shadow:0 0 0 1px rgba(109,91,255,.4),0 8px 30px rgba(109,91,255,.3);
+  transition:all .2s;
+}
+.btn-primary:hover{background:var(--p2);transform:translateY(-2px);box-shadow:0 0 0 1px rgba(109,91,255,.5),0 14px 44px rgba(109,91,255,.4)}
+.btn-secondary{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  color:var(--t2);padding:15px 26px;border-radius:11px;
+  font:600 15px 'Inter',sans-serif;cursor:pointer;transition:all .2s;
+}
+.btn-secondary:hover{background:rgba(255,255,255,.08);color:var(--text)}
+
+/* trust badges */
+.hero-trust{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.trust-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--muted);
+}
+.trust-item::before{content:'✓';color:var(--ok);font-weight:700;font-size:11px}
+
+/* ── Right: product UI ── */
+.hero-visual{
+  position:relative;z-index:1;
+  perspective:1100px;
+}
+.hero-card-3d{
+  transition:transform .08s linear;
+  transform-style:preserve-3d;
+  will-change:transform;
+  position:relative;
+}
+.hero-card-3d::before{
+  content:'';position:absolute;inset:-1px;
+  background:rgba(109,91,255,.04);border:1px solid rgba(109,91,255,.14);
+  border-radius:21px;
+  transform:translateZ(-20px) translateY(14px) translateX(7px);
+  filter:blur(3px);
+}
+.hero-card-3d::after{
+  content:'';position:absolute;inset:-2px;
+  background:rgba(109,91,255,.02);border:1px solid rgba(109,91,255,.07);
+  border-radius:22px;
+  transform:translateZ(-40px) translateY(26px) translateX(13px);
+  filter:blur(6px);
+}
+
+.ws{
+  background:var(--s1);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(109,91,255,.07),inset 0 1px 0 rgba(255,255,255,.05);
+  position:relative;z-index:1;
+}
+.ws-bar{background:var(--s2);border-bottom:1px solid var(--b);padding:10px 16px;display:flex;align-items:center;gap:8px}
+.ws-dots{display:flex;gap:5px}
+.ws-dots s{display:block;width:9px;height:9px;border-radius:50%;text-decoration:none}
+.ws-bar-t{font-size:11px;color:var(--muted);margin-left:6px}
+.ws-body{display:flex;height:360px}
+
+.wsb{width:168px;flex-shrink:0;border-right:1px solid var(--b);padding:12px 0;background:rgba(0,0,0,.12)}
+.wsbs{padding:0 10px;margin-bottom:16px}
+.wsbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 6px;margin-bottom:5px}
+.wsbi{display:flex;align-items:center;gap:8px;padding:6px 7px;border-radius:7px;font-size:12px;color:var(--muted);margin-bottom:1px;cursor:default;transition:all .1s}
+.wsbi.on{background:rgba(109,91,255,.12);color:var(--text);font-weight:600}
+.wsbi:hover:not(.on){background:rgba(255,255,255,.03);color:var(--t2)}
+.wsbg{margin-left:auto;font-size:8px;font-weight:700;border-radius:999px;padding:2px 5px;color:#fff}
+.wsbg.e{background:var(--err)}.wsbg.w{background:var(--warn)}
+
+.wsm{flex:1;padding:16px;overflow:hidden}
+.wsmh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.wsmt{font-size:13px;font-weight:700;letter-spacing:-.02em}
+.wsms{font-size:10px;color:var(--muted);margin-top:1px}
+.wsab{background:var(--p);color:#fff;border:none;padding:5px 12px;border-radius:6px;font:600 10px 'Inter',sans-serif;cursor:pointer}
+
+.wsl{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.wsr{display:flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--b);border-radius:9px;padding:9px 12px;cursor:default;transition:border-color .15s}
+.wsr:hover{border-color:rgba(255,255,255,.1)}
+.wsav{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.wsn{font-size:11px;font-weight:600}.wsme{font-size:9px;color:var(--muted);margin-top:1px}
+.wssc{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;margin-left:auto}
+.wssc.g{background:rgba(34,197,94,.1);color:var(--ok)}.wssc.y{background:rgba(245,158,11,.1);color:var(--warn)}.wssc.r{background:rgba(239,68,68,.1);color:var(--err)}
+
+.wssig{background:rgba(109,91,255,.05);border:1px solid rgba(109,91,255,.12);border-radius:8px;padding:10px 12px}
+.wssigh{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p3);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.wssigh::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--ai);box-shadow:0 0 5px rgba(34,211,238,.8);animation:blink 2s infinite}
+.wssr{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t2);margin-bottom:5px;opacity:0;animation:slin .4s ease forwards}
+.wssr:nth-child(2){animation-delay:.35s}.wssr:nth-child(3){animation-delay:.7s}.wssr:nth-child(4){animation-delay:1.05s}
+@keyframes slin{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+.wssd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.wssd.r{background:var(--err);box-shadow:0 0 4px rgba(239,68,68,.5)}.wssd.o{background:var(--warn);box-shadow:0 0 4px rgba(245,158,11,.4)}.wssd.b{background:var(--ai);box-shadow:0 0 4px rgba(34,211,238,.4)}
+
+.wspa{width:190px;flex-shrink:0;border-left:1px solid var(--b);padding:14px;background:rgba(0,0,0,.1)}
+.wspal{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.wspai{background:var(--s2);border:1px solid var(--b);border-radius:8px;padding:10px 12px;margin-bottom:5px;display:flex;gap:8px;opacity:0;animation:slin .4s ease forwards}
+.wspai:nth-child(2){animation-delay:.4s}.wspai:nth-child(3){animation-delay:.8s}.wspai:nth-child(4){animation-delay:1.2s}.wspai:nth-child(5){animation-delay:1.6s}
+.wspaid{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.wspaid.r{background:var(--err);box-shadow:0 0 4px rgba(239,68,68,.5)}.wspaid.o{background:var(--warn);box-shadow:0 0 4px rgba(245,158,11,.4)}.wspaid.b{background:var(--ai);box-shadow:0 0 4px rgba(34,211,238,.3)}.wspaid.g{background:var(--ok);box-shadow:0 0 4px rgba(34,197,94,.4)}
+.wspait{font-size:11px;color:var(--t2);line-height:1.4}.wspais{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ══════════════════════════════════════════
+   LOGOS / TRUST STRIP
+══════════════════════════════════════════ */
+.s-trust{
+  border-top:1px solid var(--b);border-bottom:1px solid var(--b);
+  padding:22px 56px;
+  display:flex;align-items:center;justify-content:center;gap:48px;
+}
+.trust-badge{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;color:var(--muted);
+}
+.trust-badge .ti{font-size:16px}
+
+/* ══════════════════════════════════════════
+   PROBLEM SECTION
+══════════════════════════════════════════ */
+.s-problem{
+  padding:100px 56px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.sec-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:20px;
+}
+.prob-h{
+  font-size:clamp(32px,4vw,52px);
+  font-weight:900;letter-spacing:-.055em;line-height:.96;
+  color:rgba(236,238,245,.8);max-width:680px;margin-bottom:16px;
+}
+.prob-sub{
+  font-size:17px;color:var(--muted);max-width:520px;
+  line-height:1.7;margin-bottom:64px;
+}
+.prob-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--b);
+  border:1px solid var(--b);border-radius:18px;
+  overflow:hidden;max-width:900px;width:100%;
+}
+.prob-card{
+  background:var(--s1);padding:36px 32px;
+  position:relative;text-align:left;
+}
+.prob-card::after{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent)}
+.prob-icon{font-size:28px;margin-bottom:16px;display:block}
+.prob-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.02em}
+.prob-desc{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ══════════════════════════════════════════
+   FEATURES
+══════════════════════════════════════════ */
+.s-features{padding:20px 0 100px}
+.feature{
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:80px;
+  padding:80px 56px;
+  border-top:1px solid var(--b);
+  max-width:1200px;margin:0 auto;
+}
+.feature.rev{direction:rtl}
+.feature.rev > *{direction:ltr}
+
+.feat-copy{}
+.feat-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--p3);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.feat-eyebrow::before{content:'';width:20px;height:1px;background:var(--p3);opacity:.5}
+.feat-h{
+  font-size:clamp(26px,3vw,40px);
+  font-weight:900;letter-spacing:-.05em;line-height:1.05;
+  color:var(--text);margin-bottom:16px;
+}
+.feat-sub{font-size:16px;color:var(--muted);line-height:1.72;margin-bottom:24px}
+.feat-sub b{color:var(--t2);font-weight:500}
+.feat-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.12);
+  border-radius:999px;padding:4px 12px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ai);
+}
+.feat-tag::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--ai);animation:blink 2s infinite}
+
+/* Feature UI blocks */
+.feat-ui{position:relative}
+.feat-ui-card{
+  background:var(--s1);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(109,91,255,.06),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.feat-ui-bar{background:var(--s2);border-bottom:1px solid var(--b);padding:9px 14px;display:flex;align-items:center;gap:7px}
+.feat-dots{display:flex;gap:4px}
+.feat-dots s{display:block;width:8px;height:8px;border-radius:50%;text-decoration:none}
+.feat-bar-t{font-size:10px;color:var(--muted);margin-left:5px}
+
+/* Feature 1: Health Scores */
+.f1-body{padding:16px}
+.f1-row{display:flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--b);border-radius:9px;padding:10px 13px;margin-bottom:5px;cursor:default}
+.f1-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.f1-name{font-size:12px;font-weight:600}
+.f1-meta{font-size:10px;color:var(--muted);margin-top:1px}
+.f1-score-wrap{margin-left:auto;text-align:right}
+.f1-score{font-size:13px;font-weight:800;margin-bottom:3px}
+.f1-score.g{color:var(--ok)}.f1-score.y{color:var(--warn)}.f1-score.r{color:var(--err)}
+.f1-bar{width:60px;height:3px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.f1-fill{height:100%;border-radius:999px}
+.f1-fill.g{background:linear-gradient(90deg,var(--ok),#86efac)}.f1-fill.y{background:linear-gradient(90deg,var(--warn),#fcd34d)}.f1-fill.r{background:linear-gradient(90deg,var(--err),#fca5a5)}
+
+/* Feature 2: AI Signals */
+.f2-body{padding:16px}
+.f2-sig{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--s2);border:1px solid var(--b);border-radius:10px;
+  padding:12px 14px;margin-bottom:6px;
+  opacity:0;animation:slin .4s ease forwards;
+}
+.f2-sig:nth-child(1){animation-delay:.2s}.f2-sig:nth-child(2){animation-delay:.55s}.f2-sig:nth-child(3){animation-delay:.9s}
+.f2-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.f2-dot.r{background:var(--err);box-shadow:0 0 6px rgba(239,68,68,.6)}.f2-dot.o{background:var(--warn);box-shadow:0 0 6px rgba(245,158,11,.5)}.f2-dot.b{background:var(--ai);box-shadow:0 0 6px rgba(34,211,238,.5)}
+.f2-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.f2-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.f2-time{font-size:10px;color:var(--muted);margin-top:2px;opacity:.6}
+
+/* Feature 3: Email */
+.f3-body{padding:16px}
+.f3-email{background:var(--s2);border:1px solid var(--b);border-radius:10px;padding:13px 14px;margin-bottom:6px}
+.f3-from{font-size:11px;font-weight:600;color:var(--text);margin-bottom:3px;display:flex;align-items:center;justify-content:space-between}
+.f3-sub{font-size:11px;color:var(--t2);margin-bottom:6px}
+.f3-preview{font-size:11px;color:var(--muted);line-height:1.5}
+.f3-tag{display:inline-flex;align-items:center;gap:5px;margin-top:7px;background:rgba(109,91,255,.08);border:1px solid rgba(109,91,255,.15);border-radius:999px;padding:2px 8px;font-size:9px;color:var(--p3);font-weight:600}
+.f3-time{font-size:10px;color:var(--muted);opacity:.5}
+
+/* ══════════════════════════════════════════
+   FOUNDER NOTE
+══════════════════════════════════════════ */
+.s-founder{
+  padding:100px 56px;border-top:1px solid var(--b);
+  display:flex;justify-content:center;
+}
+.founder-inner{
+  max-width:620px;
+  background:var(--s1);border:1px solid var(--b);
+  border-radius:20px;padding:48px 52px;
+  position:relative;overflow:hidden;
+}
+.founder-inner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(109,91,255,.3),transparent);
+}
+.founder-quote{
+  font-size:20px;font-weight:500;color:var(--text);
+  line-height:1.6;letter-spacing:-.02em;margin-bottom:28px;
+  font-style:italic;opacity:.85;
+}
+.founder-sig{display:flex;align-items:center;gap:14px}
+.founder-av{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--p),var(--ai));
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;
+}
+.founder-name{font-size:14px;font-weight:700;color:var(--text)}
+.founder-role{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ══════════════════════════════════════════
+   CTA
+══════════════════════════════════════════ */
+.s-cta{
+  padding:100px 56px 120px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  position:relative;overflow:hidden;border-top:1px solid var(--b);
+}
+.cta-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,rgba(109,91,255,.09) 0%,transparent 58%)}
+.cta-stem{width:1px;height:56px;background:linear-gradient(to bottom,transparent,rgba(109,91,255,.4));margin-bottom:32px;position:relative;z-index:1}
+.cta-h{
+  font-size:clamp(38px,5.5vw,68px);
+  font-weight:900;letter-spacing:-.06em;line-height:.9;
+  color:rgba(236,238,245,.65);max-width:680px;margin-bottom:18px;
+  position:relative;z-index:1;
+}
+.cta-h em{
+  font-style:normal;
+  background:linear-gradient(130deg,#C4B5FF 0%,#ECEEF5 45%,#6EE8F9 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.cta-sub{font-size:17px;color:var(--muted);max-width:400px;margin-bottom:48px;line-height:1.65;position:relative;z-index:1}
+.cta-btn{
+  position:relative;z-index:1;
+  background:var(--p);color:#fff;border:none;
+  padding:18px 48px;border-radius:13px;
+  font:700 17px 'Inter',sans-serif;cursor:pointer;
+  box-shadow:0 0 0 1px rgba(109,91,255,.4),0 8px 40px rgba(109,91,255,.35);
+  transition:all .2s;margin-bottom:16px;
+}
+.cta-btn:hover{background:var(--p2);transform:translateY(-2px);box-shadow:0 0 0 1px rgba(109,91,255,.5),0 18px 60px rgba(109,91,255,.45)}
+.cta-fine{font-size:12px;color:var(--muted);opacity:.35;position:relative;z-index:1}
+
+footer{
+  border-top:1px solid var(--b);padding:28px 56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.fl{font-size:15px;font-weight:900;letter-spacing:-.05em}
+.fl em{font-style:normal;background:linear-gradient(130deg,var(--p3),var(--ai));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+footer p{font-size:12px;color:var(--muted);opacity:.3}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Guni<em>mi</em></div>
+  <div class="nav-links">
+    <a href="#">Funkcie</a>
+    <a href="#">Ceny</a>
+    <a href="#">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-login">Prihlásiť sa</button>
+    <button class="nav-cta">Začať zadarmo →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-copy">
+    <div class="hero-eyebrow"><span class="ey-dot"></span>AI Workspace Operating System</div>
+
+    <h1 class="hero-h1">
+      <span class="line-a">Jeden workspace.<br>Všetci zákazníci.<br></span>
+      <span class="line-b">AI sleduje za teba.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Gunimi spája <b>kontakty, dealy, emaily a úlohy</b> do jedného miesta — a hovorí ti čo je kritické skôr než niečo vypadne.
+    </p>
+
+    <div class="hero-ctas">
+      <button class="btn-primary">Vyskúšať zadarmo →</button>
+      <button class="btn-secondary">Pozrieť demo</button>
+    </div>
+
+    <div class="hero-trust">
+      <div class="trust-item">Žiadna kreditná karta</div>
+      <div class="trust-item">Setup za 2 minúty</div>
+      <div class="trust-item">Open Alpha</div>
+    </div>
+  </div>
+
+  <div class="hero-visual" id="hero-vis">
+    <div class="hero-card-3d" id="hero-card">
+      <div class="ws">
+        <div class="ws-bar">
+          <div class="ws-dots"><s style="background:rgba(239,68,68,.4)"></s><s style="background:rgba(245,158,11,.4)"></s><s style="background:rgba(34,197,94,.4)"></s></div>
+          <span class="ws-bar-t">Gunimi · Workspace</span>
+        </div>
+        <div class="ws-body">
+          <div class="wsb">
+            <div class="wsbs">
+              <div class="wsbl">Workspace</div>
+              <div class="wsbi on"><span>👥</span>Kontakty</div>
+              <div class="wsbi"><span>🏢</span>Firmy</div>
+              <div class="wsbi"><span>💼</span>Dealy</div>
+              <div class="wsbi"><span>✅</span>Úlohy <span class="wsbg w">5</span></div>
+              <div class="wsbi"><span>📧</span>Email</div>
+              <div class="wsbi"><span>📝</span>Poznámky</div>
+            </div>
+            <div class="wsbs">
+              <div class="wsbl">AI</div>
+              <div class="wsbi"><span>⚡</span>Signály <span class="wsbg e">3</span></div>
+              <div class="wsbi"><span>🧠</span>Pamäť</div>
+            </div>
+          </div>
+          <div class="wsm">
+            <div class="wsmh">
+              <div><div class="wsmt">Kontakty</div><div class="wsms">3 potrebujú pozornosť</div></div>
+              <button class="wsab">+ Pridať</button>
+            </div>
+            <div class="wsl">
+              <div class="wsr"><div class="wsav" style="background:linear-gradient(135deg,#6D5BFF,#A998FF)">TK</div><div><div class="wsn">Tomáš Kováč</div><div class="wsme">Acme · 2 dni</div></div><span class="wssc g">87</span></div>
+              <div class="wsr"><div class="wsav" style="background:linear-gradient(135deg,#22D3EE,#6D5BFF)">MN</div><div><div class="wsn">Marta Nováková</div><div class="wsme">Beta · 18 dní</div></div><span class="wssc y">54</span></div>
+              <div class="wsr"><div class="wsav" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">PH</div><div><div class="wsn">Peter Horváth</div><div class="wsme">Delta · 42 dní</div></div><span class="wssc r">21</span></div>
+            </div>
+            <div class="wssig">
+              <div class="wssigh">AI Signály</div>
+              <div class="wssr"><div class="wssd r"></div>Peter H. — 42 dní bez kontaktu</div>
+              <div class="wssr"><div class="wssd o"></div>Deal ERP stojí 14 dní</div>
+              <div class="wssr"><div class="wssd b"></div>Meeting brief o 14:00 ready</div>
+            </div>
+          </div>
+          <div class="wspa">
+            <div class="wspal">Aktivita</div>
+            <div class="wspai"><div class="wspaid r"></div><div><div class="wspait">Peter H. bez kontaktu</div><div class="wspais">Kritické · práve</div></div></div>
+            <div class="wspai"><div class="wspaid o"></div><div><div class="wspait">Deal ERP stojí 14d</div><div class="wspais">2 hodiny</div></div></div>
+            <div class="wspai"><div class="wspaid o"></div><div><div class="wspait">Ponuka bez odpovede</div><div class="wspais">4 hodiny</div></div></div>
+            <div class="wspai"><div class="wspaid b"></div><div><div class="wspait">Meeting brief ready</div><div class="wspais">14:00 dnes</div></div></div>
+            <div class="wspai"><div class="wspaid g"></div><div><div class="wspait">Deal postúpil</div><div class="wspais">Včera</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="s-trust">
+  <div class="trust-badge"><span class="ti">🔒</span>Bezpečné · SOC2 ready</div>
+  <div class="trust-badge"><span class="ti">⚡</span>AI-native od základov</div>
+  <div class="trust-badge"><span class="ti">🇸🇰</span>Vytvorené na Slovensku</div>
+  <div class="trust-badge"><span class="ti">🆓</span>Zadarmo na začiatok</div>
+</div>
+
+<!-- PROBLEM -->
+<section class="s-problem">
+  <div class="sec-eyebrow rv">Problém</div>
+  <h2 class="prob-h rv" style="transition-delay:.05s">Zákazníci ti žijú<br>na piatich miestach naraz.</h2>
+  <p class="prob-sub rv" style="transition-delay:.1s">Gmail. WhatsApp. Notion. HubSpot. Asana. Každý deň prepínaš. Niečo vždy vypadne. A zákazník to vycíti.</p>
+  <div class="prob-cards">
+    <div class="prob-card rv" style="transition-delay:.15s">
+      <span class="prob-icon">📧</span>
+      <div class="prob-title">Roztrúsené informácie</div>
+      <div class="prob-desc">Čo zákazník povedal je v emaili. Čo sme sľúbili je v Notion. Čo sa dohodlo je vo WhatsApp. Nikto nevie kde čo hľadať.</div>
+    </div>
+    <div class="prob-card rv" style="transition-delay:.2s">
+      <span class="prob-icon">⏱</span>
+      <div class="prob-title">Zabudnuté follow-upy</div>
+      <div class="prob-desc">Zákazník napísal 3 týždne dozadu. Čakal na odpoveď. Ty si zabudol. Deal chladol potichu — kým nepodpísal s konkurenciou.</div>
+    </div>
+    <div class="prob-card rv" style="transition-delay:.25s">
+      <span class="prob-icon">🕶</span>
+      <div class="prob-title">Blind meetings</div>
+      <div class="prob-desc">Meeting o 9:00. Nevieš kto to je, čo sme riešili, čo bolo sľúbené. Improvizuješ. Zákazník to vycíti.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="s-features">
+
+  <!-- F1: Health Score -->
+  <div class="feature rv">
+    <div class="feat-copy">
+      <div class="feat-eyebrow">Relationship Intelligence</div>
+      <h3 class="feat-h">Vieš presne kde stojí každý vzťah.</h3>
+      <p class="feat-sub">Gunimi automaticky počíta <b>Relationship Health Score</b> pre každého zákazníka — na základe emailov, dealov, úloh a času od posledného kontaktu. Červená = konaj teraz.</p>
+      <span class="feat-tag">AI</span>
+    </div>
+    <div class="feat-ui">
+      <div class="feat-ui-card">
+        <div class="feat-ui-bar"><div class="feat-dots"><s style="background:rgba(239,68,68,.35)"></s><s style="background:rgba(245,158,11,.35)"></s><s style="background:rgba(34,197,94,.35)"></s></div><span class="feat-bar-t">Kontakty · Health Score</span></div>
+        <div class="f1-body">
+          <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#6D5BFF,#A998FF)">TK</div><div><div class="f1-name">Tomáš Kováč</div><div class="f1-meta">Acme · aktívny 2 dni</div></div><div class="f1-score-wrap"><div class="f1-score g">87</div><div class="f1-bar"><div class="f1-fill g" style="width:87%"></div></div></div></div>
+          <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#22D3EE,#6D5BFF)">MN</div><div><div class="f1-name">Marta Nováková</div><div class="f1-meta">Beta · 18 dní</div></div><div class="f1-score-wrap"><div class="f1-score y">54</div><div class="f1-bar"><div class="f1-fill y" style="width:54%"></div></div></div></div>
+          <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">PH</div><div><div class="f1-name">Peter Horváth</div><div class="f1-meta">Delta · 42 dní bez kontaktu</div></div><div class="f1-score-wrap"><div class="f1-score r">21</div><div class="f1-bar"><div class="f1-fill r" style="width:21%"></div></div></div></div>
+          <div class="f1-row"><div class="f1-av" style="background:linear-gradient(135deg,#10b981,#22D3EE)">JS</div><div><div class="f1-name">Jana Svobodová</div><div class="f1-meta">Omega · včera</div></div><div class="f1-score-wrap"><div class="f1-score g">92</div><div class="f1-bar"><div class="f1-fill g" style="width:92%"></div></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F2: AI Signals -->
+  <div class="feature rev rv">
+    <div class="feat-copy">
+      <div class="feat-eyebrow">AI Signály</div>
+      <h3 class="feat-h">AI upozorní skôr než deal chladne.</h3>
+      <p class="feat-sub">Gunimi sleduje každý vzťah a každý deal. Keď niečo stojí, keď zákazník mlčí, keď ponuka čaká — dostaneš <b>presný signál</b> s kontextom. Nie notifikáciu. Informáciu.</p>
+      <span class="feat-tag">AI</span>
+    </div>
+    <div class="feat-ui">
+      <div class="feat-ui-card">
+        <div class="feat-ui-bar"><div class="feat-dots"><s style="background:rgba(239,68,68,.35)"></s><s style="background:rgba(245,158,11,.35)"></s><s style="background:rgba(34,197,94,.35)"></s></div><span class="feat-bar-t">AI Signály · dnes</span></div>
+        <div class="f2-body">
+          <div class="f2-sig"><div class="f2-dot r"></div><div><div class="f2-title">Peter Horváth — vzťah chladne</div><div class="f2-desc">42 dní bez kontaktu. Posledný email zostal bez odpovede. Odporúčame kontakt do 24h.</div><div class="f2-time">Práve · Kritické</div></div></div>
+          <div class="f2-sig"><div class="f2-dot o"></div><div><div class="f2-title">Deal "ERP nasadenie" stojí</div><div class="f2-desc">14 dní bez pohybu v fáze Rokovanie. Ponuka odoslaná, odpoveď chýba.</div><div class="f2-time">2 hodiny · Upozornenie</div></div></div>
+          <div class="f2-sig"><div class="f2-dot b"></div><div><div class="f2-title">Meeting s Betou o 14:00 — brief ready</div><div class="f2-desc">AI pripravil súhrn vzťahu, históriu dealov a posledné záväzky.</div><div class="f2-time">Dnes 14:00 · Info</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F3: Email -->
+  <div class="feature rv">
+    <div class="feat-copy">
+      <div class="feat-eyebrow">Email Connect</div>
+      <h3 class="feat-h">Každý email pri správnom zákazníkovi.</h3>
+      <p class="feat-sub">Napoj Gmail a všetky emaily sa automaticky priraďujú k zákazníkom. Vidíš celú komunikáciu na jednom mieste — <b>bez manuálneho kopírovania</b>, bez hľadania v doručenej pošte.</p>
+    </div>
+    <div class="feat-ui">
+      <div class="feat-ui-card">
+        <div class="feat-ui-bar"><div class="feat-dots"><s style="background:rgba(239,68,68,.35)"></s><s style="background:rgba(245,158,11,.35)"></s><s style="background:rgba(34,197,94,.35)"></s></div><span class="feat-bar-t">Peter Horváth · Emaily</span></div>
+        <div class="f3-body">
+          <div class="f3-email">
+            <div class="f3-from"><span>Peter Horváth</span><span class="f3-time">pred 42 dňami</span></div>
+            <div class="f3-sub">Re: Cenová ponuka — ERP nasadenie</div>
+            <div class="f3-preview">"Dobrý deň, posielam spätnú väzbu na ponuku. Máme pár otázok ohľadom implementácie..."</div>
+            <span class="f3-tag">⚡ Bez odpovede 42 dní</span>
+          </div>
+          <div class="f3-email">
+            <div class="f3-from"><span>Peter Horváth</span><span class="f3-time">pred 58 dňami</span></div>
+            <div class="f3-sub">Záujem o demo — Q4 plán</div>
+            <div class="f3-preview">"Chceli by sme si dohodnúť demo pred koncom kvartálu. Preferujeme online..."</div>
+            <span class="f3-tag">✓ Odpovedané</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOUNDER NOTE -->
+<section class="s-founder">
+  <div class="founder-inner rv">
+    <div class="founder-quote">
+      "Gunimi vzniklo z frustrácie. Každý deň som prepínal medzi piatimi nástrojmi, zabudol na follow-up a stratil zákazníka. Rozhodol som sa to vyriešiť — pre seba aj pre každého kto pozná tento pocit."
+    </div>
+    <div class="founder-sig">
+      <div class="founder-av">M</div>
+      <div>
+        <div class="founder-name">Michal</div>
+        <div class="founder-role">Zakladateľ, Gunimi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-cta">
+  <div class="cta-glow"></div>
+  <div class="cta-stem"></div>
+  <h2 class="cta-h rv">Koľko dealov si stratil<br>lebo si <em>zabudol</em>?</h2>
+  <p class="cta-sub rv" style="transition-delay:.1s">Gunimi to nevie zmeniť spätne. Ale od zajtrajška — vie.</p>
+  <button class="cta-btn rv" style="transition-delay:.2s">Vyskúšať Gunimi zadarmo →</button>
+  <p class="cta-fine">Open Alpha · Žiadna kreditná karta · Setup za 2 minúty</p>
+</section>
+
+<footer>
+  <div class="fl">Guni<em>mi</em></div>
+  <p>© 2026 Gunimi · AI Workspace Operating System</p>
+</footer>
+
+<script>
+// 3D tilt on hero card
+const hv=document.getElementById('hero-vis'),hc=document.getElementById('hero-card');
+if(hv&&hc){
+  hv.addEventListener('mousemove',e=>{
+    const r=hv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    hc.style.transform=`perspective(1100px) rotateY(${x*12}deg) rotateX(${-y*7}deg)`;
+  });
+  hv.addEventListener('mouseleave',()=>{
+    hc.style.transition='transform .7s cubic-bezier(.16,1,.3,1)';
+    hc.style.transform='perspective(1100px) rotateY(0) rotateX(0)';
+    setTimeout(()=>hc.style.transition='',700);
+  });
+}
+
+// Scroll reveal
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

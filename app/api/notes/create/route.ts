@@ -16,6 +16,13 @@ from "@/lib/ratelimit";
 import { getCurrentWorkspace }
 from "@/lib/workspace/getCurrentWorkspace";
 import { logger } from "@/lib/logger";
+import { z } from "zod";
+
+const createNoteSchema = z.object({
+  companyId: z.string().uuid().optional().nullable(),
+  title: z.string().min(1).max(500),
+  content: z.string().max(50000).optional().nullable(),
+});
 
 export async function POST(
   req: Request
@@ -23,26 +30,16 @@ export async function POST(
 
   try {
 
-    const body =
-      await req.json();
-
-    const {
-      companyId,
-      title,
-      content,
-    } = body;
+    const parsed = createNoteSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return errorResponse("Invalid input", 400);
+    }
+    const { companyId, title, content } = parsed.data;
 
     const user = await getUser();
 
     if (!user) {
       return errorResponse("Unauthorized", 401);
-    }
-
-    if (!title) {
-      return errorResponse(
-        "Missing fields",
-        400
-      );
     }
 
     const workspace =
@@ -71,7 +68,7 @@ export async function POST(
       sanitize(title);
 
     const cleanContent =
-      sanitize(content);
+      sanitize(content ?? "");
 
     const { error } =
       await supabaseAdmin
