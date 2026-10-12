@@ -1969,6 +1969,8 @@
     "syncFailed": "Synchronizace se nezdařila",
     "syncFailedReconnect": "Synchronizace selhala — prosím znovu propojte účet",
     "syncFailedApiDisabled": "Synchronizace selhala — Google API není povoleno",
+    "refreshInsights": "Obnovit AI přehledy",
+    "wakeupComplete": "AI e-mailové přehledy aktualizovány",
     "noThreads": "Zatím žádná e-mailová vlákna",
     "noThreadsDescription": "Připojte Gmail a synchronizujte jej, abyste zde viděli vlákna.",
     "noSubject": "(Bez předmětu)",

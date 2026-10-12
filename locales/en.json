@@ -1969,6 +1969,8 @@
     "syncFailed": "Sync failed",
     "syncFailedReconnect": "Sync failed — please reconnect your account",
     "syncFailedApiDisabled": "Sync failed — Google API is not enabled",
+    "refreshInsights": "Refresh AI Insights",
+    "wakeupComplete": "AI email insights updated",
     "noThreads": "No email threads yet",
     "noThreadsDescription": "Connect a Gmail account and sync to see email threads here.",
     "noSubject": "(No subject)",

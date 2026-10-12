@@ -39,8 +39,22 @@ export default function EmailConnectionCard({ connections }: Props) {
   const locale = useLocale();
   const router = useRouter();
   const [syncing, setSyncing] = useState(false);
+  const [wakingUp, setWakingUp] = useState(false);
   const [disconnectTarget, setDisconnectTarget] = useState<EmailConnection | null>(null);
   const [isDisconnecting, startDisconnect] = useTransition();
+
+  async function handleWakeup() {
+    try {
+      setWakingUp(true);
+      await fetch("/api/email/wakeup", { method: "POST" });
+      toast.success(t("wakeupComplete"));
+      router.refresh();
+    } catch {
+      toast.error(t("syncFailed"));
+    } finally {
+      setWakingUp(false);
+    }
+  }
 
   async function handleSync() {
     try {
@@ -131,6 +145,19 @@ export default function EmailConnectionCard({ connections }: Props) {
               </div>
 
               <div className="flex shrink-0 items-center gap-2">
+                <GunimiButton
+                  variant="secondary"
+                  className="h-8 gap-1.5 px-3 text-xs"
+                  disabled={wakingUp}
+                  onClick={handleWakeup}
+                >
+                  {wakingUp ? (
+                    <Loader2 size={12} className="animate-spin" />
+                  ) : (
+                    <RefreshCw size={12} />
+                  )}
+                  {t("refreshInsights")}
+                </GunimiButton>
                 <GunimiButton
                   variant="secondary"
                   className="h-8 gap-1.5 px-3 text-xs"
