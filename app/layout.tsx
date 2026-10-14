@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { cookies } from "next/headers";
 import { APP_CONFIG } from "@/lib/config/app";
 import PostHogProvider from "@/components/analytics/PostHogProvider";
 import CookieConsentLoader from "@/components/public/CookieConsentLoader";
@@ -67,7 +68,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const locale = await getLocale();
-  const messages = await getMessages();
+  const allMessages = await getMessages();
+
+  const cookieStore = await cookies();
+  const isAuthenticated = cookieStore.getAll().some(
+    (c) => c.name.includes("sb-access-token") || c.name.includes("sb-refresh-token") || c.name.includes("-auth-token"),
+  );
+
+  // Public pages only need landing + public namespaces (~15 KiB vs 225 KiB)
+  const messages = isAuthenticated
+    ? allMessages
+    : { landing: allMessages.landing, public: allMessages.public };
 
   return (
     <html lang={locale}>
