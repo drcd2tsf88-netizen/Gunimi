@@ -50,17 +50,17 @@ export default async function PricingPage() {
             </span>
           </div>
 
-          <h1 className="mx-auto max-w-2xl text-[46px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[62px]">
-            {t("headline")}{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, #A998FF 0%, #6D5BFF 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              {t("headlineAccent")}
-            </span>
+          <h1
+            className="mx-auto max-w-2xl font-black leading-[0.9] tracking-[-0.06em]"
+            style={{
+              fontSize: "clamp(42px,5vw,64px)",
+              background: "linear-gradient(160deg,rgba(240,242,250,.95) 0%,rgba(200,190,255,.9) 40%,rgba(146,232,248,.8) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {t("headline")} {t("headlineAccent")}
           </h1>
 
           <p className="mx-auto mt-6 max-w-[50ch] text-[17px] leading-[1.75] text-[#9AA3B2]">
@@ -70,7 +70,7 @@ export default async function PricingPage() {
 
         {/* PLAN CARD */}
         <section className="relative mx-auto max-w-md px-6 pb-20">
-          <div className="relative overflow-hidden rounded-[28px] border border-[#6D5BFF]/[0.22] bg-[#0A0E17] p-8 shadow-[0_0_80px_rgba(109,91,255,0.1)]">
+          <div className="relative overflow-hidden rounded-[28px] border border-[#6D5BFF]/[0.22] bg-[#07090F] p-8 shadow-[0_0_80px_rgba(109,91,255,0.1)]">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#6D5BFF]/40 to-transparent" />
             <div
               className="pointer-events-none absolute inset-0"
@@ -105,7 +105,7 @@ export default async function PricingPage() {
 
               <Link
                 href="/register"
-                className="mt-6 flex h-12 w-full items-center justify-center rounded-[12px] bg-[#6D5BFF] text-[15px] font-semibold text-white transition-all duration-200 hover:bg-[#5a49e6] hover:shadow-[0_4px_20px_rgba(109,91,255,0.3)]"
+                className="mt-6 flex h-12 w-full items-center justify-center rounded-[12px] bg-[#6D5BFF] text-[15px] font-semibold text-white transition-all duration-200 hover:bg-[#8B7DFF] hover:shadow-[0_4px_20px_rgba(109,91,255,0.3)]"
               >
                 {t("planCta")}
               </Link>
@@ -146,7 +146,7 @@ export default async function PricingPage() {
             {faq.map(({ q, a }) => (
               <div
                 key={q}
-                className="relative overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#0A0E17] p-6"
+                className="relative overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#07090F] p-6"
               >
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
                 <h3 className="text-[15px] font-semibold tracking-[-0.01em] text-[#F7F8FC]">

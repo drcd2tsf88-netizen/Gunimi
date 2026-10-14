@@ -54,14 +54,17 @@ export default async function AiTransparencyPage() {
             </span>
           </div>
 
-          <h1 className="mx-auto max-w-3xl text-[46px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[60px]">
-            {t("headline")}{" "}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: "linear-gradient(135deg, #6D5BFF, #A998FF)" }}
-            >
-              {t("headlineAccent")}
-            </span>
+          <h1
+            className="mx-auto max-w-3xl font-black leading-[0.9] tracking-[-0.06em]"
+            style={{
+              fontSize: "clamp(42px,5vw,60px)",
+              background: "linear-gradient(160deg,rgba(240,242,250,.95) 0%,rgba(200,190,255,.9) 40%,rgba(146,232,248,.8) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {t("headline")} {t("headlineAccent")}
           </h1>
           <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-[1.7] text-[#9AA3B2]">
             {t("subline")}
@@ -72,7 +75,7 @@ export default async function AiTransparencyPage() {
         <section className="relative mx-auto max-w-4xl px-6 pb-20">
           <div className="grid gap-5 md:grid-cols-2">
             {/* CAN */}
-            <div className="relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#0A0E17] p-7">
+            <div className="relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#07090F] p-7">
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
               <div className="mb-5 flex items-center gap-2.5">
                 <CheckCircle2 size={18} className="text-emerald-400/80" strokeWidth={1.75} />
@@ -89,7 +92,7 @@ export default async function AiTransparencyPage() {
             </div>
 
             {/* CANNOT */}
-            <div className="relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#0A0E17] p-7">
+            <div className="relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#07090F] p-7">
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
               <div className="mb-5 flex items-center gap-2.5">
                 <XCircle size={18} className="text-red-400/70" strokeWidth={1.75} />
@@ -118,7 +121,7 @@ export default async function AiTransparencyPage() {
             {principles.map(({ title, body }) => (
               <div
                 key={title}
-                className="relative overflow-hidden rounded-[18px] border border-white/[0.055] bg-[#0A0E17] p-6"
+                className="relative overflow-hidden rounded-[18px] border border-white/[0.055] bg-[#07090F] p-6"
               >
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
                 <h3 className="mb-2 text-[15px] font-semibold tracking-[-0.01em] text-[#F7F8FC]">{title}</h3>

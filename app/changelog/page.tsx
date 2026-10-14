@@ -55,7 +55,16 @@ export default async function ChangelogPage() {
               {t("badge")}
             </span>
           </div>
-          <h1 className="text-[44px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[60px]">
+          <h1
+            className="font-black leading-[0.9] tracking-[-0.06em]"
+            style={{
+              fontSize: "clamp(40px,5vw,60px)",
+              background: "linear-gradient(160deg,rgba(240,242,250,.95) 0%,rgba(200,190,255,.9) 40%,rgba(146,232,248,.8) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             {t("headline")}
           </h1>
           <p className="mx-auto mt-5 max-w-[48ch] text-[16px] leading-[1.7] text-[#9AA3B2]">
@@ -72,13 +81,13 @@ export default async function ChangelogPage() {
             {releases.map((release) => (
               <div key={release.version} className="relative flex gap-7">
                 {/* DOT */}
-                <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#6D5BFF]/[0.20] bg-[#0A0E17]">
+                <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#6D5BFF]/[0.20] bg-[#07090F]">
                   <span className="text-[10px] font-bold text-[#8B7DFF]">{release.version}</span>
                 </div>
 
                 {/* CARD */}
                 <div className="flex-1 pb-2">
-                  <div className="relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#0A0E17] p-7">
+                  <div className="relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#07090F] p-7">
                     <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
 
                     {/* META */}

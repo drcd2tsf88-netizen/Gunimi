@@ -56,7 +56,16 @@ export default function ContactPage() {
               {t("badge")}
             </span>
           </div>
-          <h1 className="text-[44px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[56px]">
+          <h1
+            className="font-black leading-[0.9] tracking-[-0.06em]"
+            style={{
+              fontSize: "clamp(40px,5vw,56px)",
+              background: "linear-gradient(160deg,rgba(240,242,250,.95) 0%,rgba(200,190,255,.9) 40%,rgba(146,232,248,.8) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             {t("headline")}
           </h1>
           <p className="mx-auto mt-5 max-w-[44ch] text-[16px] leading-[1.7] text-[#9AA3B2]">
@@ -66,7 +75,7 @@ export default function ContactPage() {
 
         {/* FORM */}
         <section className="relative mx-auto max-w-xl px-6 pb-32">
-          <div className="relative overflow-hidden rounded-[24px] border border-white/[0.055] bg-[#0A0E17] p-8 shadow-[0_8px_60px_rgba(109,91,255,0.10)]">
+          <div className="relative overflow-hidden rounded-[24px] border border-white/[0.055] bg-[#07090F] p-8 shadow-[0_8px_60px_rgba(109,91,255,0.10)]">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.09] to-transparent" />
             <div
               className="pointer-events-none absolute inset-0"
@@ -167,7 +176,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={pending}
-                className="w-full rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] px-6 py-3.5 text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.35)] transition-all duration-300 hover:bg-[#7B6BFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.50)] disabled:opacity-50"
+                className="w-full rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] px-6 py-3.5 text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.35)] transition-all duration-300 hover:bg-[#8B7DFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.50)] disabled:opacity-50"
               >
                 {pending ? t("sendingLabel") : t("submitLabel")}
               </button>

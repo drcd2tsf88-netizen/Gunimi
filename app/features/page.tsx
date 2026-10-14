@@ -79,17 +79,17 @@ export default async function FeaturesPage() {
             </span>
           </div>
 
-          <h1 className="mx-auto max-w-3xl text-[46px] font-bold leading-[0.95] tracking-[-0.04em] text-[#F7F8FC] md:text-[62px]">
-            {t("headlineLine1")}{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, #A998FF 0%, #6D5BFF 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              {t("headlineLine2")}
-            </span>
+          <h1
+            className="mx-auto max-w-3xl font-black leading-[0.9] tracking-[-0.06em]"
+            style={{
+              fontSize: "clamp(42px,5vw,64px)",
+              background: "linear-gradient(160deg,rgba(240,242,250,.95) 0%,rgba(200,190,255,.9) 40%,rgba(146,232,248,.8) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {t("headlineLine1")} {t("headlineLine2")}
           </h1>
 
           <p className="mx-auto mt-7 max-w-[54ch] text-[17px] leading-[1.75] text-[#9AA3B2]">
@@ -110,7 +110,7 @@ export default async function FeaturesPage() {
               return (
                 <div
                   key={title}
-                  className="group relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#0A0E17] p-6 transition-all duration-500 hover:border-[#6D5BFF]/[0.18] hover:shadow-[0_8px_32px_rgba(109,91,255,0.08)]"
+                  className="group relative overflow-hidden rounded-[20px] border border-white/[0.055] bg-[#07090F] p-6 transition-all duration-500 hover:border-[#6D5BFF]/[0.18] hover:shadow-[0_8px_32px_rgba(109,91,255,0.08)]"
                 >
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
                   <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_top_left,rgba(109,91,255,0.07),transparent_55%)]" />
@@ -131,7 +131,7 @@ export default async function FeaturesPage() {
 
         {/* CTA */}
         <section className="relative mx-auto max-w-3xl px-6 pb-32 text-center">
-          <div className="relative overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#0A0E17] p-12 shadow-[0_8px_60px_rgba(109,91,255,0.07)]">
+          <div className="relative overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#07090F] p-12 shadow-[0_8px_60px_rgba(109,91,255,0.07)]">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.09] to-transparent" />
             <div
               className="pointer-events-none absolute inset-0"
@@ -147,7 +147,7 @@ export default async function FeaturesPage() {
               <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <Link
                   href="/register"
-                  className="inline-flex h-12 items-center gap-2 rounded-[12px] bg-[#6D5BFF] px-8 text-[15px] font-semibold text-white transition-all duration-200 hover:bg-[#5a49e6] hover:shadow-[0_4px_20px_rgba(109,91,255,0.35)]"
+                  className="inline-flex h-12 items-center gap-2 rounded-[12px] bg-[#6D5BFF] px-8 text-[15px] font-semibold text-white transition-all duration-200 hover:bg-[#8B7DFF] hover:shadow-[0_4px_20px_rgba(109,91,255,0.35)]"
                 >
                   {tf("ctaButton")}
                 </Link>
