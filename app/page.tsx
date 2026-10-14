@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { APP_CONFIG } from "@/lib/config/app";
+import dynamic from "next/dynamic";
 import { MotionProvider, GenesisNavbar } from "@/components/genesis";
 import { V13Hero } from "@/components/landing/v13/V13Hero";
-import { V13Problem } from "@/components/landing/v13/V13Problem";
-import { V13Features } from "@/components/landing/v13/V13Features";
-import { V13Cta } from "@/components/landing/v13/V13Cta";
 import { V13Footer } from "@/components/landing/v13/V13Footer";
+
+const V13Problem = dynamic(() => import("@/components/landing/v13/V13Problem").then((m) => ({ default: m.V13Problem })));
+const V13Features = dynamic(() => import("@/components/landing/v13/V13Features").then((m) => ({ default: m.V13Features })));
+const V13Cta = dynamic(() => import("@/components/landing/v13/V13Cta").then((m) => ({ default: m.V13Cta })));
 
 export const metadata: Metadata = {
   title: { absolute: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}` },

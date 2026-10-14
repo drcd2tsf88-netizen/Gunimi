@@ -6,8 +6,8 @@ import { Toaster } from "react-hot-toast";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { APP_CONFIG } from "@/lib/config/app";
-import CookieConsent from "@/components/public/CookieConsent";
 import PostHogProvider from "@/components/analytics/PostHogProvider";
+import CookieConsentLoader from "@/components/public/CookieConsentLoader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -124,7 +124,7 @@ export default async function RootLayout({
           />
 
           {children}
-          <CookieConsent />
+          <CookieConsentLoader />
         </PostHogProvider>
         </NextIntlClientProvider>
       </body>

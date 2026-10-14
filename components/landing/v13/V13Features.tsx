@@ -175,12 +175,12 @@ export function V13Features() {
             <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-[rgba(109,91,255,.28)] mb-4">
               {eyebrow}
             </div>
-            <h3
+            <h2
               className="font-extrabold tracking-[-0.05em] leading-[1.04] text-[#F0F2FA] mb-3.5"
               style={{ fontSize: "clamp(24px,2.8vw,38px)" }}
             >
               {heading}
-            </h3>
+            </h2>
             <p className="text-[15px] text-[rgba(138,148,168,.6)] leading-[1.75] mb-5 tracking-[-0.01em]">
               {body}
             </p>
