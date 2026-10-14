@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { APP_CONFIG } from "@/lib/config/app";
-import LandingFooter from "@/components/landing/LandingFooter";
-import {
-  MotionProvider,
-  GenesisNavbar,
-  GenesisHeroDuo,
-  GenesisBridge,
-  GenesisEmailMoment,
-  GenesisFounderNote,
-} from "@/components/genesis";
-
-const GenesisActIV = dynamic(() => import("@/components/genesis/GenesisActIV").then((m) => ({ default: m.GenesisActIV })));
+import { MotionProvider, GenesisNavbar } from "@/components/genesis";
+import { V13Hero } from "@/components/landing/v13/V13Hero";
+import { V13Problem } from "@/components/landing/v13/V13Problem";
+import { V13Features } from "@/components/landing/v13/V13Features";
+import { V13Cta } from "@/components/landing/v13/V13Cta";
+import { V13Footer } from "@/components/landing/v13/V13Footer";
 
 export const metadata: Metadata = {
   title: { absolute: `${APP_CONFIG.name} — ${APP_CONFIG.tagline}` },
@@ -32,26 +26,13 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <MotionProvider>
-      <main className="min-h-screen overflow-hidden bg-[var(--g-bg)] text-[var(--g-text)]">
-        {/* Navigation */}
+      <main className="min-h-screen overflow-hidden bg-[#020307] text-[#F0F2FA]">
         <GenesisNavbar />
-
-        {/* 1 — Two-panel hero: cosmic headline + CTA */}
-        <GenesisHeroDuo />
-
-        {/* 2 — Bridge: why this matters in 3 sentences */}
-        <GenesisBridge />
-
-        {/* 3 — Email moment: concrete proof of what Gunimi sees */}
-        <GenesisEmailMoment />
-
-        {/* 3 — Live demo: try it yourself */}
-        <GenesisActIV />
-
-        {/* 4 — Founder note */}
-        <GenesisFounderNote />
-
-        <LandingFooter />
+        <V13Hero />
+        <V13Problem />
+        <V13Features />
+        <V13Cta />
+        <V13Footer />
       </main>
     </MotionProvider>
   );

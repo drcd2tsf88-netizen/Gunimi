@@ -197,6 +197,42 @@
   50%       { transform: translateY(-6px); }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   LANDING V13 — keyframes
+   ───────────────────────────────────────────────────────────── */
+@keyframes v13-grid-drift {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(60px); }
+}
+@keyframes v13-scan {
+  0%   { top: -10%; }
+  100% { top: 110%; }
+}
+@keyframes v13-float-up {
+  0%   { opacity: 0; transform: translateY(40px) rotateX(8deg); }
+  100% { opacity: 1; transform: translateY(0) rotateX(8deg); }
+}
+@keyframes v13-fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes v13-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.06); }
+}
+@keyframes v13-ring {
+  0%   { opacity: 0.2; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(2.2); }
+}
+@keyframes v13-blink {
+  0%, 100% { opacity: 0.25; }
+  50%       { opacity: 1; }
+}
+@keyframes v13-slin {
+  from { opacity: 0; transform: translateX(6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 @keyframes gunimi-grain {
   0%, 100% { transform: translate(0, 0); }
   10%       { transform: translate(-1%, -1%); }
