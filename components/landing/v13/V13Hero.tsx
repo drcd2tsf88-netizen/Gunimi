@@ -111,11 +111,12 @@ export function V13Hero() {
 
       {/* Scan line */}
       <div
-        className="absolute left-0 right-0 h-[180px] pointer-events-none z-[1]"
+        className="absolute top-0 left-0 right-0 h-[180px] pointer-events-none z-[1]"
         style={{
           background:
             "linear-gradient(to bottom,transparent,rgba(109,91,255,.025),transparent)",
           animation: "v13-scan 8s ease-in-out infinite",
+          willChange: "transform",
         }}
       />
 

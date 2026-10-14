@@ -205,8 +205,8 @@
   100% { transform: translateY(60px); }
 }
 @keyframes v13-scan {
-  0%   { top: -10%; }
-  100% { top: 110%; }
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 @keyframes v13-float-up {
   0%   { opacity: 0; transform: translateY(40px) rotateX(8deg); }
