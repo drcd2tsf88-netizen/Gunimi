@@ -6,11 +6,13 @@
 import { type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { syncEmailConnection } from "@/lib/email/sync";
+import { processEmailPromises } from "@/lib/promises/processEmailPromises";
 import { logger } from "@/lib/logger";
 
 type ConnectionRow = {
   id: string;
   workspace_id: string;
+  user_id: string;
   provider: string;
 };
 
@@ -40,7 +42,7 @@ export async function GET(request: NextRequest) {
   // Fetch all connections that have a valid access token
   const { data: connections, error } = await supabaseAdmin
     .from("email_connections")
-    .select("id, workspace_id, provider")
+    .select("id, workspace_id, user_id, provider")
     .not("access_token", "is", null);
 
   if (error || !connections) {
@@ -56,6 +58,16 @@ export async function GET(request: NextRequest) {
 
     try {
       const result = await syncEmailConnection(conn.id);
+
+      // After sync — scan new outbound emails for promises
+      try {
+        await processEmailPromises(conn.workspace_id, conn.user_id, conn.id);
+      } catch (promiseErr) {
+        logger.error(`[EmailSync] Promise processing failed for ${conn.id}`, {
+          error: promiseErr instanceof Error ? promiseErr.message : "Unknown",
+        });
+      }
+
       reports.push({
         connectionId: conn.id,
         workspaceId: conn.workspace_id,
