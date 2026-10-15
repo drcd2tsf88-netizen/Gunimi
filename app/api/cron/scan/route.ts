@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
   }
 
   const cronStartMs = Date.now();
-  const TIME_BUDGET_MS = 25_000;
+  const TIME_BUDGET_MS = 20_000;
   const scanTypes = getAllScanTypes();
   const workspaceReports: WorkspaceReport[] = [];
 
@@ -81,6 +81,8 @@ export async function GET(request: NextRequest) {
     const workspaceScans: ScanReport[] = [];
 
     for (const scanType of scanTypes) {
+      if (Date.now() - cronStartMs > TIME_BUDGET_MS) break;
+
       const state = scanSchedule[scanType] ?? { lastRunAt: null, lastFailedAt: null, lastError: null };
       const lastRunAt = state.lastRunAt ?? null;
 

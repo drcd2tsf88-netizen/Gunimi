@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
   }
 
   const reports: ConnectionReport[] = [];
-  const TIME_BUDGET_MS = 25_000;
+  const TIME_BUDGET_MS = 20_000;
 
   for (const conn of connections as ConnectionRow[]) {
     if (Date.now() - startMs > TIME_BUDGET_MS) break;
