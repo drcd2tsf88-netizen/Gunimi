@@ -72,7 +72,7 @@ export async function syncEmailConnection(
     : undefined;
 
   const summaries = await provider.listThreads(accessToken, {
-    maxResults: 50,
+    maxResults: afterDate ? 20 : 30,
     afterDate,
   });
 

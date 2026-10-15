@@ -49,8 +49,11 @@ export async function GET(request: NextRequest) {
   }
 
   const reports: ConnectionReport[] = [];
+  const TIME_BUDGET_MS = 25_000;
 
   for (const conn of connections as ConnectionRow[]) {
+    if (Date.now() - startMs > TIME_BUDGET_MS) break;
+
     try {
       const result = await syncEmailConnection(conn.id);
       reports.push({

@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
   }
 
   const cronStartMs = Date.now();
+  const TIME_BUDGET_MS = 25_000;
   const scanTypes = getAllScanTypes();
   const workspaceReports: WorkspaceReport[] = [];
 
@@ -73,6 +74,8 @@ export async function GET(request: NextRequest) {
   // ─── Process each workspace ───────────────────────────────────────────────
 
   for (const workspace of workspaces as WorkspaceRow[]) {
+    if (Date.now() - cronStartMs > TIME_BUDGET_MS) break;
+
     const prefs: WorkspacePreferences = workspace.preferences ?? {};
     const scanSchedule: Record<string, ScanTypeState> = prefs.scanSchedule ?? {};
     const workspaceScans: ScanReport[] = [];
@@ -168,10 +171,15 @@ export async function GET(request: NextRequest) {
     totalDurationMs,
   });
 
+  const totalSignals = workspaceReports.reduce(
+    (s, w) => s + w.scans.reduce((ss, sc) => ss + (sc.signalsProduced ?? 0), 0),
+    0,
+  );
+
   return Response.json({
     ok: true,
     workspacesProcessed: workspaceReports.length,
+    totalSignalsProduced: totalSignals,
     totalDurationMs,
-    report: workspaceReports,
   });
 }
