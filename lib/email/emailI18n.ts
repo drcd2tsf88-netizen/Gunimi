@@ -222,9 +222,12 @@ export type DailyDigestStrings = {
   sectionMeetings: string;
   sectionTasks: string;
   sectionSignals: string;
+  sectionReachOut: string;
   noMeetings: string;
   noTasks: string;
   noSignals: string;
+  noReachOut: string;
+  reachOutDaysAgo: string;
   meetingAt: string;
   taskDueToday: string;
   taskOverdue: string;
@@ -248,9 +251,12 @@ export function getDailyDigestStrings(
       sectionMeetings: "Today's meetings",
       sectionTasks: "Tasks due today",
       sectionSignals: "Things needing attention",
+      sectionReachOut: "Reach out today",
       noMeetings: "No meetings scheduled for today.",
       noTasks: "No tasks due today.",
       noSignals: "No active signals.",
+      noReachOut: "All relationships look healthy.",
+      reachOutDaysAgo: "days without contact",
       meetingAt: "at",
       taskDueToday: "Due today",
       taskOverdue: "Overdue",
@@ -265,9 +271,12 @@ export function getDailyDigestStrings(
       sectionMeetings: "Dnešné stretnutia",
       sectionTasks: "Úlohy na dnes",
       sectionSignals: "Vyžaduje pozornosť",
+      sectionReachOut: "Dnes osloviť",
       noMeetings: "Dnes nemáte naplánované žiadne stretnutia.",
       noTasks: "Dnes nemáte žiadne úlohy.",
       noSignals: "Žiadne aktívne signály.",
+      noReachOut: "Všetky vzťahy sú v poriadku.",
+      reachOutDaysAgo: "dní bez kontaktu",
       meetingAt: "o",
       taskDueToday: "Na dnes",
       taskOverdue: "Po termíne",
@@ -282,9 +291,12 @@ export function getDailyDigestStrings(
       sectionMeetings: "Dnešní schůzky",
       sectionTasks: "Úkoly na dnes",
       sectionSignals: "Vyžaduje pozornost",
+      sectionReachOut: "Dnes oslovit",
       noMeetings: "Dnes nemáte naplánované žádné schůzky.",
       noTasks: "Dnes nemáte žádné úkoly.",
       noSignals: "Žádné aktivní signály.",
+      noReachOut: "Všechny vztahy jsou v pořádku.",
+      reachOutDaysAgo: "dní bez kontaktu",
       meetingAt: "v",
       taskDueToday: "Na dnes",
       taskOverdue: "Po termínu",

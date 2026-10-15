@@ -83,6 +83,7 @@ export async function processEmailPromises(
         .insert({
           workspace_id: workspaceId,
           user_id: userId,
+          assigned_to: userId,
           contact_id: contactId,
           title: p.text,
           description: msgMarker,

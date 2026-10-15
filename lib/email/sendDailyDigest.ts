@@ -20,6 +20,12 @@ export type DigestSignal = {
   entityName: string;
 };
 
+export type DigestContact = {
+  id: string;
+  name: string;
+  daysSinceContact: number;
+};
+
 type Props = {
   email: string;
   name: string;
@@ -28,6 +34,7 @@ type Props = {
   tasks: DigestTask[];
   meetings: DigestMeeting[];
   signals: DigestSignal[];
+  contacts: DigestContact[];
   dashboardUrl: string;
 };
 
@@ -84,6 +91,7 @@ export async function sendDailyDigest({
   tasks,
   meetings,
   signals,
+  contacts,
   dashboardUrl,
 }: Props): Promise<void> {
   const locale: EmailLocale = resolveEmailLocale(language);
@@ -109,6 +117,11 @@ export async function sendDailyDigest({
       const sub = [sig.entityName, sig.summary].filter(Boolean).join(" — ");
       return renderRow("◉", sig.title, sub);
     })
+    .join("");
+
+  const contactRows = contacts
+    .slice(0, 3)
+    .map((c) => renderRow("→", c.name, `${c.daysSinceContact} ${s.reachOutDaysAgo}`))
     .join("");
 
   const html = `<!DOCTYPE html>
@@ -165,6 +178,9 @@ export async function sendDailyDigest({
                 <!-- Signals -->
                 ${renderSection(s.sectionSignals, signalRows, s.noSignals)}
 
+                <!-- Reach out today -->
+                ${renderSection(s.sectionReachOut, contactRows, s.noReachOut)}
+
                 <!-- CTA -->
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                   <tr>
@@ -202,7 +218,7 @@ export async function sendDailyDigest({
 </body>
 </html>`;
 
-  const text = buildTextBody(s, meetings, tasks, signals, dashboardUrl);
+  const text = buildTextBody(s, meetings, tasks, signals, contacts, dashboardUrl);
 
   const client = getEmailClient();
   await client.sendEmail({
@@ -226,6 +242,7 @@ function buildTextBody(
   meetings: DigestMeeting[],
   tasks: DigestTask[],
   signals: DigestSignal[],
+  contacts: DigestContact[],
   dashboardUrl: string,
 ): string {
   const lines: string[] = [
@@ -257,6 +274,15 @@ function buildTextBody(
   } else {
     signals.slice(0, 5).forEach((sig) => {
       lines.push(`• ${sig.title}${sig.entityName ? ` (${sig.entityName})` : ""}`);
+    });
+  }
+
+  lines.push("", `── ${s.sectionReachOut} ──`);
+  if (contacts.length === 0) {
+    lines.push(s.noReachOut);
+  } else {
+    contacts.slice(0, 3).forEach((c) => {
+      lines.push(`→ ${c.name} (${c.daysSinceContact} ${s.reachOutDaysAgo})`);
     });
   }
 

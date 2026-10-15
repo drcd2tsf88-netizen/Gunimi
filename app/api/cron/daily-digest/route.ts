@@ -6,7 +6,7 @@
 import { type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
-import { sendDailyDigest, type DigestTask, type DigestMeeting, type DigestSignal } from "@/lib/email/sendDailyDigest";
+import { sendDailyDigest, type DigestTask, type DigestMeeting, type DigestSignal, type DigestContact } from "@/lib/email/sendDailyDigest";
 import { getActiveSignalsForWorkspace } from "@/lib/signals/queries";
 import enMessages from "@/locales/en.json";
 import skMessages from "@/locales/sk.json";
@@ -146,7 +146,9 @@ export async function GET(request: NextRequest) {
     try {
       // ─── Workspace-level data ──────────────────────────────────────────
 
-      const [signalsRaw, meetingsRes, membersRes] = await Promise.all([
+      const fourteenDaysAgo = new Date(Date.now() - 14 * 86_400_000).toISOString();
+
+      const [signalsRaw, meetingsRes, membersRes, coolingSignalsRes] = await Promise.all([
         getActiveSignalsForWorkspace(ws.id, supabaseAdmin),
         supabaseAdmin
           .from("calendar_events")
@@ -161,6 +163,15 @@ export async function GET(request: NextRequest) {
           .from("workspace_members")
           .select("user_id, profiles(full_name)")
           .eq("workspace_id", ws.id),
+        supabaseAdmin
+          .from("workspace_signals")
+          .select("entity_id, entity_type, created_at")
+          .eq("workspace_id", ws.id)
+          .eq("entity_type", "contact")
+          .in("type", ["relationship_cooling", "relationship_gone_cold"])
+          .eq("status", "active")
+          .order("created_at", { ascending: false })
+          .limit(5),
       ]);
 
       const meetings: DigestMeeting[] = ((meetingsRes.data ?? []) as MeetingRow[]).map((m) => ({
@@ -172,6 +183,25 @@ export async function GET(request: NextRequest) {
       // Resolve entity names for signals
       const topSignals = signalsRaw.slice(0, 5);
       const entityNames = await resolveEntityNames(topSignals, ws.id);
+
+      // Resolve cooling contact names
+      const coolingSignals = coolingSignalsRes.data ?? [];
+      const coolingContactIds = coolingSignals.map((s) => s.entity_id as string);
+      let contacts: DigestContact[] = [];
+      if (coolingContactIds.length > 0) {
+        const { data: coolingPeople } = await supabaseAdmin
+          .from("workspace_people")
+          .select("id, name, last_contacted_at")
+          .eq("workspace_id", ws.id)
+          .in("id", coolingContactIds);
+        contacts = (coolingPeople ?? []).map((p) => {
+          const lastContact = p.last_contacted_at
+            ? new Date(p.last_contacted_at as string)
+            : new Date(fourteenDaysAgo);
+          const days = Math.floor((Date.now() - lastContact.getTime()) / 86_400_000);
+          return { id: p.id as string, name: p.name as string, daysSinceContact: days };
+        });
+      }
 
       const signals: DigestSignal[] = topSignals.map((sig) => ({
         id: sig.id,
@@ -253,6 +283,7 @@ export async function GET(request: NextRequest) {
               tasks,
               meetings,
               signals,
+              contacts,
               dashboardUrl,
             });
           }
