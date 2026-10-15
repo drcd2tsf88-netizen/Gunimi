@@ -66,8 +66,15 @@ export async function syncEmailConnection(
     }
   }
 
-  // List recent threads
-  const summaries = await provider.listThreads(accessToken, { maxResults: 30 });
+  // Incremental sync: only fetch threads newer than last sync
+  const afterDate = connection.last_synced_at
+    ? new Date(connection.last_synced_at)
+    : undefined;
+
+  const summaries = await provider.listThreads(accessToken, {
+    maxResults: 50,
+    afterDate,
+  });
 
   if (summaries.length === 0) {
     await supabaseAdmin
