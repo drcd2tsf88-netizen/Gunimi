@@ -107,6 +107,11 @@ export default function CreateDealSheet({
       return;
     }
 
+    if (!companyId && !contactId) {
+      toast.error(t("deals.requireContactOrCompany"));
+      return;
+    }
+
     if (probability < 0 || probability > 100) {
       toast.error(t("deals.invalidProbability"));
       return;

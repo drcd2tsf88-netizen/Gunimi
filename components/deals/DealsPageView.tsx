@@ -13,6 +13,7 @@ import {
   LayoutGrid,
   List,
   BarChart2,
+  ShieldAlert,
   PlusCircle,
   TrendingUp,
   Trophy,
@@ -31,6 +32,7 @@ import { formatCurrency } from "@/lib/utils/formatCurrency";
 import DealsPipeline from "./DealsPipeline";
 import DealsListCommand from "./DealsListCommand";
 import DealsPipelineAnalytics from "./DealsPipelineAnalytics";
+import DealsPipelineRisk from "./DealsPipelineRisk";
 import CreateDealSheet from "./CreateDealSheet";
 import EditDealSheet from "./EditDealSheet";
 
@@ -39,7 +41,7 @@ import type { Company } from "@/types/company";
 import type { Contact } from "@/types/contact";
 import type { WorkspaceDealStage } from "@/types/dealStage";
 
-type View = "list" | "pipeline" | "analytics";
+type View = "list" | "pipeline" | "analytics" | "risk";
 
 type Props = {
   deals: Deal[];
@@ -240,6 +242,33 @@ export default function DealsPageView({
                 <BarChart2 size={12} />
                 {t("analyticsView")}
               </button>
+
+              <button
+                onClick={() => setView("risk")}
+                className={cn(
+                  `
+                  flex
+                  h-7
+                  items-center
+                  gap-1.5
+
+                  rounded-lg
+
+                  px-2.5
+
+                  text-xs
+                  font-medium
+
+                  transition-all
+                  `,
+                  view === "risk"
+                    ? "bg-red-500/[0.15] text-red-400"
+                    : "text-white/40 hover:text-white/65"
+                )}
+              >
+                <ShieldAlert size={12} />
+                {t("riskView")}
+              </button>
             </div>
 
             <GunimiButton onClick={() => setOpen(true)}>
@@ -283,9 +312,9 @@ export default function DealsPageView({
           />
         </div>
 
-        {/* SEARCH — hidden in analytics view */}
+        {/* SEARCH — hidden in analytics and risk views */}
 
-        {view !== "analytics" && (
+        {view !== "analytics" && view !== "risk" && (
           <div
             className="
               w-full
@@ -316,6 +345,8 @@ export default function DealsPageView({
               </GunimiButton>
             }
           />
+        ) : view === "risk" ? (
+          <DealsPipelineRisk deals={localDeals} />
         ) : view === "analytics" ? (
           <DealsPipelineAnalytics deals={localDeals} stages={stages} />
         ) : view === "list" ? (

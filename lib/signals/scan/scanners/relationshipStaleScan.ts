@@ -55,6 +55,20 @@ export async function relationshipStaleScan(context: ScanContext): Promise<ScanR
     };
   }
 
+  // One batch query: contacts + companies with an active deal in this workspace
+  const { data: activeDeals } = await supabaseAdmin
+    .from("workspace_deals")
+    .select("contact_id, company_id")
+    .eq("workspace_id", context.workspaceId)
+    .not("stage", "in", '("won","lost")');
+
+  const activeContactIds = new Set<string>();
+  const activeCompanyIds = new Set<string>();
+  for (const d of activeDeals ?? []) {
+    if (d.contact_id) activeContactIds.add(d.contact_id);
+    if (d.company_id) activeCompanyIds.add(d.company_id);
+  }
+
   let resumeCursor = context.cursor;
   let scanned = 0;
   let signalsProduced = 0;
@@ -74,6 +88,10 @@ export async function relationshipStaleScan(context: ScanContext): Promise<ScanR
       };
     }
 
+    const hasActiveDeal =
+      activeContactIds.has(contact.id) ||
+      (contact.company_id !== null && activeCompanyIds.has(contact.company_id));
+
     const stats = await produceContactSignals({
       workspaceId: context.workspaceId,
       contactId: contact.id,
@@ -82,6 +100,7 @@ export async function relationshipStaleScan(context: ScanContext): Promise<ScanR
       email: contact.email,
       phone: contact.phone,
       companyId: contact.company_id,
+      hasActiveDeal,
     });
 
     signalsProduced += stats.signalsProduced;

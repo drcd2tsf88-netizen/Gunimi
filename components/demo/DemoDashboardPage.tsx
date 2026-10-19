@@ -19,10 +19,10 @@ import {
   DEMO_DISPLAY_NAME, DEMO_WORKSPACE_NAME,
   DEMO_TODAY_DATA, DEMO_CONTACTS, DEMO_COMPANIES, DEMO_DEALS,
   DEMO_TASKS, DEMO_SIGNALS, DEMO_MEMORIES, DEMO_ACTIVITIES,
-  DEMO_MEMORY_EVENTS,
+  DEMO_MEMORY_EVENTS, DEMO_EMAIL_THREADS,
 } from "@/lib/demo/demoWorkspaceData";
 import type {
-  DemoContact, DemoCompany, DemoDeal, DemoTask, DemoSignal, DemoMemory,
+  DemoContact, DemoCompany, DemoDeal, DemoTask, DemoSignal, DemoMemory, DemoEmailThread,
 } from "@/lib/demo/demoWorkspaceData";
 
 // ─── Types ───────────────────────────────────────────────────
@@ -110,10 +110,23 @@ function memoryTypeBadge(type: DemoMemory["type"]) {
 }
 
 function signalTypeKey(type: DemoSignal["type"]): string {
-  if (type === "stale_contact") return "signalTypeStaleContact";
-  if (type === "deal_risk")     return "signalTypeDealRisk";
-  if (type === "opportunity")   return "signalTypeOpportunity";
-  return                               "signalTypeTaskOverdue";
+  if (type === "stale_contact")  return "signalTypeStaleContact";
+  if (type === "deal_risk")      return "signalTypeDealRisk";
+  if (type === "opportunity")    return "signalTypeOpportunity";
+  if (type === "promise_broken") return "signalTypePromiseBroken";
+  return                                "signalTypeTaskOverdue";
+}
+
+function healthScoreColor(score: number): string {
+  if (score >= 61) return "#22c55e";
+  if (score >= 31) return "#F59E0B";
+  return "#EF4444";
+}
+
+function dealHealthDotColor(dot: DemoDeal["healthDot"]): string {
+  if (dot === "healthy")  return "#22c55e";
+  if (dot === "warning")  return "#F59E0B";
+  return "#EF4444";
 }
 
 // ─── Shimmer ─────────────────────────────────────────────────
@@ -308,7 +321,7 @@ function ContactDetail({ contact, nav }: { contact: DemoContact; nav: DemoNav })
             {tDemo(`status${contact.status.charAt(0).toUpperCase()}${contact.status.slice(1)}`)}
           </span>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/[0.04] pt-4 sm:grid-cols-3">
+        <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/[0.04] pt-4 sm:grid-cols-4">
           <div>
             <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-[#9AA3B2]/40">{tDemo("detailLastContact")}</p>
             <p className="mt-0.5 text-[13px] font-medium text-[#F7F8FC]">{contact.lastContact}</p>
@@ -320,6 +333,10 @@ function ContactDetail({ contact, nav }: { contact: DemoContact; nav: DemoNav })
           <div>
             <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-[#9AA3B2]/40">{tDemo("detailCompany")}</p>
             <p className="mt-0.5 text-[13px] font-medium text-[#F7F8FC]">{contact.company}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-[#9AA3B2]/40">{tDemo("columnScore")}</p>
+            <p className="mt-0.5 text-[18px] font-bold tabular-nums" style={{ color: healthScoreColor(contact.healthScore) }}>{contact.healthScore}</p>
           </div>
         </div>
         <ActionBar openActionCTA={nav.openActionCTA} tDemo={tDemo} />
@@ -690,10 +707,11 @@ function ContactsSection({ nav }: { nav: DemoNav }) {
     <div className="space-y-3">
       <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">{tDemo("commandContacts")}</h2>
       <div className="overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#0A0E17]">
-        <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#9AA3B2]/40 sm:grid-cols-[1fr_1fr_auto_auto]">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#9AA3B2]/40 sm:grid-cols-[1fr_1fr_auto_auto_auto]">
           <span>{tDemo("columnName")}</span>
           <span className="hidden sm:block">{tDemo("columnCompany")}</span>
           <span className="hidden sm:block">{tDemo("detailLastContact")}</span>
+          <span>{tDemo("columnScore")}</span>
           <span>{tDemo("columnStatus")}</span>
         </div>
         {DEMO_CONTACTS.map((c, i) => {
@@ -706,7 +724,7 @@ function ContactsSection({ nav }: { nav: DemoNav }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04, duration: 0.25 }}
               onClick={() => nav.navigate({ type: "contact-detail", id: c.id })}
-              className="grid w-full grid-cols-[1fr_auto] gap-4 border-b border-white/[0.03] px-5 py-3.5 last:border-0 transition-colors hover:bg-white/[0.02] sm:grid-cols-[1fr_1fr_auto_auto]"
+              className="grid w-full grid-cols-[1fr_auto_auto] gap-4 border-b border-white/[0.03] px-5 py-3.5 last:border-0 transition-colors hover:bg-white/[0.02] sm:grid-cols-[1fr_1fr_auto_auto_auto]"
             >
               <div className="text-left">
                 <p className="text-[13px] font-medium text-[#F7F8FC]">{c.name}</p>
@@ -714,6 +732,7 @@ function ContactsSection({ nav }: { nav: DemoNav }) {
               </div>
               <p className="hidden self-center text-[13px] text-[#9AA3B2]/70 sm:block">{c.company}</p>
               <p className="hidden self-center text-[12px] text-[#9AA3B2]/40 sm:block">{c.lastContact}</p>
+              <p className="self-center text-[13px] font-bold tabular-nums" style={{ color: healthScoreColor(c.healthScore) }}>{c.healthScore}</p>
               <span className={`self-center inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${pill.bg} ${pill.text}`}>
                 {statusLabel}
               </span>
@@ -800,6 +819,7 @@ function DealsSection({ nav }: { nav: DemoNav }) {
                 style={{ borderColor: `${d.stageColor}40`, color: d.stageColor, backgroundColor: `${d.stageColor}10` }}>
                 {d.stage}
               </span>
+              <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: dealHealthDotColor(d.healthDot) }} />
               <p className="text-[14px] font-semibold text-[#F7F8FC]">{d.value}</p>
             </div>
           </motion.button>
@@ -854,9 +874,17 @@ function TasksSection({ nav }: { nav: DemoNav }) {
                 onClick={() => nav.navigate({ type: "task-detail", id: task.id })}
                 className="flex flex-1 items-center justify-between gap-4 text-left"
               >
-                <p className={`text-[13px] transition-all ${done ? "text-[#9AA3B2]/40 line-through" : "text-[#F7F8FC]"}`}>
-                  {task.title}
-                </p>
+                <div className="flex min-w-0 items-center gap-2">
+                  <p className={`text-[13px] transition-all ${done ? "text-[#9AA3B2]/40 line-through" : "text-[#F7F8FC]"}`}>
+                    {task.title}
+                  </p>
+                  {task.isAutoPromise && !done && (
+                    <span className="hidden shrink-0 items-center gap-1 rounded-full border border-[#6D5BFF]/20 bg-[#6D5BFF]/[0.08] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#8B7DFF] sm:inline-flex">
+                      <Sparkles size={8} />
+                      {tDemo("taskAutoFromEmail")}
+                    </span>
+                  )}
+                </div>
                 <div className="flex shrink-0 items-center gap-3">
                   <span className="hidden text-[11px] sm:block" style={{ color: done ? "#9AA3B2" : task.dueColor }}>{task.due}</span>
                   <span className={`h-2 w-2 rounded-full ${priorityDot(task.priority)}`} />
@@ -909,6 +937,54 @@ function SignalsSection({ nav }: { nav: DemoNav }) {
             </motion.button>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+// ─── SECTION: EMAIL ──────────────────────────────────────────
+
+function EmailSection({ nav }: { nav: DemoNav }) {
+  const tDemo = useTranslations("demo");
+  return (
+    <div className="space-y-3">
+      <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-[#F7F8FC]">{tDemo("emailSection")}</h2>
+      <div className="overflow-hidden rounded-[16px] border border-white/[0.055] bg-[#0A0E17]">
+        {DEMO_EMAIL_THREADS.length === 0 ? (
+          <div className="px-5 py-10 text-center">
+            <p className="text-[13px] text-[#9AA3B2]/40">{tDemo("emailNoThreads")}</p>
+          </div>
+        ) : (
+          DEMO_EMAIL_THREADS.map((thread: DemoEmailThread, i: number) => (
+            <motion.button
+              key={thread.id}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05, duration: 0.25 }}
+              onClick={() => nav.navigate({ type: "contact-detail", id: thread.contactId })}
+              className="flex w-full items-start gap-4 border-b border-white/[0.03] px-5 py-4 last:border-0 text-left transition-colors hover:bg-white/[0.02]"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-[13px] font-semibold text-[#F7F8FC]/60">
+                {thread.contactName.charAt(0)}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <p className={`truncate text-[13px] font-medium ${thread.isUnread ? "text-[#F7F8FC]" : "text-[#F7F8FC]/70"}`}>
+                    {thread.contactName}
+                  </p>
+                  <span className="shrink-0 text-[11px] text-[#9AA3B2]/30">{thread.timeAgo}</span>
+                </div>
+                <p className={`mt-0.5 truncate text-[12px] ${thread.isUnread ? "font-semibold text-[#F7F8FC]/90" : "text-[#9AA3B2]/60"}`}>
+                  {thread.subject}
+                </p>
+                <p className="mt-0.5 truncate text-[11px] text-[#9AA3B2]/40">{thread.snippet}</p>
+              </div>
+              {thread.isUnread && (
+                <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#6D5BFF]" />
+              )}
+            </motion.button>
+          ))
+        )}
       </div>
     </div>
   );
@@ -1295,7 +1371,7 @@ export default function DemoDashboardPage({ initialSection }: { initialSection?:
           case "tasks":     return <TasksSection nav={demoNav} />;
           case "signals":   return <SignalsSection nav={demoNav} />;
           case "memory":    return <MemorySection />;
-          case "email":     return <GunimiEmptyState title="Email" icon={Mail} description={tDemo("connectPrompt")} action={<Link href="/register?ref=demo" className="inline-flex items-center gap-2 rounded-[10px] bg-[#6D5BFF] px-5 py-2.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90">{tDemo("enterGunimi")}<ChevronRight size={14}/></Link>} />;
+          case "email":     return <EmailSection nav={demoNav} />;
           case "calendar":  return <GunimiEmptyState title="Calendar" icon={CalendarDays} description={tDemo("connectPrompt")} action={<Link href="/register?ref=demo" className="inline-flex items-center gap-2 rounded-[10px] bg-[#6D5BFF] px-5 py-2.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90">{tDemo("enterGunimi")}<ChevronRight size={14}/></Link>} />;
           case "analytics": return <GunimiEmptyState title="Analytics" icon={BarChart3} description={tDemo("connectPrompt")} action={<Link href="/register?ref=demo" className="inline-flex items-center gap-2 rounded-[10px] bg-[#6D5BFF] px-5 py-2.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90">{tDemo("enterGunimi")}<ChevronRight size={14}/></Link>} />;
           case "settings":  return <GunimiEmptyState title="Settings" icon={Settings} description={tDemo("connectPrompt")} action={<Link href="/register?ref=demo" className="inline-flex items-center gap-2 rounded-[10px] bg-[#6D5BFF] px-5 py-2.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90">{tDemo("enterGunimi")}<ChevronRight size={14}/></Link>} />;

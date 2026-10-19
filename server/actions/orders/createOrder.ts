@@ -21,6 +21,7 @@ export type CreateOrderInput = {
 export async function createOrder(input: CreateOrderInput): Promise<Order | null> {
   try {
     if (!input.title.trim()) return null;
+    if (!input.contact_id && !input.company_id && !input.deal_id) return null;
 
     const user = await getUser();
     if (!user) return null;

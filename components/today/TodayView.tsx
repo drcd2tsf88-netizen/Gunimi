@@ -11,10 +11,12 @@ import TodaySignalsPulse from "./TodaySignalsPulse";
 import TodayMemoryWidget from "./TodayMemoryWidget";
 import AiBriefCard from "./AiBriefCard";
 import TodayMeetingsSection from "./TodayMeetingsSection";
+import NeedsReplySection from "./NeedsReplySection";
 import type { ResolvedTodayData, TodayCalmContext } from "@/lib/today/types";
 import type { MemoryEvent } from "@/lib/memory/types";
 import type { AiBrief } from "@/server/actions/today/getAiBrief";
 import type { CalendarEventRow } from "@/types/calendar";
+import type { UnansweredThread } from "@/server/actions/email/getUnansweredThreads";
 
 type Props = {
   displayName: string;
@@ -24,6 +26,7 @@ type Props = {
   calmContext?: TodayCalmContext;
   aiBrief?: AiBrief | null;
   todayMeetings?: CalendarEventRow[];
+  unansweredThreads?: UnansweredThread[];
 } & ResolvedTodayData;
 
 function getGreetingKey(): "greetingMorning" | "greetingAfternoon" | "greetingEvening" {
@@ -51,6 +54,7 @@ export default function TodayView({
   calmContext,
   aiBrief,
   todayMeetings = [],
+  unansweredThreads = [],
 }: Props) {
   const t = useTranslations("today");
 
@@ -87,6 +91,9 @@ export default function TodayView({
 
       {/* ── Today's Meetings ─────────────────────────────────────────────── */}
       <TodayMeetingsSection meetings={todayMeetings} />
+
+      {/* ── Needs Reply ──────────────────────────────────────────────────── */}
+      <NeedsReplySection threads={unansweredThreads} />
 
       {/* ── First Signal Moment ───────────────────────────────────────────── */}
       <FirstSignalMoment hasSignals={hasSignals} />

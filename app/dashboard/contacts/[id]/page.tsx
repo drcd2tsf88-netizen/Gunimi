@@ -15,6 +15,7 @@ import { getContactUpcomingMeetings } from "@/server/actions/calendar/getContact
 import { getCalendarConnections } from "@/server/actions/calendar/getCalendarConnections";
 import { getEntityBusinessMemories } from "@/server/actions/memory/getEntityBusinessMemories";
 import ContactDetailView from "@/components/contacts/detail/ContactDetailView";
+import PromisesCard from "@/components/promises/PromisesCard";
 import type { WorkspaceMember } from "@/types/task";
 import { Suspense } from "react";
 import NextActionCard from "@/components/ai/NextActionCard";
@@ -53,6 +54,9 @@ export default async function ContactDetailPage({ params }: Props) {
     <div className="space-y-4">
       <Suspense fallback={null}>
         <NextActionCard entityType="contact" entityId={contactId} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <PromisesCard contactId={contactId} />
       </Suspense>
       <ContactDetailView
         contact={contact}

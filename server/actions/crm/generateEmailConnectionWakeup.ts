@@ -7,6 +7,7 @@ import { checkAIBudget } from "@/lib/ai/checkAIBudget";
 import { logAIUsage } from "@/lib/ai/logUsage";
 import { logger } from "@/lib/logger";
 import { getWorkspaceAILanguage } from "@/lib/ai/getWorkspaceAILanguage";
+import { TIER_LIMITS, WorkspaceTier } from "@/lib/ai/tiers";
 
 async function emailInsightExists(workspaceId: string, contactId: string): Promise<boolean> {
   const { data } = await supabaseAdmin
@@ -49,8 +50,11 @@ export async function generateEmailConnectionWakeup({
 
     if (!threads?.length) return;
 
-    // Collect unique contact IDs
-    const contactIds = [...new Set(threads.map((t) => t.contact_id as string))].slice(0, 12);
+    const tier: WorkspaceTier = budget.tier ?? "free";
+    const maxContacts = TIER_LIMITS[tier].maxEmailWakeupContacts;
+
+    // Collect unique contact IDs, capped by tier
+    const contactIds = [...new Set(threads.map((t) => t.contact_id as string))].slice(0, maxContacts);
 
     const { data: people } = await supabaseAdmin
       .from("workspace_people")

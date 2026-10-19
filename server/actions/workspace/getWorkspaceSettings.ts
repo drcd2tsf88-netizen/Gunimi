@@ -28,6 +28,8 @@ export type WorkspacePreferences = {
   dashboardWidgets?: string[];
   /** Whether to send daily digest emails to workspace members. Default true. */
   emailDigest?: boolean;
+  /** Billing tier — enforced server-side only. Never expose in UI until monetization is live. */
+  tier?: "free" | "starter" | "pro" | "business";
 };
 
 export type WorkspaceSettings = {

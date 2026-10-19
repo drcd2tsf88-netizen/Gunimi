@@ -51,8 +51,10 @@ export async function POST(req: Request) {
       if (!budget.allowed) {
         return errorResponse(
           budget.reason === "workspace_suspended"
-            ? "AI is currently suspended for this workspace."
-            : "Daily AI token limit reached. Try again tomorrow.",
+            ? "Gunimi is currently suspended for this workspace."
+            : budget.reason === "platform_cap"
+              ? "Platform capacity limit reached. Try again later."
+              : "Daily token limit reached. Try again tomorrow.",
           429
         );
       }

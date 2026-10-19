@@ -22,6 +22,7 @@ import { logger } from "@/lib/logger";
 import { produceDealSignals } from "@/lib/signals/producers/dealProducer";
 import { dispatchWebhookEvent } from "@/lib/webhooks/dispatch";
 import { createAuditLog } from "@/lib/server/audit";
+import { generateDealFirstLook } from "./generateDealFirstLook";
 
 export type CreateDealProps = {
   title: string;
@@ -58,19 +59,10 @@ export async function createDeal({
   expiryDate,
 }: CreateDealProps) {
   try {
-    if (!title.trim()) {
-      return null;
-    }
-    if (
-  probability < 0 ||
-  probability > 100
-) {
-  return null;
-}
-
-if (value < 0) {
-  return null;
-}
+    if (!title.trim()) return null;
+    if (probability < 0 || probability > 100) return null;
+    if (value < 0) return null;
+    if (!contactId && !companyId) return null;
 
     const user =
       await getUser();
@@ -273,6 +265,15 @@ probability =
       title: deal.title,
       stage: deal.stage,
       value: deal.value,
+    });
+
+    void generateDealFirstLook({
+      workspaceId: workspace.id,
+      dealId: deal.id,
+      title: deal.title,
+      stage: deal.stage,
+      value: deal.value != null ? Number(deal.value) : null,
+      currency: deal.currency ?? null,
     });
 
     revalidatePath("/dashboard/deals");

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import { createOrder } from "@/server/actions/orders/createOrder";
+
 import GunimiButton from "@/components/ui/GunimiButton";
 import GunimiInput from "@/components/ui/GunimiInput";
 import GunimiTextarea from "@/components/ui/GunimiTextarea";
@@ -95,6 +96,10 @@ export default function CreateOrderSheet({
 
   function handleSubmit() {
     if (!title.trim()) return;
+    if (!companyId && !contactId && !dealId) {
+      toast.error(t("requireContactOrCompany"));
+      return;
+    }
     startTransition(async () => {
       const order = await createOrder({
         title: title.trim(),

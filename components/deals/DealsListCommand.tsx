@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 import GunimiEmptyState from "@/components/ui/GunimiEmptyState";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { computeDealHealth } from "@/lib/deals/dealHealth";
 
 import type { Deal } from "@/types/deal";
 import type { WorkspaceDealStage } from "@/types/dealStage";
@@ -81,7 +82,13 @@ function DealRow({ deal, stage, onNavigate, onEdit }: RowProps) {
 
       {/* Title + chips */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-white/90">{deal.title}</p>
+        <div className="flex items-center gap-1.5">
+          {deal.stage !== "won" && deal.stage !== "lost" && (() => {
+            const h = computeDealHealth(deal.probability, deal.updated_at, deal.expected_close_date, deal.stage);
+            return <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", h.dotClass)} title={h.label} />;
+          })()}
+          <p className="truncate text-sm font-medium text-white/90">{deal.title}</p>
+        </div>
         <div className="mt-0.5 flex items-center gap-2">
           {deal.company?.id && (
             <Link

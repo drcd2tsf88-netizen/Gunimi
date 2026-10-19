@@ -74,14 +74,15 @@ export type DemoContact = {
   role: string;
   lastContact: string;
   status: "active" | "stale" | "cold";
+  healthScore: number;
 };
 
 export const DEMO_CONTACTS: DemoContact[] = [
-  { id: "c1", name: "Jana Horáková",   company: "Acme Corp",   role: "Head of Procurement", lastContact: "12 days ago", status: "stale"  },
-  { id: "c2", name: "Peter Svoboda",   company: "StarBridge",  role: "CFO",                 lastContact: "3 days ago",  status: "active" },
-  { id: "c3", name: "Martin Novák",    company: "Acme Corp",   role: "CEO",                 lastContact: "21 days ago", status: "cold"   },
-  { id: "c4", name: "Eva Kratochvíl",  company: "Nexus Ltd",   role: "Operations Lead",     lastContact: "45 days ago", status: "cold"   },
-  { id: "c5", name: "Tomáš Blažek",    company: "StarBridge",  role: "Product Director",    lastContact: "1 day ago",   status: "active" },
+  { id: "c1", name: "Jana Horáková",   company: "Acme Corp",   role: "Head of Procurement", lastContact: "12 days ago", status: "stale",  healthScore: 34 },
+  { id: "c2", name: "Peter Svoboda",   company: "StarBridge",  role: "CFO",                 lastContact: "3 days ago",  status: "active", healthScore: 87 },
+  { id: "c3", name: "Martin Novák",    company: "Acme Corp",   role: "CEO",                 lastContact: "21 days ago", status: "cold",   healthScore: 12 },
+  { id: "c4", name: "Eva Kratochvíl",  company: "Nexus Ltd",   role: "Operations Lead",     lastContact: "45 days ago", status: "cold",   healthScore: 8  },
+  { id: "c5", name: "Tomáš Blažek",    company: "StarBridge",  role: "Product Director",    lastContact: "1 day ago",   status: "active", healthScore: 91 },
 ];
 
 // ─── Companies ───────────────────────────────────────────────
@@ -110,12 +111,13 @@ export type DemoDeal = {
   stage: string;
   stageColor: string;
   daysOpen: number;
+  healthDot: "healthy" | "warning" | "critical";
 };
 
 export const DEMO_DEALS: DemoDeal[] = [
-  { id: "d1", title: "Acme Corp renewal",   company: "Acme Corp",  value: "€45,000", stage: "Negotiation", stageColor: "#F59E0B", daysOpen: 42 },
-  { id: "d2", title: "StarBridge proposal", company: "StarBridge", value: "€28,000", stage: "Proposal",    stageColor: "#6D5BFF", daysOpen: 14 },
-  { id: "d3", title: "Acme integration",    company: "Acme Corp",  value: "€28,000", stage: "Discovery",   stageColor: "#22D3EE", daysOpen: 7  },
+  { id: "d1", title: "Acme Corp renewal",   company: "Acme Corp",  value: "€45,000", stage: "Negotiation", stageColor: "#F59E0B", daysOpen: 42, healthDot: "critical" },
+  { id: "d2", title: "StarBridge proposal", company: "StarBridge", value: "€28,000", stage: "Proposal",    stageColor: "#6D5BFF", daysOpen: 14, healthDot: "healthy"  },
+  { id: "d3", title: "Acme integration",    company: "Acme Corp",  value: "€28,000", stage: "Discovery",   stageColor: "#22D3EE", daysOpen: 7,  healthDot: "warning"  },
 ];
 
 // ─── Tasks ───────────────────────────────────────────────────
@@ -125,20 +127,23 @@ export type DemoTask = {
   due: string;
   dueColor: string;
   priority: "high" | "medium" | "low";
+  isAutoPromise?: boolean;
 };
 
 export const DEMO_TASKS: DemoTask[] = [
-  { id: "t1", title: "Call Martin Novák — deal is going cold",   due: "Overdue",    dueColor: "#EF4444", priority: "high"   },
-  { id: "t2", title: "Follow up with Jana Horáková",             due: "Today",      dueColor: "#F59E0B", priority: "high"   },
-  { id: "t3", title: "Send StarBridge proposal draft",           due: "Tomorrow",   dueColor: "#9AA3B2", priority: "high"   },
-  { id: "t4", title: "Review Acme Corp contract terms",          due: "This week",  dueColor: "#9AA3B2", priority: "medium" },
-  { id: "t5", title: "Schedule Nexus Ltd discovery call",        due: "This week",  dueColor: "#9AA3B2", priority: "low"    },
+  { id: "t1", title: "Call Martin Novák — deal is going cold",         due: "Overdue",   dueColor: "#EF4444", priority: "high"   },
+  { id: "t2", title: "Follow up with Jana Horáková",                   due: "Today",     dueColor: "#F59E0B", priority: "high"   },
+  { id: "t3", title: "Send StarBridge proposal draft",                 due: "Tomorrow",  dueColor: "#9AA3B2", priority: "high"   },
+  { id: "t6", title: "Send updated pricing sheet to Jana Horáková",    due: "Tomorrow",  dueColor: "#F59E0B", priority: "high",   isAutoPromise: true },
+  { id: "t4", title: "Review Acme Corp contract terms",                due: "This week", dueColor: "#9AA3B2", priority: "medium" },
+  { id: "t7", title: "Prepare StarBridge integration summary for call", due: "This week", dueColor: "#9AA3B2", priority: "medium", isAutoPromise: true },
+  { id: "t5", title: "Schedule Nexus Ltd discovery call",              due: "This week", dueColor: "#9AA3B2", priority: "low"    },
 ];
 
 // ─── Signals ─────────────────────────────────────────────────
 export type DemoSignal = {
   id: string;
-  type: "stale_contact" | "deal_risk" | "opportunity" | "task_overdue";
+  type: "stale_contact" | "deal_risk" | "opportunity" | "task_overdue" | "promise_broken";
   title: string;
   description: string;
   urgency: "critical" | "warning" | "info";
@@ -149,10 +154,30 @@ export type DemoSignal = {
 
 export const DEMO_SIGNALS: DemoSignal[] = [
   { id: "s1", type: "deal_risk",       title: "Acme Corp renewal at risk",             description: "No communication in 14 days during negotiation phase.",              urgency: "critical", entityType: "deal",    entityId: "d1", createdAt: "2 hours ago"  },
+  { id: "s6", type: "promise_broken",  title: "Missed commitment to Martin Novák",     description: "You promised to send updated contract terms 3 days ago — still pending.", urgency: "critical", entityType: "contact", entityId: "c3", createdAt: "3 days ago"  },
   { id: "s2", type: "stale_contact",   title: "Martin Novák — relationship cooling",   description: "21 days since last contact. Key decision maker for Acme integration.", urgency: "warning",  entityType: "contact", entityId: "c3", createdAt: "5 hours ago"  },
   { id: "s3", type: "task_overdue",    title: "Follow-up with Jana Horáková overdue",  description: "Scheduled follow-up is 2 days past due.",                            urgency: "critical", entityType: "task",    entityId: "t2", createdAt: "1 day ago"    },
   { id: "s4", type: "opportunity",     title: "StarBridge buying signals detected",    description: "Tomáš Blažek engaged yesterday. Proposal decision may be imminent.", urgency: "info",     entityType: "deal",    entityId: "d2", createdAt: "1 day ago"    },
   { id: "s5", type: "stale_contact",   title: "Nexus Ltd — 45 days inactive",          description: "Eva Kratochvíl hasn't been contacted since initial discovery.",       urgency: "warning",  entityType: "contact", entityId: "c4", createdAt: "3 days ago"   },
+];
+
+// ─── Email threads ───────────────────────────────────────────
+export type DemoEmailThread = {
+  id: string;
+  contactId: string;
+  contactName: string;
+  subject: string;
+  snippet: string;
+  timeAgo: string;
+  isUnread: boolean;
+};
+
+export const DEMO_EMAIL_THREADS: DemoEmailThread[] = [
+  { id: "e1", contactId: "c5", contactName: "Tomáš Blažek",   subject: "Re: StarBridge integration questions",  snippet: "Thanks for the quick turnaround. I'll share this with Peter before end of week.",                           timeAgo: "1 day ago",   isUnread: true  },
+  { id: "e2", contactId: "c2", contactName: "Peter Svoboda",   subject: "StarBridge proposal — feedback",        snippet: "Looks good overall. A few questions about pricing — can we jump on a call Thursday?",                     timeAgo: "1 day ago",   isUnread: false },
+  { id: "e3", contactId: "c3", contactName: "Martin Novák",    subject: "Follow-up: updated contract terms",     snippet: "Martin — following up on the updated terms I promised to send. Apologies for the delay.",                  timeAgo: "3 days ago",  isUnread: false },
+  { id: "e4", contactId: "c1", contactName: "Jana Horáková",   subject: "Re: Acme Corp Q3 renewal",              snippet: "I'll need to loop in Martin before we can move forward. Let's plan a joint call next week.",                timeAgo: "12 days ago", isUnread: false },
+  { id: "e5", contactId: "c4", contactName: "Eva Kratochvíl",  subject: "Nexus Ltd discovery — initial notes",   snippet: "Hi Eva, here are the initial discovery notes from our call. Please review when you get a chance.",         timeAgo: "45 days ago", isUnread: false },
 ];
 
 // ─── Memory ──────────────────────────────────────────────────

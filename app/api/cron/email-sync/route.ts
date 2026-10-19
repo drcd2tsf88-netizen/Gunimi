@@ -7,6 +7,7 @@ import { type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { syncEmailConnection } from "@/lib/email/sync";
 import { processEmailPromises } from "@/lib/promises/processEmailPromises";
+import { generateEmailConnectionWakeup } from "@/server/actions/crm/generateEmailConnectionWakeup";
 import { logger } from "@/lib/logger";
 
 type ConnectionRow = {
@@ -52,6 +53,7 @@ export async function GET(request: NextRequest) {
 
   const reports: ConnectionReport[] = [];
   const TIME_BUDGET_MS = 20_000;
+  const processedWakeupWorkspaces = new Set<string>();
 
   for (const conn of connections as ConnectionRow[]) {
     if (Date.now() - startMs > TIME_BUDGET_MS) break;
@@ -66,6 +68,18 @@ export async function GET(request: NextRequest) {
         logger.error(`[EmailSync] Promise processing failed for ${conn.id}`, {
           error: promiseErr instanceof Error ? promiseErr.message : "Unknown",
         });
+      }
+
+      // Auto-trigger email relationship wakeup — once per workspace per cron run
+      if (!processedWakeupWorkspaces.has(conn.workspace_id)) {
+        processedWakeupWorkspaces.add(conn.workspace_id);
+        try {
+          await generateEmailConnectionWakeup({ workspaceId: conn.workspace_id });
+        } catch (wakeupErr) {
+          logger.error(`[EmailSync] Wakeup failed for workspace ${conn.workspace_id}`, {
+            error: wakeupErr instanceof Error ? wakeupErr.message : "Unknown",
+          });
+        }
       }
 
       reports.push({

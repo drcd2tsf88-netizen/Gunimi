@@ -7,6 +7,7 @@ import { getWorkspaceState } from "@/server/actions/workspace/getWorkspaceState"
 import { getSignalCounts } from "@/server/actions/signals/getSignalCounts";
 import { getWorkspaceTimeline } from "@/server/actions/memory/getWorkspaceTimeline";
 import { getTodayMeetings } from "@/server/actions/calendar/getTodayMeetings";
+import { getUnansweredThreads } from "@/server/actions/email/getUnansweredThreads";
 import TodayView from "@/components/today/TodayView";
 import WorkspaceAwakening from "@/components/today/WorkspaceAwakening";
 import WorkspaceAwakenedMoment from "@/components/today/WorkspaceAwakenedMoment";
@@ -25,7 +26,7 @@ export default async function TodayPage() {
       )
     : Promise.resolve({ data: null });
 
-  const [todayData, profileResult, wsState, signalCounts, recentMemory, aiBrief, todayMeetings] = await Promise.all([
+  const [todayData, profileResult, wsState, signalCounts, recentMemory, aiBrief, todayMeetings, unansweredThreads] = await Promise.all([
     getTodayData(),
     profilePromise,
     getWorkspaceState(),
@@ -33,6 +34,7 @@ export default async function TodayPage() {
     getWorkspaceTimeline(3),
     getAiBrief(),
     getTodayMeetings(),
+    getUnansweredThreads(),
   ]);
 
   const displayName =
@@ -59,6 +61,7 @@ export default async function TodayPage() {
         criticalSignalCount={signalCounts.critical}
         recentMemory={recentMemory}
         todayMeetings={todayMeetings}
+        unansweredThreads={unansweredThreads}
       />
     </WorkspaceAwakenedMoment>
   );

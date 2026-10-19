@@ -95,7 +95,7 @@
     "resetLinkExpiredDesc": "Password reset links can only be used once and expire after a short time. Please request a new one.",
     "requestNewLink": "Request a new link",
     "sessionExpiredLogin": "Your session has expired. Please sign in again.",
-    "aiWorkspaceActive": "AI Workspace Active",
+    "aiWorkspaceActive": "Gunimi Workspace Active",
     "enterpriseSystems": "Enterprise Systems",
     "completeInitializing": "Confirming your account...",
     "completeSyncing": "Syncing your identity...",
@@ -133,7 +133,7 @@
     "quickActions": "Quick Actions",
     "commandCenter": "Command Center",
     "workspace": "Workspace",
-    "systemsOperational": "Workspace AI systems operational.",
+    "systemsOperational": "Gunimi workspace systems operational.",
     "activityCenter": "Activity Center",
     "operationsFeed": "Operations Feed",
     "operationsFeedSubtitle": "Realtime operational activity across your workspace.",
@@ -160,7 +160,7 @@
     "goodMorning": "Good morning",
     "goodAfternoon": "Good afternoon",
     "goodEvening": "Good evening",
-    "heroSubtitle": "Workspace systems operational. AI monitoring active execution across your environment.",
+    "heroSubtitle": "Workspace systems operational. Gunimi monitoring active execution across your environment.",
     "workspaceStatus": "Workspace Status",
     "allSystemsOperational": "All systems operational. No critical issues detected.",
     "openOrbit": "Open Gunimi AI",
@@ -714,6 +714,7 @@
     "requiredField": "This field is required",
     "invalidProbability": "Probability must be between 0 and 100",
     "invalidValue": "Value must be greater than or equal to 0",
+    "requireContactOrCompany": "Select a company or contact — at least one is required.",
     "open": "Open",
     "opportunities": "Opportunities",
     "moveForward": "Move Forward",
@@ -750,6 +751,19 @@
     "analyticsLost": "Lost",
     "analyticsNoLost": "No lost deals.",
     "analyticsMore": "more",
+    "riskView": "Risk",
+    "riskTitle": "Pipeline Risk",
+    "riskSubtitle": "Open deals sorted by risk — address the critical ones first.",
+    "riskNoDeals": "No open deals to analyze.",
+    "riskHealthy": "On track",
+    "riskNoActivity": "No activity for {days}d",
+    "riskPastCloseDate": "Past expected close date",
+    "riskClosingSoon": "Closing in {days}d",
+    "riskNoCloseDate": "No close date set",
+    "riskAtRiskCount": "{count} at risk",
+    "riskWarningCount": "{count} warning",
+    "riskHealthyCount": "{count} healthy",
+    "aiFirstLookBadge": "Gunimi First Look",
     "pipeline": "Pipeline",
     "closed": "Closed",
     "closeDate": "Close Date",
@@ -923,20 +937,20 @@
     "title": "Automation Center",
     "subtitle": "Deterministic automation rules that react to business events in your workspace.",
     "activeAutomations": "Active Automation",
-    "aiWorkflows": "AI Workflows",
+    "aiWorkflows": "Gunimi Workflows",
     "productivityBoost": "Productivity Boost",
     "configureAutomation": "Configure Automation",
-    "suggestedWorkflows": "Suggested AI Workflows",
+    "suggestedWorkflows": "Suggested Gunimi Workflows",
     "orbitAi": "Gunimi AI",
     "statusActive": "Active",
     "statusComingSoon": "Coming Soon",
     "suggestion1": "Create tasks from meeting notes automatically",
-    "suggestion2": "Generate CRM follow-up reminders using AI",
+    "suggestion2": "Generate CRM follow-up reminders using Gunimi",
     "suggestion3": "Detect inactive leads and suggest re-engagement",
     "automation1Title": "Lead Follow-Up",
     "automation1Description": "Automatically create a follow-up task when a new lead is added.",
-    "automation2Title": "AI Meeting Summary",
-    "automation2Description": "Generate AI summaries after creating company notes.",
+    "automation2Title": "Gunimi Meeting Summary",
+    "automation2Description": "Generate Gunimi summaries after creating company notes.",
     "automation3Title": "Won Deal Workflow",
     "automation3Description": "Create onboarding tasks when a customer is moved to won stage.",
     "automation4Title": "Task Reminder",
@@ -1052,6 +1066,11 @@
     "tasksSubtitle": "Work items related to this contact.",
     "noTasks": "No tasks",
     "noTasksDescription": "No tasks linked to this contact.",
+    "promisesBadge": "Tracked Promises",
+    "promisesEmpty": "No tracked promises for this contact.",
+    "promisesDue": "Due {date}",
+    "promisesOverdue": "Overdue",
+    "promisesNoDue": "No deadline",
     "notesBadge": "Knowledge",
     "notes": "Notes",
     "notesSubtitle": "Captured notes and context for this contact.",
@@ -1061,7 +1080,7 @@
     "upcomingMeetings": "Upcoming Meetings",
     "allDay": "All day",
     "businessContext": "Key Context",
-    "aiFirstLookBadge": "AI First Look",
+    "aiFirstLookBadge": "Gunimi First Look",
     "aiEmailInsightBadge": "Email Relationship Insight",
     "memoryType": {
       "commitment": "Commitment",
@@ -1217,7 +1236,7 @@
   },
   "ai": {
     "badge": "Gunimi AI",
-    "title": "AI Mission Control",
+    "title": "Gunimi Mission Control",
     "subtitle": "Central command for all intelligence systems in your workspace.",
     "overviewLabel": "Workspace",
     "overviewTitle": "Workspace Overview",
@@ -1228,7 +1247,7 @@
     "statMembers": "Team Members",
     "intelligenceLabel": "Gunimi Intelligence",
     "intelligenceTitle": "Live Intelligence Modules",
-    "intelligenceSubtitle": "All AI systems are active and connected to your workspace data.",
+    "intelligenceSubtitle": "All Gunimi systems are active and connected to your workspace data.",
     "activeBadge": "Active",
     "openModule": "Open",
     "moduleAutomationsTitle": "Automation Engine",
@@ -1240,7 +1259,7 @@
     "moduleRecommendationsTitle": "Recommendations",
     "moduleRecommendationsDesc": "AI-powered action items surfaced from your live workspace data.",
     "alphaBadge": "Alpha",
-    "chatTitle": "AI Workspace Chat",
+    "chatTitle": "Gunimi Workspace Chat",
     "chatDesc": "Conversational AI with access to your workspace. Ask questions, get summaries and trigger actions.",
     "contextCardTitle": "Workspace Context",
     "promptsLabel": "Quick Prompts",
@@ -1248,9 +1267,9 @@
     "prompt2": "What's urgent today?",
     "prompt3": "Summarize my workspace",
     "prompt4": "Prepare my next meeting",
-    "openChat": "Open AI Chat",
+    "openChat": "Open Gunimi Chat",
     "statUpcomingMeetings": "Upcoming Meetings",
-    "pageTitle": "AI Mission Control"
+    "pageTitle": "Gunimi Mission Control"
   },
   "admin": {
     "badge": "Platform Admin",
@@ -1259,7 +1278,7 @@
     "navOverview": "Overview",
     "navWorkspaces": "Workspaces",
     "navUsers": "Users",
-    "navAi": "AI Operations",
+    "navAi": "Gunimi Operations",
     "navHealth": "Platform Health",
     "navInvites": "Invites",
     "navDogfood": "Dogfood",
@@ -1267,7 +1286,7 @@
     "hubSubtitle": "Real-time overview of all Gunimi workspaces, users and platform health.",
     "hubWorkspaces": "Total Workspaces",
     "hubUsers": "Total Users",
-    "hubAIToday": "AI Today",
+    "hubAIToday": "Gunimi Today",
     "hubSignals": "Active Signals",
     "hubInvites": "Invites",
     "hubDogfood": "Internal Feedback",
@@ -1303,7 +1322,7 @@
     "healthSubtitle": "Real-time snapshot of platform scale, Signal Engine and AI spend.",
     "healthSectionScale": "Platform Scale",
     "healthSectionSignals": "Signal Engine",
-    "healthSectionAI": "AI — Today",
+    "healthSectionAI": "Gunimi — Today",
     "healthWorkspaces": "Workspaces",
     "healthUsers": "Users",
     "healthInvitesPending": "Pending Invites",
@@ -1312,7 +1331,7 @@
     "healthSignalsTotal": "total",
     "healthCritical": "Critical Signals",
     "healthLastSignal": "Last Signal",
-    "healthAIRequests": "AI Requests",
+    "healthAIRequests": "Gunimi Requests",
     "healthAITokens": "Tokens Used",
     "healthAICost": "Cost",
     "invitesTitle": "Invite Control",
@@ -1434,7 +1453,7 @@
     "workspaceLanguage": "Workspace Language",
     "workspaceLanguageNote": "Changing language reloads the interface for all members.",
     "detectedFromBrowser": "Detected from your browser.",
-    "aiLanguage": "AI Response Language",
+    "aiLanguage": "Gunimi Response Language",
     "aiLanguageFollow": "Follow workspace language",
     "lang_en": "English",
     "lang_sk": "Slovenský",
@@ -1562,11 +1581,11 @@
     "emailDigestEnabled": "Sending daily",
     "emailDigestDisabled": "Digest paused",
     "emailDigestSaved": "Notification preferences saved",
-    "aiUsageTitle": "AI Usage",
+    "aiUsageTitle": "Gunimi Usage",
     "aiUsageSubtitle": "Daily token consumption for this workspace.",
     "aiUsageToday": "Used today",
     "aiUsageLimit": "Daily limit",
-    "aiUsageSuspended": "AI is currently suspended for this workspace.",
+    "aiUsageSuspended": "Gunimi is currently suspended for this workspace.",
     "aiUsageTokensOf": "{used} of {limit} tokens",
     "aiUsageLimitLabel": "Daily token limit",
     "aiUsageLimitHint": "Between 10,000 and 1,000,000 tokens per day.",
@@ -1728,7 +1747,7 @@
     "title": "Live Activity Timeline",
     "subtitle": "Monitor live AI actions, workflow executions, workspace updates and operational events across Gunimi.",
     "totalEvents": "Total Events",
-    "aiExecutions": "AI Executions",
+    "aiExecutions": "Gunimi Executions",
     "taskEvents": "Task Events",
     "noActivity": "No activity yet",
     "noActivityDescription": "Gunimi AI activity and workflow events will appear here live.",
@@ -1753,7 +1772,7 @@
     "pipelineDesc": "Understand deal progression, identify bottlenecks and optimize your sales pipeline performance.",
     "teamTitle": "Team Performance",
     "teamDesc": "Monitor individual and team productivity, task completion rates and collaboration metrics.",
-    "aiTitle": "AI Forecasting",
+    "aiTitle": "Gunimi Forecasting",
     "aiDesc": "Gunimi AI will analyze workspace patterns and surface intelligent forecasts and recommendations.",
     "statUpcomingMeetings": "Upcoming Meetings",
     "statEmailThreads": "Email Threads",
@@ -1900,7 +1919,7 @@
     "aiMeetingPrepError": "Failed to generate prep",
     "aiMeetingPrepTopics": "Suggested Topics",
     "aiMeetingPrepKeyPoints": "Key Points",
-    "aiMeetingPrepHint": "Generate AI prep to get context, suggested topics and key points for this meeting.",
+    "aiMeetingPrepHint": "Generate Gunimi prep to get context, suggested topics and key points for this meeting.",
     "markAsMet": "Mark as Met",
     "metLogged": "Meeting logged",
     "metFailed": "Failed to log meeting",
@@ -1969,8 +1988,8 @@
     "syncFailed": "Sync failed",
     "syncFailedReconnect": "Sync failed — please reconnect your account",
     "syncFailedApiDisabled": "Sync failed — Google API is not enabled",
-    "refreshInsights": "Refresh AI Insights",
-    "wakeupComplete": "AI email insights updated",
+    "refreshInsights": "Refresh Gunimi Insights",
+    "wakeupComplete": "Gunimi email insights updated",
     "noThreads": "No email threads yet",
     "noThreadsDescription": "Connect a Gmail account and sync to see email threads here.",
     "noSubject": "(No subject)",
@@ -2029,6 +2048,7 @@
     "createOrder": "Create Order",
     "orderCreated": "Order created",
     "failedToCreateOrder": "Failed to create order",
+    "requireContactOrCompany": "Select a company, contact, or deal — at least one is required.",
     "orderPrefix": "Order:",
     "compose": "Compose",
     "composeTitle": "New Email",
@@ -2050,8 +2070,8 @@
     "reconnectRequired": "Reconnect your Gmail to enable sending",
     "reconnectBanner": "Email sending requires updated permissions. Please reconnect your Gmail account.",
     "reconnectAction": "Reconnect Gmail",
-    "aiDraft": "AI Draft",
-    "aiDraftFailed": "AI draft unavailable",
+    "aiDraft": "Gunimi Draft",
+    "aiDraftFailed": "Gunimi draft unavailable",
     "composeToPlaceholder": "email@example.com"
   },
   "workspace": {
@@ -2157,7 +2177,7 @@
     "subtitle": "AI-powered workspace control",
     "placeholder": "Search workspace, AI actions or workflows...",
     "topbarPlaceholder": "Search Gunimi...",
-    "badgeAI": "AI",
+    "badgeAI": "Gunimi",
     "badgeAction": "ACTION",
     "badgeOpen": "OPEN",
     "badgeContact": "CONTACT",
@@ -2199,6 +2219,10 @@
     "createDealPlaceholder": "Deal name...",
     "createDealHint": "Type a name and press Enter to create",
     "createDealBackHint": "ESC to cancel",
+    "createDealCompanyPlaceholder": "Select company...",
+    "createDealContactPlaceholder": "Select contact (optional)...",
+    "selectClearOption": "— None —",
+    "createDealRequireEntity": "Select a company or contact before creating.",
     "createDealValuePlaceholder": "Estimated value (optional)",
     "createDealNotesPlaceholder": "Notes (optional)",
     "createDealSubmitPrefix": "Create deal",
@@ -2213,6 +2237,9 @@
     "createOrderSubmitPrefix": "Create order",
     "createOrderSubmitHint": "Add to workspace orders",
     "createOrderSubmitKey": "CREATE",
+    "createOrderCompanyPlaceholder": "Select company...",
+    "createOrderContactPlaceholder": "Select contact (optional)...",
+    "createOrderRequireEntity": "Select a company, contact, or deal before creating.",
     "createOrderNotesPlaceholder": "Notes (optional)",
     "createOrderSuccess": "Order created",
     "createOrderError": "Failed to create order. Please try again.",
@@ -2309,12 +2336,12 @@
       "workspace": "Workspace",
       "crm": "CRM",
       "analytics": "Analytics",
-      "ai": "AI Actions"
+      "ai": "Gunimi Actions"
     }
   },
   "adminAI": {
     "badge": "Founder Only",
-    "pageTitle": "AI Operations",
+    "pageTitle": "Gunimi Operations",
     "pageSubtitle": "Real-time AI usage intelligence and cost monitoring for Gunimi.",
     "generatedAt": "Generated",
     "overviewTitle": "Usage Overview",
@@ -2341,7 +2368,7 @@
     "projectionMonthly": "Month to Date",
     "projectionMonthlyHint": "Actual spend this calendar month",
     "featuresTitle": "Feature Usage",
-    "featuresSubtitle": "AI request breakdown by product feature.",
+    "featuresSubtitle": "Gunimi request breakdown by product feature.",
     "featureColFeature": "Feature",
     "featureColRequests": "Requests",
     "featureColTokens": "Tokens",
@@ -2354,7 +2381,7 @@
     "wsCost": "Cost",
     "wsLastActivity": "Last Active",
     "usersTitle": "User Usage",
-    "usersSubtitle": "AI usage attributed to individual users.",
+    "usersSubtitle": "Gunimi usage attributed to individual users.",
     "userUser": "User",
     "userWorkspace": "Workspace",
     "userRequests": "Requests",
@@ -2382,8 +2409,8 @@
     "budgetColLimit": "Daily Limit",
     "budgetColStatus": "Status",
     "budgetColActions": "Actions",
-    "budgetSuspend": "Suspend AI",
-    "budgetResume": "Resume AI",
+    "budgetSuspend": "Suspend Gunimi",
+    "budgetResume": "Resume Gunimi",
     "budgetSuspended": "Suspended",
     "budgetActive": "Active"
   },
@@ -2399,7 +2426,7 @@
     "email": "Email",
     "calendar": "Calendar",
     "analytics": "Analytics",
-    "ai": "AI Mission Control",
+    "ai": "Gunimi Mission Control",
     "activity": "Activity",
     "import": "Import",
     "settings": "Settings",
@@ -2521,7 +2548,7 @@
     "thinkingAnalyzing": "Gunimi AI analyzing workspace...",
     "thinkingDelegating": "Delegating to {agent}...",
     "thinkingComplete": "Analysis complete.",
-    "closePanel": "Close AI panel",
+    "closePanel": "Close Gunimi panel",
     "clearSession": "Clear session",
     "confirmClear": "Confirm? Click again",
     "showLess": "Show less",
@@ -2594,7 +2621,7 @@
         "terms": "Terms",
         "cookies": "Cookies",
         "security": "Security",
-        "aiTransparency": "AI Transparency"
+        "aiTransparency": "Gunimi Transparency"
       },
       "copyright": "© 2026 Gunimi. All rights reserved.",
       "signIn": "Sign in",
@@ -2745,14 +2772,14 @@
       "headlineLine2": "Nothing missed.",
       "subtitle": "A live view of your entire business — metrics, relationships, tasks, and AI signals — all in one place.",
       "browserLabel": "Workspace",
-      "aiActive": "AI active",
+      "aiActive": "Gunimi active",
       "intelligenceCore": "Intelligence Core",
       "analyzingWorkspace": "Analyzing workspace",
-      "recentAiActivityLabel": "Recent AI Activity",
+      "recentAiActivityLabel": "Recent Gunimi Activity",
       "revenueLabel": "Revenue",
       "revenueChange": "+18% vs last month",
       "activeDealsLabel": "Active Deals",
-      "aiInsight": "AI insight",
+      "aiInsight": "Gunimi insight",
       "thisMonth": "this month",
       "openWorkspace": "Open your workspace",
       "metrics": [
@@ -2773,7 +2800,7 @@
         }
       ],
       "activity": [
-        "AI analyzed Acme Corp deal",
+        "Gunimi analyzed Acme Corp deal",
         "Automation triggered: Follow-up",
         "Task closed by AI suggestion",
         "New contact linked to deal"
@@ -2787,7 +2814,7 @@
       "statusLive": "Live",
       "modules": [
         {
-          "title": "AI Intelligence",
+          "title": "Gunimi Intelligence",
           "desc": "Real-time analysis, summaries, and insights generated continuously across your workspace."
         },
         {
@@ -2909,7 +2936,7 @@
         "Encrypted at rest & in transit",
         "GDPR-aligned",
         "Supabase SOC 2 Type II",
-        "AI never trained on your data",
+        "Gunimi never trained on your data",
         "Workspace isolation"
       ]
     },
@@ -2935,7 +2962,7 @@
             "500 AI actions / month",
             "Contacts, deals & tasks",
             "Basic automation",
-            "AI command center"
+            "Gunimi command center"
           ]
         },
         {
@@ -2949,7 +2976,7 @@
             "Unlimited AI actions",
             "Full automation engine",
             "Memory & context recall",
-            "AI agents",
+            "Gunimi agents",
             "Priority support"
           ]
         },
@@ -2999,14 +3026,14 @@
         "uiAdd": "+ Add",
         "uiAiLabel": "Gunimi AI",
         "uiAiInsight": "Peter Horváth — 42 days without contact. Relationship is cooling. Recommend a short message before end of week.",
-        "uiSignalsLabel": "AI Signals",
+        "uiSignalsLabel": "Gunimi Signals",
         "uiEnterBtn": "Enter Gunimi",
         "uiNavOverview": "Overview",
         "uiNavContacts": "Contacts",
         "uiNavCompanies": "Companies",
         "uiNavDeals": "Deals",
         "uiNavTasks": "Tasks",
-        "uiNavSignals": "AI Signals",
+        "uiNavSignals": "Gunimi Signals",
         "uiNavMemory": "Memory",
         "uiNavEmail": "Email",
         "uiStatusActive": "Active",
@@ -3034,16 +3061,16 @@
         "f1Eyebrow": "02 · Relationship Intelligence",
         "f1Heading": "Know exactly where every relationship stands.",
         "f1Body": "Gunimi calculates the <b>Health Score</b> automatically — emails, deals, time since last contact. Red means act now.",
-        "f2Eyebrow": "03 · AI Signals",
-        "f2Heading": "AI alerts you before it's too late.",
+        "f2Eyebrow": "03 · Gunimi Signals",
+        "f2Heading": "Gunimi alerts you before it's too late.",
         "f2Body": "When something stalls — you get a <b>precise signal with context</b>. Not a notification. Information.",
         "f3Eyebrow": "04 · Email Connect",
         "f3Heading": "Emails right next to your client.",
         "f3Body": "Connect Gmail and every email is automatically assigned to the right client. <b>All communication in one place.</b>",
-        "aiLabel": "AI",
+        "aiLabel": "Gunimi",
         "f1FcTitle": "Contacts · Health Score",
         "f1HealthLabel": "Health Score",
-        "f2FcTitle": "AI Signals · today",
+        "f2FcTitle": "Gunimi Signals · today",
         "f2Sig1Text": "Peter Horváth — relationship cooling",
         "f2Sig1Sub": "42 days no contact. Contact recommended within 24h.",
         "f2Sig1Time": "Just now · Critical",
@@ -3123,7 +3150,7 @@
         },
         {
           "title": "Intelligence first",
-          "body": "AI is not an add-on. It runs through every surface: drafting, surfacing signals, connecting the dots across your relationship graph."
+          "body": "Gunimi is not an add-on. It runs through every surface: drafting, surfacing signals, connecting the dots across your relationship graph."
         },
         {
           "title": "Enterprise trust",
@@ -3211,11 +3238,11 @@
           ]
         },
         {
-          "title": "AI & data access",
+          "title": "Gunimi & data access",
           "items": [
-            "AI features operate only on data within your workspace",
+            "Gunimi features only operate on data within your workspace",
             "Your data is never used to train third-party models",
-            "AI prompts and outputs are not stored beyond the session",
+            "Gunimi prompts and outputs are not stored beyond the session",
             "See our AI Transparency page for full details"
           ]
         },
@@ -3230,12 +3257,12 @@
       ]
     },
     "aiTransparency": {
-      "badge": "AI Transparency",
+      "badge": "Gunimi Transparency",
       "headline": "AI that works",
       "headlineAccent": "for you.",
       "subline": "We believe you have a right to know exactly what our AI can access, what it cannot do, and how your data is handled.",
-      "canTitle": "AI can",
-      "cannotTitle": "AI cannot",
+      "canTitle": "Gunimi can",
+      "cannotTitle": "Gunimi cannot",
       "can": [
         "Read workspace data (contacts, companies, deals, notes, tasks) that you explicitly share in a prompt",
         "Generate drafts, summaries and suggestions based on that data",
@@ -3257,15 +3284,15 @@
         },
         {
           "title": "Workspace-scoped context only",
-          "body": "AI features only operate on data within your active workspace. There is no cross-workspace AI context — ever."
+          "body": "Gunimi features only operate on data within your active workspace. There is no cross-workspace Gunimi context — ever."
         },
         {
           "title": "Human confirmation for writes",
-          "body": "AI can draft and suggest, but it cannot modify, create or delete records without an explicit action from a human. Every write is intentional."
+          "body": "Gunimi can draft and suggest, but it cannot modify, create or delete records without an explicit action from a human. Every write is intentional."
         },
         {
           "title": "Hallucinations are real",
-          "body": "AI can and does generate incorrect information. Treat AI output as a draft, not a source of truth. Always verify important facts from primary sources."
+          "body": "Gunimi can and does generate incorrect information. Treat Gunimi output as a draft, not a source of truth. Always verify important facts from primary sources."
         },
         {
           "title": "Prompts are not stored",
@@ -3276,7 +3303,7 @@
           "body": "Gunimi uses the OpenAI API to power AI features. OpenAI's API Terms explicitly state: data submitted via the API is not used to train OpenAI models by default. This applies to all API customers and is contractually guaranteed. This is different from ChatGPT — API usage has stricter data protections. You can verify this directly in OpenAI's usage policies at platform.openai.com."
         }
       ],
-      "warningTitle": "AI can be wrong.",
+      "warningTitle": "Gunimi can be wrong.",
       "warningBody": "AI-generated content in Gunimi is a starting point, not an authoritative record. Always verify critical business information against primary sources. The responsibility for decisions made using AI-assisted information remains with the human making that decision."
     },
     "changelog": {
@@ -3290,6 +3317,22 @@
         "fixed": "Fixed"
       },
       "releases": [
+        {
+          "version": "1.6",
+          "date": "October 2026",
+          "title": "Deal Awareness & Today Intelligence",
+          "description": "Today now surfaces unanswered emails and meeting preparation gaps. Deals get an AI-generated First Look on creation. A new Risk tab gives pipeline health at a glance. Promise Tracker captures email commitments on contact pages.",
+          "changes": [
+            { "tag": "new", "text": "Needs Reply: Today dashboard surfaces unanswered inbound emails with a direct Reply link to Gmail or Outlook." },
+            { "tag": "new", "text": "Meeting signals now appear in Today Focus and Attention — approaching meetings and meetings with no prep note are surfaced." },
+            { "tag": "new", "text": "Deal First Look: AI generates a brief on every new deal immediately after creation — stored as workspace memory and shown on the deal page." },
+            { "tag": "new", "text": "Pipeline Risk tab on the Deals page: at-risk, warning, and healthy deal breakdown with ranked list." },
+            { "tag": "new", "text": "Promise Tracker: commitments extracted from email now appear on contact detail pages." },
+            { "tag": "improved", "text": "Create Deal and Create Order in ⌘K now require a linked company or contact before saving — no orphan records." },
+            { "tag": "improved", "text": "Contacts with an active deal no longer trigger stale relationship signals — less noise, sharper focus." },
+            { "tag": "improved", "text": "Deal health dot appears on all pipeline list rows — green, amber, or red at a glance." }
+          ]
+        },
         {
           "version": "1.5",
           "date": "September 2026",
@@ -3317,7 +3360,7 @@
             },
             {
               "tag": "new",
-              "text": "AI Meeting Prep: tap the sparkle icon on any meeting for instant context, suggested discussion topics, and key reminders — powered by your CRM data."
+              "text": "Gunimi Meeting Prep: tap the sparkle icon on any meeting for instant context, suggested discussion topics, and key reminders — powered by your CRM data."
             },
             {
               "tag": "new",
@@ -3389,7 +3432,7 @@
             },
             {
               "tag": "new",
-              "text": "AI Budget Controls — per-workspace daily token limits and suspension kill switch for platform safety"
+              "text": "Gunimi Budget Controls — per-workspace daily token limits and suspension kill switch for platform safety"
             },
             {
               "tag": "new",
@@ -3445,7 +3488,7 @@
             },
             {
               "tag": "new",
-              "text": "AI Meeting Prep — automatic brief before every calendar meeting: contact context, open deals, stored memory"
+              "text": "Gunimi Meeting Prep — automatic brief before every calendar meeting: contact context, open deals, stored memory"
             },
             {
               "tag": "new",
@@ -3457,7 +3500,7 @@
             },
             {
               "tag": "new",
-              "text": "AI Tag Intelligence — GPT-powered context summary on tag detail page and tag hover card"
+              "text": "Gunimi Tag Intelligence — GPT-powered context summary on tag detail page and tag hover card"
             },
             {
               "tag": "new",
@@ -3469,7 +3512,7 @@
             },
             {
               "tag": "improved",
-              "text": "AI Meeting Prep enriched with stored memory context passed to the GPT brief"
+              "text": "Gunimi Meeting Prep enriched with stored memory context passed to the GPT brief"
             },
             {
               "tag": "improved",
@@ -3540,7 +3583,7 @@
         {
           "version": "0.95",
           "date": "June 2026",
-          "title": "AI Foundation",
+          "title": "Gunimi Foundation",
           "description": "The intelligence layer underneath Gunimi is production-complete. Orbit Assistant, Morning Intelligence, and the Signal scanning infrastructure are all live and running continuously across workspaces.",
           "changes": [
             {
@@ -3716,50 +3759,30 @@
       },
       "inProgress": [
         {
-          "title": "Email — full two-way sync",
-          "description": "Sent and received emails from Gmail fully synced inside Gunimi. Thread view live — compose, AI replies and sent-mail sync in progress."
-        },
-        {
-          "title": "Contact timeline",
-          "description": "Chronological feed of all interactions per contact: emails, notes, tasks, signals and meetings in one scrollable view."
+          "title": "Email — compose & reply",
+          "description": "Send and reply to emails from inside Gunimi. Gmail read sync is live — compose, AI-assisted drafts and sent-mail sync are in progress."
         },
         {
           "title": "Kanban deal pipeline",
           "description": "Drag-and-drop pipeline view alongside the existing list view. Move deals between stages visually."
-        },
-        {
-          "title": "Relationship intelligence graph",
-          "description": "Visualise connections between contacts, companies and deals. Identity model complete — graph view in progress."
         }
       ],
       "planned": [
         {
-          "title": "Weekly AI Digest",
-          "description": "Every Monday morning: a personalised email summary — signals fired, deals moved, tasks overdue, relationship health changes."
+          "title": "Contact deduplication",
+          "description": "Automatically detect and merge duplicate contacts. Keep your workspace clean without manual auditing."
         },
         {
-          "title": "CSV contact import",
-          "description": "Bulk import contacts from a spreadsheet. Map columns, deduplicate, and seed your workspace in minutes."
+          "title": "Team role assignments",
+          "description": "Assign deals, contacts, and tasks to specific team members. Visibility filters and workload views per person."
         },
         {
-          "title": "Recurring tasks",
-          "description": "Set a task to repeat daily, weekly or monthly. Never manually recreate standing work items."
+          "title": "Custom fields",
+          "description": "Add workspace-specific fields to contacts, companies, deals and tasks. No code required — fully typed and searchable."
         },
         {
-          "title": "Deal Health Score",
-          "description": "0–100 automatic score per deal based on age, last activity, interaction count and open signals. Shown inline in the pipeline."
-        },
-        {
-          "title": "Next action suggestions",
-          "description": "AI surfaces the most important thing to do next — no contact in 18 days, open deal in Proposal — without being asked."
-        },
-        {
-          "title": "Onboarding checklist",
-          "description": "First-week guided checklist for new workspace members: add a contact, connect Gmail, create a deal. Disappears when complete."
-        },
-        {
-          "title": "Global full-text search",
-          "description": "One search across contacts, companies, deals, notes, tasks and tags. Results ranked by relevance and recency."
+          "title": "Zapier & webhook integrations",
+          "description": "Trigger external workflows from Gunimi signals and actions. Connect to thousands of apps via Zapier or your own webhook endpoints."
         }
       ],
       "future": [
@@ -3769,7 +3792,7 @@
         },
         {
           "title": "Autonomous agents",
-          "description": "AI agents that take actions — scheduling follow-ups, enriching data, drafting outreach — with your approval."
+          "description": "Gunimi agents that take actions — scheduling follow-ups, enriching data, drafting outreach — with your approval."
         },
         {
           "title": "Revenue intelligence",
@@ -3964,7 +3987,7 @@
       "voice": [
         {
           "title": "Precise, not verbose",
-          "do": "\"AI that understands your business.\"",
+          "do": "\"Gunimi that understands your business.\"",
           "dont": "\"Powerful AI features designed to help businesses like yours succeed.\""
         },
         {
@@ -4209,6 +4232,8 @@
     "focusCompanyClosingDealReason": "A deal with this company is approaching its close window.",
     "focusProposalUnansweredAction": "Follow up on \"{title}\" — proposal unanswered for {days} days",
     "focusProposalUnansweredReason": "Proposals that go unanswered lose momentum. A quick check-in can unlock a decision.",
+    "focusMeetingApproachingAction": "Prepare for your meeting with {name} — in {hours}h",
+    "focusMeetingApproachingReason": "Your meeting is approaching. Review recent notes and open deals for this contact before you connect.",
     "attentionSectionLabel": "Attention required",
     "attentionDealPastClose": "\"{title}\" — close date passed {days} days ago",
     "attentionDealClosingSoon": "\"{title}\" — closes in {days} days",
@@ -4218,6 +4243,8 @@
     "attentionContactOverdueTask": "{name} — task overdue by {days} days",
     "attentionCompanyClosingDeal": "{company} — \"{dealTitle}\" closes in {days} days",
     "attentionProposalUnanswered": "\"{title}\" — proposal unanswered for {days} days",
+    "attentionMeetingApproaching": "{name} — meeting in {hours}h",
+    "attentionMeetingNoPrep": "{name} — meeting soon, no prep note",
     "relationshipsSectionLabel": "Relationships",
     "relationshipStale": "No contact in {days} days",
     "relationshipNeverContacted": "Never contacted",
@@ -4241,7 +4268,11 @@
     "briefLabel": "Daily Brief",
     "todayMeetings": "Today's Meetings",
     "past": "Past",
-    "allDay": "All day"
+    "allDay": "All day",
+    "needsReplyTitle": "Needs Reply",
+    "needsReplyButton": "Reply",
+    "needsReplySeeAll": "All emails",
+    "needsReplyNoSubject": "(no subject)"
   },
   "awakening": {
     "heading": "Your workspace is ready.",
@@ -4278,13 +4309,13 @@
     "ariaLabel": "Release notification",
     "readMore": "View changelog",
     "dismiss": "Got it",
-    "title": "Intelligence Layer — v1.5",
+    "title": "Deal Awareness & Today Intelligence — v1.6",
     "bullets": [
-      "Next Action: AI suggests your best move on every contact and deal page.",
-      "Weekly Digest: receive a Monday email with your pipeline, signals, and an AI brief.",
-      "Meeting Signals: get notified before meetings with no recent notes or preparation.",
-      "Notes now appear in global search (⌘K).",
-      "Pipeline cards now show deal health at a glance."
+      "Needs Reply: Today shows unanswered emails with a direct link to Gmail or Outlook.",
+      "Meeting signals now surface in Today Focus and Attention — approaching meetings and no-prep alerts.",
+      "Deal First Look: AI brief generated on every new deal, saved as workspace memory.",
+      "Pipeline Risk tab: at-risk, warning, and healthy deals in one view.",
+      "Promise Tracker: email commitments visible on every contact page."
     ]
   },
   "demo": {
@@ -4313,7 +4344,7 @@
     "ctaTimedButton": "Start free — no credit card",
     "ctaTimedDismiss": "Continue exploring",
     "detailActivity": "Activity",
-    "detailAiObservations": "AI Observations",
+    "detailAiObservations": "Gunimi Observations",
     "detailRelatedContacts": "Related Contacts",
     "detailRelatedCompanies": "Related Companies",
     "detailRelatedDeals": "Related Deals",
@@ -4382,7 +4413,13 @@
     "activitySection": "Activity",
     "columnName": "Name",
     "columnStatus": "Status",
-    "columnCompany": "Company"
+    "columnCompany": "Company",
+    "columnScore": "Score",
+    "signalTypePromiseBroken": "Promise Broken",
+    "taskAutoFromEmail": "From email",
+    "emailSection": "Email Inbox",
+    "emailUnread": "Unread",
+    "emailNoThreads": "No recent emails."
   },
   "invite": {
     "loadingTitle": "Loading Invitation",
@@ -4439,7 +4476,7 @@
     "tagDetailPageTitle": "Tag",
     "backToSettings": "Back",
     "hoverViewTag": "View tag",
-    "aiInsightTitle": "AI Insight",
+    "aiInsightTitle": "Gunimi Insight",
     "aiInsightAnalyzing": "Analyzing...",
     "aiInsightEmpty": "Add more entities to generate an insight.",
     "aiInsightRefresh": "Refresh insight",
@@ -4448,8 +4485,8 @@
     "indexSubtitle": "All workspace tags — each one analyzed by AI based on its tagged entities.",
     "indexBadge": "tags",
     "indexEntities": "entities",
-    "indexAiCovered": "AI analyzed",
-    "indexNoAiYet": "Open tag to generate AI insight.",
+    "indexAiCovered": "Gunimi analyzed",
+    "indexNoAiYet": "Open tag to generate Gunimi insight.",
     "indexEmptyDescription": "Create tags in Settings to categorize contacts, companies, deals and tasks.",
     "filterSearch": "Search tags...",
     "filterAll": "All",
@@ -4858,7 +4895,7 @@
           }
         ],
         "extras": [
-          "AI decision: what to do next with this contact",
+          "Gunimi decision: what to do next with this contact",
           "Upcoming meetings shown on contact page",
           "Full activity timeline per contact"
         ]
@@ -4882,18 +4919,18 @@
         "body": "Gmail integration — read and write. Every thread is automatically linked to the right contact, deal, and company.",
         "features": [
           "Compose and reply from within Gunimi",
-          "AI email draft — context-aware, uses open deals and tasks",
+          "Gunimi email draft — context-aware, uses open deals and tasks",
           "Automatic signal on every send",
           "CRM coverage rate, unread analysis, follow-up detection"
         ],
-        "quote": "AI writes the first draft. You decide what to send."
+        "quote": "Gunimi writes the first draft. You decide what to send."
       },
       "calendar": {
         "label": "Calendar Intelligence",
         "title": "Every meeting, in context.",
         "body": "Google Calendar integration with full CRM intelligence. Before every meeting with a CRM contact, Gunimi generates a brief.",
         "features": [
-          "AI Meeting Prep — open deals, open tasks, last contact, suggested topics",
+          "Gunimi Meeting Prep — open deals, open tasks, last contact, suggested topics",
           "Mark as Met — one click logs a meeting_held signal",
           "Upcoming meetings shown on contact detail page",
           "Month / Week / List view with tasks and deals overlay"
@@ -4962,7 +4999,7 @@
         "security": [
           "Row Level Security — workspace data fully isolated",
           "Admin console with full audit log",
-          "AI budget controls per workspace",
+          "Gunimi budget controls per workspace",
           "3 languages: English, Slovak, Czech"
         ]
       },

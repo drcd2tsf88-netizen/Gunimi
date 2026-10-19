@@ -21,12 +21,13 @@ export type ContactProducerInput = {
   email: string | null;
   phone: string | null;
   companyId: string | null;
+  hasActiveDeal?: boolean;
 };
 
 export async function produceContactSignals(
   input: ContactProducerInput,
 ): Promise<SignalProductionStats> {
-  const { workspaceId, contactId, lastContactedAt, createdAt, email, phone, companyId } = input;
+  const { workspaceId, contactId, lastContactedAt, createdAt, email, phone, companyId, hasActiveDeal = false } = input;
 
   const now = Date.now();
   const origin = `contact_resolver:${contactId}`;
@@ -34,12 +35,13 @@ export async function produceContactSignals(
   let signalsResolved = 0;
 
   // ─── contact_stale ────────────────────────────────────────────────────────
+  // Suppressed when contact has an active deal — silence is expected, not a warning.
 
   const daysSinceContact = lastContactedAt
     ? Math.floor((now - new Date(lastContactedAt).getTime()) / MS_PER_DAY)
     : null;
 
-  if (daysSinceContact !== null && daysSinceContact > STALE_RELATIONSHIP_DAYS) {
+  if (!hasActiveDeal && daysSinceContact !== null && daysSinceContact > STALE_RELATIONSHIP_DAYS) {
     if (
       await produceSignal({
         workspaceId,
@@ -62,10 +64,11 @@ export async function produceContactSignals(
   }
 
   // ─── contact_new_no_interaction ───────────────────────────────────────────
+  // Suppressed when contact has an active deal — being worked, not ignored.
 
   const daysSinceCreated = Math.floor((now - new Date(createdAt).getTime()) / MS_PER_DAY);
 
-  if (!lastContactedAt && daysSinceCreated <= NEW_RELATIONSHIP_DAYS) {
+  if (!hasActiveDeal && !lastContactedAt && daysSinceCreated <= NEW_RELATIONSHIP_DAYS) {
     if (
       await produceSignal({
         workspaceId,

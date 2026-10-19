@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
 import { extractPromises } from "./extractPromises";
+import { getTierFromPreferences, TIER_LIMITS } from "@/lib/ai/tiers";
 
 // Hidden marker stored in task description to prevent duplicate processing
 const MARKER_PREFIX = "<!-- pid:";
@@ -32,9 +33,18 @@ export async function processEmailPromises(
 
   if (!messages || messages.length === 0) return { tasksCreated: 0 };
 
+  const { data: workspaceRow } = await supabaseAdmin
+    .from("workspaces")
+    .select("preferences")
+    .eq("id", workspaceId)
+    .maybeSingle();
+
+  const tier = getTierFromPreferences(workspaceRow?.preferences as Record<string, unknown> | null);
+  const cappedMessages = messages.slice(0, TIER_LIMITS[tier].maxPromiseEmailsPerRun);
+
   let tasksCreated = 0;
 
-  for (const msg of messages) {
+  for (const msg of cappedMessages) {
     if (!msg.snippet) continue;
 
     const msgMarker = marker(msg.provider_message_id);

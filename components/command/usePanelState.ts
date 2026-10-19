@@ -121,12 +121,18 @@ export function usePanelState({
   async function handleCreateDeal(extra: DealExtra) {
     const title = query.trim();
     if (!title) return;
+    if (!extra.companyId && !extra.contactId) {
+      setPanelError(t("createDealRequireEntity"));
+      return;
+    }
     const numericValue = parseFloat(extra.value.replace(/[^0-9.]/g, ""));
     await runPanelAction(
       () => createDeal({
         title,
         value: isNaN(numericValue) ? 0 : Math.max(0, numericValue),
         description: extra.notes || undefined,
+        companyId: extra.companyId || undefined,
+        contactId: extra.contactId || undefined,
       }),
       t("createDealSuccess"),
       t("createDealError")
@@ -136,11 +142,17 @@ export function usePanelState({
   async function handleCreateOrder(extra: OrderExtra) {
     const title = query.trim();
     if (!title) return;
+    if (!extra.companyId && !extra.contactId) {
+      setPanelError(t("createOrderRequireEntity"));
+      return;
+    }
     await runPanelAction(
       () => createOrder({
         title,
         currency: "EUR",
         notes: extra.notes || undefined,
+        company_id: extra.companyId || undefined,
+        contact_id: extra.contactId || undefined,
       }),
       t("createOrderSuccess"),
       t("createOrderError")

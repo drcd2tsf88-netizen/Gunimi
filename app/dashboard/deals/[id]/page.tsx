@@ -17,6 +17,7 @@ import { getCalendarConnections } from "@/server/actions/calendar/getCalendarCon
 import { getDealUpcomingMeetings } from "@/server/actions/calendar/getDealUpcomingMeetings";
 
 import DealDetailView from "@/components/deals/detail/DealDetailView";
+import DealFirstLookCard from "@/components/deals/detail/DealFirstLookCard";
 import type { WorkspaceMember } from "@/types/task";
 import GunimiBreadcrumbs from "@/components/ui/GunimiBreadcrumbs";
 import { Suspense } from "react";
@@ -62,6 +63,9 @@ export default async function DealPage({ params }: Props) {
       />
       <Suspense fallback={null}>
         <NextActionCard entityType="deal" entityId={id} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <DealFirstLookCard dealId={id} />
       </Suspense>
       <DealDetailView
         deal={dealData.deal}

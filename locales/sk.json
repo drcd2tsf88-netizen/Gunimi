@@ -95,7 +95,7 @@
     "resetLinkExpiredDesc": "Odkaz na obnovu hesla možno použiť len raz a po krátkom čase vyprší. Požiadajte o nový.",
     "requestNewLink": "Požiadať o nový odkaz",
     "sessionExpiredLogin": "Vaša relácia vypršala. Prihláste sa znova.",
-    "aiWorkspaceActive": "AI Pracovný priestor aktívny",
+    "aiWorkspaceActive": "Gunimi Pracovný priestor aktívny",
     "enterpriseSystems": "Podnikové systémy",
     "completeInitializing": "Potvrdzujeme váš účet...",
     "completeSyncing": "Synchronizácia vašej identity...",
@@ -133,7 +133,7 @@
     "quickActions": "Rýchle akcie",
     "commandCenter": "Riadiace centrum",
     "workspace": "Pracovný priestor",
-    "systemsOperational": "AI systémy pracovného priestoru sú aktívne.",
+    "systemsOperational": "Gunimi systémy pracovného priestoru sú aktívne.",
     "activityCenter": "Centrum aktivít",
     "operationsFeed": "Prevádzkový prehľad",
     "operationsFeedSubtitle": "Aktivity a udalosti v pracovnom priestore v reálnom čase.",
@@ -160,7 +160,7 @@
     "goodMorning": "Dobré ráno",
     "goodAfternoon": "Dobrý deň",
     "goodEvening": "Dobrý večer",
-    "heroSubtitle": "Systémy pracovného priestoru sú aktívne. AI monitoruje vykonávanie vo vašom prostredí.",
+    "heroSubtitle": "Systémy pracovného priestoru sú aktívne. Gunimi monitoruje vykonávanie vo vašom prostredí.",
     "workspaceStatus": "Stav pracovného priestoru",
     "allSystemsOperational": "Všetky systémy sú funkčné. Neboli zistené žiadne kritické problémy.",
     "openOrbit": "Otvoriť Gunimi AI",
@@ -714,6 +714,7 @@
     "requiredField": "Toto pole je povinné",
     "invalidProbability": "Pravdepodobnosť musí byť medzi 0 a 100",
     "invalidValue": "Hodnota musí byť väčšia alebo rovná 0",
+    "requireContactOrCompany": "Vyberte firmu alebo kontakt — aspoň jedno je povinné.",
     "open": "Otvorené",
     "opportunities": "Príležitosti",
     "moveForward": "Presunúť dopredu",
@@ -750,6 +751,19 @@
     "analyticsLost": "Prehraté",
     "analyticsNoLost": "Žiadne prehraté obchody.",
     "analyticsMore": "ďalších",
+    "riskView": "Riziká",
+    "riskTitle": "Riziko pipeline",
+    "riskSubtitle": "Otvorené obchody zoradené podľa rizika — najprv vyriešte kritické.",
+    "riskNoDeals": "Žiadne otvorené obchody na analýzu.",
+    "riskHealthy": "V poriadku",
+    "riskNoActivity": "Žiadna aktivita {days}d",
+    "riskPastCloseDate": "Po termíne uzavretia",
+    "riskClosingSoon": "Uzatvára sa za {days}d",
+    "riskNoCloseDate": "Bez dátumu uzavretia",
+    "riskAtRiskCount": "{count} ohrozené",
+    "riskWarningCount": "{count} varovanie",
+    "riskHealthyCount": "{count} zdravé",
+    "aiFirstLookBadge": "Gunimi prvý pohľad",
     "pipeline": "Pipeline",
     "closed": "Uzavreté",
     "closeDate": "Dátum uzavretia",
@@ -923,20 +937,20 @@
     "title": "Obchodná automatizácia poháňaná AI.",
     "subtitle": "Automatizujte opakujúce sa workflow, CRM akcie a obchodné operácie s Gunimi AI.",
     "activeAutomations": "Aktívna automatizácia",
-    "aiWorkflows": "AI workflow",
+    "aiWorkflows": "Gunimi workflow",
     "productivityBoost": "Zlepšenie produktivity",
     "configureAutomation": "Konfigurovať automáciu",
-    "suggestedWorkflows": "Navrhované AI workflow",
+    "suggestedWorkflows": "Navrhované Gunimi workflow",
     "orbitAi": "Gunimi AI",
     "statusActive": "Aktívne",
     "statusComingSoon": "Čoskoro",
     "suggestion1": "Automaticky vytvárať úlohy z poznámok zo stretnutí",
-    "suggestion2": "Generovať CRM pripomienky pomocou AI",
+    "suggestion2": "Generovať CRM pripomienky pomocou Gunimi",
     "suggestion3": "Detegovať neaktívne leady a navrhnúť opätovné oslovenie",
     "automation1Title": "Sledovanie leadov",
     "automation1Description": "Automaticky vytvoriť sledovaciu úlohu po pridaní nového leadu.",
-    "automation2Title": "AI súhrn stretnutia",
-    "automation2Description": "Generovať AI súhrny po vytvorení firemných poznámok.",
+    "automation2Title": "Gunimi súhrn stretnutia",
+    "automation2Description": "Generovať Gunimi súhrny po vytvorení firemných poznámok.",
     "automation3Title": "Workflow pre vyhraté obchody",
     "automation3Description": "Vytvoriť onboardingové úlohy pri presunutí zákazníka do fázy vyhraté.",
     "automation4Title": "Pripomienka úlohy",
@@ -1052,6 +1066,11 @@
     "tasksSubtitle": "Pracovné položky súvisiace s týmto kontaktom.",
     "noTasks": "Žiadne úlohy",
     "noTasksDescription": "S týmto kontaktom nie sú prepojené žiadne úlohy.",
+    "promisesBadge": "Sledované sľuby",
+    "promisesEmpty": "Pre tento kontakt nie sú sledované žiadne sľuby.",
+    "promisesDue": "Do {date}",
+    "promisesOverdue": "Po termíne",
+    "promisesNoDue": "Bez termínu",
     "notesBadge": "Znalosti",
     "notes": "Poznámky",
     "notesSubtitle": "Zachytené poznámky a kontext pre tento kontakt.",
@@ -1061,7 +1080,7 @@
     "upcomingMeetings": "Nadchádzajúce stretnutia",
     "allDay": "Celý deň",
     "businessContext": "Kľúčový kontext",
-    "aiFirstLookBadge": "AI First Look",
+    "aiFirstLookBadge": "Gunimi prvý pohľad",
     "aiEmailInsightBadge": "Emailový prehľad vzťahu",
     "memoryType": {
       "commitment": "Záväzok",
@@ -1217,7 +1236,7 @@
   },
   "ai": {
     "badge": "Gunimi AI",
-    "title": "AI Mission Control",
+    "title": "Gunimi Mission Control",
     "subtitle": "Centrálne velenie pre všetky inteligentné systémy vášho pracovného priestoru.",
     "overviewLabel": "Pracovný priestor",
     "overviewTitle": "Prehľad pracovného priestoru",
@@ -1228,7 +1247,7 @@
     "statMembers": "Členovia tímu",
     "intelligenceLabel": "Gunimi Intelligence",
     "intelligenceTitle": "Aktívne moduly inteligencie",
-    "intelligenceSubtitle": "Všetky AI systémy sú aktívne a prepojené s dátami vášho pracovného priestoru.",
+    "intelligenceSubtitle": "Všetky Gunimi systémy sú aktívne a prepojené s dátami vášho pracovného priestoru.",
     "activeBadge": "Aktívne",
     "openModule": "Otvoriť",
     "moduleAutomationsTitle": "Engine automácií",
@@ -1238,9 +1257,9 @@
     "moduleAnalyticsTitle": "Analytika",
     "moduleAnalyticsDesc": "Zdravie pipeline, rýchlosť obchodov a výkonnostné metriky pracovného priestoru.",
     "moduleRecommendationsTitle": "Odporúčania",
-    "moduleRecommendationsDesc": "AI akčné položky odvodené z živých dát vášho pracovného priestoru.",
+    "moduleRecommendationsDesc": "Gunimi akčné položky odvodené z živých dát vášho pracovného priestoru.",
     "alphaBadge": "Alfa",
-    "chatTitle": "AI chat pracovného priestoru",
+    "chatTitle": "Gunimi chat pracovného priestoru",
     "chatDesc": "Konverzačná AI s prístupom k vášmu pracovnému priestoru. Pýtajte sa, získavajte zhrnutia a spúšťajte akcie.",
     "contextCardTitle": "Kontext pracovného priestoru",
     "promptsLabel": "Rýchle výzvy",
@@ -1248,9 +1267,9 @@
     "prompt2": "Čo je dnes urgentné?",
     "prompt3": "Zhrnutie môjho priestoru",
     "prompt4": "Pripraviť najbližšie stretnutie",
-    "openChat": "Otvoriť AI Chat",
+    "openChat": "Otvoriť Gunimi Chat",
     "statUpcomingMeetings": "Nadchádzajúce stretnutia",
-    "pageTitle": "AI Mission Control"
+    "pageTitle": "Gunimi Mission Control"
   },
   "admin": {
     "badge": "Platform Admin",
@@ -1259,7 +1278,7 @@
     "navOverview": "Prehľad",
     "navWorkspaces": "Workspace",
     "navUsers": "Používatelia",
-    "navAi": "AI Operácie",
+    "navAi": "Gunimi Operácie",
     "navHealth": "Zdravie platformy",
     "navInvites": "Pozvánky",
     "navDogfood": "Dogfood",
@@ -1267,7 +1286,7 @@
     "hubSubtitle": "Aktuálny prehľad všetkých workspaces, používateľov a zdravia platformy.",
     "hubWorkspaces": "Celkom workspaces",
     "hubUsers": "Celkom používateľov",
-    "hubAIToday": "AI dnes",
+    "hubAIToday": "Gunimi dnes",
     "hubSignals": "Aktívne signály",
     "hubInvites": "Pozvánky",
     "hubDogfood": "Interná spätná väzba",
@@ -1303,7 +1322,7 @@
     "healthSubtitle": "Aktuálny stav platformy, Signal Engine a AI nákladov.",
     "healthSectionScale": "Rozsah platformy",
     "healthSectionSignals": "Signal Engine",
-    "healthSectionAI": "AI — Dnes",
+    "healthSectionAI": "Gunimi — Dnes",
     "healthWorkspaces": "Workspaces",
     "healthUsers": "Používatelia",
     "healthInvitesPending": "Čakajúce pozvánky",
@@ -1312,7 +1331,7 @@
     "healthSignalsTotal": "celkom",
     "healthCritical": "Kritické signály",
     "healthLastSignal": "Posledný signál",
-    "healthAIRequests": "AI požiadavky",
+    "healthAIRequests": "Gunimi požiadavky",
     "healthAITokens": "Tokeny",
     "healthAICost": "Náklady",
     "invitesTitle": "Správa pozvánnok",
@@ -1434,7 +1453,7 @@
     "workspaceLanguage": "Jazyk pracovného priestoru",
     "workspaceLanguageNote": "Zmena jazyka obnoví rozhranie pre všetkých členov.",
     "detectedFromBrowser": "Zistené z vášho prehliadača.",
-    "aiLanguage": "Jazyk odpovedí AI",
+    "aiLanguage": "Jazyk odpovedí Gunimi",
     "aiLanguageFollow": "Sledovať jazyk pracovného priestoru",
     "lang_en": "English",
     "lang_sk": "Slovenský",
@@ -1562,11 +1581,11 @@
     "emailDigestEnabled": "Zasielanie aktívne",
     "emailDigestDisabled": "Súhrn pozastavený",
     "emailDigestSaved": "Nastavenia notifikácií uložené",
-    "aiUsageTitle": "Využitie AI",
+    "aiUsageTitle": "Využitie Gunimi",
     "aiUsageSubtitle": "Denná spotreba tokenov pre tento workspace.",
     "aiUsageToday": "Spotrebované dnes",
     "aiUsageLimit": "Denný limit",
-    "aiUsageSuspended": "AI je momentálne pozastavené pre tento workspace.",
+    "aiUsageSuspended": "Gunimi je momentálne pozastavené pre tento workspace.",
     "aiUsageTokensOf": "{used} z {limit} tokenov",
     "aiUsageLimitLabel": "Denný limit tokenov",
     "aiUsageLimitHint": "Hodnota medzi 10 000 a 1 000 000 tokenov za deň.",
@@ -1728,7 +1747,7 @@
     "title": "Časová os živých aktivít",
     "subtitle": "Monitorujte živé AI akcie, vykonávanie workflow, aktualizácie pracovného priestoru a prevádzkové udalosti v Gunimi.",
     "totalEvents": "Celkový počet udalostí",
-    "aiExecutions": "AI vykonávania",
+    "aiExecutions": "Gunimi vykonávania",
     "taskEvents": "Úlohové udalosti",
     "noActivity": "Zatiaľ žiadna aktivita",
     "noActivityDescription": "Gunimi AI aktivity a udalosti workflow sa tu budú zobrazovať naživo.",
@@ -1753,7 +1772,7 @@
     "pipelineDesc": "Pochopte postup obchodov, identifikujte úzke miesta a optimalizujte výkon predajného pipeline.",
     "teamTitle": "Výkonnosť tímu",
     "teamDesc": "Monitorujte produktivitu jednotlivcov a tímu, miery plnenia úloh a metriky spolupráce.",
-    "aiTitle": "AI prognózovanie",
+    "aiTitle": "Gunimi prognózovanie",
     "aiDesc": "Gunimi AI analyzuje vzory pracovného priestoru a poskytne inteligentné prognózy a odporúčania.",
     "statUpcomingMeetings": "Nadchádzajúce stretnutia",
     "statEmailThreads": "E-mailové vlákna",
@@ -1900,7 +1919,7 @@
     "aiMeetingPrepError": "Nepodarilo sa vygenerovať prípravu",
     "aiMeetingPrepTopics": "Navrhované témy",
     "aiMeetingPrepKeyPoints": "Kľúčové body",
-    "aiMeetingPrepHint": "Vygenerujte AI prípravu pre kontext, navrhované témy a kľúčové body k tomuto stretnutiu.",
+    "aiMeetingPrepHint": "Vygenerujte Gunimi prípravu pre kontext, navrhované témy a kľúčové body k tomuto stretnutiu.",
     "markAsMet": "Označiť ako absolvované",
     "metLogged": "Stretnutie zaznamenané",
     "metFailed": "Nepodarilo sa zaznamenať stretnutie",
@@ -1969,8 +1988,8 @@
     "syncFailed": "Synchronizácia zlyhala",
     "syncFailedReconnect": "Synchronizácia zlyhala — prosím znovu prepojte účet",
     "syncFailedApiDisabled": "Synchronizácia zlyhala — Google API nie je povolené",
-    "refreshInsights": "Obnoviť AI prehľady",
-    "wakeupComplete": "AI emailové prehľady aktualizované",
+    "refreshInsights": "Obnoviť Gunimi prehľady",
+    "wakeupComplete": "Gunimi emailové prehľady aktualizované",
     "noThreads": "Zatiaľ žiadne e-mailové vlákna",
     "noThreadsDescription": "Pripojte Gmail a synchronizujte ho, aby ste tu videli vlákna.",
     "noSubject": "(Bez predmetu)",
@@ -2029,6 +2048,7 @@
     "createOrder": "Vytvoriť objednávku",
     "orderCreated": "Objednávka vytvorená",
     "failedToCreateOrder": "Nepodarilo sa vytvoriť objednávku",
+    "requireContactOrCompany": "Vyberte firmu, kontakt alebo obchod — aspoň jedno je povinné.",
     "orderPrefix": "Objednávka:",
     "compose": "Napísať",
     "composeTitle": "Nový email",
@@ -2050,8 +2070,8 @@
     "reconnectRequired": "Pre odosielanie emailov je potrebné znovu prepojiť Gmail",
     "reconnectBanner": "Odosielanie emailov vyžaduje aktualizované oprávnenia. Znovu prepojte Gmail účet.",
     "reconnectAction": "Znovu prepojiť Gmail",
-    "aiDraft": "AI návrh",
-    "aiDraftFailed": "AI návrh nie je dostupný",
+    "aiDraft": "Gunimi návrh",
+    "aiDraftFailed": "Gunimi návrh nie je dostupný",
     "composeToPlaceholder": "email@priklad.sk"
   },
   "workspace": {
@@ -2157,7 +2177,7 @@
     "subtitle": "Riadenie pracovného priestoru pomocou AI",
     "placeholder": "Hľadajte stránky, AI akcie alebo pracovné postupy...",
     "topbarPlaceholder": "Hľadajte v Gunimi...",
-    "badgeAI": "AI",
+    "badgeAI": "Gunimi",
     "badgeAction": "AKCIA",
     "badgeOpen": "OTVORIŤ",
     "badgeContact": "KONTAKT",
@@ -2199,6 +2219,10 @@
     "createDealPlaceholder": "Názov obchodu...",
     "createDealHint": "Zadajte názov a stlačte Enter na vytvorenie",
     "createDealBackHint": "ESC na zrušenie",
+    "createDealCompanyPlaceholder": "Vyberte firmu...",
+    "createDealContactPlaceholder": "Vyberte kontakt (voliteľné)...",
+    "selectClearOption": "— Žiadne —",
+    "createDealRequireEntity": "Pred vytvorením vyberte firmu alebo kontakt.",
     "createDealValuePlaceholder": "Odhadovaná hodnota (voliteľné)",
     "createDealNotesPlaceholder": "Poznámky (voliteľné)",
     "createDealSubmitPrefix": "Vytvoriť obchod",
@@ -2213,6 +2237,9 @@
     "createOrderSubmitPrefix": "Vytvoriť objednávku",
     "createOrderSubmitHint": "Pridať do objednávok",
     "createOrderSubmitKey": "VYTVORIŤ",
+    "createOrderCompanyPlaceholder": "Vyberte firmu...",
+    "createOrderContactPlaceholder": "Vyberte kontakt (voliteľné)...",
+    "createOrderRequireEntity": "Pred vytvorením vyberte firmu, kontakt alebo obchod.",
     "createOrderNotesPlaceholder": "Poznámky (voliteľné)",
     "createOrderSuccess": "Objednávka vytvorená",
     "createOrderError": "Nepodarilo sa vytvoriť objednávku. Skúste znova.",
@@ -2309,12 +2336,12 @@
       "workspace": "Pracovný priestor",
       "crm": "CRM",
       "analytics": "Analytika",
-      "ai": "AI Akcie"
+      "ai": "Gunimi Akcie"
     }
   },
   "adminAI": {
     "badge": "Iba zakladatelia",
-    "pageTitle": "AI Operácie",
+    "pageTitle": "Gunimi Operácie",
     "pageSubtitle": "Prehľad využitia AI a monitorovanie nákladov v reálnom čase.",
     "generatedAt": "Vygenerované",
     "overviewTitle": "Prehľad využitia",
@@ -2382,8 +2409,8 @@
     "budgetColLimit": "Denný limit",
     "budgetColStatus": "Stav",
     "budgetColActions": "Akcie",
-    "budgetSuspend": "Pozastaviť AI",
-    "budgetResume": "Obnoviť AI",
+    "budgetSuspend": "Pozastaviť Gunimi",
+    "budgetResume": "Obnoviť Gunimi",
     "budgetSuspended": "Pozastavené",
     "budgetActive": "Aktívne"
   },
@@ -2399,7 +2426,7 @@
     "email": "E-mail",
     "calendar": "Kalendár",
     "analytics": "Analytika",
-    "ai": "AI Mission Control",
+    "ai": "Gunimi Mission Control",
     "activity": "Aktivita",
     "import": "Import",
     "settings": "Nastavenia",
@@ -2521,7 +2548,7 @@
     "thinkingAnalyzing": "Gunimi AI analyzuje pracovný priestor...",
     "thinkingDelegating": "Delegovanie na {agent}...",
     "thinkingComplete": "Analýza dokončená.",
-    "closePanel": "Zatvoriť panel AI",
+    "closePanel": "Zatvoriť Gunimi panel",
     "clearSession": "Vymazať reláciu",
     "confirmClear": "Potvrdiť? Kliknite znova",
     "showLess": "Zobraziť menej",
@@ -2745,14 +2772,14 @@
       "headlineLine2": "Nič prehliadnuté.",
       "subtitle": "Živý pohľad na celé vaše podnikanie — metriky, vzťahy, úlohy a AI signály — všetko na jednom mieste.",
       "browserLabel": "Workspace",
-      "aiActive": "AI aktívna",
+      "aiActive": "Gunimi aktívna",
       "intelligenceCore": "Intelligence Core",
       "analyzingWorkspace": "Analyzujem workspace",
-      "recentAiActivityLabel": "Nedávna AI aktivita",
+      "recentAiActivityLabel": "Nedávna Gunimi aktivita",
       "revenueLabel": "Tržby",
       "revenueChange": "+18 % oproti minulému mesiacu",
       "activeDealsLabel": "Aktívne obchody",
-      "aiInsight": "AI poznaток",
+      "aiInsight": "Gunimi poznatok",
       "thisMonth": "tento mesiac",
       "openWorkspace": "Otvoriť workspace",
       "metrics": [
@@ -2773,7 +2800,7 @@
         }
       ],
       "activity": [
-        "AI analyzovala obchod Acme Corp",
+        "Gunimi analyzovala obchod Acme Corp",
         "Spustená automácia: Sledovanie",
         "Úloha uzavretá na základe AI návrhu",
         "Nový kontakt prepojený s obchodom"
@@ -2787,7 +2814,7 @@
       "statusLive": "Aktívne",
       "modules": [
         {
-          "title": "AI inteligencia",
+          "title": "Gunimi inteligencia",
           "desc": "Analýza v reálnom čase, zhrnutia a poznatky generované nepretržite v celom workspace."
         },
         {
@@ -2909,7 +2936,7 @@
         "Šifrované v pokoji aj pri prenose",
         "V súlade s GDPR",
         "Supabase SOC 2 Type II",
-        "AI netrénuje na vašich dátach",
+        "Gunimi netrénuje na vašich dátach",
         "Izolácia workspacu"
       ]
     },
@@ -2935,7 +2962,7 @@
             "500 AI akcií / mesiac",
             "Kontakty, obchody a úlohy",
             "Základné automácie",
-            "AI command center"
+            "Gunimi command center"
           ]
         },
         {
@@ -2949,7 +2976,7 @@
             "Neobmedzené AI akcie",
             "Plný engine automácií",
             "Memory a kontextové spomienky",
-            "AI agenti",
+            "Gunimi agenti",
             "Prioritná podpora"
           ]
         },
@@ -2999,14 +3026,14 @@
         "uiAdd": "+ Pridať",
         "uiAiLabel": "Gunimi AI",
         "uiAiInsight": "Peter Horváth — 42 dní bez kontaktu. Vzťah chladne. Odporúčam krátku správu pred koncom týždňa.",
-        "uiSignalsLabel": "AI Signály",
+        "uiSignalsLabel": "Gunimi Signály",
         "uiEnterBtn": "Vstúpiť do Gunimi",
         "uiNavOverview": "Prehľad",
         "uiNavContacts": "Kontakty",
         "uiNavCompanies": "Firmy",
         "uiNavDeals": "Dealy",
         "uiNavTasks": "Úlohy",
-        "uiNavSignals": "AI Signály",
+        "uiNavSignals": "Gunimi Signály",
         "uiNavMemory": "Pamäť",
         "uiNavEmail": "Email",
         "uiStatusActive": "Aktívny",
@@ -3034,16 +3061,16 @@
         "f1Eyebrow": "02 · Relationship Intelligence",
         "f1Heading": "Vieš presne kde stojí každý vzťah.",
         "f1Body": "Gunimi počíta <b>Health Score</b> automaticky — emaily, dealy, čas od posledného kontaktu. Červená znamená konaj teraz.",
-        "f2Eyebrow": "03 · AI Signály",
-        "f2Heading": "AI upozorní skôr než je neskoro.",
+        "f2Eyebrow": "03 · Gunimi Signály",
+        "f2Heading": "Gunimi upozorní skôr než je neskoro.",
         "f2Body": "Keď niečo stojí — dostaneš <b>presný signál s kontextom</b>. Nie upozornenie. Informáciu.",
         "f3Eyebrow": "04 · Email Connect",
         "f3Heading": "Emaily priamo pri zákazníkovi.",
         "f3Body": "Napoj Gmail a každý email sa automaticky priraďuje k správnemu zákazníkovi. <b>Celá komunikácia na jednom mieste.</b>",
-        "aiLabel": "AI",
+        "aiLabel": "Gunimi",
         "f1FcTitle": "Kontakty · Health Score",
         "f1HealthLabel": "Health Score",
-        "f2FcTitle": "AI Signály · dnes",
+        "f2FcTitle": "Gunimi Signály · dnes",
         "f2Sig1Text": "Peter Horváth — vzťah chladne",
         "f2Sig1Sub": "42 dní bez kontaktu. Odporúčame kontakt do 24h.",
         "f2Sig1Time": "Práve · Kritické",
@@ -3123,7 +3150,7 @@
         },
         {
           "title": "Inteligencia na prvom mieste",
-          "body": "AI nie je doplnok. Prechádza každým povrchom: vytváranie, zobrazovanie signálov, prepájanie bodov vo vašom relačnom grafe."
+          "body": "Gunimi nie je doplnok. Prechádza každým povrchom: vytváranie, zobrazovanie signálov, prepájanie bodov vo vašom relačnom grafe."
         },
         {
           "title": "Enterprise dôvera",
@@ -3211,9 +3238,9 @@
           ]
         },
         {
-          "title": "AI a prístup k dátam",
+          "title": "Gunimi a prístup k dátam",
           "items": [
-            "AI funkcie operujú len s dátami v rámci vášho workspace",
+            "Gunimi funkcie operujú len s dátami v rámci vášho workspace",
             "Vaše dáta sa nikdy nepoužívajú na trénovanie modelov tretích strán",
             "Výzvy a odpovede AI sa neukladajú mimo aktuálnej relácie",
             "Pre úplné podrobnosti pozrite našu stránku Transparentnosť AI"
@@ -3234,8 +3261,8 @@
       "headline": "AI, ktorá pracuje",
       "headlineAccent": "pre vás.",
       "subline": "Veríme, že máte právo vedieť presne, k čomu má naša AI prístup, čo nemôže robiť a ako sú vaše dáta spravované.",
-      "canTitle": "AI môže",
-      "cannotTitle": "AI nemôže",
+      "canTitle": "Gunimi môže",
+      "cannotTitle": "Gunimi nemôže",
       "can": [
         "Čítať dáta workspace (kontakty, spoločnosti, dealy, poznámky, úlohy), ktoré explicitne zdieľate vo výzve",
         "Generovať koncepty, zhrnutia a návrhy na základe týchto dát",
@@ -3257,15 +3284,15 @@
         },
         {
           "title": "Kontext obmedzený na workspace",
-          "body": "AI funkcie operujú len s dátami vo vašom aktívnom workspace. Nikdy neexistuje krížový kontext AI medzi workspacmi."
+          "body": "Gunimi funkcie operujú len s dátami vo vašom aktívnom workspace. Nikdy neexistuje krížový kontext Gunimi medzi workspacmi."
         },
         {
           "title": "Ľudské potvrdenie pre zápisy",
-          "body": "AI môže navrhovať a tvoriť koncepty, ale nemôže upravovať, vytvárať ani mazať záznamy bez explicitnej akcie od človeka. Každý zápis je zámerný."
+          "body": "Gunimi môže navrhovať a tvoriť koncepty, ale nemôže upravovať, vytvárať ani mazať záznamy bez explicitnej akcie od človeka. Každý zápis je zámerný."
         },
         {
           "title": "Halucinácie sú realita",
-          "body": "AI môže a generuje nesprávne informácie. Zaobchádzajte s výstupom AI ako s konceptom, nie zdrojom pravdy. Vždy overte dôležité fakty z primárnych zdrojov."
+          "body": "Gunimi môže a generuje nesprávne informácie. Zaobchádzajte s výstupom Gunimi ako s konceptom, nie zdrojom pravdy. Vždy overte dôležité fakty z primárnych zdrojov."
         },
         {
           "title": "Výzvy sa neukladajú",
@@ -3276,7 +3303,7 @@
           "body": "Gunimi používa OpenAI API na napájanie AI funkcií. Podmienky API spoločnosti OpenAI výslovne uvádzajú: dáta odoslané cez API sa predvolene nepoužívajú na trénovanie modelov OpenAI. Toto platí pre všetkých zákazníkov API a je zmluvne garantované. Je to iné ako ChatGPT — použitie API má prísnejšiu ochranu dát. Môžete si to overiť priamo v politikách používania OpenAI na platform.openai.com."
         }
       ],
-      "warningTitle": "AI sa môže mýliť.",
+      "warningTitle": "Gunimi sa môže mýliť.",
       "warningBody": "Obsah generovaný AI v Gunimi je východiskový bod, nie autoritatívny záznam. Vždy overte kritické obchodné informácie z primárnych zdrojov. Zodpovednosť za rozhodnutia prijaté pomocou informácií asistovaných AI zostáva na človeku, ktorý toto rozhodnutie robí."
     },
     "changelog": {
@@ -3291,10 +3318,26 @@
       },
       "releases": [
         {
+          "version": "1.6",
+          "date": "Október 2026",
+          "title": "Prehľad obchodov a inteligencia Today",
+          "description": "Today teraz zobrazuje nezodpovedané emaily a medzery v príprave na stretnutia. Obchody dostávajú AI-generovaný prvý pohľad pri vytvorení. Nová záložka Riziko ponúka okamžitý prehľad zdravia pipeline. Promise Tracker zachytáva záväzky z emailov na stránkach kontaktov.",
+          "changes": [
+            { "tag": "new", "text": "Needs Reply: Today zobrazuje nezodpovedané prichádzajúce emaily s priamym odkazom na Gmail alebo Outlook." },
+            { "tag": "new", "text": "Signály stretnutí sa teraz zobrazujú vo Focus a Attention Today — blížiace sa stretnutia a upozornenia na chýbajúcu prípravu." },
+            { "tag": "new", "text": "Deal First Look: AI generuje brief pre každý nový obchod ihneď po vytvorení — uložený ako pamäť workspace a zobrazený na stránke obchodu." },
+            { "tag": "new", "text": "Záložka Pipeline Risk na stránke obchodov: breakdown obchodov v ohrození, s varovaniami a zdravých s hodnotenými zoznamom." },
+            { "tag": "new", "text": "Promise Tracker: záväzky extrahované z emailov sú viditeľné na každej stránke kontaktu." },
+            { "tag": "improved", "text": "Vytvorenie obchodu a objednávky v ⌘K teraz vyžaduje prepojenie so spoločnosťou alebo kontaktom — žiadne osirotené záznamy." },
+            { "tag": "improved", "text": "Kontakty s aktívnym obchodom už nevyvolávajú signály starnutia vzťahu — menej šumu, ostrejší fokus." },
+            { "tag": "improved", "text": "Zdravotný bod obchodu sa zobrazuje na všetkých riadkoch zoznamu pipeline — zelený, oranžový alebo červený na prvý pohľad." }
+          ]
+        },
+        {
           "version": "1.5",
           "date": "September 2026",
           "title": "Vrstva inteligencie",
-          "description": "AI návrhy ďalšieho kroku, týždenný súhrn pre vlastníkov, signály stretnutí, poznámky v globálnom vyhľadávaní a zdravotné body v pipeline — inteligentná vrstva Gunimi ožíva.",
+          "description": "Gunimi návrhy ďalšieho kroku, týždenný súhrn pre vlastníkov, signály stretnutí, poznámky v globálnom vyhľadávaní a zdravotné body v pipeline — inteligentná vrstva Gunimi ožíva.",
           "changes": [
             { "tag": "new", "text": "Ďalší krok: AI navrhuje váš najlepší ťah na každej stránke kontaktu a obchodu — kontextovo, 2 vety, zavretie jedným klikom." },
             { "tag": "new", "text": "Týždenný súhrn: vlastníci workspace dostávajú každý pondelok ráno email s pipeline, signálmi, zdravím vzťahov a AI naratiívom." },
@@ -3317,7 +3360,7 @@
             },
             {
               "tag": "new",
-              "text": "AI príprava na stretnutie: kliknite na iskričku pri akomkoľvek stretnutí a okamžite získate kontext, navrhované témy a kľúčové poznámky z vašich CRM dát."
+              "text": "Gunimi príprava na stretnutie: kliknite na iskričku pri akomkoľvek stretnutí a okamžite získate kontext, navrhované témy a kľúčové poznámky z vašich CRM dát."
             },
             {
               "tag": "new",
@@ -3389,7 +3432,7 @@
             },
             {
               "tag": "new",
-              "text": "AI Budget Controls — denné tokeny na workspace úrovni a kill switch pre pozastavenie AI"
+              "text": "Gunimi Budget Controls — denné tokeny na workspace úrovni a kill switch pre pozastavenie Gunimi"
             },
             {
               "tag": "new",
@@ -3433,7 +3476,7 @@
           "version": "1.1",
           "date": "August 2026",
           "title": "Inteligencia & Pamäť",
-          "description": "AI vrstva sa prehlbuje. Business Memory zhromažďuje pochopenie z každej noty a dealu. Relationship Health hodnotí každý kontakt. Mentions prepájajú ľudí naprieč workspace.",
+          "description": "Gunimi vrstva sa prehlbuje. Business Memory zhromažďuje pochopenie z každej noty a dealu. Relationship Health hodnotí každý kontakt. Mentions prepájajú ľudí naprieč workspace.",
           "changes": [
             {
               "tag": "new",
@@ -3445,7 +3488,7 @@
             },
             {
               "tag": "new",
-              "text": "AI príprava na stretnutie — automatický brief pred každým stretnutím: kontext kontaktu, otvorené dealy, uložená pamäť"
+              "text": "Gunimi príprava na stretnutie — automatický brief pred každým stretnutím: kontext kontaktu, otvorené dealy, uložená pamäť"
             },
             {
               "tag": "new",
@@ -3457,7 +3500,7 @@
             },
             {
               "tag": "new",
-              "text": "AI Tag Intelligence — GPT sumár kontextu tagu na detail stránke a hover karte"
+              "text": "Gunimi Tag Intelligence — GPT sumár kontextu tagu na detail stránke a hover karte"
             },
             {
               "tag": "new",
@@ -3469,7 +3512,7 @@
             },
             {
               "tag": "improved",
-              "text": "AI príprava na stretnutie obohatená o kontext z Business Memory"
+              "text": "Gunimi príprava na stretnutie obohatená o kontext z Business Memory"
             },
             {
               "tag": "improved",
@@ -3540,7 +3583,7 @@
         {
           "version": "0.95",
           "date": "Jún 2026",
-          "title": "AI Základy",
+          "title": "Gunimi Základy",
           "description": "Inteligentná vrstva pod Gunimi je produkčne kompletná. Orbit Assistant, Morning Intelligence a infraštruktúra skenovania signálov sú live a nepretržite bežia naprieč workspacmi.",
           "changes": [
             {
@@ -3581,7 +3624,7 @@
           "version": "0.9",
           "date": "Jún 2026",
           "title": "Workspace Intelligence",
-          "description": "AI vrstva je teraz dostupná v celom workspace. Gunimi Intelligence môže zobrazovať súvisiace záznamy, tvoriť komunikáciu a sumarizovať históriu dealov v kontexte.",
+          "description": "Gunimi vrstva je teraz dostupná v celom workspace. Gunimi Intelligence môže zobrazovať súvisiace záznamy, tvoriť komunikáciu a sumarizovať históriu dealov v kontexte.",
           "changes": [
             {
               "tag": "new",
@@ -3716,50 +3759,30 @@
       },
       "inProgress": [
         {
-          "title": "Email — plná obojsmerná synchronizácia",
-          "description": "Odoslané aj prijaté emaily z Gmailu plne synchronizované v Gunimi. Zobrazenie vlákien je live — compose, AI odpovede a sync odoslaných v procese."
-        },
-        {
-          "title": "Časová os kontaktu",
-          "description": "Chronologický feed všetkých interakcií na kontakt: emaily, noty, tasky, signály a stretnutia v jednom pohľade."
+          "title": "Email — compose a odpoveď",
+          "description": "Odosielanie a odpovedanie na emaily priamo z Gunimi. Gmail sync čítania je live — compose, AI návrhy odpovedí a sync odoslaných v procese."
         },
         {
           "title": "Kanban pipeline dealov",
           "description": "Drag-and-drop pohľad na pipeline vedľa existujúceho zoznamu. Presúvajte dealy medzi fázami vizuálne."
-        },
-        {
-          "title": "Graf relačnej inteligencie",
-          "description": "Vizualizácia prepojení medzi kontaktmi, spoločnosťami a dealmi. Identity model hotový — grafové zobrazenie v procese."
         }
       ],
       "planned": [
         {
-          "title": "Týždenný AI Digest",
-          "description": "Každé pondelkové ráno: personalizovaný emailový súhrn — signály, posunuté dealy, oneskorené tasky, zmeny zdravia vzťahov."
+          "title": "Deduplikácia kontaktov",
+          "description": "Automatické odhalenie a zlúčenie duplicitných kontaktov. Udržujte workspace čistý bez manuálneho auditu."
         },
         {
-          "title": "Import kontaktov z CSV",
-          "description": "Hromadný import kontaktov z tabuľky. Namapujte stĺpce, deduplikujte a naplňte workspace za minúty."
+          "title": "Priradenia rolí tímu",
+          "description": "Priraďte dealy, kontakty a tasky konkrétnym členom tímu. Filtre viditeľnosti a pohľady na pracovné zaťaženie per osoba."
         },
         {
-          "title": "Opakujúce sa tasky",
-          "description": "Nastavte task na opakovanie denne, týždenne alebo mesačne. Nikdy manuálne nevytvárajte opakovanú prácu."
+          "title": "Vlastné polia",
+          "description": "Pridajte polia špecifické pre workspace ku kontaktom, spoločnostiam, dealmi a taskom. Bez kódu — plne typované a prehľadávateľné."
         },
         {
-          "title": "Deal Health Score",
-          "description": "Automatické skóre 0–100 na deal podľa veku, poslednej aktivity, počtu interakcií a otvorených signálov."
-        },
-        {
-          "title": "Návrhy ďalšej akcie",
-          "description": "AI navrhne najdôležitejšiu vec na vykonanie — žiadny kontakt 18 dní, otvorený deal vo fáze Proposal — bez pýtania."
-        },
-        {
-          "title": "Onboarding checklist",
-          "description": "Sprievodný checklist pre nových členov workspace: pridaj kontakt, prepoj Gmail, vytvor deal. Zmizne po dokončení."
-        },
-        {
-          "title": "Globálne fulltextové vyhľadávanie",
-          "description": "Jedno vyhľadávanie naprieč kontaktmi, spoločnosťami, dealmi, nótami, taskami a tagmi. Výsledky zoradené podľa relevancie."
+          "title": "Zapier & webhook integrácie",
+          "description": "Spúšťajte externé pracovné toky zo signálov a akcií Gunimi. Pripojte sa k tisícom aplikácií cez Zapier alebo vlastné webhook endpointy."
         }
       ],
       "future": [
@@ -3769,7 +3792,7 @@
         },
         {
           "title": "Autonómni agenti",
-          "description": "AI agenti, ktorí vykonávajú akcie — plánujú follow-upy, obohacujú dáta, navrhujú oslovenie — s vaším schválením."
+          "description": "Gunimi agenti, ktorí vykonávajú akcie — plánujú follow-upy, obohacujú dáta, navrhujú oslovenie — s vaším schválením."
         },
         {
           "title": "Revenue intelligence",
@@ -4209,6 +4232,8 @@
     "focusCompanyClosingDealReason": "Obchod s touto spoločnosťou sa blíži k dátumu uzávierky.",
     "focusProposalUnansweredAction": "Nadviazať na \"{title}\" — návrh bez odpovede {days} dní",
     "focusProposalUnansweredReason": "Návrhy bez odpovede strácajú dynamiku. Krátka správa môže odblokovať rozhodnutie.",
+    "focusMeetingApproachingAction": "Priprav sa na stretnutie s {name} — za {hours}h",
+    "focusMeetingApproachingReason": "Stretnutie sa blíži. Pred stretnutím si prezri posledné poznámky a otvorené obchody pre tento kontakt.",
     "attentionSectionLabel": "Vyžaduje pozornosť",
     "attentionDealPastClose": "\"{title}\" — dátum uzávierky uplynul pred {days} dňami",
     "attentionDealClosingSoon": "\"{title}\" — uzatvori sa o {days} dní",
@@ -4218,6 +4243,8 @@
     "attentionContactOverdueTask": "{name} — úloha po termíne {days} dní",
     "attentionCompanyClosingDeal": "{company} — \"{dealTitle}\" uzatvori sa o {days} dní",
     "attentionProposalUnanswered": "\"{title}\" — návrh bez odpovede {days} dní",
+    "attentionMeetingApproaching": "{name} — stretnutie za {hours}h",
+    "attentionMeetingNoPrep": "{name} — stretnutie čoskoro, žiadna prípravná poznámka",
     "relationshipsSectionLabel": "Vzťahy",
     "relationshipStale": "Bez kontaktu {days} dní",
     "relationshipNeverContacted": "Nikdy nekontaktovaný",
@@ -4241,7 +4268,11 @@
     "briefLabel": "Denný prehľad",
     "todayMeetings": "Dnešné stretnutia",
     "past": "Prebehlo",
-    "allDay": "Celý deň"
+    "allDay": "Celý deň",
+    "needsReplyTitle": "Čaká na odpoveď",
+    "needsReplyButton": "Odpovedať",
+    "needsReplySeeAll": "Všetky emaily",
+    "needsReplyNoSubject": "(bez predmetu)"
   },
   "awakening": {
     "heading": "Váš workspace je pripravený.",
@@ -4278,13 +4309,13 @@
     "ariaLabel": "Upozornenie o vydaní",
     "readMore": "Zobraziť changelog",
     "dismiss": "Rozumiem",
-    "title": "Vrstva inteligencie — v1.5",
+    "title": "Prehľad obchodov & inteligencia Today — v1.6",
     "bullets": [
-      "Ďalší krok: AI navrhuje váš najlepší ťah na každej stránke kontaktu a obchodu.",
-      "Týždenný súhrn: každý pondelok dostanete email s pipeline, signálmi a AI briefom.",
-      "Signály stretnutí: upozornenie pred stretnutiami bez nedávnych poznámok alebo prípravy.",
-      "Poznámky sa teraz zobrazujú v globálnom vyhľadávaní (⌘K).",
-      "Karty v pipeline teraz zobrazujú zdravie obchodu na prvý pohľad."
+      "Needs Reply: Today zobrazuje nezodpovedané emaily s priamym odkazom na Gmail alebo Outlook.",
+      "Signály stretnutí sa teraz zobrazujú vo Focus a Attention Today — blížiace sa stretnutia a chýbajúca príprava.",
+      "Deal First Look: AI brief pri každom novom obchode, uložený ako pamäť workspace.",
+      "Záložka Pipeline Risk: obchody v ohrození, s varovaniami a zdravé v jednom prehľade.",
+      "Promise Tracker: záväzky z emailov viditeľné na každej stránke kontaktu."
     ]
   },
   "demo": {
@@ -4313,7 +4344,7 @@
     "ctaTimedButton": "Začať zadarmo — bez karty",
     "ctaTimedDismiss": "Pokračovať v objavovaní",
     "detailActivity": "Aktivita",
-    "detailAiObservations": "AI Pozorovania",
+    "detailAiObservations": "Gunimi Pozorovania",
     "detailRelatedContacts": "Súvisiace kontakty",
     "detailRelatedCompanies": "Súvisiace spoločnosti",
     "detailRelatedDeals": "Súvisiace dohody",
@@ -4382,7 +4413,13 @@
     "activitySection": "Aktivita",
     "columnName": "Meno",
     "columnStatus": "Stav",
-    "columnCompany": "Spoločnosť"
+    "columnCompany": "Spoločnosť",
+    "columnScore": "Skóre",
+    "signalTypePromiseBroken": "Nesplnený sľub",
+    "taskAutoFromEmail": "Z emailu",
+    "emailSection": "Doručená pošta",
+    "emailUnread": "Neprečítané",
+    "emailNoThreads": "Žiadne nedávne emaily."
   },
   "invite": {
     "loadingTitle": "Načítanie pozvánky",
@@ -4439,7 +4476,7 @@
     "tagDetailPageTitle": "Tag",
     "backToSettings": "Späť",
     "hoverViewTag": "Zobraziť tag",
-    "aiInsightTitle": "AI pohľad",
+    "aiInsightTitle": "Gunimi pohľad",
     "aiInsightAnalyzing": "Analyzujem...",
     "aiInsightEmpty": "Pridajte ďalšie entity pre vygenerovanie pohľadu.",
     "aiInsightRefresh": "Obnoviť pohľad",
@@ -4448,8 +4485,8 @@
     "indexSubtitle": "Všetky workspace tagy — každý analyzovaný AI na základe tagovaných entít.",
     "indexBadge": "tagov",
     "indexEntities": "entít",
-    "indexAiCovered": "AI analyzovaných",
-    "indexNoAiYet": "Otvorte tag pre vygenerovanie AI pohľadu.",
+    "indexAiCovered": "Gunimi analyzovaných",
+    "indexNoAiYet": "Otvorte tag pre vygenerovanie Gunimi pohľadu.",
     "indexEmptyDescription": "Vytvorte tagy v Nastaveniach pre kategorizáciu kontaktov, firiem, obchodov a úloh.",
     "filterSearch": "Hľadať tagy...",
     "filterAll": "Všetky",
@@ -4858,7 +4895,7 @@
           }
         ],
         "extras": [
-          "AI rozhodnutie: čo robiť ďalej s týmto kontaktom",
+          "Gunimi rozhodnutie: čo robiť ďalej s týmto kontaktom",
           "Nadchádzajúce stretnutia na stránke kontaktu",
           "Kompletná časová os aktivity na kontakt"
         ]
@@ -4882,18 +4919,18 @@
         "body": "Integrácia Gmail — čítanie aj písanie. Každé vlákno je automaticky prepojené so správnym kontaktom, obchodom a spoločnosťou.",
         "features": [
           "Tvorba a odpovede priamo z Gunimi",
-          "AI návrh emailu — kontextovo vedomý, používa otvorené obchody a úlohy",
+          "Gunimi návrh emailu — kontextovo vedomý, používa otvorené obchody a úlohy",
           "Automatický signál pri každom odoslaní",
           "Miera pokrytia CRM, analýza neprečítaných, detekcia potreby nadväzujúcej komunikácie"
         ],
-        "quote": "AI napíše prvý návrh. Vy rozhodnete, čo odošlete."
+        "quote": "Gunimi napíše prvý návrh. Vy rozhodnete, čo odošlete."
       },
       "calendar": {
         "label": "Inteligencia kalendára",
         "title": "Každé stretnutie, v kontexte.",
         "body": "Integrácia Google Kalendára s plnou CRM inteligenciou. Pred každým stretnutím s CRM kontaktom Gunimi vygeneruje brief.",
         "features": [
-          "AI príprava stretnutia — otvorené obchody, úlohy, posledný kontakt, navrhované témy",
+          "Gunimi príprava stretnutia — otvorené obchody, úlohy, posledný kontakt, navrhované témy",
           "Označiť ako absolvované — jedným kliknutím zaznamená signál meeting_held",
           "Nadchádzajúce stretnutia na stránke detailu kontaktu",
           "Zobrazenia Mesiac / Týždeň / Zoznam s prekryvom úloh a obchodov"

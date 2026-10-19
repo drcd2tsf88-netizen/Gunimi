@@ -211,6 +211,13 @@ function buildFocusItem(sig: SignalRow, entityName: string): TodayFocus {
         reasonKey: "focusProposalUnansweredReason",
         href,
       };
+    case "meeting_approaching":
+      return {
+        actionKey: "focusMeetingApproachingAction",
+        actionParams: { name: entityName, hours: Number(sig.evidence_data?.hoursUntil ?? 0) },
+        reasonKey: "focusMeetingApproachingReason",
+        href,
+      };
     default:
       return null;
   }
@@ -258,6 +265,14 @@ function buildAttentionItem(sig: SignalRow, entityName: string): TodayAttentionI
     case "proposal_unanswered":
       labelKey = "attentionProposalUnanswered";
       labelParams = { title: entityName, days };
+      break;
+    case "meeting_approaching":
+      labelKey = "attentionMeetingApproaching";
+      labelParams = { name: entityName, hours: Number(sig.evidence_data?.hoursUntil ?? 0) };
+      break;
+    case "meeting_no_preparation":
+      labelKey = "attentionMeetingNoPrep";
+      labelParams = { name: entityName };
       break;
     default:
       return null;
