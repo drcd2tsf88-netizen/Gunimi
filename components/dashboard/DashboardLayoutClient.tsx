@@ -42,6 +42,12 @@ export default function DashboardLayoutClient({
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
   const { openFeedback, dogfoodEnabled, setContext } = useDogfoodStore();
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => { /* SW registration failure is non-fatal */ });
+    }
+  }, []);
   const { setTaskCounts } = useTaskFocusStore();
 
   function toggleGroup(id: string) {

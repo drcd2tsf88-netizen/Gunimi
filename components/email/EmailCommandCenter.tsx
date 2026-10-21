@@ -141,11 +141,19 @@ function ThreadDetailPanel({ thread, onClose, t, locale }: ThreadDetailPanelProp
   }
 
   async function handleCreateOrder() {
+    if (!thread.contact && !thread.company) {
+      toast.error(t("orderRequiresLinkedRecord"));
+      return;
+    }
     setCreatingOrder(true);
     try {
       const title = `${t("orderPrefix")} ${thread.subject ?? thread.contact?.name ?? t("noSubject")}`;
-      const contactId = thread.contact?.id ?? undefined;
-      const result = await createOrder({ title, contact_id: contactId, currency: "EUR" });
+      const result = await createOrder({
+        title,
+        contact_id: thread.contact?.id ?? undefined,
+        company_id: thread.company?.id ?? undefined,
+        currency: "EUR",
+      });
       if (result) {
         toast.success(t("orderCreated"));
       } else {

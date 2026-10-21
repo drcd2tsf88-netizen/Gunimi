@@ -12,6 +12,7 @@
 import { type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { logger } from "@/lib/logger";
+import { notifyWorkspaceMembers } from "@/lib/push/notifyWorkspaceMembers";
 import {
   runScanToCompletion,
   getAllScanTypes,
@@ -164,6 +165,15 @@ export async function GET(request: NextRequest) {
     }
 
     workspaceReports.push({ workspaceId: workspace.id, scans: workspaceScans });
+
+    const newSignals = workspaceScans.reduce((sum, sc) => sum + (sc.signalsProduced ?? 0), 0);
+    if (newSignals > 0) {
+      void notifyWorkspaceMembers(workspace.id, {
+        title: "Gunimi",
+        body: `${newSignals} new signal${newSignals === 1 ? "" : "s"} require your attention.`,
+        data: { href: "/dashboard/signals" },
+      });
+    }
   }
 
   const totalDurationMs = Date.now() - cronStartMs;

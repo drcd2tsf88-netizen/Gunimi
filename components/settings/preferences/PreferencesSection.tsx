@@ -14,6 +14,8 @@ import type { WorkspaceAIUsage } from "@/server/actions/workspace/getWorkspaceAI
 import GunimiCard from "@/components/ui/GunimiCard";
 import GunimiField from "@/components/ui/GunimiField";
 import GunimiButton from "@/components/ui/GunimiButton";
+import PushNotificationToggle from "@/components/settings/PushNotificationToggle";
+import MobileInstallGuide from "@/components/settings/MobileInstallGuide";
 import {
   Select,
   SelectContent,
@@ -447,7 +449,7 @@ export default function PreferencesSection({ preferences, currentUserRole, local
             <p className="mt-0.5 text-sm text-white/40">{t("notificationsSubtitle")}</p>
           </div>
 
-          <GunimiCard className="p-6">
+          <GunimiCard className="p-6 space-y-5">
             <div className="flex items-center justify-between gap-6">
               <div>
                 <p className="text-[13px] font-medium text-white/80">{t("emailDigestLabel")}</p>
@@ -462,6 +464,9 @@ export default function PreferencesSection({ preferences, currentUserRole, local
                 {emailDigest ? t("emailDigestEnabled") : t("emailDigestDisabled")}
               </GunimiButton>
             </div>
+            <div className="border-t border-white/5" />
+            <PushNotificationToggle />
+            <MobileInstallGuide />
           </GunimiCard>
         </section>
       )}
