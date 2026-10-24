@@ -438,11 +438,23 @@ function ThreadRow({ thread, compact = false, onClick }: ThreadRowProps) {
         )}
       </div>
 
-      {thread.message_count > 1 && (
-        <span className="mt-1 shrink-0 rounded-full border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 text-[10px] tabular-nums text-white/30">
-          {thread.message_count}
-        </span>
-      )}
+      <div className="mt-1 flex shrink-0 flex-col items-end gap-1">
+        {thread.provider === "microsoft365" && (
+          <span className="rounded-md border border-sky-500/20 bg-sky-500/10 px-1.5 py-0.5 text-[9px] font-medium text-sky-400">
+            O
+          </span>
+        )}
+        {thread.provider === "gmail" && (
+          <span className="rounded-md border border-red-500/20 bg-red-500/10 px-1.5 py-0.5 text-[9px] font-medium text-red-400">
+            G
+          </span>
+        )}
+        {thread.message_count > 1 && (
+          <span className="rounded-full border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 text-[10px] tabular-nums text-white/30">
+            {thread.message_count}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -801,11 +813,18 @@ function NoConnectionState({
               {t("noConnectionsSubtitle")}
             </p>
           </div>
-          <a href="/api/email/connect/gmail">
-            <GunimiButton variant="primary" className="mt-2">
-              {t("connectGmail")}
-            </GunimiButton>
-          </a>
+          <div className="mt-2 flex flex-wrap justify-center gap-2">
+            <a href="/api/email/connect/gmail">
+              <GunimiButton variant="primary">
+                {t("connectGmail")}
+              </GunimiButton>
+            </a>
+            <a href="/api/email/connect/outlook">
+              <GunimiButton variant="secondary">
+                {t("connectOutlook")}
+              </GunimiButton>
+            </a>
+          </div>
         </div>
       </GunimiCard>
 
@@ -832,8 +851,10 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
   const [syncDone, setSyncDone] = useState(false);
   const autoSyncing = isInitialConnect && !syncDone;
 
-  const needsReconnect = connections.some(
-    (c) => !c.scope?.includes("gmail.send")
+  const needsReconnect = connections.some((c) =>
+    c.provider === "microsoft365"
+      ? !c.scope?.includes("Mail.Send")
+      : !c.scope?.includes("gmail.send")
   );
 
   // Auto-sync on first connect — callback redirects before sync completes
@@ -931,6 +952,12 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
               <GunimiButton variant="secondary" className="gap-2 text-sm">
                 <Mail size={14} />
                 {t("addEmail")}
+              </GunimiButton>
+            </a>
+            <a href="/api/email/connect/outlook">
+              <GunimiButton variant="secondary" className="gap-2 text-sm">
+                <Mail size={14} />
+                {t("addOutlook")}
               </GunimiButton>
             </a>
           </div>

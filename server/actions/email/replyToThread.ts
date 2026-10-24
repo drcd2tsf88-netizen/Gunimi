@@ -31,8 +31,11 @@ export async function replyToThread(
 
     const { connection, accessToken } = tokenData;
 
-    // Scope check — must have send scope
-    if (!connection.scope?.includes("gmail.send")) {
+    // Scope check — must have send scope (provider-aware)
+    const hasSendScope = connection.provider === "microsoft365"
+      ? connection.scope?.includes("Mail.Send")
+      : connection.scope?.includes("gmail.send");
+    if (!hasSendScope) {
       return { ok: false, error: "reconnect_required" };
     }
 

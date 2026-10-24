@@ -34,7 +34,10 @@ export async function composeEmail(
 
     const { connection: conn, accessToken } = tokenData;
 
-    if (!conn.scope?.includes("gmail.send")) {
+    const hasSendScope = conn.provider === "microsoft365"
+      ? conn.scope?.includes("Mail.Send")
+      : conn.scope?.includes("gmail.send");
+    if (!hasSendScope) {
       return { ok: false, error: "reconnect_required" };
     }
 

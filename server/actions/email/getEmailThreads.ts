@@ -14,6 +14,7 @@ export async function getEmailThreads(limit = 50): Promise<EmailThread[]> {
       .from("email_threads")
       .select(
         `id, subject, snippet, message_count, participant_emails, last_message_at, has_unread,
+         connection:email_connections(provider),
          contact:workspace_people(id, name, email),
          company:workspace_companies(id, name)`
       )
@@ -26,7 +27,16 @@ export async function getEmailThreads(limit = 50): Promise<EmailThread[]> {
       return [];
     }
 
-    return (data ?? []) as unknown as EmailThread[];
+    type RawRow = {
+      connection: Array<{ provider: string }> | { provider: string } | null;
+      [key: string]: unknown;
+    };
+    return (data ?? []).map((row) => {
+      const r = row as RawRow;
+      const conn = Array.isArray(r.connection) ? r.connection[0] : r.connection;
+      const { connection: _c, ...rest } = r;
+      return { ...rest, provider: conn?.provider ?? null } as unknown as EmailThread;
+    });
   } catch (error) {
     logger.error("getEmailThreads failed:", error);
     return [];

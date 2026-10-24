@@ -1986,7 +1986,9 @@
     "connectionStatus": "Pripojenie",
     "recentThreads": "Posledné vlákna",
     "connectGmail": "Pripojiť Gmail",
-    "addEmail": "Pridať e-mailový účet",
+    "connectOutlook": "Pripojiť Outlook",
+    "addEmail": "Pridať Gmail",
+    "addOutlook": "Pridať Outlook",
     "noConnections": "Žiadny e-mail nie je pripojený",
     "noConnectionsDescription": "Pripojte Gmail a zobrazte e-mailové vlákna v Gunimi.",
     "connected": "Pripojený",
@@ -3775,10 +3777,6 @@
         }
       },
       "inProgress": [
-        {
-          "title": "Email — compose a odpoveď",
-          "description": "Odosielanie a odpovedanie na emaily priamo z Gunimi. Gmail sync čítania je live — compose, AI návrhy odpovedí a sync odoslaných v procese."
-        },
         {
           "title": "Kanban pipeline dealov",
           "description": "Drag-and-drop pohľad na pipeline vedľa existujúceho zoznamu. Presúvajte dealy medzi fázami vizuálne."

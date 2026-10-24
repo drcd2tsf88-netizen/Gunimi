@@ -1986,7 +1986,9 @@
     "connectionStatus": "Connection",
     "recentThreads": "Recent Threads",
     "connectGmail": "Connect Gmail",
-    "addEmail": "Add Email Account",
+    "connectOutlook": "Connect Outlook",
+    "addEmail": "Add Gmail",
+    "addOutlook": "Add Outlook",
     "noConnections": "No email connected",
     "noConnectionsDescription": "Connect your Gmail account to see communication threads inside Gunimi.",
     "connected": "Connected",
@@ -3775,10 +3777,6 @@
         }
       },
       "inProgress": [
-        {
-          "title": "Email — compose & reply",
-          "description": "Send and reply to emails from inside Gunimi. Gmail read sync is live — compose, AI-assisted drafts and sent-mail sync are in progress."
-        },
         {
           "title": "Kanban deal pipeline",
           "description": "Drag-and-drop pipeline view alongside the existing list view. Move deals between stages visually."

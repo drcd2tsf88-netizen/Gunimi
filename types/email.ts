@@ -15,6 +15,7 @@ export type EmailThread = {
   participant_emails: string[];
   last_message_at: string | null;
   has_unread: boolean;
+  provider: "gmail" | "microsoft365" | null;
   contact: { id: string; name: string; email: string | null } | null;
   company: { id: string; name: string } | null;
 };
