@@ -69,7 +69,7 @@ export class OutlookProvider implements EmailProvider {
       response_type: "code",
       scope: SCOPES.join(" "),
       response_mode: "query",
-      prompt: "select_account",
+      prompt: "login",
       state,
     });
     return `${MS_AUTH_URL}?${params.toString()}`;
