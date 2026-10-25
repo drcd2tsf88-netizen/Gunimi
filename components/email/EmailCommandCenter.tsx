@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import Link from "next/link";
@@ -848,7 +848,11 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const isInitialConnect = searchParams.get("connected") === "true";
+  const connectProvider = searchParams.get("provider");
+  const connectEmail = searchParams.get("email");
+  const connectError = searchParams.get("error");
   const [syncDone, setSyncDone] = useState(false);
+  const handledRef = useRef(false);
   const autoSyncing = isInitialConnect && !syncDone;
 
   const needsReconnect = connections.some((c) =>
@@ -857,13 +861,31 @@ export default function EmailCommandCenter({ threads, connections }: Props) {
       : !c.scope?.includes("gmail.send")
   );
 
-  // Auto-sync on first connect — callback redirects before sync completes
+  // Show error toast when OAuth callback fails
   useEffect(() => {
-    if (!isInitialConnect || syncDone) return;
+    if (!connectError || handledRef.current) return;
+    handledRef.current = true;
+    const msg =
+      connectError === "access_denied" ? t("connectErrorDenied") :
+      connectError === "session_mismatch" ? t("connectErrorSession") :
+      connectError === "connection_failed" ? t("connectErrorFailed") :
+      t("connectErrorGeneric");
+    toast.error(msg);
+    router.replace("/dashboard/email");
+  }, [connectError, t, router]);
+
+  // Show success toast + auto-sync on first connect
+  useEffect(() => {
+    if (!isInitialConnect || syncDone || handledRef.current) return;
+    handledRef.current = true;
+    const providerLabel = connectProvider === "outlook" ? "Outlook" : "Gmail";
+    const emailLabel = connectEmail ? ` (${connectEmail})` : "";
+    toast.success(`${providerLabel}${emailLabel} ${t("connectSuccess")}`);
     fetch("/api/email/sync", { method: "POST" })
-      .then(() => { setSyncDone(true); router.replace("/dashboard/email"); })
-      .catch(() => { setSyncDone(true); router.replace("/dashboard/email"); });
-  }, [isInitialConnect, syncDone, router]);
+      .then(() => { setSyncDone(true); router.replace("/dashboard/email"); router.refresh(); })
+      .catch(() => { setSyncDone(true); router.replace("/dashboard/email"); router.refresh(); });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInitialConnect, syncDone]);
 
   const hasConnection = connections.length > 0;
 

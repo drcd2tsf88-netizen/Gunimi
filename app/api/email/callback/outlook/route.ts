@@ -102,7 +102,9 @@ export async function GET(request: NextRequest) {
       }
     })().catch(() => undefined);
 
-    return NextResponse.redirect(new URL("/dashboard/email?connected=true", request.url));
+    return NextResponse.redirect(
+      new URL(`/dashboard/email?connected=true&provider=outlook&email=${encodeURIComponent(connectedEmail)}`, request.url)
+    );
   } catch (err) {
     logger.error("Outlook OAuth callback failed", err);
     return NextResponse.redirect(new URL("/dashboard/email?error=oauth_failed", request.url));

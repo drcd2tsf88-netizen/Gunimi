@@ -26,21 +26,22 @@ export async function POST() {
 
   if (!workspace) return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
 
-  const { data: connection, error: connError } = await supabaseAdmin
+  const { data: connections, error: connError } = await supabaseAdmin
     .from("email_connections")
     .select("id")
     .eq("workspace_id", workspace.id)
     .eq("user_id", user.id)
-    .limit(1)
-    .maybeSingle();
+    .not("access_token", "is", null);
 
-  if (connError || !connection) {
+  if (connError || !connections?.length) {
     return NextResponse.json({ error: "No email connection found" }, { status: 404 });
   }
 
   try {
-    const result = await syncEmailConnection(connection.id);
-    return NextResponse.json({ synced: result.synced, linked: result.linked });
+    const results = await Promise.all(connections.map((c) => syncEmailConnection(c.id)));
+    const synced = results.reduce((s, r) => s + r.synced, 0);
+    const linked = results.reduce((s, r) => s + r.linked, 0);
+    return NextResponse.json({ synced, linked });
   } catch (err) {
     logger.error("Email sync failed", err);
     return NextResponse.json({ error: "Sync failed", code: classifyError(err) }, { status: 500 });
