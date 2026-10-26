@@ -17,6 +17,8 @@ const SCOPES = [
   "Mail.Send",
   "Calendars.Read",
   "User.Read",
+  "Chat.Read",
+  "Chat.ReadBasic",
   "offline_access",
 ];
 
@@ -69,7 +71,7 @@ export class OutlookProvider implements EmailProvider {
       response_type: "code",
       scope: SCOPES.join(" "),
       response_mode: "query",
-      prompt: "login",
+      prompt: "select_account",
       state,
     });
     return `${MS_AUTH_URL}?${params.toString()}`;

@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   LayoutGrid,
   Mail,
+  MessageCircle,
   Radio,
   Settings,
   ShoppingBag,
@@ -30,6 +31,7 @@ export type NavItemId =
   | "notes"
   | "email"
   | "calendar"
+  | "communications"
   | "automations"
   | "analytics"
   | "signals"
@@ -109,9 +111,10 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { id: "tasks",       labelKey: "tasks",       href: "/dashboard/tasks",       icon: CheckSquare  },
       { id: "notes",       labelKey: "notes",       href: "/dashboard/notes",       icon: StickyNote   },
-      { id: "email",       labelKey: "email",       href: "/dashboard/email",       icon: Mail         },
-      { id: "calendar",    labelKey: "calendar",    href: "/dashboard/calendar",    icon: CalendarDays },
-      { id: "automations", labelKey: "automations", href: "/dashboard/automations", icon: Zap          },
+      { id: "email",           labelKey: "email",           href: "/dashboard/email",           icon: Mail          },
+      { id: "calendar",        labelKey: "calendar",        href: "/dashboard/calendar",        icon: CalendarDays  },
+      { id: "communications",  labelKey: "communications",  href: "/dashboard/communications",  icon: MessageCircle },
+      { id: "automations",     labelKey: "automations",     href: "/dashboard/automations",     icon: Zap           },
     ],
   },
   {

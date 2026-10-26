@@ -440,13 +440,13 @@ function ThreadRow({ thread, compact = false, onClick }: ThreadRowProps) {
 
       <div className="mt-1 flex shrink-0 flex-col items-end gap-1">
         {thread.provider === "microsoft365" && (
-          <span className="rounded-md border border-sky-500/20 bg-sky-500/10 px-1.5 py-0.5 text-[9px] font-medium text-sky-400">
-            O
+          <span className="rounded-md border border-sky-500/30 bg-sky-500/10 px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-sky-400">
+            Outlook
           </span>
         )}
         {thread.provider === "gmail" && (
-          <span className="rounded-md border border-red-500/20 bg-red-500/10 px-1.5 py-0.5 text-[9px] font-medium text-red-400">
-            G
+          <span className="rounded-md border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-red-400">
+            Gmail
           </span>
         )}
         {thread.message_count > 1 && (
