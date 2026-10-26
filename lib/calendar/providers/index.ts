@@ -1,8 +1,10 @@
 import { GoogleCalendarProvider } from "./google";
+import { MicrosoftCalendarProvider } from "./microsoft";
 import type { CalendarProvider } from "./types";
 
 const PROVIDERS: Record<string, CalendarProvider> = {
   google: new GoogleCalendarProvider(),
+  microsoft: new MicrosoftCalendarProvider(),
 };
 
 export function getProvider(name: string): CalendarProvider {

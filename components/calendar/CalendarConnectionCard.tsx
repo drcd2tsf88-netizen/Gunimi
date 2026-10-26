@@ -94,11 +94,18 @@ export default function CalendarConnectionCard({ connections }: Props) {
               {t("noConnectionsDescription")}
             </p>
           </div>
-          <a href="/api/calendar/connect/google">
-            <GunimiButton variant="primary" className="mt-2">
-              {t("connectGoogle")}
-            </GunimiButton>
-          </a>
+          <div className="mt-2 flex flex-wrap justify-center gap-3">
+            <a href="/api/calendar/connect/google">
+              <GunimiButton variant="primary">
+                {t("connectGoogle")}
+              </GunimiButton>
+            </a>
+            <a href="/api/calendar/connect/microsoft">
+              <GunimiButton variant="secondary">
+                {t("connectOutlookCalendar")}
+              </GunimiButton>
+            </a>
+          </div>
         </div>
       </GunimiCard>
     );

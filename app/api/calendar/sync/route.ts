@@ -18,20 +18,19 @@ export async function POST() {
     const workspace = await getCurrentWorkspace();
     if (!workspace) return errorResponse("Workspace not found", 404);
 
-    const { data: connection } = await supabaseAdmin
+    const { data: connections } = await supabaseAdmin
       .from("calendar_connections")
       .select("id")
       .eq("workspace_id", workspace.id)
       .eq("user_id", user.id)
-      .order("connected_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      .not("access_token", "is", null);
 
-    if (!connection) return errorResponse("No calendar connection found", 404);
+    if (!connections?.length) return errorResponse("No calendar connection found", 404);
 
-    const result = await syncCalendarConnection(connection.id as string);
+    const results = await Promise.all(connections.map((c) => syncCalendarConnection(c.id as string)));
+    const synced = results.reduce((s, r) => s + r.synced, 0);
 
-    return successResponse(result);
+    return successResponse({ synced, connectionId: connections[0].id });
   } catch (error) {
     logger.error("Calendar sync failed", error);
     const msg = String(error).toLowerCase();

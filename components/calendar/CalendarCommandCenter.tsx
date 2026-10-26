@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useState, useEffect, useMemo } from "react";
+import { useTransition, useState, useEffect, useRef, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import Link from "next/link";
@@ -1709,11 +1709,18 @@ function NoConnectionState({
               {t("noConnectionsSubtitle")}
             </p>
           </div>
-          <a href="/api/calendar/connect/google">
-            <GunimiButton variant="primary" className="mt-2">
-              {t("connectGoogle")}
-            </GunimiButton>
-          </a>
+          <div className="mt-2 flex flex-wrap justify-center gap-3">
+            <a href="/api/calendar/connect/google">
+              <GunimiButton variant="primary">
+                {t("connectGoogle")}
+              </GunimiButton>
+            </a>
+            <a href="/api/calendar/connect/microsoft">
+              <GunimiButton variant="secondary">
+                {t("connectOutlookCalendar")}
+              </GunimiButton>
+            </a>
+          </div>
         </div>
       </GunimiCard>
 
@@ -1747,15 +1754,31 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
   const searchParams = useSearchParams();
   const router = useRouter();
   const isInitialConnect = searchParams.get("connected") === "true";
+  const connectProvider = searchParams.get("provider");
+  const connectEmail = searchParams.get("email");
+  const connectError = searchParams.get("error");
   const [syncDone, setSyncDone] = useState(false);
+  const handledRef = useRef(false);
   const autoSyncing = isInitialConnect && !syncDone;
 
   useEffect(() => {
-    if (!isInitialConnect || syncDone) return;
+    if (!connectError || handledRef.current) return;
+    handledRef.current = true;
+    toast.error(t("connectError"));
+    router.replace("/dashboard/calendar");
+  }, [connectError, t, router]);
+
+  useEffect(() => {
+    if (!isInitialConnect || syncDone || handledRef.current) return;
+    handledRef.current = true;
+    const providerLabel = connectProvider === "microsoft" ? "Outlook Calendar" : "Google Calendar";
+    const emailLabel = connectEmail ? ` (${connectEmail})` : "";
+    toast.success(`${providerLabel}${emailLabel} ${t("connectSuccess")}`);
     fetch("/api/calendar/sync", { method: "POST" })
-      .then(() => { setSyncDone(true); router.replace("/dashboard/calendar"); })
-      .catch(() => { setSyncDone(true); router.replace("/dashboard/calendar"); });
-  }, [isInitialConnect, syncDone, router]);
+      .then(() => { setSyncDone(true); router.replace("/dashboard/calendar"); router.refresh(); })
+      .catch(() => { setSyncDone(true); router.replace("/dashboard/calendar"); router.refresh(); });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInitialConnect, syncDone]);
 
   const contactByEmail = useMemo(() => {
     const map = new Map<string, CalendarContact>();
@@ -1869,6 +1892,12 @@ export default function CalendarCommandCenter({ events: initialEvents, connectio
               <GunimiButton variant="secondary" className="gap-2 text-sm">
                 <CalendarDays size={14} />
                 {t("addCalendar")}
+              </GunimiButton>
+            </a>
+            <a href="/api/calendar/connect/microsoft">
+              <GunimiButton variant="secondary" className="gap-2 text-sm">
+                <CalendarDays size={14} />
+                {t("addOutlookCalendar")}
               </GunimiButton>
             </a>
           </div>
