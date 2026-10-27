@@ -167,9 +167,12 @@ export async function GET(request: NextRequest) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.gunimi.com";
   const dashboardUrl = `${appUrl}/dashboard`;
 
-  // Dedup window: start of Monday 00:00 UTC this week
+  // Only send on Mondays (UTC). Cron is triggered daily — non-Monday runs exit early.
   const now = new Date();
-  const dayOfWeek = now.getDay();
+  const dayOfWeek = now.getUTCDay(); // 0=Sun, 1=Mon
+  if (dayOfWeek !== 1 && !dryRun) {
+    return Response.json({ ok: true, skipped: true, reason: "not_monday" });
+  }
   const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
   const thisMonday = new Date(now.getTime() - daysToMonday * MS_PER_DAY);
   thisMonday.setUTCHours(0, 0, 0, 0);

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, Radio, RefreshCw, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ArrowRight, CheckSquare2, ChevronDown, Radio, RefreshCw, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
@@ -20,6 +20,7 @@ import {
 import { dismissSignal } from "@/server/actions/signals/dismissSignal";
 import { runWorkspaceScan } from "@/server/actions/signals/runWorkspaceScan";
 import { submitSignalFeedback, type SignalFeedback } from "@/server/actions/signals/submitSignalFeedback";
+import { createTask } from "@/server/actions/tasks/createTask";
 import type { EnrichedSignal } from "@/server/actions/signals/getWorkspaceSignals";
 import type { DismissalType } from "@/lib/signals/types";
 
@@ -58,6 +59,7 @@ export default function SignalsPageView({ initialSignals }: Props) {
   const [isDismissing, startDismiss] = useTransition();
   const [isScanning, startScan] = useTransition();
   const [feedbackMap, setFeedbackMap] = useState<Record<string, SignalFeedback>>({});
+  const [taskCreatingMap, setTaskCreatingMap] = useState<Record<string, boolean>>({});
 
   function handleDismiss(signalId: string, type: DismissalType) {
     startDismiss(async () => {
@@ -74,6 +76,26 @@ export default function SignalsPageView({ initialSignals }: Props) {
     submitSignalFeedback(signalId, feedback).then((res) => {
       if (res.success) toast.success(t("feedbackSaved"), { id: `feedback-${signalId}` });
     });
+  }
+
+  async function handleCreateTask(signal: EnrichedSignal) {
+    setTaskCreatingMap((prev) => ({ ...prev, [signal.id]: true }));
+    try {
+      const result = await createTask({
+        title: `Follow up: ${signal.entityName}`,
+        description: signalTypeLabel(signal.type),
+        priority: signal.severity === "critical" ? "high" : signal.severity === "warning" ? "medium" : "low",
+      });
+      if (result) {
+        toast.success(t("taskCreated"), { id: `task-${signal.id}` });
+      } else {
+        toast.error(t("taskCreateFailed"), { id: `task-${signal.id}` });
+      }
+    } catch {
+      toast.error(t("taskCreateFailed"), { id: `task-${signal.id}` });
+    } finally {
+      setTaskCreatingMap((prev) => ({ ...prev, [signal.id]: false }));
+    }
   }
 
   function handleScanNow() {
@@ -207,6 +229,19 @@ export default function SignalsPageView({ initialSignals }: Props) {
                         <ThumbsDown size={11} />
                       </button>
                     </div>
+
+                    <button
+                      onClick={() => handleCreateTask(signal)}
+                      disabled={taskCreatingMap[signal.id]}
+                      title={t("createTask")}
+                      className="hidden h-7 items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-zinc-400 transition-all hover:border-emerald-500/30 hover:text-emerald-400 disabled:opacity-40 sm:flex"
+                    >
+                      {taskCreatingMap[signal.id] ? (
+                        <RefreshCw size={11} className="animate-spin" />
+                      ) : (
+                        <CheckSquare2 size={11} />
+                      )}
+                    </button>
 
                     <Link
                       href={signal.entityHref}
