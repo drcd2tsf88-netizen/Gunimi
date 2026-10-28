@@ -7,6 +7,7 @@ interface OAuthStatePayload {
   workspaceId: string;
   userId: string;
   timestamp: number;
+  returnTo?: string;
 }
 
 /**
@@ -15,7 +16,7 @@ interface OAuthStatePayload {
  *
  * Requires OAUTH_STATE_SECRET in environment variables.
  */
-export function createOAuthState(workspaceId: string, userId: string): string {
+export function createOAuthState(workspaceId: string, userId: string, returnTo?: string): string {
   const secret = process.env.OAUTH_STATE_SECRET;
   if (!secret) throw new Error("OAUTH_STATE_SECRET is not configured");
 
@@ -23,6 +24,7 @@ export function createOAuthState(workspaceId: string, userId: string): string {
     workspaceId,
     userId,
     timestamp: Date.now(),
+    ...(returnTo ? { returnTo } : {}),
   };
 
   const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
@@ -44,7 +46,7 @@ export function createOAuthState(workspaceId: string, userId: string): string {
  */
 export function verifyOAuthState(
   state: string
-): { workspaceId: string; userId: string } | null {
+): { workspaceId: string; userId: string; returnTo?: string } | null {
   try {
     const secret = process.env.OAUTH_STATE_SECRET;
     if (!secret) return null;
@@ -80,7 +82,7 @@ export function verifyOAuthState(
     // Reject expired states
     if (Date.now() - timestamp > STATE_TTL_MS) return null;
 
-    return { workspaceId, userId };
+    return { workspaceId, userId, returnTo: payload.returnTo };
   } catch {
     return null;
   }

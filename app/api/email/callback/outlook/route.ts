@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
   if (!verified) {
     return NextResponse.redirect(new URL("/dashboard/email?error=invalid_state", request.url));
   }
-  const { workspaceId, userId } = verified;
+  const { workspaceId, userId, returnTo } = verified;
+  const successBase = returnTo ?? "/dashboard/email";
 
   const sessionUser = await getUser();
   if (!sessionUser) {
@@ -103,7 +104,7 @@ export async function GET(request: NextRequest) {
     })().catch(() => undefined);
 
     return NextResponse.redirect(
-      new URL(`/dashboard/email?connected=true&provider=outlook&email=${encodeURIComponent(connectedEmail)}`, request.url)
+      new URL(`${successBase}?connected=true&provider=outlook&email=${encodeURIComponent(connectedEmail)}`, request.url)
     );
   } catch (err) {
     logger.error("Outlook OAuth callback failed", err);

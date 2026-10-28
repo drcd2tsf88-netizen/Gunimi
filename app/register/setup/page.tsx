@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, CheckCircle2, Mail, User } from "lucide-react";
+import { ArrowRight, BellDot, CalendarDays, CheckCircle2, Mail, TrendingUp, User } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
@@ -13,9 +13,9 @@ import { createContact } from "@/server/actions/crm/createContact";
 import AiCore from "@/components/ui/AiCore";
 import GunimiInput from "@/components/ui/GunimiInput";
 
-type Phase = "checking" | "naming" | "creating" | "contact" | "email" | "done";
+type Phase = "checking" | "naming" | "creating" | "contact" | "email" | "ready" | "done";
 
-const STEP_LABELS = ["workspace", "contact", "email"] as const;
+const STEP_LABELS = ["workspace", "contact", "email", "ready"] as const;
 
 function StepDots({ active }: { active: number }) {
   return (
@@ -172,10 +172,7 @@ export default function RegisterSetupPage() {
   }
 
   function handleSkipEmail() {
-    setPhase("done");
-    setTimeout(() => {
-      window.location.href = "/dashboard";
-    }, 900);
+    setPhase("ready");
   }
 
   // ── Checking phase ─────────────────────────────────────────────
@@ -370,6 +367,88 @@ export default function RegisterSetupPage() {
             className="mt-5 w-full text-center text-[12.5px] text-[#9AA3B2]/50 transition-colors hover:text-[#9AA3B2]/80"
           >
             {t("setupEmailSkip")}
+          </button>
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  // ── Ready phase ───────────────────────────────────────────────
+  if (phase === "ready") {
+    const items = [
+      {
+        icon: BellDot,
+        color: "text-amber-400",
+        bg: "border-amber-500/[0.15] bg-amber-500/[0.06]",
+        title: t("setupReadyItem1Title"),
+        body: t("setupReadyItem1Body"),
+      },
+      {
+        icon: TrendingUp,
+        color: "text-violet-400",
+        bg: "border-violet-500/[0.15] bg-violet-500/[0.06]",
+        title: t("setupReadyItem2Title"),
+        body: t("setupReadyItem2Body"),
+      },
+      {
+        icon: CalendarDays,
+        color: "text-sky-400",
+        bg: "border-sky-500/[0.15] bg-sky-500/[0.06]",
+        title: t("setupReadyItem3Title"),
+        body: t("setupReadyItem3Body"),
+      },
+    ] as const;
+
+    return card(
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="ready"
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -24 }}
+          transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center"
+        >
+          <StepDots active={3} />
+
+          <div className="mb-7 flex justify-center">
+            <div className="flex h-[72px] w-[72px] items-center justify-center rounded-[22px] border border-emerald-500/[0.18] bg-emerald-500/[0.08]">
+              <CheckCircle2 size={28} className="text-emerald-400" />
+            </div>
+          </div>
+
+          <h1 className="text-[24px] font-semibold tracking-[-0.03em] text-[#F7F8FC]">
+            {t("setupReadyHeading")}
+          </h1>
+          <p className="mx-auto mt-2.5 max-w-[340px] text-[13px] leading-relaxed text-[#9AA3B2]">
+            {t("setupReadySubtitle")}
+          </p>
+
+          <div className="mt-8 space-y-3 text-left">
+            {items.map((item) => (
+              <div
+                key={item.title}
+                className={`flex items-start gap-4 rounded-[14px] border p-4 ${item.bg}`}
+              >
+                <div className={`mt-0.5 shrink-0 ${item.color}`}>
+                  <item.icon size={16} />
+                </div>
+                <div>
+                  <p className="text-[13px] font-semibold text-[#F7F8FC]">{item.title}</p>
+                  <p className="mt-0.5 text-[12px] leading-relaxed text-[#9AA3B2]">{item.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => { window.location.href = "/dashboard"; }}
+            className="group relative mt-6 flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-[12px] border border-[#6D5BFF]/30 bg-[#6D5BFF] text-[14px] font-semibold text-white shadow-[0_0_20px_rgba(109,91,255,0.40)] transition-all duration-300 hover:bg-[#7B6BFF] hover:shadow-[0_0_32px_rgba(109,91,255,0.55)]"
+          >
+            <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.10),transparent_55%)]" />
+            <span className="relative z-10">{t("setupReadyCta")}</span>
+            <ArrowRight size={15} className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5" />
           </button>
         </motion.div>
       </AnimatePresence>

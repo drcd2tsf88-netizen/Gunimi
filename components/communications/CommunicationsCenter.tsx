@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import {
   Building2,
@@ -335,7 +335,7 @@ function NoConnectionState({
             {hasMs365 ? t("needsTeamsScopeDescription") : t("noConnectionDescription")}
           </p>
         </div>
-        <a href="/api/email/connect/outlook">
+        <a href="/api/communications/connect/teams">
           <GunimiButton variant="primary" className="gap-2">
             <MessageCircle size={14} />
             {hasMs365 ? t("reconnect") : t("connectMs365")}
@@ -361,9 +361,23 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
   const [syncing, setSyncing] = useState(false);
   const didAutoSync = useRef(false);
 
+  const searchParams = useSearchParams();
+  const handledRef = useRef(false);
+
   const ms365Connection = connections.find((c) => c.provider === "microsoft365");
   const hasTeamsScope = ms365Connection?.scope?.includes("Chat.Read") ?? false;
   const hasAnyConnection = !!ms365Connection;
+
+  // Handle ?connected=true after OAuth
+  useEffect(() => {
+    if (handledRef.current) return;
+    const connected = searchParams.get("connected");
+    if (connected !== "true") return;
+    handledRef.current = true;
+    toast.success(t("connectSuccess"));
+    router.replace("/dashboard/communications");
+    router.refresh();
+  }, [searchParams, router, t]);
 
   // Auto-sync on first load if Teams scope exists
   useEffect(() => {
