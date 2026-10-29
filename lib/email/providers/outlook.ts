@@ -98,7 +98,7 @@ export class OutlookProvider implements EmailProvider {
       accessToken: data.access_token,
       refreshToken: data.refresh_token,
       expiresAt: new Date(Date.now() + data.expires_in * 1000),
-      scope: data.scope,
+      scope: data.scope ?? SCOPES.join(" "),
     };
   }
 

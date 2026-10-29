@@ -368,15 +368,14 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
   const hasTeamsScope = ms365Connection?.scope?.includes("Chat.Read") ?? false;
   const hasAnyConnection = !!ms365Connection;
 
-  // Handle ?connected=true after OAuth
+  // Handle ?connected=true after OAuth — data already fresh from SSR, no refresh needed
   useEffect(() => {
     if (handledRef.current) return;
     const connected = searchParams.get("connected");
     if (connected !== "true") return;
     handledRef.current = true;
-    toast.success(t("connectSuccess"));
+    toast.success(t("connectSuccess"), { duration: 5000 });
     router.replace("/dashboard/communications");
-    router.refresh();
   }, [searchParams, router, t]);
 
   // Auto-sync on first load if Teams scope exists
