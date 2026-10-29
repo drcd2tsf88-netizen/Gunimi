@@ -126,7 +126,7 @@ async function linkToCrm(
 
 export async function syncTeamsChats(
   connectionId: string
-): Promise<{ synced: number; linked: number }> {
+): Promise<{ synced: number; linked: number; needsPermission?: boolean }> {
   const { data: connection, error } = await supabaseAdmin
     .from("email_connections")
     .select("*")
@@ -136,11 +136,6 @@ export async function syncTeamsChats(
   if (error || !connection) throw new Error(`Connection not found: ${connectionId}`);
   if (connection.provider !== "microsoft365") throw new Error("Not a Microsoft 365 connection");
 
-  // Verify Chat.Read scope
-  if (!connection.scope?.includes("Chat.Read")) {
-    return { synced: 0, linked: 0 };
-  }
-
   const workspaceId = connection.workspace_id as string;
   const accessToken = await refreshTokenIfNeeded(connection);
 
@@ -148,6 +143,11 @@ export async function syncTeamsChats(
   try {
     chats = await fetchChats(accessToken);
   } catch (err) {
+    // 403 = Chat.Read permission not granted — not an error worth logging loudly
+    const message = err instanceof Error ? err.message : String(err);
+    if (message.includes("403") || message.includes("Forbidden") || message.includes("Authorization")) {
+      return { synced: 0, linked: 0, needsPermission: true };
+    }
     logger.error("[Teams] Failed to fetch chats", err);
     return { synced: 0, linked: 0 };
   }

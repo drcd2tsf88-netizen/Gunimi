@@ -31,7 +31,8 @@ export async function POST() {
     const results = await Promise.all(connections.map((c) => syncTeamsChats(c.id)));
     const synced = results.reduce((s, r) => s + r.synced, 0);
     const linked = results.reduce((s, r) => s + r.linked, 0);
-    return NextResponse.json({ synced, linked });
+    const needsPermission = results.some((r) => r.needsPermission);
+    return NextResponse.json({ synced, linked, needsPermission });
   } catch (err) {
     logger.error("Teams sync failed", err);
     return NextResponse.json({ error: "Sync failed" }, { status: 500 });

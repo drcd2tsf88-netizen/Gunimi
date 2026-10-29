@@ -359,17 +359,16 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
   const router = useRouter();
   const [selectedThread, setSelectedThread] = useState<CommunicationThread | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [needsPermission, setNeedsPermission] = useState(false);
   const didAutoSync = useRef(false);
 
   const searchParams = useSearchParams();
   const handledRef = useRef(false);
 
   const ms365Connection = connections.find((c) => c.provider === "microsoft365");
-  const hasTeamsScope = ms365Connection?.scope?.includes("Chat.Read") ?? false;
   const hasAnyConnection = !!ms365Connection;
 
   // Handle ?connected=true after OAuth
-  // Use history.replaceState to clean URL without Next.js cache hit, then refresh server data
   useEffect(() => {
     if (handledRef.current) return;
     const connected = searchParams.get("connected");
@@ -380,14 +379,21 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
     router.refresh();
   }, [searchParams, router, t]);
 
-  // Auto-sync on first load if Teams scope exists
+  // Auto-sync on first load if MS365 connected
   useEffect(() => {
-    if (!hasTeamsScope || didAutoSync.current || threads.length > 0) return;
+    if (!hasAnyConnection || didAutoSync.current || threads.length > 0) return;
     didAutoSync.current = true;
     fetch("/api/communications/sync", { method: "POST" })
-      .then(() => router.refresh())
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.needsPermission) {
+          setNeedsPermission(true);
+        } else {
+          router.refresh();
+        }
+      })
       .catch(() => {});
-  }, [hasTeamsScope, threads.length, router]);
+  }, [hasAnyConnection, threads.length, router]);
 
   async function handleSync() {
     setSyncing(true);
@@ -398,8 +404,12 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
         toast.error(t("syncFailed"));
         return;
       }
-      toast.success(t("syncComplete", { count: data.synced ?? 0 }));
-      router.refresh();
+      if (data.needsPermission) {
+        setNeedsPermission(true);
+      } else {
+        toast.success(t("syncComplete", { count: data.synced ?? 0 }));
+        router.refresh();
+      }
     } catch {
       toast.error(t("syncFailed"));
     } finally {
@@ -407,7 +417,7 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
     }
   }
 
-  if (!hasAnyConnection || !hasTeamsScope) {
+  if (!hasAnyConnection) {
     return (
       <div className="space-y-6">
         <GunimiHeading
@@ -415,7 +425,7 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
           title={t("commandCenterTitle")}
           subtitle={t("commandCenterSubtitle")}
         />
-        <NoConnectionState hasMs365={hasAnyConnection} t={t} />
+        <NoConnectionState hasMs365={false} t={t} />
       </div>
     );
   }
@@ -444,6 +454,18 @@ export default function CommunicationsCenter({ threads, connections }: Props) {
             {syncing ? t("syncing") : t("sync")}
           </GunimiButton>
         </div>
+
+        {/* Needs permission banner */}
+        {needsPermission && (
+          <div className="flex items-center justify-between gap-4 rounded-xl border border-amber-500/20 bg-amber-500/[0.06] px-4 py-3">
+            <p className="text-sm text-amber-300/80">{t("needsTeamsScopeDescription")}</p>
+            <a href="/api/communications/connect/teams" className="shrink-0">
+              <GunimiButton variant="secondary" className="h-8 gap-1.5 px-3 text-xs">
+                {t("reconnect")}
+              </GunimiButton>
+            </a>
+          </div>
+        )}
 
         {/* Thread list */}
         {threads.length === 0 ? (
