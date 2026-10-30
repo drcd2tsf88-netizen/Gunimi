@@ -10,7 +10,7 @@ import {
   resolveSignalIfExists,
   type SignalProductionStats,
 } from "./_resolveByType";
-import { MS_PER_DAY, STALE_THRESHOLD_DAYS, PROPOSAL_STALE_DAYS } from "@/lib/deals/constants";
+import { MS_PER_DAY, STALE_THRESHOLD_DAYS, PROPOSAL_STALE_DAYS, EXPIRY_APPROACHING_DAYS } from "@/lib/deals/constants";
 import { CLOSING_SOON_DAYS } from "@/lib/companies/constants";
 
 export type DealProducerInput = {
@@ -19,6 +19,7 @@ export type DealProducerInput = {
   stage: string;
   value: number | null;
   expectedCloseDate: string | null;
+  expiryDate?: string | null;
   updatedAt: string | null;
   contactId: string | null;
   companyId: string | null;
@@ -34,6 +35,7 @@ export async function produceDealSignals(
     stage,
     value,
     expectedCloseDate,
+    expiryDate,
     updatedAt,
     contactId,
     companyId,
@@ -290,6 +292,52 @@ export async function produceDealSignals(
       "deal_missing_value",
       "value_set",
     );
+  }
+
+  // ─── deal_expiry_approaching / deal_expiry_passed ────────────────────────────
+
+  if (expiryDate) {
+    const msUntilExpiry = new Date(expiryDate).getTime() - now;
+    const daysUntilExpiry = Math.floor(msUntilExpiry / MS_PER_DAY);
+
+    if (daysUntilExpiry < 0) {
+      if (
+        await produceSignal({
+          workspaceId,
+          entityType: "deal",
+          entityId: dealId,
+          type: "deal_expiry_passed",
+          confidence: "high",
+          evidenceData: { days: Math.abs(daysUntilExpiry) },
+          producedBy: "deal_resolver",
+          origin,
+        })
+      ) signalsProduced++;
+      signalsResolved += await resolveSignalIfExists(workspaceId, dealId, "deal_expiry_approaching", "expiry_passed");
+    } else if (daysUntilExpiry <= EXPIRY_APPROACHING_DAYS) {
+      const expiryPlusTen = new Date(expiryDate);
+      expiryPlusTen.setDate(expiryPlusTen.getDate() + 10);
+      if (
+        await produceSignal({
+          workspaceId,
+          entityType: "deal",
+          entityId: dealId,
+          type: "deal_expiry_approaching",
+          confidence: "high",
+          evidenceData: { days: daysUntilExpiry },
+          producedBy: "deal_resolver",
+          origin,
+          expiresAt: expiryPlusTen.toISOString(),
+        })
+      ) signalsProduced++;
+      signalsResolved += await resolveSignalIfExists(workspaceId, dealId, "deal_expiry_passed", "expiry_updated");
+    } else {
+      signalsResolved += await resolveSignalIfExists(workspaceId, dealId, "deal_expiry_approaching", "expiry_updated");
+      signalsResolved += await resolveSignalIfExists(workspaceId, dealId, "deal_expiry_passed", "expiry_updated");
+    }
+  } else {
+    signalsResolved += await resolveSignalIfExists(workspaceId, dealId, "deal_expiry_approaching", "expiry_removed");
+    signalsResolved += await resolveSignalIfExists(workspaceId, dealId, "deal_expiry_passed", "expiry_removed");
   }
 
   return { signalsProduced, signalsResolved };

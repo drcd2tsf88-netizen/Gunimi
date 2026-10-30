@@ -30,6 +30,7 @@ function buildHref(entityType: string, entityId: string): string {
     case "deal":    return `/dashboard/deals/${entityId}`;
     case "contact": return `/dashboard/contacts/${entityId}`;
     case "company": return `/dashboard/companies/${entityId}`;
+    case "email":   return `/dashboard/email`;
     default:        return "/dashboard/tasks";
   }
 }
@@ -59,6 +60,7 @@ export async function getWorkspaceSignals(): Promise<EnrichedSignal[]> {
     if (s.entityType === "contact") entityName = contactNames.get(s.entityId) ?? "—";
     if (s.entityType === "company") entityName = companyNames.get(s.entityId) ?? "—";
     if (s.entityType === "task")    entityName = taskTitles.get(s.entityId)   ?? "—";
+    if (s.entityType === "email")   entityName = (s.evidenceData.subject as string | undefined) ?? "—";
     return { ...s, entityName, entityHref: buildHref(s.entityType, s.entityId) };
   });
 }

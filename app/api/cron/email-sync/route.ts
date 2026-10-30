@@ -7,6 +7,7 @@ import { type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { syncEmailConnection } from "@/lib/email/sync";
 import { processEmailPromises } from "@/lib/promises/processEmailPromises";
+import { processEmailOrderIntents } from "@/lib/email/processEmailOrderIntents";
 import { generateEmailConnectionWakeup } from "@/server/actions/crm/generateEmailConnectionWakeup";
 import { logger } from "@/lib/logger";
 
@@ -67,6 +68,15 @@ export async function GET(request: NextRequest) {
       } catch (promiseErr) {
         logger.error(`[EmailSync] Promise processing failed for ${conn.id}`, {
           error: promiseErr instanceof Error ? promiseErr.message : "Unknown",
+        });
+      }
+
+      // Scan inbound emails for order intent — produce email_order_intent signals
+      try {
+        await processEmailOrderIntents(conn.workspace_id, conn.user_id, conn.id);
+      } catch (orderErr) {
+        logger.error(`[EmailSync] Order intent scan failed for ${conn.id}`, {
+          error: orderErr instanceof Error ? orderErr.message : "Unknown",
         });
       }
 

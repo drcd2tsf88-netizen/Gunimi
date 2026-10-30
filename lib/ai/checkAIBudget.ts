@@ -1,5 +1,6 @@
 import { supabaseAdmin } from "@/lib/server/supabaseAdmin";
 import { getTierFromPreferences, TIER_LIMITS, WorkspaceTier } from "./tiers";
+import { notifyAIBudgetExceeded } from "./notifyAIBudgetExceeded";
 
 const PLATFORM_DAILY_USD_CAP = Number(process.env.PLATFORM_AI_DAILY_USD_LIMIT ?? "50");
 
@@ -68,6 +69,10 @@ export async function checkAIBudget(workspaceId: string): Promise<BudgetCheckRes
 
   const percentUsed = dailyLimit > 0 ? (tokensUsedToday / dailyLimit) * 100 : 0;
   const allowed = tokensUsedToday < dailyLimit;
+
+  if (!allowed) {
+    void notifyAIBudgetExceeded(workspaceId, tokensUsedToday, dailyLimit, percentUsed);
+  }
 
   return {
     allowed,

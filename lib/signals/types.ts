@@ -36,12 +36,16 @@ export type SignalType =
   | "task_waiting_customer"
   // Category 5 — Communication Signals
   | "email_important_unanswered"
+  | "email_order_intent"
   | "meeting_approaching"
   | "meeting_no_preparation"
   // Category 6 — Order Signals
   | "order_overdue"
   | "order_draft_stale"
   | "order_not_acknowledged"
+  // Category 6b — Deal Expiry Signals
+  | "deal_expiry_approaching"
+  | "deal_expiry_passed"
   // Category 7 — Memory Signals (post-Alpha, defined for type completeness)
   | "relationship_milestone"
   | "ai_pattern_detected"

@@ -18,6 +18,7 @@ type DealRow = {
   stage: string;
   value: number | null;
   expected_close_date: string | null;
+  expiry_date: string | null;
   updated_at: string | null;
   contact_id: string | null;
   company_id: string | null;
@@ -29,7 +30,7 @@ export async function dealStaleScan(context: ScanContext): Promise<ScanResult> {
 
   let query = supabaseAdmin
     .from("workspace_deals")
-    .select("id, stage, value, expected_close_date, updated_at, contact_id, company_id, title")
+    .select("id, stage, value, expected_close_date, expiry_date, updated_at, contact_id, company_id, title")
     .eq("workspace_id", context.workspaceId)
     .not("stage", "in", '("won","lost")')
     .order("id")
@@ -80,6 +81,7 @@ export async function dealStaleScan(context: ScanContext): Promise<ScanResult> {
       stage: deal.stage,
       value: deal.value,
       expectedCloseDate: deal.expected_close_date,
+      expiryDate: deal.expiry_date,
       updatedAt: deal.updated_at,
       contactId: deal.contact_id,
       companyId: deal.company_id,

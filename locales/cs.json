@@ -2583,6 +2583,13 @@
     "createTask": "Vytvořit úkol",
     "taskCreated": "Úkol vytvořen",
     "taskCreateFailed": "Nepodařilo se vytvořit úkol",
+    "createOrder": "Vytvořit objednávku",
+    "orderCreated": "Objednávka vytvořena",
+    "orderCreateFailed": "Nepodařilo se vytvořit objednávku",
+    "orderCreateNoContact": "Nejprve propojte e-mail s kontaktem",
+    "orderFromEmail": "Objednávka z e-mailu",
+    "orderFromEmailNote": "Z e-mailu",
+    "categoryEmail": "E-mail",
     "types": {
       "deal_approaching_close": "Obchod se blíží uzavření",
       "deal_close_date_passed": "Datum uzavření prošlo",
@@ -2598,6 +2605,7 @@
       "contact_no_company": "Žádná propojená firma",
       "contact_no_reach": "Žádný e-mail ani telefon",
       "email_important_unanswered": "Nezodpovězený e-mail",
+      "email_order_intent": "Detekován záměr objednávky",
       "company_stale": "Firma stagnuje",
       "company_no_contacts": "Žádné propojené kontakty",
       "company_no_active_deals": "Žádné aktivní obchody",
@@ -2611,7 +2619,9 @@
       "order_draft_stale": "Objednávka uvízla v konceptu",
       "order_not_acknowledged": "Objednávka čeká na potvrzení",
       "meeting_approaching": "Schůzka se blíží",
-      "meeting_no_preparation": "Schůzka bez přípravy"
+      "meeting_no_preparation": "Schůzka bez přípravy",
+      "deal_expiry_approaching": "Smlouva brzy vyprší",
+      "deal_expiry_passed": "Smlouva vypršela"
     }
   },
   "notifications": {

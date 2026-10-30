@@ -254,6 +254,7 @@ probability =
       stage: deal.stage,
       value: deal.value ?? null,
       expectedCloseDate: deal.expected_close_date ?? null,
+      expiryDate: deal.expiry_date ?? null,
       updatedAt: deal.updated_at ?? null,
       contactId: deal.contact_id ?? null,
       companyId: deal.company_id ?? null,

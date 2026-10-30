@@ -455,6 +455,42 @@ export const SIGNAL_REGISTRY: Record<SignalType, SignalTypeDefinition> = {
 
   // ─── Category 7 — Order Signals ────────────────────────────────────────────
 
+  deal_expiry_approaching: {
+    tier: 1,
+    severity: "critical",
+    defaultConfidence: "high",
+    evidenceKey: "signals.deal_expiry_approaching.evidence",
+    actionType: "signals.deal_expiry_approaching.action",
+    resolutionCondition: "Expiry date updated beyond 30-day threshold, or deal won or lost.",
+    ttlDays: null,
+    visibleOn: ["today_focus", "today_attention", "workspace_decision", "workspace_situation"],
+    taskLevelDedup: false,
+  },
+
+  deal_expiry_passed: {
+    tier: 1,
+    severity: "critical",
+    defaultConfidence: "high",
+    evidenceKey: "signals.deal_expiry_passed.evidence",
+    actionType: "signals.deal_expiry_passed.action",
+    resolutionCondition: "Expiry date updated to a future date, or deal won or lost.",
+    ttlDays: 60,
+    visibleOn: ["today_focus", "today_attention", "workspace_decision", "workspace_situation"],
+    taskLevelDedup: false,
+  },
+
+  email_order_intent: {
+    tier: 2,
+    severity: "warning",
+    defaultConfidence: "medium",
+    evidenceKey: "signals.email_order_intent.evidence",
+    actionType: "signals.email_order_intent.action",
+    resolutionCondition: "Order created from the email thread, or user dismisses.",
+    ttlDays: 7,
+    visibleOn: ["today_attention", "workspace_situation"],
+    taskLevelDedup: false,
+  },
+
   order_overdue: {
     tier: 1,
     severity: "critical",

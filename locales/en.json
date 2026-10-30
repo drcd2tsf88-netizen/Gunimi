@@ -2583,6 +2583,13 @@
     "createTask": "Create task",
     "taskCreated": "Task created",
     "taskCreateFailed": "Failed to create task",
+    "createOrder": "Create order",
+    "orderCreated": "Order created",
+    "orderCreateFailed": "Failed to create order",
+    "orderCreateNoContact": "Link the email to a contact first",
+    "orderFromEmail": "Order from email",
+    "orderFromEmailNote": "From email",
+    "categoryEmail": "Email",
     "types": {
       "deal_approaching_close": "Deal approaching close",
       "deal_close_date_passed": "Close date passed",
@@ -2598,6 +2605,7 @@
       "contact_no_company": "No company linked",
       "contact_no_reach": "No email or phone",
       "email_important_unanswered": "Unanswered email",
+      "email_order_intent": "Order intent detected",
       "company_stale": "Company gone quiet",
       "company_no_contacts": "No contacts linked",
       "company_no_active_deals": "No active deals",
@@ -2611,7 +2619,9 @@
       "order_draft_stale": "Order stuck in draft",
       "order_not_acknowledged": "Order awaiting acknowledgement",
       "meeting_approaching": "Meeting approaching",
-      "meeting_no_preparation": "Meeting with no prep"
+      "meeting_no_preparation": "Meeting with no prep",
+      "deal_expiry_approaching": "Contract expiring soon",
+      "deal_expiry_passed": "Contract expired"
     }
   },
   "notifications": {

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckSquare2, ChevronDown, Radio, RefreshCw, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ArrowRight, CheckSquare2, ChevronDown, Radio, RefreshCw, ShoppingCart, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
@@ -21,6 +21,7 @@ import { dismissSignal } from "@/server/actions/signals/dismissSignal";
 import { runWorkspaceScan } from "@/server/actions/signals/runWorkspaceScan";
 import { submitSignalFeedback, type SignalFeedback } from "@/server/actions/signals/submitSignalFeedback";
 import { createTask } from "@/server/actions/tasks/createTask";
+import { createOrder } from "@/server/actions/orders/createOrder";
 import type { EnrichedSignal } from "@/server/actions/signals/getWorkspaceSignals";
 import type { DismissalType } from "@/lib/signals/types";
 
@@ -45,9 +46,10 @@ const ENTITY_CATEGORY_KEY: Record<string, string> = {
   contact: "categoryContact",
   company: "categoryCompany",
   task:    "categoryTask",
+  email:   "categoryEmail",
 };
 
-const CATEGORY_ORDER = ["deal", "contact", "company", "task"];
+const CATEGORY_ORDER = ["deal", "contact", "company", "task", "email"];
 
 function getRelativeDays(iso: string): number {
   return Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000);
@@ -60,6 +62,7 @@ export default function SignalsPageView({ initialSignals }: Props) {
   const [isScanning, startScan] = useTransition();
   const [feedbackMap, setFeedbackMap] = useState<Record<string, SignalFeedback>>({});
   const [taskCreatingMap, setTaskCreatingMap] = useState<Record<string, boolean>>({});
+  const [orderCreatingMap, setOrderCreatingMap] = useState<Record<string, boolean>>({});
 
   function handleDismiss(signalId: string, type: DismissalType) {
     startDismiss(async () => {
@@ -95,6 +98,36 @@ export default function SignalsPageView({ initialSignals }: Props) {
       toast.error(t("taskCreateFailed"), { id: `task-${signal.id}` });
     } finally {
       setTaskCreatingMap((prev) => ({ ...prev, [signal.id]: false }));
+    }
+  }
+
+  async function handleCreateOrder(signal: EnrichedSignal) {
+    const contactId = (signal.evidenceData.contactId as string | undefined) || undefined;
+    const summary = signal.evidenceData.summary as string | undefined;
+    const subject = signal.evidenceData.subject as string | undefined;
+
+    if (!contactId) {
+      toast.error(t("orderCreateNoContact"), { id: `order-${signal.id}` });
+      return;
+    }
+
+    setOrderCreatingMap((prev) => ({ ...prev, [signal.id]: true }));
+    try {
+      const result = await createOrder({
+        title: summary || subject || t("orderFromEmail"),
+        notes: subject ? `${t("orderFromEmailNote")}: ${subject}` : undefined,
+        contact_id: contactId,
+      });
+      if (result) {
+        toast.success(t("orderCreated"), { id: `order-${signal.id}` });
+        setSignals((prev) => prev.filter((s) => s.id !== signal.id));
+      } else {
+        toast.error(t("orderCreateFailed"), { id: `order-${signal.id}` });
+      }
+    } catch {
+      toast.error(t("orderCreateFailed"), { id: `order-${signal.id}` });
+    } finally {
+      setOrderCreatingMap((prev) => ({ ...prev, [signal.id]: false }));
     }
   }
 
@@ -230,18 +263,34 @@ export default function SignalsPageView({ initialSignals }: Props) {
                       </button>
                     </div>
 
-                    <button
-                      onClick={() => handleCreateTask(signal)}
-                      disabled={taskCreatingMap[signal.id]}
-                      title={t("createTask")}
-                      className="hidden h-7 items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-zinc-400 transition-all hover:border-emerald-500/30 hover:text-emerald-400 disabled:opacity-40 sm:flex"
-                    >
-                      {taskCreatingMap[signal.id] ? (
-                        <RefreshCw size={11} className="animate-spin" />
-                      ) : (
-                        <CheckSquare2 size={11} />
-                      )}
-                    </button>
+                    {signal.type === "email_order_intent" ? (
+                      <button
+                        onClick={() => handleCreateOrder(signal)}
+                        disabled={orderCreatingMap[signal.id]}
+                        title={t("createOrder")}
+                        className="hidden h-7 items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-zinc-400 transition-all hover:border-violet-500/30 hover:text-violet-300 disabled:opacity-40 sm:flex"
+                      >
+                        {orderCreatingMap[signal.id] ? (
+                          <RefreshCw size={11} className="animate-spin" />
+                        ) : (
+                          <ShoppingCart size={11} />
+                        )}
+                        <span>{t("createOrder")}</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleCreateTask(signal)}
+                        disabled={taskCreatingMap[signal.id]}
+                        title={t("createTask")}
+                        className="hidden h-7 items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-zinc-400 transition-all hover:border-emerald-500/30 hover:text-emerald-400 disabled:opacity-40 sm:flex"
+                      >
+                        {taskCreatingMap[signal.id] ? (
+                          <RefreshCw size={11} className="animate-spin" />
+                        ) : (
+                          <CheckSquare2 size={11} />
+                        )}
+                      </button>
+                    )}
 
                     <Link
                       href={signal.entityHref}
